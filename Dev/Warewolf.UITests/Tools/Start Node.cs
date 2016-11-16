@@ -4,11 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools.Control_Flow
 {
     [CodedUITest]
-    public class StudioTooling
+    public class Start_Node
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible_UITest()
+        public void WorkflowDesignSurface_StartNode_IsVisible_UITest()
         {
             Uimap.Click_New_Workflow_Ribbon_Button();
             Assert.IsTrue(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists);

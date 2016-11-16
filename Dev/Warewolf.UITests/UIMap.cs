@@ -2067,7 +2067,7 @@ namespace Warewolf.UITests
         public void Create_Resource_In_Folder1()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
-            Assert.AreEqual(Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+            Assert.AreEqual(true, MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(79, 13));
             Drag_Toolbox_Random_Onto_DesignSurface();
         }
@@ -5554,7 +5554,7 @@ namespace Warewolf.UITests
         [When(@"I Open Json Tool Qvi Large View")]
         public void Open_Json_Tool_Qvi_Large_View()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton.Pressed = Open_Json_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton.Pressed = true;
             Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.Exists, "JSON QVI window does not exist on the design surface");
         }
 
@@ -5872,3153 +5872,1011 @@ namespace Warewolf.UITests
         [When(@"I Open System Information Tool Qvi Large View")]
         public void Open_System_Information_Tool_Qvi_Large_View()
         {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton;
-            WpfCustom gatherSystemInfo = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            #endregion
-            openQuickVariableInpToggleButton.Pressed = Open_System_Information_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-            Assert.AreEqual(Open_System_Information_Tool_Qvi_Large_ViewParams.GatherSystemInfoExists, gatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton.Pressed = true;
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
         }
+
         [When(@"I Open UniqueRecords Large View")]
         public void Open_UniqueRecords_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom unique = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
-            #endregion
-            Mouse.DoubleClick(unique, new Point(134, 10));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique, new Point(134, 10));
         }
+
         [When(@"I Open Unzip Tool Large View")]
         public void Open_Unzip_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom unZip = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
-            WpfCheckBox overwriteCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.OverwriteCheckBox;
-            WpfComboBox unZipNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.UnZipNameComboBox;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton;
-            #endregion
-            Mouse.DoubleClick(unZip, new Point(102, 14));
-            Assert.AreEqual(Open_Unzip_Tool_Large_ViewParams.UnZipExists, unZip.Exists, "Unzip large view on the design surface does not exist");
-            Assert.AreEqual(Open_Unzip_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
-            Assert.AreEqual(Open_Unzip_Tool_Large_ViewParams.UnZipNameComboBoxExists, unZipNameComboBox.Exists, "UnZipNameComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Unzip_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip, new Point(102, 14));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.Exists, "Unzip large view on the design surface does not exist");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.LargeViewContentCustom.UnZipNameComboBox.Exists, "UnZipNameComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
+
         [When(@"I Open WebRequest LargeView")]
         public void Open_WebRequest_LargeView()
         {
-            #region Variable Declarations
-            WpfCustom webRequest = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            WpfCustom largeView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView;
-            #endregion
-            Mouse.DoubleClick(webRequest, new Point(126, 13));
-            Assert.AreEqual(Open_WebRequest_LargeViewParams.LargeViewExists, largeView.Exists, "Web request large view does not exist on design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest, new Point(126, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView.Exists, "Web request large view does not exist on design surface.");
         }
+
         [When(@"I Open Write File Tool Large View")]
         public void Open_Write_File_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom fileWrite = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OnErrorCustom;
-            WpfComboBox contentsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.ContentsComboBox;
-            WpfRadioButton overwriteRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OverwriteRadioButton;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton;
-            #endregion
-            Mouse.DoubleClick(fileWrite, new Point(149, 13));
-            Assert.AreEqual(Open_Write_File_Tool_Large_ViewParams.FileWriteExists, fileWrite.Exists, "Write file large view on the design surface does not exist");
-            Assert.AreEqual(Open_Write_File_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
-            Assert.AreEqual(Open_Write_File_Tool_Large_ViewParams.ContentsComboBoxExists, contentsComboBox.Exists, "ContentsComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Write_File_Tool_Large_ViewParams.OverwriteRadioButtonExists, overwriteRadioButton.Exists, "OverwriteRadioButton does not exist on the design surface");
-            Assert.AreEqual(Open_Write_File_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite, new Point(149, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.Exists, "Write file large view on the design surface does not exist");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.ContentsComboBox.Exists, "ContentsComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.LargeViewContentCustom.OverwriteRadioButton.Exists, "OverwriteRadioButton does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
+
         [When(@"I Open Xpath Tool Large View")]
         public void Open_Xpath_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom xPath = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            #endregion
-            Mouse.DoubleClick(xPath, new Point(113, 12));
-            Assert.AreEqual(Open_Xpath_Tool_Large_ViewParams.XPathExists, xPath.Exists, "Xpath large view does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath, new Point(113, 12));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.Exists, "Xpath large view does not exist on the design surface");
         }
+
         [When(@"I Open Xpath Tool Qvi Large View")]
         public void Open_Xpath_Tool_Qvi_Large_View()
         {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton;
-            WpfCustom xPath = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            WpfCustom quickVariableInputContent = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent;
-            #endregion
-            openQuickVariableInpToggleButton.Pressed = Open_Xpath_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-            Assert.AreEqual(Open_Xpath_Tool_Qvi_Large_ViewParams.XPathExists, xPath.Exists, "Xpath Qvi does not exist on the design surface");
-            Assert.AreEqual(Open_Xpath_Tool_Qvi_Large_ViewParams.QuickVariableInputContentExists, quickVariableInputContent.Exists, "QVI on XPath is not open");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton.Pressed = true;
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.Exists, "Xpath Qvi does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent.Exists, "QVI on XPath is not open");
         }
+
         [When(@"I Open Zip Tool Large View")]
         public void Open_Zip_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom zip = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
-            WpfComboBox selectedCompressComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OnErrorCustom;
-            WpfCheckBox overwriteCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OverwriteCheckBox;
-            WpfComboBox fileOrFolderComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.FileOrFolderComboBox;
-            #endregion
-            Mouse.DoubleClick(zip, new Point(124, 12));
-            Assert.AreEqual(Open_Zip_Tool_Large_ViewParams.ZipExists, zip.Exists, "Zip large view on the design surface does not exist");
-            Assert.AreEqual(Open_Zip_Tool_Large_ViewParams.SelectedCompressComboBoxExists, selectedCompressComboBox.Exists, "SelectedCompressComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Zip_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
-            Assert.AreEqual(Open_Zip_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
-            Assert.AreEqual(Open_Zip_Tool_Large_ViewParams.FileOrFolderComboBoxExists, fileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip, new Point(124, 12));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.Exists, "Zip large view on the design surface does not exist");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox.Exists, "SelectedCompressComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.FileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
         }
+
         [When(@"I Press F6")]
         public void Press_F6()
         {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = MainStudioWindow;
-            #endregion
-            Keyboard.SendKeys(mainStudioWindow, Press_F6Params.MainStudioWindowSendKeys, ModifierKeys.None);
+            Keyboard.SendKeys(MainStudioWindow, "{F6}", ModifierKeys.None);
         }
+
         [When(@"I PressF11 EnterFullScreen")]
         public void PressF11_EnterFullScreen()
         {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = MainStudioWindow;
-            #endregion
-            Keyboard.SendKeys(mainStudioWindow, PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
+            Keyboard.SendKeys(MainStudioWindow, "{F11}", ModifierKeys.None);
         }
+
         [When(@"I RabbitMqAsserts")]
         public void RabbitMqAsserts()
         {
-            #region Variable Declarations
-            WpfEdit virtualHostTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.VirtualHostTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PasswordTextBoxEdit;
-            WpfEdit userNameTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.UserNameTextBoxEdit;
-            WpfEdit hostTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.HostTextBoxEdit;
-            WpfEdit portTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit;
-            #endregion
-            Assert.AreEqual(RabbitMqAssertsExpectedValues.VirtualHostTextBoxEditExists, virtualHostTextBoxEdit.Exists, "VirtualHoast textbox does not exist after opening RabbitMq Source tab");
-            Assert.AreEqual(RabbitMqAssertsExpectedValues.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after opening RabbitMq Source");
-            Assert.AreEqual(RabbitMqAssertsExpectedValues.UserNameTextBoxEditExists, userNameTextBoxEdit.Exists, "Username textbox does not exist after opening RabbitMq Source");
-            Assert.AreEqual(RabbitMqAssertsExpectedValues.HostTextBoxEditExists, hostTextBoxEdit.Exists, "Host textbox does not exist after opening RabbitMq Source");
-            Assert.AreEqual(RabbitMqAssertsExpectedValues.PortTextBoxEditExists, portTextBoxEdit.Exists, "Port textbox does not exist after opening RabbitMq Source");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.VirtualHostTextBoxEdit.Exists, "VirtualHoast textbox does not exist after opening RabbitMq Source tab");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening RabbitMq Source");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening RabbitMq Source");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening RabbitMq Source");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening RabbitMq Source");
         }
+
         [When(@"I Remove WorkflowName From Save Dialog")]
         public void Remove_WorkflowName_From_Save_Dialog()
         {
-            #region Variable Declarations
-            WpfEdit serviceNameTextBox = SaveDialogWindow.ServiceNameTextBox;
-            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
-            WpfButton saveButton = SaveDialogWindow.SaveButton;
-            #endregion
-            serviceNameTextBox.Text = Remove_WorkflowName_From_Save_DialogParams.ServiceNameTextBoxText;
-            Assert.AreEqual(Remove_WorkflowName_From_Save_DialogParams.ErrorLabelDisplayText, errorLabel.DisplayText, "Name cannot be null validation message does not appear");
-            Assert.AreEqual(Remove_WorkflowName_From_Save_DialogParams.SaveButtonEnabled, saveButton.Enabled, "Save button on the Save dialog is enabled");
+            SaveDialogWindow.ServiceNameTextBox.Text = "";
+            Assert.AreEqual("Cannot be null", SaveDialogWindow.ErrorLabel.DisplayText, "Name cannot be null validation message does not appear");
+            Assert.AreEqual(false, SaveDialogWindow.SaveButton.Enabled, "Save button on the Save dialog is enabled");
         }
+
         [When(@"I Rename FolderItem ToNewFolderItem")]
         public void Rename_FolderItem_ToNewFolderItem()
         {
-            #region Variable Declarations
-            WpfTreeItem firstSubItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem;
-            WpfMenuItem rename = MainStudioWindow.ExplorerContextMenu.Rename;
-            WpfEdit itemEdit = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit;
-            #endregion
-            Mouse.Click(firstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(rename, new Point(27, 18));
-            itemEdit.Text = Rename_FolderItem_ToNewFolderItemParams.ItemEditText;
-            Keyboard.SendKeys(itemEdit, Rename_FolderItem_ToNewFolderItemParams.ItemEditSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = "Control Flow - Decision2";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem rename = MainStudioWindow.ExplorerContextMenu.Rename;
-            WpfEdit itemEdit = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
-            #endregion
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(rename, new Point(27, 18));
-            itemEdit.Text = Rename_LocalFolder_To_SecondFolderParams.ItemEditText;
-            Keyboard.SendKeys(itemEdit, Rename_LocalFolder_To_SecondFolderParams.ItemEditSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "Example";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
         public void Rename_LocalWorkflow_To_SecodWorkFlow()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem rename = MainStudioWindow.ExplorerContextMenu.Rename;
-            WpfEdit itemEdit = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit;
-            #endregion
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-            Mouse.Click(rename, new Point(73, 15));
-            itemEdit.Text = Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditText;
-            Keyboard.SendKeys(itemEdit, Rename_LocalWorkflow_To_SecodWorkFlowParams.ItemEditSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(73, 15));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "SecondWorkflow";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Restore Unpinned Tab Using Context Menu")]
         public void Restore_Unpinned_Tab_Using_Context_Menu()
         {
-            #region Variable Declarations
-            WpfCustom unpinnedTab = MainStudioWindow.UnpinnedTab;
-            WpfMenuItem tabbedDocument = MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument;
-            #endregion
-            Mouse.Click(unpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
-            tabbedDocument.Checked = Restore_Unpinned_Tab_Using_Context_MenuExpectedValues.TabbedDocumentChecked;
+            Mouse.Click(MainStudioWindow.UnpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
+            MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument.Checked = true;
         }
+
         [When(@"I Right Click Help Tab")]
         public void Right_Click_Help_Tab()
         {
-            #region Variable Declarations
-            WpfTabPage helpTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.HelpTab;
-            #endregion
-            Mouse.Click(helpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.HelpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
         }
+
         [When(@"I RightClick BaseConvert OnDesignSurface")]
         public void RightClick_BaseConvert_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom baseConvert = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
-            #endregion
-            Mouse.Click(baseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
         }
+
         [When(@"I RightClick Calculate OnDesignSurface")]
         public void RightClick_Calculate_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom calculate = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
-            #endregion
-            Mouse.Click(calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
         }
+
         [When(@"I RightClick CaseConvert OnDesignSurface")]
         public void RightClick_CaseConvert_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom caseConvert = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
-            #endregion
-            Mouse.Click(caseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
         }
+
         [When(@"I RightClick Comment OnDesignSurface")]
         public void RightClick_Comment_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom comment = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
-            #endregion
-            Mouse.Click(comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
         }
+
         [When(@"I RightClick Copy OnDesignSurface")]
         public void RightClick_Copy_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom pathCopy = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
-            #endregion
-            Mouse.Click(pathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
         }
+
         [When(@"I RightClick CountRecords OnDesignSurface")]
         public void RightClick_CountRecords_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom countRecordset = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
-            #endregion
-            Mouse.Click(countRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
         }
+
         [When(@"I RightClick CreateJSON OnDesignSurface")]
         public void RightClick_CreateJSON_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom createJson = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
-            #endregion
-            Mouse.Click(createJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
         }
+
         [When(@"I RightClick CreateTool OnDesignSurface")]
         public void RightClick_CreateTool_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom pathCreate = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
-            #endregion
-            Mouse.Click(pathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
         }
+
         [When(@"I RightClick DataMerge OnDesignSurface")]
         public void RightClick_DataMerge_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dataMerge = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
-            #endregion
-            Mouse.Click(dataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
         }
+
         [When(@"I RightClick DataSplit OnDesignSurface")]
         public void RightClick_DataSplit_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dataSplit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
-            #endregion
-            Mouse.Click(dataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
         }
+
         [When(@"I RightClick DateTime OnDesignSurface")]
         public void RightClick_DateTime_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dateTime = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
-            #endregion
-            Mouse.Click(dateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
         }
+
         [When(@"I RightClick DateTimeDifference OnDesignSurface")]
         public void RightClick_DateTimeDifference_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dateTimeDifference = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
-            #endregion
-            Mouse.Click(dateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
         }
+
         [When(@"I RightClick Decision OnDesignSurface")]
         public void RightClick_Decision_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom decision = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
-            #endregion
-            Mouse.Click(decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
         }
+
         [When(@"I RightClick Delete OnDesignSurface")]
         public void RightClick_Delete_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom pathDelete = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
-            #endregion
-            Mouse.Click(pathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
         }
+
         [When(@"I RightClick DeleteRecord OnDesignSurface")]
         public void RightClick_DeleteRecord_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom deleteRecord = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
-            #endregion
-            Mouse.Click(deleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
         }
+
         [When(@"I RightClick DotNetDllConnector OnDesignSurface")]
         public void RightClick_DotNetDllConnector_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dotNetDll = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            #endregion
-            Mouse.Click(dotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
         }
+
         [When(@"I RightClick DropboxFileOperation OnDesignSurface")]
         public void RightClick_DropboxFileOperation_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom dropboxDownload = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload;
-            #endregion
-            Mouse.Click(dropboxDownload, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
         }
+
         [When(@"I RightClick Email OnDesignSurface")]
         public void RightClick_Email_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sMTPEmail = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            #endregion
-            Mouse.Click(sMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
         }
+
         [When(@"I RightClick ExecuteCommandLine OnDesignSurface")]
         public void RightClick_ExecuteCommandLine_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom executeCommandLine = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
-            #endregion
-            Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
         }
+
         [When(@"I RightClick Explorer First Remote Server First Item")]
         public void RightClick_Explorer_First_Remote_Server_First_Item()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            #endregion
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
+
         [When(@"I RightClick Explorer Localhost First Item")]
         public void RightClick_Explorer_Localhost_First_Item()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem open = MainStudioWindow.ExplorerContextMenu.Open;
-            WpfMenuItem showDependencies = MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfMenuItem delete = MainStudioWindow.ExplorerContextMenu.Delete;
-            #endregion
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-            Assert.AreEqual(RightClick_Explorer_Localhost_First_ItemParams.OpenExists, open.Exists, "Open does not exist in explorer context menu.");
-            Assert.AreEqual(RightClick_Explorer_Localhost_First_ItemParams.ShowDependenciesExists, showDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
-            Assert.AreEqual(RightClick_Explorer_Localhost_First_ItemParams.DeleteExists, delete.Exists, "Delete does not exist in ExplorerContextMenu");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+            Assert.AreEqual(true, MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Assert.AreEqual(true, MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
+            Assert.AreEqual(true, MainStudioWindow.ExplorerContextMenu.Delete.Exists, "Delete does not exist in ExplorerContextMenu");
         }
+
         [When(@"I RightClick FindIndex OnDesignSurface")]
         public void RightClick_FindIndex_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom findIndex = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
-            #endregion
-            Mouse.Click(findIndex, MouseButtons.Right, ModifierKeys.None, new Point(113, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex, MouseButtons.Right, ModifierKeys.None, new Point(113, 8));
         }
+
         [When(@"I RightClick FindRecordIndex OnDesignSurface")]
         public void RightClick_FindRecordIndex_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom findRecordsIndex = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
-            #endregion
-            Mouse.Click(findRecordsIndex, MouseButtons.Right, ModifierKeys.None, new Point(191, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex, MouseButtons.Right, ModifierKeys.None, new Point(191, 11));
         }
+
         [When(@"I RightClick ForEach OnDesignSurface")]
         public void RightClick_ForEach_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom forEach = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
-            #endregion
-            Mouse.Click(forEach, MouseButtons.Right, ModifierKeys.None, new Point(137, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach, MouseButtons.Right, ModifierKeys.None, new Point(137, 9));
         }
+
         [When(@"I RightClick FormatNumber OnDesignSurface")]
         public void RightClick_FormatNumber_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom formatNumber = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
-            #endregion
-            Mouse.Click(formatNumber, MouseButtons.Right, ModifierKeys.None, new Point(143, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber, MouseButtons.Right, ModifierKeys.None, new Point(143, 9));
         }
+
         [When(@"I RightClick Length OnDesignSurface")]
         public void RightClick_Length_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom length = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
-            #endregion
-            Mouse.Click(length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
         }
+
         [When(@"I RightClick Move OnDesignSurface")]
         public void RightClick_Move_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom pathMove = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
-            #endregion
-            Mouse.Click(pathMove, MouseButtons.Right, ModifierKeys.None, new Point(98, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove, MouseButtons.Right, ModifierKeys.None, new Point(98, 11));
         }
+
         [When(@"I RightClick MySQLConnector OnDesignSurface")]
         public void RightClick_MySQLConnector_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom mySqlDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
-            #endregion
-            Mouse.Click(mySqlDatabase, MouseButtons.Right, ModifierKeys.None, new Point(202, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase, MouseButtons.Right, ModifierKeys.None, new Point(202, 10));
         }
+
         [When(@"I RightClick New Workflow Tab")]
         public void RightClick_New_Workflow_Tab()
         {
-            #region Variable Declarations
-            WpfTabPage workflowTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab;
-            #endregion
-            Mouse.Click(workflowTab, MouseButtons.Right, ModifierKeys.None, new Point(63, 18));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab, MouseButtons.Right, ModifierKeys.None, new Point(63, 18));
         }
+
         [When(@"I RightClick Random OnDesignSurface")]
         public void RightClick_Random_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom random = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
-            #endregion
-            Mouse.Click(random, MouseButtons.Right, ModifierKeys.None, new Point(107, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random, MouseButtons.Right, ModifierKeys.None, new Point(107, 13));
         }
+
         [When(@"I RightClick ReadFile OnDesignSurface")]
         public void RightClick_ReadFile_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom fileRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
-            #endregion
-            Mouse.Click(fileRead, MouseButtons.Right, ModifierKeys.None, new Point(99, 14));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead, MouseButtons.Right, ModifierKeys.None, new Point(99, 14));
         }
+
         [When(@"I RightClick ReadFolder OnDesignSurface")]
         public void RightClick_ReadFolder_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom folderRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
-            #endregion
-            Mouse.Click(folderRead, MouseButtons.Right, ModifierKeys.None, new Point(115, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead, MouseButtons.Right, ModifierKeys.None, new Point(115, 12));
         }
+
         [When(@"I RightClick Rename OnDesignSurface")]
         public void RightClick_Rename_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom pathRename = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
-            #endregion
-            Mouse.Click(pathRename, MouseButtons.Right, ModifierKeys.None, new Point(103, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename, MouseButtons.Right, ModifierKeys.None, new Point(103, 7));
         }
+
         [When(@"I RightClick Replace OnDesignSurface")]
         public void RightClick_Replace_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom replace = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
-            #endregion
-            Mouse.Click(replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
         }
+
         [When(@"I RightClick Sequence OnDesignSurface")]
         public void RightClick_Sequence_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sequence = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
-            #endregion
-            Mouse.Click(sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
         }
+
         [When(@"I RightClick SharepointCreateListItem OnDesignSurface")]
         public void RightClick_SharepointCreateListItem_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfMenuItem copy = MainStudioWindow.DesignSurfaceContextMenu.Copy;
-            #endregion
-            Mouse.Click(copy, MouseButtons.Right, ModifierKeys.None, new Point(199, 12));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Copy, MouseButtons.Right, ModifierKeys.None, new Point(199, 12));
         }
+
         [When(@"I RightClick SharepointDelete OnDesignSurface")]
         public void RightClick_SharepointDelete_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sharepointDeleteFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile;
-            #endregion
-            Mouse.Click(sharepointDeleteFile, MouseButtons.Right, ModifierKeys.None, new Point(217, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile, MouseButtons.Right, ModifierKeys.None, new Point(217, 8));
         }
+
         [When(@"I RightClick SharepointRead OnDesignSurface")]
         public void RightClick_SharepointRead_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sharepointReadListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem;
-            #endregion
-            Mouse.Click(sharepointReadListItem, MouseButtons.Right, ModifierKeys.None, new Point(203, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem, MouseButtons.Right, ModifierKeys.None, new Point(203, 9));
         }
+
         [When(@"I RightClick SharepointUpdate OnDesignSurface")]
         public void RightClick_SharepointUpdate_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sharepointUpdate = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
-            #endregion
-            Mouse.Click(sharepointUpdate, MouseButtons.Right, ModifierKeys.None, new Point(210, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate, MouseButtons.Right, ModifierKeys.None, new Point(210, 5));
         }
+
         [When(@"I RightClick SortRecords OnDesignSurface")]
         public void RightClick_SortRecords_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sortRecords = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
-            #endregion
-            Mouse.Click(sortRecords, MouseButtons.Right, ModifierKeys.None, new Point(118, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords, MouseButtons.Right, ModifierKeys.None, new Point(118, 8));
         }
+
         [When(@"I RightClick SQLConnector OnDesignSurface")]
         public void RightClick_SQLConnector_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sqlBulkInsert = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-            Mouse.Click(sqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
         }
+
         [When(@"I RightClick SqlServerConnector OnDesignSurface")]
         public void RightClick_SqlServerConnector_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            #endregion
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
         }
+
         [When(@"I RightClick Switch OnDesignSurface")]
         public void RightClick_Switch_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom switch1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            #endregion
-            Mouse.Click(switch1, MouseButtons.Right, ModifierKeys.None, new Point(46, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, MouseButtons.Right, ModifierKeys.None, new Point(46, 15));
         }
+
         [When(@"I RightClick Unzip OnDesignSurface")]
         public void RightClick_Unzip_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfComboBox actionsCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
-            #endregion
-            Mouse.Click(actionsCombobox, MouseButtons.Right, ModifierKeys.None, new Point(101, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox, MouseButtons.Right, ModifierKeys.None, new Point(101, 10));
         }
+
         [When(@"I RightClick WebRequest OnDesignSurface")]
         public void RightClick_WebRequest_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom webRequest = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            #endregion
-            Mouse.Click(webRequest, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
         }
+
         [When(@"I RightClick WriteFile OnDesignSurface")]
         public void RightClick_WriteFile_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom fileWrite = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
-            #endregion
-            Mouse.Click(fileWrite, MouseButtons.Right, ModifierKeys.None, new Point(96, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite, MouseButtons.Right, ModifierKeys.None, new Point(96, 12));
         }
+
         [When(@"I RightClick XPath OnDesignSurface")]
         public void RightClick_XPath_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom xPath = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
-            #endregion
-            Mouse.Click(xPath, MouseButtons.Right, ModifierKeys.None, new Point(99, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath, MouseButtons.Right, ModifierKeys.None, new Point(99, 8));
         }
+
         [When(@"I RightClick Zip OnDesignSurface")]
         public void RightClick_Zip_OnDesignSurface()
         {
-            #region Variable Declarations
-            WpfCustom zip = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
-            #endregion
-            Mouse.Click(zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
         }
+
         [When(@"I Search And Select DiceRoll")]
         public void Search_And_Select_DiceRoll()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-            Mouse.Click(searchTextBox, new Point(165, 9));
-            searchTextBox.Text = Search_And_Select_DiceRollParams.SearchTextBoxText;
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Dice Roll";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
         }
+
         [When(@"I Search And Select HelloWolrd")]
         public void Search_And_Select_HelloWolrd()
         {
-            #region Variable Declarations
-            WpfEdit searchTextBox = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox;
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-            Mouse.Click(searchTextBox, new Point(165, 9));
-            searchTextBox.Text = Search_And_Select_HelloWolrdParams.SearchTextBoxText;
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Hello World";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
         }
+
         [When(@"I Select AcceptanceTestin create")]
         public void Select_AcceptanceTestin_create()
         {
-            #region Variable Declarations
-            WpfComboBox methodList = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList;
-            WpfListItem uIAcceptanceTesting_CrListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList.UIAcceptanceTesting_CrListItem;
-            #endregion
-            Mouse.Click(methodList, new Point(119, 7));
-            Mouse.Click(uIAcceptanceTesting_CrListItem, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList.UIAcceptanceTesting_CrListItem, new Point(114, 13));
         }
+
         [When(@"I Select Action")]
         public void Select_Action()
         {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-            Mouse.Click(item1, new Point(137, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
         }
+
         [When(@"I Select Action From PostgreTool")]
         public void Select_Action_From_PostgreTool()
         {
-            #region Variable Declarations
-            WpfMenuItem newDatabaseSource = MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.ActionsComboBox;
-            WpfTable largeDataGridTable = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.LargeDataGridTable;
-            #endregion
-            Mouse.Click(newDatabaseSource, new Point(119, 7));
-            Mouse.Click(actionsComboBox, new Point(114, 13));
-            Assert.AreEqual(Select_Action_From_PostgreToolParams.LargeDataGridTableEnabled, largeDataGridTable.Enabled, "Inputs grid is not enabled after selecting an Action.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.ActionsComboBox, new Point(114, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.LargeDataGridTable.Enabled, "Inputs grid is not enabled after selecting an Action.");
         }
+
         [When(@"I Select AppData From MethodList")]
         public void Select_AppData_From_MethodList()
         {
-            #region Variable Declarations
-            WpfComboBox methodList = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList;
-            WpfListItem uIAppdataListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList.UIAppdataListItem;
-            #endregion
-            Mouse.Click(methodList, new Point(174, 7));
-            Mouse.Click(uIAppdataListItem, new Point(43, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList, new Point(174, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.MethodList.UIAppdataListItem, new Point(43, 15));
         }
+
         [When(@"I Select AppData From MethodList From ReadTool")]
         public void Select_AppData_From_MethodList_From_ReadTool()
         {
-            #region Variable Declarations
-            WpfComboBox methodList = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.MethodList;
-            WpfListItem uIAppdataListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.MethodList.UIAppdataListItem;
-            #endregion
-            Mouse.Click(methodList, new Point(174, 7));
-            Mouse.Click(uIAppdataListItem, new Point(43, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.MethodList, new Point(174, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.MethodList.UIAppdataListItem, new Point(43, 15));
         }
+
         [When(@"I Select Copy FromContextMenu")]
         public void Select_Copy_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem copy = MainStudioWindow.DesignSurfaceContextMenu.Copy;
-            #endregion
-            Mouse.Click(copy, new Point(27, 18));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Copy, new Point(27, 18));
         }
+
         [When(@"I Select CopyAsImage FromContextMenu")]
         public void Select_CopyAsImage_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem copyasImage = MainStudioWindow.DesignSurfaceContextMenu.CopyasImage;
-            #endregion
-            Mouse.Click(copyasImage, new Point(62, 22));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.CopyasImage, new Point(62, 22));
         }
+
         [When(@"I Select Cut FromContextMenu")]
         public void Select_Cut_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem cut = MainStudioWindow.DesignSurfaceContextMenu.Cut;
-            #endregion
-            Mouse.Click(cut, new Point(53, 16));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Cut, new Point(53, 16));
         }
+
         [When(@"I Select DatabaseAndTable From BulkInsert Tool")]
         public void Select_DatabaseAndTable_From_BulkInsert_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox databaseComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox;
-            WpfListItem testingDb = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.TestingDb;
-            WpfComboBox tableNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox;
-            #endregion
-            Mouse.Click(databaseComboBox, new Point(174, 7));
-            Mouse.Click(testingDb, new Point(43, 15));
-            Assert.AreEqual(Select_DatabaseAndTable_From_BulkInsert_ToolParams.TableNameComboBoxEnabled, tableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox, new Point(174, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.TestingDb, new Point(43, 15));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
         }
+
         [When(@"I Select Delete FromExplorerContextMenu")]
         public void Select_Delete_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem delete = MainStudioWindow.ExplorerContextMenu.Delete;
-            WpfButton yesButton = MessageBoxWindow.YesButton;
-            #endregion
-            Mouse.Click(delete, new Point(87, 12));
-            Assert.AreEqual(Select_Delete_FromExplorerContextMenuParams.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
+            Assert.AreEqual(true, MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
+
         [When(@"I Select DeleteRow FromContextMenu")]
         public void Select_DeleteRow_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem deleteRow = MainStudioWindow.DesignSurfaceContextMenu.DeleteRow;
-            #endregion
-            Mouse.Click(deleteRow, new Point(74, 9));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
+
         [When(@"I Select Deploy FromExplorerContextMenu")]
         public void Select_Deploy_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem deploy = MainStudioWindow.ExplorerContextMenu.Deploy;
-            WpfTabPage deployTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab;
-            #endregion
-            Mouse.Click(deploy, new Point(57, 11));
-            Assert.AreEqual(Select_Deploy_FromExplorerContextMenuParams.DeployTabExists, deployTab.Exists, "DeployTab does not exist after clicking Deploy");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Deploy, new Point(57, 11));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
+
         [When(@"I Select Dev2TestingDB From DB Source Wizard Database Combobox")]
         public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
         {
-            #region Variable Declarations
-            WpfCustom databaseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox;
-            WpfCustom comboboxListItemAsDev2TestingDB = MainStudioWindow.ComboboxListItemAsDev2TestingDB;
-            WpfText uIDev2TestingDBText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText;
-            #endregion
-            Mouse.Click(databaseCombobox, new Point(221, 9));
-            Mouse.Click(comboboxListItemAsDev2TestingDB, new Point(129, 19));
-            Assert.AreEqual(Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams.UIDev2TestingDBTextDisplayText, uIDev2TestingDBText.DisplayText);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox, new Point(221, 9));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsDev2TestingDB, new Point(129, 19));
+            Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIDev2TestingDBText.DisplayText);
         }
+
         [When(@"I Select First Item From DotNet DLL Large View Source Combobox")]
         public void Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem listItem1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1;
-            #endregion
-            Mouse.Click(sourcesComboBox, new Point(175, 9));
-            Mouse.Click(listItem1, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox, new Point(175, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.ListItem1, new Point(163, 17));
         }
+
         [When(@"I Select FirstItem From DotNet DLL Large View Action Combobox")]
         public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-            Mouse.Click(item1, new Point(137, 7));
-            Assert.AreEqual(Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
+            Assert.AreEqual("Dev2.Common.Interfaces.PluginAction", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
+
         [When(@"I Select GetCountries From SQL Server Large View Action Combobox")]
         public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox actionsCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox;
-            WpfListItem getCountriesListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem;
-            #endregion
-            Mouse.Click(actionsCombobox, new Point(216, 7));
-            Mouse.Click(getCountriesListItem, new Point(137, 7));
-            Assert.AreEqual(Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues.ActionsComboboxSelectedItem, actionsCombobox.SelectedItem, "GetCountries is not selected in SQL server large view action combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.GetCountriesListItem, new Point(137, 7));
+            Assert.AreEqual("dbo.GetCountries", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.ActionsCombobox.SelectedItem, "GetCountries is not selected in SQL server large view action combobox.");
         }
+
         [When(@"I Select GUID From Random Type Combobox")]
         public void Select_GUID_From_Random_Type_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox typeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
-            WpfListItem gUID = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.GUID;
-            #endregion
-            Mouse.Click(typeComboBox, new Point(133, 10));
-            Mouse.Click(gUID, new Point(31, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox, new Point(133, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.GUID, new Point(31, 16));
         }
+
         [When(@"I Select http From Server Source Wizard Address Protocol Dropdown")]
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
-            #region Variable Declarations
-            WpfButton toggleDropdown = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown;
-            WpfCustom comboboxListItemAsHttp = MainStudioWindow.ComboboxListItemAsHttp;
-            WpfText httpSelectedItemText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText;
-            WpfEdit addressEditBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            #endregion
-            Mouse.Click(toggleDropdown, new Point(54, 8));
-            Assert.AreEqual(Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.ComboboxListItemAsHttpExists, comboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
-            Mouse.Click(comboboxListItemAsHttp, new Point(31, 12));
-            Assert.AreEqual(Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.HttpSelectedItemTextDisplayText, httpSelectedItemText.DisplayText, "Server source wizard address protocol is not equal to http.");
-            Assert.AreEqual(Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams.AddressEditBoxExists, addressEditBox.Exists, "Server source wizard address textbox does not exist");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.ToggleDropdown, new Point(54, 8));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsHttp, new Point(31, 12));
+            Assert.AreEqual("http", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ProtocolCombobox.HttpSelectedItemText.DisplayText, "Server source wizard address protocol is not equal to http.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox.Exists, "Server source wizard address textbox does not exist");
         }
+
         [When(@"I Select InsertRow FromContextMenu")]
         public void Select_InsertRow_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem insertRow = MainStudioWindow.DesignSurfaceContextMenu.InsertRow;
-            #endregion
-            Mouse.Click(insertRow, new Point(66, 19));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.InsertRow, new Point(66, 19));
         }
+
         [When(@"I Select Letters From Random Type Combobox")]
         public void Select_Letters_From_Random_Type_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox typeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox;
-            WpfListItem letters = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.Letters;
-            WpfComboBox lengthComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.LengthComboBox;
-            #endregion
-            Mouse.Click(typeComboBox, new Point(133, 10));
-            Mouse.Click(letters, new Point(31, 16));
-            Assert.AreEqual(Select_Letters_From_Random_Type_ComboboxParams.LengthComboBoxExists, lengthComboBox.Exists, "Length combobox does not exist after selecting Letters as Random Type");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox, new Point(133, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.TypeComboBox.Letters, new Point(31, 16));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallViewContentCustom.LengthComboBox.Exists, "Length combobox does not exist after selecting Letters as Random Type");
         }
+
         [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]
         public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
         {
-            #region Variable Declarations
-            WpfButton toggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsLocalhostConnected = MainStudioWindow.ComboboxListItemAsLocalhostConnected;
-            WpfText remoteConnectionIntegrationText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-            Mouse.Click(toggleButton, new Point(230, 9));
-            Assert.AreEqual(Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.AreEqual(Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsLocalhostConnectedExists, comboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-            Mouse.Click(comboboxListItemAsLocalhostConnected, new Point(226, 13));
-            Assert.AreEqual(Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
+            Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
         }
+
         [When(@"I Select LoggingTab")]
         public void Select_LoggingTab()
         {
-            #region Variable Declarations
-            WpfTabPage loggingTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
-            #endregion
-            Mouse.Click(loggingTab, new Point(57, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab, new Point(57, 7));
         }
+
         [When(@"I Select Months From AddTime Type")]
         public void Select_Months_From_AddTime_Type()
         {
-            #region Variable Declarations
-            WpfComboBox addTimeTypeComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox;
-            WpfListItem months = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox.Months;
-            #endregion
-            Mouse.Click(addTimeTypeComboBox, new Point(175, 9));
-            Mouse.Click(months, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox, new Point(175, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime.SmallViewContentCustom.AddTimeTypeComboBox.Months, new Point(163, 17));
         }
+
         [When(@"I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown")]
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
         {
-            #region Variable Declarations
-            WpfButton toggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton;
-            WpfText microsoftSQLServerText = MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText;
-            WpfText microsoftSQLServer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
-            #endregion
-            Mouse.Click(toggleButton, new Point(625, 11));
-            Assert.AreEqual(Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerTextExists, microsoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type com" +
-                    "bobox.");
-            Mouse.Click(microsoftSQLServerText, new Point(118, 6));
-            Assert.AreEqual(Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton, new Point(625, 11));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText, new Point(118, 6));
+            Assert.AreEqual("Microsoft SQL Server", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
         }
+
         [When(@"I Select Namespace")]
         public void Select_Namespace()
         {
-            #region Variable Declarations
-            WpfComboBox classNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
-            #endregion
-            Mouse.Click(classNameComboBox, new Point(216, 7));
-            Assert.AreEqual(Select_NamespaceExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
-            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(216, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject, new Point(137, 7));
         }
+
         [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
         public void Select_NewDatabaseSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newDatabaseSource = MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
-            #endregion
-            Mouse.Click(newDatabaseSource, new Point(72, 14));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(72, 14));
         }
+
         [When(@"I Select NewDatabaseSource FromSqlServerTool")]
         public void Select_NewDatabaseSource_FromSqlServerTool()
         {
-            #region Variable Declarations
-            WpfButton newDbSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            WpfText microsoftSQLServer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer;
-            WpfEdit userNameTextBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox;
-            WpfEdit passwordTextBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox;
-            #endregion
-            Mouse.Click(newDbSourceButton, new Point(16, 13));
-            Assert.AreEqual(Select_NewDatabaseSource_FromSqlServerToolParams.MicrosoftSQLServerDisplayText, microsoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
-            Assert.AreEqual(Select_NewDatabaseSource_FromSqlServerToolParams.UserNameTextBoxExists, userNameTextBox.Exists, "User name testbox does not exist on db source wizard.");
-            Assert.AreEqual(Select_NewDatabaseSource_FromSqlServerToolParams.PasswordTextBoxExists, passwordTextBox.Exists, "Password textbox does not exist on database source wizard.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton, new Point(16, 13));
+            Assert.AreEqual("Microsoft SQL Server", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Exists, "User name testbox does not exist on db source wizard.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Exists, "Password textbox does not exist on database source wizard.");
         }
+
         [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
         public void Select_NewDropboxSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newDropboxSource = MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
-            #endregion
-            Mouse.Click(newDropboxSource, new Point(119, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDropboxSource, new Point(119, 15));
         }
+
         [When(@"I Select NewEmailSource FromExplorerContextMenu")]
         public void Select_NewEmailSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            WpfMenu explorerEnvironmentContextMenu = MainStudioWindow.ExplorerEnvironmentContextMenu;
-            WpfMenuItem newEmailSource = MainStudioWindow.ExplorerEnvironmentContextMenu.NewEmailSource;
-            WpfEdit hostTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.HostTextBoxEdit;
-            WpfEdit userNameTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.UserNameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PasswordTextBoxEdit;
-            WpfEdit portTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PortTextBoxEdit;
-            WpfEdit timeoutTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TimeoutTextBoxEdit;
-            #endregion
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.ExplorerEnvironmentContextMenuExists, explorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
-            Mouse.Click(newEmailSource, new Point(101, 13));
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.HostTextBoxEditExists, hostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.UserNameTextBoxEditExists, userNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.PortTextBoxEditExists, portTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
-            Assert.AreEqual(Select_NewEmailSource_FromExplorerContextMenuParams.TimeoutTextBoxEditExists, timeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Assert.AreEqual(true, MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewEmailSource, new Point(101, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TimeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab");
         }
+
         [When(@"I Select NewPluginSource FromExplorerContextMenu")]
         public void Select_NewPluginSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            WpfListItem systemRandomListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
-            #endregion
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Mouse.Click(systemRandomListItem, new Point(78, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem, new Point(78, 11));
         }
+
         [When(@"I Select NewServerSource FromExplorerContextMenu")]
         public void Select_NewServerSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newServerSource = MainStudioWindow.ExplorerContextMenu.NewServerSource;
-            #endregion
-            Mouse.Click(newServerSource, new Point(44, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewServerSource, new Point(44, 13));
         }
+
         [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
         public void Select_NewSharepointSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newSharepointSource = MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
-            #endregion
-            Mouse.Click(newSharepointSource, new Point(126, 17));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewSharepointSource, new Point(126, 17));
         }
+
         [When(@"I Select NewSharepointSource FromServer Lookup")]
         public void Select_NewSharepointSource_FromServer_Lookup()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server;
-            #endregion
-            Mouse.Click(server, new Point(107, 13));
-            Keyboard.SendKeys(server, Select_NewSharepointSource_FromServer_LookupParams.ServerSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server, new Point(107, 13));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server, "{Down}{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Select NewSharepointSource FromServer Lookup On SharepointCopyFile Tool")]
         public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server;
-            #endregion
-            Mouse.Click(server, new Point(107, 13));
-            Keyboard.SendKeys(server, Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams.ServerSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server, new Point(107, 13));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server, "{Down}{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Select NewSharepointSource FromServer Lookup On SharepointMoveFile Tool")]
         public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server;
-            #endregion
-            Mouse.Click(server, new Point(107, 13));
-            Keyboard.SendKeys(server, Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams.ServerSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server, new Point(107, 13));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile.SmallView.Server, "{Down}{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Select NewSharepointSource FromServer Lookup On SharepointUpload Tool")]
         public void Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox sourceCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox;
-            #endregion
-            Mouse.Click(sourceCombobox, new Point(107, 13));
-            Keyboard.SendKeys(sourceCombobox, Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams.SourceComboboxSendKeys, ModifierKeys.None);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox, new Point(107, 13));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox, "{Down}{Enter}", ModifierKeys.None);
         }
+
         [When(@"I Select NewWebSource FromExplorerContextMenu")]
         public void Select_NewWebSource_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newWebServiceSource = MainStudioWindow.ExplorerContextMenu.NewWebServiceSource;
-            #endregion
-            Mouse.Click(newWebServiceSource, new Point(82, 20));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWebServiceSource, new Point(82, 20));
         }
+
         [When(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem newWorkflow = MainStudioWindow.ExplorerContextMenu.NewWorkflow;
-            #endregion
-            Mouse.Click(newWorkflow, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(30, 11));
         }
+
         [When(@"I Select NewWorkFlowService From ContextMenu")]
         public void Select_NewWorkFlowService_From_ContextMenu()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            WpfMenuItem newWorkflow = MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow;
-            #endregion
-            Mouse.Click(localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
-            Assert.AreEqual(Select_NewWorkFlowService_From_ContextMenuParams.NewWorkflowEnabled, newWorkflow.Enabled, "NewWorkFlowService button is disabled.");
-            Mouse.Click(newWorkflow, new Point(79, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+            Assert.AreEqual(true, MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow, new Point(79, 13));
         }
+
         [When(@"I Select Next From DotNet DLL Large View Action Combobox")]
         public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem nextListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem;
-            #endregion
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-            Mouse.Click(nextListItem, new Point(137, 7));
-            Assert.AreEqual(Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem, new Point(137, 7));
+            Assert.AreEqual("Next", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
+
         [When(@"I Select Open FromExplorerContextMenu")]
         public void Select_Open_FromExplorerContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem open = MainStudioWindow.ExplorerContextMenu.Open;
-            #endregion
-            Mouse.Click(open, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open, new Point(30, 11));
         }
+
         [When(@"I Select OutputIn Days")]
         public void Select_OutputIn_Days()
         {
-            #region Variable Declarations
-            WpfComboBox outputInComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox;
-            WpfListItem days = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox.Days;
-            #endregion
-            Mouse.Click(outputInComboBox, new Point(119, 7));
-            Mouse.Click(days, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference.SmallViewContentCustom.OutputInComboBox.Days, new Point(114, 13));
         }
+
         [When(@"I Select Paste FromContextMenu")]
         public void Select_Paste_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem paste = MainStudioWindow.DesignSurfaceContextMenu.Paste;
-            #endregion
-            Mouse.Click(paste, new Point(52, 16));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Paste, new Point(52, 16));
         }
+
         [When(@"I Select PerfomanceCounterTab")]
         public void Select_PerfomanceCounterTab()
         {
-            #region Variable Declarations
-            WpfTabPage perfomanceCounterTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab;
-            #endregion
-            Mouse.Click(perfomanceCounterTab, new Point(124, 14));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
         }
+
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
-            #region Variable Declarations
-            WpfButton toggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegration = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-            Mouse.Click(toggleButton, new Point(230, 9));
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected destination server in deploy is not Remote Connection Integration.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+            Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected destination server in deploy is not Remote Connection Integration.");
         }
+
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
-            #region Variable Declarations
-            WpfButton toggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegration = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            WpfText remoteConnectionIntegrationText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-            Mouse.Click(toggleButton, new Point(230, 9));
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationExists, comboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobo" +
-                    "x.");
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
-            Assert.AreEqual(Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+            Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
         }
+
         [When(@"I Select RemoteConnectionIntegration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
-            #region Variable Declarations
-            WpfButton serverListComboBox = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegration = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            #endregion
-            Mouse.Click(serverListComboBox, new Point(174, 8));
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(174, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
         }
+
         [When(@"I Select RemoteConnectionIntegrationConnected From Deploy Tab Source Server Combobox")]
         public void Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_Combobox()
         {
-            #region Variable Declarations
-            WpfButton toggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton;
-            WpfCustom comboboxListItemAsNewRemoteServer = MainStudioWindow.ComboboxListItemAsNewRemoteServer;
-            WpfCustom comboboxListItemAsRemoteConnectionIntegrationConnected = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected;
-            WpfText remoteConnectionIntegrationText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText;
-            #endregion
-            Mouse.Click(toggleButton, new Point(230, 9));
-            Assert.AreEqual(Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsNewRemoteServerExists, comboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.AreEqual(Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.ComboboxListItemAsRemoteConnectionIntegrationConnectedExists, comboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(comboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
-            Assert.AreEqual(Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams.RemoteConnectionIntegrationTextDisplayText, remoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
+            Assert.AreEqual(true, MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
+            Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
         }
+
         [When(@"I Select Round Up")]
         public void Select_Round_Up()
         {
-            #region Variable Declarations
-            WpfComboBox roundingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
-            WpfListItem roungUP = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.RoungUP;
-            #endregion
-            Mouse.Click(roundingComboBox, new Point(119, 7));
-            Mouse.Click(roungUP, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.RoungUP, new Point(114, 13));
         }
+
         [When(@"I Select RoundingType None")]
         public void Select_RoundingType_None()
         {
-            #region Variable Declarations
-            WpfComboBox roundingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
-            WpfListItem none = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.None;
-            #endregion
-            Mouse.Click(roundingComboBox, new Point(119, 7));
-            Mouse.Click(none, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.None, new Point(114, 13));
         }
+
         [When(@"I Select RoundingType Normal")]
         public void Select_RoundingType_Normal()
         {
-            #region Variable Declarations
-            WpfComboBox roundingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
-            WpfListItem normal = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.Normal;
-            #endregion
-            Mouse.Click(roundingComboBox, new Point(119, 7));
-            Mouse.Click(normal, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.Normal, new Point(114, 13));
         }
+
         [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
         public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
         {
-            #region Variable Declarations
-            WpfListItem rSAKLFSVRGENDEV = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV;
-            WpfEdit textbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox;
-            #endregion
-            Mouse.Click(rSAKLFSVRGENDEV, new Point(97, 17));
-            Assert.AreEqual(Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues.TextboxText, textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV, new Point(97, 17));
+            Assert.AreEqual("RSAKLFSVRGENDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
         }
+
         [When(@"I Select SaveAsImage FromContextMenu")]
         public void Select_SaveAsImage_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem saveasImage = MainStudioWindow.DesignSurfaceContextMenu.SaveasImage;
-            #endregion
-            Mouse.Click(saveasImage, new Point(38, 15));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.SaveasImage, new Point(38, 15));
         }
+
         [When(@"I Select SecurityTab")]
         public void Select_SecurityTab()
         {
-            #region Variable Declarations
-            WpfTabPage securityTab = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
-            #endregion
-            Mouse.Click(securityTab, new Point(102, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab, new Point(102, 10));
         }
+
         [When(@"I Select SetAsStartNode FromContextMenu")]
         public void Select_SetAsStartNode_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem setasStartNode = MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode;
-            #endregion
-            Mouse.Click(setasStartNode, new Point(67, 16));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode, new Point(67, 16));
         }
+
         [When(@"I Select SharepointTestServer")]
         public void Select_SharepointTestServer()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server;
-            WpfListItem sharepointTestServer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server.SharepointTestServer;
-            #endregion
-            Mouse.Click(server, new Point(98, 12));
-            Mouse.Click(sharepointTestServer, new Point(67, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server, new Point(98, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Server.SharepointTestServer, new Point(67, 13));
         }
+
         [When(@"I Select SharepointTestServer From SharepointRead Tool")]
         public void Select_SharepointTestServer_From_SharepointRead_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.Server;
-            WpfListItem sharepointTestServer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.Server.SharepointTestServer;
-            WpfButton editSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.EditSourceButton;
-            #endregion
-            Mouse.Click(server, new Point(98, 12));
-            Mouse.Click(sharepointTestServer, new Point(67, 13));
-            Assert.AreEqual(Select_SharepointTestServer_From_SharepointRead_ToolParams.EditSourceButtonEnabled, editSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.Server, new Point(98, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.Server.SharepointTestServer, new Point(67, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.EditSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
         }
+
         [When(@"I Select SharepointTestServer From SharepointUpdate Tool")]
         public void Select_SharepointTestServer_From_SharepointUpdate_Tool()
         {
-            #region Variable Declarations
-            WpfComboBox server = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.Server;
-            WpfListItem sharepointTestServer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.Server.SharepointTestServer;
-            WpfButton editSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.EditSourceButton;
-            #endregion
-            Mouse.Click(server, new Point(98, 12));
-            Mouse.Click(sharepointTestServer, new Point(67, 13));
-            Assert.AreEqual(Select_SharepointTestServer_From_SharepointUpdate_ToolParams.EditSourceButtonEnabled, editSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.Server, new Point(98, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.Server.SharepointTestServer, new Point(67, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.EditSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
         }
+
         [When(@"I Select ShowLargeView FromContextMenu")]
         public void Select_ShowLargeView_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem showLargeView = MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            #endregion
-            Mouse.Click(showLargeView, new Point(43, 15));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView, new Point(43, 15));
         }
+
         [When(@"I Select Source From DotnetTool")]
         public void Select_Source_From_DotnetTool()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox;
-            WpfListItem dotNetSource = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.DotNetSource;
-            WpfComboBox classNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem assemblyLocationGACCListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.AssemblyLocationGACCListItem;
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem equalsAction = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.EqualsAction;
-            WpfButton generateOutputsButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton;
-            WpfRow row1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1;
-            WpfButton saveButton = MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-            Mouse.Click(sourcesComboBox, new Point(119, 7));
-            Mouse.Click(dotNetSource, new Point(114, 13));
-            Assert.AreEqual(Select_Source_From_DotnetToolParams.ClassNameComboBoxEnabled, classNameComboBox.Enabled, "ClassNameComboBox is not Enabled after selecting a source");
-            Mouse.Click(classNameComboBox, new Point(119, 7));
-            Mouse.Click(assemblyLocationGACCListItem, new Point(114, 13));
-            Assert.AreEqual(Select_Source_From_DotnetToolParams.ActionsComboBoxEnabled, actionsComboBox.Enabled, "ActionsComboBox is not Enabled after selecting ClassName");
-            Mouse.Click(actionsComboBox, new Point(119, 7));
-            Mouse.Click(equalsAction, new Point(114, 13));
-            Assert.AreEqual(Select_Source_From_DotnetToolParams.GenerateOutputsButtonEnabled, generateOutputsButton.Enabled, "GenerateOutputsButton is not Enabled after selecting an Action");
-            Assert.AreEqual(Select_Source_From_DotnetToolParams.Row1Enabled, row1.Enabled, "InputsDataGridTable is not Enabled after selecting an Action");
-            Mouse.Click(saveButton, new Point(10, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.DotNetSource, new Point(114, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled, "ClassNameComboBox is not Enabled after selecting a source");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.AssemblyLocationGACCListItem, new Point(114, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Enabled, "ActionsComboBox is not Enabled after selecting ClassName");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.EqualsAction, new Point(114, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton.Enabled, "GenerateOutputsButton is not Enabled after selecting an Action");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1.Enabled, "InputsDataGridTable is not Enabled after selecting an Action");
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
         }
+
         [When(@"I Select Source From PostgreTool")]
         public void Select_Source_From_PostgreTool()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.SourcesComboBox;
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.ActionsComboBox;
-            #endregion
-            Mouse.Click(sourcesComboBox, new Point(119, 7));
-            Mouse.Click(sourcesComboBox, new Point(114, 13));
-            Assert.AreEqual(Select_Source_From_PostgreToolParams.ActionsComboBoxEnabled, actionsComboBox.Enabled, "Action combobox is not enabled after selecting an Action.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.SourcesComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.SourcesComboBox, new Point(114, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.ActionsComboBox.Enabled, "Action combobox is not enabled after selecting an Action.");
         }
+
         [When(@"I Select SystemObject From DotNet DLL Large View Namespace Combobox")]
         public void Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox classNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem comboboxlistItemAsSystemObject = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject;
-            #endregion
-            Mouse.Click(classNameComboBox, new Point(216, 7));
-            Assert.AreEqual(Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ComboboxlistItemAsSystemObjectExists, comboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
-            Mouse.Click(comboboxlistItemAsSystemObject, new Point(137, 7));
-            Assert.AreEqual(Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Object is not selected in DotNet DLL tool large view namespace combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(216, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject, new Point(137, 7));
+            Assert.AreEqual("{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
+                            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
+                            "l}", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SelectedItem, "System.Object is not selected in DotNet DLL tool large view namespace combobox.");
         }
+
         [When(@"I Select SystemRandom From DotNet DLL Large View Namespace Combobox")]
         public void Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox classNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox;
-            WpfListItem systemRandomListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem;
-            #endregion
-            Mouse.Click(classNameComboBox, new Point(216, 7));
-            Mouse.Click(systemRandomListItem, new Point(137, 7));
-            Assert.AreEqual(Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues.ClassNameComboBoxSelectedItem, classNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem, new Point(137, 7));
+            Assert.AreEqual("{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
+                            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
+                            "l}", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
+
         [When(@"I Select TestingReturnText Web Put Source")]
         public void Select_TestingReturnText_Web_Put_Source()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox;
-            WpfListItem comboboxListItemAsTestingReturnText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.ComboboxListItemAsTestingReturnText;
-            #endregion
-            Mouse.Click(sourcesComboBox, new Point(196, 11));
-            Mouse.Click(comboboxListItemAsTestingReturnText, new Point(129, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox, new Point(196, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.ComboboxListItemAsTestingReturnText, new Point(129, 13));
         }
+
         [When(@"I Select Tests From Context Menu")]
         public void Select_Tests_From_Context_Menu()
         {
-            #region Variable Declarations
-            WpfMenuItem tests = MainStudioWindow.ExplorerContextMenu.Tests;
-            WpfTabPage testsTabPage = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage;
-            #endregion
-            Mouse.Click(tests, new Point(46, 16));
-            Assert.AreEqual(Select_Tests_From_Context_MenuParams.TestsTabPageExists, testsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context men" +
-                    "u.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(46, 16));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context menu.");
         }
+
         [When(@"I Select ToString From DotNet DLL Large View Action Combobox")]
         public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox actionsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox;
-            WpfListItem item1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1;
-            #endregion
-            Mouse.Click(actionsComboBox, new Point(216, 7));
-            Mouse.Click(item1, new Point(137, 7));
-            Assert.AreEqual(Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues.ActionsComboBoxSelectedItem, actionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
+            Assert.AreEqual("ToString", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
+
         [When(@"I Select TSTCIREMOTE From Server Source Wizard Dropdownlist")]
         public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
         {
-            #region Variable Declarations
-            WpfListItem tSTCIREMOTE = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
-            WpfEdit addressEditBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
-            WpfButton testConnectionButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton;
-            #endregion
-            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
-            Assert.AreEqual(Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
-            Assert.AreEqual(Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams.TestConnectionButtonExists, testConnectionButton.Exists, "Server source wizard does not contain a test connection button");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE, new Point(70, 19));
+            Assert.AreEqual("TST-CI-REMOTE", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton.Exists, "Server source wizard does not contain a test connection button");
         }
+
         [When(@"I Select UITestingDBSource From SQL Server Large View Source Combobox")]
         public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox;
-            WpfListItem uITestingDBSourceListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem;
-            #endregion
-            Mouse.Click(sourcesCombobox, new Point(216, 7));
-            Mouse.Click(uITestingDBSourceListItem, new Point(137, 7));
-            Assert.AreEqual(Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams.SourcesComboboxSelectedItem, sourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSo" +
-                    "urce.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.UITestingDBSourceListItem, new Point(137, 7));
+            Assert.AreEqual("UITestingDBSource", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.SourcesCombobox.SelectedItem, "SQL Server large view source combobox selected item is not equal to UITestingDBSource.");
         }
+
         [When(@"I Select UITestingSource From Web Server Large View Source Combobox")]
         public void Select_UITestingSource_From_Web_Server_Large_View_Source_Combobox()
         {
-            #region Variable Declarations
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox;
-            WpfListItem uITesting = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox.UITesting;
-            WpfButton editSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton;
-            WpfButton generateOutputsButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton;
-            #endregion
-            Mouse.Click(sourcesComboBox, new Point(216, 7));
-            Mouse.Click(uITesting, new Point(137, 7));
-            Assert.AreEqual(Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams.EditSourceButtonEnabled, editSourceButton.Enabled, "Delete Web large view source combobox EDIT button is disabled.");
-            Assert.AreEqual(Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams.GenerateOutputsButtonEnabled, generateOutputsButton.Enabled, "Delete Web large view source combobox GenerateOutput button is disabled.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox, new Point(216, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox.UITesting, new Point(137, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton.Enabled, "Delete Web large view source combobox EDIT button is disabled.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton.Enabled, "Delete Web large view source combobox GenerateOutput button is disabled.");
         }
+
         [When(@"I Select User From RunTestAs")]
         public void Select_User_From_RunTestAs()
         {
-            #region Variable Declarations
-            WpfRadioButton userRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserRadioButton;
-            WpfEdit usernameTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit;
-            WpfEdit passwordTextBoxEdit = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit;
-            WpfButton saveButton = MainStudioWindow.SideMenuBar.SaveButton;
-            #endregion
-            userRadioButton.Selected = Select_User_From_RunTestAsParams.UserRadioButtonSelected;
-            Assert.AreEqual(Select_User_From_RunTestAsParams.UsernameTextBoxEditExists, usernameTextBoxEdit.Exists, "Username textbox does not exist after clicking RunAsUser radio button");
-            Assert.AreEqual(Select_User_From_RunTestAsParams.PasswordTextBoxEditExists, passwordTextBoxEdit.Exists, "Password textbox does not exist after clicking RunAsUser radio button");
-            Assert.AreEqual(Select_User_From_RunTestAsParams.SaveButtonEnabled, saveButton.Enabled, "Save Ribbon Menu buton is disabled after changing test");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserRadioButton.Selected = true;
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UsernameTextBoxEdit.Exists, "Username textbox does not exist after clicking RunAsUser radio button");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.PasswordTextBoxEdit.Exists, "Password textbox does not exist after clicking RunAsUser radio button");
+            Assert.AreEqual(true, MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Menu buton is disabled after changing test");
         }
+
         [When(@"I Select Zip Compression")]
         public void Select_Zip_Compression()
         {
-            #region Variable Declarations
-            WpfComboBox selectedCompressComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox;
-            WpfListItem normalDefault = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox.NormalDefault;
-            #endregion
-            Mouse.Click(selectedCompressComboBox, new Point(119, 7));
-            Mouse.Click(normalDefault, new Point(114, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.SelectedCompressComboBox.NormalDefault, new Point(114, 13));
         }
+
         [When(@"I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
         {
-            #region Variable Declarations
-            WpfEdit dataTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox;
-            #endregion
-            dataTextbox.Text = Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText;
-            Assert.AreEqual(Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues.DataTextboxText1, dataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text = "0";
+            Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
         }
+
         [When(@"I Type 0 Into SQL Server Large View Test Inputs Row1 Test Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
         {
-            #region Variable Declarations
-            WpfEdit testDataTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox;
-            #endregion
-            testDataTextbox.Text = Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText;
-            Assert.AreEqual(Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues.TestDataTextboxText1, testDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text = "0";
+            Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
         }
+
         [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
         }
+
         [When(@"I Type TestSite into Web Source Wizard Address Textbox")]
         public void Type_TestSite_into_Web_Source_Wizard_Address_Textbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx";
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a vali" +
-                    "d web address.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web address.");
         }
-        #region Properties
-        public virtual Click_RunDebug_buttonParams Click_RunDebug_buttonParams
-        {
-            get
-            {
-                if ((mClick_RunDebug_buttonParams == null))
-                {
-                    mClick_RunDebug_buttonParams = new Click_RunDebug_buttonParams();
-                }
-                return mClick_RunDebug_buttonParams;
-            }
-        }
-        public virtual Click_Save_Ribbon_Button_to_Open_Save_DialogParams Click_Save_Ribbon_Button_to_Open_Save_DialogParams
-        {
-            get
-            {
-                if ((mClick_Save_Ribbon_Button_to_Open_Save_DialogParams == null))
-                {
-                    mClick_Save_Ribbon_Button_to_Open_Save_DialogParams = new Click_Save_Ribbon_Button_to_Open_Save_DialogParams();
-                }
-                return mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
-            }
-        }
-        public virtual Open_Javascript_Large_ViewParams Open_Javascript_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Javascript_Large_ViewParams == null))
-                {
-                    mOpen_Javascript_Large_ViewParams = new Open_Javascript_Large_ViewParams();
-                }
-                return mOpen_Javascript_Large_ViewParams;
-            }
-        }
-        public virtual Open_Json_Tool_Large_ViewParams Open_Json_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Json_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Json_Tool_Large_ViewParams = new Open_Json_Tool_Large_ViewParams();
-                }
-                return mOpen_Json_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Json_Tool_Qvi_Large_ViewParams Open_Json_Tool_Qvi_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Json_Tool_Qvi_Large_ViewParams == null))
-                {
-                    mOpen_Json_Tool_Qvi_Large_ViewParams = new Open_Json_Tool_Qvi_Large_ViewParams();
-                }
-                return mOpen_Json_Tool_Qvi_Large_ViewParams;
-            }
-        }
-        public virtual Open_Length_Tool_Large_ViewParams Open_Length_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Length_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Length_Tool_Large_ViewParams = new Open_Length_Tool_Large_ViewParams();
-                }
-                return mOpen_Length_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Move_Tool_Large_ViewParams Open_Move_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Move_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Move_Tool_Large_ViewParams = new Open_Move_Tool_Large_ViewParams();
-                }
-                return mOpen_Move_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_NumberFormat_Toolbox_Large_ViewParams Open_NumberFormat_Toolbox_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_NumberFormat_Toolbox_Large_ViewParams == null))
-                {
-                    mOpen_NumberFormat_Toolbox_Large_ViewParams = new Open_NumberFormat_Toolbox_Large_ViewParams();
-                }
-                return mOpen_NumberFormat_Toolbox_Large_ViewParams;
-            }
-        }
-        public virtual Open_ODBC_Tool_Large_ViewExpectedValues Open_ODBC_Tool_Large_ViewExpectedValues
-        {
-            get
-            {
-                if ((mOpen_ODBC_Tool_Large_ViewExpectedValues == null))
-                {
-                    mOpen_ODBC_Tool_Large_ViewExpectedValues = new Open_ODBC_Tool_Large_ViewExpectedValues();
-                }
-                return mOpen_ODBC_Tool_Large_ViewExpectedValues;
-            }
-        }
-        public virtual Open_Oracle_Tool_Large_ViewExpectedValues Open_Oracle_Tool_Large_ViewExpectedValues
-        {
-            get
-            {
-                if ((mOpen_Oracle_Tool_Large_ViewExpectedValues == null))
-                {
-                    mOpen_Oracle_Tool_Large_ViewExpectedValues = new Open_Oracle_Tool_Large_ViewExpectedValues();
-                }
-                return mOpen_Oracle_Tool_Large_ViewExpectedValues;
-            }
-        }
-        public virtual Open_Postgre_Tool_Large_ViewExpectedValues Open_Postgre_Tool_Large_ViewExpectedValues
-        {
-            get
-            {
-                if ((mOpen_Postgre_Tool_Large_ViewExpectedValues == null))
-                {
-                    mOpen_Postgre_Tool_Large_ViewExpectedValues = new Open_Postgre_Tool_Large_ViewExpectedValues();
-                }
-                return mOpen_Postgre_Tool_Large_ViewExpectedValues;
-            }
-        }
-        public virtual Open_PostWeb_RequestTool_Large_ViewParams Open_PostWeb_RequestTool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_PostWeb_RequestTool_Large_ViewParams == null))
-                {
-                    mOpen_PostWeb_RequestTool_Large_ViewParams = new Open_PostWeb_RequestTool_Large_ViewParams();
-                }
-                return mOpen_PostWeb_RequestTool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Python_Large_ViewParams Open_Python_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Python_Large_ViewParams == null))
-                {
-                    mOpen_Python_Large_ViewParams = new Open_Python_Large_ViewParams();
-                }
-                return mOpen_Python_Large_ViewParams;
-            }
-        }
-        public virtual Open_RabbitMqConsume_LargeViewParams Open_RabbitMqConsume_LargeViewParams
-        {
-            get
-            {
-                if ((mOpen_RabbitMqConsume_LargeViewParams == null))
-                {
-                    mOpen_RabbitMqConsume_LargeViewParams = new Open_RabbitMqConsume_LargeViewParams();
-                }
-                return mOpen_RabbitMqConsume_LargeViewParams;
-            }
-        }
-        public virtual Open_RabbitMqPublish_LargeViewParams Open_RabbitMqPublish_LargeViewParams
-        {
-            get
-            {
-                if ((mOpen_RabbitMqPublish_LargeViewParams == null))
-                {
-                    mOpen_RabbitMqPublish_LargeViewParams = new Open_RabbitMqPublish_LargeViewParams();
-                }
-                return mOpen_RabbitMqPublish_LargeViewParams;
-            }
-        }
-        public virtual Open_Random_Large_ToolParams Open_Random_Large_ToolParams
-        {
-            get
-            {
-                if ((mOpen_Random_Large_ToolParams == null))
-                {
-                    mOpen_Random_Large_ToolParams = new Open_Random_Large_ToolParams();
-                }
-                return mOpen_Random_Large_ToolParams;
-            }
-        }
-        public virtual Open_Read_File_Tool_Large_ViewParams Open_Read_File_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Read_File_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Read_File_Tool_Large_ViewParams = new Open_Read_File_Tool_Large_ViewParams();
-                }
-                return mOpen_Read_File_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Read_Folder_Tool_Large_ViewParams Open_Read_Folder_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Read_Folder_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Read_Folder_Tool_Large_ViewParams = new Open_Read_Folder_Tool_Large_ViewParams();
-                }
-                return mOpen_Read_Folder_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Rename_Tool_Large_ViewParams Open_Rename_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Rename_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Rename_Tool_Large_ViewParams = new Open_Rename_Tool_Large_ViewParams();
-                }
-                return mOpen_Rename_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Replace_Tool_Large_ViewParams Open_Replace_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Replace_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Replace_Tool_Large_ViewParams = new Open_Replace_Tool_Large_ViewParams();
-                }
-                return mOpen_Replace_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Ruby_Large_ViewParams Open_Ruby_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Ruby_Large_ViewParams == null))
-                {
-                    mOpen_Ruby_Large_ViewParams = new Open_Ruby_Large_ViewParams();
-                }
-                return mOpen_Ruby_Large_ViewParams;
-            }
-        }
-        public virtual Open_Selectandapply_Large_ViewParams Open_Selectandapply_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Selectandapply_Large_ViewParams == null))
-                {
-                    mOpen_Selectandapply_Large_ViewParams = new Open_Selectandapply_Large_ViewParams();
-                }
-                return mOpen_Selectandapply_Large_ViewParams;
-            }
-        }
-        public virtual Open_Sequence_Large_tool_ViewParams Open_Sequence_Large_tool_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Sequence_Large_tool_ViewParams == null))
-                {
-                    mOpen_Sequence_Large_tool_ViewParams = new Open_Sequence_Large_tool_ViewParams();
-                }
-                return mOpen_Sequence_Large_tool_ViewParams;
-            }
-        }
-        public virtual Open_SMTP_Email_Tool_Large_ViewParams Open_SMTP_Email_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_SMTP_Email_Tool_Large_ViewParams == null))
-                {
-                    mOpen_SMTP_Email_Tool_Large_ViewParams = new Open_SMTP_Email_Tool_Large_ViewParams();
-                }
-                return mOpen_SMTP_Email_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_SQL_Bulk_Insert_Tool_Large_ViewParams Open_SQL_Bulk_Insert_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams == null))
-                {
-                    mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams = new Open_SQL_Bulk_Insert_Tool_Large_ViewParams();
-                }
-                return mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams == null))
-                {
-                    mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams = new Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams();
-                }
-                return mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams;
-            }
-        }
-        public virtual Open_SQL_Large_View_FromContextMenuParams Open_SQL_Large_View_FromContextMenuParams
-        {
-            get
-            {
-                if ((mOpen_SQL_Large_View_FromContextMenuParams == null))
-                {
-                    mOpen_SQL_Large_View_FromContextMenuParams = new Open_SQL_Large_View_FromContextMenuParams();
-                }
-                return mOpen_SQL_Large_View_FromContextMenuParams;
-            }
-        }
-        public virtual Open_Sql_Server_Tool_Large_ViewExpectedValues Open_Sql_Server_Tool_Large_ViewExpectedValues
-        {
-            get
-            {
-                if ((mOpen_Sql_Server_Tool_Large_ViewExpectedValues == null))
-                {
-                    mOpen_Sql_Server_Tool_Large_ViewExpectedValues = new Open_Sql_Server_Tool_Large_ViewExpectedValues();
-                }
-                return mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
-            }
-        }
-        public virtual Open_Switch_Tool_Large_ViewParams Open_Switch_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Switch_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Switch_Tool_Large_ViewParams = new Open_Switch_Tool_Large_ViewParams();
-                }
-                return mOpen_Switch_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_System_Information_Tool_Large_ViewParams Open_System_Information_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_System_Information_Tool_Large_ViewParams == null))
-                {
-                    mOpen_System_Information_Tool_Large_ViewParams = new Open_System_Information_Tool_Large_ViewParams();
-                }
-                return mOpen_System_Information_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_System_Information_Tool_Qvi_Large_ViewParams Open_System_Information_Tool_Qvi_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_System_Information_Tool_Qvi_Large_ViewParams == null))
-                {
-                    mOpen_System_Information_Tool_Qvi_Large_ViewParams = new Open_System_Information_Tool_Qvi_Large_ViewParams();
-                }
-                return mOpen_System_Information_Tool_Qvi_Large_ViewParams;
-            }
-        }
-        public virtual Open_Unzip_Tool_Large_ViewParams Open_Unzip_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Unzip_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Unzip_Tool_Large_ViewParams = new Open_Unzip_Tool_Large_ViewParams();
-                }
-                return mOpen_Unzip_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_WebRequest_LargeViewParams Open_WebRequest_LargeViewParams
-        {
-            get
-            {
-                if ((mOpen_WebRequest_LargeViewParams == null))
-                {
-                    mOpen_WebRequest_LargeViewParams = new Open_WebRequest_LargeViewParams();
-                }
-                return mOpen_WebRequest_LargeViewParams;
-            }
-        }
-        public virtual Open_Write_File_Tool_Large_ViewParams Open_Write_File_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Write_File_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Write_File_Tool_Large_ViewParams = new Open_Write_File_Tool_Large_ViewParams();
-                }
-                return mOpen_Write_File_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Xpath_Tool_Large_ViewParams Open_Xpath_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Xpath_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Xpath_Tool_Large_ViewParams = new Open_Xpath_Tool_Large_ViewParams();
-                }
-                return mOpen_Xpath_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Open_Xpath_Tool_Qvi_Large_ViewParams Open_Xpath_Tool_Qvi_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Xpath_Tool_Qvi_Large_ViewParams == null))
-                {
-                    mOpen_Xpath_Tool_Qvi_Large_ViewParams = new Open_Xpath_Tool_Qvi_Large_ViewParams();
-                }
-                return mOpen_Xpath_Tool_Qvi_Large_ViewParams;
-            }
-        }
-        public virtual Open_Zip_Tool_Large_ViewParams Open_Zip_Tool_Large_ViewParams
-        {
-            get
-            {
-                if ((mOpen_Zip_Tool_Large_ViewParams == null))
-                {
-                    mOpen_Zip_Tool_Large_ViewParams = new Open_Zip_Tool_Large_ViewParams();
-                }
-                return mOpen_Zip_Tool_Large_ViewParams;
-            }
-        }
-        public virtual Press_F6Params Press_F6Params
-        {
-            get
-            {
-                if ((mPress_F6Params == null))
-                {
-                    mPress_F6Params = new Press_F6Params();
-                }
-                return mPress_F6Params;
-            }
-        }
-        public virtual PressF11_EnterFullScreenParams PressF11_EnterFullScreenParams
-        {
-            get
-            {
-                if ((mPressF11_EnterFullScreenParams == null))
-                {
-                    mPressF11_EnterFullScreenParams = new PressF11_EnterFullScreenParams();
-                }
-                return mPressF11_EnterFullScreenParams;
-            }
-        }
-        public virtual RabbitMqAssertsExpectedValues RabbitMqAssertsExpectedValues
-        {
-            get
-            {
-                if ((mRabbitMqAssertsExpectedValues == null))
-                {
-                    mRabbitMqAssertsExpectedValues = new RabbitMqAssertsExpectedValues();
-                }
-                return mRabbitMqAssertsExpectedValues;
-            }
-        }
-        public virtual Remove_WorkflowName_From_Save_DialogParams Remove_WorkflowName_From_Save_DialogParams
-        {
-            get
-            {
-                if ((mRemove_WorkflowName_From_Save_DialogParams == null))
-                {
-                    mRemove_WorkflowName_From_Save_DialogParams = new Remove_WorkflowName_From_Save_DialogParams();
-                }
-                return mRemove_WorkflowName_From_Save_DialogParams;
-            }
-        }
-        public virtual Rename_FolderItem_ToNewFolderItemParams Rename_FolderItem_ToNewFolderItemParams
-        {
-            get
-            {
-                if ((mRename_FolderItem_ToNewFolderItemParams == null))
-                {
-                    mRename_FolderItem_ToNewFolderItemParams = new Rename_FolderItem_ToNewFolderItemParams();
-                }
-                return mRename_FolderItem_ToNewFolderItemParams;
-            }
-        }
-        public virtual Rename_LocalFolder_To_SecondFolderParams Rename_LocalFolder_To_SecondFolderParams
-        {
-            get
-            {
-                if ((mRename_LocalFolder_To_SecondFolderParams == null))
-                {
-                    mRename_LocalFolder_To_SecondFolderParams = new Rename_LocalFolder_To_SecondFolderParams();
-                }
-                return mRename_LocalFolder_To_SecondFolderParams;
-            }
-        }
-        public virtual Rename_LocalWorkflow_To_SecodWorkFlowParams Rename_LocalWorkflow_To_SecodWorkFlowParams
-        {
-            get
-            {
-                if ((mRename_LocalWorkflow_To_SecodWorkFlowParams == null))
-                {
-                    mRename_LocalWorkflow_To_SecodWorkFlowParams = new Rename_LocalWorkflow_To_SecodWorkFlowParams();
-                }
-                return mRename_LocalWorkflow_To_SecodWorkFlowParams;
-            }
-        }
-        public virtual Restore_Unpinned_Tab_Using_Context_MenuExpectedValues Restore_Unpinned_Tab_Using_Context_MenuExpectedValues
-        {
-            get
-            {
-                if ((mRestore_Unpinned_Tab_Using_Context_MenuExpectedValues == null))
-                {
-                    mRestore_Unpinned_Tab_Using_Context_MenuExpectedValues = new Restore_Unpinned_Tab_Using_Context_MenuExpectedValues();
-                }
-                return mRestore_Unpinned_Tab_Using_Context_MenuExpectedValues;
-            }
-        }
-        public virtual RightClick_Explorer_Localhost_First_ItemParams RightClick_Explorer_Localhost_First_ItemParams
-        {
-            get
-            {
-                if ((mRightClick_Explorer_Localhost_First_ItemParams == null))
-                {
-                    mRightClick_Explorer_Localhost_First_ItemParams = new RightClick_Explorer_Localhost_First_ItemParams();
-                }
-                return mRightClick_Explorer_Localhost_First_ItemParams;
-            }
-        }
-        public virtual Search_And_Select_DiceRollParams Search_And_Select_DiceRollParams
-        {
-            get
-            {
-                if ((mSearch_And_Select_DiceRollParams == null))
-                {
-                    mSearch_And_Select_DiceRollParams = new Search_And_Select_DiceRollParams();
-                }
-                return mSearch_And_Select_DiceRollParams;
-            }
-        }
-        public virtual Search_And_Select_HelloWolrdParams Search_And_Select_HelloWolrdParams
-        {
-            get
-            {
-                if ((mSearch_And_Select_HelloWolrdParams == null))
-                {
-                    mSearch_And_Select_HelloWolrdParams = new Search_And_Select_HelloWolrdParams();
-                }
-                return mSearch_And_Select_HelloWolrdParams;
-            }
-        }
-        public virtual Select_Action_From_PostgreToolParams Select_Action_From_PostgreToolParams
-        {
-            get
-            {
-                if ((mSelect_Action_From_PostgreToolParams == null))
-                {
-                    mSelect_Action_From_PostgreToolParams = new Select_Action_From_PostgreToolParams();
-                }
-                return mSelect_Action_From_PostgreToolParams;
-            }
-        }
-        public virtual Select_DatabaseAndTable_From_BulkInsert_ToolParams Select_DatabaseAndTable_From_BulkInsert_ToolParams
-        {
-            get
-            {
-                if ((mSelect_DatabaseAndTable_From_BulkInsert_ToolParams == null))
-                {
-                    mSelect_DatabaseAndTable_From_BulkInsert_ToolParams = new Select_DatabaseAndTable_From_BulkInsert_ToolParams();
-                }
-                return mSelect_DatabaseAndTable_From_BulkInsert_ToolParams;
-            }
-        }
-        public virtual Select_Delete_FromExplorerContextMenuParams Select_Delete_FromExplorerContextMenuParams
-        {
-            get
-            {
-                if ((mSelect_Delete_FromExplorerContextMenuParams == null))
-                {
-                    mSelect_Delete_FromExplorerContextMenuParams = new Select_Delete_FromExplorerContextMenuParams();
-                }
-                return mSelect_Delete_FromExplorerContextMenuParams;
-            }
-        }
-        public virtual Select_Deploy_FromExplorerContextMenuParams Select_Deploy_FromExplorerContextMenuParams
-        {
-            get
-            {
-                if ((mSelect_Deploy_FromExplorerContextMenuParams == null))
-                {
-                    mSelect_Deploy_FromExplorerContextMenuParams = new Select_Deploy_FromExplorerContextMenuParams();
-                }
-                return mSelect_Deploy_FromExplorerContextMenuParams;
-            }
-        }
-        public virtual Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams == null))
-                {
-                    mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams = new Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams();
-                }
-                return mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
-            }
-        }
-        public virtual Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues = new Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues();
-                }
-                return mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams
-        {
-            get
-            {
-                if ((mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams == null))
-                {
-                    mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams = new Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams();
-                }
-                return mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
-            }
-        }
-        public virtual Select_Letters_From_Random_Type_ComboboxParams Select_Letters_From_Random_Type_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_Letters_From_Random_Type_ComboboxParams == null))
-                {
-                    mSelect_Letters_From_Random_Type_ComboboxParams = new Select_Letters_From_Random_Type_ComboboxParams();
-                }
-                return mSelect_Letters_From_Random_Type_ComboboxParams;
-            }
-        }
-        public virtual Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
-                {
-                    mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams();
-                }
-                return mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
-            }
-        }
-        public virtual Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams
-        {
-            get
-            {
-                if ((mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams == null))
-                {
-                    mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams = new Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams();
-                }
-                return mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
-            }
-        }
-        public virtual Select_NamespaceExpectedValues Select_NamespaceExpectedValues
-        {
-            get
-            {
-                if ((mSelect_NamespaceExpectedValues == null))
-                {
-                    mSelect_NamespaceExpectedValues = new Select_NamespaceExpectedValues();
-                }
-                return mSelect_NamespaceExpectedValues;
-            }
-        }
-        public virtual Select_NewDatabaseSource_FromSqlServerToolParams Select_NewDatabaseSource_FromSqlServerToolParams
-        {
-            get
-            {
-                if ((mSelect_NewDatabaseSource_FromSqlServerToolParams == null))
-                {
-                    mSelect_NewDatabaseSource_FromSqlServerToolParams = new Select_NewDatabaseSource_FromSqlServerToolParams();
-                }
-                return mSelect_NewDatabaseSource_FromSqlServerToolParams;
-            }
-        }
-        public virtual Select_NewEmailSource_FromExplorerContextMenuParams Select_NewEmailSource_FromExplorerContextMenuParams
-        {
-            get
-            {
-                if ((mSelect_NewEmailSource_FromExplorerContextMenuParams == null))
-                {
-                    mSelect_NewEmailSource_FromExplorerContextMenuParams = new Select_NewEmailSource_FromExplorerContextMenuParams();
-                }
-                return mSelect_NewEmailSource_FromExplorerContextMenuParams;
-            }
-        }
-        public virtual Select_NewSharepointSource_FromServer_LookupParams Select_NewSharepointSource_FromServer_LookupParams
-        {
-            get
-            {
-                if ((mSelect_NewSharepointSource_FromServer_LookupParams == null))
-                {
-                    mSelect_NewSharepointSource_FromServer_LookupParams = new Select_NewSharepointSource_FromServer_LookupParams();
-                }
-                return mSelect_NewSharepointSource_FromServer_LookupParams;
-            }
-        }
-        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams
-        {
-            get
-            {
-                if ((mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams == null))
-                {
-                    mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams();
-                }
-                return mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams;
-            }
-        }
-        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams
-        {
-            get
-            {
-                if ((mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams == null))
-                {
-                    mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams();
-                }
-                return mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams;
-            }
-        }
-        public virtual Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams
-        {
-            get
-            {
-                if ((mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams == null))
-                {
-                    mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams = new Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams();
-                }
-                return mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams;
-            }
-        }
-        public virtual Select_NewWorkFlowService_From_ContextMenuParams Select_NewWorkFlowService_From_ContextMenuParams
-        {
-            get
-            {
-                if ((mSelect_NewWorkFlowService_From_ContextMenuParams == null))
-                {
-                    mSelect_NewWorkFlowService_From_ContextMenuParams = new Select_NewWorkFlowService_From_ContextMenuParams();
-                }
-                return mSelect_NewWorkFlowService_From_ContextMenuParams;
-            }
-        }
-        public virtual Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams == null))
-                {
-                    mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams = new Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams();
-                }
-                return mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
-            }
-        }
-        public virtual Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams == null))
-                {
-                    mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams = new Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams();
-                }
-                return mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
-            }
-        }
-        public virtual Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams == null))
-                {
-                    mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams = new Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams();
-                }
-                return mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
-            }
-        }
-        public virtual Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
-        {
-            get
-            {
-                if ((mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues == null))
-                {
-                    mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues = new Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues();
-                }
-                return mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
-            }
-        }
-        public virtual Select_SharepointTestServer_From_SharepointRead_ToolParams Select_SharepointTestServer_From_SharepointRead_ToolParams
-        {
-            get
-            {
-                if ((mSelect_SharepointTestServer_From_SharepointRead_ToolParams == null))
-                {
-                    mSelect_SharepointTestServer_From_SharepointRead_ToolParams = new Select_SharepointTestServer_From_SharepointRead_ToolParams();
-                }
-                return mSelect_SharepointTestServer_From_SharepointRead_ToolParams;
-            }
-        }
-        public virtual Select_SharepointTestServer_From_SharepointUpdate_ToolParams Select_SharepointTestServer_From_SharepointUpdate_ToolParams
-        {
-            get
-            {
-                if ((mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams == null))
-                {
-                    mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams = new Select_SharepointTestServer_From_SharepointUpdate_ToolParams();
-                }
-                return mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams;
-            }
-        }
-        public virtual Select_Source_From_DotnetToolParams Select_Source_From_DotnetToolParams
-        {
-            get
-            {
-                if ((mSelect_Source_From_DotnetToolParams == null))
-                {
-                    mSelect_Source_From_DotnetToolParams = new Select_Source_From_DotnetToolParams();
-                }
-                return mSelect_Source_From_DotnetToolParams;
-            }
-        }
-        public virtual Select_Source_From_PostgreToolParams Select_Source_From_PostgreToolParams
-        {
-            get
-            {
-                if ((mSelect_Source_From_PostgreToolParams == null))
-                {
-                    mSelect_Source_From_PostgreToolParams = new Select_Source_From_PostgreToolParams();
-                }
-                return mSelect_Source_From_PostgreToolParams;
-            }
-        }
-        public virtual Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
-                {
-                    mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
-                }
-                return mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues == null))
-                {
-                    mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues = new Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues();
-                }
-                return mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_Tests_From_Context_MenuParams Select_Tests_From_Context_MenuParams
-        {
-            get
-            {
-                if ((mSelect_Tests_From_Context_MenuParams == null))
-                {
-                    mSelect_Tests_From_Context_MenuParams = new Select_Tests_From_Context_MenuParams();
-                }
-                return mSelect_Tests_From_Context_MenuParams;
-            }
-        }
-        public virtual Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-        {
-            get
-            {
-                if ((mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues == null))
-                {
-                    mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues = new Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues();
-                }
-                return mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-            }
-        }
-        public virtual Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
-        {
-            get
-            {
-                if ((mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams == null))
-                {
-                    mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams = new Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams();
-                }
-                return mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
-            }
-        }
-        public virtual Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams == null))
-                {
-                    mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams = new Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams();
-                }
-                return mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
-            }
-        }
-        public virtual Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams
-        {
-            get
-            {
-                if ((mSelect_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams == null))
-                {
-                    mSelect_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams = new Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams();
-                }
-                return mSelect_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams;
-            }
-        }
-        public virtual Select_User_From_RunTestAsParams Select_User_From_RunTestAsParams
-        {
-            get
-            {
-                if ((mSelect_User_From_RunTestAsParams == null))
-                {
-                    mSelect_User_From_RunTestAsParams = new Select_User_From_RunTestAsParams();
-                }
-                return mSelect_User_From_RunTestAsParams;
-            }
-        }
-        public virtual Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
-        {
-            get
-            {
-                if ((mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues == null))
-                {
-                    mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues = new Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues();
-                }
-                return mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
-            }
-        }
-        public virtual Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues
-        {
-            get
-            {
-                if ((mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues == null))
-                {
-                    mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues = new Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues();
-                }
-                return mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
-            }
-        }
-        #endregion
-        #region Fields
-        private Click_RunDebug_buttonParams mClick_RunDebug_buttonParams;
-        private Click_Save_Ribbon_Button_to_Open_Save_DialogParams mClick_Save_Ribbon_Button_to_Open_Save_DialogParams;
-        private Open_Javascript_Large_ViewParams mOpen_Javascript_Large_ViewParams;
-        private Open_Json_Tool_Large_ViewParams mOpen_Json_Tool_Large_ViewParams;
-        private Open_Json_Tool_Qvi_Large_ViewParams mOpen_Json_Tool_Qvi_Large_ViewParams;
-        private Open_Length_Tool_Large_ViewParams mOpen_Length_Tool_Large_ViewParams;
-        private Open_Move_Tool_Large_ViewParams mOpen_Move_Tool_Large_ViewParams;
-        private Open_NumberFormat_Toolbox_Large_ViewParams mOpen_NumberFormat_Toolbox_Large_ViewParams;
-        private Open_ODBC_Tool_Large_ViewExpectedValues mOpen_ODBC_Tool_Large_ViewExpectedValues;
-        private Open_Oracle_Tool_Large_ViewExpectedValues mOpen_Oracle_Tool_Large_ViewExpectedValues;
-        private Open_Postgre_Tool_Large_ViewExpectedValues mOpen_Postgre_Tool_Large_ViewExpectedValues;
-        private Open_PostWeb_RequestTool_Large_ViewParams mOpen_PostWeb_RequestTool_Large_ViewParams;
-        private Open_Python_Large_ViewParams mOpen_Python_Large_ViewParams;
-        private Open_RabbitMqConsume_LargeViewParams mOpen_RabbitMqConsume_LargeViewParams;
-        private Open_RabbitMqPublish_LargeViewParams mOpen_RabbitMqPublish_LargeViewParams;
-        private Open_Random_Large_ToolParams mOpen_Random_Large_ToolParams;
-        private Open_Read_File_Tool_Large_ViewParams mOpen_Read_File_Tool_Large_ViewParams;
-        private Open_Read_Folder_Tool_Large_ViewParams mOpen_Read_Folder_Tool_Large_ViewParams;
-        private Open_Rename_Tool_Large_ViewParams mOpen_Rename_Tool_Large_ViewParams;
-        private Open_Replace_Tool_Large_ViewParams mOpen_Replace_Tool_Large_ViewParams;
-        private Open_Ruby_Large_ViewParams mOpen_Ruby_Large_ViewParams;
-        private Open_Selectandapply_Large_ViewParams mOpen_Selectandapply_Large_ViewParams;
-        private Open_Sequence_Large_tool_ViewParams mOpen_Sequence_Large_tool_ViewParams;
-        private Open_SMTP_Email_Tool_Large_ViewParams mOpen_SMTP_Email_Tool_Large_ViewParams;
-        private Open_SQL_Bulk_Insert_Tool_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Large_ViewParams;
-        private Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams mOpen_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams;
-        private Open_SQL_Large_View_FromContextMenuParams mOpen_SQL_Large_View_FromContextMenuParams;
-        private Open_Sql_Server_Tool_Large_ViewExpectedValues mOpen_Sql_Server_Tool_Large_ViewExpectedValues;
-        private Open_Switch_Tool_Large_ViewParams mOpen_Switch_Tool_Large_ViewParams;
-        private Open_System_Information_Tool_Large_ViewParams mOpen_System_Information_Tool_Large_ViewParams;
-        private Open_System_Information_Tool_Qvi_Large_ViewParams mOpen_System_Information_Tool_Qvi_Large_ViewParams;
-        private Open_Unzip_Tool_Large_ViewParams mOpen_Unzip_Tool_Large_ViewParams;
-        private Open_WebRequest_LargeViewParams mOpen_WebRequest_LargeViewParams;
-        private Open_Write_File_Tool_Large_ViewParams mOpen_Write_File_Tool_Large_ViewParams;
-        private Open_Xpath_Tool_Large_ViewParams mOpen_Xpath_Tool_Large_ViewParams;
-        private Open_Xpath_Tool_Qvi_Large_ViewParams mOpen_Xpath_Tool_Qvi_Large_ViewParams;
-        private Open_Zip_Tool_Large_ViewParams mOpen_Zip_Tool_Large_ViewParams;
-        private Press_F6Params mPress_F6Params;
-        private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
-        private RabbitMqAssertsExpectedValues mRabbitMqAssertsExpectedValues;
-        private Remove_WorkflowName_From_Save_DialogParams mRemove_WorkflowName_From_Save_DialogParams;
-        private Rename_FolderItem_ToNewFolderItemParams mRename_FolderItem_ToNewFolderItemParams;
-        private Rename_LocalFolder_To_SecondFolderParams mRename_LocalFolder_To_SecondFolderParams;
-        private Rename_LocalWorkflow_To_SecodWorkFlowParams mRename_LocalWorkflow_To_SecodWorkFlowParams;
-        private Restore_Unpinned_Tab_Using_Context_MenuExpectedValues mRestore_Unpinned_Tab_Using_Context_MenuExpectedValues;
-        private RightClick_Explorer_Localhost_First_ItemParams mRightClick_Explorer_Localhost_First_ItemParams;
-        private Search_And_Select_DiceRollParams mSearch_And_Select_DiceRollParams;
-        private Search_And_Select_HelloWolrdParams mSearch_And_Select_HelloWolrdParams;
-        private Select_Action_From_PostgreToolParams mSelect_Action_From_PostgreToolParams;
-        private Select_DatabaseAndTable_From_BulkInsert_ToolParams mSelect_DatabaseAndTable_From_BulkInsert_ToolParams;
-        private Select_Delete_FromExplorerContextMenuParams mSelect_Delete_FromExplorerContextMenuParams;
-        private Select_Deploy_FromExplorerContextMenuParams mSelect_Deploy_FromExplorerContextMenuParams;
-        private Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams mSelect_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams;
-        private Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        private Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues mSelect_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues;
-        private Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams mSelect_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams;
-        private Select_Letters_From_Random_Type_ComboboxParams mSelect_Letters_From_Random_Type_ComboboxParams;
-        private Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams;
-        private Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams mSelect_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams;
-        private Select_NamespaceExpectedValues mSelect_NamespaceExpectedValues;
-        private Select_NewDatabaseSource_FromSqlServerToolParams mSelect_NewDatabaseSource_FromSqlServerToolParams;
-        private Select_NewEmailSource_FromExplorerContextMenuParams mSelect_NewEmailSource_FromExplorerContextMenuParams;
-        private Select_NewSharepointSource_FromServer_LookupParams mSelect_NewSharepointSource_FromServer_LookupParams;
-        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams;
-        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams;
-        private Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams mSelect_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams;
-        private Select_NewWorkFlowService_From_ContextMenuParams mSelect_NewWorkFlowService_From_ContextMenuParams;
-        private Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        private Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams;
-        private Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams;
-        private Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams mSelect_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams;
-        private Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues mSelect_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues;
-        private Select_SharepointTestServer_From_SharepointRead_ToolParams mSelect_SharepointTestServer_From_SharepointRead_ToolParams;
-        private Select_SharepointTestServer_From_SharepointUpdate_ToolParams mSelect_SharepointTestServer_From_SharepointUpdate_ToolParams;
-        private Select_Source_From_DotnetToolParams mSelect_Source_From_DotnetToolParams;
-        private Select_Source_From_PostgreToolParams mSelect_Source_From_PostgreToolParams;
-        private Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-        private Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues mSelect_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues;
-        private Select_Tests_From_Context_MenuParams mSelect_Tests_From_Context_MenuParams;
-        private Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues mSelect_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues;
-        private Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams mSelect_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams;
-        private Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams mSelect_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams;
-        private Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams mSelect_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams;
-        private Select_User_From_RunTestAsParams mSelect_User_From_RunTestAsParams;
-        private Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues;
-        private Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues mType_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_RunDebug_buttonParams
-    {
-        #region Fields
-        public bool DebugInputDialogExists = true;
-        public bool CancelButtonEnabled = true;
-        public bool RememberDebugInputCheckBoxEnabled = true;
-        public bool InputDataTabEnabled = true;
-        public bool RememberDebugInputCheckBoxChecked = true;
-        public bool XMLTabExists = true;
-        public bool JSONTabExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Save_Ribbon_Button_to_Open_Save_DialogParams
-    {
-        #region Fields
-
-        public bool ErrorLabelExists = true;
-        public bool ExplorerTreeExists = true;
-        public bool ExplorerViewExists = true;
-        public bool SearchTextBoxExists = true;
-        public bool NameLabelExists = true;
-        public bool RefreshButtonExists = true;
-        public bool SaveButtonExists1 = true;
-        public bool SaveDialogWindowExists = true;
-        public bool ServiceNameTextBoxExists = true;
-        public bool SaveDialogWindowExists1 = true;
-        public bool ServiceNameTextBoxExists1 = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DisplayStartNodeContextMenuExpectedValues
-    {
-        #region Fields
-        public bool DebugInputsMenuItemExists = true;
-        public bool DebugStudioMenuItemExists = true;
-        public bool DebugBrowserMenuItemExists = true;
-        public bool ScheduleMenuItemExists = true;
-        public bool TestEditorMenuItemExists = true;
-        public bool TestEditorMenuItemEnabled = false;
-        public bool DebugInputsMenuItemEnabled = true;
-        public bool DebugStudioMenuItemEnabled = true;
-        public bool DebugBrowserMenuItemEnabled = true;
-        public bool ScheduleMenuItemEnabled = false;
-        public bool RunAllTestsMenuItemExists = true;
-        public bool RunAllTestsMenuItemEnabled = false;
-        public bool DuplicateMenuItemEnabled = false;
-        public bool DuplicateMenuItemExists = true;
-        public bool DeployMenuItemExists = true;
-        public bool DeployMenuItemEnabled = false;
-        public bool ShowDependenciesMenuItemEnabled = false;
-        public bool ShowDependenciesMenuItemExists = true;
-        public bool ViewSwaggerMenuItemExists = true;
-        public bool ViewSwaggerMenuItemEnabled = false;
-        public bool CopyURLtoClipboardMenuItemEnabled = false;
-        public bool CopyURLtoClipboardMenuItemExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Javascript_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Json_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Json_Tool_Qvi_Large_ViewParams
-    {
-        #region Fields
-        public bool OpenQuickVariableInpToggleButtonPressed = true;
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Length_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Move_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_NumberFormat_Toolbox_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_ODBC_Tool_Large_ViewExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Oracle_Tool_Large_ViewExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Postgre_Tool_Large_ViewExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_PostWeb_RequestTool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Python_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_RabbitMqConsume_LargeViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_RabbitMqPublish_LargeViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Random_Large_ToolParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Read_File_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Read_Folder_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Rename_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Replace_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Ruby_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Selectandapply_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Sequence_Large_tool_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_SMTP_Email_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_SQL_Bulk_Insert_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_SQL_Large_View_FromContextMenuParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Sql_Server_Tool_Large_ViewExpectedValues
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Switch_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_System_Information_Tool_Large_ViewParams
-    {
-        #region Fields
-
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_System_Information_Tool_Qvi_Large_ViewParams
-    {
-        #region Fields
-        public bool OpenQuickVariableInpToggleButtonPressed = true;
-        public bool GatherSystemInfoExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Unzip_Tool_Large_ViewParams
-    {
-        #region Fields
-        public bool UnZipExists = true;
-        public bool OverwriteCheckBoxExists = true;
-        public bool UnZipNameComboBoxExists = true;
-        public bool DoneButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_WebRequest_LargeViewParams
-    {
-        #region Fields
-        public bool LargeViewExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Write_File_Tool_Large_ViewParams
-    {
-        #region Fields
-        public bool FileWriteExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool ContentsComboBoxExists = true;
-        public bool OverwriteRadioButtonExists = true;
-        public bool DoneButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Xpath_Tool_Large_ViewParams
-    {
-        #region Fields
-        public bool XPathExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Xpath_Tool_Qvi_Large_ViewParams
-    {
-        #region Fields
-        public bool OpenQuickVariableInpToggleButtonPressed = true;
-        public bool XPathExists = true;
-        public bool QuickVariableInputContentExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_Zip_Tool_Large_ViewParams
-    {
-        #region Fields
-        public bool ZipExists = true;
-        public bool SelectedCompressComboBoxExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool OverwriteCheckBoxExists = true;
-        public bool FileOrFolderComboBoxExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Press_F6Params
-    {
-        #region Fields
-        public string MainStudioWindowSendKeys = "{F6}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PressF11_EnterFullScreenParams
-    {
-        #region Fields
-        public string MainStudioWindowSendKeys = "{F11}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RabbitMqAssertsExpectedValues
-    {
-        #region Fields
-        public bool VirtualHostTextBoxEditExists = true;
-        public bool PasswordTextBoxEditExists = true;
-        public bool UserNameTextBoxEditExists = true;
-        public bool HostTextBoxEditExists = true;
-        public bool PortTextBoxEditExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Remove_WorkflowName_From_Save_DialogParams
-    {
-        #region Fields
-        public string ServiceNameTextBoxText = "";
-        public string ErrorLabelDisplayText = "Cannot be null";
-        public bool SaveButtonEnabled = false;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Rename_FolderItem_ToNewFolderItemParams
-    {
-        #region Fields
-        public string ItemEditText = "Control Flow - Decision2";
-        public string ItemEditSendKeys = "{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Rename_LocalFolder_To_SecondFolderParams
-    {
-        #region Fields
-        public string ItemEditText = "Example";
-        public string ItemEditSendKeys = "{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Rename_LocalWorkflow_To_SecodWorkFlowParams
-    {
-        #region Fields
-        public string ItemEditText = "SecondWorkflow";
-        public string ItemEditSendKeys = "{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Restore_Unpinned_Tab_Using_Context_MenuExpectedValues
-    {
-        #region Fields
-        public bool TabbedDocumentChecked = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RightClick_Explorer_Localhost_First_ItemParams
-    {
-        #region Fields
-        public bool OpenExists = true;
-        public bool ShowDependenciesExists = true;
-        public bool DeleteExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Search_And_Select_DiceRollParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "Dice Roll";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Search_And_Select_HelloWolrdParams
-    {
-        #region Fields
-        public string SearchTextBoxText = "Hello World";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Action_From_PostgreToolParams
-    {
-        #region Fields
-        public bool LargeDataGridTableEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_DatabaseAndTable_From_BulkInsert_ToolParams
-    {
-        #region Fields
-        public bool TableNameComboBoxEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Delete_FromExplorerContextMenuParams
-    {
-        #region Fields
-        public bool YesButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Deploy_FromExplorerContextMenuParams
-    {
-        #region Fields
-        public bool DeployTabExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Dev2TestingDB_From_DB_Source_Wizard_Database_ComboboxParams
-    {
-        #region Fields
-        public string UIDev2TestingDBTextDisplayText = "Dev2TestingDB";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_FirstItem_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        #region Fields
-        public string ActionsComboBoxSelectedItem = "Dev2.Common.Interfaces.PluginAction";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_GetCountries_From_SQL_Server_Large_View_Action_ComboboxExpectedValues
-    {
-        #region Fields
-        public string ActionsComboboxSelectedItem = "dbo.GetCountries";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_http_From_Server_Source_Wizard_Address_Protocol_DropdownParams
-    {
-        #region Fields
-        public bool ComboboxListItemAsHttpExists = true;
-        public string HttpSelectedItemTextDisplayText = "http";
-        public bool AddressEditBoxExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Letters_From_Random_Type_ComboboxParams
-    {
-        #region Fields
-        public bool LengthComboBoxExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_ComboboxParams
-    {
-        #region Fields
-        public bool ComboboxListItemAsNewRemoteServerExists = true;
-        public bool ComboboxListItemAsLocalhostConnectedExists = true;
-        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_DropdownParams
-    {
-        #region Fields
-        public bool MicrosoftSQLServerTextExists = true;
-        public string MicrosoftSQLServerDisplayText = "Microsoft SQL Server";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NamespaceExpectedValues
-    {
-        #region Fields
-        public bool ComboboxlistItemAsSystemObjectExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewDatabaseSource_FromSqlServerToolParams
-    {
-        #region Fields
-        public string MicrosoftSQLServerDisplayText = "Microsoft SQL Server";
-        public bool UserNameTextBoxExists = true;
-        public bool PasswordTextBoxExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewEmailSource_FromExplorerContextMenuParams
-    {
-        #region Fields
-        public bool ExplorerEnvironmentContextMenuExists = true;
-        public bool HostTextBoxEditExists = true;
-        public bool UserNameTextBoxEditExists = true;
-        public bool PasswordTextBoxEditExists = true;
-        public bool PortTextBoxEditExists = true;
-        public bool TimeoutTextBoxEditExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewSharepointSource_FromServer_LookupParams
-    {
-        #region Fields
-        public string ServerSendKeys = "{Down}{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointCopyFile_ToolParams
-    {
-        #region Fields
-        public string ServerSendKeys = "{Down}{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointMoveFile_ToolParams
-    {
-        #region Fields
-        public string ServerSendKeys = "{Down}{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewSharepointSource_FromServer_Lookup_On_SharepointUpload_ToolParams
-    {
-        #region Fields
-        public string SourceComboboxSendKeys = "{Down}{Enter}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_NewWorkFlowService_From_ContextMenuParams
-    {
-        #region Fields
-        public bool NewWorkflowEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Next_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        #region Fields
-        public string ActionsComboBoxSelectedItem = "Next";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_ComboboxParams
-    {
-        #region Fields
-        public bool ComboboxListItemAsNewRemoteServerExists = true;
-        public bool ComboboxListItemAsRemoteConnectionIntegrationExists = true;
-        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_ComboboxParams
-    {
-        #region Fields
-        public bool ComboboxListItemAsNewRemoteServerExists = true;
-        public bool ComboboxListItemAsRemoteConnectionIntegrationExists = true;
-        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_RemoteConnectionIntegrationConnected_From_Deploy_Tab_Source_Server_ComboboxParams
-    {
-        #region Fields
-        public bool ComboboxListItemAsNewRemoteServerExists = true;
-        public bool ComboboxListItemAsRemoteConnectionIntegrationConnectedExists = true;
-        public string RemoteConnectionIntegrationTextDisplayText = "Remote Connection Integration";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_DropdownlistExpectedValues
-    {
-        #region Fields
-        public string TextboxText = "RSAKLFSVRGENDEV";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SharepointTestServer_From_SharepointRead_ToolParams
-    {
-        #region Fields
-        public bool EditSourceButtonEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SharepointTestServer_From_SharepointUpdate_ToolParams
-    {
-        #region Fields
-        public bool EditSourceButtonEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Source_From_DotnetToolParams
-    {
-        #region Fields
-        public bool ClassNameComboBoxEnabled = true;
-        public bool ActionsComboBoxEnabled = true;
-        public bool GenerateOutputsButtonEnabled = true;
-        public bool Row1Enabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Source_From_PostgreToolParams
-    {
-        #region Fields
-        public bool ActionsComboBoxEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemObject_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-    {
-        #region Fields
-        public bool ComboboxlistItemAsSystemObjectExists = true;
-        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
-            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Object\",\"MethodName\":nul" +
-            "l}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_SystemRandom_From_DotNet_DLL_Large_View_Namespace_ComboboxExpectedValues
-    {
-        #region Fields
-        public string ClassNameComboBoxSelectedItem = "{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
-            "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
-            "l}";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_Tests_From_Context_MenuParams
-    {
-        #region Fields
-        public bool TestsTabPageExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_ToString_From_DotNet_DLL_Large_View_Action_ComboboxExpectedValues
-    {
-        #region Fields
-        public string ActionsComboBoxSelectedItem = "ToString";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_TSTCIREMOTE_From_Server_Source_Wizard_DropdownlistParams
-    {
-        #region Fields
-        public string AddressEditBoxText = "TST-CI-REMOTE";
-        public bool TestConnectionButtonExists = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_UITestingDBSource_From_SQL_Server_Large_View_Source_ComboboxParams
-    {
-        #region Fields
-        public string SourcesComboboxSelectedItem = "UITestingDBSource";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_UITestingSource_From_Web_Server_Large_View_Source_ComboboxParams
-    {
-        #region Fields
-        public bool EditSourceButtonEnabled = true;
-        public bool GenerateOutputsButtonEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Select_User_From_RunTestAsParams
-    {
-        #region Fields
-        public bool UserRadioButtonSelected = true;
-        public bool UsernameTextBoxEditExists = true;
-        public bool PasswordTextBoxEditExists = true;
-        public bool SaveButtonEnabled = true;
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_TextboxExpectedValues
-    {
-        #region Fields
-        public string DataTextboxText = "0";
-        public string DataTextboxText1 = "0";
-        #endregion
-    }
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_TextboxExpectedValues
-    {
-        #region Fields
-        public string TestDataTextboxText = "0";
-        public string TestDataTextboxText1 = "0";
-        #endregion
     }
 }

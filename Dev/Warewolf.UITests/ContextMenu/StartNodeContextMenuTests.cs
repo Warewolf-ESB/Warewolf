@@ -8,7 +8,7 @@ namespace Warewolf.UITests.ContextMenu
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    public class DesignSurfaceContextMenuTests
+    public class StartNodeContextMenuTests
     {
         [TestMethod]
         public void CodedUIShowStartNode()
