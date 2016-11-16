@@ -1538,7 +1538,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.
+        ///   Looks up a localized string similar to The format of the eg. yyyy-dd-mm.
         /// </summary>
         public static string DateTimeDifferenceToolTipInputFormat {
             get {
@@ -9727,7 +9727,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to date time format disk cpu memory ram resource language region user roles name domain computer hardware physical.
+        ///   Looks up a localized string similar to date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system.
         /// </summary>
         public static string Tool_Utility_Sys_Info_Tags {
             get {

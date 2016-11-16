@@ -1281,6 +1281,28 @@ Scenario: Test WF with PostGre Sql
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "PostGreTestWF" is deleted as cleanup
+Scenario: Test WF with Decision
+		Given I have a workflow "DecisionTestWF"
+		And "DecisionTestWF" contains an Assign "TestAssign" as
+		| variable | value |
+		| [[A]]    | 30    |
+		And a decision variable "[[A]]" value "30"	
+		And decide if "[[A]]" "IsAlphanumeric" 
+		And I save workflow "DecisionTestWF"
+		Then the test builder is open with "DecisionTestWF" new workflows
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestDecision" as TestStep
+		And I add Assert steps as
+		| Step Name                  | Output Variable | Output Value | Activity Type |
+		| If [[Name]] <> (Not Equal) | Flow Arm        | True         | Decision      |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "DecisionTestWF" is deleted as cleanup
 
 Scenario: Test WF with SqlBulk Insert
 		Given I have a workflow "SqlBulkTestWF"
