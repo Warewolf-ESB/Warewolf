@@ -1538,10 +1538,10 @@ namespace Warewolf.Studio.ViewModels
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
                 return false;
             }
-            //finally
-            //{
-            //    Server.UpdateRepository.FireItemSaved(true);
-            //}
+            finally
+            {
+                Server.UpdateRepository.FireItemSaved(true);
+            }
             return true;
         }
 
