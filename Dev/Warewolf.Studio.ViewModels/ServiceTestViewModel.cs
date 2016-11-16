@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Activities;
@@ -1235,22 +1236,34 @@ namespace Warewolf.Studio.ViewModels
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
-            AsyncWorker.Start(() =>
+            if (resourceId == ResourceModel.ID)
             {
-                var contextModel = ResourceModel?.Environment?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-                _resourceModel = contextModel;
-                return GetTests();
-            }, models =>
-            {
-                var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
-                models.Add(dummyTest);
-                var testName = SelectedServiceTest?.TestName;
-                SelectedServiceTest = dummyTest;
-                _tests = models;
-                OnPropertyChanged(() => Tests);
-                SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
-                IsLoading = false;
-            });
+                AsyncWorker.Start(() =>
+                {
+                    var contextModel = ResourceModel?.Environment?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+                    _resourceModel = contextModel;
+                    return GetTests();
+                }, models =>
+                {
+                    var dummyTest = new DummyServiceTest(CreateTests) {TestName = "Create a new test."};
+                    models.Add(dummyTest);
+                    var testName = SelectedServiceTest?.TestName;
+                    SelectedServiceTest = dummyTest;
+                    _tests = models;
+                    OnPropertyChanged(() => Tests);
+                    SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
+                    IsLoading = false;
+                });
+
+                if (Application.Current != null)
+                    if (Application.Current.Dispatcher != null)
+                        Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
+                        {
+                            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                            var vieModel = mainViewModel?.CreateNewDesigner(ResourceModel);
+                            WorkflowDesignerViewModel = vieModel;
+                        }), DispatcherPriority.Background);
+            }
         }
 
         private bool IsServerConnected()
