@@ -60,6 +60,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.Workflow;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
@@ -1188,6 +1189,13 @@ namespace Dev2.Studio.ViewModels
             var confirmDelete = popupResult == MessageBoxResult.Yes;
 
             return confirmDelete;
+        }
+
+        public IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+
+            return workflow;
         }
 
         public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm = true, System.Action actionToDoOnDelete = null)

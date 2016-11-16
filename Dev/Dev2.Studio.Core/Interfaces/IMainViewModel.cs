@@ -15,6 +15,8 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Security;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Interfaces
@@ -56,5 +58,6 @@ namespace Dev2.Interfaces
         Task<bool> CheckForNewVersion();
 
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
+        IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
     }
 }

@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
@@ -693,6 +694,82 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.CreateTestCommand.Execute(null);
 
+        }
+
+        private void BuildDecision()
+        {
+            var decisionActivity = new DsfFlowDecisionActivity();
+            Dev2DecisionMode mode;
+            MyContext.TryGetValue("mode", out mode);
+
+            var decisionModels =
+                MyContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
+
+            foreach (var dm in decisionModels)
+            {
+                var dev2Decision = new Dev2Decision
+                {
+                    Col1 = dm.Item1 ?? string.Empty,
+                    EvaluationFn = dm.Item2,
+                    Col2 = dm.Item3 ?? string.Empty,
+                    Col3 = dm.Item4 ?? string.Empty
+                };
+
+                dds.AddModelItem(dev2Decision);
+            }
+
+            string modelData = dds.ToVBPersistableModel();
+            MyContext.Add("modelData", modelData);
+
+            decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+        }
+
+        [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
+        public void GivenADecisionVariableValue(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            MyContext.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                MyContext.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+        [Given(@"decide if ""(.*)"" ""(.*)""")]
+        public void GivenDecideIf(string variable1, string decision)
+        {
+            List<Tuple<string, enDecisionType, string, string>> decisionModels;
+            MyContext.TryGetValue("decisionModels", out decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                MyContext.Add("decisionModels", decisionModels);
+            }
+
+            decisionModels.Add(new Tuple<string, enDecisionType, string, string>(
+                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null));
+        }
+
+        [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
+        public void GivenINeedToSwitchOnVariableWithTheValue(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            MyContext.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                MyContext.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
 

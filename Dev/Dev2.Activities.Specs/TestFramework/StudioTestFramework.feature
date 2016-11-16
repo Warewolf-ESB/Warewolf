@@ -1149,5 +1149,47 @@ Scenario: Test WF with Data Merge
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 
+Scenario: Test WF with Decision
+		Given I have a workflow "DecisionTestWF"
+		And "DecisionTestWF" contains an Assign "TestAssign" as
+		| variable | value |
+		| [[A]]    | 30    |
+		And a decision variable "[[A]]" value "30"	
+		And decide if "[[A]]" "IsAlphanumeric" 
+		And I save workflow "DecisionTestWF"
+		Then the test builder is open with "DecisionTestWF" new workflows
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestDecision" as TestStep
+		And I add Assert steps as
+		| Step Name                  | Output Variable | Output Value | Activity Type |
+		| If [[Name]] <> (Not Equal) | Flow Arm        | True         | Decision      |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "DecisionTestWF" is deleted as cleanup
 
-	  
+Scenario: Test WF with Switch
+		Given I have a workflow "SwitchTestWF"
+		And "SwitchTestWF" contains an Assign "TestAssign" as
+		| variable | value |
+		| [[A]]    | 30    |
+		And I need to switch on variable "<variable>" with the value "<val>"
+		And I save workflow "SwitchTestWF"
+		Then the test builder is open with "SwitchTestWF" new workflows
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestSwitch" as TestStep
+		And inputs are
+		| Variable Name | Value |
+		| [[A]]   |   30    |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SwitchTestWF" is deleted as cleanup

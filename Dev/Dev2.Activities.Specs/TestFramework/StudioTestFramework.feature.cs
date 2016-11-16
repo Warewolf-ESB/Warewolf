@@ -3359,6 +3359,134 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Decision")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithDecision()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Decision", ((string[])(null)));
+#line 1152
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 1153
+  testRunner.Given("I have a workflow \"DecisionTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table124.AddRow(new string[] {
+                        "[[A]]",
+                        "30"});
+#line 1154
+  testRunner.And("\"DecisionTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table124, "And ");
+#line 1157
+  testRunner.And("a decision variable \"[[A]]\" value \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1158
+  testRunner.And("decide if \"[[A]]\" \"IsAlphanumeric\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1159
+  testRunner.And("I save workflow \"DecisionTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1160
+  testRunner.Then("the test builder is open with \"DecisionTestWF\" new workflows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1161
+  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1162
+  testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1163
+  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1164
+  testRunner.And("I Add \"TestDecision\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Step Name",
+                        "Output Variable",
+                        "Output Value",
+                        "Activity Type"});
+            table125.AddRow(new string[] {
+                        "If [[Name]] <> (Not Equal)",
+                        "Flow Arm",
+                        "True",
+                        "Decision"});
+#line 1165
+  testRunner.And("I add Assert steps as", ((string)(null)), table125, "And ");
+#line 1168
+  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1169
+  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1170
+  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1171
+  testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1172
+  testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1173
+  testRunner.Then("workflow \"DecisionTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Switch")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithSwitch()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Switch", ((string[])(null)));
+#line 1175
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 1176
+  testRunner.Given("I have a workflow \"SwitchTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table126.AddRow(new string[] {
+                        "[[A]]",
+                        "30"});
+#line 1177
+  testRunner.And("\"SwitchTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table126, "And ");
+#line 1180
+  testRunner.And("I need to switch on variable \"<variable>\" with the value \"<val>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1181
+  testRunner.And("I save workflow \"SwitchTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1182
+  testRunner.Then("the test builder is open with \"SwitchTestWF\" new workflows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1183
+  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1184
+  testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1185
+  testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1186
+  testRunner.And("I Add \"TestSwitch\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Value"});
+            table127.AddRow(new string[] {
+                        "[[A]]",
+                        "30"});
+#line 1187
+  testRunner.And("inputs are", ((string)(null)), table127, "And ");
+#line 1190
+  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1191
+  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1192
+  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1193
+  testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1194
+  testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1195
+  testRunner.Then("workflow \"SwitchTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
