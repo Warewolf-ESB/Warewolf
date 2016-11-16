@@ -71,9 +71,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_Toolbox_Decision_Onto_DesignSurface();
         }
