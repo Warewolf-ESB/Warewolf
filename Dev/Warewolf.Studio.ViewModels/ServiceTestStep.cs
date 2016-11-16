@@ -104,7 +104,10 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var testOutput = serviceTestOutput as ServiceTestOutput;
                             if (testOutput != null)
+                            {
                                 testOutput.AssertOps = new ObservableCollection<string> {"="};
+                                testOutput.CanEditVariable = false;
+                            }
                         }
                     }
                 }
