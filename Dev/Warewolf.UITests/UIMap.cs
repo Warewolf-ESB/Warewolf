@@ -77,10 +77,6 @@ namespace Warewolf.UITests
                 {
                     Click_MessageBox_OK();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging message box to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -88,7 +84,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -101,10 +97,6 @@ namespace Warewolf.UITests
                 {
                     Click_DebugInput_Cancel_Button();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging debug input dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -112,7 +104,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -125,10 +117,6 @@ namespace Warewolf.UITests
                 {
                     Click_SaveDialog_CancelButton();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging save dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -136,7 +124,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -149,10 +137,6 @@ namespace Warewolf.UITests
                 {
                     Restore_Unpinned_Tab_Using_Context_Menu();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging unpinned pane to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -160,7 +144,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -173,10 +157,6 @@ namespace Warewolf.UITests
                 {
                     Click_Service_Picker_Dialog_Cancel();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging service picker dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -184,7 +164,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -197,10 +177,6 @@ namespace Warewolf.UITests
                 {
                     Click_Select_Windows_Group_Cancel_Button();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging select windows group dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -208,7 +184,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -221,10 +197,6 @@ namespace Warewolf.UITests
                 {
                     Click_Close_Error_Dialog();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging error dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -232,7 +204,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -245,10 +217,6 @@ namespace Warewolf.UITests
                 {
                     Click_Close_Critical_Error_Dialog();
                 }
-                else
-                {
-                    Console.WriteLine("No hanging critical error dialog to clean up.");
-                }
             }
             catch (Exception e)
             {
@@ -256,7 +224,7 @@ namespace Warewolf.UITests
             }
             finally
             {
-                Console.WriteLine("After trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -870,10 +838,18 @@ namespace Warewolf.UITests
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
+            Filter_Explorer(FilterText, true);
+        }
+
+        public void Filter_Explorer(string FilterText, bool skipRefresh = false)
+        {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            if (!skipRefresh)
+            {
+                WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            }
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
@@ -2164,8 +2140,7 @@ namespace Warewolf.UITests
         [When(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
         public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
         {
-            Filter_Explorer(ServiceName);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Filter_Explorer(ServiceName, true);
             Show_Explorer_First_Item_Tests_With_Context_Menu();
         }
 
@@ -2994,9 +2969,9 @@ namespace Warewolf.UITests
         public void Show_Explorer_First_Item_Tests_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests does not exist in explorer context menu.");
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton.Exists, "Create new test button does not exist on tests tab after openning it with the explorer context menu.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
         }
         
         public void Debug_Using_Play_Icon()
