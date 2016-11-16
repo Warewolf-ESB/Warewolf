@@ -25,11 +25,8 @@ namespace Warewolf.Studio.Views
 
         private void Tree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //if (e.OriginalSource is TextBlock)
-            {
-                // Store the mouse position
-                _startPoint = e.GetPosition(null);
-            }
+            // Store the mouse position
+            _startPoint = e.GetPosition(null);
         }
 
         private void StartDrag(MouseEventArgs e)
@@ -41,12 +38,7 @@ namespace Warewolf.Studio.Views
                 var dragData = new DataObject();
                 dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, temp.ActivityName);
                 dragData.SetData(temp);
-                DragDropEffects dde = DragDropEffects.Copy;
-                if (e.RightButton == MouseButtonState.Pressed)
-                {
-                    dde = DragDropEffects.All;
-                }
-                DragDrop.DoDragDrop(this, dragData, dde);
+                DragDrop.DoDragDrop(this, dragData, DragDropEffects.Copy);
             }
             _isDragging = false;
         }
@@ -65,53 +57,7 @@ namespace Warewolf.Studio.Views
                     StartDrag(e);
                 }
             }
-
-            //if (flag == 1) //Begin Drag
-            //{
-            //    // Get the current mouse position
-            //    Point mousePos = e.GetPosition(null);
-            //    Vector diff = _startPoint - mousePos;
-
-            //    if (e.LeftButton == MouseButtonState.Pressed &&
-            //        Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-            //        Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
-            //    {
-            //        // Get the dragged ListViewItem
-            //        TreeView treeView = sender as TreeView;
-            //        TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
-            //        if (treeViewItem != null && treeView != null)
-            //        {
-            //            // Find the data behind the ListViewItem
-            //            ExplorerItemViewModel contact = (ExplorerItemViewModel) treeView.SelectedItem;
-
-            //            // Initialize the drag & drop operation
-            //            DataObject dragData = new DataObject("myFormat", contact);
-            //            DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
-            //        }
-            //    }
-            //}
-
-//            if (e.LeftButton == MouseButtonState.Pressed && flag == 1)
-//            {
-//                var mousePos = e.GetPosition(null);
-//                var diff = _startPoint - mousePos;
-//
-//                if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance || Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
-//                {
-//                    var treeView = sender as TreeView;
-//                    var treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-//
-//                    if (treeView == null || treeViewItem == null)
-//                        return;
-//
-//                    var folderViewModel = treeView.SelectedItem as IExplorerItemViewModel;
-//                    if (folderViewModel == null)
-//                        return;
-//
-//                    var dragData = new DataObject(folderViewModel);
-//                    DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
-//                }
-//            }
+            
         }
 
         private void DropTree_DragEnter(object sender, DragEventArgs e)
@@ -132,27 +78,30 @@ namespace Warewolf.Studio.Views
             if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
             {
                 var explorerItemViewModel = e.Data.GetData(typeof (ExplorerItemViewModel)) as ExplorerItemViewModel;
+                if (explorerItemViewModel == null)
+                {
+                    e.Handled = true;
+                    return;
+                }
                 var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
 
                 var dropTarget = destination.DataContext as IExplorerItemViewModel;
 
-                if (dropTarget == null || explorerItemViewModel == null || !dropTarget.IsFolder)
+                if (dropTarget != null && dropTarget.IsFolder)
+                {
+                    var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                    itemViewModel.Move(dropTarget);
+                }
+                var destEnv = destination.DataContext as IEnvironmentViewModel;
+                if (destEnv != null)
+                {
+                    var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                    itemViewModel.Move(destEnv);
+                }
+                else
+                {
                     return;
-
-
-                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
-
-                itemViewModel.Parent = dropTarget;
-                itemViewModel.Move(dropTarget);
-
-                //TreeViewItem itemNode;
-                //FindDropTarget((TreeView) sender, out itemNode, e);
-                //ExplorerTree.Items.Remove(explorerItemViewModel);
-                //MyData.Insert(MyData.IndexOf(dropItem) + 1, dragItem);
-                //ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(explorerItemViewModel) >= 1 ? ExplorerTree.Items.IndexOf(explorerItemViewModel) : 0, explorerItemViewModel);
-
-
-                //destination.Items.Add(e.Data);
+                }                
                 destination.Background = Brushes.Transparent;
             }
         }
