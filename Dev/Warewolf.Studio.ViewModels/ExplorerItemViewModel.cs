@@ -424,7 +424,18 @@ namespace Warewolf.Studio.ViewModels
         public void AddChild(IExplorerItemViewModel child)
         {
             var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
-            tempChildren.Insert(0, child);
+            var exists = tempChildren.FirstOrDefault(model => model.ResourceName.Equals(child.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+            if (exists != null)
+            {
+                foreach(var explorerItemViewModel in child.Children)
+                {
+                    exists.AddChild(explorerItemViewModel);
+                }
+            }
+            else
+            {
+                tempChildren.Insert(0, child);
+            }
             _children = tempChildren;
             OnPropertyChanged(() => Children);
         }
@@ -1520,11 +1531,14 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                 }
-
+                destination.AddChild(this);
+                Parent.RemoveChild(this);
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
+                    Parent.AddChild(this);
+                    destination.RemoveChild(this);
                     return false;
                 }
                 UpdateResourcePaths(destination);
@@ -1536,7 +1550,7 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
-                Server.UpdateRepository.FireItemSaved(true);
+                //Server.UpdateRepository.FireItemSaved(true);
             }
             return true;
         }
