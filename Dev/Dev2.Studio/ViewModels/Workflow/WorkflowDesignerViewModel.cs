@@ -1605,6 +1605,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
             }
         }
+
         
         private void SetHashTable()
         {
@@ -2482,6 +2483,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
+                
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
 
                 _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
