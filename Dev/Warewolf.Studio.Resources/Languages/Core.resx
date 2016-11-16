@@ -455,7 +455,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>note</value>
   </data>
   <data name="Tool_Utility_Sys_Info_Tags" xml:space="preserve">
-    <value>date time format disk cpu memory ram resource language region user roles name domain computer hardware physical</value>
+    <value>date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system</value>
   </data>
   <data name="Tool_Utility_Random_Tags" xml:space="preserve">
     <value>guid generate </value>
@@ -1129,7 +1129,33 @@ The window will be reloaded when you click OK.</value>
     <value>Any variable and/or data goes in here.	To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
-    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;12h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour format: 3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;24h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;24 hour format: 15&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;am/pm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;am or pm&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;d&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in single digit: 6&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in double digit: 06&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dw&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week number: 4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week text abbreviated: Thur&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;DW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week in full: Thursday&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of year: 361&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Era&lt;/b&gt;&lt;/td&gt;&lt;td&gt;A.D.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;m&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in single digit: 8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;M&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month text abbreviated: Aug&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;min&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Minutes:  32&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in double digits: 08&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;MM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in full: August&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sp&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Split seconds: 999&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ss&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Seconds: 59&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;w&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year single digit: 9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ww&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year double digit: 52&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 2 digits: 78&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yyyy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 4 digits: 2013&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Z&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone in short format: GMT (if available)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone: Greenwich mean time&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone offset: GMT +2:00&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
   </data>
   <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
     <value>Select the unit of time to output the difference in.</value>
@@ -1144,7 +1170,33 @@ The window will be reloaded when you click OK.</value>
     <value>Any variable and/or data goes in here.	To format a date time, or to add/subtract from a date time, put it in here.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="DateTimeHelpInputformat" xml:space="preserve">
-    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;12h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;12 hour format: 3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;24h&lt;/b&gt;&lt;/td&gt;&lt;td&gt;24 hour format: 15&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;am/pm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;am or pm&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;d&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in single digit: 6&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of month in double digit: 06&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dw&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week number: 4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week text abbreviated: Thur&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;DW&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of week in full: Thursday&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Day of year: 361&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Era&lt;/b&gt;&lt;/td&gt;&lt;td&gt;A.D.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;m&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in single digit: 8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;M&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month text abbreviated: Aug&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;min&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Minutes:  32&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in double digits: 08&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;MM&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Month in full: August&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sp&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Split seconds: 999&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ss&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Seconds: 59&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;w&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year single digit: 9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ww&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Week of year double digit: 52&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 2 digits: 78&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;yyyy&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Year in 4 digits: 2013&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Z&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone in short format: GMT (if available)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone: Greenwich mean time&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ZZZ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Time zone offset: GMT +2:00&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
   </data>
   <data name="DateTimeHelpOutputformat" xml:space="preserve">
     <value>Describe the format you would like the date time to be returned in.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.' 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
@@ -1845,7 +1897,184 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="CalculateHelpFx" xml:space="preserve">
-    <value>Any variable and/or data goes in here.	To perform a calculation, put the calculation in here in BODMAS format.	Using (*) notation for recordsets, will perform the calculation and give a result, for each record.	To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Any variable and/or data goes in here.	To perform a calculation, put the calculation in here in BODMAS format.	Using (*) notation for recordsets, will perform the calculation and give a result, for each record.	To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;abs&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the absolute value of a number. The absolute value of a number is the number without its sign.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;acos&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the arccosine, or inverse cosine, of a number. The arccosine is the angle whose cosine is specified number. The returned angle is given in radians in the range zero to pi. To convert the result from radians to degrees, multiply by 180/PI().&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;acosh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the inverse hyperbolic cosine of the given number. The inverse hyperbolic cosine is the angle whose hyperbolic cosine is specified number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;and&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if all values are true or returns false if one or more values are false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;asin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the arcsine, or inverse sine, of a number. The arcsine is the angle whose sine is the specified number. The returned angle is given in radians in the range -pi/2 to pi/2. To express the arcsine in degrees, multiply the result by 180/PI().&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;asinh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the inverse hyperbolic sine of the given number. The inverse hyperbolic sine is the angle whose hyperbolic sine is specified number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;atan&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the arctangent, or inverse tangent, of a number. The arctangent is the angle whose tangent is the specified number. The returned angle is given in radians in the range -pi/2 to pi/2. To express the arctangent in degrees, multiply the result by 180/PI().&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;atan2&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the arctangent, or inverse tangent, of the specified x and y-coordinates. The arctangent is the angle from the x-axis to a line containing the origin (0, 0) and a point with coordinates (x_num, y_num). The angle is given in radians between -pi and pi, excluding -pi.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;atanh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the inverse hyperbolic tangent of the given number. The inverse hyperbolic tangent is the angle whose hyperbolic tangent is specified number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;avedev&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the average deviation from the average of all numeric values.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;average&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the average (arithmetic mean) of one or more values.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;bin2dec&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the decimal value of a text representation of a number in the binary number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;bin2hex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing a binary number to a text expression representing the same number in the hexadecimal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;bin2oct&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing a binary number to a text expression representing the same number in the octal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ceiling&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the smallest multiple of the significance (defaults to 1) greater than or equal to the specified number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;char&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the character specified by the code number from the character set for your computer.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;choose&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns one of the values provided in its arguments based on the number in the first argument.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;code&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a numeric code for the first character in a text expression using the character set used by your computer.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;combin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of possible combinations given a set of items and a number of chosen items from that set.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;complex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a complex number represented as a text expression in the format "x + yi" or "x + yj" by combining a real and imaginary number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;concatenate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Joins all the arguments into one text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;convert&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a value from one system of measurement to another, such as meters to inches or hours to seconds.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;cos&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the cosine of the given angle.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;cosh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the hyperbolic cosine of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;count&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Counts the number of references that contain numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;counta&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Counts the number of references that are not blank.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;date&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sequential serial number that represents a particular date.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dateadd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a date to which the specified interval has been added.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;datediff&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a value indicating the number of intervals between two DateTime values.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;datevalue&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the date value of the specified date text.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;day&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the day of month of a date value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;days360&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of days between two dates based on a 360-day year.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;db&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the depreciation of an asset for a specified period using the fixed-declining balance method.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dbnull&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns something that represents a non-existent value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ddb&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the depreciation of an asset for a specified period using the double-declining balance method or some other method specified.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dec2bin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a text expression representing the specified decimal value as a binary number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dec2hex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a text expression representing the specified decimal value as a hexadecimal number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dec2oct&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a text expression representing the specified decimal value as an octal number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;degrees&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts radians to degrees.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;delta&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Compares two numbers and returns one if they are equal or zero if they are not.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dollarde&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a dollar amount expressed as a fraction into a dollar amount expressed as a decimal.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;dollarfr&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a dollar amount expressed as a decimal into a dollar amount expressed as a fraction.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;edate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a date that is the specified number of months before or after the start date.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;eomonth&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a date that is at the end of the month which is the specified number of months before or after the start date.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;errortype&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a number corresponding to an error value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;even&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a positive number up and a negative number down to nearest even integer.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;exp&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns e raised to the power of the specified number. The constant e equals 2.71828182845904.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;fact&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the factorial of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;factdouble&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the double factorial of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;find&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the starting position of one text expression within another, case sensitively.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;fixed&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number to the specified number of decimals and returns the result as text with or without commas.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;floor&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the largest multiple of the significance (defaults to 1) less than or equal to the given number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;fv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the future value of an investment based on periodic.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;gcd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the greatest common divisor of one or more integer values.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;gestep&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Compares two numbers and returns one if the first number is greater than or equal to the second or returns zero if not.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;hex2bin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing a hexadecimal number to a text expression representing the same number in the binary number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;hex2dec&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the decimal value of a text representation of a number in the hexadecimal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;hex2oct&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing a hexadecimal number to a text expression representing the same number in the octal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;hour&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the hour of a time value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;if&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns one value if the specified condition evaluates to true and another value if it evaluates to false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;iferror&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns one of two values depending on whether or not the first value is an error or not.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imabs&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the absolute value of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imaginary&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the imaginary coefficient of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imargument&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the argument theta, an angle expressed in radians.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imconjugate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the conjugate of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imcos&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the cosine of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imdiv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the quotient of two complex numbers (Dividend / Divisor).&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imexp&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the exponential of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imln&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the natural logarithm of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imlog10&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the base-10 logarithm of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imlog2&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the base-2 logarithm of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;impower&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the complex number raised to the specified power.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;improduct&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the product of one or more complex numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imreal&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the real coefficient of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imsin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sine of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imsqrt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the square root of a complex number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imsub&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the difference between two complex numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;imsum&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sum of one or more complex numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;info&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns information about the current operating environment.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;int&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number down to the nearest integer.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;intrate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the interest rate for a fully invested security.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ipmt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the interest payment for a given period for an investment, based on periodic, constant payments and a constant interest rate.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;irr&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the internal rate of return for a series of cash flows.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isblank&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is blank.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isdbnull&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value represents a non-existent value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;iserr&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is any error value except #N/A.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;iserror&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is any error value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;iseven&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is an even number, else returns false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;islogical&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is a logical value (true or false).&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isna&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is the #N/A (value not available) error value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isnontext&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is any item that is not text.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isnull&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is non-existent.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isnumber&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isodd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is an odd number, else returns false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;isref&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is a reference.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;istext&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if the value is a text value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;lcm&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the least common multiple of one or more integer values.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;left&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the first character or characters in a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;len&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of characters in a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ln&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the natural logarithm of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;log&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the logarithm of a number to the base specified.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;log10&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the base-10 logarithm of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;lower&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts all uppercase letters in a text expression to lowercase.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;max&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the largest number in a set of numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;median&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the median of a set of numbers. The median is the middle number when the numbers are sorted or the average of the two middle numbers if there are an even number of specified numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mid&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a specific number of characters from a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;min&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the smallest number in a set of numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;minute&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the minute of a time value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mod&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the remainder after a number is divided by a divisor. The result has the same sign as the divisor.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;month&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the month of a date value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;mround&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number to the nearest multiple of another number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;multinomial&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the multinomial of a set of numbers. The multinomial is the ratio of the factorial of a sum of values to the product of their factorials.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;n&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a value to a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;na&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the #N/A (value not available) error value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;networkdays&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the total number of whole work days between the specified dates, excluding any specified holidays.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;not&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Reverses a logical value (changes true to false and false to true).&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;now&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a value representing the current date and time.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;nper&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of periods for an investment based on periodic, constant payments and a constant interest rate.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;npv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Calculates the net present value of an investment by using a discount rate and a series of future payments (negative values) and income (positive value).&lt;/td&gt;NPV(discountRate, value1, value2, ..., valueN)&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;null&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a non-existent value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;oct2bin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing an octal number to a text expression representing the same number in the binary number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;oct2dec&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the decimal value of a text representation of a number in the octal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;oct2hex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing an octal number to a text expression representing the same number in the hexadecimal number system.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;odd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a positive number up and a negative number down to the nearest odd integer.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;or&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns true if one or more values are true; returns false if all values are false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;pi&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the constant pi, which is 3.14159265358979.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;pmt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Calculates the payment for a loan based on constant payments and a constant interest rate.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;power&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the result of a number raised to a power.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;ppmt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the payment on the principal for a given period for an investment based on periodic, constant payments and a constant interest rate.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;product&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Multiplies all the numbers given as arguments and returns the product.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;pv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the present value of an investment.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;quotient&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the integer portion of a division. This will discard the remainder of the division.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;radians&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts degrees to radians.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;rand&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns an evenly distributed random number greater than or equal to 0 and less than 1&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;randbetween&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Generates a pseudorandom integer between two specified numbers.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;rate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the interest rate per period of an annuity.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;replace&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Replaces part of a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;rept&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Repeats text a specific number of times.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;right&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the last character or characters in a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;roman&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a number into a roman number as a text expression.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;round&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number to a specified number of digits.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;rounddown&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number to down to the specified number of digits.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;roundup&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Rounds a number to up to the specified number of digits.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;search&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the 1-based index of one string within another, searching case insensitively.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;searchb&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the 1-based index of one string within another, searching case insensitively.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;second&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the second of a time value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;seriessum&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sum of a power series.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sign&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sign of a number (-1, 0, or 1).&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sine of the specified angle.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sinh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the hyperbolic sine of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sln&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the straight-line depreciation of an asset for one period.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sqrt&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a positive square root of a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sqrtpi&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Multiplies the specified number by pi and returns the square root of the result.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;stdev&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the standard deviation of a population sample.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;subtotal&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Calculates the subtotal in one of more references.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;sum&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Sums all the numbers given as arguments and returns the sum.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;syd&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the sum-of-years' digits depreciation of an asset for a specified period.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;tan&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the tangent of the specified angle.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;tanh&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the hyperbolic tangent of the specified angle.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;text&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts the value to text based on the specified format.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;time&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a number that represents a particular time value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;timevalue&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing a time to its equivalent time value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;today&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the current date.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;trim&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Removes all spaces from text except for single spaces between words.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;trunc&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Truncates a number to an integer by removing the fractional part of the number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;type&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a number representing the type of value: number = 1; text = 2; logical value (true or false) = 4; error value = 16; array = 64.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;upper&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts all lowercase letters in a text expression to uppercase.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;value&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression that represents a number to a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;var&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the variance of a population sample.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;weekday&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a number representing the day of the week of the specified date.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;weeknum&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of the week into which the specified date falls.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;workday&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a work day the specified number of days from the specified date, excluding any specified holidays.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;year&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the year of a date value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;FALSE&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the logical value false.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;TRUE&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the logical value true.&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
   </data>
   <data name="AssignObjectHelpVariable" xml:space="preserve">
     <value>Only objects go in here.	To assign a value to an object, put the object path in here.	&lt;br /&gt;	Allowed: &lt;br /&gt;	[[@Object.Property]]&lt;br /&gt;	[[@Object.Object(n).Property]]</value>
@@ -3472,7 +3701,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select the unit of time to output the difference in.</value>
   </data>
   <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
-    <value>3</value>
+    <value>The format of the eg. yyyy-dd-mm</value>
   </data>
   <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
     <value>Any variable and/or data goes in here.
