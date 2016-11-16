@@ -438,6 +438,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _children = tempChildren;
             OnPropertyChanged(() => Children);
+            OnPropertyChanged(()=>ChildrenCount);
         }
 
         public void RemoveChild(IExplorerItemViewModel child)
@@ -446,6 +447,7 @@ namespace Warewolf.Studio.ViewModels
             tempChildren.Remove(child);
             _children = tempChildren;
             OnPropertyChanged(() => Children);
+            OnPropertyChanged(() => ChildrenCount);
         }
 
         public void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction)
