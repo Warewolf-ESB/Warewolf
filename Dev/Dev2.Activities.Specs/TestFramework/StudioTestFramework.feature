@@ -975,7 +975,7 @@ Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with
 	And I run the test
 	Then test result is Passed
 
-#Data
+#Data Category
 Scenario: Test WF with Assign
 	Given I have a workflow "AssignTestWF"
 	And "AssignTestWF" contains an Assign "TestAssign" as
@@ -1006,20 +1006,21 @@ Scenario: Test WF with Assign Object
 		 | [[@Person.Name]]    | yes   |
 		 | [[@Person.Surname]] | no    |
 		 And I save workflow "AssignObjectTestWF"
-		 Then the test builder is open with "AssignObjectTestWF" new workflows
+		 Then the test builder is open with "AssignObjectTestWF"
 		 And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "TestAssignObject" as TestStep
-		And I add new StepOutputs as 
-		| Variable Name       | Condition | Value | 
-		| [[@Person.Name]]    | =         | yes   | 
-		| [[@Person.Surname]] | =         | no    | 
-			When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
+		 And a new test is added	
+	   	 And test name starts with "Test 1"
+		 And I Add "TestAssignObject" as TestStep
+		 And I add new StepOutputs as 
+		 | Variable Name       | Condition | Value | 
+		 | [[@Person.Name]]    | =         | yes   | 
+		 | [[@Person.Surname]] | =         | no    | 
+		 When I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+		 Then The "DeleteConfirmation" popup is shown I click Ok
+		 Then workflow "AssignObjectTestWF" is deleted as cleanup
 
 
 Scenario: Test WF with BaseConvert 
@@ -1028,72 +1029,79 @@ Scenario: Test WF with BaseConvert
 		  | variable | value                                                                                                    |
 		  | [[a]]    | 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 |
 		And "BaseConvertTestWF" contains Base convert "TestBaseConvert" as
-		  | Variable  | From | To      |
-		 | [[[[a]]]] | Text | Base 64 |
+		  | Variable  | From   | To   |
+		  | [[a]] | Binary | Text |
 		 And I save workflow "BaseConvertTestWF"
-		 Then the test builder is open with "BaseConvertTestWF" new workflows
+		 Then the test builder is open with "BaseConvertTestWF"
 		 And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "TestBaseConvert" as TestStep
-		And I add new StepOutputs as 
-		| Variable Name | Condition | Value         |
-		| [[a]]      | =         | I was mangled |
-			When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
+		 And a new test is added	
+		 And test name starts with "Test 1"
+		 And I Add "TestBaseConvert" as TestStep
+		 And I add new StepOutputs as 
+		  | Variable Name | Condition | Value         |
+		  | [[a]]         | =         | I was mangled |
+		 When I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+		 Then The "DeleteConfirmation" popup is shown I click Ok
+		 Then workflow "BaseConvertTestWF" is deleted as cleanup
 		
 Scenario: Test WF with CaseConvert
 		Given I have a workflow "CaseConvertTestWF"
 			And "CaseConvertTestWF" contains an Assign "TestAssign" as
-		  | variable | value                                                                                                    |
-		  | [[name]] | 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 |
+		 | variable    | value |
+		 | [[rec().a]] | 50    |
+		 | [[rec().a]] | test  |
+		 | [[rec().a]] | 100   |
 		And "CaseConvertTestWF" contains case convert "TestCaseConvert" as
-		 | variable | value |
-		 | [[name]] | micky |
+		  | Variable     | Type  |
+		  | [[rec(2).a]] | UPPER |
 		 And I save workflow "CaseConvertTestWF"
-		 Then the test builder is open with "CaseConvertTestWF" new workflows
+		 Then the test builder is open with "CaseConvertTestWF"
 		 And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "TestCaseConvert" as TestStep
-		And I add new StepOutputs as 
-		| Variable Name | Condition | Value         |
-		| [[Blob]]      | =         | MICKY |
-			When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
+		 And a new test is added	
+		 And test name starts with "Test 1"
+		 And I Add "TestCaseConvert" as TestStep
+		 And I add new StepOutputs as 
+		 | Variable Name | Condition | Value |
+		 | [[rec(2).a]]  | =         | TEST  |
+		 When I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+		 Then The "DeleteConfirmation" popup is shown I click Ok
+		 Then workflow "CaseConvertTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Data split
 		Given I have a workflow "DataSplitTestWF"
-			And "DataSplitTestWF" contains an Assign "TestAssign" as
-		 | variable     | value    |
-		 | [[a]]        | 1        |
-		 | [[b]]        | 2        |
-		 | [[rec(1).a]] | warewolf |
-		 | [[rec(2).a]] | test     |	
-		And "DataSplitTestWF" contains Data Split "TestDataSplit" as
-		 | String                  | Variable    | Type  | At | Include    | Escape |
-		 | [[result]][[split().a]] | [[rec().b]] | Index | 4  | Unselected |        |
-		 |                         | [[rec().b]] | Index | 8  | Unselected |        |
+		And "DataSplitTestWF" contains an Assign "TestAssign" as
+		 | variable        | value                                                                              |
+		 | [[FileContent]] | Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.com |
+		And "DataSplitTestWF" contains Data Split "TestDataSplit" as	
+		| String          | Variable       | Type  | At | Include | Escape |
+		| [[FileContent]] | [[rec().Name]] | Chars | ,  |         |        |
 		 And I save workflow "DataSplitTestWF"
-		 Then the test builder is open with "DataSplitTestWF" new workflows
+		 Then the test builder is open with "DataSplitTestWF"
 		 And I click New Test
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestDataSplit" as TestStep
 		 And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value         |
-		 | [[Blob]]      | =         | MICKY |
+	  	 | Variable Name   | Condition | Value             |
+	  	 | [[rec(1).Name]] | =         | Brad              |
+	  	 | [[rec(2).Name]] | =         | 5546854           |
+	  	 | [[rec(3).Name]] | =         | brad@mail.com Bob |
+	  	 | [[rec(4).Name]] | =         | 65548912          |
+	  	 | [[rec(5).Name]] | =         | bob@mail.com Bill |
+	  	 | [[rec(6).Name]] | =         | 3215464987        |
+	  	 | [[rec(7).Name]] | =         | bill@mail.com     |
 		 When  I save
 		 And I run the test
 		 Then test result is Passed
 		 When I delete "Test 1"
 		 Then The "DeleteConfirmation" popup is shown I click Ok
+		 Then workflow "DataSplitTestWF" is deleted as cleanup
 		
 Scenario: Test WF with Find Index
 		Given I have a workflow "FindIndexTestWF"
@@ -1107,48 +1115,172 @@ Scenario: Test WF with Find Index
 		  | In Fields   | Index           | Character | Direction     |
 		  | [[rec().a]] | First Occurence | e         | Left to Right |
 		 And I save workflow "FindIndexTestWF"
-		 Then the test builder is open with "FindIndexTestWF" new workflows
+		 Then the test builder is open with "FindIndexTestWF"
 		 And I click New Test
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestIndex" as TestStep
 		 And I add new StepOutputs as 
-		 | Variable Name | Condition | Value         |
-		 | [[Blob]]      | =         | MICKY |
-			When I save
+		 | Variable Name   | Condition | Value |
+		 | [[indexResult]] | =         | 4     |
+		 When I save
 		 And I run the test
 		 Then test result is Passed
 		 When I delete "Test 1"
-	 	Then The "DeleteConfirmation" popup is shown I click Ok
+	 	 Then The "DeleteConfirmation" popup is shown I click Ok
+		 Then workflow "FindIndexTestWF" is deleted as cleanup
 
 
 Scenario: Test WF with Data Merge
 		Given I have a workflow "DataMergeTestWF"
 		And "DataMergeTestWF" contains an Assign "TestAssign" as
-		   | variable    | value    |
-			  | [[rec().a]] | test     |
-			  | [[rec().b]] | nothing  |
-			  | [[rec().a]] | warewolf |
-			  | [[rec().b]] | nothing  |
-		And "DataMergeTestWF" contains Data Merge "TestDataMerge" into "[[result]]" as	
-		
-		  | In Fields   | Index           | Character | Direction     |
-		  | [[rec().a]] | First Occurence | e         | Left to Right |
-		 And I save workflow "DataMergeTestWF"
-		 Then the test builder is open with "DataMergeTestWF" new workflows
-		 And I click New Test
+		  | variable      | value    |
+		  | [[a]]         | Test     |
+		  | [[b]]         | Warewolf |
+		  | [[split().a]] | Workflow |
+		And "DataMergeTestWF" contains Data Merge "TestDataMerge" into "[[result]]" as			
+		  | Variable | Type  | Using | Padding | Alignment |
+		  | [[a]]    | Index | 4     |         | Left      |
+		  | [[b]]    | Index | 8     |         | Left      |
+		And I save workflow "DataMergeTestWF"
+		Then the test builder is open with "DataMergeTestWF"
+		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "TestDataMerge" as TestStep
 		And I add new StepOutputs as 
-		| Variable Name | Condition | Value         |
-		| [[Blob]]      | =         | MICKY |
-			When I save
+		| Variable Name | Condition | Value        |
+		| [[result]]    | =         | TestWarewolf |
+		When I save
 		And I run the test
 		Then test result is Passed
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "DataMergeTestWF" is deleted as cleanup
+		
+Scenario: Test WF with Replace
+		Given I have a workflow "ReplaceTestWF"
+		And "ReplaceTestWF" contains an Assign "TestAssign" as
+		 | variable    | value    |
+		  | [[rec().a]] | test     |
+		  | [[rec().b]] | nothing  |
+		  | [[rec().a]] | warewolf |
+		  | [[rec().b]] | nothing  |
+	  And "ReplaceTestWF" contains Replace "TestReplace" into "[[replaceResult]]" as	
+		  | In Fields  | Find | Replace With |
+		  | [[rec(*)]] | e    | REPLACED     |
+		And I save workflow "ReplaceTestWF"
+		Then the test builder is open with "ReplaceTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestReplace" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name     | Condition | Value           |
+		| [[rec(1).a]]      | =         | tREPLACEDst     |
+		| [[rec(2).a]]      | =         | warREPLACEDwolf |		
+		| [[replaceResult]] | =         | 2               |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "ReplaceTestWF" is deleted as cleanup
 
+#Database Category	  
+Scenario: Test WF with MySql
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
+
+Scenario: Test WF with Sql Server
+		Given I have a workflow "SqlTestWF"
+		 And "SqlTestWF" contains a sqlserver database service "dbo.Pr_CitiesGetCountries" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  | Prefix           | afg           | countryid           | [[rec(*).name]]  |
+		  |                  |               | description         | [[rec(*).email]] |
+		And I save workflow "SqlTestWF"
+		Then the test builder is open with "SqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "dbo.Pr_CitiesGetCountries" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name                | Condition | Value       |
+		| [[countries(1).id]]          | =         | 1           |
+		| [[countries(1).description]] | =         | Afghanistan |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SqlTestWF" is deleted as cleanup
+
+Scenario: Test WF with Oracle
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
+
+Scenario: Test WF with PostGre Sql
+		Given I have a workflow "PostGreTestWF"
+		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable           |
+		  | Prefix           | s             | name                | [[countries(*).Id]]   |
+		  |                  |               | email               | [[countries(*).Name]] |
+		And I save workflow "PostGreTestWF"
+		Then the test builder is open with "PostGreTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "get_countries" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name         | Condition | Value         |
+		| [[countries(1).Id]]   | =         | 1             |
+		| [[countries(2).Id]]   | =         | 3             |
+		| [[countries(1).Name]] | =         | United States |
+		| [[countries(2).Name]] | =         | South Africa  |	
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "PostGreTestWF" is deleted as cleanup
 Scenario: Test WF with Decision
 		Given I have a workflow "DecisionTestWF"
 		And "DecisionTestWF" contains an Assign "TestAssign" as
@@ -1172,6 +1304,51 @@ Scenario: Test WF with Decision
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "DecisionTestWF" is deleted as cleanup
 
+Scenario: Test WF with SqlBulk Insert
+		Given I have a workflow "SqlBulkTestWF"
+		 And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+		   | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
+		   | Id     |                     | false      | int          |           | true            |
+		   | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
+		   | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
+		And I save workflow "SqlBulkTestWF"
+		Then the test builder is open with "SqlBulkTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "BulkInsert" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name | Condition | Value   |
+		| [[result]]    | =         | Success |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SqlBulkTestWF" is deleted as cleanup
+
+Scenario: Test WF with Odbc
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
 Scenario: Test WF with Switch
 		Given I have a workflow "SwitchTestWF"
 		And "SwitchTestWF" contains an Assign "TestAssign" as
