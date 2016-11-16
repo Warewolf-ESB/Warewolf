@@ -975,7 +975,7 @@ Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with
 	And I run the test
 	Then test result is Passed
 
-#Data
+#Data Category
 Scenario: Test WF with Assign
 	Given I have a workflow "AssignTestWF"
 	And "AssignTestWF" contains an Assign "TestAssign" as
@@ -1050,11 +1050,13 @@ Scenario: Test WF with BaseConvert
 Scenario: Test WF with CaseConvert
 		Given I have a workflow "CaseConvertTestWF"
 			And "CaseConvertTestWF" contains an Assign "TestAssign" as
-		  | variable | value                                                                                                    |
-		  | [[name]] | 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 |
+		 | variable    | value |
+		 | [[rec().a]] | 50    |
+		 | [[rec().a]] | test  |
+		 | [[rec().a]] | 100   |
 		And "CaseConvertTestWF" contains case convert "TestCaseConvert" as
-		 | variable | value |
-		 | [[name]] | micky |
+		  | Variable     | Type  |
+		  | [[rec(2).a]] | UPPER |
 		 And I save workflow "CaseConvertTestWF"
 		 Then the test builder is open with "CaseConvertTestWF"
 		 And I click New Test
@@ -1062,8 +1064,8 @@ Scenario: Test WF with CaseConvert
 		 And test name starts with "Test 1"
 		 And I Add "TestCaseConvert" as TestStep
 		 And I add new StepOutputs as 
-		 | Variable Name | Condition | Value         |
-		 | [[Blob]]      | =         | MICKY |
+		 | Variable Name | Condition | Value |
+		 | [[rec(2).a]]  | =         | TEST  |
 		 When I save
 		 And I run the test
 		 Then test result is Passed
@@ -1185,5 +1187,143 @@ Scenario: Test WF with Replace
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "ReplaceTestWF" is deleted as cleanup
 
+#Database Category	  
+Scenario: Test WF with MySql
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
 
-	  
+Scenario: Test WF with Sql Server
+		Given I have a workflow "SqlTestWF"
+		 And "SqlTestWF" contains a sqlserver database service "dbo.Pr_CitiesGetCountries" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  | Prefix           | afg           | countryid           | [[rec(*).name]]  |
+		  |                  |               | description         | [[rec(*).email]] |
+		And I save workflow "SqlTestWF"
+		Then the test builder is open with "SqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "dbo.Pr_CitiesGetCountries" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name                | Condition | Value       |
+		| [[countries(1).id]]          | =         | 1           |
+		| [[countries(1).description]] | =         | Afghanistan |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SqlTestWF" is deleted as cleanup
+
+Scenario: Test WF with Oracle
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
+
+Scenario: Test WF with PostGre Sql
+		Given I have a workflow "PostGreTestWF"
+		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable           |
+		  | Prefix           | s             | name                | [[countries(*).Id]]   |
+		  |                  |               | email               | [[countries(*).Name]] |
+		And I save workflow "PostGreTestWF"
+		Then the test builder is open with "PostGreTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "get_countries" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name         | Condition | Value         |
+		| [[countries(1).Id]]   | =         | 1             |
+		| [[countries(2).Id]]   | =         | 3             |
+		| [[countries(1).Name]] | =         | United States |
+		| [[countries(2).Name]] | =         | South Africa  |	
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "PostGreTestWF" is deleted as cleanup
+
+Scenario: Test WF with SqlBulk Insert
+		Given I have a workflow "SqlBulkTestWF"
+		 And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+		   | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
+		   | Id     |                     | false      | int          |           | true            |
+		   | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
+		   | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
+		And I save workflow "SqlBulkTestWF"
+		Then the test builder is open with "SqlBulkTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "BulkInsert" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name | Condition | Value   |
+		| [[result]]    | =         | Success |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SqlBulkTestWF" is deleted as cleanup
+
+Scenario: Test WF with Odbc
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
+		Then the test builder is open with "MySqlTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "MySqlEmail" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name           | Condition | Value              |
+		| [[MySqlEmail(1).name]]  | =         | Monk               |
+		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "MySqlTestWF" is deleted as cleanup
