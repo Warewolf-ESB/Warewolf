@@ -6857,5 +6857,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx";
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web address.");
         }
+
+        [When(@"I Click Decision Large View Match Type Combobox")]
+        public void Click_Decision_Large_View_Match_Type_Combobox()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.LargeView.Table.Row1.MatchTypeCell.MatchTypeCombobox, new Point(5, 5));
+        }
     }
 }
