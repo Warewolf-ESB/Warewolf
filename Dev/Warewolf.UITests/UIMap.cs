@@ -448,8 +448,8 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(SwitchCaseDialog.Exists);
-            Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
+            Assert.IsTrue(DecisionOrSwitchDialog.Exists);
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(34, 10));
             Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
         }
@@ -458,8 +458,8 @@ namespace Warewolf.UITests
         public void ThenTheCaseDialogMustBeOpen()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
-            Assert.IsTrue(SwitchCaseDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
-            Mouse.Click(SwitchCaseDialog.DoneButton);
+            Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton);
         }
         [When(@"I Click Close Workflow Tab")]
         [Then(@"I Click Close Workflow Tab")]
@@ -1175,8 +1175,8 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(SwitchCaseDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
-            Mouse.Click(SwitchCaseDialog.DoneButton, new Point(34, 10));
+            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(34, 10));
             Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
             TryClearToolboxFilter();
@@ -5836,7 +5836,7 @@ namespace Warewolf.UITests
         public void Open_Switch_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(39, 35));
-            Assert.AreEqual(true, SwitchCaseDialog.Enabled, "Switch dialog does not exist after opening switch large view");
+            Assert.AreEqual(true, DecisionOrSwitchDialog.Enabled, "Switch dialog does not exist after opening switch large view");
         }
 
         [When(@"I Open System Information Tool Large View")]
