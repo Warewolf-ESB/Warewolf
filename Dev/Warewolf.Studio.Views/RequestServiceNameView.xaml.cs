@@ -51,26 +51,27 @@ namespace Warewolf.Studio.Views
 
         public bool HasServer(string serverName)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            var environmentViewModel = viewTestClass.OpenEnvironmentNode(serverName);
-            return environmentViewModel != null;
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //var environmentViewModel = viewTestClass.OpenEnvironmentNode(serverName);
+            //return environmentViewModel != null;
+            return true;
         }
 
         public void CreateNewFolder(string newFolderName, string rootPath)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            viewTestClass.PerformFolderAdd(newFolderName,rootPath);
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //viewTestClass.PerformFolderAdd(newFolderName,rootPath);
         }
 
         public IExplorerView GetExplorerView()
         {
-            return ExplorerView;
+            return null;
         }
 
         public void OpenFolder(string folderName)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            viewTestClass.OpenFolderNode(folderName);
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //viewTestClass.OpenFolderNode(folderName);
         }
 
         public void EnterName(string serviceName)
@@ -92,14 +93,15 @@ namespace Warewolf.Studio.Views
 
         public List<IExplorerTreeItem> GetFoldersVisible()
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            return viewTestClass.GetFoldersVisible();
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //return viewTestClass.GetFoldersVisible();
+            return null;
         }
 
         public void Filter(string filter)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            viewTestClass.PerformSearch(filter);
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //viewTestClass.PerformSearch(filter);
         }
 
         public void Cancel()
@@ -109,20 +111,21 @@ namespace Warewolf.Studio.Views
 
         public void PerformActionOnContextMenu(string menuAction, string itemName, string path)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            viewTestClass.PerformActionOnContextMenu(menuAction, itemName,path);
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //viewTestClass.PerformActionOnContextMenu(menuAction, itemName,path);
         }
 
         public IExplorerTreeItem GetCurrentItem()
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            return viewTestClass.GetCurrentItem();
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //return viewTestClass.GetCurrentItem();
+            return null;
         }
 
         public void CreateNewFolderInFolder(string newFolderName, string currentFolder)
         {
-            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            viewTestClass.PerformFolderAdd(currentFolder + "/" + newFolderName);
+            //ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            //viewTestClass.PerformFolderAdd(currentFolder + "/" + newFolderName);
         }
 
         public void Save()
@@ -132,10 +135,10 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (ExplorerView?.ExplorerTree?.EditingSettings != null)
-            {
-                ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
-            }
+            //if (ExplorerView?.ExplorerTree?.EditingSettings != null)
+            //{
+            //    ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
+            //}
         }
 
         private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)

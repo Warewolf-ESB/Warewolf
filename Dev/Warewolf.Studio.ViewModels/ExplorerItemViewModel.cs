@@ -1330,7 +1330,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canExecute;
+                return _canExecute && !IsFolder && !IsServer;
             }
             set
             {
@@ -1360,7 +1360,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion;
+                return _canView && !IsResourceVersion && !IsFolder && !IsServer;
             }
             set
             {
