@@ -1021,6 +1021,28 @@ Scenario: Test WF with Assign Object
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 
+Scenario: Test WF with Rand
+		Given I have a workflow "RandTestWF"
+		And "RandTestWF" contains an Assign Object "TestRand" as 
+		 | variable            | value |
+		 | [[@Person.Name]]    | yes   |
+		 | [[@Person.Surname]] | no    |
+		 And I save workflow "RandTestWF"
+		 Then the test builder is open with "RandTestWF" new workflows
+		 And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestRand" as TestStep
+		And I add new StepOutputs as 
+		| Variable Name       | Condition | Value | 
+		| [[@Person.Name]]    | =         | yes   | 
+		| [[@Person.Surname]] | =         | no    | 
+			When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+
 
 Scenario: Test WF with BaseConvert 
 		Given I have a workflow "BaseConvertTestWF"
@@ -1151,3 +1173,194 @@ Scenario: Test WF with Data Merge
 
 
 	  
+#Utility
+Scenario: Test WF with Random
+	Given I have a workflow "RandomTestWF"
+	And "RandomTestWF" contains Random "TestRandoms" as
+	  | Type    | From | To | Result     |
+	  | Numbers | 1    | 10 | [[result]] |
+	And I save workflow "RandomTestWF"
+	Then the test builder is open with "RandomTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestRandoms" as TestStep	
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition  | Value |
+	  	 | [[result]]    | Is Numeric |       |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "RandomTestWF" is deleted as cleanup
+
+Scenario: Test WF with Aggregate Calculate
+	Given I have a workflow "AggrCalculateTestWF"
+	And "AggrCalculateTestWF" contains an Assign "values1" as
+      | variable | value |
+      | [[a]]    | 31     |
+      | [[b]]    | 15     |
+      | [[c]]    | 8     |
+      | [[d]]    | 24     |
+	And "AggrCalculateTestWF" contains Calculate "TestAgrCalculate" with formula "Min([[a]],[[b]],[[c]],[[d]])" into "[[result]]"
+	And I save workflow "AggrCalculateTestWF"
+	Then the test builder is open with "AggrCalculateTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestAgrCalculate" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 8     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "AggrCalculateTestWF" is deleted as cleanup
+
+Scenario: Test WF with RabbitMq Publish
+	Given I have a workflow "RabbitMqPubTestWF"
+	And "RabbitMqPubTestWF" contains RabbitMQPublish "TestRabbitMqPub" with source "testRabbitMQSource"
+	And I save workflow "RabbitMqPubTestWF"
+	Then the test builder is open with "RabbitMqPubTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestRabbitMqPub" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | Contains  | Fail  |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "RabbitMqPubTestWF" is deleted as cleanup
+
+Scenario: Test WF with Calculate
+	Given I have a workflow "CalculateTestWF"
+	And "CalculateTestWF" contains an Assign "values1" as
+      | variable | value |
+      | [[a]]    | 1     |
+      | [[b]]    | 5     |
+	And "CalculateTestWF" contains Calculate "TestCalculate" with formula "Sum([[a]],[[b]])" into "[[result]]"
+	And I save workflow "CalculateTestWF"
+	Then the test builder is open with "CalculateTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestCalculate" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 6     |		 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "CalculateTestWF" is deleted as cleanup
+
+Scenario: Test WF with Xpath
+	Given I have a workflow "XPathTestWF"
+	And "XPathTestWF" contains XPath \"XPathTest" with source "//XPATH-EXAMPLE/CUSTOMER[@id='2' or @type='C']/text()"
+	And I save workflow "XPathTestWF"
+	Then the test builder is open with "XPathTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "XPathTest" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name   | Condition | Value        |
+	  	 | [[singleValue]] | =         | Mr.  Johnson |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "XPathTestWF" is deleted as cleanup
+
+Scenario: Test WF with SysInfo
+	Given I have a workflow "SysInfoTestWF"
+	And "SysInfoTestWF" contains Gather System Info "System info" as
+	| Variable | Selected    |
+	| [[a]]    | Date & Time |
+	And I save workflow "SysInfoTestWF"
+	Then the test builder is open with "SysInfoTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "System info" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[a]]         | Is Date   |       |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "SysInfoTestWF" is deleted as cleanup
+
+Scenario: Test WF with FormatNumber
+	Given I have a workflow "FormatNumberTestWF"
+	And "FormatNumberTestWF" contains Format Number "Fnumber" as 
+	| Number  | Rounding Selected | Rounding To | Decimal to show | Result     |
+	| 12.3412 | Up                | 3           | 2               | [[result]] |
+	And I save workflow "FormatNumberTestWF"
+	Then the test builder is open with "FormatNumberTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Fnumber" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 12.34 |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "FormatNumberTestWF" is deleted as cleanup
+
+Scenario: Test WF with DateTime
+	Given I have a workflow "DateTimeTestWF"
+	And "DateTimeTestWF" contains Date and Time "AddDate" as
+	| Input      | Input Format | Add Time | Output Format | Result     |
+	| 12 03 2016 | dd mm yyyy   |          | yy mm dd      | [[result]] |
+	And I save workflow "DateTimeTestWF"
+	Then the test builder is open with "DateTimeTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "AddDate" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value    |
+	  	 | [[result]]    | =         | 16 03 12 |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "DateTimeTestWF" is deleted as cleanup
+
+Scenario: Test WF with DateTimeDiff
+	Given I have a workflow "DateTimeDiffTestWF"	 	  
+	And "DateTimeDiffTestWF" contains Date and Time Difference "DateTimedif" as
+       | Input1     | Input2     | Input Format | Output In | Result     |
+       | 02 03 2016 | 16 11 2016 | dd mm yyyy   | Days      | [[result]] |  
+	And I save workflow "DateTimeDiffTestWF"
+	Then the test builder is open with "DateTimeDiffTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "DateTimedif" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value         |
+		 | [[result]]      | =         | 259 |		 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "DateTimeDiffTestWF" is deleted as cleanup
