@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _testInvalid;
         private bool _testFailing;
         private TestRunResult _result;
+        private bool _canEditVariable;
 
         // ReSharper disable once UnusedMember.Global
         public ServiceTestOutput()
@@ -50,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
             var collection = _findRecsetOptions.Select(c => c.HandlesType());
             AssertOps = new ObservableCollection<string>(collection);
             AssertOp = "=";
+            CanEditVariable = true;
             IsSinglematchCriteriaVisible = true;
             TestPending = true;
         }
@@ -354,6 +356,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AssertOps);
             }
         }
+
+        public bool CanEditVariable
+        {
+            get { return _canEditVariable; }
+            set
+            {
+                _canEditVariable = value; 
+                OnPropertyChanged(() => CanEditVariable);
+            }
+        }
+
         [JsonIgnore]
         public Action AddNewAction { get; set; }
         [JsonIgnore]

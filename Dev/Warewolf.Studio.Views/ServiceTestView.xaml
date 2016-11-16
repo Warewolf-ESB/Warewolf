@@ -582,6 +582,7 @@
                                                                             <TextBox Margin="1,0,1,1"
 																					Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																					ToolTip="{x:Static languages:Core.ServiceTestStepAssertVariableTooltip}"
+                                                                                     IsEnabled="{Binding Path=CanEditVariable}"
 																					AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                                                 <i:Interaction.Behaviors>
                                                                                     <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />

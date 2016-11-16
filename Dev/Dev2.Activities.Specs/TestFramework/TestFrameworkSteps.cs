@@ -456,7 +456,11 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.IsNotNull(vm);
                 Assert.IsNotNull(vm.ResourceModel);
                 MyContext.Add("testFramework", vm);
-                MyContext.Add(workflowName + "Id", resourceModel.ID);
+                var firstOrDefault = MyContext.FirstOrDefault(pair => pair.Value.ToString() == resourceModel.ID.ToString()).Value;
+                if (firstOrDefault == null)
+                {
+                    MyContext.Add(workflowName + "Id", resourceModel.ID);
+                }
                 return;
             }
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
