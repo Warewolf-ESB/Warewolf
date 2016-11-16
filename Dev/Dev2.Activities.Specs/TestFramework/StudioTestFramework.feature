@@ -692,10 +692,10 @@ Scenario: Run a test with mock step
 	| Message       | Hello World. |
 	And I add mock steps as
 	| Step Name                  | Output Variable | Output Value | Activity Type |
-	| If [[Name]] <> (Not Equal) |                 | Blank Input  | Decision      |
+	| If [[Name]] <> (Not Equal) | Flow Arm        | Blank Input  | Decision      |
 	And I save
 	When I run the test
-	Then test result is Failed
+	Then test result is Passed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |	
