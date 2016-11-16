@@ -469,42 +469,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
-        [Given(@"the test builder is open with ""(.*)"" new workflows")]
-        [When(@"the test builder is open with ""(.*)"" new workflows")]
-        [Then(@"the test builder is open with ""(.*)"" new workflows")]
-        public void ThenTheTestBuilderIsOpenWithNewWorkflows(string workflowName)
-        {
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            if (!environmentModel.IsConnected)
-            {
-                environmentModel.Connect();
-            }
-            environmentModel.ResourceRepository.ForceLoad();
-            ResourceModel resourceModel;
-            if (MyContext.TryGetValue(workflowName, out resourceModel))
-            {
-               
-                var single = environmentModel.ResourceRepository
-                            .All()
-                            .First(model => model.ResourceName.Equals(workflowName, StringComparison.Ordinal));
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(single.ID);
-
-                var vm = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-                Assert.IsNotNull(vm);
-                Assert.IsNotNull(vm.ResourceModel);
-                MyContext.Add("testFramework", vm);
-                MyContext.Add(workflowName + "Id", contextualResourceModel.ID);
-                return;
-            }
-            var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
-            var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
-            var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
-            Assert.IsNotNull(testFramework);
-            Assert.IsNotNull(testFramework.ResourceModel);
-            MyContext.Add("testFramework", testFramework);
-        }
-
-
         [Given(@"I update inputs as")]
         [When(@"I update inputs as")]
         [Then(@"I update inputs as")]
@@ -1753,6 +1717,9 @@ namespace Dev2.Activities.Specs.TestFramework
                 });
             }
         }
+
+        
+
 
 
 
