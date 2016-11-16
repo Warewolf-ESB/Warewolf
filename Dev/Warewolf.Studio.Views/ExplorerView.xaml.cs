@@ -121,11 +121,11 @@ namespace Warewolf.Studio.Views
                 itemViewModel.Parent = dropTarget;
                 itemViewModel.Move(dropTarget);
 
-                TreeViewItem itemNode;
-                FindDropTarget((TreeView) sender, out itemNode, e);
-                ExplorerTree.Items.Remove(explorerItemViewModel);
+                //TreeViewItem itemNode;
+                //FindDropTarget((TreeView) sender, out itemNode, e);
+                //ExplorerTree.Items.Remove(explorerItemViewModel);
                 //MyData.Insert(MyData.IndexOf(dropItem) + 1, dragItem);
-                ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(explorerItemViewModel) >= 1 ? ExplorerTree.Items.IndexOf(explorerItemViewModel) : 0, explorerItemViewModel);
+                //ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(explorerItemViewModel) >= 1 ? ExplorerTree.Items.IndexOf(explorerItemViewModel) : 0, explorerItemViewModel);
 
                 flag = 0; //Release Drag Operation
 

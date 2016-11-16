@@ -277,6 +277,7 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Center"
                                                     Focusable="True"
+                                                   Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                                     Text="{Binding ResourceName}"
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTip="{Binding ResourceName}">
@@ -289,9 +290,10 @@
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                         </TextBlock>
-                                        <!--<TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                                        <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
                                                  Style="{StaticResource ExplorerEditTextBoxStyle}"
-                                                 Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />-->
+                                                 Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                 Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
                                                Margin="4,0,0,0"
