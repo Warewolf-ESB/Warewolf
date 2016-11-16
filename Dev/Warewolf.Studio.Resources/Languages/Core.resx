@@ -2017,7 +2017,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;not&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Reverses a logical value (changes true to false and false to true).&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;now&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a value representing the current date and time.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;nper&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the number of periods for an investment based on periodic, constant payments and a constant interest rate.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;npv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Calculates the net present value of an investment by using a discount rate and a series of future payments (negative values) and income (positive value).&lt;/td&gt;NPV(discountRate, value1, value2, ..., valueN)&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;npv&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Calculates the net present value of an investment by using a discount rate and a series of future payments (negative values) and income (positive value).&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;null&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns a non-existent value.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;oct2bin&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Converts a text expression representing an octal number to a text expression representing the same number in the binary number system.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;oct2dec&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Returns the decimal value of a text representation of a number in the octal number system.&lt;/td&gt;&lt;/tr&gt;
