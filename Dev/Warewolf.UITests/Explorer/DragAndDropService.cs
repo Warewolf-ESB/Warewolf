@@ -57,7 +57,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_Resource_In_Folder1();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World");
+            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World", true);
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Delete_Nested_Hello_World();
@@ -85,13 +85,14 @@ namespace Warewolf.UITests
     
         [TestMethod]
         [TestCategory("Explorer")]
-        public void ShowDependenciesUITest()
+        public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {            
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
-            UIMap.Click_Close_Dependecy_Tab();
-            UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("SharepointPlugin");
-            UIMap.Click_Close_Dependecy_Tab();
-            UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("MySQLDATA");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton.Exists, "Refresh button does not exist on dependency graph");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies is selected");
             UIMap.Click_Close_Dependecy_Tab();
         }
 

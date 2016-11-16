@@ -995,6 +995,7 @@ namespace Warewolf.UITests
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
+            Playback.Wait(1000);
             Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
@@ -1458,25 +1459,11 @@ namespace Warewolf.UITests
         [When(@"I Select Show Dependencies In Explorer Context Menu for service ""(.*)""")]
         public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            WpfMenuItem showDependencies = MainStudioWindow.ExplorerContextMenu.ShowDependencies;
-            WpfRadioButton showwhatdependsonthisRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
-            WpfEdit textbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
-            WpfButton refreshButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
-            WpfText text = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
-            #endregion
-
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-            Mouse.Click(showDependencies, new Point(50, 15));
-            Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
-            Assert.IsTrue(textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-            Assert.IsTrue(refreshButton.Exists, "Refresh button does not exist on dependency graph");
-            Assert.IsTrue(showwhatdependsonthisRadioButton.Exists, "Show what depends on workflow does not exist after Show Dependencies is selected");
-            Assert.IsTrue(showwhatdependsonthisRadioButton.Selected, "Show what depends on workflow radio button is not selected after Show dependecies" +
-                    " is selected");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
         }
 
         [When(@"I Click DB Source Wizard Test Connection Button")]
@@ -5205,10 +5192,7 @@ namespace Warewolf.UITests
         public void Open_AggregateCalculate_Tool_large_view()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat, new Point(136, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.DoneButton.Exists, "Done button does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "On Error group does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox.Exists, "Results combobox does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox.Exists, "fx combobox does not exist after opening Aggregate Calculate tool large view");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.Exists, "Tool large view does not exist after opening Aggregate Calculate tool large view");
         }
 
         [When(@"I Open Assign Tool Large View")]
@@ -5319,12 +5303,7 @@ namespace Warewolf.UITests
         public void Open_Copy_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy, new Point(144, 11));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.Exists, "Copy Tool large view on the design surface does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.DoneButton.Exists, "DoneButton on the design surface does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.FileOrFolderComboBox.Exists, "FileOrFolderComboBox on the design surface does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.DestinationComboBox.Exists, "DestinationComboBox on the design surface does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom group on the design surface does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.Exists, "Copy Tool large view on the design surface does not exist");
         }
 
         [When(@"I Open CountRecords Large View")]
