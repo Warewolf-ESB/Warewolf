@@ -1702,6 +1702,33 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
         }
+        [Given(@"""(.*)"" contains XPath \\""(.*)"" with source ""(.*)""")]
+        public void GivenContainsXPathWithResultAs(string parentName, string xpathName, string source)
+        {
+            const string a = "<XPATH-EXAMPLE>  <CUSTOMER id=\"1\" type=\"B\">Mr.  Jones</CUSTOMER><CUSTOMER id=\"2\" type=\"C\">Mr.  Johnson</CUSTOMER></XPATH-EXAMPLE> ";
+            DsfXPathActivity dsfXPathActivity = new DsfXPathActivity
+            {
+                
+                SourceString = a
+                , DisplayName = xpathName                
+                , ResultsCollection = new List<XPathDTO>
+                {
+                    new XPathDTO("[[singleValue]]", source, 1, true)
+                }
+            };            
+            _commonSteps.AddActivityToActivityList(parentName, xpathName, dsfXPathActivity);
+        }
+
+        [Given(@"""(.*)"" contains Aggregate Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
+        public void GivenAggregateCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
+        {
+            _commonSteps.AddVariableToVariableList(resultVariable);
+
+            DsfAggregateCalculateActivity calculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
+
+        }
 
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
