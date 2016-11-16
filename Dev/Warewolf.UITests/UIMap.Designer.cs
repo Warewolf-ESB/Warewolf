@@ -140,18 +140,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public SwitchCaseDialog SwitchCaseDialog
-        {
-            get
-            {
-                if ((this.mSwitchCaseDialog == null))
-                {
-                    this.mSwitchCaseDialog = new SwitchCaseDialog();
-                }
-                return this.mSwitchCaseDialog;
-            }
-        }
-        
         public StartNodePopupWindow StartNodePopupWindow
         {
             get
@@ -205,8 +193,6 @@ namespace Warewolf.UITests
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         
         private ServicePickerDialog mServicePickerDialog;
-        
-        private SwitchCaseDialog mSwitchCaseDialog;
         
         private StartNodePopupWindow mStartNodePopupWindow;
         
@@ -85057,12 +85043,1222 @@ namespace Warewolf.UITests
                 return this.mDoneButton;
             }
         }
+        
+        public OnErrorGroup60 OnErrorGroup
+        {
+            get
+            {
+                if ((this.mOnErrorGroup == null))
+                {
+                    this.mOnErrorGroup = new OnErrorGroup60(this);
+                }
+                return this.mOnErrorGroup;
+            }
+        }
+        
+        public LargeView27 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView27(this);
+                }
+                return this.mLargeView;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsStartsWith
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsStartsWith == null))
+                {
+                    this.mComboboxListItemAsStartsWith = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsStartsWith.SearchProperties[WpfListItem.PropertyNames.Name] = "Starts With";
+                    this.mComboboxListItemAsStartsWith.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsStartsWith;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotEqual
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotEqual == null))
+                {
+                    this.mComboboxListItemAsNotEqual = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotEqual.SearchProperties[WpfListItem.PropertyNames.Name] = "<> (Not Equal)";
+                    this.mComboboxListItemAsNotEqual.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotEqual;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsLessThanOrEqualTo
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsLessThanOrEqualTo == null))
+                {
+                    this.mComboboxListItemAsLessThanOrEqualTo = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsLessThanOrEqualTo.SearchProperties[WpfListItem.PropertyNames.Name] = "<=";
+                    this.mComboboxListItemAsLessThanOrEqualTo.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsLessThanOrEqualTo;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsLessThan
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsLessThan == null))
+                {
+                    this.mComboboxListItemAsLessThan = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsLessThan.SearchProperties[WpfListItem.PropertyNames.Name] = "<";
+                    this.mComboboxListItemAsLessThan.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsLessThan;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsGreaterThanOrEqualTo
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsGreaterThanOrEqualTo == null))
+                {
+                    this.mComboboxListItemAsGreaterThanOrEqualTo = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsGreaterThanOrEqualTo.SearchProperties[WpfListItem.PropertyNames.Name] = ">=";
+                    this.mComboboxListItemAsGreaterThanOrEqualTo.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsGreaterThanOrEqualTo;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsGreaterThan
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsGreaterThan == null))
+                {
+                    this.mComboboxListItemAsGreaterThan = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsGreaterThan.SearchProperties[WpfListItem.PropertyNames.Name] = ">";
+                    this.mComboboxListItemAsGreaterThan.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsGreaterThan;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsEndsWith
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsEndsWith == null))
+                {
+                    this.mComboboxListItemAsEndsWith = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsEndsWith.SearchProperties[WpfListItem.PropertyNames.Name] = "Ends With";
+                    this.mComboboxListItemAsEndsWith.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsEndsWith;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsContains
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsContains == null))
+                {
+                    this.mComboboxListItemAsContains = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsContains.SearchProperties[WpfListItem.PropertyNames.Name] = "Contains";
+                    this.mComboboxListItemAsContains.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsContains;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsDoesntContain
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsDoesntContain == null))
+                {
+                    this.mComboboxListItemAsDoesntContain = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsDoesntContain.SearchProperties[WpfListItem.PropertyNames.Name] = "Doesn\'t Contain";
+                    this.mComboboxListItemAsDoesntContain.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsDoesntContain;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsDoesntEndWith
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsDoesntEndWith == null))
+                {
+                    this.mComboboxListItemAsDoesntEndWith = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsDoesntEndWith.SearchProperties[WpfListItem.PropertyNames.Name] = "Doesn\'t End With";
+                    this.mComboboxListItemAsDoesntEndWith.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsDoesntEndWith;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsDoesntStartWith
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsDoesntStartWith == null))
+                {
+                    this.mComboboxListItemAsDoesntStartWith = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsDoesntStartWith.SearchProperties[WpfListItem.PropertyNames.Name] = "Doesn\'t Start With";
+                    this.mComboboxListItemAsDoesntStartWith.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsDoesntStartWith;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsEquals
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsEquals == null))
+                {
+                    this.mComboboxListItemAsEquals = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsEquals.SearchProperties[WpfListItem.PropertyNames.Name] = "=";
+                    this.mComboboxListItemAsEquals.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsEquals;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsAlphanumeric
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsAlphanumeric == null))
+                {
+                    this.mComboboxListItemAsIsAlphanumeric = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsAlphanumeric.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Alphanumeric";
+                    this.mComboboxListItemAsIsAlphanumeric.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsAlphanumeric;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsBase64
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsBase64 == null))
+                {
+                    this.mComboboxListItemAsIsBase64 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsBase64.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Base64";
+                    this.mComboboxListItemAsIsBase64.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsBase64;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsBetween
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsBetween == null))
+                {
+                    this.mComboboxListItemAsIsBetween = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsBetween.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Between";
+                    this.mComboboxListItemAsIsBetween.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsBetween;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsBinary
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsBinary == null))
+                {
+                    this.mComboboxListItemAsIsBinary = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsBinary.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Binary";
+                    this.mComboboxListItemAsIsBinary.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsBinary;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsDate
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsDate == null))
+                {
+                    this.mComboboxListItemAsIsDate = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsDate.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Date";
+                    this.mComboboxListItemAsIsDate.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsDate;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsEmail
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsEmail == null))
+                {
+                    this.mComboboxListItemAsIsEmail = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsEmail.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Email";
+                    this.mComboboxListItemAsIsEmail.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsEmail;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsHex
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsHex == null))
+                {
+                    this.mComboboxListItemAsIsHex = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsHex.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Hex";
+                    this.mComboboxListItemAsIsHex.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsHex;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsNotNULL
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsNotNULL == null))
+                {
+                    this.mComboboxListItemAsIsNotNULL = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsNotNULL.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Not NULL";
+                    this.mComboboxListItemAsIsNotNULL.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsNotNULL;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsNULL
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsNULL == null))
+                {
+                    this.mComboboxListItemAsIsNULL = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsNULL.SearchProperties[WpfListItem.PropertyNames.Name] = "Is NULL";
+                    this.mComboboxListItemAsIsNULL.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsNULL;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsNumeric
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsNumeric == null))
+                {
+                    this.mComboboxListItemAsIsNumeric = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsNumeric.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Numeric";
+                    this.mComboboxListItemAsIsNumeric.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsNumeric;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsRegex
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsRegex == null))
+                {
+                    this.mComboboxListItemAsIsRegex = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsRegex.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Regex";
+                    this.mComboboxListItemAsIsRegex.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsRegex;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsText
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsText == null))
+                {
+                    this.mComboboxListItemAsIsText = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsText.SearchProperties[WpfListItem.PropertyNames.Name] = "Is Text";
+                    this.mComboboxListItemAsIsText.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsText;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsIsXML
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsIsXML == null))
+                {
+                    this.mComboboxListItemAsIsXML = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsIsXML.SearchProperties[WpfListItem.PropertyNames.Name] = "Is XML";
+                    this.mComboboxListItemAsIsXML.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsIsXML;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotAlphanumeric
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotAlphanumeric == null))
+                {
+                    this.mComboboxListItemAsNotAlphanumeric = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotAlphanumeric.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Alphanumeric";
+                    this.mComboboxListItemAsNotAlphanumeric.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotAlphanumeric;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotBase64
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotBase64 == null))
+                {
+                    this.mComboboxListItemAsNotBase64 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotBase64.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Base64";
+                    this.mComboboxListItemAsNotBase64.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotBase64;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotBetween
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotBetween == null))
+                {
+                    this.mComboboxListItemAsNotBetween = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotBetween.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Between";
+                    this.mComboboxListItemAsNotBetween.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotBetween;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotBinary
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotBinary == null))
+                {
+                    this.mComboboxListItemAsNotBinary = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotBinary.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Binary";
+                    this.mComboboxListItemAsNotBinary.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotBinary;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotDate
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotDate == null))
+                {
+                    this.mComboboxListItemAsNotDate = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotDate.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Date";
+                    this.mComboboxListItemAsNotDate.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotDate;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotEmail
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotEmail == null))
+                {
+                    this.mComboboxListItemAsNotEmail = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotEmail.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Email";
+                    this.mComboboxListItemAsNotEmail.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotEmail;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotHex
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotHex == null))
+                {
+                    this.mComboboxListItemAsNotHex = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotHex.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Hex";
+                    this.mComboboxListItemAsNotHex.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotHex;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotNumeric
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotNumeric == null))
+                {
+                    this.mComboboxListItemAsNotNumeric = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotNumeric.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Numeric";
+                    this.mComboboxListItemAsNotNumeric.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotNumeric;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotRegex
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotRegex == null))
+                {
+                    this.mComboboxListItemAsNotRegex = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotRegex.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Regex";
+                    this.mComboboxListItemAsNotRegex.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotRegex;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotText
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotText == null))
+                {
+                    this.mComboboxListItemAsNotText = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotText.SearchProperties[WpfListItem.PropertyNames.Name] = "Not Text";
+                    this.mComboboxListItemAsNotText.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotText;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsNotXML
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsNotXML == null))
+                {
+                    this.mComboboxListItemAsNotXML = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsNotXML.SearchProperties[WpfListItem.PropertyNames.Name] = "Not XML";
+                    this.mComboboxListItemAsNotXML.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsNotXML;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsThereisAnError
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsThereisAnError == null))
+                {
+                    this.mComboboxListItemAsThereisAnError = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsThereisAnError.SearchProperties[WpfListItem.PropertyNames.Name] = "There is An Error";
+                    this.mComboboxListItemAsThereisAnError.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsThereisAnError;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsThereisNoError
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsThereisNoError == null))
+                {
+                    this.mComboboxListItemAsThereisNoError = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsThereisNoError.SearchProperties[WpfListItem.PropertyNames.Name] = "There is No Error";
+                    this.mComboboxListItemAsThereisNoError.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mComboboxListItemAsThereisNoError;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mCancelButton;
         
         private WpfButton mDoneButton;
+        
+        private OnErrorGroup60 mOnErrorGroup;
+        
+        private LargeView27 mLargeView;
+        
+        private WpfListItem mComboboxListItemAsStartsWith;
+        
+        private WpfListItem mComboboxListItemAsNotEqual;
+        
+        private WpfListItem mComboboxListItemAsLessThanOrEqualTo;
+        
+        private WpfListItem mComboboxListItemAsLessThan;
+        
+        private WpfListItem mComboboxListItemAsGreaterThanOrEqualTo;
+        
+        private WpfListItem mComboboxListItemAsGreaterThan;
+        
+        private WpfListItem mComboboxListItemAsEndsWith;
+        
+        private WpfListItem mComboboxListItemAsContains;
+        
+        private WpfListItem mComboboxListItemAsDoesntContain;
+        
+        private WpfListItem mComboboxListItemAsDoesntEndWith;
+        
+        private WpfListItem mComboboxListItemAsDoesntStartWith;
+        
+        private WpfListItem mComboboxListItemAsEquals;
+        
+        private WpfListItem mComboboxListItemAsIsAlphanumeric;
+        
+        private WpfListItem mComboboxListItemAsIsBase64;
+        
+        private WpfListItem mComboboxListItemAsIsBetween;
+        
+        private WpfListItem mComboboxListItemAsIsBinary;
+        
+        private WpfListItem mComboboxListItemAsIsDate;
+        
+        private WpfListItem mComboboxListItemAsIsEmail;
+        
+        private WpfListItem mComboboxListItemAsIsHex;
+        
+        private WpfListItem mComboboxListItemAsIsNotNULL;
+        
+        private WpfListItem mComboboxListItemAsIsNULL;
+        
+        private WpfListItem mComboboxListItemAsIsNumeric;
+        
+        private WpfListItem mComboboxListItemAsIsRegex;
+        
+        private WpfListItem mComboboxListItemAsIsText;
+        
+        private WpfListItem mComboboxListItemAsIsXML;
+        
+        private WpfListItem mComboboxListItemAsNotAlphanumeric;
+        
+        private WpfListItem mComboboxListItemAsNotBase64;
+        
+        private WpfListItem mComboboxListItemAsNotBetween;
+        
+        private WpfListItem mComboboxListItemAsNotBinary;
+        
+        private WpfListItem mComboboxListItemAsNotDate;
+        
+        private WpfListItem mComboboxListItemAsNotEmail;
+        
+        private WpfListItem mComboboxListItemAsNotHex;
+        
+        private WpfListItem mComboboxListItemAsNotNumeric;
+        
+        private WpfListItem mComboboxListItemAsNotRegex;
+        
+        private WpfListItem mComboboxListItemAsNotText;
+        
+        private WpfListItem mComboboxListItemAsNotXML;
+        
+        private WpfListItem mComboboxListItemAsThereisAnError;
+        
+        private WpfListItem mComboboxListItemAsThereisNoError;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OnErrorGroup60 : WpfGroup
+    {
+        
+        public OnErrorGroup60(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public ErrorVariableIntellisenseCombobox6 ErrorVariableIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mErrorVariableIntellisenseCombobox == null))
+                {
+                    this.mErrorVariableIntellisenseCombobox = new ErrorVariableIntellisenseCombobox6(this);
+                }
+                return this.mErrorVariableIntellisenseCombobox;
+            }
+        }
+        
+        public ErrorServiceIntellisenseCombobox ErrorServiceIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mErrorServiceIntellisenseCombobox == null))
+                {
+                    this.mErrorServiceIntellisenseCombobox = new ErrorServiceIntellisenseCombobox(this);
+                }
+                return this.mErrorServiceIntellisenseCombobox;
+            }
+        }
+        
+        public WpfCheckBox EndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mEndthisworkflowCheckBox == null))
+                {
+                    this.mEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mEndthisworkflowCheckBox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ErrorVariableIntellisenseCombobox6 mErrorVariableIntellisenseCombobox;
+        
+        private ErrorServiceIntellisenseCombobox mErrorServiceIntellisenseCombobox;
+        
+        private WpfCheckBox mEndthisworkflowCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ErrorVariableIntellisenseCombobox6 : WpfComboBox
+    {
+        
+        public ErrorVariableIntellisenseCombobox6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ErrorServiceIntellisenseCombobox : WpfComboBox
+    {
+        
+        public ErrorServiceIntellisenseCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Workflow_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView27 : WpfCustom
+    {
+        
+        public LargeView27(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public Table5 Table
+        {
+            get
+            {
+                if ((this.mTable == null))
+                {
+                    this.mTable = new Table5(this);
+                }
+                return this.mTable;
+            }
+        }
+        
+        public WpfCheckBox RequireAllDecisionsToBeTrueCheckbox
+        {
+            get
+            {
+                if ((this.mRequireAllDecisionsToBeTrueCheckbox == null))
+                {
+                    this.mRequireAllDecisionsToBeTrueCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mRequireAllDecisionsToBeTrueCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__RequireAllTrue_AutoID";
+                    this.mRequireAllDecisionsToBeTrueCheckbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mRequireAllDecisionsToBeTrueCheckbox;
+            }
+        }
+        
+        public WpfEdit DisplayTextbox
+        {
+            get
+            {
+                if ((this.mDisplayTextbox == null))
+                {
+                    this.mDisplayTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDisplayTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Result_AutoID";
+                    this.mDisplayTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDisplayTextbox;
+            }
+        }
+        
+        public WpfEdit TrueArmTextbox
+        {
+            get
+            {
+                if ((this.mTrueArmTextbox == null))
+                {
+                    this.mTrueArmTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTrueArmTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Result_AutoID";
+                    this.mTrueArmTextbox.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
+                    this.mTrueArmTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTrueArmTextbox;
+            }
+        }
+        
+        public WpfEdit FalseArmTextbox
+        {
+            get
+            {
+                if ((this.mFalseArmTextbox == null))
+                {
+                    this.mFalseArmTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFalseArmTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Result_AutoID";
+                    this.mFalseArmTextbox.SearchProperties[WpfEdit.PropertyNames.Instance] = "3";
+                    this.mFalseArmTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mFalseArmTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Table5 mTable;
+        
+        private WpfCheckBox mRequireAllDecisionsToBeTrueCheckbox;
+        
+        private WpfEdit mDisplayTextbox;
+        
+        private WpfEdit mTrueArmTextbox;
+        
+        private WpfEdit mFalseArmTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Table5 : WpfTable
+    {
+        
+        public Table5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public Row129 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row129(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row129 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row129 : WpfRow
+    {
+        
+        public Row129(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueCell MatchValueCell
+        {
+            get
+            {
+                if ((this.mMatchValueCell == null))
+                {
+                    this.mMatchValueCell = new MatchValueCell(this);
+                }
+                return this.mMatchValueCell;
+            }
+        }
+        
+        public DeleteRowCell DeleteRowCell
+        {
+            get
+            {
+                if ((this.mDeleteRowCell == null))
+                {
+                    this.mDeleteRowCell = new DeleteRowCell(this);
+                }
+                return this.mDeleteRowCell;
+            }
+        }
+        
+        public MatchTypeCell6 MatchTypeCell
+        {
+            get
+            {
+                if ((this.mMatchTypeCell == null))
+                {
+                    this.mMatchTypeCell = new MatchTypeCell6(this);
+                }
+                return this.mMatchTypeCell;
+            }
+        }
+        
+        public WpfCell MatchCell
+        {
+            get
+            {
+                if ((this.mMatchCell == null))
+                {
+                    this.mMatchCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+                    this.mMatchCell.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueCell mMatchValueCell;
+        
+        private DeleteRowCell mDeleteRowCell;
+        
+        private MatchTypeCell6 mMatchTypeCell;
+        
+        private WpfCell mMatchCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MatchValueCell : WpfCell
+    {
+        
+        public MatchValueCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueIntellisenseCombobox MatchValueIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mMatchValueIntellisenseCombobox == null))
+                {
+                    this.mMatchValueIntellisenseCombobox = new MatchValueIntellisenseCombobox(this);
+                }
+                return this.mMatchValueIntellisenseCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueIntellisenseCombobox mMatchValueIntellisenseCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MatchValueIntellisenseCombobox : WpfComboBox
+    {
+        
+        public MatchValueIntellisenseCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchCriteria_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeleteRowCell : WpfCell
+    {
+        
+        public DeleteRowCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "#";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteRowButton
+        {
+            get
+            {
+                if ((this.mDeleteRowButton == null))
+                {
+                    this.mDeleteRowButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteRowButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
+                    this.mDeleteRowButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDeleteRowButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteRowButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MatchTypeCell6 : WpfCell
+    {
+        
+        public MatchTypeCell6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "MatchType";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox MatchTypeCombobox
+        {
+            get
+            {
+                if ((this.mMatchTypeCombobox == null))
+                {
+                    this.mMatchTypeCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mMatchTypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mMatchTypeCombobox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchTypeCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mMatchTypeCombobox;
         #endregion
     }
     
@@ -85580,42 +86776,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mSpinner;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SwitchCaseDialog : WpfWindow
-    {
-        
-        public SwitchCaseDialog()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("ActivityDefaultWindow");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton DoneButton
-        {
-            get
-            {
-                if ((this.mDoneButton == null))
-                {
-                    this.mDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mDoneButton.WindowTitles.Add("ActivityDefaultWindow");
-                    #endregion
-                }
-                return this.mDoneButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -86252,13 +87412,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView27 LargeView
+        public LargeView28 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView27(this);
+                    this.mLargeView = new LargeView28(this);
                 }
                 return this.mLargeView;
             }
@@ -86317,7 +87477,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView22 mSmallView;
         
-        private LargeView27 mLargeView;
+        private LargeView28 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -86374,13 +87534,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row129 Row1
+        public Row130 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row129(this);
+                    this.mRow1 = new Row130(this);
                 }
                 return this.mRow1;
             }
@@ -86412,7 +87572,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row129 mRow1;
+        private Row130 mRow1;
         
         private Row211 mRow2;
         
@@ -86421,10 +87581,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row129 : WpfRow
+    public class Row130 : WpfRow
     {
         
-        public Row129(UITestControl searchLimitContainer) : 
+        public Row130(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -87280,10 +88440,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView27 : WpfCustom
+    public class LargeView28 : WpfCustom
     {
         
-        public LargeView27(UITestControl searchLimitContainer) : 
+        public LargeView28(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -87326,13 +88486,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Row130 Row1
+        public Row131 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row130(this);
+                    this.mRow1 = new Row131(this);
                 }
                 return this.mRow1;
             }
@@ -87376,7 +88536,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Row130 mRow1;
+        private Row131 mRow1;
         
         private Row212 mRow2;
         
@@ -87387,10 +88547,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row130 : WpfRow
+    public class Row131 : WpfRow
     {
         
-        public Row130(UITestControl searchLimitContainer) : 
+        public Row131(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
