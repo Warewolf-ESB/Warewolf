@@ -125,6 +125,7 @@
                       AllowDrop="True">
                 <TreeView.ItemContainerStyle>
                     <Style BasedOn="{StaticResource TreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
+                        
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                     </Style>
                 </TreeView.ItemContainerStyle>

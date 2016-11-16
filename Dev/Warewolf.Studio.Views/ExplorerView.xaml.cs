@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Activities.Presentation;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Interfaces;
-using Infragistics.Controls.Menus;
-using Infragistics.DragDrop;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -27,21 +20,52 @@ namespace Warewolf.Studio.Views
             InitializeComponent();    
         }
 
-        int flag = 0;
         private Point _startPoint;
+        private bool _isDragging;
 
         private void Tree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.OriginalSource is TextBlock)
+            //if (e.OriginalSource is TextBlock)
             {
                 // Store the mouse position
                 _startPoint = e.GetPosition(null);
-                flag = 1;
             }
+        }
+
+        private void StartDrag(MouseEventArgs e)
+        {
+            _isDragging = true;
+            var temp = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            if (temp != null)
+            {
+                var dragData = new DataObject();
+                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, temp.ActivityName);
+                dragData.SetData(temp);
+                DragDropEffects dde = DragDropEffects.Copy;
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    dde = DragDropEffects.All;
+                }
+                DragDrop.DoDragDrop(this, dragData, dde);
+            }
+            _isDragging = false;
         }
 
         private void Tree_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.LeftButton == MouseButtonState.Pressed ||
+        e.RightButton == MouseButtonState.Pressed && !_isDragging)
+            {
+                Point position = e.GetPosition(null);
+                if (Math.Abs(position.X - _startPoint.X) >
+                        SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) >
+                        SystemParameters.MinimumVerticalDragDistance)
+                {
+                    StartDrag(e);
+                }
+            }
+
             //if (flag == 1) //Begin Drag
             //{
             //    // Get the current mouse position
@@ -67,27 +91,27 @@ namespace Warewolf.Studio.Views
             //    }
             //}
 
-            if (e.LeftButton == MouseButtonState.Pressed && flag == 1)
-            {
-                var mousePos = e.GetPosition(null);
-                var diff = _startPoint - mousePos;
-
-                if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance || Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
-                {
-                    var treeView = sender as TreeView;
-                    var treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-
-                    if (treeView == null || treeViewItem == null)
-                        return;
-
-                    var folderViewModel = treeView.SelectedItem as IExplorerItemViewModel;
-                    if (folderViewModel == null)
-                        return;
-
-                    var dragData = new DataObject(folderViewModel);
-                    DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
-                }
-            }
+//            if (e.LeftButton == MouseButtonState.Pressed && flag == 1)
+//            {
+//                var mousePos = e.GetPosition(null);
+//                var diff = _startPoint - mousePos;
+//
+//                if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance || Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+//                {
+//                    var treeView = sender as TreeView;
+//                    var treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+//
+//                    if (treeView == null || treeViewItem == null)
+//                        return;
+//
+//                    var folderViewModel = treeView.SelectedItem as IExplorerItemViewModel;
+//                    if (folderViewModel == null)
+//                        return;
+//
+//                    var dragData = new DataObject(folderViewModel);
+//                    DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
+//                }
+//            }
         }
 
         private void DropTree_DragEnter(object sender, DragEventArgs e)
@@ -97,10 +121,10 @@ namespace Warewolf.Studio.Views
             //{
             //    e.Effects = DragDropEffects.None;
             //}
-            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
-            {
-                e.Effects = DragDropEffects.None;
-            }
+//            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
+//            {
+//                e.Effects = DragDropEffects.None;
+//            }
         }
 
         private void DropTree_Drop(object sender, DragEventArgs e)
@@ -127,7 +151,6 @@ namespace Warewolf.Studio.Views
                 //MyData.Insert(MyData.IndexOf(dropItem) + 1, dragItem);
                 //ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(explorerItemViewModel) >= 1 ? ExplorerTree.Items.IndexOf(explorerItemViewModel) : 0, explorerItemViewModel);
 
-                flag = 0; //Release Drag Operation
 
                 //destination.Items.Add(e.Data);
                 destination.Background = Brushes.Transparent;
@@ -151,7 +174,7 @@ namespace Warewolf.Studio.Views
                         pItemNode = treeNode;
                     }
                 }
-                else if (k == tv)
+                else if (Equals(k, tv))
                 {
                     Console.WriteLine("Found treeview instance");
                     return;
@@ -196,7 +219,7 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerTree_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            flag = 0;
+            _isDragging = false;
         }
 
         private void ExplorerTree_OnPreviewDrop(object sender, DragEventArgs e)
@@ -215,7 +238,8 @@ namespace Warewolf.Studio.Views
                     //MyData.Insert(MyData.IndexOf(dropItem) + 1, dragItem);
                     ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(dropItem) >= 1 ? ExplorerTree.Items.IndexOf(dropItem) : 0, dragItem);
                 }
-                flag = 0;//Release Drag Operation
+                _isDragging = false;
+                e.Effects = DragDropEffects.None;
             }
         }
 
