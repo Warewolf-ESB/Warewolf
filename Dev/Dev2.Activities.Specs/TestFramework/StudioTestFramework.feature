@@ -1022,29 +1022,6 @@ Scenario: Test WF with Assign Object
 		 Then The "DeleteConfirmation" popup is shown I click Ok
 		 Then workflow "AssignObjectTestWF" is deleted as cleanup
 
-Scenario: Test WF with Rand
-		Given I have a workflow "RandTestWF"
-		And "RandTestWF" contains an Assign Object "TestRand" as 
-		 | variable            | value |
-		 | [[@Person.Name]]    | yes   |
-		 | [[@Person.Surname]] | no    |
-		 And I save workflow "RandTestWF"
-		 Then the test builder is open with "RandTestWF" new workflows
-		 And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "TestRand" as TestStep
-		And I add new StepOutputs as 
-		| Variable Name       | Condition | Value | 
-		| [[@Person.Name]]    | =         | yes   | 
-		| [[@Person.Surname]] | =         | no    | 
-			When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-
-
 Scenario: Test WF with BaseConvert 
 		Given I have a workflow "BaseConvertTestWF"
 		And "BaseConvertTestWF" contains an Assign "TestAssign" as

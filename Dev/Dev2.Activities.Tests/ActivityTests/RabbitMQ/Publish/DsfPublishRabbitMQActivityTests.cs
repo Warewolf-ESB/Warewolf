@@ -65,7 +65,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             channel.Verify(c => c.ExchangeDeclare(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()), Times.Once);
             channel.Verify(c => c.QueueDeclare(It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()), Times.Once);
             channel.Verify(c => c.BasicPublish(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<IBasicProperties>(), It.IsAny<byte[]>()), Times.Once);
-            Assert.AreEqual(result[0], "Success");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Success");
+            }
         }
 
         [TestMethod]
@@ -86,7 +89,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var result = p.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Source has been deleted.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Source has been deleted.");
+            }
         }
 
         [TestMethod]
@@ -109,7 +115,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var result = p.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
+            }
         }
 
         [TestMethod]
@@ -132,7 +141,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Queue Name and Message are required.");
+            }
         }
 
         [TestMethod]
