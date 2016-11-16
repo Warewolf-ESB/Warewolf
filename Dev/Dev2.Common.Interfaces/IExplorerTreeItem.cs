@@ -39,7 +39,6 @@ namespace Dev2.Common.Interfaces
         bool IsSource { get; set; }
         bool IsService { get; set; }
         bool IsFolder { get; set; }
-        bool IsReservedService { get; set; }
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
         bool CanViewApisJson { get; set; }

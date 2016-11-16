@@ -514,11 +514,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsReservedService
-        {
-            get;
-            set;
-        }
+       
         public bool IsServer
         {
             get;
@@ -1687,8 +1683,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string Inputs { get; set; }
-        public string Outputs { get; set; }
         public string ExecuteToolTip => Resources.Languages.Core.ExplorerItemExecuteToolTip;
         public string EditToolTip => Resources.Languages.Core.ExplorerItemEditToolTip;
         public string ResourcePath { get; set; }

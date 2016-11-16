@@ -1092,7 +1092,6 @@ namespace Warewolf.Studio.ViewModels
                 IsService = explorerItem.IsService,
                 IsFolder = explorerItem.IsFolder,
                 IsSource = explorerItem.IsSource,
-                IsReservedService = explorerItem.IsReservedService,
                 IsServer = explorerItem.IsServer
             };
             if (isDeploy)

@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var fetchExplorerItems = new FetchExplorerItems();
 
-            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
             Assert.IsNotNull(item);
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();

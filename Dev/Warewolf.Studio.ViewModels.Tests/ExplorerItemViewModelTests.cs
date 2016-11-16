@@ -1615,7 +1615,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
-            _target.IsReservedService = false;
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
@@ -1641,7 +1640,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.IsFolder, createdFolder.IsFolder);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
-            Assert.AreEqual(_target.IsReservedService, createdFolder.IsReservedService);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
