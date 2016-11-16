@@ -23,6 +23,7 @@ using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
 {
+    [Binding]
     public partial class UIMap
     {
         const int _lenientSearchTimeout = 30000;
@@ -5518,561 +5519,356 @@ namespace Warewolf.UITests
         [When(@"I Open GET Web Connector Tool Large View")]
         public void Open_GET_Web_Connector_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom webGet = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            WpfComboBox sourcesComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox;
-            WpfButton generateOutputsButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton;
-            #endregion
-            Mouse.DoubleClick(webGet, new Point(238, 16));
-            Assert.IsTrue(sourcesComboBox.Exists, "Web GET large view sources combobox does not exist.");
-            Assert.IsTrue(generateOutputsButton.Exists, "Web GET large view generate inputs button does not exist.");
-            Assert.IsTrue(doneButton.Exists, "Web GET large view done does not exist.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet, new Point(238, 16));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox.Exists, "Web GET large view sources combobox does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton.Exists, "Web GET large view generate inputs button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton.Exists, "Web GET large view done does not exist.");
         }
+
         [When(@"I Open GetWeb RequestTool small View")]
         public void Open_GetWeb_RequestTool_small_View()
         {
-            #region Variable Declarations
-            WpfCustom webRequest = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest;
-            #endregion
-            Mouse.DoubleClick(webRequest, new Point(237, 7));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest, new Point(237, 7));
         }
+
         [When(@"I Open Javascript Large View")]
         public void Open_Javascript_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom javascript = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.OnErrorPane;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.DoneButton;
-            #endregion
-            Mouse.DoubleClick(javascript, new Point(115, 14));
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Javascript script textbox does not exist after openning large view with a double " +
-                    "click.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Javascript Attachments textbox does not exist after openning large view with a do" +
-                    "uble click.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Javascript Attach File Button does not exist after openning large view with a dou" +
-                    "ble click.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Javascript escape sequences checkbox does not exist after openning large view wit" +
-                    "h a double click.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Javascript result textbox does not exist after openning large view with a double " +
-                    "click.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Javascript OnError pane does not exist after openning large view with a double cl" +
-                    "ick.");
-            Assert.AreEqual(Open_Javascript_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Javascript Done button does not exist after openning large view with a double cli" +
-                    "ck.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript, new Point(115, 14));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ScriptIntellisenseCombobox.Exists, "Javascript script textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachmentsIntellisenseCombobox.Exists, "Javascript Attachments textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.AttachFileButton.Exists, "Javascript Attach File Button does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.EscapesequencesCheckBox.Exists, "Javascript escape sequences checkbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.ResultIntellisenseCombobox.Exists, "Javascript result textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.LargeView.OnErrorPane.Exists, "Javascript OnError pane does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.DoneButton.Exists, "Javascript Done button does not exist after openning large view with a double click.");
         }
+
         [When(@"I Open Json Tool Large View")]
         public void Open_Json_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom createJson = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
-            #endregion
-            Mouse.DoubleClick(createJson, new Point(158, 13));
-            Assert.AreEqual(Open_Json_Tool_Large_ViewParams.CreateJsonExists, createJson.Exists, "JSON tool large view on the design surface does not exist");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, new Point(158, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.Exists, "JSON tool large view on the design surface does not exist");
         }
+
         [When(@"I Open Json Tool Qvi Large View")]
         public void Open_Json_Tool_Qvi_Large_View()
         {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton;
-            WpfCustom createJson = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
-            #endregion
-            openQuickVariableInpToggleButton.Pressed = Open_Json_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-            Assert.AreEqual(Open_Json_Tool_Qvi_Large_ViewParams.CreateJsonExists, createJson.Exists, "JSON QVI window does not exist on the design surface");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton.Pressed = Open_Json_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.Exists, "JSON QVI window does not exist on the design surface");
         }
+
         [When(@"I Open Length Tool Large View")]
         public void Open_Length_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom length = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
-            WpfComboBox recordsetComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.RecordsetComboBox;
-            WpfComboBox resultComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.ResultComboBox;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.OnErrorCustom;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.DoneButton;
-            WpfCheckBox nullAsZeroCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.NullAsZeroCheckBox;
-            #endregion
-            Mouse.DoubleClick(length, new Point(136, 13));
-            Assert.AreEqual(Open_Length_Tool_Large_ViewParams.RecordsetComboBoxExists, recordsetComboBox.Exists, "Recordset combobox does not exist after dragging Recordset Length on to Workflow " +
-                    "surface");
-            Assert.AreEqual(Open_Length_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after dragging Recordset Length on to Workflow sur" +
-                    "face");
-            Assert.AreEqual(Open_Length_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "On Error pane does not exist after dragging Recordset Length on to Workflow surfa" +
-                    "ce");
-            Assert.AreEqual(Open_Length_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist after dragging Recordset Length on to Workflow surface");
-            Assert.AreEqual(Open_Length_Tool_Large_ViewParams.NullAsZeroCheckBoxExists, nullAsZeroCheckBox.Exists, "NullAsZero checkbox is does not exist after dragging Recordset Length on to Workf" +
-                    "low surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length, new Point(136, 13));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.RecordsetComboBox.Exists, "Recordset combobox does not exist after dragging Recordset Length on to Workflow surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.ResultComboBox.Exists, "Result combobox does not exist after dragging Recordset Length on to Workflow surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.OnErrorCustom.Exists, "On Error pane does not exist after dragging Recordset Length on to Workflow surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.DoneButton.Exists, "DoneButton does not exist after dragging Recordset Length on to Workflow surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length.LargeViewContentCustom.NullAsZeroCheckBox.Exists, "NullAsZero checkbox is does not exist after dragging Recordset Length on to Workflow surface");
         }
+
         [When(@"I Open Move Tool Large View")]
         public void Open_Move_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom pathMove = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OnErrorCustom;
-            WpfComboBox destinationComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.DestinationComboBox;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.DoneButton;
-            WpfCheckBox overwriteCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OverwriteCheckBox;
-            #endregion
-            Mouse.DoubleClick(pathMove, new Point(125, 6));
-            Assert.AreEqual(Open_Move_Tool_Large_ViewParams.PathMoveExists, pathMove.Exists, "Move tool large view does not exist on the design surface");
-            Assert.AreEqual(Open_Move_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
-            Assert.AreEqual(Open_Move_Tool_Large_ViewParams.DestinationComboBoxExists, destinationComboBox.Exists, "DestinationComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Move_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
-            Assert.AreEqual(Open_Move_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove, new Point(125, 6));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.Exists, "Move tool large view does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.DestinationComboBox.Exists, "DestinationComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.DoneButton.Exists, "DoneButton does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
         }
+
         [When(@"I Open MySql Database Tool Large View")]
         public void Open_MySql_Database_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom mySqlDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
-            #endregion
-            Mouse.DoubleClick(mySqlDatabase, new Point(238, 15));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase, new Point(238, 15));
         }
+
         [When(@"I Open NumberFormat Toolbox Large View")]
         public void Open_NumberFormat_Toolbox_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom formatNumber = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton;
-            WpfGroup onErrorGroup = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            WpfComboBox resultInputComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox;
-            WpfComboBox decimalsToShowComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox;
-            WpfComboBox roundingComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox;
-            WpfComboBox numberInputComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox;
-            #endregion
-            Mouse.DoubleClick(formatNumber, new Point(145, 5));
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening  Format Number tool large view");
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "On Error group does not exist after opening  Format Number tool large view");
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.ResultInputComboBoxExists, resultInputComboBox.Exists, "Reult combobox does not exist after opening  Format Number tool large view");
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.DecimalsToShowComboBoxExists, decimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after opening  Format Number tool large vie" +
-                    "w");
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.RoundingComboBoxExists, roundingComboBox.Exists, "Rounding combobox does not exist after opening  Format Number tool large view");
-            Assert.AreEqual(Open_NumberFormat_Toolbox_Large_ViewParams.NumberInputComboBoxExists, numberInputComboBox.Exists, "NumberInput combobox does not exist after opening  Format Number tool large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton.Exists, "Done button does not exist after opening  Format Number tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "On Error group does not exist after opening  Format Number tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.ResultInputComboBox.Exists, "Reult combobox does not exist after opening  Format Number tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.DecimalsToShowComboBox.Exists, "DecimalToShow combobox does not exist after opening  Format Number tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.RoundingComboBox.Exists, "Rounding combobox does not exist after opening  Format Number tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox.Exists, "NumberInput combobox does not exist after opening  Format Number tool large view");
         }
+
         [When(@"I Open ODBC Tool Large View")]
         public void Open_ODBC_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom oDBCDatabaseActivCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom;
-            WpfCustom largeViewContentCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeViewContentCustom;
-            #endregion
-            Mouse.DoubleClick(oDBCDatabaseActivCustom, new Point(145, 5));
-            Assert.AreEqual(Open_ODBC_Tool_Large_ViewExpectedValues.LargeViewContentCustomExists, largeViewContentCustom.Exists, "ODBC tool large view does not exist on the design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeViewContentCustom.Exists, "ODBC tool large view does not exist on the design surface.");
         }
+
         [When(@"I Open Oracle Tool Large View")]
         public void Open_Oracle_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom oracleDatabaseActCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom;
-            WpfCustom largeViewContentCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeViewContentCustom;
-            #endregion
-            Mouse.DoubleClick(oracleDatabaseActCustom, new Point(145, 5));
-            Assert.AreEqual(Open_Oracle_Tool_Large_ViewExpectedValues.LargeViewContentCustomExists, largeViewContentCustom.Exists, "Oracle tool large view does not exist on the design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeViewContentCustom.Exists, "Oracle tool large view does not exist on the design surface.");
         }
+
         [When(@"I Open Postgre Tool Large View")]
         public void Open_Postgre_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom postgreSqlActivitCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom;
-            WpfCustom largeViewContentCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom;
-            #endregion
-            Mouse.DoubleClick(postgreSqlActivitCustom, new Point(145, 5));
-            Assert.AreEqual(Open_Postgre_Tool_Large_ViewExpectedValues.LargeViewContentCustomExists, largeViewContentCustom.Exists, "Postgre tool large view does not exist on the design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeViewContentCustom.Exists, "Postgre tool large view does not exist on the design surface.");
         }
+
         [When(@"I Open PostWeb RequestTool Large View")]
         public void Open_PostWeb_RequestTool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom webPost = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
-            WpfCustom largeView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView;
-            #endregion
-            Mouse.DoubleClick(webPost, new Point(128, 8));
-            Assert.AreEqual(Open_PostWeb_RequestTool_Large_ViewParams.LargeViewExists, largeView.Exists, "Post web request large view does not exist on design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost, new Point(128, 8));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.Exists, "Post web request large view does not exist on design surface.");
         }
+
         [When(@"I Open PutWeb Tool large view")]
         public void Open_PutWeb_Tool_large_view()
         {
-            #region Variable Declarations
-            WpfCustom webPut = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut;
-            #endregion
-            Mouse.DoubleClick(webPut, new Point(145, 5));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut, new Point(145, 5));
         }
+
         [When(@"I Open Python Large View")]
         public void Open_Python_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom python = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton;
-            #endregion
-            Mouse.DoubleClick(python, new Point(117, 9));
-            Assert.AreEqual(Open_Python_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Python script textbox does not exist after openning large view with a double clic" +
-                    "k.");
-            Assert.AreEqual(Open_Python_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Python Attachments textbox does not exist after openning large view with a double" +
-                    " click.");
-            Assert.AreEqual(Open_Python_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Python Attach File Button does not exist after openning large view with a double " +
-                    "click.");
-            Assert.AreEqual(Open_Python_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Python escape sequences checkbox does not exist after openning large view with a " +
-                    "double click.");
-            Assert.AreEqual(Open_Python_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Python result textbox does not exist after openning large view with a double clic" +
-                    "k.");
-            Assert.AreEqual(Open_Python_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Python OnError pane does not exist after openning large view with a double click." +
-                    "");
-            Assert.AreEqual(Open_Python_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python, new Point(117, 9));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ScriptIntellisenseCombobox.Exists, "Python script textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Exists, "Python Attachments textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachFileButton.Exists, "Python Attach File Button does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.EscapesequencesCheckBox.Exists, "Python escape sequences checkbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.ResultIntellisenseCombobox.Exists, "Python result textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane.Exists, "Python OnError pane does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
         }
+
         [When(@"I Open RabbitMqConsume LargeView")]
         public void Open_RabbitMqConsume_LargeView()
         {
-            #region Variable Declarations
-            WpfCustom rabbitMQConsume = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume;
-            WpfComboBox responseComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox;
-            WpfCheckBox acknowledgeCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.AcknowledgeCheckBox;
-            WpfComboBox sourceComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.SourceComboBox;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.DoneButton;
-            #endregion
-            Mouse.DoubleClick(rabbitMQConsume, new Point(145, 7));
-            Assert.AreEqual(Open_RabbitMqConsume_LargeViewParams.ResponseComboBoxExists, responseComboBox.Exists, "ResponseComboBox does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqConsume_LargeViewParams.AcknowledgeCheckBoxExists, acknowledgeCheckBox.Exists, "AcknowledgeCheckBox does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqConsume_LargeViewParams.SourceComboBoxExists, sourceComboBox.Exists, "SourceComboBox does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqConsume_LargeViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume, new Point(145, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox.Exists, "ResponseComboBox does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.AcknowledgeCheckBox.Exists, "AcknowledgeCheckBox does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.SourceComboBox.Exists, "SourceComboBox does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.DoneButton.Exists, "DoneButton does not exist on the large view");
         }
+
         [When(@"I Open RabbitMqPublish LargeView")]
         public void Open_RabbitMqPublish_LargeView()
         {
-            #region Variable Declarations
-            WpfCustom rabbitMQPublish = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish;
-            WpfCheckBox durableCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.DurableCheckBox;
-            WpfButton newSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.NewSourceButton;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.OnErrorCustom;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.DoneButton;
-            #endregion
-            Mouse.DoubleClick(rabbitMQPublish, new Point(145, 7));
-            Assert.AreEqual(Open_RabbitMqPublish_LargeViewParams.DurableCheckBoxExists, durableCheckBox.Exists, "DurableCheckBox does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqPublish_LargeViewParams.NewSourceButtonExists, newSourceButton.Exists, "NewSourceButton does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqPublish_LargeViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqPublish_LargeViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the large view");
-            Assert.AreEqual(Open_RabbitMqPublish_LargeViewParams.RabbitMQPublishExists, rabbitMQPublish.Exists, "RabbitMQPublish does not exist on the large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish, new Point(145, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.DurableCheckBox.Exists, "DurableCheckBox does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.NewSourceButton.Exists, "NewSourceButton does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.DoneButton.Exists, "DoneButton does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.Exists, "RabbitMQPublish does not exist on the large view");
         }
+
         [When(@"I Open Random Large Tool")]
         public void Open_Random_Large_Tool()
         {
-            #region Variable Declarations
-            WpfCustom random = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.DoneButton;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.OnErrorCustom;
-            WpfComboBox fromComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.FromComboBox;
-            WpfComboBox toComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ToComboBox;
-            #endregion
-            Mouse.DoubleClick(random, new Point(145, 7));
-            Assert.AreEqual(Open_Random_Large_ToolParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the large view");
-            Assert.AreEqual(Open_Random_Large_ToolParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the large view");
-            Assert.AreEqual(Open_Random_Large_ToolParams.FromComboBoxExists, fromComboBox.Exists, "FromComboBox does not exist on the large view");
-            Assert.AreEqual(Open_Random_Large_ToolParams.ToComboBoxExists, toComboBox.Exists, "ToComboBox does not exist on the large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random, new Point(145, 7));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.DoneButton.Exists, "DoneButton does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.FromComboBox.Exists, "FromComboBox does not exist on the large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.LargeViewContentCustom.ToComboBox.Exists, "ToComboBox does not exist on the large view");
         }
+
         [When(@"I Open Read File Tool Large View")]
         public void Open_Read_File_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom fileRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
-            WpfComboBox resultComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.ResultComboBox;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.OnErrorCustom;
-            WpfComboBox fileNameComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.FileNameComboBox;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton;
-            #endregion
-            Mouse.DoubleClick(fileRead, new Point(120, 5));
-            Assert.AreEqual(Open_Read_File_Tool_Large_ViewParams.FileReadExists, fileRead.Exists, "Read file large view does not exist on the design surface");
-            Assert.AreEqual(Open_Read_File_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "ResultComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Read_File_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
-            Assert.AreEqual(Open_Read_File_Tool_Large_ViewParams.FileNameComboBoxExists, fileNameComboBox.Exists, "FileNameComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Read_File_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead, new Point(120, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.Exists, "Read file large view does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.ResultComboBox.Exists, "ResultComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.FileNameComboBox.Exists, "FileNameComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
+
         [When(@"I Open Read Folder Tool Large View")]
         public void Open_Read_Folder_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom folderRead = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
-            WpfRadioButton filesFoldersRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.FilesFoldersRadioButton;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.OnErrorCustom;
-            WpfComboBox directoryComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.DirectoryComboBox;
-            WpfComboBox resultComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.ResultComboBox;
-            #endregion
-            Mouse.DoubleClick(folderRead, new Point(138, 14));
-            Assert.AreEqual(Open_Read_Folder_Tool_Large_ViewParams.FolderReadExists, folderRead.Exists, "Read Folder large view does not exist on the design surface");
-            Assert.AreEqual(Open_Read_Folder_Tool_Large_ViewParams.FilesFoldersRadioButtonExists, filesFoldersRadioButton.Exists, "FilesFoldersRadioButton does not exist on the design surface");
-            Assert.AreEqual(Open_Read_Folder_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
-            Assert.AreEqual(Open_Read_Folder_Tool_Large_ViewParams.DirectoryComboBoxExists, directoryComboBox.Exists, "DirectoryComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Read_Folder_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Read Folder large view does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead, new Point(138, 14));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.Exists, "Read Folder large view does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.FilesFoldersRadioButton.Exists, "FilesFoldersRadioButton does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom group does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.DirectoryComboBox.Exists, "DirectoryComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.LargeViewContentCustom.ResultComboBox.Exists, "Read Folder large view does not exist on the design surface");
         }
+
         [When(@"I Open Rename Tool Large View")]
         public void Open_Rename_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom pathRename = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
-            WpfCustom onErrorCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OnErrorCustom;
-            WpfCheckBox overwriteCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OverwriteCheckBox;
-            WpfComboBox fileOrFolderComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.FileOrFolderComboBox;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton;
-            #endregion
-            Mouse.DoubleClick(pathRename, new Point(159, 11));
-            Assert.AreEqual(Open_Rename_Tool_Large_ViewParams.PathRenameExists, pathRename.Exists, "Rename tool large view on the design surface does not exist");
-            Assert.AreEqual(Open_Rename_Tool_Large_ViewParams.OnErrorCustomExists, onErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
-            Assert.AreEqual(Open_Rename_Tool_Large_ViewParams.OverwriteCheckBoxExists, overwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
-            Assert.AreEqual(Open_Rename_Tool_Large_ViewParams.FileOrFolderComboBoxExists, fileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
-            Assert.AreEqual(Open_Rename_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "DoneButton does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename, new Point(159, 11));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.Exists, "Rename tool large view on the design surface does not exist");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.LargeViewContentCustom.FileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
+
         [When(@"I Open Replace Tool Large View")]
         public void Open_Replace_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom replace = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.DoneButton;
-            WpfComboBox resultComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.ResultComboBox;
-            WpfComboBox replaceComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.ReplaceComboBox;
-            WpfComboBox findComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.FindComboBox;
-            WpfComboBox inFiledsComboBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.InFiledsComboBox;
-            #endregion
-            Mouse.DoubleClick(replace, new Point(159, 11));
-            Assert.AreEqual(Open_Replace_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button does not exist after opening Replace tool large view");
-            Assert.AreEqual(Open_Replace_Tool_Large_ViewParams.ResultComboBoxExists, resultComboBox.Exists, "Result combobox does not exist after opening Replace tool large view");
-            Assert.AreEqual(Open_Replace_Tool_Large_ViewParams.ReplaceComboBoxExists, replaceComboBox.Exists, "Replace combobox does not exist after opening Replace tool large view");
-            Assert.AreEqual(Open_Replace_Tool_Large_ViewParams.FindComboBoxExists, findComboBox.Exists, "Find combobox does not exist after opening Replace tool large view");
-            Assert.AreEqual(Open_Replace_Tool_Large_ViewParams.InFiledsComboBoxExists, inFiledsComboBox.Exists, "InFields combobox does not exist after opening Replace tool large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace, new Point(159, 11));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.DoneButton.Exists, "Done button does not exist after opening Replace tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.ResultComboBox.Exists, "Result combobox does not exist after opening Replace tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.ReplaceComboBox.Exists, "Replace combobox does not exist after opening Replace tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.FindComboBox.Exists, "Find combobox does not exist after opening Replace tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.LargeViewContentCustom.InFiledsComboBox.Exists, "InFields combobox does not exist after opening Replace tool large view");
         }
+
         [When(@"I Open Ruby Large View")]
         public void Open_Ruby_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom ruby = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby;
-            WpfComboBox scriptIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ScriptIntellisenseCombobox;
-            WpfComboBox attachmentsIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachmentsIntellisenseCombobox;
-            WpfButton attachFileButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachFileButton;
-            WpfCheckBox escapesequencesCheckBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.EscapesequencesCheckBox;
-            WpfComboBox resultIntellisenseCombobox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ResultIntellisenseCombobox;
-            WpfCustom onErrorPane = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.OnErrorPane;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.DoneButton;
-            #endregion
-            Mouse.DoubleClick(ruby, new Point(116, 12));
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.ScriptIntellisenseComboboxExists, scriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after openning large view with a double click." +
-                    "");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.AttachmentsIntellisenseComboboxExists, attachmentsIntellisenseCombobox.Exists, "Ruby Attachments textbox does not exist after openning large view with a double c" +
-                    "lick.");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.AttachFileButtonExists, attachFileButton.Exists, "Ruby Attach File Button does not exist after openning large view with a double cl" +
-                    "ick.");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.EscapesequencesCheckBoxExists, escapesequencesCheckBox.Exists, "Ruby escape sequences checkbox does not exist after openning large view with a do" +
-                    "uble click.");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.ResultIntellisenseComboboxExists, resultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after openning large view with a double click." +
-                    "");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Ruby OnError pane does not exist after openning large view with a double click.");
-            Assert.AreEqual(Open_Ruby_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Ruby Done button does not exist after openning large view with a double click.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby, new Point(116, 12));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ScriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachmentsIntellisenseCombobox.Exists, "Ruby Attachments textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.AttachFileButton.Exists, "Ruby Attach File Button does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.EscapesequencesCheckBox.Exists, "Ruby escape sequences checkbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.ResultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.LargeView.OnErrorPane.Exists, "Ruby OnError pane does not exist after openning large view with a double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.DoneButton.Exists, "Ruby Done button does not exist after openning large view with a double click.");
         }
+
         [When(@"I Open Selectandapply Large View")]
         public void Open_Selectandapply_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom selectAndApply = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.DoneButton;
-            WpfComboBox selectFromIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.SelectFromIntellisenseTextbox;
-            WpfComboBox aliasIntellisenseTextbox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.AliasIntellisenseTextbox;
-            WpfCustom dropActivityHere = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.DropActivityHere;
-            WpfCustom onErrorPane = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.OnErrorPane;
-            #endregion
-            Mouse.DoubleClick(selectAndApply, new Point(129, 10));
-            Assert.AreEqual(Open_Selectandapply_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Select and apply done button does not exist after openning tool large view with d" +
-                    "ouble click.");
-            Assert.AreEqual(Open_Selectandapply_Large_ViewParams.SelectFromIntellisenseTextboxExists, selectFromIntellisenseTextbox.Exists, "Select and apply select from textbox does not exist after openning tool large vie" +
-                    "w with double click.");
-            Assert.AreEqual(Open_Selectandapply_Large_ViewParams.AliasIntellisenseTextboxExists, aliasIntellisenseTextbox.Exists, "Select and apply alias textbox does not exist after openning tool large view with" +
-                    " double click.");
-            Assert.AreEqual(Open_Selectandapply_Large_ViewParams.DropActivityHereExists, dropActivityHere.Exists, "Select and apply activity drop box does not exist after openning tool large view " +
-                    "with double click.");
-            Assert.AreEqual(Open_Selectandapply_Large_ViewParams.OnErrorPaneExists, onErrorPane.Exists, "Select and apply OnError pane does not exist after openning tool large view with " +
-                    "double click.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply, new Point(129, 10));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.DoneButton.Exists, "Select and apply done button does not exist after openning tool large view with double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.SelectFromIntellisenseTextbox.Exists, "Select and apply select from textbox does not exist after openning tool large view with double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.AliasIntellisenseTextbox.Exists, "Select and apply alias textbox does not exist after openning tool large view with double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.DropActivityHere.Exists, "Select and apply activity drop box does not exist after openning tool large view with double click.");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.OnErrorPane.Exists, "Select and apply OnError pane does not exist after openning tool large view with double click.");
         }
+
         [When(@"I Open Sequence Large tool View")]
         public void Open_Sequence_Large_tool_View()
         {
-            #region Variable Declarations
-            WpfCustom sequence = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
-            WpfCustom sequenceLargeView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView;
-            #endregion
-            Mouse.DoubleClick(sequence, new Point(139, 12));
-            Assert.AreEqual(Open_Sequence_Large_tool_ViewParams.SequenceLargeViewExists, sequenceLargeView.Exists, "SequenceLargeView does not exist after opening Sequence tool large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, new Point(139, 12));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.Exists, "SequenceLargeView does not exist after opening Sequence tool large view");
         }
+
         [When(@"I Open Sharepoint Copy Tool Large View")]
         public void Open_Sharepoint_Copy_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointCopyFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile;
-            #endregion
-            Mouse.DoubleClick(sharepointCopyFile, new Point(230, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile, new Point(230, 11));
         }
+
         [When(@"I Open Sharepoint Create Tool Large View")]
         public void Open_Sharepoint_Create_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointCreateListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem;
-            #endregion
-            Mouse.DoubleClick(sharepointCreateListItem, new Point(195, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem, new Point(195, 11));
         }
+
         [When(@"I Open Sharepoint Delete Tool Large View")]
         public void Open_Sharepoint_Delete_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointDeleteFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile;
-            #endregion
-            Mouse.DoubleClick(sharepointDeleteFile, new Point(218, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile, new Point(218, 11));
         }
+
         [When(@"I Open Sharepoint Download File Tool Large View With Double Click")]
         public void Open_Sharepoint_Download_File_Tool_Large_View_With_Double_Click()
         {
-            #region Variable Declarations
-            WpfCustom sharepointDownloadFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile;
-            #endregion
-            Mouse.DoubleClick(sharepointDownloadFile, new Point(185, 9));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile, new Point(185, 9));
         }
+
         [When(@"I Open Sharepoint MoveFile Tool Large View")]
         public void Open_Sharepoint_MoveFile_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointMoveFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile;
-            #endregion
-            Mouse.DoubleClick(sharepointMoveFile, new Point(230, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile, new Point(230, 11));
         }
+
         [When(@"I Open Sharepoint Read Folder Tool Large View")]
         public void Open_Sharepoint_Read_Folder_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointReadFolder = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadFolder;
-            #endregion
-            Mouse.DoubleClick(sharepointReadFolder, new Point(195, 7));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadFolder, new Point(195, 7));
         }
+
         [When(@"I Open Sharepoint Read List Item Tool Large View")]
         public void Open_Sharepoint_Read_List_Item_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointReadListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem;
-            #endregion
-            Mouse.DoubleClick(sharepointReadListItem, new Point(195, 7));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem, new Point(195, 7));
         }
+
         [When(@"I Open Sharepoint Update Tool Large View")]
         public void Open_Sharepoint_Update_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointUpdate = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
-            #endregion
-            Mouse.DoubleClick(sharepointUpdate, new Point(230, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate, new Point(230, 11));
         }
+
         [When(@"I Open Sharepoint Upload Tool Large View")]
         public void Open_Sharepoint_Upload_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sharepointUploadFile = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile;
-            #endregion
-            Mouse.DoubleClick(sharepointUploadFile, new Point(230, 11));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile, new Point(230, 11));
         }
+
         [When(@"I Open SMTP Email Tool Large View")]
         public void Open_SMTP_Email_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sMTPEmail = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail;
-            WpfCustom largeView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView;
-            #endregion
-            Mouse.DoubleClick(sMTPEmail, new Point(168, 11));
-            Assert.AreEqual(Open_SMTP_Email_Tool_Large_ViewParams.LargeViewExists, largeView.Exists, "Email Tool large view does not exist on the design surface");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail, new Point(168, 11));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView.Exists, "Email Tool large view does not exist on the design surface");
         }
+
         [When(@"I Open SortRecords Large View")]
         public void Open_SortRecords_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sortRecords = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
-            #endregion
-            Mouse.DoubleClick(sortRecords, new Point(114, 13));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords, new Point(114, 13));
         }
+
         [When(@"I Open SQL Bulk Insert Tool Large View")]
         public void Open_SQL_Bulk_Insert_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sqlBulkInsert = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-            Mouse.DoubleClick(sqlBulkInsert, new Point(157, 6));
-            Assert.AreEqual(Open_SQL_Bulk_Insert_Tool_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert, new Point(157, 6));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
         }
+
         [When(@"I Open SQL Bulk Insert Tool Qvi Large View")]
         public void Open_SQL_Bulk_Insert_Tool_Qvi_Large_View()
         {
-            #region Variable Declarations
-            WpfToggleButton openQuickVariableInpToggleButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton;
-            WpfCustom sqlBulkInsert = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
-            #endregion
-            openQuickVariableInpToggleButton.Pressed = Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.OpenQuickVariableInpToggleButtonPressed;
-            Assert.AreEqual(Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams.SqlBulkInsertExists, sqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton.Pressed = true;
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
         }
+
         [When(@"I Open SQL Large View FromContextMenu")]
         public void Open_SQL_Large_View_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfMenuItem showLargeView = MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView;
-            WpfButton newDbSourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton;
-            #endregion
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
-            Mouse.Click(showLargeView, new Point(43, 15));
-            Assert.AreEqual(Open_SQL_Large_View_FromContextMenuParams.NewDbSourceButtonExists, newDbSourceButton.Exists, "\"New button does not exist\"");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView, new Point(43, 15));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton.Exists, "\"New button does not exist\"");
         }
+
         [When(@"I Open Sql Server Tool Large View")]
         public void Open_Sql_Server_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfCustom largeView = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView;
-            #endregion
-            Mouse.DoubleClick(sqlServerDatabase, new Point(145, 5));
-            Assert.AreEqual(Open_Sql_Server_Tool_Large_ViewExpectedValues.LargeViewExists, largeView.Exists, "SQL Server tool large view does not exist on the design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.Exists, "SQL Server tool large view does not exist on the design surface.");
         }
+
         [When(@"I Open Sql Server Tool small View")]
         public void Open_Sql_Server_Tool_small_View()
         {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            #endregion
-            Mouse.DoubleClick(sqlServerDatabase, new Point(253, 18));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(253, 18));
         }
+
         [When(@"I Open Switch Tool Large View")]
         public void Open_Switch_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom switch1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            WpfWindow switchCaseDialog = SwitchCaseDialog;
-            #endregion
-            Mouse.DoubleClick(switch1, new Point(39, 35));
-            Assert.AreEqual(Open_Switch_Tool_Large_ViewParams.SwitchCaseDialogEnabled, switchCaseDialog.Enabled, "Switch dialog does not exist after opening switch large view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(39, 35));
+            Assert.AreEqual(true, SwitchCaseDialog.Enabled, "Switch dialog does not exist after opening switch large view");
         }
+
         [When(@"I Open System Information Tool Large View")]
         public void Open_System_Information_Tool_Large_View()
         {
-            #region Variable Declarations
-            WpfCustom gatherSystemInfo = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
-            WpfTable smallDataGridTable = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable;
-            WpfButton doneButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton;
-            WpfGroup onErrorGroup = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.OnErrorCustom.OnErrorGroup;
-            #endregion
-            Mouse.DoubleClick(gatherSystemInfo, new Point(145, 5));
-            Assert.AreEqual(Open_System_Information_Tool_Large_ViewParams.SmallDataGridTableExists, smallDataGridTable.Exists, "Variable Grid does not exist after opening Gather System information tool large v" +
-                    "iew");
-            Assert.AreEqual(Open_System_Information_Tool_Large_ViewParams.DoneButtonExists, doneButton.Exists, "Done button  does not exist after opening Gather System information tool large vi" +
-                    "ew");
-            Assert.AreEqual(Open_System_Information_Tool_Large_ViewParams.OnErrorGroupExists, onErrorGroup.Exists, "OnError group  does not exist after opening Gather System information tool large " +
-                    "view");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo, new Point(145, 5));
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable.Exists, "Variable Grid does not exist after opening Gather System information tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton.Exists, "Done button  does not exist after opening Gather System information tool large view");
+            Assert.AreEqual(true, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "OnError group  does not exist after opening Gather System information tool large view");
         }
+
         [When(@"I Open System Information Tool Qvi Large View")]
         public void Open_System_Information_Tool_Qvi_Large_View()
         {
@@ -8582,20 +8378,14 @@ namespace Warewolf.UITests
     public class Open_Javascript_Large_ViewParams
     {
         #region Fields
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool AttachmentsIntellisenseComboboxExists = true;
-        public bool AttachFileButtonExists = true;
-        public bool EscapesequencesCheckBoxExists = true;
-        public bool ResultIntellisenseComboboxExists = true;
-        public bool OnErrorPaneExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Json_Tool_Large_ViewParams
     {
         #region Fields
-        public bool CreateJsonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -8603,240 +8393,182 @@ namespace Warewolf.UITests
     {
         #region Fields
         public bool OpenQuickVariableInpToggleButtonPressed = true;
-        public bool CreateJsonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Length_Tool_Large_ViewParams
     {
         #region Fields
-        public bool RecordsetComboBoxExists = true;
-        public bool ResultComboBoxExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool DoneButtonExists = true;
-        public bool NullAsZeroCheckBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Move_Tool_Large_ViewParams
     {
         #region Fields
-        public bool PathMoveExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool DestinationComboBoxExists = true;
-        public bool DoneButtonExists = true;
-        public bool OverwriteCheckBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_NumberFormat_Toolbox_Large_ViewParams
     {
         #region Fields
-        public bool DoneButtonExists = true;
-        public bool OnErrorGroupExists = true;
-        public bool ResultInputComboBoxExists = true;
-        public bool DecimalsToShowComboBoxExists = true;
-        public bool RoundingComboBoxExists = true;
-        public bool NumberInputComboBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_ODBC_Tool_Large_ViewExpectedValues
     {
         #region Fields
-        public bool LargeViewContentCustomExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Oracle_Tool_Large_ViewExpectedValues
     {
         #region Fields
-        public bool LargeViewContentCustomExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Postgre_Tool_Large_ViewExpectedValues
     {
         #region Fields
-        public bool LargeViewContentCustomExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_PostWeb_RequestTool_Large_ViewParams
     {
         #region Fields
-        public bool LargeViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Python_Large_ViewParams
     {
         #region Fields
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool AttachmentsIntellisenseComboboxExists = true;
-        public bool AttachFileButtonExists = true;
-        public bool EscapesequencesCheckBoxExists = true;
-        public bool ResultIntellisenseComboboxExists = true;
-        public bool OnErrorPaneExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_RabbitMqConsume_LargeViewParams
     {
         #region Fields
-        public bool ResponseComboBoxExists = true;
-        public bool AcknowledgeCheckBoxExists = true;
-        public bool SourceComboBoxExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_RabbitMqPublish_LargeViewParams
     {
         #region Fields
-        public bool DurableCheckBoxExists = true;
-        public bool NewSourceButtonExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool DoneButtonExists = true;
-        public bool RabbitMQPublishExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Random_Large_ToolParams
     {
         #region Fields
-        public bool DoneButtonExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool FromComboBoxExists = true;
-        public bool ToComboBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Read_File_Tool_Large_ViewParams
     {
         #region Fields
-        public bool FileReadExists = true;
-        public bool ResultComboBoxExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool FileNameComboBoxExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Read_Folder_Tool_Large_ViewParams
     {
         #region Fields
-        public bool FolderReadExists = true;
-        public bool FilesFoldersRadioButtonExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool DirectoryComboBoxExists = true;
-        public bool ResultComboBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Rename_Tool_Large_ViewParams
     {
         #region Fields
-        public bool PathRenameExists = true;
-        public bool OnErrorCustomExists = true;
-        public bool OverwriteCheckBoxExists = true;
-        public bool FileOrFolderComboBoxExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Replace_Tool_Large_ViewParams
     {
         #region Fields
-        public bool DoneButtonExists = true;
-        public bool ResultComboBoxExists = true;
-        public bool ReplaceComboBoxExists = true;
-        public bool FindComboBoxExists = true;
-        public bool InFiledsComboBoxExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Ruby_Large_ViewParams
     {
         #region Fields
-        public bool ScriptIntellisenseComboboxExists = true;
-        public bool AttachmentsIntellisenseComboboxExists = true;
-        public bool AttachFileButtonExists = true;
-        public bool EscapesequencesCheckBoxExists = true;
-        public bool ResultIntellisenseComboboxExists = true;
-        public bool OnErrorPaneExists = true;
-        public bool DoneButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Selectandapply_Large_ViewParams
     {
         #region Fields
-        public bool DoneButtonExists = true;
-        public bool SelectFromIntellisenseTextboxExists = true;
-        public bool AliasIntellisenseTextboxExists = true;
-        public bool DropActivityHereExists = true;
-        public bool OnErrorPaneExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Sequence_Large_tool_ViewParams
     {
         #region Fields
-        public bool SequenceLargeViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_SMTP_Email_Tool_Large_ViewParams
     {
         #region Fields
-        public bool LargeViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_SQL_Bulk_Insert_Tool_Large_ViewParams
     {
         #region Fields
-        public bool SqlBulkInsertExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams
     {
         #region Fields
-        public bool OpenQuickVariableInpToggleButtonPressed = true;
-        public bool SqlBulkInsertExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_SQL_Large_View_FromContextMenuParams
     {
         #region Fields
-        public bool NewDbSourceButtonExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Sql_Server_Tool_Large_ViewExpectedValues
     {
         #region Fields
-        public bool LargeViewExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_Switch_Tool_Large_ViewParams
     {
         #region Fields
-        public bool SwitchCaseDialogEnabled = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_System_Information_Tool_Large_ViewParams
     {
         #region Fields
-        public bool SmallDataGridTableExists = true;
-        public bool DoneButtonExists = true;
-        public bool OnErrorGroupExists = true;
+
         #endregion
     }
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
