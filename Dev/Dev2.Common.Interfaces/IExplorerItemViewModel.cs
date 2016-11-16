@@ -26,8 +26,6 @@ namespace Dev2.Common.Interfaces
 
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
-        string Inputs { get; set; }
-        string Outputs { get; set; }
         string ExecuteToolTip { get; }
         string EditToolTip { get; }
         string ActivityName { get; }

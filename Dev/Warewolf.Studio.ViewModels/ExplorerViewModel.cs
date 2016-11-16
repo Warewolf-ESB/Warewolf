@@ -426,7 +426,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IsLoading = true;
             localhostEnvironment.Connect();
-            var result = await localhostEnvironment.Load(isDeploy,true);
+            var result = await localhostEnvironment.Load(isDeploy);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
             IsLoading = false;
             return result;

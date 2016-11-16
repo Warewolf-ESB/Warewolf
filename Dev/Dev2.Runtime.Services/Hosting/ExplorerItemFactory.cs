@@ -126,9 +126,8 @@ namespace Dev2.Runtime.Hosting
         public ServerExplorerItem CreateResourceItem(IResource resource, Guid workSpaceId)
         {
             Guid resourceId = resource.ResourceID;
-            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.GetResourcePath(workSpaceId), "", "")
+            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.GetResourcePath(workSpaceId))
             {
-                IsReservedService = resource.IsReservedService,
                 IsService = resource.IsService,
                 IsSource = resource.IsSource,
                 IsFolder = resource.IsFolder,
@@ -159,7 +158,7 @@ namespace Dev2.Runtime.Hosting
             {
                 var resourcePath = resource.Replace(rootPath, "").Substring(1);
 
-                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), "Folder", null, _authService.GetResourcePermissions(Guid.Empty), resourcePath, "", "")
+                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), "Folder", null, _authService.GetResourcePermissions(Guid.Empty), resourcePath)
                 {
                     IsFolder = true
                 };
@@ -174,7 +173,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem BuildRoot()
         {
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, "Server", new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "", "", "")
+            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, "Server", new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "")
             {
                 ServerId = HostSecurityProvider.Instance.ServerID,
                 WebserverUri = EnvironmentVariables.WebServerUri,
