@@ -448,7 +448,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"the test builder is open with ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
-           
+
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
@@ -1701,7 +1701,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var searchNode = actStartNode as FlowStep;
                 while (searchNode != null)
                 {
-                    var isCorr =  searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    var isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     if (isCorr)
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
@@ -1798,7 +1798,29 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        
+        [Then(@"I add new Children StepOutputs as")]
+        public void ThenIAddNewChildrenStepOutputsAs(Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            int count = 1;
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+                var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First().Children.First();
+                if (count == 1)
+                    serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+                count++;
+            }
+        }
+
+
+
 
 
 
