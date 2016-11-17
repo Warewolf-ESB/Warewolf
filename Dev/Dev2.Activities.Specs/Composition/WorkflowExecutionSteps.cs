@@ -230,7 +230,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenIHaveAWorkflow(string workflowName)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
@@ -256,7 +256,7 @@ namespace Dev2.Activities.Specs.Composition
                     }
                     // ReSharper disable once EmptyGeneralCatchClause
                     catch { }
-                    WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                    var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {   new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
                                                                 new WarewolfRequestsPerSecondPerformanceCounter(),
@@ -287,7 +287,7 @@ namespace Dev2.Activities.Specs.Composition
                     var performanceCounter = counters.First(a => a.CounterName == tableRow[0]);
                     if (performanceCounter != null)
                     {
-                        using (PerformanceCounter cnt = new PerformanceCounter("Warewolf", tableRow[0], counter, true))
+                        using (var cnt = new PerformanceCounter("Warewolf", tableRow[0], counter, true))
                         {
                             if (tableRow[1] == "x")
                             {
@@ -478,8 +478,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]
         public void GivenContainsADatabaseServiceWithMappings(string wf, string serviceType, string serviceName, Table table)
         {
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            ResourceRepository repository = new ResourceRepository(environmentModel);
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            var repository = new ResourceRepository(environmentModel);
             repository.Load();
             var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
             if (resource == null)
@@ -613,7 +613,7 @@ namespace Dev2.Activities.Specs.Composition
         DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
         {
             var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
-            DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
+            var dataMappingViewModel = new DataMappingViewModel(webActivity);
             foreach(var inputOutputViewModel in dataMappingViewModel.Inputs)
             {
                 inputOutputViewModel.Value = "";
@@ -768,7 +768,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"'(.*)' in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
-            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -808,7 +808,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                var systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
@@ -836,7 +836,7 @@ namespace Dev2.Activities.Specs.Composition
                     if(DataListUtil.IsValueRecordset(input))
                     {
                         recordsetName = DataListUtil.ExtractRecordsetNameFromValue(input);
-                        string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
+                        var fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
                                    where String.Equals((string)elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
@@ -922,10 +922,10 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
 
-            string currentDl = CurrentDl;
+            var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
-            WorkflowHelper helper = new WorkflowHelper();
-            StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            var helper = new WorkflowHelper();
+            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
             repository.Save(resourceModel);
@@ -943,7 +943,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            Guid workflowId = Guid.Empty;
+            var workflowId = Guid.Empty;
 
             if(parentWorkflowName != workflowName)
             {
@@ -1065,7 +1065,7 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper disable InconsistentNaming
         public double GetServerCPUUsage()
         {
-            PerformanceCounter processorTimeCounter = new PerformanceCounter(
+            var processorTimeCounter = new PerformanceCounter(
                     "Process",
                     "% Processor Time",
                     "Warewolf Server", true);
@@ -1141,7 +1141,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            Guid workflowId = Guid.Empty;
+            var workflowId = Guid.Empty;
 
             if(parentWorkflowName != workflowName)
             {
@@ -1159,7 +1159,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
             if (toolSpecificDebug.Count > 1)
             {
@@ -1271,7 +1271,7 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper restore InconsistentNaming
         {
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\"+nestedWF).FirstOrDefault();
@@ -1306,7 +1306,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" into result as ""(.*)""")]
         public void GivenContainsFindRecordIndexIntoResultAs(string parentName, string activityName, string result, Table table)
         {
-            DsfFindRecordsMultipleCriteriaActivity act = new DsfFindRecordsMultipleCriteriaActivity { DisplayName = activityName, Result = result };
+            var act = new DsfFindRecordsMultipleCriteriaActivity { DisplayName = activityName, Result = result };
             foreach(var rule in table.Rows)
             {
                 act.ResultsCollection.Add(new FindRecordsTO(rule[4], rule[3], 0));
@@ -1321,7 +1321,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            DsfRecordsetNullhandlerLengthActivity len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
+            var len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
@@ -1392,14 +1392,14 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
 
-            string currentDl = CurrentDl;
+            var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
-            WorkflowHelper helper = new WorkflowHelper();
-            StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            var helper = new WorkflowHelper();
+            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
             resourceModel.ID = id;
 
-            for(int i = 0; i < count; i++)
+            for(var i = 0; i < count; i++)
             {
                 repository.Save(resourceModel);
                 repository.SaveToServer(resourceModel);
@@ -1442,10 +1442,10 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
 
-            string currentDl = CurrentDl;
+            var currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
-            WorkflowHelper helper = new WorkflowHelper();
-            StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            var helper = new WorkflowHelper();
+            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
             repository.SaveToServer(resourceModel);
 
@@ -1490,7 +1490,7 @@ namespace Dev2.Activities.Specs.Composition
                 Assert.Fail("InvalidVersions");
             else
             {
-                for(int i = 0; i < versions.Count; i++)
+                for(var i = 0; i < versions.Count; i++)
                 {
                     var v1 = table.Rows[i + 1][0].Split(' ');
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
@@ -1510,7 +1510,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
-            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
 
             foreach(var tableRow in table.Rows)
             {
@@ -1540,7 +1540,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
         {
             
-            DsfMultiAssignObjectActivity assignActivity = new DsfMultiAssignObjectActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignObjectActivity { DisplayName = assignName };
 
             foreach (var tableRow in table.Rows)
             {
@@ -1657,7 +1657,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed ""(.*)""")]
         public void WhenIsExecuted(string workflowName, string executionLabel)
         {
-            Stopwatch st = new Stopwatch();
+            var st = new Stopwatch();
             st.Start();
             WhenIsExecuted(workflowName);
             _scenarioContext.Add(executionLabel, st.ElapsedMilliseconds);
@@ -1675,7 +1675,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
         public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
         {
-            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
+            var activity = new DsfUniqueActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Field(s)"];
@@ -1697,7 +1697,34 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
+
+        }
+        [Given(@"""(.*)"" contains XPath \\""(.*)"" with source ""(.*)""")]
+        public void GivenContainsXPathWithResultAs(string parentName, string xpathName, string source)
+        {
+            const string a = "<XPATH-EXAMPLE>  <CUSTOMER id=\"1\" type=\"B\">Mr.  Jones</CUSTOMER><CUSTOMER id=\"2\" type=\"C\">Mr.  Johnson</CUSTOMER></XPATH-EXAMPLE> ";
+            DsfXPathActivity dsfXPathActivity = new DsfXPathActivity
+            {
+                
+                SourceString = a
+                , DisplayName = xpathName                
+                , ResultsCollection = new List<XPathDTO>
+                {
+                    new XPathDTO("[[singleValue]]", source, 1, true)
+                }
+            };            
+            _commonSteps.AddActivityToActivityList(parentName, xpathName, dsfXPathActivity);
+        }
+
+        [Given(@"""(.*)"" contains Aggregate Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
+        public void GivenAggregateCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
+        {
+            _commonSteps.AddVariableToVariableList(resultVariable);
+
+            DsfAggregateCalculateActivity calculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
@@ -1708,7 +1735,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(result);
 
-            DsfCountRecordsetNullHandlerActivity countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
+            var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
@@ -1716,7 +1743,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
-            DsfDeleteRecordActivity nullHandlerActivity = new DsfDeleteRecordActivity { DisplayName = activityName };
+            var nullHandlerActivity = new DsfDeleteRecordActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -1733,7 +1760,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains NullHandlerDelete ""(.*)"" as")]
         public void GivenContainsNullHandlerDeleteAs(string parentName, string activityName, Table table)
         {
-            DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
+            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -1754,7 +1781,7 @@ namespace Dev2.Activities.Specs.Composition
             var result = resultVariable;
             var recset = recsetToSearch;
             _commonSteps.AddVariableToVariableList(result);
-            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
+            var activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var matchType = tableRow["Match Type"];
@@ -1769,7 +1796,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
         public void GivenItContainFindUniqueAs(string parentName, string activityName, Table table)
         {
-            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
+            var activity = new DsfUniqueActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Fields"];
@@ -1788,7 +1815,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
         public void GivenItContainsCaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity { DisplayName = activityName };
+            var activity = new DsfCaseConvertActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -1810,7 +1837,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                var systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
@@ -1922,7 +1949,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Data Split ""(.*)"" as")]
         public void GivenItContainsDataSplitAs(string parentName, string activityName, Table table)
         {
-            DsfDataSplitActivity activity = new DsfDataSplitActivity { DisplayName = activityName };
+            var activity = new DsfDataSplitActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var valueToSplit = string.IsNullOrEmpty(tableRow["String"]) ? "" : tableRow["String"];
@@ -1946,7 +1973,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsReplaceIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfReplaceActivity activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -1965,7 +1992,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Find Index ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsFindIndexIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfIndexActivity activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -1985,7 +2012,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
         public void GivenContainsAnCreateAs(string parentName, string activityName, Table table)
         {
-            DsfPathCreate activity = new DsfPathCreate { DisplayName = activityName };
+            var activity = new DsfPathCreate { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -2005,11 +2032,182 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
+        [Given(@"""(.*)"" contains an Rename ""(.*)"" as")]
+        public void GivenContainsAnWriteRenameAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfPathRename() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variable = tableRow["File or Folder"];
+                var destination = tableRow["Destination"];
+                var exist = tableRow["If it exits"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.Overwrite = exist == "True";
+                activity.OutputPath = destination;
+                activity.InputPath = variable;
+
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains an Zip ""(.*)"" as")]
+        public void GivenContainsAnZipAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfZip() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variable = tableRow["File or Folder"];
+                var destination = tableRow["Destination"];
+                var exist = tableRow["If it exits"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.Overwrite = exist == "True";
+                activity.OutputPath = destination;
+                activity.InputPath = variable;
+
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains an UnZip ""(.*)"" as")]
+        public void GivenContainsAnUnZipAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfUnZip() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variable = tableRow["File or Folder"];
+                var destination = tableRow["Destination"];
+                var exist = tableRow["If it exits"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.Overwrite = exist == "True";
+                activity.OutputPath = destination;
+                activity.InputPath = variable;
+
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+
+
+
+        [Given(@"""(.*)"" contains an Move ""(.*)"" as")]
+        public void GivenContainsAnMoveAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfPathMove { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var source = tableRow["File or Folder"];
+                var exist = tableRow["If it exits"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+                var desc = tableRow["Destination"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.Overwrite = exist == "True";
+                activity.OutputPath = desc;
+                activity.InputPath = source;
+
+
+
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains an Read Folder ""(.*)"" as")]
+        public void GivenContainsAnReadFolderAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfFolderRead() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var source = tableRow["File or Folder"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+                var isFoldersSelected = tableRow["Folders"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.InputPath = source;
+                activity.IsFoldersSelected = isFoldersSelected == "True";
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains an Read File ""(.*)"" as")]
+        public void GivenContainsAnReadFileAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfFileRead() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var source = tableRow["File or Folder"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.InputPath = source;
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains an Write File ""(.*)"" as")]
+        public void GivenContainsAnWriteFileAs(string parentName, string activityName, Table table)
+        {
+            var activity = new DsfFileWrite() { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var source = tableRow["File or Folder"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+                var overWrite = tableRow["If it exits"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.OutputPath = source;
+                activity.Overwrite = overWrite == "True";
+                _commonSteps.AddVariableToVariableList(result);
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+
+
 
         [Given(@"""(.*)"" contains an Delete Folder ""(.*)"" as")]
         public void GivenContainsAnDeleteFolderAs(string parentName, string activityName, Table table)
         {
-            DsfPathDelete activity = new DsfPathDelete { DisplayName = activityName };
+            var activity = new DsfPathDelete { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Recordset"];
@@ -2026,7 +2224,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -2044,7 +2242,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
         public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
+            var activity = new DsfBaseConvertActivity { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -2061,7 +2259,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
             //Load Source based on the name
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\PostgreSourceTest").FirstOrDefault();
@@ -2104,7 +2302,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
             //Load Source based on the name
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\mysqlSource").FirstOrDefault();
@@ -2147,7 +2345,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
             //Load Source based on the name
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\testingDBSrc").FirstOrDefault();
