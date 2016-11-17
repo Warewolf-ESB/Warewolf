@@ -26,7 +26,9 @@ namespace Dev2.Studio.Core
             _inputs = new ObservableCollection<object>();
             _outputs = new ObservableCollection<object>();
             _assertResultList = new ObservableCollection<object>();
+            IsTestView = false;
         }
+
 
         public ActivitySelectionType SelectionType { get; set; }
 
@@ -76,7 +78,7 @@ namespace Dev2.Studio.Core
 
             Guid serverID;
             var isRemote = Guid.TryParse(content.Server, out serverID);
-            if (isRemote|| String.IsNullOrEmpty( content.Server))
+            if (isRemote|| string.IsNullOrEmpty( content.Server))
             {
 
 
@@ -158,11 +160,17 @@ namespace Dev2.Studio.Core
                     }
                     while (parent != null);
                 }
-                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
+                if (!IsTestView)
+                {
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
+                }
             }
             else
             {
-                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = ActivitySelectionType.Remove });
+                if (!IsTestView)
+                {
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = ActivitySelectionType.Remove });
+                }
             }
 
             SelectionType = ActivitySelectionType.Single;

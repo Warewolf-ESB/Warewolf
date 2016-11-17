@@ -32,6 +32,7 @@ namespace Dev2.Studio.Core
         protected DebugTreeViewItemViewModel()
         {
             _children = new ObservableCollection<IDebugTreeViewItemViewModel>();
+            IsTestView = false;
         }
 
         public TContent Content
@@ -110,6 +111,7 @@ namespace Dev2.Studio.Core
             }
         }
         public string ActivityTypeName { get; set; }
+        public bool IsTestView { get; set; }
 
         public string TestDescription
         {
