@@ -3312,6 +3312,18 @@ namespace Warewolf.UITests
                 return this.mFirstSubItem;
             }
         }
+        
+        public SecondSubItem1 SecondSubItem
+        {
+            get
+            {
+                if ((this.mSecondSubItem == null))
+                {
+                    this.mSecondSubItem = new SecondSubItem1(this);
+                }
+                return this.mSecondSubItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3322,6 +3334,8 @@ namespace Warewolf.UITests
         private WpfEdit mItemEdit;
         
         private FirstSubItem mFirstSubItem;
+        
+        private SecondSubItem1 mSecondSubItem;
         #endregion
     }
     
@@ -3444,6 +3458,18 @@ namespace Warewolf.UITests
                 return this.mResourceNameTextBlock;
             }
         }
+        
+        public FirstItem1 FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new FirstItem1(this);
+                }
+                return this.mFirstItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3452,6 +3478,8 @@ namespace Warewolf.UITests
         private WpfEdit mItemEdit;
         
         private WpfText mResourceNameTextBlock;
+        
+        private FirstItem1 mFirstItem;
         #endregion
     }
     
@@ -3460,6 +3488,554 @@ namespace Warewolf.UITests
     {
         
         public ResourceImageImage1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstItem1 : WpfTreeItem
+    {
+        
+        public FirstItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage2 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage2(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        
+        public WpfText ResourceNameTextBlock
+        {
+            get
+            {
+                if ((this.mResourceNameTextBlock == null))
+                {
+                    this.mResourceNameTextBlock = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceNameTextBlock.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mResourceNameTextBlock.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceNameTextBlock.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mResourceNameTextBlock;
+            }
+        }
+        
+        public FirstSubItem1 FirstSubItem
+        {
+            get
+            {
+                if ((this.mFirstSubItem == null))
+                {
+                    this.mFirstSubItem = new FirstSubItem1(this);
+                }
+                return this.mFirstSubItem;
+            }
+        }
+        
+        public SecondSubItem SecondSubItem
+        {
+            get
+            {
+                if ((this.mSecondSubItem == null))
+                {
+                    this.mSecondSubItem = new SecondSubItem(this);
+                }
+                return this.mSecondSubItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage2 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        
+        private WpfText mResourceNameTextBlock;
+        
+        private FirstSubItem1 mFirstSubItem;
+        
+        private SecondSubItem mSecondSubItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage2 : WpfImage
+    {
+        
+        public ResourceImageImage2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstSubItem1 : WpfTreeItem
+    {
+        
+        public FirstSubItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage3 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage3(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        
+        public WpfText ResourceNameTextBlock
+        {
+            get
+            {
+                if ((this.mResourceNameTextBlock == null))
+                {
+                    this.mResourceNameTextBlock = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceNameTextBlock.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mResourceNameTextBlock.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceNameTextBlock.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mResourceNameTextBlock;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage3 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        
+        private WpfText mResourceNameTextBlock;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage3 : WpfImage
+    {
+        
+        public ResourceImageImage3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SecondSubItem : WpfTreeItem
+    {
+        
+        public SecondSubItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage4 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage4(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        
+        public WpfText ResourceNameTextBlock
+        {
+            get
+            {
+                if ((this.mResourceNameTextBlock == null))
+                {
+                    this.mResourceNameTextBlock = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceNameTextBlock.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mResourceNameTextBlock.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceNameTextBlock.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mResourceNameTextBlock;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage4 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        
+        private WpfText mResourceNameTextBlock;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage4 : WpfImage
+    {
+        
+        public ResourceImageImage4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ViewIcon
+        {
+            get
+            {
+                if ((this.mViewIcon == null))
+                {
+                    this.mViewIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mViewIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "EditButton";
+                    this.mViewIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mViewIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewIcon;
+            }
+        }
+        
+        public WpfButton ExecuteIcon
+        {
+            get
+            {
+                if ((this.mExecuteIcon == null))
+                {
+                    this.mExecuteIcon = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExecuteIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExecuteButton";
+                    this.mExecuteIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExecuteIcon.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExecuteIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mViewIcon;
+        
+        private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SecondSubItem1 : WpfTreeItem
+    {
+        
+        public SecondSubItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ResourceImageImage5 ResourceImageImage
+        {
+            get
+            {
+                if ((this.mResourceImageImage == null))
+                {
+                    this.mResourceImageImage = new ResourceImageImage5(this);
+                }
+                return this.mResourceImageImage;
+            }
+        }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
+        
+        public WpfText ResourceNameTextBlock
+        {
+            get
+            {
+                if ((this.mResourceNameTextBlock == null))
+                {
+                    this.mResourceNameTextBlock = new WpfText(this);
+                    #region Search Criteria
+                    this.mResourceNameTextBlock.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mResourceNameTextBlock.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mResourceNameTextBlock.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mResourceNameTextBlock;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResourceImageImage5 mResourceImageImage;
+        
+        private WpfEdit mItemEdit;
+        
+        private WpfText mResourceNameTextBlock;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ResourceImageImage5 : WpfImage
+    {
+        
+        public ResourceImageImage5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3529,13 +4105,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public FirstSubItem1 FirstSubItem
+        public FirstSubItem2 FirstSubItem
         {
             get
             {
                 if ((this.mFirstSubItem == null))
                 {
-                    this.mFirstSubItem = new FirstSubItem1(this);
+                    this.mFirstSubItem = new FirstSubItem2(this);
                 }
                 return this.mFirstSubItem;
             }
@@ -3543,15 +4119,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private FirstSubItem1 mFirstSubItem;
+        private FirstSubItem2 mFirstSubItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FirstSubItem1 : WpfTreeItem
+    public class FirstSubItem2 : WpfTreeItem
     {
         
-        public FirstSubItem1(UITestControl searchLimitContainer) : 
+        public FirstSubItem2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3564,13 +4140,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage2 ResourceImageImage
+        public ResourceImageImage6 ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage2(this);
+                    this.mResourceImageImage = new ResourceImageImage6(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -3595,17 +4171,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage2 mResourceImageImage;
+        private ResourceImageImage6 mResourceImageImage;
         
         private WpfEdit mItemEdit;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage2 : WpfImage
+    public class ResourceImageImage6 : WpfImage
     {
         
-        public ResourceImageImage2(UITestControl searchLimitContainer) : 
+        public ResourceImageImage6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -3685,13 +4261,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public FirstItem1 FirstItem
+        public FirstItem2 FirstItem
         {
             get
             {
                 if ((this.mFirstItem == null))
                 {
-                    this.mFirstItem = new FirstItem1(this);
+                    this.mFirstItem = new FirstItem2(this);
                 }
                 return this.mFirstItem;
             }
@@ -3719,7 +4295,7 @@ namespace Warewolf.UITests
         #region Fields
         private Checkbox1 mCheckbox;
         
-        private FirstItem1 mFirstItem;
+        private FirstItem2 mFirstItem;
         
         private WpfTreeItem mSecondItem;
         #endregion
@@ -3784,10 +4360,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FirstItem1 : WpfTreeItem
+    public class FirstItem2 : WpfTreeItem
     {
         
-        public FirstItem1(UITestControl searchLimitContainer) : 
+        public FirstItem2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84812,13 +85388,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public FirstItem2 FirstItem
+        public FirstItem3 FirstItem
         {
             get
             {
                 if ((this.mFirstItem == null))
                 {
-                    this.mFirstItem = new FirstItem2(this);
+                    this.mFirstItem = new FirstItem3(this);
                 }
                 return this.mFirstItem;
             }
@@ -84848,7 +85424,7 @@ namespace Warewolf.UITests
         #region Fields
         private Checkbox2 mCheckbox;
         
-        private FirstItem2 mFirstItem;
+        private FirstItem3 mFirstItem;
         
         private WpfTreeItem mSecondItem;
         #endregion
@@ -84913,10 +85489,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FirstItem2 : WpfTreeItem
+    public class FirstItem3 : WpfTreeItem
     {
         
-        public FirstItem2(UITestControl searchLimitContainer) : 
+        public FirstItem3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84930,13 +85506,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ResourceImageImage3 ResourceImageImage
+        public ResourceImageImage7 ResourceImageImage
         {
             get
             {
                 if ((this.mResourceImageImage == null))
                 {
-                    this.mResourceImageImage = new ResourceImageImage3(this);
+                    this.mResourceImageImage = new ResourceImageImage7(this);
                 }
                 return this.mResourceImageImage;
             }
@@ -84944,15 +85520,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ResourceImageImage3 mResourceImageImage;
+        private ResourceImageImage7 mResourceImageImage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ResourceImageImage3 : WpfImage
+    public class ResourceImageImage7 : WpfImage
     {
         
-        public ResourceImageImage3(UITestControl searchLimitContainer) : 
+        public ResourceImageImage7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

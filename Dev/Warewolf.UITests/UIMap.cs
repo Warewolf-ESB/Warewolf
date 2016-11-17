@@ -542,7 +542,7 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
-        
+
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
             FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
@@ -2027,12 +2027,11 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
-        public void Create_Resource_In_Folder1()
+        public void Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(79, 13));
-            Drag_Toolbox_Random_Onto_DesignSurface();
         }
 
         public void Click_Assign_Tool_Remove_Variable_From_Tool()
@@ -2462,7 +2461,7 @@ namespace Warewolf.UITests
                     break;
             }
         }
-        
+
         public void Click_Explorer_RemoteServer_Edit_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
@@ -2624,25 +2623,25 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
-        
+
         public void Enter_Person_Name_On_Assign_Object_tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldCell.FieldNameComboBox.TextEdit.Text = "[[@Person.Name]]";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.DataGrid.Row1.FieldValueCell.FieldValueComboBox.TextEdit.Text = "Bob";
         }
-        
+
         public void Enter_Values_Into_Case_Conversion_Tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell.ValueComboBox.TextEdit.Text = "res";
         }
-        
+
         public void Connect_Assign_to_Next_tool()
         {
             Mouse.Hover(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(200, 220));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(300, 220));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, 0, 44);
         }
-        
+
         public void Enter_Values_Into_Replace_Tool_Large_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.InFiledsComboBox.TextEdit.Text = "[[rec().a]]";
@@ -2650,7 +2649,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ReplaceComboBox.TextEdit.Text = "o";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace.SmallViewContentCustom.ResultComboBox.TextEdit.Text = "res";
         }
-        
+
         public void Enter_Values_Into_FindIndex_Tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.SmallViewContentCustom.InFieldComboBox.TextEdit.Text = "SomeLongString";
@@ -2930,7 +2929,7 @@ namespace Warewolf.UITests
         {
             Assert.AreEqual("Dice1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
-        
+
         public void Add_Dotnet_Dll_Source(string sourceName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
@@ -2941,7 +2940,7 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(sourceName, true);
             Click_Close_DotNetDll_Tab();
         }
-        
+
         public void Enter_Dice_Roll_Values()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.From.FromTextEdit.Exists, "From textbox does not exist");
@@ -2965,7 +2964,7 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
             Playback.Wait(100);
         }
-        
+
         public void Show_Explorer_First_Item_Tests_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
@@ -2973,7 +2972,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
         }
-        
+
         public void Debug_Using_Play_Icon()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon.DrawHighlight();
@@ -4058,13 +4057,14 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Paste, new Point(64, 15));
         }
 
-        [When(@"I Create SubFolder In Folder1")]
-        public void Create_SubFolder_In_Folder1()
+        [When(@"I Create New Folder ""(.*)"" In Explorer Second Item With Context Menu")]
+        public void Create_New_Folder_In_Explorer_Second_Item_With_Context_Menu(string FolderName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(126, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem, new Point(78, 15));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit.Text = "Acceptance Testing Resources";
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem.ItemEdit.Text = FolderName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, "{Enter}", ModifierKeys.None);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         [When(@"I Delete Nested Hello World")]
@@ -5147,12 +5147,12 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewSwagger.Enabled, "View swagger is disabled");
         }
 
-        [When(@"I Move AcceptanceTestd To AcceptanceTestingResopurces")]
-        public void Move_AcceptanceTestd_To_AcceptanceTestingResopurces()
+        [When(@"I Drag Explorer First Item Onto The Second Item")]
+        public void Drag_Explorer_First_Item_Onto_The_Second_Item()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(10, 10));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 11));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(10, 10));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 11));
         }
 
         [When(@"I Move Dice Roll To Localhost")]
@@ -6833,6 +6833,22 @@ namespace Warewolf.UITests
         public void Click_Decision_Large_View_Match_Type_Combobox()
         {
             Mouse.Click(DecisionOrSwitchDialog.LargeView.Table.Row1.MatchTypeCell.MatchTypeCombobox, new Point(5, 5));
+        }
+
+        [When(@"I Make Workflow Savable")]
+        public void Make_Workflow_Savable()
+        {
+            Drag_Toolbox_Comment_Onto_DesignSurface();
+        }
+
+        [When(@"I Drag Explorer First Sub Item Onto Second Sub Item")]
+        public void Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem, new Point(90, 7));
+            Playback.Wait(2000);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
     }
 }

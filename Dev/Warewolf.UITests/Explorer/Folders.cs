@@ -12,16 +12,9 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void MergeFoldersUITest()
         {
-            var acceptanceResources = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
-            Assert.IsTrue(Directory.Exists(acceptanceResources));
-            Assert.IsFalse(Directory.Exists(resourcesFolder));
-            UIMap.Filter_Explorer("Acceptance");
-            UIMap.Create_SubFolder_In_Folder1();
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
+            UIMap.Filter_Explorer("DragAndDropMergeFolder");
+            UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.SecondSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         }
 
         [TestMethod]
@@ -29,14 +22,9 @@ namespace Warewolf.UITests
         public void CreateResourceInFolderUITest()
         {
             UIMap.Filter_Explorer("Acceptance Tests");
-            UIMap.Create_Resource_In_Folder1();
+            UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
+            UIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World", true);
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Delete_Nested_Hello_World();
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-            Assert.IsTrue(File.Exists(resourcesFolder + @"\" + "Hello World" + ".xml"));
-            UIMap.Click_Explorer_Filter_Clear_Button();
         }
 
         #region Additional test attributes
