@@ -1060,6 +1060,9 @@ namespace Dev2.Studio.ViewModels
                     EventPublisher.Publish(serviceTestViewModel?.SelectedServiceTest != null
                         ? new DebugOutputMessage(serviceTestViewModel.SelectedServiceTest?.DebugForTest ?? new List<IDebugState>())
                         : new DebugOutputMessage(new List<IDebugState>()));
+
+                    if (serviceTestViewModel != null)
+                        serviceTestViewModel.WorkflowDesignerViewModel.IsTestView = true;
                 }
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
@@ -1193,8 +1196,7 @@ namespace Dev2.Studio.ViewModels
 
         public IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel)
         {
-            var workflow = new WorkflowDesignerViewModel(resourceModel);
-
+            var workflow = new WorkflowDesignerViewModel(resourceModel) {IsTestView = true};
             return workflow;
         }
 
