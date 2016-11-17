@@ -104,7 +104,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _contextualResourceModel = contextualResourceModel;
                 ResourceID = _contextualResourceModel.ID;
             }
-
+            IsTestView = false;
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
@@ -119,6 +119,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             AddNewTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => AddNewTest(EventPublishers.Aggregator), CanAddNewTest);
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
+
+        public bool IsTestView { get; set; }
 
         private void AddNewTest(IEventAggregator eventPublisher)
         {
@@ -824,6 +826,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
             {
                 parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { ActivityTypeName = content.ActualType };
+                parent.IsTestView = IsTestView;
                 _contentItemMap.Add(content.ParentID, parent);
             }
             child.Parent = parent;
@@ -850,6 +853,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     ActivityTypeName = content.ActualType
                 };
             }
+            child.IsTestView = IsTestView;
             return child;
         }
 

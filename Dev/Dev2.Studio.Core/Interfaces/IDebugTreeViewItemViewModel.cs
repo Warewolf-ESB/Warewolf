@@ -14,6 +14,8 @@ namespace Dev2.Studio.Core.Interfaces
         bool? HasNoError { get; set; }
         bool? MockSelected { get; set; }
         string ActivityTypeName { get; set; }
+        bool IsTestView { get; set; }
+
         void VerifyErrorState();
     }
 }

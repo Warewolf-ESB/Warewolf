@@ -1743,6 +1743,19 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
+        [Given(@"""(.*)"" contains WebRequest ""(.*)"" as")]
+        public void GivenContainsWebRequestAs(string parentName, string toolName, Table table)
+        {
+            var resultVariable = table.Rows[0]["Result"];
+
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            var dsfWebGetRequestActivity = new DsfWebGetRequestActivity { DisplayName = toolName };
+            dsfWebGetRequestActivity.Url = table.Rows[0]["Url"];
+            dsfWebGetRequestActivity.Result = resultVariable;
+
+            _commonSteps.AddActivityToActivityList(parentName, toolName, dsfWebGetRequestActivity);
+        }
+
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
         {
