@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.TestFramework
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-
+            
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             //var environmentModel = EnvironmentRepository.Instance.Source;
             //environmentModel.Connect();
@@ -465,6 +465,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
             var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
+            
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
