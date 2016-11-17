@@ -20,6 +20,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
@@ -1264,6 +1265,15 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             _scenarioContext.Add(activityName, forEach);
         }
+
+        [Given(@"""(.*)"" contains a SelectAndApply ""(.*)"" DataSource ""(.*)"" Alias ""(.*)""")]
+        public void GivenContainsASelectAndApplyDataSourceAlias(string parentName, string activityName, string datasource, string alias)
+        {
+            var selectAndApplyActivity = new DsfSelectAndApplyActivity { DisplayName = activityName, DataSource = datasource, Alias = alias};
+            _commonSteps.AddActivityToActivityList(parentName, activityName, selectAndApplyActivity);
+            _scenarioContext.Add(activityName, selectAndApplyActivity);
+        }
+
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
         // ReSharper disable InconsistentNaming

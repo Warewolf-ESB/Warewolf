@@ -43,6 +43,7 @@ namespace Dev2.ViewModels
                 }
             };
             DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel);
+            DebugOutputViewModel.IsTestView = true;
         }
 
         public override bool HasVariables => false;
@@ -137,7 +138,6 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.None:
                             return false;
                         case MessageBoxResult.No:
-                            ViewModel.Dispose();
                             return true;
                         case MessageBoxResult.Yes:
                             if (ViewModel.HasDuplicates())
@@ -161,7 +161,6 @@ namespace Dev2.ViewModels
                     ViewModel.Save();
                 }
             }
-            ViewModel.Dispose();
             return true;
         }
 

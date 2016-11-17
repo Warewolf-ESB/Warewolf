@@ -153,6 +153,7 @@ namespace Dev2.Runtime
                             serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                             {
                                 Variable = dev2Definition.Name,
+                                AssertOp = "=",
                                 Value = ""
                             });
                         }
@@ -198,6 +199,7 @@ namespace Dev2.Runtime
                     serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                     {
                         Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                        AssertOp = "=",
                         Value = ""
                     });
                 }
@@ -208,6 +210,7 @@ namespace Dev2.Runtime
                         serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                         {
                             Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                            AssertOp = "=",
                             Value = ""
                         });
                     }

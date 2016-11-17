@@ -261,7 +261,6 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
 
-        // Travis.Frisinger - 28.01.2013 : Amended for Debug
         List<DebugItem> GetDebugOutputs(string theResult)
         {
             var result = new List<DebugItem>();
@@ -273,7 +272,6 @@ namespace Dev2.Activities
             {
                 resultString = GetResultString(theResult, dds);
                 
-                //AddDebugOutputItem(new DebugItemStaticDataParams(resultString, ""));
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }

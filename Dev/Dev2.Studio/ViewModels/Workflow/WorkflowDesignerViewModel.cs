@@ -2616,6 +2616,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             ActivityDesignerHelper.AddDesignerAttributes(this);
             NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            GetWorkflowLink();
         }
 
         private void PublishMessages(IContextualResourceModel resourceModel)

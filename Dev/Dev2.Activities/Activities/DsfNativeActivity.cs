@@ -966,6 +966,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
                     var actMsg = string.Format(msg, val1, val2, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
+                    if (testResult.Message.EndsWith(Environment.NewLine))
+                    {
+                        testResult.Message = testResult.Message.Replace(Environment.NewLine, "").Replace("\r", "");
+                    }
                 }
                 if (dataObject.IsDebugMode())
                 {
@@ -973,6 +977,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
                         msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                        msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
                     }
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
