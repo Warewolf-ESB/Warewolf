@@ -100,8 +100,6 @@ namespace Warewolf.Studio.ViewModels
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
-            IsLoading = true;
-
 
             UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
 
@@ -114,8 +112,6 @@ namespace Warewolf.Studio.ViewModels
                 models.Add(dummyTest);
                 SelectedServiceTest = dummyTest;
                 Tests = models;
-                IsLoading = false;
-
                 if (msg != null)
                 {
                     var test = msg as NewTestFromDebugMessage;
@@ -163,22 +159,27 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name && debugItemContent.ActualType != typeof(TestMockDecisionStep).Name && debugItemContent.ActualType != typeof(TestMockSwitchStep).Name && debugItemContent.ActualType != typeof(TestMockStep).Name)
                         {
-                            var actualType = debugItemContent.ActualType;
-                            if (actualType == typeof(DsfDecision).Name)
-                            {
-                                DecisionFromDebug(debugItemContent);
-                            }
-                            else if (actualType == typeof(DsfSwitch).Name)
-                            {
-                                SwitchFromDebug(debugItemContent);
-                            }
-                            else
-                            {
-                                AddStepFromDebug(debugState, debugItemContent);
-                            }
+                            ProcessRegularDebugItem(debugItemContent, debugState);
                         }
                     }
                 }
+            }
+        }
+
+        private void ProcessRegularDebugItem(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState)
+        {
+            var actualType = debugItemContent.ActualType;
+            if(actualType == typeof(DsfDecision).Name)
+            {
+                DecisionFromDebug(debugItemContent);
+            }
+            else if(actualType == typeof(DsfSwitch).Name)
+            {
+                SwitchFromDebug(debugItemContent);
+            }
+            else
+            {
+                AddStepFromDebug(debugState, debugItemContent);
             }
         }
 
@@ -1245,25 +1246,23 @@ namespace Warewolf.Studio.ViewModels
                     return GetTests();
                 }, models =>
                 {
-                    var dummyTest = new DummyServiceTest(CreateTests) {TestName = "Create a new test."};
+                    var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                     models.Add(dummyTest);
                     var testName = SelectedServiceTest?.TestName;
                     SelectedServiceTest = dummyTest;
-                    _tests = models;
-                    OnPropertyChanged(() => Tests);
+                    Tests = models;
                     SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
-                    IsLoading = false;
+
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                        WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
+                        if (WorkflowDesignerViewModel != null)
+                            WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
+                    }, DispatcherPriority.Render);
+
                 });
 
-                if (Application.Current != null)
-                    if (Application.Current.Dispatcher != null)
-                        Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
-                        {
-                            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-                            WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
-                            if (WorkflowDesignerViewModel != null)
-                                WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
-                        }), DispatcherPriority.Background);
             }
         }
 
@@ -1330,14 +1329,8 @@ namespace Warewolf.Studio.ViewModels
             return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public bool IsLoading { get; set; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        public IAsyncWorker AsyncWorker { get; set; }
-        // ReSharper disable once MemberCanBePrivate.Global
-        public IEventAggregator EventPublisher { get; set; }
+        private IAsyncWorker AsyncWorker { get; }
+        private IEventAggregator EventPublisher { get; }
 
         private void CreateTests()
         {
@@ -1960,8 +1953,6 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestModel.Item = (ServiceTestModel)serviceTestModel.Clone();
                         serviceTestModels.Add(serviceTestModel);
                     }
-
-
                 }
                 return serviceTestModels.ToObservableCollection<IServiceTestModel>();
             }

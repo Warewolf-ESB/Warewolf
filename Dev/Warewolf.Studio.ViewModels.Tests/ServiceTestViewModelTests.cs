@@ -558,28 +558,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(_wasCalled);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("TestFrameworkViewModel_Tests")]
-        public void TestFrameworkViewModel_TestPassingResult_SetProperty_ShouldFireOnPropertyChanged()
-        {
-            //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
-            var _wasCalled = false;
-            testFrameworkViewModel.PropertyChanged += (sender, args) =>
-              {
-                  if (args.PropertyName == "TestPassingResult")
-                  {
-                      _wasCalled = true;
-                  }
-              };
-            //------------Execute Test---------------------------
-            testFrameworkViewModel.TestPassingResult = String.Empty;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_wasCalled);
-            Assert.IsFalse(testFrameworkViewModel.IsLoading);
-        }
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
