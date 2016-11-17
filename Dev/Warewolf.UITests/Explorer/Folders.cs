@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void MergeFoldersUITest()
         {
-            UIMap.Filter_Explorer("DragAndDropMergeFolder");
+            UIMap.Filter_Explorer("DragAndDropMergeFolder", true);
             UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.SecondSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         }
