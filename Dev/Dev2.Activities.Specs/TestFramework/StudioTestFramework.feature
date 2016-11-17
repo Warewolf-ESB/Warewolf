@@ -1429,8 +1429,8 @@ Scenario: Test WF with Move
 Scenario: Test WF with Read Folder
 		Given I have a workflow "ReadFolderTestWF"		
 		And "ReadFolderTestWF" contains an Read Folder "ReadFolder" as
-		  | File or Folder          | If it exits | Username | Password | Result   | Folders |
-		  | C:\ProgramData\Warewolf | True        |          |          | [[res2]] | True    |
+		  | File or Folder          | If it exits | Username | Password | Result          | Folders |
+		  | C:\ProgramData\Warewolf | True        |          |          | [[rec(*).Name]] | True    |
 		And I save workflow "ReadFolderTestWF"
 		Then the test builder is open with "ReadFolderTestWF"
 		And I click New Test
@@ -1448,19 +1448,22 @@ Scenario: Test WF with Read Folder
 		Then workflow "ReadFolderTestWF" is deleted as cleanup
 
 Scenario: Test WF with Read File
-		Given I have a workflow "ReadFileTestWF"		
-		And "ReadFileTestWF" contains an Read File "ReadFolder" as
-		  | File or Folder                  | If it exits | Username | Password | Result     | Folders |
-		  | C:\ProgramData\Warewolf\Log.txt | True        |          |          | [[result]] | True    |
+		Given I have a workflow "ReadFileTestWF"
+		And "ReadFileTestWF" contains an Create "Create1" as
+		  | File or Folder                            | If it exits | Username | Password | Result         |
+		  | C:\ProgramData\Warewolf\Resources\Log.txt | True        |          |          | [[FileCreate]] |
+		And "ReadFileTestWF" contains an Read File "ReadFile" as
+		  | File or Folder                            | If it exits | Username | Password | Result     | Folders |
+		  | C:\ProgramData\Warewolf\Resources\Log.txt | True        |          |          | [[result]] | True    |
 		And I save workflow "ReadFileTestWF"
 		Then the test builder is open with "ReadFileTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "ReadFolder" as TestStep
+		And I Add "ReadFile" as TestStep
 		And I add new StepOutputs as 
-		| Variable Name | Condition | Value                        |
-		| [[result]]    | =         | the contents of the log file |
+		| Variable Name | Condition | Value |
+		| [[result]]    | =         |       |
 		When I save
 		And I run the test
 		Then test result is Passed
@@ -1643,6 +1646,163 @@ Scenario: Test WF with FormatNumber
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "FormatNumberTestWF" is deleted as cleanup
 
+Scenario: Test WF with Count Record
+	Given I have a workflow "CountRecTestWF"
+	And "CountRecTestWF&2Delete" contains an Assign "countrecordval1" as
+	  | variable    | value |
+	  | [[rec().a]] | 21    |
+	  | [[rec().a]] | 22    |
+	  | [[rec().a]] |       |
+	  And "CountRecTestWF&2Delete" contains Count Record "Cnt1" on "[[rec()]]" into "[[result]]"
+	And I save workflow "CountRecTestWF"
+	Then the test builder is open with "CountRecTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Cnt1" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 3     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "CountRecTestWF" is deleted as cleanup
+
+Scenario: Test WF with Lenght
+	Given I have a workflow "LenghtTestWF"
+	And "LenghtTestWF" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | 1213  |
+	  | [[rec().a]] | 4561  |
+	  And "LenghtTestWF" contains Length "Len" on "[[rec(*)]]" into "[[result]]"
+	And I save workflow "LenghtTestWF"
+	Then the test builder is open with "LenghtTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Len" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 2     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "LenghtTestWF" is deleted as cleanup
+
+Scenario: Test WF with Find Records
+	Given I have a workflow "FindRecTestWF"
+	 And "FindRecTestWF" contains an Assign "Record" as
+      | variable     | value |
+      | [[rec(1).a]] | 23    |
+      | [[rec(2).a]] | 34    |
+      | [[rec(3).a]]  | 10    |
+	  And "FindRecTestWF" contains Find Record Index "FindRecord0" into result as "[[result]]"
+	  | # | In Field    | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
+	  | # | [[rec().a]] | 1 | =          | 34    | YES                            | NO                          |
+	And I save workflow "FindRecTestWF"
+	Then the test builder is open with "FindRecTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "FindRecord0" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 2     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "FindRecTestWF" is deleted as cleanup
+
+Scenario: Test WF with Delete Records
+	Given I have a workflow "DeleteRecTestWF"
+	And "DeleteRecTestWF" contains an Assign "Assign to delete" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "DeleteRecTestWF" contains Delete "Delet1" as
+	  | Variable   | result     |
+	  | [[rec(1)]] | [[result]] |
+      And I save workflow "DeleteRecTestWF"
+	Then the test builder is open with "DeleteRecTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Delet1" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value   |
+	  	 | [[result]]    | =         | Success |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "DeleteRecTestWF" is deleted as cleanup
+
+Scenario: Test WF with Unique Record
+	Given I have a workflow "UniqueTestWF"
+	 And "UniqueTestWF" contains an Assign "Records" as
+	  | variable      | value |
+	  | [[rs().row]]  | 10    |
+	  | [[rs().data]] | 10    |
+	  | [[rs().row]]  | 40    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 20    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 30    |
+	  | [[rs().data]] | 40    |
+	  And "UniqueTestWF" contains an Unique "Unique rec" as
+	  | In Field(s)                  | Return Fields | Result           |
+	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
+	 And I save workflow "UniqueTestWF"
+	Then the test builder is open with "UniqueTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "Unique rec" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name     | Condition | Value |
+	  	 | [[rec(1).unique]] | =         | 10    |
+	  	 | [[rec(2).unique]] | =         | 40    |
+	  	 | [[rec(3).unique]] | =         | 20    |
+	  	 | [[rec(4).unique]] | =         | 30    |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "UniqueTestWF" is deleted as cleanup
+
+Scenario: Test WF with Sort
+	Given I have a workflow "SortTestWF"
+	And "SortTestWF" contains an Assign "sortval5" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 10    |	  	  
+	  | [[rs(2).a]] | 20    |
+	  And "SortTestWF" contains an Sort "sortRec1" as
+	  | Sort Field  | Sort Order |
+	  | [[rs(*).a]] | Backwards  |
+	 And I save workflow "SortTestWF"
+	Then the test builder is open with "SortTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "sortRec1" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[rs(1).a]]   | =         | 20    |
+	  	 | [[rs(2).a]]   | =         | 10    |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "SortTestWF" is deleted as cleanup
+
 Scenario: Test WF with DateTime
 	Given I have a workflow "DateTimeTestWF"
 	And "DateTimeTestWF" contains Date and Time "AddDate" as
@@ -1684,26 +1844,27 @@ Scenario: Test WF with DateTimeDiff
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "DateTimeDiffTestWF" is deleted as cleanup
+
 Scenario: Test WF with Unzip File
 		Given I have a workflow "UnzipFileTestWF"		
 		And "UnzipFileTestWF" contains an Create "Create1" as
-		  | File or Folder                                     | If it exits | Username | Password | Result   |
+		  | File or Folder                                          | If it exits | Username | Password | Result   |
 		  | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzip.txt | True        |          |          | [[res1]] |
 		And "UnzipFileTestWF" contains an Zip "ZipFile" as
 		  | File or Folder                                          | Destination                                                   | If it exits | Username | Password | Result        | Folders |
-		  | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzip.txt | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped.txt | True        |          |          | [[Zipresult]] | True    |
-		And "UnzipFileTestWF" contains an UnZip "ZipFile" as
-		  | File or Folder                                          | Destination                                                   | If it exits | Username | Password | Result        | Folders |
-		  | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped.txt | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped1.txt | True        |          |          | [[Zipresult]] | True    |
+		  | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzip.txt | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped.zip | True        |          |          | [[ZipResult]] | True    |
+		And "UnzipFileTestWF" contains an UnZip "UnZipFile" as
+		  | File or Folder                                                | Destination                                                | If it exits | Username | Password | Result          | Folders |
+		  | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped.zip | C:\ProgramData\Warewolf\Resources\FileToZipAndUnzipZipped1 | True        |          |          | [[UnZipResult]] | True    |
 		And I save workflow "UnzipFileTestWF"
 		Then the test builder is open with "UnzipFileTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "RenameFile" as TestStep
+		And I Add "UnZipFile" as TestStep
 		And I add new StepOutputs as 
-		| Variable Name | Condition | Value   |
-		| [[result]]    | =         | Success |
+		| Variable Name   | Condition | Value   |
+		| [[UnZipResult]] | =         | Success |
 		When I save
 		And I run the test
 		Then test result is Passed
