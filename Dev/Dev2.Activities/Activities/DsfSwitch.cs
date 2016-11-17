@@ -173,7 +173,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
                     List<DebugItem> result = new List<DebugItem>();
-                    var debugOutputBase = new DebugItemStaticDataParams(Result, "Switch Arm:");
+                    var debugOutputBase = new DebugItemStaticDataParams(Result, "");
                     DebugItem itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugOutputBase.GetDebugItemResult());
                     result.Add(itemToAdd);
@@ -261,7 +261,7 @@ namespace Dev2.Activities
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "Flow Arm:", true);
+                var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
                 AddDebugOutputItem(debugItemStaticDataParams);
                 AddDebugAssertResultItem(debugItemStaticDataParams);
                 hasResult = true;
@@ -270,7 +270,7 @@ namespace Dev2.Activities
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "Flow Arm:", true);
+                var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
                 AddDebugOutputItem(debugItemStaticDataParams);
                 AddDebugAssertResultItem(debugItemStaticDataParams);
                 hasResult = true;
