@@ -5914,6 +5914,244 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Cmd Script")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithCmdScript()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Cmd Script", ((string[])(null)));
+#line 1948
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 1949
+ testRunner.Given("I have a workflow \"CmdScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1950
+ testRunner.And("\"SelectAndApplyWithAssignTestWF\" contains a Cmd Script \"testCmdScript\" ScriptToRu" +
+                    "n \"dir C:\\ProgramData\\Warewolf\\Resources\\*.xml\" and result as \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1951
+ testRunner.And("I save workflow \"CmdScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1952
+ testRunner.Then("the test builder is open with \"CmdScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1953
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1954
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1955
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1956
+ testRunner.And("I Add \"testCmdScript\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table202 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table202.AddRow(new string[] {
+                        "[[result]]",
+                        "Contains",
+                        "Volume in drive C is System"});
+#line 1957
+ testRunner.And("I add new StepOutputs as", ((string)(null)), table202, "And ");
+#line 1960
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1961
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1962
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1963
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1964
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1965
+ testRunner.Then("workflow \"CmdScriptTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with JavaScript")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithJavaScript()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with JavaScript", ((string[])(null)));
+#line 1967
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 1968
+ testRunner.Given("I have a workflow \"JavaScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1969
+ testRunner.And("\"JavaScriptTestWF\" contains a Java Script \"testJavaScript\" ScriptToRun \"var myInt" +
+                    " = Math.sqrt(49);return myInt;\" and result as \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1970
+ testRunner.And("I save workflow \"JavaScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1971
+ testRunner.Then("the test builder is open with \"JavaScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1972
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1973
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1974
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1975
+ testRunner.And("I Add \"testJavaScript\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table203 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table203.AddRow(new string[] {
+                        "[[result]]",
+                        "=",
+                        "7"});
+#line 1976
+ testRunner.And("I add new StepOutputs as", ((string)(null)), table203, "And ");
+#line 1979
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1980
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1981
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1982
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1983
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1984
+ testRunner.Then("workflow \"JavaScriptTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Python")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithPython()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Python", ((string[])(null)));
+#line 1986
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 1987
+ testRunner.Given("I have a workflow \"PythonTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table204 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table204.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "return { \'1\': \"one\", \'2\': \"two\",}.get(\'7\', \"not one or two\")"});
+#line 1988
+   testRunner.And("\"PythonTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table204, "And ");
+#line 1991
+ testRunner.And("\"PythonTestWF\" contains a Python \"testPython\" ScriptToRun \"[[rec().a]]\" and resul" +
+                    "t as \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1992
+ testRunner.And("I save workflow \"PythonTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1993
+ testRunner.Then("the test builder is open with \"PythonTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1994
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1995
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1996
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1997
+ testRunner.And("I Add \"testPython\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table205 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table205.AddRow(new string[] {
+                        "[[result]]",
+                        "=",
+                        "not one or two"});
+#line 1998
+ testRunner.And("I add new StepOutputs as", ((string)(null)), table205, "And ");
+#line 2001
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2002
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2003
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2004
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2005
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2006
+ testRunner.Then("workflow \"PythonTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Ruby")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWithRuby()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Ruby", ((string[])(null)));
+#line 2008
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2009
+ testRunner.Given("I have a workflow \"RubyTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table206 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table206.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "sleep(5)"});
+#line 2010
+   testRunner.And("\"RubyTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table206, "And ");
+#line 2013
+ testRunner.And("\"RubyTestWF\" contains a Ruby \"testRuby\" ScriptToRun \"[[rec().a]]\" and result as \"" +
+                    "[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2014
+ testRunner.And("I save workflow \"RubyTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2015
+ testRunner.Then("the test builder is open with \"RubyTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2016
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2017
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2018
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2019
+ testRunner.And("I Add \"testRuby\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table207 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table207.AddRow(new string[] {
+                        "[[result]]",
+                        "=",
+                        "5"});
+#line 2020
+ testRunner.And("I add new StepOutputs as", ((string)(null)), table207, "And ");
+#line 2023
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2024
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2025
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2026
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2027
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2028
+ testRunner.Then("workflow \"RubyTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
