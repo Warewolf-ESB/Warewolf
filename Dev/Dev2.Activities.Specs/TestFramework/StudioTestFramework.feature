@@ -1187,13 +1187,35 @@ Scenario: Test WF with Replace
 		Then workflow "ReplaceTestWF" is deleted as cleanup
 
 #Database Category	  
-Scenario: Test WF with MySql
-		Given I have a workflow "MySqlTestWF"
-		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
-		  | Input to Service | From Variable | Output from Service | To Variable      |
-		  |                  |               | name                | [[rec(*).name]]  |
-		  |                  |               | email               | [[rec(*).email]] |	
-		And I save workflow "MySqlTestWF"
+#Scenario: Test WF with MySql
+#		Given I have a workflow "MySqlTestWF"
+#		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+#		  | Input to Service | From Variable | Output from Service | To Variable      |
+#		  |                  |               | name                | [[rec(*).name]]  |
+#		  |                  |               | email               | [[rec(*).email]] |	
+#		And I save workflow "MySqlTestWF"
+#		Then the test builder is open with "MySqlTestWF"
+#		And I click New Test
+#		And a new test is added	
+#		And test name starts with "Test 1"
+#		And I Add "MySqlEmail" as TestStep
+#		And I add new StepOutputs as 
+#		| Variable Name           | Condition | Value              |
+#		| [[MySqlEmail(1).name]]  | =         | Monk               |
+#		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+#		When I save
+#		And I run the test
+#		Then test result is Passed
+#		When I delete "Test 1"
+#		Then The "DeleteConfirmation" popup is shown I click Ok
+#		Then workflow "MySqlTestWF" is deleted as cleanup
+Scenario Outline: Test WF with MySql
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
+    	And I save workflow "MySqlTestWF"
 		Then the test builder is open with "MySqlTestWF"
 		And I click New Test
 		And a new test is added	
@@ -1209,6 +1231,10 @@ Scenario: Test WF with MySql
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "MySqlTestWF" is deleted as cleanup
+		Examples: 
+			| WorkflowName | ServiceName | nameVariable    | emailVariable    | errorOccured |
+			| MySqlTestWF  | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
+
 
 Scenario: Test WF with Sql Server
 		Given I have a workflow "SqlTestWF"
@@ -2285,3 +2311,79 @@ Scenario: Test WF with Sharepoint Update List Item
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointUpdateListItemTestWF" is deleted as cleanup
+#Web Methods
+Scenario: Test WF with Web Delete
+	Given I have a workflow "WebDeleteTestWF"		
+	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[WebResponse]]"		
+	And I save workflow "WebDeleteTestWF"
+	Then the test builder is open with "WebDeleteTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebDelete" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 5     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebDeleteTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Post
+	Given I have a workflow "WebPostTestWF"		
+	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[WebResponse]]"		
+	And I save workflow "WebPostTestWF"
+	Then the test builder is open with "WebPostTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebPost" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 5     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebPostTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Get
+	Given I have a workflow "WebGetTestWF"		 
+	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[WebResponse]]"		
+	And I save workflow "WebGetTestWF"
+	Then the test builder is open with "WebGetTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebGet" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 5     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebGetTestWF" is deleted as cleanup
+
+Scenario: Test WF with Web Put
+	Given I have a workflow "WebPutTestWF"		
+	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[WebResponse]]"		
+	And I save workflow "WebPutTestWF"
+	Then the test builder is open with "WebPutTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testWebPut" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 5     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "WebPutTestWF" is deleted as cleanup
