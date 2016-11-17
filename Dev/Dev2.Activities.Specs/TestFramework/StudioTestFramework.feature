@@ -1449,6 +1449,7 @@ Scenario: Test WF with Read Folder
 
 Scenario: Test WF with Read File
 		Given I have a workflow "ReadFileTestWF"
+		And I create temp file to read from as "C:\ProgramData\Warewolf\Resources\Log.txt" 
 		And "ReadFileTestWF" contains an Read File "ReadFile" as
 		  | File or Folder                            |Username | Password | Result     |
 		  | C:\ProgramData\Warewolf\Resources\Log.txt |         |          | [[Result]] |
@@ -1563,16 +1564,16 @@ Scenario: Test WF with WebRequest
 
 Scenario: Test WF with RabbitMq Publish
 	Given I have a workflow "RabbitMqPubTestWF"
-	And "RabbitMqPubTestWF" contains RabbitMQPublish "TestRabbitMqPub" with source "testRabbitMQSource"
+	And "RabbitMqPubTestWF" contains RabbitMQPublish "DsfPublishRabbitMQActivity" into "[[result]]"
 	And I save workflow "RabbitMqPubTestWF"
 	Then the test builder is open with "RabbitMqPubTestWF"
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestRabbitMqPub" as TestStep
+	And I Add "DsfPublishRabbitMQActivity" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | Contains  | Fail  |
+	  	 | Variable Name | Condition | Value                                         |
+	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
 	When I save
 	And I run the test
 	Then test result is Passed
