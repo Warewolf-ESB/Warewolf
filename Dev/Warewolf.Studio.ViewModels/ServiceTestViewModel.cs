@@ -1260,8 +1260,9 @@ namespace Warewolf.Studio.ViewModels
                         Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
                         {
                             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-                            var vieModel = mainViewModel?.CreateNewDesigner(ResourceModel);
-                            WorkflowDesignerViewModel = vieModel;
+                            WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
+                            if (WorkflowDesignerViewModel != null)
+                                WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
                         }), DispatcherPriority.Background);
             }
         }
