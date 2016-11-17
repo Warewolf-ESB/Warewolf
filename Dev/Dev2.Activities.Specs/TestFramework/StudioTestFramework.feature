@@ -1944,3 +1944,86 @@ Scenario: Test WF with SelectAndApply which contains assign
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "SelectAndApplyWithAssignTestWF" is deleted as cleanup
 
+#Scripting
+Scenario: Test WF with Cmd Script
+	Given I have a workflow "CmdScriptTestWF"	
+	And "SelectAndApplyWithAssignTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
+	And I save workflow "CmdScriptTestWF"
+	Then the test builder is open with "CmdScriptTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testCmdScript" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value                       |
+	  	 | [[result]]    | Contains  | Volume in drive C is System |   
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "CmdScriptTestWF" is deleted as cleanup
+	
+Scenario: Test WF with JavaScript
+	Given I have a workflow "JavaScriptTestWF"	
+	And "JavaScriptTestWF" contains a Java Script "testJavaScript" ScriptToRun "var myInt = Math.sqrt(49);return myInt;" and result as "[[result]]"	
+	And I save workflow "JavaScriptTestWF"
+	Then the test builder is open with "JavaScriptTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testJavaScript" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 7     |  
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "JavaScriptTestWF" is deleted as cleanup
+
+Scenario: Test WF with Python
+	Given I have a workflow "PythonTestWF"	
+	  And "PythonTestWF" contains an Assign "MyAssign" as
+	    | variable    | value                                                        |
+	    | [[rec().a]] | return { '1': "one", '2': "two",}.get('7', "not one or two") |
+	And "PythonTestWF" contains a Python "testPython" ScriptToRun "[[rec().a]]" and result as "[[result]]"		
+	And I save workflow "PythonTestWF"
+	Then the test builder is open with "PythonTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testPython" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value          |
+	  	 | [[result]]    | =         | not one or two |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "PythonTestWF" is deleted as cleanup
+
+Scenario: Test WF with Ruby
+	Given I have a workflow "RubyTestWF"	
+	  And "RubyTestWF" contains an Assign "MyAssign" as
+	    | variable    | value    |
+	    | [[rec().a]] | sleep(5) |
+	And "RubyTestWF" contains a Ruby "testRuby" ScriptToRun "[[rec().a]]" and result as "[[result]]"		
+	And I save workflow "RubyTestWF"
+	Then the test builder is open with "RubyTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "testRuby" as TestStep
+	And I add new StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[result]]    | =         | 5     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "RubyTestWF" is deleted as cleanup
+
