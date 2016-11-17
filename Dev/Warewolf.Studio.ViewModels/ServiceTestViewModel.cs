@@ -1288,16 +1288,19 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTest()
         {
-            if (SelectedServiceTest.IsDirty)
+            if (SelectedServiceTest != null)
             {
-                if (ShowPopupWhenDuplicates())
+                if (SelectedServiceTest.IsDirty)
                 {
-                    return;
+                    if (ShowPopupWhenDuplicates())
+                    {
+                        return;
+                    }
+                    Save(new List<IServiceTestModel> {SelectedServiceTest});
                 }
-                Save(new List<IServiceTestModel> { SelectedServiceTest });
+                ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
+                ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
             }
-            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
-            ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
 
         private void RunAllTestsInBrowser()

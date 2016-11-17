@@ -222,6 +222,7 @@ namespace Dev2.Activities.Designers2.Core
             BuildInitialContextMenu();
             ApplyBindings(_dataContext);
             ApplyEventHandlers(_dataContext);
+            UpdateContentEnabled();
         }
 
         protected virtual TViewModel CreateViewModel()

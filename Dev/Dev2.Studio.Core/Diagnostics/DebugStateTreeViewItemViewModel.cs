@@ -9,6 +9,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 // ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Studio.Core
 {
@@ -76,21 +77,19 @@ namespace Dev2.Studio.Core
             SelectionType = ActivitySelectionType.Add;
             IsSelected = content.ActivityType != ActivityType.Workflow;
 
-            Guid serverID;
-            var isRemote = Guid.TryParse(content.Server, out serverID);
+            Guid serverId;
+            var isRemote = Guid.TryParse(content.Server, out serverId);
             if (isRemote|| string.IsNullOrEmpty( content.Server))
             {
+                var envId = content.EnvironmentID;
 
-
-                var envID = content.EnvironmentID;
-
-                var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
+                var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envId);
                 if (env == null)
                 {
                     var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
                     if (environmentModels != null)
                     {
-                        env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                        env = environmentModels.FirstOrDefault(e => e.ID == envId) ?? _environmentRepository.ActiveEnvironment;
                     }
                     else
                     {
@@ -120,15 +119,27 @@ namespace Dev2.Studio.Core
             }
             if (content.AssertResultList != null)
             {
-                foreach (var debugItem in content.AssertResultList)
+                var setAllError = false;
+                // ReSharper disable once UnusedVariable
+                foreach (var debugItem in content.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
                 {
-                    foreach (var debugItemResult in debugItem.ResultsList)
+                    setAllError = true;
+                }
+
+                foreach (var debugItemResult in content.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
+                {
+                    if (setAllError)
+                    {
+                        HasError = true;
+                        HasNoError = false;
+                    }
+                    else
                     {
                         HasError = debugItemResult.HasError;
                         HasNoError = !debugItemResult.HasError;
-                        MockSelected = debugItemResult.MockSelected;
-                        TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
                     }
+                    MockSelected = debugItemResult.MockSelected;
+                    TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
                 }
             }
         }

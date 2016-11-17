@@ -34,6 +34,8 @@
     </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding RunSelectedTestCommand}" Key="F5" />
+        <KeyBinding Command="{Binding RunAllTestsCommand}" Key="F6" />
+        <KeyBinding Command="{Binding RunAllTestsInBrowserCommand}" Key="F7" />
     </UserControl.InputBindings>
     <Grid Margin="{StaticResource ElementBorder}" x:Name="MainGrid" MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
         <Grid.ColumnDefinitions>
