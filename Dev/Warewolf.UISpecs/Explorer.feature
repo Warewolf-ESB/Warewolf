@@ -14,7 +14,7 @@ Scenario: Explorer Context Menu Items
 	And I Save With Ribbon Button And Dialog As "Local_DoubleDice"
 	And I Open Explorer First Item Version History With Context Menu 
 	And I Rename LocalWorkflow To SecodWorkFlow 
-	And I Click Duplicate From Explorer Context Menu for Service "SecondWorkFlow"
+	And I Click Duplicate From Explorer Context Menu for Service "Local_DoubleDice"
 	And I Enter Duplicate workflow name 
 	And I Click UpdateDuplicateRelationships 
 	And I Click Duplicate From Duplicate Dialog 

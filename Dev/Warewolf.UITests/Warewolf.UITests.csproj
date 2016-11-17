@@ -65,6 +65,8 @@
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />
+    <Compile Include="Explorer\RemoteServers.cs" />
+    <Compile Include="Explorer\Folders.cs" />
     <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
@@ -89,7 +91,7 @@
     <Compile Include="Tools\Sharepoint\Update List Item.cs" />
     <Compile Include="Tools\Sharepoint\Upload File.cs" />
     <Compile Include="Tools\Sharepoint\Update File.cs" />
-    <Compile Include="Explorer\DragAndDropService.cs" />
+    <Compile Include="Explorer\DragAndDrop.cs" />
     <Compile Include="Tools\Database\ODBCTests.cs" />
     <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
     <Compile Include="Tools\Database\PostgreSqlTests.cs" />
