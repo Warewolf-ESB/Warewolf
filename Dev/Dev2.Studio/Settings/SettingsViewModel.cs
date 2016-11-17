@@ -230,6 +230,10 @@ namespace Dev2.Settings
             }
         }
 
+        public void CloseView()
+        {
+        }
+
         public bool IsLoading
         {
             get { return _isLoading; }

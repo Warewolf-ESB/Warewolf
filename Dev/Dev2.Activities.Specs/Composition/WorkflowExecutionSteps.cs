@@ -12,19 +12,23 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Scripting;
+using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
@@ -2277,9 +2281,33 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
+        [Given(@"I create temp file to read from as ""(.*)""")]
+        public void GivenICreateTempFileToReadFromAs(string path)
+        {
+            using (var sw = File.CreateText(path))
+            {
+                sw.WriteLine("Hello");
+            }
+        }
+
+        [Given(@"""(.*)"" contains RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsRabbitMQPublishInto(string parentName, string activityName, string variable)
+        {            
+            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid() 
+                ,
+                Result = variable
+                ,
+                DisplayName = activityName
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
+        }
+
         [Given(@"""(.*)"" contains an Read File ""(.*)"" as")]
         public void GivenContainsAnReadFileAs(string parentName, string activityName, Table table)
         {
+
             var activity = new DsfFileRead() { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
