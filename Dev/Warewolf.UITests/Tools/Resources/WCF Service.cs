@@ -21,7 +21,7 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void WCFServiceTool_SmallViewUITest()
         {
-            UIMap.Collapse_WCF_Service_Connector_Tool_Large_View();
+            UIMap.Collapse_WCF_Service_Connector_Tool_Large_View_to_Small_View_With_Double_Click();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.SmallView.Exists, "Com DLL tool small view does not exist after double clicking tool large view.");
         }
 
