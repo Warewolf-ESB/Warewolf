@@ -25,6 +25,7 @@ using System.Xml.Linq;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
+using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
@@ -1280,6 +1281,75 @@ namespace Dev2.Activities.Specs.Composition
             var rubyActivity = new DsfRubyActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
             _commonSteps.AddActivityToActivityList(parentName, activityName, rubyActivity);
         }
+        [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
+        public void GivenContainsSharepointDownloadFileAs(string parentName, string activityName, Table table)
+        {
+            SharepointFileDownLoadActivity downLoadActivity = new SharepointFileDownLoadActivity();
+            _commonSteps.AddActivityToActivityList(parentName, activityName, downLoadActivity);
+        }
+        [Given(@"""(.*)"" contains SharepointReadFolder ""(.*)"" as")]
+        public void GivenContainsSharepointReadFolderAs(string parentName, string activityName, Table table)
+        {
+            SharepointReadFolderItemActivity readFolderItemActivity = new SharepointReadFolderItemActivity();
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+        }
+
+        [Given(@"""(.*)"" contains SharepointDeleteListItem ""(.*)"" as")]
+        public void GivenContainsSharepointDeleteListItemAs(string parentName, string activityName, Table table)
+        {
+            var sourceName = table.Rows[0]["Server"];
+            var list = table.Rows[0]["List"];
+            var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
+            var deleteListItemActivity = new SharepointDeleteListItemActivity
+            {
+                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
+                ,
+                DisplayName = activityName
+                ,
+                SharepointList = list
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
+            
+        }
+
+        [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
+        public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
+        {
+            SharepointCreateListItemActivity createListItemActivity = new SharepointCreateListItemActivity();
+            _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
+        }
+        [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
+        public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
+        {
+            SharepointDeleteFileActivity deleteFileActivity = new SharepointDeleteFileActivity();
+            _commonSteps.AddActivityToActivityList(parentName, activityName, deleteFileActivity);
+        }
+
+        [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
+        public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
+        {
+            SharepointFileUploadActivity  fileUploadActivity = new SharepointFileUploadActivity();
+            _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
+        }
+
+
+        [Given(@"""(.*)"" contains SharepointDelete ""(.*)"" as")]
+        public void GivenContainsSharepointDeleteAs(string parentName, string activityName, Table table)
+        {
+            var sourceName = table.Rows[0]["Source"];
+            var list = table.Rows[0]["List"];
+            
+            var deleteListItemActivity = new SharepointDeleteListItemActivity
+            {
+                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
+                ,
+                DisplayName = activityName
+                ,
+                SharepointList = list
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
+        }
 
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
@@ -1753,9 +1823,12 @@ namespace Dev2.Activities.Specs.Composition
             var resultVariable = table.Rows[0]["Result"];
 
             _commonSteps.AddVariableToVariableList(resultVariable);
-            var dsfWebGetRequestActivity = new DsfWebGetRequestActivity { DisplayName = toolName };
-            dsfWebGetRequestActivity.Url = table.Rows[0]["Url"];
-            dsfWebGetRequestActivity.Result = resultVariable;
+            DsfWebGetRequestWithTimeoutActivity dsfWebGetRequestActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                DisplayName = toolName,
+                Url = table.Rows[0]["Url"],
+                Result = resultVariable
+            };
 
             _commonSteps.AddActivityToActivityList(parentName, toolName, dsfWebGetRequestActivity);
         }
