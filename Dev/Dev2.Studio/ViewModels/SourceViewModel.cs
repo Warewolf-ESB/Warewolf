@@ -99,6 +99,10 @@ namespace Dev2.ViewModels
 
         public bool IsDirty => ViewModel.HasChanged && ViewModel.CanSave();
 
+        public void CloseView()
+        {
+        }
+
         public bool DoDeactivate(bool showMessage)
         {
             if (showMessage)

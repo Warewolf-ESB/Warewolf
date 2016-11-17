@@ -1017,7 +1017,7 @@ namespace Dev2.Studio.ViewModels
 
             if (success)
             {
-                if (_previousActive != item && Items.Contains(_previousActive))
+                if(_previousActive != item && Items.Contains(_previousActive))
                 {
                     ActivateItem(_previousActive);
                 }
