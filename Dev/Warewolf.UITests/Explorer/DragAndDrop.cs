@@ -13,7 +13,7 @@ namespace Warewolf.UITests
         public void DragAndDropServiceFromExplorerUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
-            UIMap.Move_AcceptanceTestd_To_AcceptanceTestingResopurces();
+            UIMap.Drag_Explorer_First_Item_Onto_The_Second_Item();
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(resourcesFolder));
         }
