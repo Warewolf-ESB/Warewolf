@@ -1,5 +1,5 @@
 /*
-*  Warewolf - Once bitten, there's no going back
+*  Warewolf - Once bitten, there's no going bac
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -22,6 +22,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.BaseTypes;
@@ -1240,6 +1241,46 @@ namespace Dev2.Activities.Specs.Composition
             var dsfSort = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
+      
+        [Given(@"""(.*)"" contains a Cmd Script ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
+        public void GivenContainsACmdScriptScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
+        {
+            var commandLineActivity = new DsfExecuteCommandLineActivity
+            {
+                DisplayName = activityName,
+                CommandFileName = scriptToRun,
+                CommandResult = Result
+
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, commandLineActivity);
+        }
+
+        [Given(@"""(.*)"" contains a Java Script ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
+        public void GivenContainsAJavaScriptScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
+        {
+            var dsfJavascriptActivity = new DsfJavascriptActivity
+            {
+                DisplayName = activityName,
+                Result = Result,
+                Script = scriptToRun
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfJavascriptActivity);
+        }
+
+        [Given(@"""(.*)"" contains a Python ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
+        public void GivenContainsAPythonScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
+        {
+            var dsfPythonActivity = new DsfPythonActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPythonActivity);
+        }
+
+        [Given(@"""(.*)"" contains a Ruby ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
+        public void GivenContainsARubyScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
+        {
+            var rubyActivity = new DsfRubyActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, rubyActivity);
+        }
+
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
         // ReSharper disable InconsistentNaming
