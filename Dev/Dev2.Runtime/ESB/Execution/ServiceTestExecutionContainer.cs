@@ -370,6 +370,10 @@ namespace Dev2.Runtime.ESB.Execution
                                 var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                                 var testRunResults = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory)).ToList();
                                 testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                                if (!testPassed)
+                                {
+                                    failureMessage = failureMessage.AppendLine(string.Join(Environment.NewLine,testRunResults.Select(result => result.Message).ToList()));
+                                }
                             }
                         }
                     }
