@@ -12508,6 +12508,23 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfCustom SubWorkflow
+        {
+            get
+            {
+                if ((this.mSubWorkflow == null))
+                {
+                    this.mSubWorkflow = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSubWorkflow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+                    this.mSubWorkflow.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "workflow", PropertyExpressionOperator.Contains));
+                    this.mSubWorkflow.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSubWorkflow;
+            }
+        }
+        
         public ForEach1 ForEach
         {
             get
@@ -13428,6 +13445,8 @@ namespace Warewolf.UITests
         private BaseConvert1 mBaseConvert;
         
         private CaseConvert1 mCaseConvert;
+        
+        private WpfCustom mSubWorkflow;
         
         private ForEach1 mForEach;
         
@@ -15150,12 +15169,49 @@ namespace Warewolf.UITests
                 return this.mResponseTextbox;
             }
         }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public WpfCustom SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSmallView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+                    this.mSmallView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+                    this.mSmallView.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSmallView;
+            }
+        }
         #endregion
         
         #region Fields
         private LargeView mLargeView;
         
         private WpfEdit mResponseTextbox;
+        
+        private WpfButton mDoneButton;
+        
+        private WpfCustom mSmallView;
         #endregion
     }
     
@@ -59024,12 +59080,49 @@ namespace Warewolf.UITests
                 return this.mLargeView;
             }
         }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public WpfCustom SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSmallView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+                    this.mSmallView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+                    this.mSmallView.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSmallView;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfEdit mResponseTextbox;
         
         private LargeView20 mLargeView;
+        
+        private WpfButton mDoneButton;
+        
+        private WpfCustom mSmallView;
         #endregion
     }
     
@@ -59685,15 +59778,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public Table4 Table
+        public HeadersTable HeadersTable
         {
             get
             {
-                if ((this.mTable == null))
+                if ((this.mHeadersTable == null))
                 {
-                    this.mTable = new Table4(this);
+                    this.mHeadersTable = new HeadersTable(this);
                 }
-                return this.mTable;
+                return this.mHeadersTable;
             }
         }
         
@@ -59877,7 +59970,7 @@ namespace Warewolf.UITests
         
         private WpfButton mTestButton;
         
-        private Table4 mTable;
+        private HeadersTable mHeadersTable;
         
         private WpfButton mEditSourceButton;
         
@@ -59904,10 +59997,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Table4 : WpfTable
+    public class HeadersTable : WpfTable
     {
         
-        public Table4(UITestControl searchLimitContainer) : 
+        public HeadersTable(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -87597,13 +87690,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Table5 Table
+        public Table4 Table
         {
             get
             {
                 if ((this.mTable == null))
                 {
-                    this.mTable = new Table5(this);
+                    this.mTable = new Table4(this);
                 }
                 return this.mTable;
             }
@@ -87677,7 +87770,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Table5 mTable;
+        private Table4 mTable;
         
         private WpfCheckBox mRequireAllDecisionsToBeTrueCheckbox;
         
@@ -87690,10 +87783,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Table5 : WpfTable
+    public class Table4 : WpfTable
     {
         
-        public Table5(UITestControl searchLimitContainer) : 
+        public Table4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

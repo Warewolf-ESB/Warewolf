@@ -10,6 +10,10 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickLargeViewDoneButton()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox.Exists, "Web POST large view sources combobox does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Exists, "Web POST large view generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.Table.Exists, "Web POST large view headers table generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.DoneButton.Exists, "Web POST large view done does not exist.");
             UIMap.Open_PostWeb_RequestTool_Large_View();
         }
 
@@ -23,22 +27,10 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebPostToolClickTestInputsDoneButton()
+        public void HttpWebPostToolSmallView()
         {
-            UIMap.Open_PostWeb_RequestTool_Large_View();
-            //Uimap.Select_PostWeb_Source();
-            //Uimap.Click_PostWeb_GenerateOutputs_Button();
-            //Uimap.Click_PostWeb_Test_Inputs_Done_Button();
-        }
-
-        [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void HttpWebPostToolClickPasteResponseButton()
-        {
-            UIMap.Open_PostWeb_RequestTool_Large_View();
-            //Uimap.Select_PostWeb_Source();
-            //Uimap.Click_PostWeb_GenerateOutputs_Button();
-            //Uimap.Click_PostWeb_Paste_Response_Button();
+            UIMap.Collapse_PostWeb_RequestTool_Large_View_to_Small_View_With_Double_Click();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.SmallView.Exists, "Web POST small view does not exist after collapsing the large view with a double click.");
         }
 
         #region Additional test attributes

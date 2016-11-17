@@ -21,7 +21,7 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void ComTool_SmallViewUITest()
         {
-            UIMap.Collapse_Com_DLL_Connector_Tool_Large_View();
+            UIMap.Collapse_Com_DLL_Connector_Tool_Large_View_to_Small_View_With_Double_Click();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.SmallView.Exists, "Com DLL tool small view does not exist after double clicking tool large view.");
         }
 
