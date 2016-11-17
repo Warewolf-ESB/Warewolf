@@ -1260,8 +1260,9 @@ namespace Warewolf.Studio.ViewModels
                         Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
                         {
                             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-                            var vieModel = mainViewModel?.CreateNewDesigner(ResourceModel);
-                            WorkflowDesignerViewModel = vieModel;
+                            WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
+                            if (WorkflowDesignerViewModel != null)
+                                WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
                         }), DispatcherPriority.Background);
             }
         }
@@ -1288,16 +1289,19 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTest()
         {
-            if (SelectedServiceTest.IsDirty)
+            if (SelectedServiceTest != null)
             {
-                if (ShowPopupWhenDuplicates())
+                if (SelectedServiceTest.IsDirty)
                 {
-                    return;
+                    if (ShowPopupWhenDuplicates())
+                    {
+                        return;
+                    }
+                    Save(new List<IServiceTestModel> {SelectedServiceTest});
                 }
-                Save(new List<IServiceTestModel> { SelectedServiceTest });
+                ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
+                ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
             }
-            ServiceTestCommandHandler.RunSelectedTest(SelectedServiceTest, ResourceModel, AsyncWorker);
-            ViewModelUtils.RaiseCanExecuteChanged(StopTestCommand);
         }
 
         private void RunAllTestsInBrowser()
