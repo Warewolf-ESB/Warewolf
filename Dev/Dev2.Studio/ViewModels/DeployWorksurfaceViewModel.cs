@@ -97,6 +97,10 @@ namespace Dev2.ViewModels
 
         public bool IsDirty => false;
 
+        public void CloseView()
+        {
+        }
+
         public bool DoDeactivate(bool showMessage)
         {
 

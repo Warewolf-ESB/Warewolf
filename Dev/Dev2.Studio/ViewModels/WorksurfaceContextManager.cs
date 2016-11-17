@@ -1126,7 +1126,8 @@ namespace Dev2.Studio.ViewModels
                         remove = tab.DoDeactivate(true);
                         if (remove)
                         {
-                            tab.Dispose();
+                            tab.Dispose();  
+                            tab.CloseView();                          
                         }
                     }
                 }

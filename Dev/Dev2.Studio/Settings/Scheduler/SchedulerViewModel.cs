@@ -786,6 +786,10 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
+        public void CloseView()
+        {
+        }
+
         public virtual bool DoDeactivate(bool showMessage)
         {
             if (showMessage)
