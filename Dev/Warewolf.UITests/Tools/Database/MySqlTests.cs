@@ -9,9 +9,16 @@ namespace Warewolf.UITests.Tools
         [TestMethod]
         [TestCategory("Database Tools")]
         public void MySqlTool_OpenLargeViewUITest()
-        {            
-            UIMap.Open_MySql_Database_Tool_Large_View();
+        {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.DoneButton.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void MySqlTool_CollapseLargeViewToSmallViewUITest()
+        {
+            UIMap.Collapse_MySql_Database_Tool_Large_View_to_Small_View_With_Double_Click();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.SmallView.Exists, "MY SQL Connector tool small view does not exist after collapsing large view with a double click.");
         }
 
         #region Additional test attributes
