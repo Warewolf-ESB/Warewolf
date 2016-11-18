@@ -35,9 +35,20 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
+        public void HttpWebGetToolClickGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
+            UIMap.Click_GetWeb_GenerateOutputs_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.DoneButton.Exists, "Web PUT tool large view generate outputs done button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.CancelButton.Exists, "Web PUT tool large view generate outputs cancel button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.PasteButton.Exists, "Web PUT tool large view generate outputs paste button does not exist.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
         public void HttpWebGetToolClickTestInputsDoneButton()
         {
-            UIMap.Select_Second_to_Last_Source_From_GET_Web_Large_View_Source_Combobox();
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
             UIMap.Click_GET_Web_Large_View_Generate_Outputs();
             UIMap.Click_GET_Web_Large_View_Test_Inputs_Button();
             UIMap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();
