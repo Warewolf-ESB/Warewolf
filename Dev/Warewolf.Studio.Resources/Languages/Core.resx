@@ -3015,7 +3015,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     The test is always associated with the service running it.</value>
   </data>
   <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
-    <value>Open this URL in your default browser to view the tests for this workflow</value>
+    <value>Open this URL in your default browser to view the tests for this workflow [F7]</value>
   </data>
   <data name="ServiceTestRunSelectedTestInBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to execute this test externaly</value>
@@ -3070,10 +3070,10 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Please save this test before duplicating it</value>
   </data>
   <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
-    <value>Run this test</value>
+    <value>Run this test [F5]</value>
   </data>
   <data name="ServiceTestRunSelectedTestHelpText" xml:space="preserve">
-    <value>Run this test</value>
+    <value>Run this test [F5]</value>
   </data>
   <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
     <value>Stop this test</value>
@@ -3143,7 +3143,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>The Value of the item you want to assert to.</value>
   </data>
   <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
-    <value>Run all tests</value>
+    <value>Run all tests [F6]</value>
   </data>
   <data name="ServiceTestRunAllTestHelpText" xml:space="preserve">
     <value>Runs all tests that are marked as enabled</value>
