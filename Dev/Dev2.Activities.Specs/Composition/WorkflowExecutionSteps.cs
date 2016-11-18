@@ -1988,12 +1988,15 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsWebRequestAs(string parentName, string toolName, Table table)
         {
             var resultVariable = table.Rows[0]["Result"];
+            var url = table.Rows[0]["Url"];
 
             _commonSteps.AddVariableToVariableList(resultVariable);
-            DsfWebGetRequestWithTimeoutActivity dsfWebGetRequestActivity = new DsfWebGetRequestWithTimeoutActivity
+            DsfWebGetRequestActivity dsfWebGetRequestActivity = new DsfWebGetRequestActivity
             {
-                DisplayName = toolName,
-                Url = table.Rows[0]["Url"],
+                DisplayName = toolName
+                ,
+                Url = url
+                ,
                 Result = resultVariable
             };
 
