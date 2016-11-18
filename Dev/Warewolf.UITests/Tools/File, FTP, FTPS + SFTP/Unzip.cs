@@ -7,7 +7,7 @@ namespace Warewolf.UITests.Tools
     public class Unzip
     {
         [TestMethod]
-		[TestCategory("File  Tools")]
+		[TestCategory("File Tools")]
         public void UnzipTool_OpenLargeViewUITest()
         {            
             UIMap.Open_Unzip_Tool_Large_View();
@@ -19,9 +19,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Unzip_Onto_DesignSurface();
         }
