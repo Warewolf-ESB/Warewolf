@@ -6,13 +6,13 @@ Feature: WebRequest
 
 
 Scenario: Enter a URL to download html  
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed 
 	Then the result should contain the string "Welcome to ASP.NET Web API"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                        | Header |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
 	|                     |
 	| [[result]] = String |
@@ -38,7 +38,7 @@ Scenario: Enter a URL made up of text and variables with no header
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                                                  | Header |
-	| http://[[site]][[file]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
+	| http://[[site]][[file]] = http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
 	|                     |
 	| [[result]] = String |
