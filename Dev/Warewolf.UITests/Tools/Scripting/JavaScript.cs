@@ -11,6 +11,8 @@ namespace Warewolf.UITests.Tools
         public void JavaScriptToolUITest()
         {
             UIMap.Drag_Toolbox_Javascript_Onto_DesignSurface();
+            Assert.AreEqual(true, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ScriptIntellisenseCombobox.Exists, "JavaScript script textbox does not exist after dragging on tool from the toolbox.");
+            Assert.AreEqual(true, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Javascript.SmallView.ResultsIntellisenseCombobox.Exists, "JavaScript result textbox does not exist after dragging on tool from the toolbox.");
             UIMap.Open_Javascript_Large_View();
         }
 
@@ -20,9 +22,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.InitializeABlankWorkflow();
         }
 
