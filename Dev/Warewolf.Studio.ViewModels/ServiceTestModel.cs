@@ -18,7 +18,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestModel : BindableBase, IServiceTestModel
     {
-
         private string _testName;
         private string _userName;
         private bool _testPassed;
@@ -364,7 +363,6 @@ namespace Warewolf.Studio.ViewModels
                     TestPassed = false;
                 }
                 OnPropertyChanged(() => TestInvalid);
-               
             }
         }
 
@@ -426,7 +424,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-
                 var isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
@@ -544,7 +541,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (addRow)
                     {
-
                         AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
                     }
                 }
@@ -569,7 +565,6 @@ namespace Warewolf.Studio.ViewModels
                 colName = col.Name;
             }
         }
-
 
         public void AddRow(IServiceTestOutput itemToAdd, IDataListModel dataList)
         {
@@ -603,7 +598,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (addRow)
                     {
-
                         AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
                     }
                 }
@@ -628,7 +622,6 @@ namespace Warewolf.Studio.ViewModels
                 colName = col.Name;
             }
         }
-
 
         private bool Equals(ServiceTestModel other)
         {

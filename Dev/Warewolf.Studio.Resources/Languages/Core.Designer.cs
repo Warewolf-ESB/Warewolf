@@ -7617,7 +7617,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow [F7].
         /// </summary>
         public static string ServiceTestRunAllTestsInBrowserTooltip {
             get {
@@ -7626,7 +7626,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run all tests.
+        ///   Looks up a localized string similar to Run all tests [F6].
         /// </summary>
         public static string ServiceTestRunAllTestTooltip {
             get {
@@ -7653,7 +7653,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run this test.
+        ///   Looks up a localized string similar to Run this test [F5].
         /// </summary>
         public static string ServiceTestRunSelectedTestHelpText {
             get {
@@ -7671,7 +7671,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run this test.
+        ///   Looks up a localized string similar to Run this test [F5].
         /// </summary>
         public static string ServiceTestRunSelectedTestTooltip {
             get {
