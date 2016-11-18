@@ -321,7 +321,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             var allTests = TestCatalog.Instance.Fetch(dataObject.ResourceID);
                             var taskList = new List<Task>();
                             var testResults = new List<IServiceTestModelTO>();
-                            foreach (var test in allTests)
+                            foreach (var test in allTests.Where(to => to.Enabled))
                             {
                                 var dataObjectClone = dataObject.Clone();
                                 dataObjectClone.Environment = new ExecutionEnvironment();
