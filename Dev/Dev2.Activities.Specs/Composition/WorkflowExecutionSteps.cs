@@ -1271,7 +1271,16 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Python ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
         public void GivenContainsAPythonScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
         {
-            var dsfPythonActivity = new DsfPythonActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            var dsfPythonActivity = new DsfPythonActivity()
+            {
+                DisplayName = activityName
+                ,
+                Result = Result
+                ,
+                Script = scriptToRun
+                ,
+                EscapeScript = true
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPythonActivity);
         }
 
