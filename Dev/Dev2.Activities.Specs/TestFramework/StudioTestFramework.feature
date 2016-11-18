@@ -2012,7 +2012,7 @@ Scenario: Test WF with Cmd Script
 	
 Scenario: Test WF with JavaScript
 	Given I have a workflow "JavaScriptTestWF"	
-	And "JavaScriptTestWF" contains a Java Script "testJavaScript" ScriptToRun "var myInt = Math.sqrt(49);return myInt;" and result as "[[result]]"	
+	And "JavaScriptTestWF" contains a Java Script "testJavaScript" ScriptToRun "return Math.sqrt(49);" and result as "[[result]]"
 	And I save workflow "JavaScriptTestWF"
 	Then the test builder is open with "JavaScriptTestWF"
 	And I click New Test
