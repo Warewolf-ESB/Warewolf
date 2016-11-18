@@ -10,7 +10,13 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Data Tools")]
         public void FindIndexToolUITest()
         {            
-            Uimap.Open_Find_Index_Tool_Large_View();
+            UIMap.Open_Find_Index_Tool_Large_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.LargeViewContentCustom.ResultComboBox.Exists, "ResultComboBox does not exist after opening large Find Index view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.LargeViewContentCustom.InFieldComboBox.Exists, "InFieldComboBox does not exist after opening large Find Index view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.LargeViewContentCustom.IndexComboBox.Exists, "IndexComboBox does not exist after opening large Find Index view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.LargeViewContentCustom.CharactersComboBox.Exists, "CharactersComboBox does not exist after opening large Find Index view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.LargeViewContentCustom.DirectionComboBox.Exists, "DirectionComboBox does not exist after opening large Find Index view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex.DoneButton.Exists, "DoneButton does not exist after opening large Find Index view");
         }
 
         #region Additional test attributes
@@ -18,15 +24,13 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
-#if !DEBUG
-            Uimap.CloseHangingDialogs();
-#endif
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
+            UIMap.SetPlaybackSettings();
+            UIMap.CloseHangingDialogs();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Find_Index_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {

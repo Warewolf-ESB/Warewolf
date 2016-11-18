@@ -13,6 +13,7 @@ namespace Dev2.Activities.Debug
             Value = value;
             Type = DebugItemResultType.Value;
             HasError = hasError;
+            TestStepHasError = hasError;
             MockSelected = mockSelected;
         }
 
@@ -41,6 +42,8 @@ namespace Dev2.Activities.Debug
 
         public bool HasError { get; }
 
+        public bool TestStepHasError { get; }
+
         public bool MockSelected { get; }
 
         public DebugItemResultType Type { get; }
@@ -56,6 +59,7 @@ namespace Dev2.Activities.Debug
                         Label = LabelText,
                         Variable = Variable,
                         HasError = HasError,
+                        TestStepHasError = TestStepHasError,
                         MockSelected = MockSelected,
                         Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
                     }};
