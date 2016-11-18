@@ -17,7 +17,6 @@ namespace Warewolf.UITests.Tools.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Ashley Lewis")]
         [TestCategory("Sharepoint Tools")]
         public void Sharepoint_Download_File_Large_View_UITest()
         {
@@ -35,9 +34,7 @@ namespace Warewolf.UITests.Tools.Sharepoint
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Sharepoint_Download_File_Onto_DesignSurface();
         }      
