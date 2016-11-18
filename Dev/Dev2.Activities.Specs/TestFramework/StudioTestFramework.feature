@@ -1314,7 +1314,7 @@ Scenario: Test WF with Decision
 		And a decision variable "[[A]]" value "30"	
 		And decide if "[[A]]" "IsAlphanumeric" 
 		And I save workflow "DecisionTestWF"
-		Then the test builder is open with "DecisionTestWF" new workflows
+		Then the test builder is open with "DecisionTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
@@ -2159,8 +2159,8 @@ Scenario: Test WF with Sharepoint Delete List Item
     And test name starts with "Test 1"
 	And I Add "TestSharePdeleteListItem" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name | Condition  | Value |
+	  	 | [[Result]]    | Is Numeric | 0     |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2198,7 +2198,7 @@ Scenario: Test WF with Sharepoint Upload File
 	    | variable       | value |
 	    | [[TestResult]] | 0     |
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Source                 | List                     | Result     |
+	| Server                 | List                     | Result     |
 	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
 	And I save workflow "ShapointUploadFileTestWF"
 	Then the test builder is open with "ShapointUploadFileTestWF"
@@ -2277,7 +2277,7 @@ Scenario: Test WF with Sharepoint Read List Item
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePReadFolder" as TestStep
+	And I Add "TestSharePReadListItem" as TestStep
 	And I add new StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[Result]]    | =         | 0     |
@@ -2294,7 +2294,7 @@ Scenario: Test WF with Sharepoint Update List Item
 	    | variable       | value |
 	    | [[TestResult]] | 0     |
 	And "ShapointUpdateListItemTestWF" contains SharepointUploadFile "TestSharePUpdateListItem" as 
-	| Source                 | List                     | Result     |
+	| Server                 | List                     | Result     |
 	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
 	And I save workflow "ShapointUpdateListItemTestWF"
 	Then the test builder is open with "ShapointUpdateListItemTestWF"

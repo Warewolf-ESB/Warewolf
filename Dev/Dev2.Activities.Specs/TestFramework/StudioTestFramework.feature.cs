@@ -3826,7 +3826,7 @@ this.FeatureBackground();
 #line 1316
   testRunner.And("I save workflow \"DecisionTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1317
-  testRunner.Then("the test builder is open with \"DecisionTestWF\" new workflows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("the test builder is open with \"DecisionTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1318
   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1319
@@ -6440,7 +6440,7 @@ this.FeatureBackground();
                         "Value"});
             table220.AddRow(new string[] {
                         "[[Result]]",
-                        "=",
+                        "Is Numeric",
                         "0"});
 #line 2161
  testRunner.And("I add new StepOutputs as", ((string)(null)), table220, "And ");
@@ -6561,7 +6561,7 @@ this.FeatureBackground();
    testRunner.And("\"ShapointUploadFileTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table224, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table225 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Source",
+                        "Server",
                         "List",
                         "Result"});
             table225.AddRow(new string[] {
@@ -6804,7 +6804,7 @@ this.FeatureBackground();
 #line 2279
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2280
- testRunner.And("I Add \"TestSharePReadFolder\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"TestSharePReadListItem\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table235 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
@@ -6856,7 +6856,7 @@ this.FeatureBackground();
    testRunner.And("\"ShapointUpdateListItemTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table236, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Source",
+                        "Server",
                         "List",
                         "Result"});
             table237.AddRow(new string[] {

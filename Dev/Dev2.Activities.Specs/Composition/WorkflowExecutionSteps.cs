@@ -1284,13 +1284,48 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
         public void GivenContainsSharepointDownloadFileAs(string parentName, string activityName, Table table)
         {
-            SharepointFileDownLoadActivity downLoadActivity = new SharepointFileDownLoadActivity();
+            SharepointFileDownLoadActivity downLoadActivity = new SharepointFileDownLoadActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, downLoadActivity);
         }
+
+        [Given(@"""(.*)"" contains SharepointMoveFile ""(.*)"" as")]
+        public void GivenContainsSharepointMoveFileAs(string parentName, string activityName, Table table)
+        {
+            SharepointMoveFileActivity readFolderItemActivity = new SharepointMoveFileActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+        }
+
+        [Given(@"""(.*)"" contains SharepointReadListItem ""(.*)"" as")]
+        public void GivenContainsSharepointReadListItemAs(string parentName, string activityName, Table table)
+        {
+            var readFolderItemActivity = new SharepointReadListActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+        }
+
         [Given(@"""(.*)"" contains SharepointReadFolder ""(.*)"" as")]
         public void GivenContainsSharepointReadFolderAs(string parentName, string activityName, Table table)
         {
-            SharepointReadFolderItemActivity readFolderItemActivity = new SharepointReadFolderItemActivity();
+            SharepointReadFolderItemActivity readFolderItemActivity = new SharepointReadFolderItemActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
@@ -1300,6 +1335,7 @@ namespace Dev2.Activities.Specs.Composition
             var sourceName = table.Rows[0]["Server"];
             var list = table.Rows[0]["List"];
             var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddVariableToVariableList(result);
             var deleteListItemActivity = new SharepointDeleteListItemActivity
             {
@@ -1316,20 +1352,36 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
         public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
         {
-            SharepointCreateListItemActivity createListItemActivity = new SharepointCreateListItemActivity();
+            SharepointCreateListItemActivity createListItemActivity = new SharepointCreateListItemActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
         }
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
         public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
         {
-            SharepointDeleteFileActivity deleteFileActivity = new SharepointDeleteFileActivity();
+            SharepointDeleteFileActivity deleteFileActivity = new SharepointDeleteFileActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteFileActivity);
         }
 
         [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
-            SharepointFileUploadActivity  fileUploadActivity = new SharepointFileUploadActivity();
+            var server = table.Rows[0]["Server"];
+            SharepointFileUploadActivity  fileUploadActivity = new SharepointFileUploadActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
+            };
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
         }
 
