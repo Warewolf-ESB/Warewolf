@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
