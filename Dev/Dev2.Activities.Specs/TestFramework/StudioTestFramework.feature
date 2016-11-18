@@ -2031,10 +2031,7 @@ Scenario: Test WF with JavaScript
 
 Scenario: Test WF with Python
 	Given I have a workflow "PythonTestWF"	
-	  And "PythonTestWF" contains an Assign "MyAssign" as
-	    | variable    | value                                                        |
-	    | [[rec().a]] | return { '1': "one", '2': "two",}.get('7', "not one or two") |
-	And "PythonTestWF" contains a Python "testPython" ScriptToRun "[[rec().a]]" and result as "[[result]]"		
+	And "PythonTestWF" contains a Python "testPython" ScriptToRun "return { '1': "one", '2': "two",}.get('7', "not one or two")" and result as "[[result]]"		
 	And I save workflow "PythonTestWF"
 	Then the test builder is open with "PythonTestWF"
 	And I click New Test
