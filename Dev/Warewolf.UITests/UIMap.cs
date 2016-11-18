@@ -7141,5 +7141,11 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton, new Point(16, 7));
         }
+
+        [When(@"I Click AssigName From DesignSurface")]
+        public void Click_AssigName_From_DesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom, new Point(5, 5));
+        }
     }
 }
