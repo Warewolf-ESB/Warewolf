@@ -2406,6 +2406,15 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
+        [Given(@"I create temp file as ""(.*)""")]
+        public void GivenICreateTempFileAs(string fileName)
+        {
+            using (var sw = File.Create(fileName))
+            {
+            }
+        }
+
+
         [Given(@"I create temp file to read from as ""(.*)""")]
         public void GivenICreateTempFileToReadFromAs(string path)
         {

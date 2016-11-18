@@ -1429,13 +1429,14 @@ Scenario: Test WF with Create and Delete folder
 
 Scenario: Test WF with Move
 		Given I have a workflow "MoveTestWF"
+		And I create temp file as "C:\copied00.txt" 
 		And "MoveTestWF" contains an Assign "Assign to Move" as
 		  | variable    | value           |
 		  | [[rec().a]] | C:\copied00.txt |
 		  | [[rec().b]] | C:\copied01.txt |
 		And "MoveTestWF" contains an Move "Move1" as
-		  | File or Folder | If it exits | Destination | Username | Password | Result   |
-		  | [[rec().a]]    | True        | [[rec().b]] |          |          | [[res1]] |	  
+		  | File or Folder | If it exits | Destination | Username | Password | Result     |
+		  | [[rec().a]]    | True        | [[rec().b]] |          |          | [[result]] |	  
 		And I save workflow "MoveTestWF"
 		Then the test builder is open with "MoveTestWF"
 		And I click New Test
@@ -1444,7 +1445,7 @@ Scenario: Test WF with Move
 		And I Add "Move1" as TestStep
 		And I add new StepOutputs as 
 		| Variable Name | Condition | Value   |
-		| [[res1]]      | =         | Success |
+		| [[result]]    | =         | Success |
 		When I save
 		And I run the test
 		Then test result is Passed
