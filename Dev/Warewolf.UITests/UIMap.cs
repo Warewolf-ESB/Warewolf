@@ -987,104 +987,32 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
 
-        [When(@"I Select Last Source From GET Web Large View Source Combobox")]
-        public void Select_Last_Source_From_GET_Web_Large_View_Source_Combobox()
+        [When(@"I Select Test Source From GET Web Large View Source Combobox")]
+        public void Select_Test_Source_From_GET_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
-            if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem10))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem10, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem9))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem9, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem8))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem8, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem7))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem7, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem6))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem6, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem5))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem5, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem4))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem4, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem3))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem3, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem2))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem2, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem1))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot select last list item from a list with no items.");
-            }
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem6, new Point(163, 17));
         }
 
-        [When(@"I Select Second to Last Source From GET Web Large View Source Combobox")]
-        public void Select_Second_to_Last_Source_From_GET_Web_Large_View_Source_Combobox()
+        [When(@"I Select Test Source From POST Web Large View Source Combobox")]
+        public void Select_Test_Source_From_POST_Web_Large_View_Source_Combobox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
-            if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem10))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem9, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem9))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem8, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem8))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem7, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem7))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem6, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem6))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem5, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem5))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem4, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem4))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem3, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem3))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem2, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem2))
-            {
-                Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
-            }
-            else if (ControlExistsNow(MainStudioWindow.WebServerSourceComboboxListItem1))
-            {
-                throw new InvalidOperationException("Cannot select second to last list item from a list with only one item.");
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot select second to last list item from a list with no items.");
-            }
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox, new Point(175, 9));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem10, new Point(163, 17));
+        }
+
+        [When(@"I Select Test Source From DELETE Web Large View Source Combobox")]
+        public void Select_Test_Source_From_DELETE_Web_Large_View_Source_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox, new Point(175, 9));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
+        }
+
+        [When(@"I Select Test Source From PUT Web Large View Source Combobox")]
+        public void Select_Test_Source_From_PUT_Web_Large_View_Source_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox, new Point(175, 9));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem11, new Point(163, 17));
         }
 
         [When(@"I Click New Web Source Ribbon Button")]
@@ -3289,14 +3217,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
 
-        [When(@"I Click DeleteWeb Generate Outputs")]
-        public void Click_DeleteWeb_Generate_Outputs()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton, new Point(85, 10));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.PasteButton.Exists, "Paste button does not exist after clicking generate outputs.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DsfWebDeleteOutputsLargeView.TestButton.Exists, "Test button does not exist after clicking generate outputs.");
-        }
-
         [When(@"I Click Deploy Tab Destination Server Combobox")]
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
@@ -3452,6 +3372,27 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView.Exists, "Web GET small view does not exist after clicking large view done button.");
         }
 
+        [When(@"I Click POST Web Large View Done Button")]
+        public void Click_POST_Web_Large_View_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.DoneButton, new Point(33, 11));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.SmallView.Exists, "Web POST small view does not exist after clicking large view done button.");
+        }
+
+        [When(@"I Click DELETE Web Large View Done Button")]
+        public void Click_DELETE_Web_Large_View_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.DoneButton, new Point(33, 11));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.SmallView.Exists, "Web DELETE small view does not exist after clicking large view done button.");
+        }
+
+        [When(@"I Click PUT Web Large View Done Button")]
+        public void Click_PUT_Web_Large_View_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.DoneButton, new Point(33, 11));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.SmallView.Exists, "Web PUT small view does not exist after clicking large view done button.");
+        }
+
         [When(@"I Click GET Web Large View Done Button With Invalid Large View")]
         public void Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View()
         {
@@ -3468,6 +3409,32 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton.Exists, "Web GET tool large view generate inputs done button does not exist.");
         }
 
+        [When(@"I Click POST Web Large View Generate Outputs")]
+        public void Click_POST_Web_Large_View_Generate_Outputs()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton, new Point(7, 7));
+            Playback.Wait(500);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.TestButton.Exists, "Web POST large view generate outputs test button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton.Exists, "Web POST tool large view generate inputs done button does not exist.");
+        }
+
+        [When(@"I Click PUT Web Large View Generate Outputs")]
+        public void Click_PUT_Web_Large_View_Generate_Outputs()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton, new Point(7, 7));
+            Playback.Wait(500);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.TestButton.Exists, "Web PUT large view generate outputs test button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.DoneButton.Exists, "Web PUT tool large view generate inputs done button does not exist.");
+        }
+
+        [When(@"I Click DELETE Web Large View Generate Outputs")]
+        public void Click_DELETE_Web_Large_View_Generate_Outputs()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton, new Point(7, 7));
+            Playback.Wait(500);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton.Exists, "Web DELETE large view test inputs button does not exist after clicking generate outputs.");
+        }
+
         [When(@"I Click GET Web Large View Test Inputs Button")]
         public void Click_GET_Web_Large_View_Test_Inputs_Button()
         {
@@ -3478,6 +3445,42 @@ namespace Warewolf.UITests
         public void Click_GET_Web_Large_View_Test_Inputs_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton, new Point(35, 6));
+        }
+
+        [When(@"I Click POST Web Large View Test Inputs Button")]
+        public void Click_POST_Web_Large_View_Test_Inputs_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.TestButton, new Point(21, 11));
+        }
+
+        [When(@"I Click POST Web Large View Test Inputs Done Button")]
+        public void Click_POST_Web_Large_View_Test_Inputs_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton, new Point(35, 6));
+        }
+
+        [When(@"I Click DELETE Web Large View Test Inputs Button")]
+        public void Click_DELETE_Web_Large_View_Test_Inputs_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton, new Point(21, 11));
+        }
+
+        [When(@"I Click DELETE Web Large View Test Inputs Done Button")]
+        public void Click_DELETE_Web_Large_View_Test_Inputs_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.DoneButton, new Point(35, 6));
+        }
+
+        [When(@"I Click PUT Web Large View Test Inputs Button")]
+        public void Click_PUT_Web_Large_View_Test_Inputs_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.TestButton, new Point(21, 11));
+        }
+
+        [When(@"I Click PUT Web Large View Test Inputs Done Button")]
+        public void Click_PUT_Web_Large_View_Test_Inputs_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.DoneButton, new Point(35, 6));
         }
 
         [When(@"I Click HTTP Delete Web Tool New Button")]
@@ -3656,6 +3659,12 @@ namespace Warewolf.UITests
         public void Click_PutWeb_GenerateOutputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton, new Point(34, 13));
+        }
+
+        [When(@"I Click GetWeb GenerateOutputs Button")]
+        public void Click_GetWeb_GenerateOutputs_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton, new Point(34, 13));
         }
 
         [When(@"I Click Read Done Button")]
@@ -4078,7 +4087,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.DELETE, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+#if !DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.Exists, "Delete Web connector tool large view does not exist on the design surface after drag and drop from toolbox.");
+#else
+            Open_DeleteWeb_Tool_Large_View();
+#endif
         }
 
         [When(@"I Drag Dice Onto Dice On The DesignSurface")]
@@ -4176,7 +4189,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.GET, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+#if !DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.Exists, "GET Web connector large view does not exist on the design surface after drag and drop from toolbox.");
+#else
+            Open_GET_Web_Connector_Tool_Large_View();
+#endif
         }
 
         [When(@"I Drag GetWeb RequestTool Onto DesignSurface")]
@@ -4198,7 +4215,11 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.POST, new Point(20, 35));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface.");
+#if !DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.Exists, "Web Post Request large view does not exist on the design surface.");
+#else
+            Open_PostWeb_RequestTool_Large_View();
+#endif
         }
 
         [When(@"I Drag PutWeb Tool Onto DesignSurface")]
@@ -4208,7 +4229,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.HTTPWebMethods.PUT, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 126));
+#if !DEBUG
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.Exists, "Put Web connector large view does not exist on the design surface after drag and drop from toolbox.");
+#else
+            Open_PutWeb_Tool_large_view();
+#endif
         }
 
         [When(@"I Drag Toolbox AggregateCalculate Onto DesignSurface")]
@@ -6817,13 +6842,6 @@ namespace Warewolf.UITests
             Assert.AreEqual("{\"AssemblyLocation\":\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework64\\\\v4.0.30319\\\\mscorli" +
                             "b.dll\",\"AssemblyName\":\"mscorlib.dll\",\"FullName\":\"System.Random\",\"MethodName\":nul" +
                             "l}", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        }
-
-        [When(@"I Select TestingReturnText Web Put Source")]
-        public void Select_TestingReturnText_Web_Put_Source()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox, new Point(196, 11));
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.ComboboxListItemAsTestingReturnText, new Point(129, 13));
         }
 
         [When(@"I Select Tests From Context Menu")]

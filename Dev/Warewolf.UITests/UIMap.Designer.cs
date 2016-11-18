@@ -593,6 +593,23 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfListItem WebServerSourceComboboxListItem11
+        {
+            get
+            {
+                if ((this.mWebServerSourceComboboxListItem11 == null))
+                {
+                    this.mWebServerSourceComboboxListItem11 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServerSourceComboboxListItem11.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServerSourceComboboxListItem11.SearchProperties[WpfListItem.PropertyNames.Instance] = "11";
+                    this.mWebServerSourceComboboxListItem11.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mWebServerSourceComboboxListItem11;
+            }
+        }
+        
         public WpfListItem WebServerSourceComboboxListItem2
         {
             get
@@ -954,6 +971,8 @@ namespace Warewolf.UITests
         private WpfListItem mWebServerSourceComboboxListItem1;
         
         private WpfListItem mWebServerSourceComboboxListItem10;
+        
+        private WpfListItem mWebServerSourceComboboxListItem11;
         
         private WpfListItem mWebServerSourceComboboxListItem2;
         
@@ -15230,22 +15249,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTable InputDataGridTable
-        {
-            get
-            {
-                if ((this.mInputDataGridTable == null))
-                {
-                    this.mInputDataGridTable = new WpfTable(this);
-                    #region Search Criteria
-                    this.mInputDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
-                    this.mInputDataGridTable.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mInputDataGridTable;
-            }
-        }
-        
         public WpfButton CancelButton
         {
             get
@@ -15425,11 +15428,53 @@ namespace Warewolf.UITests
                 return this.mRecordSetTextBox;
             }
         }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public InputsTable InputsTable
+        {
+            get
+            {
+                if ((this.mInputsTable == null))
+                {
+                    this.mInputsTable = new InputsTable(this);
+                }
+                return this.mInputsTable;
+            }
+        }
+        
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfTable mInputDataGridTable;
-        
         private WpfButton mCancelButton;
         
         private WpfButton mPasteButton;
@@ -15453,6 +15498,12 @@ namespace Warewolf.UITests
         private WpfTable mOutputsGridTable;
         
         private WpfEdit mRecordSetTextBox;
+        
+        private WpfButton mDoneButton;
+        
+        private InputsTable mInputsTable;
+        
+        private WpfButton mTestButton;
         #endregion
     }
     
@@ -15749,6 +15800,42 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsTable : WpfTable
+    {
+        
+        public InputsTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage SuccessImage
+        {
+            get
+            {
+                if ((this.mSuccessImage == null))
+                {
+                    this.mSuccessImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mSuccessImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSuccessImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSuccessImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mSuccessImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebDelete : WpfCustom
     {
         
@@ -16029,6 +16116,22 @@ namespace Warewolf.UITests
                 return this.mTestButton;
             }
         }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -16057,6 +16160,8 @@ namespace Warewolf.UITests
         private WpfEdit mRecordSetTextBox;
         
         private WpfButton mTestButton;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -22433,13 +22538,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public InputsTable InputsTable
+        public InputsTable1 InputsTable
         {
             get
             {
                 if ((this.mInputsTable == null))
                 {
-                    this.mInputsTable = new InputsTable(this);
+                    this.mInputsTable = new InputsTable1(this);
                 }
                 return this.mInputsTable;
             }
@@ -22587,7 +22692,7 @@ namespace Warewolf.UITests
         
         private SourcesCombobox3 mSourcesCombobox;
         
-        private InputsTable mInputsTable;
+        private InputsTable1 mInputsTable;
         
         private WpfButton mGenerateOutputsButton;
         
@@ -22682,10 +22787,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class InputsTable : WpfTable
+    public class InputsTable1 : WpfTable
     {
         
-        public InputsTable(UITestControl searchLimitContainer) : 
+        public InputsTable1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -60656,19 +60761,47 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTable InputDataGridTable
+        public WpfButton TestButton
         {
             get
             {
-                if ((this.mInputDataGridTable == null))
+                if ((this.mTestButton == null))
                 {
-                    this.mInputDataGridTable = new WpfTable(this);
+                    this.mTestButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mInputDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
-                    this.mInputDataGridTable.WindowTitles.Add("Warewolf");
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mInputDataGridTable;
+                return this.mTestButton;
+            }
+        }
+        
+        public InputsTable2 InputsTable
+        {
+            get
+            {
+                if ((this.mInputsTable == null))
+                {
+                    this.mInputsTable = new InputsTable2(this);
+                }
+                return this.mInputsTable;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
             }
         }
         #endregion
@@ -60698,7 +60831,11 @@ namespace Warewolf.UITests
         
         private WpfEdit mRecordSetTextBox;
         
-        private WpfTable mInputDataGridTable;
+        private WpfButton mTestButton;
+        
+        private InputsTable2 mInputsTable;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -60954,6 +61091,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsTable2 : WpfTable
+    {
+        
+        public InputsTable2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage SuccessImage
+        {
+            get
+            {
+                if ((this.mSuccessImage == null))
+                {
+                    this.mSuccessImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mSuccessImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSuccessImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSuccessImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mSuccessImage;
         #endregion
     }
     
@@ -78518,13 +78691,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public InputsTable1 InputsTable
+        public InputsTable3 InputsTable
         {
             get
             {
                 if ((this.mInputsTable == null))
                 {
-                    this.mInputsTable = new InputsTable1(this);
+                    this.mInputsTable = new InputsTable3(this);
                 }
                 return this.mInputsTable;
             }
@@ -78532,15 +78705,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private InputsTable1 mInputsTable;
+        private InputsTable3 mInputsTable;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class InputsTable1 : WpfTable
+    public class InputsTable3 : WpfTable
     {
         
-        public InputsTable1(UITestControl searchLimitContainer) : 
+        public InputsTable3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
