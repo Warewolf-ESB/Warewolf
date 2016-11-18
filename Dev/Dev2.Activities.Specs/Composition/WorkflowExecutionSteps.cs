@@ -68,7 +68,9 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Warewolf.Core;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
+using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 // ReSharper disable NonLocalizedString
 
@@ -1271,14 +1273,14 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Python ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
         public void GivenContainsAPythonScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
         {
-            var dsfPythonActivity = new DsfPythonActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            var dsfPythonActivity = new DsfPythonActivity { DisplayName = activityName, Result = Result, Script = scriptToRun };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPythonActivity);
         }
 
         [Given(@"""(.*)"" contains a Ruby ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
         public void GivenContainsARubyScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
         {
-            var rubyActivity = new DsfRubyActivity() { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            var rubyActivity = new DsfRubyActivity { DisplayName = activityName, Result = Result, Script = scriptToRun };
             _commonSteps.AddActivityToActivityList(parentName, activityName, rubyActivity);
         }
         [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
@@ -1346,7 +1348,7 @@ namespace Dev2.Activities.Specs.Composition
                 SharepointList = list
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
-            
+
         }
 
         [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
@@ -1376,7 +1378,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
             var server = table.Rows[0]["Server"];
-            SharepointFileUploadActivity  fileUploadActivity = new SharepointFileUploadActivity
+            SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
@@ -1391,7 +1393,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var sourceName = table.Rows[0]["Source"];
             var list = table.Rows[0]["List"];
-            
+
             var deleteListItemActivity = new SharepointDeleteListItemActivity
             {
                 SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
@@ -1410,16 +1412,15 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
 
-            //var _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), environmentConnection);
-            //var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
-            //var a = pluginSources.Single(source => source.Id == "86bf5590-7b1b-4a15-b68c-7bb2575abbff".ToGuid());
-            //a.HostName = "rsaklfsvrtfsbld";
-            //var b = pluginSources.Single(source => source.Id == "f3115126-4001-465c-99b6-36ed75bace1d".ToGuid());
-            //b.HostName = "rsaklfsvrtfsbld";
-           
-            var dsfWebDeleteActivity = new DsfWebDeleteActivity()
+            var _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), environmentConnection);
+            var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
+            var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
+
+
+            var dsfWebDeleteActivity = new DsfWebDeleteActivity
             {
-                DisplayName = activityName
+                DisplayName = activityName,
+                SourceId = a.Id
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebDeleteActivity);
         }
@@ -1427,7 +1428,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Post ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebPostResultAs(string parentName, string activityName, string p2)
         {
-            var dsfWebPostActivity = new DsfWebPostActivity()
+            var dsfWebPostActivity = new DsfWebPostActivity
             {
                 DisplayName = activityName
             };
@@ -1437,17 +1438,70 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Get ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebGetResultAs(string parentName, string activityName, string p2)
         {
-            var dsfWebPostActivity = new DsfWebGetActivity()
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var manageWebServiceModel = new ManageWebServiceModel(
+                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
+            var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
+            var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
+            var webServiceDefinition = new WebServiceDefinition("Get", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
             {
-                DisplayName = activityName
+                Headers = new List<NameValue>(),
+                
             };
-            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebPostActivity);
+            var testResult = manageWebServiceModel.TestService(webServiceDefinition);
+
+            var serializer = new Dev2JsonSerializer();
+            
+            var dsfWebGetActivity = new DsfWebGetActivity
+            {
+                DisplayName = activityName,
+                SourceId = a.Id,
+                
+            };
+
+            RecordsetList recordsetList;
+            using (var responseService = serializer.Deserialize<WebService>(testResult))
+            {
+                recordsetList = responseService.Recordsets;
+                if (recordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                dsfWebGetActivity.OutputDescription = responseService.GetOutputDescription();
+            }
+
+            var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+            {
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                return serviceOutputMapping;
+            }).Cast<IServiceOutputMapping>().ToList();
+
+            dsfWebGetActivity.Outputs = outputMapping;
+            dsfWebGetActivity.Headers = new List<INameValue>()
+            {
+                new NameValue("Content-Type","text/html")
+            };
+            dsfWebGetActivity.QueryString = string.Empty;
+            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Id]]");
+            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Name]]");
+            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Category]]");
+            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Price]]");
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebGetActivity);
         }
 
         [Given(@"""(.*)"" contains a Web Put ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebPutResultAs(string parentName, string activityName, string p2)
         {
-            var dsfWebPostActivity = new DsfWebPutActivity()
+            var dsfWebPostActivity = new DsfWebPutActivity
             {
                 DisplayName = activityName
             };
@@ -2282,7 +2336,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Rename ""(.*)"" as")]
         public void GivenContainsAnWriteRenameAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfPathRename() { DisplayName = activityName };
+            var activity = new DsfPathRename { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -2307,7 +2361,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Zip ""(.*)"" as")]
         public void GivenContainsAnZipAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfZip() { DisplayName = activityName };
+            var activity = new DsfZip { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -2332,7 +2386,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an UnZip ""(.*)"" as")]
         public void GivenContainsAnUnZipAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfUnZip() { DisplayName = activityName };
+            var activity = new DsfUnZip { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -2387,7 +2441,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Read Folder ""(.*)"" as")]
         public void GivenContainsAnReadFolderAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfFolderRead() { DisplayName = activityName };
+            var activity = new DsfFolderRead { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -2426,10 +2480,10 @@ namespace Dev2.Activities.Specs.Composition
 
         [Given(@"""(.*)"" contains RabbitMQPublish ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQPublishInto(string parentName, string activityName, string variable)
-        {            
+        {
             var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid() 
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
                 ,
                 Result = variable
                 ,
@@ -2442,7 +2496,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAnReadFileAs(string parentName, string activityName, Table table)
         {
 
-            var activity = new DsfFileRead() { DisplayName = activityName };
+            var activity = new DsfFileRead { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -2462,7 +2516,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Write File ""(.*)"" as")]
         public void GivenContainsAnWriteFileAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfFileWrite() { DisplayName = activityName };
+            var activity = new DsfFileWrite { DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];

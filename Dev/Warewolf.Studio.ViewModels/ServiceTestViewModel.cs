@@ -881,7 +881,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void ProcessActivity(ModelItem modelItem)
         {
-            var step = BuildParentsFromModelItem(modelItem);
+           var step = BuildParentsFromModelItem(modelItem);
             if (step != null)
             {
                 if (step.Parent == null)
@@ -952,7 +952,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return BuildParentsFromModelItem(item);
             }
-            var exists = FindExistingStep(dsfActivityAbstract?.UniqueID);
+            var exists = FindExistingStep(activityUniqueID);
             if (exists == null)
             {
                 if (outputs != null && outputs.Count > 0)
