@@ -320,6 +320,45 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="TextBlockDebugOutputServiceTestStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+                <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+                <Setter Property="Foreground" Value="Green" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,0,2,0" />
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <AdornedElementPlaceholder />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="TextBlockDebugOutputServiceTestFailedStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+                <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,0,2,0" />
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <AdornedElementPlaceholder />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -518,8 +557,20 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Value}" 
-                                                   Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" />
+                                                   AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDebugOutputServiceTestStyle}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="False">
+                                                            <Setter Property="Foreground" Value="Green"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
