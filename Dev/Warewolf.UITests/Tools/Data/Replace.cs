@@ -10,7 +10,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Data Tools")]
         public void ReplaceTool_OpenLargeViewUITest()
         {                        
-            Uimap.Open_Replace_Tool_Large_View();
+            UIMap.Open_Replace_Tool_Large_View();
         }
 
         #region Additional test attributes
@@ -18,15 +18,13 @@ namespace Warewolf.UITests.Tools
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
-#if !DEBUG
-            Uimap.CloseHangingDialogs();
-#endif
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_Replace_Onto_DesignSurface();
+            UIMap.SetPlaybackSettings();
+            UIMap.CloseHangingDialogs();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Replace_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {

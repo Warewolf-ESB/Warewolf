@@ -10,35 +10,36 @@ namespace Warewolf.UITests.Tools
         [TestCategory("HTTP Tools")]
         public void HttpWebPutToolClickLargeViewDoneButton()
         {
-            UIMap.Open_PutWeb_Tool_large_view();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.Exists, "Web POST large view sources combobox does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton.Exists, "Web POST large view generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.Table.Exists, "Web POST large view headers table generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.DoneButton.Exists, "Web POST large view done does not exist.");
         }
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
         public void HttpWebPutToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
-            UIMap.Open_PutWeb_Tool_large_view();
             UIMap.Click_AddNew_Web_Source_From_PutWebtool();
         }
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebPutToolClickTestInputsDoneButton()
+        public void HttpWebPutToolClickGenerateOutputsButton()
         {
-            UIMap.Open_PutWeb_Tool_large_view();
             UIMap.Select_TestingReturnText_Web_Put_Source();
             UIMap.Click_PutWeb_GenerateOutputs_Button();
-            //Uimap.Click_PutWeb_Test_Inputs_Done_Button();
         }
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebPutToolClickPasteResponseButton()
+        public void HttpWebPutToolSmallView()
         {
-            UIMap.Open_PutWeb_Tool_large_view();
-            //Uimap.Select_WebPut_Source();
-            //Uimap.Click_PutWeb_GenerateOutputs_Button();
-            //Uimap.Click_PutWeb_Paste_Response_Button();
+            UIMap.Collapse_PutWeb_RequestTool_Large_View_to_Small_View_With_Double_Click();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox.Exists, "Web POST large view sources combobox does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton.Exists, "Web POST large view generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.Table.Exists, "Web POST large view headers table generate inputs button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.DoneButton.Exists, "Web POST large view done does not exist.");
         }
 
         #region Additional test attributes
@@ -47,9 +48,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_PutWeb_Tool_Onto_DesignSurface();
         }
