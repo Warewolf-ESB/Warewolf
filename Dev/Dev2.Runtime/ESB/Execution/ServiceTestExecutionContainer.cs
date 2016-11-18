@@ -118,52 +118,51 @@ namespace Dev2.Runtime.ESB.Execution
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
-            if (serviceTestModelTo.Enabled)
+            
+            if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
-                if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
+                Impersonator impersonator = new Impersonator();
+                var userName = serviceTestModelTo.UserName;
+                var domain = "";
+                if (userName.Contains("\\"))
                 {
-                    Impersonator impersonator = new Impersonator();
-                    var userName = serviceTestModelTo.UserName;
-                    var domain = "";
-                    if (userName.Contains("\\"))
-                    {
-                        var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-                        domain = userName.Substring(0, slashIndex);
-                        userName = userName.Substring(slashIndex + 1);
-                    }
-                    else if (userName.Contains("@"))
-                    {
-                        var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
-                        userName = userName.Substring(0, atIndex);
-                        domain = userName.Substring(atIndex + 1);
-                    }
-                    var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
-                    if (!hasImpersonated)
-                    {
-                        DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
-                        DataObject.StopExecution = true;
-                    }
+                    var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
+                    domain = userName.Substring(0, slashIndex);
+                    userName = userName.Substring(slashIndex + 1);
                 }
-                else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
+                else if (userName.Contains("@"))
                 {
-                    Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                    var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
+                    userName = userName.Substring(0, atIndex);
+                    domain = userName.Substring(atIndex + 1);
                 }
-                var userPrinciple = Thread.CurrentPrincipal;
-                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+                var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
+                if (!hasImpersonated)
                 {
-                    result = ExecuteWf(to, serviceTestModelTo);
-                });
-                foreach (var err in DataObject.Environment.Errors)
-                {
-                    errors.AddError(err, true);
+                    DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                    DataObject.StopExecution = true;
                 }
-                foreach (var err in DataObject.Environment.AllErrors)
-                {
-                    errors.AddError(err, true);
-                }
-
-                Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
             }
+            else if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
+            {
+                Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+            }
+            var userPrinciple = Thread.CurrentPrincipal;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                result = ExecuteWf(to, serviceTestModelTo);
+            });
+            foreach (var err in DataObject.Environment.Errors)
+            {
+                errors.AddError(err, true);
+            }
+            foreach (var err in DataObject.Environment.AllErrors)
+            {
+                errors.AddError(err, true);
+            }
+
+            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            
             return result;
         }
 
