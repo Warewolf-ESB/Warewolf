@@ -943,7 +943,6 @@ namespace Warewolf.Studio.ViewModels
                 activityUniqueID = boolAct?.UniqueID;
                 activityDisplayName = boolAct?.DisplayName;
                 outputs = boolAct?.GetOutputs();
-
             }
 
             var type = computedValue.GetType();
@@ -952,7 +951,6 @@ namespace Warewolf.Studio.ViewModels
             if (item != null && (item.ItemType != typeof(Flowchart) || item.ItemType == typeof(ActivityBuilder)))
             {
                 if (outputs != null && outputs.Count > 0)
-
                 {
                     IServiceTestStep serviceTestStep;
                     if (ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out serviceTestStep))
@@ -972,7 +970,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (outputs != null && outputs.Count > 0)
                 {
-
                     var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueID, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
 
                     var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
@@ -1578,30 +1575,22 @@ namespace Warewolf.Studio.ViewModels
                     foreach (var serviceTestStep in serviceTestModel.TestSteps)
                     {
                         MarkChildrenPending(serviceTestStep);
-                        if (serviceTestStep.Children != null)
+                        if (serviceTestStep.Children == null) continue;
+                        var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
+                        foreach (var testStep in testSteps)
                         {
-                            var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
-                            foreach (var testStep in testSteps)
-                            {
-                                MarkChildrenPending(testStep);
-                            }
+                            MarkChildrenPending(testStep);
                         }
                     }
                 }
 
-                if (serviceTestModel.Outputs != null)
+                if (serviceTestModel.Outputs == null) continue;
+                foreach (var testOutput in serviceTestModel.Outputs.OfType<ServiceTestOutput>())
                 {
-                    foreach (var serviceTestOutput in serviceTestModel.Outputs)
+                    testOutput.TestPending = true;
+                    if (testOutput.Result != null)
                     {
-                        var testOutput = serviceTestOutput as ServiceTestOutput;
-                        if (testOutput != null)
-                        {
-                            testOutput.TestPending = true;
-                            if (testOutput.Result != null)
-                            {
-                                testOutput.Result.RunTestResult = RunResult.TestPending;
-                            }
-                        }
+                        testOutput.Result.RunTestResult = RunResult.TestPending;
                     }
                 }
             }

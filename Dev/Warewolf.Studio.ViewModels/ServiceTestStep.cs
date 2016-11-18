@@ -7,6 +7,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -98,22 +99,21 @@ namespace Warewolf.Studio.ViewModels
                     {
                         TestInvalid = true;
                     }
-                    if (ActivityType == "DsfDecision" || ActivityType == "DsfSwitch")
-                    {
-                        foreach (var serviceTestOutput in value)
-                        {
-                            var testOutput = serviceTestOutput as ServiceTestOutput;
-                            if (testOutput != null)
-                            {
-                                testOutput.AssertOps = new ObservableCollection<string> {"="};
-                                testOutput.CanEditVariable = false;
-                            }
-                        }
-                    }
+                    SetControlFlowValues(value);
                 }
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
+            }
+        }
+
+        private void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
+        {
+            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
+            foreach (var testOutput in value.OfType<ServiceTestOutput>())
+            {
+                testOutput.AssertOps = new ObservableCollection<string> {"="};
+                testOutput.CanEditVariable = false;
             }
         }
 
@@ -156,29 +156,45 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    if (MockSelected)
-                    {
-                        TestPassed = false;
-                        TestFailing = false;
-                        TestInvalid = false;
-                        TestPending = false;
-                    }
-                    else
-                    {
-                        TestPassed = _result.RunTestResult == RunResult.TestPassed;
-                        TestFailing = _result.RunTestResult == RunResult.TestFailed;
-                        TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
-                        TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                                      _result.RunTestResult != RunResult.TestPassed &&
-                                      _result.RunTestResult != RunResult.TestInvalid &&
-                                      _result.RunTestResult != RunResult.TestResourceDeleted &&
-                                      _result.RunTestResult != RunResult.TestResourcePathUpdated;
-                    }
-                    
+                    UpdateTestPassed();
+                    UpdateTestFailed();
+                    UpdateTestInvalid();
+                    UpdateTestPending();
                 }
 
                 OnPropertyChanged(()=> Result);
             }
+        }
+
+        private void UpdateTestPassed()
+        {
+            var testPassed = _result.RunTestResult == RunResult.TestPassed;
+            TestPassed = !MockSelected && testPassed;
+        }
+
+        private void UpdateTestFailed()
+        {
+            var testFailed = _result.RunTestResult == RunResult.TestFailed;
+            TestFailing = !MockSelected && testFailed;
+        }
+
+        private void UpdateTestInvalid()
+        {
+            var testInvalid = _result.RunTestResult == RunResult.TestInvalid ||
+                              _result.RunTestResult == RunResult.TestResourceDeleted ||
+                              _result.RunTestResult == RunResult.TestResourcePathUpdated;
+            TestInvalid = !MockSelected && testInvalid;
+        }
+
+        private void UpdateTestPending()
+        {
+            var testPending = _result.RunTestResult != RunResult.TestFailed &&
+                                  _result.RunTestResult != RunResult.TestPassed &&
+                                  _result.RunTestResult != RunResult.TestInvalid &&
+                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
+                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+            TestPending = !MockSelected && testPending;
         }
 
         public bool TestPassed
@@ -265,6 +281,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public bool IsExpanderVisible => Children.Count > 0;
 
         public bool AssertSelected
@@ -340,12 +357,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var serviceTestOutput = new ServiceTestOutput(varName,"","","");
-                    serviceTestOutput.AddNewAction = ()=>AddNewOutput(varName);
-                    //if (StepOutputs.FirstOrDefault(output => output.Variable.Equals(varName, StringComparison.InvariantCultureIgnoreCase)) == null)
+                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
                     {
-                        StepOutputs.Add(serviceTestOutput);
-                    }
+                        AddNewAction = () => AddNewOutput(varName)
+                    };
+                    StepOutputs.Add(serviceTestOutput);
                 }
             }
         }

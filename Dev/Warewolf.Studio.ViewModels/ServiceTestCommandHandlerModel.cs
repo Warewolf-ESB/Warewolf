@@ -25,7 +25,6 @@ namespace Warewolf.Studio.ViewModels
 
         private DataListModel DataList { get; set; }
 
-
         public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
@@ -64,7 +63,6 @@ namespace Warewolf.Studio.ViewModels
             return testModel;
         }
 
-
         public void StopTest(IContextualResourceModel resourceModel)
         {
             resourceModel.Environment.ResourceRepository.StopExecution(resourceModel);
@@ -91,7 +89,6 @@ namespace Warewolf.Studio.ViewModels
                 false, true, false, false);
         }
 
-
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
         {
             var clone = selectedTest.Clone();
@@ -104,8 +101,7 @@ namespace Warewolf.Studio.ViewModels
             return clone;
         }
 
-        public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel,
-            IAsyncWorker asyncWorker)
+        public void RunSelectedTest(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker)
         {
             selectedServiceTest = selectedServiceTest as ServiceTestModel;
             if (selectedServiceTest == null || resourceModel == null || asyncWorker == null ||
@@ -128,15 +124,7 @@ namespace Warewolf.Studio.ViewModels
                             return;
                         }
 
-                        selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
-                        selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
-                        selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid ||
-                                                          res.Result.RunTestResult == RunResult.TestResourceDeleted;
-                        selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
-                                                          res.Result.RunTestResult != RunResult.TestPassed &&
-                                                          res.Result.RunTestResult != RunResult.TestInvalid &&
-                                                          res.Result.RunTestResult != RunResult.TestResourceDeleted &&
-                                                          res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
+                        UpdateTestStatus(selectedServiceTest, res);
 
                         selectedServiceTest.Outputs = res.Outputs?.Select(output =>
                         {
@@ -150,32 +138,23 @@ namespace Warewolf.Studio.ViewModels
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
-                                            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
                                 foreach (var serviceTestStep in serviceTestSteps)
                                 {
                                     var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep != null)
+                                    if (resServiceTestStep == null) continue;
+
+                                    UpdateTestStepResult(resServiceTestStep, resTestStep);
+
+                                    var serviceTestOutputs = resTestStep.StepOutputs;
+                                    if (serviceTestOutputs.Count > 0)
                                     {
-                                        resServiceTestStep.Result = resTestStep.Result;
-
-                                        if (resServiceTestStep.MockSelected)
-                                        {
-                                            resServiceTestStep.TestPending = false;
-                                            resServiceTestStep.TestPassed = false;
-                                            resServiceTestStep.TestFailing = false;
-                                            resServiceTestStep.TestInvalid = false;
-                                        }
-
-                                        var serviceTestOutputs = resTestStep.StepOutputs;
-                                        if (serviceTestOutputs.Count > 0)
-                                        {
-                                            resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
-                                        }
-                                        var children = resTestStep.Children;
-                                        if (children.Count > 0)
-                                        {
-                                            SetChildrenTestResult(children, resServiceTestStep.Children);
-                                        }
+                                        resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
+                                    }
+                                    var children = resTestStep.Children;
+                                    if (children.Count > 0)
+                                    {
+                                        SetChildrenTestResult(children, resServiceTestStep.Children);
                                     }
                                 }
                             }
@@ -196,6 +175,32 @@ namespace Warewolf.Studio.ViewModels
                     }
                     selectedServiceTest.IsTestRunning = false;
                 });
+        }
+
+        private static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
+        {
+            resServiceTestStep.Result = resTestStep.Result;
+
+            if (resServiceTestStep.MockSelected)
+            {
+                resServiceTestStep.TestPending = false;
+                resServiceTestStep.TestPassed = false;
+                resServiceTestStep.TestFailing = false;
+                resServiceTestStep.TestInvalid = false;
+            }
+        }
+
+        private static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
+        {
+            selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
+            selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
+            selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid ||
+                                              res.Result.RunTestResult == RunResult.TestResourceDeleted;
+            selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
+                                              res.Result.RunTestResult != RunResult.TestPassed &&
+                                              res.Result.RunTestResult != RunResult.TestInvalid &&
+                                              res.Result.RunTestResult != RunResult.TestResourceDeleted &&
+                                              res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
         }
 
         private void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
@@ -232,7 +237,7 @@ namespace Warewolf.Studio.ViewModels
                     OptionsForValue = serviceTestOutput.OptionsForValue,
                     Result = serviceTestOutput.Result
                 };
-                
+
                 if (testStep.MockSelected)
                 {
                     testOutput.TestPending = false;
