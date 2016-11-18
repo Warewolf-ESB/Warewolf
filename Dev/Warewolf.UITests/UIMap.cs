@@ -248,11 +248,10 @@ namespace Warewolf.UITests
                     break;
                 default:
                     var messageText = type + "\n" + message;
+                    Console.WriteLine(messageText);
 #if DEBUG
-                    System.Windows.Forms.MessageBox.Show(messageText);
                     throw e.Error;
 #else
-                    Console.WriteLine(messageText);
                     Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
                     break;
 #endif
@@ -279,11 +278,7 @@ namespace Warewolf.UITests
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
                     var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
-#if DEBUG
-                    System.Windows.Forms.MessageBox.Show(messageText);
-#else
                     Console.WriteLine(messageText);
-#endif
                     parent.DrawHighlight();
 #if DEBUG
                     throw e;
@@ -297,11 +292,7 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-#if DEBUG
-                System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-#else
                 Console.WriteLine(message);
-#endif
                 (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 throw e;
@@ -314,11 +305,7 @@ namespace Warewolf.UITests
             var exceptionSource = e.ExceptionSource;
             if (exceptionSource is UITestControl)
             {
-#if DEBUG
-                System.Windows.Forms.MessageBox.Show(type + "\n" + message);
-#else
                 Console.WriteLine(message);
-#endif
                 (exceptionSource as UITestControl).DrawHighlight();
 #if DEBUG
                 throw e;
@@ -4608,7 +4595,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Database.Postgre, new Point(10, 15));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 130));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSql.LargeView.Exists, "Oracle database tool large view does not exist after dragging in from the toolbox");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.Exists, "Oracle database tool large view does not exist after dragging in from the toolbox");
         }
 
         [When(@"I Drag Toolbox Python Onto DesignSurface")]
