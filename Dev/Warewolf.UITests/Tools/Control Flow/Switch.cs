@@ -10,10 +10,10 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestCategory("Tools")]
         public void SwitchToolUITest()
         {
-            Uimap.Drag_Toolbox_Switch_Onto_DesignSurface();
-            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
-            Assert.IsTrue(Uimap.DecisionOrSwitchDialog.CancelButton.Exists, "Switch dialog cancel button does not exist after dragging switch tool in from the toolbox.");
-            Uimap.Click_Switch_Dialog_Done_Button();
+            UIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
+            Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
+            Assert.IsTrue(UIMap.DecisionOrSwitchDialog.CancelButton.Exists, "Switch dialog cancel button does not exist after dragging switch tool in from the toolbox.");
+            UIMap.Click_Switch_Dialog_Done_Button();
         }
 
         #region Additional test attributes
@@ -21,14 +21,12 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
-#if !DEBUG
-            Uimap.CloseHangingDialogs();
-#endif
-            Uimap.InitializeABlankWorkflow();
+            UIMap.SetPlaybackSettings();
+            UIMap.CloseHangingDialogs();
+            UIMap.InitializeABlankWorkflow();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {

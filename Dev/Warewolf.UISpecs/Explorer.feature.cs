@@ -97,7 +97,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And("I Rename LocalWorkflow To SecodWorkFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("I Click Duplicate From Explorer Context Menu for Service \"SecondWorkFlow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Duplicate From Explorer Context Menu for Service \"Local_DoubleDice\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.And("I Enter Duplicate workflow name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19

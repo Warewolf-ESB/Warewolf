@@ -108,6 +108,7 @@ namespace Warewolf.Studio.ViewModels
             WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
             AsyncWorker.Start(GetTests, models =>
             {
+                IsLoading = true;
                 var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                 models.Add(dummyTest);
                 SelectedServiceTest = dummyTest;
@@ -127,9 +128,23 @@ namespace Warewolf.Studio.ViewModels
                         throw new ArgumentException("expected " + typeof(NewTestFromDebugMessage).Name + " but got " + msg.GetType().Name);
                     }
                 }
+                IsLoading = false;
             }, OnError);
 
 
+        }
+
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
         }
 
         public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
@@ -1349,6 +1364,8 @@ namespace Warewolf.Studio.ViewModels
             SetDisplayName();
         }
         private bool _canAddFromDebug;
+        private bool _isLoading;
+
         private int GetNewTestNumber(string testName)
         {
             int counter = 1;

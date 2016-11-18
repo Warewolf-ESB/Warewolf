@@ -10,14 +10,14 @@ namespace Warewolf.UITests.Tools.Data
 		[TestCategory("Data Tools")]
         public void CaseConvertTool_OpenLargeViewUITest()
         {
-            Uimap.Open_Case_Conversion_Tool_Large_View();
+            UIMap.Open_Case_Conversion_Tool_Large_View();
         }
 
         [TestMethod]
 		[TestCategory("Data Tools")]
         public void CaseConvertTool_OpenQVIUITest()
         {
-            Uimap.Open_Case_Conversion_Tool_Qvi_Large_View();
+            UIMap.Open_Case_Conversion_Tool_Qvi_Large_View();
         }
 
         #region Additional test attributes
@@ -25,15 +25,13 @@ namespace Warewolf.UITests.Tools.Data
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Uimap.SetPlaybackSettings();
-#if !DEBUG
-            Uimap.CloseHangingDialogs();
-#endif
-            Uimap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
+            UIMap.SetPlaybackSettings();
+            UIMap.CloseHangingDialogs();
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Case_Conversion_Onto_DesignSurface();
         }
 
-        UIMap Uimap
+        UIMap UIMap
         {
             get
             {
