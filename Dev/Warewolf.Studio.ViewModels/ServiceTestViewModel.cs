@@ -1322,7 +1322,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunAllTests()
         {
-            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests(), ResourceModel, AsyncWorker);
+            ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests().Where(model => model.Enabled), ResourceModel, AsyncWorker);
             SelectedServiceTest = null;
         }
 

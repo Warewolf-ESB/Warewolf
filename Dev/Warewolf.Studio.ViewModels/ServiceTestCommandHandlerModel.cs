@@ -160,10 +160,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
 
-                        if (selectedServiceTest.Enabled)
-                        {
-                            selectedServiceTest.DebugForTest = res.Result.DebugForTest;
-                        }
+                        selectedServiceTest.DebugForTest = res.Result.DebugForTest;
                         selectedServiceTest.LastRunDate = DateTime.Now;
                         selectedServiceTest.LastRunDateVisibility = true;
                     }
