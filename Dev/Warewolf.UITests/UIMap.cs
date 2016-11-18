@@ -234,28 +234,25 @@ namespace Warewolf.UITests
             if (OnErrorHandlerDisabled) return;
             e.Result = PlaybackErrorOptions.Retry;
             var type = e.Error.GetType().ToString();
-            var message = e.Error.Message;
+            var messageText = type + "\n" + e.Error.Message;
             switch (type)
             {
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
-                    UITestControlNotFoundExceptionHandler(type, message, e.Error as UITestControlNotFoundException);
+                    UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
                     break;
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
-                    UITestControlNotAvailableExceptionHandler(type, message, e.Error as UITestControlNotAvailableException);
+                    UITestControlNotAvailableExceptionHandler(type, messageText, e.Error as UITestControlNotAvailableException);
                     break;
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
-                    FailedToPerformActionOnBlockedControlExceptionHandler(type, message, e.Error as FailedToPerformActionOnBlockedControlException);
+                    FailedToPerformActionOnBlockedControlExceptionHandler(type, messageText, e.Error as FailedToPerformActionOnBlockedControlException);
                     break;
                 default:
-                    var messageText = type + "\n" + message;
                     Console.WriteLine(messageText);
-#if DEBUG
-                    throw e.Error;
-#else
-                    Playback.Wait(Playback.PlaybackSettings.SearchTimeout);
                     break;
-#endif
             }
+#if DEBUG
+            throw e.Error;
+#endif
         }
 
         void UITestControlNotFoundExceptionHandler(string type, string message, UITestControlNotFoundException e)
@@ -277,12 +274,9 @@ namespace Warewolf.UITests
                 {
                     string parentProperties = string.Empty;
                     parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
-                    var messageText = type + "\n" + message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
+                    var messageText = message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
                     Console.WriteLine(messageText);
                     parent.DrawHighlight();
-#if DEBUG
-                    throw e;
-#endif
                 }
             }
         }
@@ -294,9 +288,6 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine(message);
                 (exceptionSource as UITestControl).DrawHighlight();
-#if DEBUG
-                throw e;
-#endif
             }
         }
 
@@ -307,9 +298,6 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine(message);
                 (exceptionSource as UITestControl).DrawHighlight();
-#if DEBUG
-                throw e;
-#endif
             }
         }
 
