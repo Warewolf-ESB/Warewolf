@@ -2049,11 +2049,8 @@ Scenario: Test WF with Python
 	Then workflow "PythonTestWF" is deleted as cleanup
 
 Scenario: Test WF with Ruby
-	Given I have a workflow "RubyTestWF"	
-	  And "RubyTestWF" contains an Assign "MyAssign" as
-	    | variable    | value    |
-	    | [[rec().a]] | sleep(5) |
-	And "RubyTestWF" contains a Ruby "testRuby" ScriptToRun "[[rec().a]]" and result as "[[result]]"		
+	Given I have a workflow "RubyTestWF"
+	And "RubyTestWF" contains a Ruby "testRuby" ScriptToRun "sleep(5)" and result as "[[result]]"		
 	And I save workflow "RubyTestWF"
 	Then the test builder is open with "RubyTestWF"
 	And I click New Test
