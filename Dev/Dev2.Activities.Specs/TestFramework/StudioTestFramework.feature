@@ -1187,35 +1187,13 @@ Scenario: Test WF with Replace
 		Then workflow "ReplaceTestWF" is deleted as cleanup
 
 #Database Category	  
-#Scenario: Test WF with MySql
-#		Given I have a workflow "MySqlTestWF"
-#		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
-#		  | Input to Service | From Variable | Output from Service | To Variable      |
-#		  |                  |               | name                | [[rec(*).name]]  |
-#		  |                  |               | email               | [[rec(*).email]] |	
-#		And I save workflow "MySqlTestWF"
-#		Then the test builder is open with "MySqlTestWF"
-#		And I click New Test
-#		And a new test is added	
-#		And test name starts with "Test 1"
-#		And I Add "MySqlEmail" as TestStep
-#		And I add new StepOutputs as 
-#		| Variable Name           | Condition | Value              |
-#		| [[MySqlEmail(1).name]]  | =         | Monk               |
-#		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
-#		When I save
-#		And I run the test
-#		Then test result is Passed
-#		When I delete "Test 1"
-#		Then The "DeleteConfirmation" popup is shown I click Ok
-#		Then workflow "MySqlTestWF" is deleted as cleanup
-Scenario Outline: Test WF with MySql
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | name                | <nameVariable>  |
-	  |                  |               | email               | <emailVariable> |
-    	And I save workflow "MySqlTestWF"
+Scenario: Test WF with MySql
+		Given I have a workflow "MySqlTestWF"
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |
+		  |                  |               | name                | [[rec(*).name]]  |
+		  |                  |               | email               | [[rec(*).email]] |	
+		And I save workflow "MySqlTestWF"
 		Then the test builder is open with "MySqlTestWF"
 		And I click New Test
 		And a new test is added	
@@ -1231,10 +1209,6 @@ Scenario Outline: Test WF with MySql
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "MySqlTestWF" is deleted as cleanup
-		Examples: 
-			| WorkflowName | ServiceName | nameVariable    | emailVariable    | errorOccured |
-			| MySqlTestWF  | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
 
 Scenario: Test WF with Sql Server
 		Given I have a workflow "SqlTestWF"
