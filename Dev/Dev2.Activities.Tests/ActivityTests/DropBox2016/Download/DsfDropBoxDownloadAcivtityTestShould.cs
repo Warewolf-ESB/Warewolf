@@ -10,7 +10,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dropbox.Api;

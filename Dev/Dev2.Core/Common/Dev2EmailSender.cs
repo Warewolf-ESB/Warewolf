@@ -11,12 +11,12 @@
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.TO;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common

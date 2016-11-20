@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList;
 using Dev2.Diagnostics.Debug;
@@ -268,15 +269,18 @@ namespace Dev2.Activities.SelectAndApply
         {
             RegularActivityAssertion(dataObject, serviceTestStep);
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
-            if (nonPassingSteps.Count == 0)
+            if (nonPassingSteps != null && nonPassingSteps.Count == 0)
             {
                 testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                 testRunResult.RunTestResult = RunResult.TestPassed;
             }
             else
             {
-                var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
-                testRunResult.Message = failMessage;
+                if(nonPassingSteps != null)
+                {
+                    var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                    testRunResult.Message = failMessage;
+                }
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
         }

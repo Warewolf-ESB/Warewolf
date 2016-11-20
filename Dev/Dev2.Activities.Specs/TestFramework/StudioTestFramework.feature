@@ -1260,27 +1260,29 @@ Scenario: Test WF with Sql Server
 		Then workflow "SqlTestWF" is deleted as cleanup
 
 Scenario: Test WF with Oracle
-		Given I have a workflow "MySqlTestWF"
-		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
-		  | Input to Service | From Variable | Output from Service | To Variable      |
-		  |                  |               | name                | [[rec(*).name]]  |
-		  |                  |               | email               | [[rec(*).email]] |	
-		And I save workflow "MySqlTestWF"
-		Then the test builder is open with "MySqlTestWF"
+		Given I have a workflow "oracleTestWF"
+		 And "oracleTestWF" contains a oracle database service "HR.Get_EMP_RS" with mappings as
+		  | Input to Service | From Variable | Output from Service | To Variable      |		 
+		And I save workflow "oracleTestWF"
+		Then the test builder is open with "oracleTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "MySqlEmail" as TestStep
+		And I Add "HR.Get_EMP_RS" as TestStep
 		And I add new StepOutputs as 
-		| Variable Name           | Condition | Value              |
-		| [[MySqlEmail(1).name]]  | =         | Monk               |
-		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
+		| Variable Name                        | Condition | Value        |
+		| [[HR_GET_EMP_RS(107).DEPARTMENT_ID]] | =         | 110          |
+		| [[HR_GET_EMP_RS(107).EMPLOYEE_ID]]   | =         | 206          |
+		| [[HR_GET_EMP_RS(107).FIRST_NAME]]    | =         | William      |
+		| [[HR_GET_EMP_RS(107).LAST_NAME]]     | =         | Gietz        |
+		| [[HR_GET_EMP_RS(107).PHONE_NUMBER]]  | =         | 515.123.8181 |
+		| [[HR_GET_EMP_RS(107).MANAGER_ID]]    | =         | 205          |
 		When I save
 		And I run the test
 		Then test result is Passed
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "MySqlTestWF" is deleted as cleanup
+		Then workflow "oracleTestWF" is deleted as cleanup
 
 Scenario: Test WF with PostGre Sql
 		Given I have a workflow "PostGreTestWF"

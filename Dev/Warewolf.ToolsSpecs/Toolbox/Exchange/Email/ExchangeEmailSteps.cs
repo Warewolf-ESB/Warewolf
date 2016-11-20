@@ -9,7 +9,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
