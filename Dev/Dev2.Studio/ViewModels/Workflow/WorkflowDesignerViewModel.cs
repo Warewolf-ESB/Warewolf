@@ -2603,6 +2603,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             PublishMessages(resourceModel);
             OnDispose();
             ActivityDesignerHelper.AddDesignerAttributes(this);
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel);
+            UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
