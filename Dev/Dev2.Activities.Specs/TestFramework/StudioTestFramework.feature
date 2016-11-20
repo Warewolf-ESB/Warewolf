@@ -1573,8 +1573,8 @@ Scenario: Test WF with Aggregate Calculate
 Scenario: Test WF with WebRequest
 	Given I have a workflow "WebRequestTestWF"
 	And "WebRequestTestWF" contains WebRequest "TestWebRequest" as
-	| Result       | Url                                                        |
-	| "[[Result]]" | http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |
+	| Result       | Url                                          |
+	| "[[Result]]" | http://rsaklfsvrtfsbld:9810/api/products/Get |
 	And I save workflow "WebRequestTestWF"
 	Then the test builder is open with "WebRequestTestWF"
 	And I click New Test
@@ -1582,8 +1582,8 @@ Scenario: Test WF with WebRequest
     And test name starts with "Test 1"
 	And I Add "TestWebRequest" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value           |
-	  	 | [[Result]]    | Contains  | <!DOCTYPE html> |
+	  	 | Variable Name | Condition | Value                                                                                                                                                                                                                                                                                                                                                                                                            |
+	  	 | [[Result]]    | Contains  | [{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0},{"Id":2,"Name":"Refrigerator","Category":"Electronic","Price":23000.0},{"Id":3,"Name":"Mobiles","Category":"Electronic","Price":20000.0},{"Id":4,"Name":"Laptops","Category":"Electronic","Price":45000.0},{"Id":5,"Name":"iPads","Category":"Electronic","Price":67000.0},{"Id":6,"Name":"Toys","Category":"Gift Items","Price":15000.0}] |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2311,7 +2311,7 @@ Scenario: Test WF with Sharepoint Update List Item
 #Web Methods
 Scenario: Test WF with Web Delete
 	Given I have a workflow "WebDeleteTestWF"		
-	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[WebResponse]]"		
+	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[Response]]"		
 	And I save workflow "WebDeleteTestWF"
 	Then the test builder is open with "WebDeleteTestWF"
 	And I click New Test
@@ -2319,8 +2319,8 @@ Scenario: Test WF with Web Delete
     And test name starts with "Test 1"
 	And I Add "testWebDelete" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2330,7 +2330,7 @@ Scenario: Test WF with Web Delete
 
 Scenario: Test WF with Web Post
 	Given I have a workflow "WebPostTestWF"		
-	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[WebResponse]]"		
+	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[Response]]"		
 	And I save workflow "WebPostTestWF"
 	Then the test builder is open with "WebPostTestWF"
 	And I click New Test
@@ -2338,8 +2338,8 @@ Scenario: Test WF with Web Post
     And test name starts with "Test 1"
 	And I Add "testWebPost" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2349,7 +2349,7 @@ Scenario: Test WF with Web Post
 
 Scenario: Test WF with Web Get
 	Given I have a workflow "WebGetTestWF"		 
-	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[WebResponse]]"		
+	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[Response]]"		
 	And I save workflow "WebGetTestWF"
 	Then the test builder is open with "WebGetTestWF"
 	And I click New Test
@@ -2371,7 +2371,7 @@ Scenario: Test WF with Web Get
 
 Scenario: Test WF with Web Put
 	Given I have a workflow "WebPutTestWF"		
-	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[WebResponse]]"		
+	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[Response]]"		
 	And I save workflow "WebPutTestWF"
 	Then the test builder is open with "WebPutTestWF"
 	And I click New Test
@@ -2379,8 +2379,8 @@ Scenario: Test WF with Web Put
     And test name starts with "Test 1"
 	And I Add "testWebPut" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |     
 	When I save
 	And I run the test
 	Then test result is Passed
