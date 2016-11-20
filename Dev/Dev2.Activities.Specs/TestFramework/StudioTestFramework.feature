@@ -1261,14 +1261,14 @@ Scenario: Test WF with Sql Server
 
 Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
-		 And "oracleTestWF" contains a oracle database service "HR.Get_EMP_RS" with mappings as
+		 And "oracleTestWF" contains a oracle database service "HR.GET_EMP_RS" with mappings as
 		  | Input to Service | From Variable | Output from Service | To Variable      |		 
 		And I save workflow "oracleTestWF"
 		Then the test builder is open with "oracleTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "HR.Get_EMP_RS" as TestStep
+		And I Add "HR.GET_EMP_RS" as TestStep
 		And I add new StepOutputs as 
 		| Variable Name                        | Condition | Value        |
 		| [[HR_GET_EMP_RS(107).DEPARTMENT_ID]] | =         | 110          |
