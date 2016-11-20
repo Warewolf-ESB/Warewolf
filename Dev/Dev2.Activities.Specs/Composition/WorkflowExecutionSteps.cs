@@ -2790,40 +2790,61 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\mysqlSource").FirstOrDefault();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Id == "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid());
 
-            if (resource == null)
+            var databaseService = new DatabaseService
             {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
+                Source = dbSource,
+                Inputs = new List<IServiceInput>(),
+                Action = new DbAction()
+                {
+                    Name = serviceName,
+                    SourceId = dbSource.Id,
+                    Inputs = new List<IServiceInput>()
+                },
+                Name = serviceName,
+                Id = dbSource.Id,
 
-            var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
+            };
+            var testResults = dbServiceModel.TestService(databaseService);
+
+
+
+            var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity()
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = dbSource.Id,
                 Outputs = new List<IServiceOutputMapping>(),
-                Inputs = new List<IServiceInput>()
+                Inputs = databaseService.Inputs
             };
-            foreach (var tableRow in table.Rows)
-            {
-                var output = tableRow["Output from Service"];
-                var toVariable = tableRow["To Variable"];
-                var recSetName = DataListUtil.ExtractRecordsetNameFromValue(toVariable);
-                mySqlDatabaseActivity.Outputs.Add(new ServiceOutputMapping(output, toVariable, recSetName));
-                _commonSteps.AddVariableToVariableList(toVariable);
 
-                var input = tableRow["Input to Service"];
-                var fromVariable = tableRow["From Variable"];
-                if (!string.IsNullOrEmpty(input))
+            var mappings = new List<IServiceOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            if (testResults?.Columns.Count > 1)
+            {
+                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
+                for (int i = 0; i < testResults.Columns.Count; i++)
                 {
-                    mySqlDatabaseActivity.Inputs.Add(new ServiceInput(input, fromVariable));
-                    _commonSteps.AddVariableToVariableList(fromVariable);
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
+                    mappings.Add(dbOutputMapping);
                 }
             }
+            mySqlDatabaseActivity.Outputs = mappings;
+            mySqlDatabaseActivity.ProcedureName = serviceName;
+
+            _commonSteps.AddVariableToVariableList("[[MySqlEmail(1).name]]");
+            _commonSteps.AddVariableToVariableList("[[MySqlEmail(1).email]]");
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
