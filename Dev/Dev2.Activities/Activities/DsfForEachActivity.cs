@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Enums;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
@@ -930,15 +931,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
-            if (nonPassingSteps.Count == 0)
+            if (nonPassingSteps != null && nonPassingSteps.Count == 0)
             {
                 testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                 testRunResult.RunTestResult = RunResult.TestPassed;
             }
             else
             {
-                var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
-                testRunResult.Message = failMessage;
+                if(nonPassingSteps != null)
+                {
+                    var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                    testRunResult.Message = failMessage;
+                }
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
 

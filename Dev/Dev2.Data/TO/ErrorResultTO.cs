@@ -16,7 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data.TO;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.TO
 {
     [Serializable]
     public class ErrorResultTO : IErrorResultTO
@@ -116,11 +116,11 @@ namespace Dev2.DataList.Contract
         /// Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>
-        public string MakeDataListReady(bool AsXML = true)
+        public string MakeDataListReady(bool asXml = true)
         {
             StringBuilder result = new StringBuilder();
 
-            if(!AsXML)
+            if(!asXml)
             {
                 result.Append("\"errors\": [ ");
             }
@@ -129,7 +129,7 @@ namespace Dev2.DataList.Contract
             foreach(string e in _errorList)
             {
                 var formattedMsg = FormatErrorMessage(e);
-                if(AsXML)
+                if(asXml)
                 {
                     result.Append(GlobalConstants.InnerErrorTag);
                     result.Append(formattedMsg);
@@ -150,7 +150,7 @@ namespace Dev2.DataList.Contract
                 }
             }
 
-            if(!AsXML)
+            if(!asXml)
             {
                 result.Append("]");
             }

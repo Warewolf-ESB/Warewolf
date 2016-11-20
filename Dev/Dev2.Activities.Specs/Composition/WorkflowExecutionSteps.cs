@@ -2684,13 +2684,91 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+        [Given(@"""(.*)"" contains a oracle database service ""(.*)"" with mappings as")]
+        public void GivenContainsAOracleDatabaseServiceWithMappingsAs(string parentName, string serviceName, Table table)
+        {
+            //Load Source based on the name
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
+
+            var databaseService = new DatabaseService
+            {
+                Source = dbSource,
+                Inputs = new List<IServiceInput>
+                {
+                    new ServiceInput("P_DEPTNO","2"),
+                },
+                Action = new DbAction()
+                {
+                    Name = serviceName,
+                    SourceId = dbSource.Id,
+                    Inputs = new List<IServiceInput>()
+                    {
+                        new ServiceInput("P_DEPTNO","2"),
+                    }
+                },
+                Name = "GET_EMP_RS",
+                Id = dbSource.Id,
+                
+            };
+            var testResults = dbServiceModel.TestService(databaseService);
+
+
+
+            var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                SourceId = dbSource.Id,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = databaseService.Inputs
+            };
+
+            var mappings = new List<IServiceOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            if (testResults?.Columns.Count > 1)
+            {
+                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
+                for (int i = 0; i < testResults.Columns.Count; i++)
+                {
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
+                    mappings.Add(dbOutputMapping);
+                }
+            }
+            mySqlDatabaseActivity.Outputs = mappings;
+            mySqlDatabaseActivity.ProcedureName = serviceName;
+
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).MANAGER_ID]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).DEPARTMENT_ID]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).EMPLOYEE_ID]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).FIRST_NAME]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).LAST_NAME]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).EMAIL]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).PHONE_NUMBER]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).HIRE_DATE]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).JOB_ID]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).SALARY]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).COMMISSION_PCT]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).MANAGER_ID]]");
+            _commonSteps.AddVariableToVariableList("[[HR_GET_EMP_RS(107).DEPARTMENT_ID]]");
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
+        }
+
+
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-
-
-
-
 
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;

@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Storage;
