@@ -3585,45 +3585,43 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table129.AddRow(new string[] {
-                        "Prefix",
-                        "afg",
-                        "countryid",
-                        "[[rec(*).name]]"});
-            table129.AddRow(new string[] {
-                        "",
-                        "",
-                        "description",
-                        "[[rec(*).email]]"});
 #line 1241
-   testRunner.And("\"SqlTestWF\" contains a sqlserver database service \"dbo.Pr_CitiesGetCountries\" wit" +
-                    "h mappings as", ((string)(null)), table129, "And ");
-#line 1245
+   testRunner.And("\"SqlTestWF\" contains a sqlserver database service \"dbo.FetchPlayers\" with mapping" +
+                    "s as", ((string)(null)), table129, "And ");
+#line 1243
   testRunner.And("I save workflow \"SqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1246
+#line 1244
   testRunner.Then("the test builder is open with \"SqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1247
+#line 1245
   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1248
+#line 1246
   testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1249
+#line 1247
   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1250
-  testRunner.And("I Add \"dbo.Pr_CitiesGetCountries\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1248
+  testRunner.And("I Add \"dbo.FetchPlayers\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
                         "Condition",
                         "Value"});
             table130.AddRow(new string[] {
-                        "[[countries(1).id]]",
+                        "[[dbo_FetchPlayers(1).ID]]",
                         "=",
-                        "1"});
+                        "285"});
             table130.AddRow(new string[] {
-                        "[[countries(1).description]]",
+                        "[[dbo_FetchPlayers(1).Name]]",
                         "=",
-                        "Afghanistan"});
-#line 1251
+                        "Syed"});
+            table130.AddRow(new string[] {
+                        "[[dbo_FetchPlayers(1).Surname]]",
+                        "=",
+                        "Abbas"});
+            table130.AddRow(new string[] {
+                        "[[dbo_FetchPlayers(1).Username]]",
+                        "=",
+                        "Abbas285"});
+#line 1249
   testRunner.And("I add new StepOutputs as", ((string)(null)), table130, "And ");
 #line 1255
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -6903,7 +6901,8 @@ this.FeatureBackground();
 #line 2311
  testRunner.Given("I have a workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 2312
- testRunner.And("\"WebDeleteTestWF\" contains a Web Delete \"testWebDelete\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebDeleteTestWF\" contains a Web Delete \"testWebDelete\" result as \"[[WebResponse]" +
+                    "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2313
  testRunner.And("I save workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2314
@@ -6922,9 +6921,9 @@ this.FeatureBackground();
                         "Condition",
                         "Value"});
             table237.AddRow(new string[] {
-                        "[[Response]]",
+                        "[[result]]",
                         "=",
-                        ""});
+                        "5"});
 #line 2319
  testRunner.And("I add new StepOutputs as", ((string)(null)), table237, "And ");
 #line 2322
@@ -6957,7 +6956,7 @@ this.FeatureBackground();
 #line 2330
  testRunner.Given("I have a workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 2331
- testRunner.And("\"WebPostTestWF\" contains a Web Post \"testWebPost\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebPostTestWF\" contains a Web Post \"testWebPost\" result as \"[[WebResponse]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2332
  testRunner.And("I save workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2333
@@ -6976,9 +6975,9 @@ this.FeatureBackground();
                         "Condition",
                         "Value"});
             table238.AddRow(new string[] {
-                        "[[Response]]",
+                        "[[result]]",
                         "=",
-                        ""});
+                        "5"});
 #line 2338
  testRunner.And("I add new StepOutputs as", ((string)(null)), table238, "And ");
 #line 2341
@@ -7011,7 +7010,7 @@ this.FeatureBackground();
 #line 2349
  testRunner.Given("I have a workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 2350
- testRunner.And("\"WebGetTestWF\" contains a Web Get \"testWebGet\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebGetTestWF\" contains a Web Get \"testWebGet\" result as \"[[WebResponse]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2351
  testRunner.And("I save workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2352
@@ -7077,7 +7076,7 @@ this.FeatureBackground();
 #line 2371
  testRunner.Given("I have a workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 2372
- testRunner.And("\"WebPutTestWF\" contains a Web Put \"testWebPut\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebPutTestWF\" contains a Web Put \"testWebPut\" result as \"[[WebResponse]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2373
  testRunner.And("I save workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2374
@@ -7096,9 +7095,9 @@ this.FeatureBackground();
                         "Condition",
                         "Value"});
             table240.AddRow(new string[] {
-                        "[[Response]]",
+                        "[[result]]",
                         "=",
-                        ""});
+                        "5"});
 #line 2379
  testRunner.And("I add new StepOutputs as", ((string)(null)), table240, "And ");
 #line 2382

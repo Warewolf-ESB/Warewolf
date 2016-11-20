@@ -7,6 +7,7 @@ using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -229,18 +230,40 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_result != null)
                 {
-                    TestPassed = _result.RunTestResult == RunResult.TestPassed;
-                    TestFailing = _result.RunTestResult == RunResult.TestFailed;
-                    TestInvalid = _result.RunTestResult == RunResult.TestInvalid || _result.RunTestResult == RunResult.TestResourceDeleted || _result.RunTestResult == RunResult.TestResourcePathUpdated;
-                    TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                                  _result.RunTestResult != RunResult.TestPassed &&
-                                  _result.RunTestResult != RunResult.TestInvalid &&
-                                  _result.RunTestResult != RunResult.TestResourceDeleted &&
-                                  _result.RunTestResult != RunResult.TestResourcePathUpdated;
+                    UpdateTestPassed();
+                    UpdateTestFailing();
+                    UpdateTestInvalid();
+                    UpdateTestPending();
                 }
 
                 OnPropertyChanged(() => Result);
             }
+        }
+
+        private void UpdateTestPassed()
+        {
+            TestPassed = _result.RunTestResult == RunResult.TestPassed;
+        }
+
+        private void UpdateTestFailing()
+        {
+            TestFailing = _result.RunTestResult == RunResult.TestFailed;
+        }
+
+        private void UpdateTestInvalid()
+        {
+            TestInvalid = _result.RunTestResult == RunResult.TestInvalid ||
+                          _result.RunTestResult == RunResult.TestResourceDeleted ||
+                          _result.RunTestResult == RunResult.TestResourcePathUpdated;
+        }
+
+        private void UpdateTestPending()
+        {
+            TestPending = _result.RunTestResult != RunResult.TestFailed &&
+                          _result.RunTestResult != RunResult.TestPassed &&
+                          _result.RunTestResult != RunResult.TestInvalid &&
+                          _result.RunTestResult != RunResult.TestResourceDeleted &&
+                          _result.RunTestResult != RunResult.TestResourcePathUpdated;
         }
 
         public bool TestPassed
