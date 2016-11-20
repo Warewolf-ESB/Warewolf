@@ -9,7 +9,7 @@
 */
 
 using Dev2.Activities;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -10,7 +10,7 @@
 
 using System.Text.RegularExpressions;
 using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 
 namespace Dev2.Data.Operations
 {
