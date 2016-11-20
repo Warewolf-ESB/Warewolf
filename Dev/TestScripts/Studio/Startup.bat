@@ -47,7 +47,7 @@ IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-"%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
+IF EXIST "%~dp0..\..\Resources - Debug\Resources" "%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
 IF EXIST "%~dp0..\..\Resources - Debug\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Tests" "%DeploymentDirectory%\Tests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
