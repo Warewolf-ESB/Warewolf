@@ -1307,10 +1307,9 @@ Scenario: Test WF with Decision
 
 Scenario: Test WF with SqlBulk Insert
 		Given I have a workflow "SqlBulkTestWF"
-		 And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+		 And "SqlBulkTestWF" contains an SQL Bulk Insert "BulkInsert" using database "Dev2TestingDB" and table "dbo.MailingList" and KeepIdentity set "true" and Result set "[[result]]" for testing as
 		   | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
-		   | Id     |                     | false      | int          |           | true            |
-		   | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
+		   | Name   | Warewolf            | false      | varchar      | 50        | false           |
 		   | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
 		And I save workflow "SqlBulkTestWF"
 		Then the test builder is open with "SqlBulkTestWF"
