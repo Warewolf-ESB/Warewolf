@@ -65,6 +65,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Warewolf.Core;
@@ -1183,6 +1184,78 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
+
+        [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
+        public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            IDbSource dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
+
+
+            // extract keepIdentity value ;)
+            bool keepIdentityBool;
+            bool.TryParse(keepIdentity, out keepIdentityBool);
+
+            // Configure activity ;)
+            var dsfSqlBulkInsert = new DsfSqlBulkInsertActivity
+            {
+                Result = result
+                ,
+                DisplayName = activityName
+                ,
+                TableName = tableName
+                ,
+                Database = new DbSource
+                {
+                    ResourceID = dbSource.Id,
+                    AuthenticationType = dbSource.AuthenticationType,
+                    DatabaseName = dbSrcName,
+                },
+                KeepIdentity = keepIdentityBool,
+                
+
+            };
+            // build input mapping
+            var mappings = new List<DataColumnMapping>();
+
+            var pos = 1;
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach (var row in table.Rows)
+            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                var outputColumn = row["Column"];
+                var inputColumn = row["Mapping"];
+                var isNullableStr = row["IsNullable"];
+                var dataTypeName = row["DataTypeName"];
+                var maxLengthStr = row["MaxLength"];
+                var isAutoIncrementStr = row["IsAutoIncrement"];
+
+                bool isNullable;
+                bool isAutoIncrement;
+                int maxLength;
+                bool.TryParse(isNullableStr, out isNullable);
+                bool.TryParse(isAutoIncrementStr, out isAutoIncrement);
+                int.TryParse(maxLengthStr, out maxLength);
+                SqlDbType dataType;
+                Enum.TryParse(dataTypeName, true, out dataType);
+
+                var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
+                mappings.Add(mapping);
+                pos++;
+            }
+
+            dsfSqlBulkInsert.InputMappings = mappings;
+
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
+
+        }
+
 
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSqlBulkInsertAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
