@@ -1420,32 +1420,122 @@ namespace Dev2.Activities.Specs.Composition
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
-
-            var _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), environmentConnection);
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var manageWebServiceModel = new ManageWebServiceModel(
+                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
+            var webServiceDefinition = new WebServiceDefinition("Delete", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            {
+                Headers = new List<NameValue>()
+                ,
+                Method = WebRequestMethod.Delete
+            };
+            var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
+            var serializer = new Dev2JsonSerializer();
 
             var dsfWebDeleteActivity = new DsfWebDeleteActivity
             {
-                DisplayName = activityName,
+                DisplayName = activityName
+                ,
                 SourceId = a.Id
             };
+
+            RecordsetList recordsetList;
+            using (var responseService = serializer.Deserialize<WebService>(testResult))
+            {
+                recordsetList = responseService.Recordsets;
+                if (recordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                dsfWebDeleteActivity.OutputDescription = responseService.GetOutputDescription();
+            }
+
+            var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+            {
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                return serviceOutputMapping;
+            }).Cast<IServiceOutputMapping>().ToList();
+
+            dsfWebDeleteActivity.Outputs = outputMapping;
+            dsfWebDeleteActivity.Headers = new List<INameValue>();
+            dsfWebDeleteActivity.QueryString = string.Empty;
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebDeleteActivity);
         }
 
         [Given(@"""(.*)"" contains a Web Post ""(.*)"" result as ""(.*)""")]
-        public void GivenContainsAWebPostResultAs(string parentName, string activityName, string p2)
+        public void GivenContainsAWebPostResultAs(string parentName, string activityName, string result)
         {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var manageWebServiceModel = new ManageWebServiceModel(
+                  new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                  , _proxyLayer.QueryManagerProxy
+                  , mock.Object
+                  , new Server(environmentModel));
+
+            var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
+            var a = pluginSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
+            var webServiceDefinition = new WebServiceDefinition("Post", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            {
+                Headers = new List<NameValue>()
+                ,
+                Method = WebRequestMethod.Post
+            };
+            var testResult = manageWebServiceModel.TestService(webServiceDefinition);
+
+            var serializer = new Dev2JsonSerializer();
+
             var dsfWebPostActivity = new DsfWebPostActivity
             {
                 DisplayName = activityName
+                ,
+                PostData = string.Empty
+                ,
+                SourceId = a.Id
             };
+
+            RecordsetList recordsetList;
+            using (var responseService = serializer.Deserialize<WebService>(testResult))
+            {
+                recordsetList = responseService.Recordsets;
+                if (recordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                dsfWebPostActivity.OutputDescription = responseService.GetOutputDescription();
+            }
+
+            var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+            {
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                return serviceOutputMapping;
+            }).Cast<IServiceOutputMapping>().ToList();
+
+            dsfWebPostActivity.Outputs = outputMapping;
+            dsfWebPostActivity.Headers = new List<INameValue>();
+            //{
+            //    new NameValue("Content-Type","text/html")
+            //};
+            dsfWebPostActivity.QueryString = string.Empty;
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebPostActivity);
         }
 
         [Given(@"""(.*)"" contains a Web Get ""(.*)"" result as ""(.*)""")]
-        public void GivenContainsAWebGetResultAs(string parentName, string activityName, string p2)
+        public void GivenContainsAWebGetResultAs(string parentName, string activityName, string result)
         {
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -1462,8 +1552,7 @@ namespace Dev2.Activities.Specs.Composition
             var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
             var webServiceDefinition = new WebServiceDefinition("Get", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
             {
-                Headers = new List<NameValue>(),
-                
+                Headers = new List<NameValue>()
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
@@ -1471,9 +1560,9 @@ namespace Dev2.Activities.Specs.Composition
             
             var dsfWebGetActivity = new DsfWebGetActivity
             {
-                DisplayName = activityName,
-                SourceId = a.Id,
-                
+                DisplayName = activityName
+                ,
+                SourceId = a.Id
             };
 
             RecordsetList recordsetList;
@@ -1500,21 +1589,72 @@ namespace Dev2.Activities.Specs.Composition
                 new NameValue("Content-Type","text/html")
             };
             dsfWebGetActivity.QueryString = string.Empty;
-            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Id]]");
-            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Name]]");
-            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Category]]");
-            _commonSteps.AddVariableToVariableList("[[UnnamedArrayData(6).Price]]");
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebGetActivity);
         }
 
         [Given(@"""(.*)"" contains a Web Put ""(.*)"" result as ""(.*)""")]
-        public void GivenContainsAWebPutResultAs(string parentName, string activityName, string p2)
+        public void GivenContainsAWebPutResultAs(string parentName, string activityName, string result)
         {
-            var dsfWebPostActivity = new DsfWebPutActivity
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var manageWebServiceModel = new ManageWebServiceModel(
+                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
+            var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
+            var a = pluginSources.Single(source => source.Id == "0fb49fec-e454-4357-a06f-08f329558b18".ToGuid());
+            var webServiceDefinition = new WebServiceDefinition("Put", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            {
+                Headers = new List<NameValue>()
+                ,
+                Method = WebRequestMethod.Put
+                
+            };
+            var testResult = manageWebServiceModel.TestService(webServiceDefinition);
+
+            var serializer = new Dev2JsonSerializer();
+
+            var webPutActivity = new DsfWebPutActivity
             {
                 DisplayName = activityName
+                ,
+                SourceId = a.Id
+                ,
+                PutData = "{\"Id\":\"\"}"
             };
-            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebPostActivity);
+
+            RecordsetList recordsetList;
+            using (var responseService = serializer.Deserialize<WebService>(testResult))
+            {
+                recordsetList = responseService.Recordsets;
+                if (recordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                webPutActivity.OutputDescription = responseService.GetOutputDescription();
+            }
+
+            var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+            {
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                return serviceOutputMapping;
+            }).Cast<IServiceOutputMapping>().ToList();
+
+            webPutActivity.Outputs = outputMapping;
+            webPutActivity.Headers = new List<INameValue>()
+            {
+                new NameValue("Content-Type","text/html")
+            };
+            webPutActivity.QueryString = string.Empty;
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, webPutActivity);
         }
 
 
