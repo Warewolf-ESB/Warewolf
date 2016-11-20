@@ -2309,7 +2309,7 @@ Scenario: Test WF with Sharepoint Update List Item
 #Web Methods
 Scenario: Test WF with Web Delete
 	Given I have a workflow "WebDeleteTestWF"		
-	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[WebResponse]]"		
+	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[Response]]"		
 	And I save workflow "WebDeleteTestWF"
 	Then the test builder is open with "WebDeleteTestWF"
 	And I click New Test
@@ -2317,8 +2317,8 @@ Scenario: Test WF with Web Delete
     And test name starts with "Test 1"
 	And I Add "testWebDelete" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2328,7 +2328,7 @@ Scenario: Test WF with Web Delete
 
 Scenario: Test WF with Web Post
 	Given I have a workflow "WebPostTestWF"		
-	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[WebResponse]]"		
+	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[Response]]"		
 	And I save workflow "WebPostTestWF"
 	Then the test builder is open with "WebPostTestWF"
 	And I click New Test
@@ -2336,8 +2336,8 @@ Scenario: Test WF with Web Post
     And test name starts with "Test 1"
 	And I Add "testWebPost" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2347,7 +2347,7 @@ Scenario: Test WF with Web Post
 
 Scenario: Test WF with Web Get
 	Given I have a workflow "WebGetTestWF"		 
-	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[WebResponse]]"		
+	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[Response]]"		
 	And I save workflow "WebGetTestWF"
 	Then the test builder is open with "WebGetTestWF"
 	And I click New Test
@@ -2369,7 +2369,7 @@ Scenario: Test WF with Web Get
 
 Scenario: Test WF with Web Put
 	Given I have a workflow "WebPutTestWF"		
-	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[WebResponse]]"		
+	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[Response]]"		
 	And I save workflow "WebPutTestWF"
 	Then the test builder is open with "WebPutTestWF"
 	And I click New Test
@@ -2377,8 +2377,8 @@ Scenario: Test WF with Web Put
     And test name starts with "Test 1"
 	And I Add "testWebPut" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[result]]    | =         | 5     |
+	  	 | Variable Name   | Condition | Value |
+	  	 | [[Response]] | =         |       |     
 	When I save
 	And I run the test
 	Then test result is Passed
