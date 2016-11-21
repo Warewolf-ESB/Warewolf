@@ -598,7 +598,7 @@ namespace Dev2.Network
 
             var result = new StringBuilder();
             var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
-            resultTask.Wait(MillisecondsTimeout);
+            resultTask.Wait();
             return result;
 
         }

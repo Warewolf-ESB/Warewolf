@@ -579,7 +579,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
                 remoteEnvironment.ForceLoadResources();
-                var splitNameAndCat = remoteWf.Split(new char[] { '/' });
+                var splitNameAndCat = remoteWf.Split('/');
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName || model.Category == remoteWf.Replace('/', '\\'), true);
                 if (remoteResourceModel != null)
