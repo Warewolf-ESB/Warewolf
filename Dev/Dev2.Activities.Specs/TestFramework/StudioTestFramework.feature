@@ -2001,12 +2001,12 @@ Scenario: Test WF with Ruby
 
 Scenario: Test WF with Sharepoint Copy File
 	Given I have a workflow "ShapointCopyFileTestWF"	
-	  And "ShapointCopyFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
-	And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePCopyFile" as 
-	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result |
-	| SharePoint Test Server |                |              |           |        |
+	  And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
+	| Server                 | FileToUpload                                      | serverPath | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | e.xml      | [[Result]] |	  
+	And "ShapointCopyFileTestWF" contains SharepointCopyFile "TestSharePCopyFile" as 
+	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
+	| SharePoint Test Server | e.xml          | f.xml        | true      | [[copyResult]] |
 	And I save workflow "ShapointCopyFileTestWF"
 	Then the test builder is open with "ShapointCopyFileTestWF"
 	And I click New Test
@@ -2014,8 +2014,8 @@ Scenario: Test WF with Sharepoint Copy File
     And test name starts with "Test 1"
 	And I Add "TestSharePCopyFile" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name  | Condition | Value   |
+	  	 | [[copyResult]] | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2147,7 +2147,7 @@ Scenario: Test WF with Sharepoint Upload File
 
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
-	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
+	And "ShapointMoveFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
 	| Server                 | FileToUpload                                      | serverPath | Result     |
 	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | B.xml      | [[Result]] |	  
 	And "ShapointMoveFileTestWF" contains SharepointMoveFile "TestSharePMoveFile" as 
