@@ -2861,14 +2861,6 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
         }
 
-        [Then("Deploy Was Successful")]
-        public void Assert_Deploy_Was_Successful()
-        {
-            Assert.AreEqual("Resource(s) Deployed Successfully", MessageBoxWindow.ResourcesDeployedSucText.DisplayText
-                , "Deploy message text does not equal 'Resource Deployed Successfully'.");
-            Click_MessageBox_OK();
-        }
-
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
         [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row1")]
         public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
