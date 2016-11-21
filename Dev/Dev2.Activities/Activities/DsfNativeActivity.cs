@@ -590,7 +590,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        UpdateDebugWithAssertions(dataObject);
+                        if (_debugState.StateType != StateType.Duration)
+                        {
+                            UpdateDebugWithAssertions(dataObject);
+                        }
                         var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
                         Copy(debugOutputs, _debugState.Outputs);
                     }

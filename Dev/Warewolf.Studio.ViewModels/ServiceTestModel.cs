@@ -49,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
         private IServiceTestStep _selectedTestStep;
         private ObservableCollection<IServiceTestStep> _testSteps;
         private string _errorContainsText;
+        private bool _isTestLoading;
 
         public string NeverRunString
         {
@@ -315,6 +316,19 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isTestSelected = value;
                 OnPropertyChanged(() => IsTestSelected);
+            }
+        }
+
+        public bool IsTestLoading
+        {
+            get
+            {
+                return _isTestLoading;
+            }
+            set
+            {
+                _isTestLoading = value;
+                OnPropertyChanged(() => IsTestLoading);
             }
         }
 

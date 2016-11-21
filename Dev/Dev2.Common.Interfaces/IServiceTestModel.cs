@@ -23,6 +23,7 @@ namespace Dev2.Common.Interfaces
         string ErrorContainsText { get; set; }
         bool IsNewTest { get; set; }
         bool IsTestSelected { get; set; }
+        bool IsTestLoading { get; set; }
         bool TestPassed { get; set; }
         bool TestFailing { get; set; }
         bool TestInvalid { get; set; }
