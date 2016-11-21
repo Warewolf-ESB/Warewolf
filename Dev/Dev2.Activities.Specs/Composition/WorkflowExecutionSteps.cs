@@ -1458,13 +1458,29 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointSource = sources.Single(source => source.ResourceID == createListItemActivity.SharepointServerResourceId);
             var sharepointListTos = environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
             var sharepointListTo = sharepointListTos.Single(to => to.FullName == sharepointList);
+            var sharepointFieldsToKeep = new List<ISharepointFieldTo>()
+            {
+                new SharepointFieldTo() {InternalName = "Title"},
+                new SharepointFieldTo() {InternalName = "Name"},
+                new SharepointFieldTo() {InternalName = "IntField"},
+                new SharepointFieldTo() {InternalName = "CurrencyField"},
+                new SharepointFieldTo() {InternalName = "DateField"},
+                new SharepointFieldTo() {InternalName = "DateTimeField"},
+                new SharepointFieldTo() {InternalName = "BoolField"},
+                new SharepointFieldTo() {InternalName = "MultilineTextField"},
+                new SharepointFieldTo() {InternalName = "RequiredField"},
+                new SharepointFieldTo() {InternalName = "Loc",},
+            };
             SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
             asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
             {
                 if (columnList != null)
                 {
-                    List<SharepointReadListTo> fieldMappings = columnList.Select(mapping =>
+                    List<SharepointReadListTo> fieldMappings = columnList
+                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                    .Select(mapping =>
                     {
+
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
                         var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
                         return sharepointReadListTo;
@@ -1485,13 +1501,22 @@ namespace Dev2.Activities.Specs.Composition
                             }
                         }
                     }
+
                 }
             });
 
-
-
-            _commonSteps.AddVariableToVariableList(table.Rows[0]["Result"]);
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().Title]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().Name]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().IntField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().CurrencyField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().DateField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().DateTimeField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().BoolField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().MultilineTextField]]");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().Loc]] ");
+            _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().RequiredField]]");
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
+
         }
 
         static string GetValidVariableName(ISharepointFieldTo mapping)
