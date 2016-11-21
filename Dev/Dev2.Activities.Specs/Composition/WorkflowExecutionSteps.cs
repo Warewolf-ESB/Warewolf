@@ -1415,22 +1415,29 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
-        [Given(@"""(.*)"" contains SharepointDeleteListItem ""(.*)"" as")]
+        [Given(@"""(.*)"" contains SharepointDeleteSingle ""(.*)"" as")]
         public void GivenContainsSharepointDeleteListItemAs(string parentName, string activityName, Table table)
         {
-            var sourceName = table.Rows[0]["Server"];
-            var list = table.Rows[0]["List"];
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var result = table.Rows[0]["Result"];
-            _commonSteps.AddVariableToVariableList(result);
-            _commonSteps.AddVariableToVariableList(result);
-            var deleteListItemActivity = new SharepointDeleteListItemActivity
+            var name = table.Rows[0]["Server"];
+            var serverPath = table.Rows[0]["ServerPath"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
+            var deleteListItemActivity = new SharepointDeleteFileActivity
             {
-                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
+                SharepointServerResourceId = sharepointSource.ResourceID
                 ,
                 DisplayName = activityName
                 ,
-                SharepointList = list
+                ServerInputPath = serverPath,
+                Result = result
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
 
         }
@@ -1589,7 +1596,7 @@ namespace Dev2.Activities.Specs.Composition
             var serverPath = table.Rows[0]["serverPath"];
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
-            var fileUploadActivity = new SharepointFileUploadActivity
+            SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
