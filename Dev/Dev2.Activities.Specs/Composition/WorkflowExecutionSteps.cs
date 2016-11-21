@@ -1579,16 +1579,26 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
-            var server = table.Rows[0]["Server"];
-            SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var filetoUpload = table.Rows[0]["FileToUpload"];
+            var serverPath = table.Rows[0]["serverPath"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+            var fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
-                Result = "[[Result]]"
-
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                LocalInputPath = filetoUpload,
+                ServerInputPath = serverPath
             };
-            _commonSteps.AddVariableToVariableList("[[Result]]");
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
         }
 

@@ -2095,7 +2095,7 @@ Scenario: Test WF with Sharepoint Create List Items
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointCreateListItemsTestWF" is deleted as cleanup
 	
-Scenario: Test WF with Sharepoint Delete File
+Scenario: Test WF with Sharepoint Delete File List
 	Given I have a workflow "ShapointDeleteFileTestWF"	 
 	And "ShapointDeleteFileTestWF" contains SharepointDeleteFile "TestSharePDeleteFile" as 
 	| Server                 | SharepointList | Result        |
@@ -2116,7 +2116,7 @@ Scenario: Test WF with Sharepoint Delete File
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDeleteFileTestWF" is deleted as cleanup
 	
-Scenario: Test WF with Sharepoint Delete List Item
+Scenario: Test WF with Sharepoint Delete List
 	Given I have a workflow "ShapointDelItemTestWF"	
 	  And "ShapointDelItemTestWF" contains an Assign "MyAssign" as
 	    | variable       | value |
@@ -2165,13 +2165,10 @@ Scenario: Test WF with Sharepoint Download File
 	Then workflow "ShapointDownloadFileTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Sharepoint Upload File
-	Given I have a workflow "ShapointUploadFileTestWF"	
-	  And "ShapointUploadFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	Given I have a workflow "ShapointUploadFileTestWF"		 
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | List                     | Result     |
-	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
+	| Server                 | FileToUpload                                      | serverPath | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | a.xml      | [[Result]] |
 	And I save workflow "ShapointUploadFileTestWF"
 	Then the test builder is open with "ShapointUploadFileTestWF"
 	And I click New Test
@@ -2179,8 +2176,8 @@ Scenario: Test WF with Sharepoint Upload File
     And test name starts with "Test 1"
 	And I Add "TestSharePUploadFile" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name | Condition | Value   |
+	  	 | [[Result]]    | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed
