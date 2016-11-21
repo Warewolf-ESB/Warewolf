@@ -935,45 +935,7 @@ Scenario: Control Flow - Sequence Debug Run Selected Test passed with create Exa
 	And I run all tests
 	Then all tests pass
 
-Scenario: Loop Constructs - For Each Debug Run Selected Test passed with create Example Data teststep Passes
-	Given the test builder is open with "Loop Constructs - For Each"
-	And Tab Header is "Loop Constructs - For Each - Tests"
-	Then there are 0 tests	
-	And I click New Test
-	Then a new test is added	
-    And test name starts with "Test 1"
-	And I Add all "For each" as TestStep
-	And I add StepOutputs as 
-	| Variable Name  | Condition  | Value | stepIndex | ChildIndex |
-	| [[rec(6).set]] | <>         |       | 0         | 0          |
-	| [[rec(3).set]] | Not Email  |       | 1         | 0          |
-	| [[rec(7).set]] | Is Numeric |       | 2         | 0          |
-	And save is enabled
-	When I save
-	And I run the test
-	Then test result is Passed
 
-Scenario: Loop Constructs - Select and Apply Debug Run Selected Test passed with create Example Data teststep Passes
-	Given the test builder is open with "Loop Constructs - Select and Apply"
-	And Tab Header is "Loop Constructs - Select and Apply - Tests"
-	Then there are 0 tests	
-	And I click New Test
-	Then a new test is added	
-	And Tab Header is "Loop Constructs - Select and Apply - Tests *"
-    And test name starts with "Test 1"
-	And I Add all "Select and apply" as TestStep
-	And I add StepOutputs as 
-	| Variable Name           | Condition | Value   | stepIndex | ChildIndex |
-	| [[PetsName]]            | =         | The Guv | 0         | 0          |
-	| [[@Pet.Name]]           | =         | The Guv | 0         | 1          |
-	| [[_pfname]]             | =         | DAISY   | 1         | 0          |
-	| [[@Pet.Friend(1).Name]] | =         | DAISY   | 1         | 1          |
-	| [[@Pet.Friend(2).Name]] | =         | ALEX    | 1         | 1          |
-	| [[@Pet.Friend(3).Name]] | =         | JAMIE   | 1         | 1          |	
-	And save is enabled
-	When I save
-	And I run the test
-	Then test result is Passed
 
 #Data Category
 Scenario: Test WF with Assign
@@ -2185,12 +2147,12 @@ Scenario: Test WF with Sharepoint Upload File
 
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
-	  And "ShapointMoveFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
+	| Server                 | FileToUpload                                      | serverPath | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | B.xml      | [[Result]] |	  
 	And "ShapointMoveFileTestWF" contains SharepointMoveFile "TestSharePMoveFile" as 
-	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result |
-	| SharePoint Test Server |                |              |           |        |
+	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
+	| SharePoint Test Server | B.xml          | c.xml        |           | [[MoveResult]] |
 	And I save workflow "ShapointMoveFileTestWF"
 	Then the test builder is open with "ShapointMoveFileTestWF"
 	And I click New Test
@@ -2198,8 +2160,8 @@ Scenario: Test WF with Sharepoint Move File
     And test name starts with "Test 1"
 	And I Add "TestSharePMoveFile" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name  | Condition | Value   |
+	  	 | [[MoveResult]] | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed
