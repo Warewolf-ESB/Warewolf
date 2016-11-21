@@ -1410,6 +1410,14 @@ namespace Dev2.Activities.Specs.TestFramework
             MyContext.Add("folderPath", category);
         }
 
+        [Then(@"I expect Error ""(.*)""")]
+        public void ThenIExpectError(string p0)
+        {
+            var testFrameworkFromContext = GetTestFrameworkFromContext();
+            testFrameworkFromContext.SelectedServiceTest.ErrorExpected = true;
+            testFrameworkFromContext.SelectedServiceTest.ErrorContainsText = p0;
+        }
+
         [Given(@"I have a resouce workflow ""(.*)"" inside Home")]
         public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
         {
