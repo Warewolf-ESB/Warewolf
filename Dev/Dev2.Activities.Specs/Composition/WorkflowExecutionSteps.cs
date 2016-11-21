@@ -1491,22 +1491,29 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
-        [Given(@"""(.*)"" contains SharepointDeleteListItem ""(.*)"" as")]
+        [Given(@"""(.*)"" contains SharepointDeleteSingle ""(.*)"" as")]
         public void GivenContainsSharepointDeleteListItemAs(string parentName, string activityName, Table table)
         {
-            var sourceName = table.Rows[0]["Server"];
-            var list = table.Rows[0]["List"];
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var result = table.Rows[0]["Result"];
-            _commonSteps.AddVariableToVariableList(result);
-            _commonSteps.AddVariableToVariableList(result);
-            var deleteListItemActivity = new SharepointDeleteListItemActivity
+            var name = table.Rows[0]["Server"];
+            var serverPath = table.Rows[0]["ServerPath"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
+            var deleteListItemActivity = new SharepointDeleteFileActivity
             {
-                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
+                SharepointServerResourceId = sharepointSource.ResourceID
                 ,
                 DisplayName = activityName
                 ,
-                SharepointList = list
+                ServerInputPath = serverPath,
+                Result = result
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
 
         }
@@ -1701,30 +1708,61 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
         public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
         {
-            SharepointDeleteFileActivity deleteFileActivity = new SharepointDeleteFileActivity
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var sharepointList = table.Rows[0]["SharepointList"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+            var deleteFileActivity = new SharepointDeleteListItemActivity()
             {
-                DisplayName = activityName
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                SharepointList = sharepointList,
+                DeleteCount = result,
+                FilterCriteria = new List<SharepointSearchTo>()
+                {
+                    new SharepointSearchTo("Title","=",Guid.NewGuid().ToString(),1)
+                    {
+                        InternalName = "Title"
+                    }
+                }
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
-                Result = table.Rows[0]["Result"],
+                RequireAllCriteriaToMatch = true
 
             };
+
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteFileActivity);
         }
 
         [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
-            var server = table.Rows[0]["Server"];
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var filetoUpload = table.Rows[0]["FileToUpload"];
+            var serverPath = table.Rows[0]["serverPath"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
             SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
-                Result = "[[Result]]"
-
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                LocalInputPath = filetoUpload,
+                ServerInputPath = serverPath
             };
-            _commonSteps.AddVariableToVariableList("[[Result]]");
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
         }
 

@@ -105,11 +105,11 @@ namespace Dev2.ViewModels
         {
             Dev2Logger.Info(message.GetType().Name);
             DebugOutputViewModel.Clear();
+            DebugOutputViewModel.DebugStatus = DebugStatus.Ready;
             foreach (var debugState in message.DebugStates)
             {
                 if (debugState != null)
                 {
-                    debugState.StateType = StateType.Clear;
                     debugState.SessionID = DebugOutputViewModel.SessionID;
                     DebugOutputViewModel.Append(debugState);
                 }
