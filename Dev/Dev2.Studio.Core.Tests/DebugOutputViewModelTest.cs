@@ -1232,7 +1232,7 @@ namespace Dev2.Core.Tests
             var mock = new Mock<IEventAggregator>();
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
             mock.Setup(aggregator => aggregator.Publish(newTestFromDebugMessage)).Verifiable();
-
+            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
             var debugOutpuViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object, resourceModel.Object);
             var methodInfo = typeof(DebugOutputViewModel).GetMethod("CanAddNewTest", BindingFlags.Instance | BindingFlags.NonPublic);
             debugOutpuViewModel.RootItems.Add(new DebugStateTreeViewItemViewModel(new Mock<IEnvironmentRepository>().Object));

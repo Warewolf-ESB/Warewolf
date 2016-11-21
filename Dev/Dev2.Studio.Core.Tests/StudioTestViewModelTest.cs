@@ -29,8 +29,12 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             CustomContainer.Register(new Mock<IPopupController>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
-            
-            var vm = new StudioTestViewModel(eventAggregator.Object, new Mock<IServiceTestViewModel>().Object, new Mock<IPopupController>().Object, null);
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(true);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+            var serviceTestViewModel = new Mock<IServiceTestViewModel>();
+            serviceTestViewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
+            var vm = new StudioTestViewModel(eventAggregator.Object, serviceTestViewModel.Object, new Mock<IPopupController>().Object, null);
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
