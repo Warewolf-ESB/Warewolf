@@ -109,6 +109,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return;
             }
+            selectedServiceTest.IsTestLoading = true;
             selectedServiceTest.IsTestRunning = true;
             asyncWorker.Start(() => resourceModel.Environment.ResourceRepository.ExecuteTest(resourceModel, selectedServiceTest.TestName), res =>
                 {
@@ -171,6 +172,7 @@ namespace Warewolf.Studio.ViewModels
                         selectedServiceTest.TestInvalid = true;
                     }
                     selectedServiceTest.IsTestRunning = false;
+                    selectedServiceTest.IsTestLoading = false;
                 });
         }
 

@@ -95,7 +95,6 @@ namespace Dev2.Runtime
 
         private void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
         {
-            var testRunResult = new TestRunResult { RunTestResult = RunResult.TestInvalid };
             if(serviceTestModelTo.TestSteps != null)
             {
                 foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
@@ -105,17 +104,17 @@ namespace Dev2.Runtime
                         var childs = serviceTestStep.Children.Flatten(step => step.Children);
                         foreach (var child in childs)
                         {
-                            child.Result = testRunResult;
+                            child.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                             foreach (var serviceTestOutput in child.StepOutputs)
                             {
-                                serviceTestOutput.Result = testRunResult;
+                                serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                             }
                         }
                     }
-                    serviceTestStep.Result = testRunResult;
+                    serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                     foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
                     {
-                        serviceTestOutput.Result = testRunResult;
+                        serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                     }
 
                 }
@@ -177,10 +176,9 @@ namespace Dev2.Runtime
                         serviceTestModelTO.Outputs.Remove(output);
                     }
                 }
-                var testRunResult = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                 foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
                 {
-                    serviceTestOutput.Result = testRunResult;
+                    serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                 }
                 serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable, testOutput.Variable, StringComparison.InvariantCultureIgnoreCase));
             }

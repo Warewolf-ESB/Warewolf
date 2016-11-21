@@ -165,7 +165,6 @@ namespace Dev2.Activities
 
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
                 }
             }
