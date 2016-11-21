@@ -1893,8 +1893,6 @@ Scenario: Test WF with ForEach which contains assign
 		And I Add "ForEachTest" as TestStep
 		And I add new Children StepOutputs as 
 		| Variable Name | Condition | Value |
-		| [[rec(1).a]]  | =         | yes  |
-		| [[rec(2).a]]  | =         | Test  |
 		| [[rec(3).a]]  | =         | Test  |
 		When I save
 		And I run the test
@@ -1920,7 +1918,7 @@ Scenario: Test WF with SelectAndApply which contains assign
 		And I Add "SelectAndApplyTest" as TestStep
 		And I add new Children StepOutputs as 
 		| Variable Name | Condition | Value |
-		| [[rec(1).a]]  | =         | Test  |
+		| [[f]]  | =         | Test  |
 		When I save
 		And I run the test
 		Then test result is Passed
