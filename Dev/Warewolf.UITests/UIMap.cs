@@ -47,7 +47,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackError -= OnError;
             Playback.PlaybackError += OnError;
-            Mouse.MouseDragSpeed = 450;
+            Mouse.MouseDragSpeed = 400;
         }
 
         [Given("The Warewolf Studio is running")]
@@ -246,6 +246,26 @@ namespace Warewolf.UITests
             finally
             {
                 Console.WriteLine("No hanging Web Browser Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+            }
+        }
+
+        public void TryCloseHangingDecisionDialog()
+        {
+            var TimeBefore = System.DateTime.Now;
+            try
+            {
+                if (ControlExistsNow(DecisionOrSwitchDialog))
+                {
+                    Click_Decision_Dialog_Cancel_Button();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging decision dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("No hanging decision dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
