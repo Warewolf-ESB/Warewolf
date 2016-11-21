@@ -867,6 +867,12 @@ namespace Warewolf.UITests
                 WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             }
         }
+      
+        [When(@"I Filter the ToolBox with ""(.*)""")]
+        public void Filter_ToolBox(string FilterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = FilterText;
+        }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
         {
