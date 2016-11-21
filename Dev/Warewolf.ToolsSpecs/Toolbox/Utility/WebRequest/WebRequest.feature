@@ -8,7 +8,7 @@ Feature: WebRequest
 Scenario: Enter a URL to download html  
 	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed 
-	Then the result should contain the string "Welcome to ASP.NET Web API"
+	Then the result should contain the string "Success"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                        | Header |
@@ -45,12 +45,12 @@ Scenario: Enter a URL made up of text and variables with no header
 
 
 Scenario: Enter a URL and 2 variables each with a header parameter (json)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/json"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "["value1","value2"]"
+	Then the result should contain the string "Success"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                   | Header                                                      |
@@ -60,36 +60,36 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/xml"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "<string>value1</string>"
+	Then the result should contain the string "Success"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                   | Header                                                     |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
+	| URL                                          | Header                                                     |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
 	|                                      |
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a URL that returns json
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed	
-	Then the result should contain the string "["value1","value2"]"
+	Then the result should contain the string "Success"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                        | Header |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json |        |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
 	|                                  |
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL that returns xml
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed	
-	Then the result should contain the string "<string>value1</string>"
+	Then the result should contain the string "Success"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                       | Header |

@@ -83,7 +83,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -155,14 +155,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
     testRunner.Given("I have the url \"http://[[site]][[file]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And("I have a web request variable \"[[site]]\" equal to \"rsaklfsvrtfsbld/IntegrationTes" +
-                    "tSite/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[site]]\" equal to \"http://rsaklfsvrtfsbld:9810/api/products/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("I have a web request variable \"[[file]]\" equal to \"Proxy.ashx?html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[file]]\" equal to \"Get\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
- testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -195,7 +194,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
 this.ScenarioSetup(scenarioInfo);
 #line 48
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\" without ti" +
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without ti" +
                     "meout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -206,7 +205,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 53
- testRunner.Then("the result should contain the string \"[\"value1\",\"value2\"]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 54
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -214,7 +213,7 @@ this.ScenarioSetup(scenarioInfo);
                         "URL",
                         "Header"});
             table7.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/json\""});
 #line 55
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
@@ -222,7 +221,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
-                        "[[result]] = [\"value1\",\"value2\"]"});
+                        "[[result]] = Success"});
 #line 58
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
@@ -239,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
 this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\" without ti" +
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without ti" +
                     "meout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -250,7 +249,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 68
- testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 69
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -258,7 +257,7 @@ this.ScenarioSetup(scenarioInfo);
                         "URL",
                         "Header"});
             table9.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/xml\""});
 #line 70
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
@@ -266,7 +265,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table10.AddRow(new string[] {
-                        "[[result]] = <string>value1</string>"});
+                        "[[result]] = Success"});
 #line 73
  testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
@@ -283,7 +282,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
 this.ScenarioSetup(scenarioInfo);
 #line 78
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json\" witho" +
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" witho" +
                     "ut timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -296,7 +295,7 @@ this.ScenarioSetup(scenarioInfo);
                         "URL",
                         "Header"});
             table11.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json",
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
 #line 82
  testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
@@ -304,7 +303,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table12.AddRow(new string[] {
-                        "[[result]] = [\"value1\",\"value2\"]"});
+                        "[[result]] = Success"});
 #line 85
  testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
@@ -321,12 +320,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
 this.ScenarioSetup(scenarioInfo);
 #line 90
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml\" withou" +
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" withou" +
                     "t timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 91
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 92
- testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 93
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -334,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
                         "URL",
                         "Header"});
             table13.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml",
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
 #line 94
  testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
@@ -342,7 +341,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table14.AddRow(new string[] {
-                        "[[result]] = <string>value1</string>"});
+                        "[[result]] = Success"});
 #line 97
  testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
