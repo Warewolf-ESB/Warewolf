@@ -1217,7 +1217,7 @@ namespace Dev2.Activities.Specs.Composition
                     DatabaseName = dbSrcName,
                 },
                 KeepIdentity = keepIdentityBool,
-                
+
 
             };
             // build input mapping
@@ -1440,8 +1440,12 @@ namespace Dev2.Activities.Specs.Composition
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
+                Result = table.Rows[0]["Result"],
+                SharepointList = table.Rows[0]["List"],
+                
             };
+            _commonSteps.AddVariableToVariableList(table.Rows[0]["Result"]);
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
         }
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
@@ -1451,7 +1455,9 @@ namespace Dev2.Activities.Specs.Composition
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
+                Result = table.Rows[0]["Result"],
+
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteFileActivity);
         }
@@ -1464,8 +1470,11 @@ namespace Dev2.Activities.Specs.Composition
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
+                Result = "[[Result]]"
+
             };
+            _commonSteps.AddVariableToVariableList("[[Result]]");
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
         }
 
@@ -1630,7 +1639,7 @@ namespace Dev2.Activities.Specs.Composition
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
             var serializer = new Dev2JsonSerializer();
-            
+
             var dsfWebGetActivity = new DsfWebGetActivity
             {
                 DisplayName = activityName
@@ -1687,7 +1696,7 @@ namespace Dev2.Activities.Specs.Composition
                 Headers = new List<NameValue>()
                 ,
                 Method = WebRequestMethod.Put
-                
+
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
@@ -2814,9 +2823,85 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
+        [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings for testing as")]
+        public void GivenContainsAPostgreToolUsingWithMappingsForTestingAs(string parentName, string serviceName, Table table)
+        {
+
+            //Load Source based on the name
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , new Server(environmentModel));
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            IDbSource dbSource = dbSources.Single(source => source.Id == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid());
+
+            var databaseService = new DatabaseService
+            {
+                Source = dbSource,
+                Inputs = new List<IServiceInput>
+                {
+                    new ServiceInput("Prefix","K"),
+                },
+                Action = new DbAction()
+                {
+                    Name = serviceName,
+                    SourceId = dbSource.Id,
+                    Inputs = new List<IServiceInput>()
+                    {
+                        new ServiceInput("Prefix","K"),
+                    }
+                },
+                Name = "get_countries",
+                Id = dbSource.Id,
+
+            };
+            var testResults = dbServiceModel.TestService(databaseService);
+
+            var mappings = new List<IServiceOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            if (testResults?.Columns.Count > 1)
+            {
+                var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
+                for (int i = 0; i < testResults.Columns.Count; i++)
+                {
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString().Replace(" ", ""), recordsetName);
+                    mappings.Add(dbOutputMapping);
+                }
+            }
+
+
+
+            var postGreActivity = new DsfPostgreSqlActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                SourceId = dbSource.Id,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = new List<IServiceInput>()
+            };
+
+            postGreActivity.Inputs = new List<IServiceInput>()
+            {
+                new ServiceInput("Prefix","K"),
+            };
+            postGreActivity.Outputs = mappings;
+            _commonSteps.AddVariableToVariableList("[[get_countries(1).id]]");
+            _commonSteps.AddVariableToVariableList("[[get_countries(1).name]]");
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, postGreActivity);
+        }
+
+
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings as")]
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
+
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -2956,7 +3041,7 @@ namespace Dev2.Activities.Specs.Composition
                 },
                 Name = "GET_EMP_RS",
                 Id = dbSource.Id,
-                
+
             };
             var testResults = dbServiceModel.TestService(databaseService);
 
@@ -3042,7 +3127,7 @@ namespace Dev2.Activities.Specs.Composition
             };
             var testResults = dbServiceModel.TestService(databaseService);
 
-          
+
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
@@ -3067,7 +3152,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             mySqlDatabaseActivity.Outputs = mappings;
             mySqlDatabaseActivity.ProcedureName = serviceName;
-            
+
             _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).ID]]");
             _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Name]]");
             _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Surname]]");
