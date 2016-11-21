@@ -21,6 +21,7 @@ using Warewolf.Core;
 using Warewolf.Storage;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -56,7 +57,7 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject,0);
         }
 
@@ -95,7 +96,7 @@ namespace Dev2.Activities.Sharepoint
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             try
             {
                 var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -115,21 +116,21 @@ namespace Dev2.Activities.Sharepoint
                 using (var ctx = sharepointHelper.GetContext())
                 {
                     var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields,update , RequireAllCriteriaToMatch);
-                    List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
+                    var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
                     listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
                     ctx.ExecuteQuery();
                 }
                 using (var ctx = sharepointHelper.GetContext())
                 {
-                    List list = ctx.Web.Lists.GetByTitle(SharepointList);
+                    var list = ctx.Web.Lists.GetByTitle(SharepointList);
                     foreach (var item in listItems)
                         list.GetItemById(item.Id).DeleteObject();
                     list.Update();
                     ctx.ExecuteQuery();
                 }
                 var successfulDeleteCount = listItems.Count();
-                if(!String.IsNullOrWhiteSpace(DeleteCount))
+                if(!string.IsNullOrWhiteSpace(DeleteCount))
                 {
                     dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString(),update);
                     env.CommitAssign();
@@ -170,12 +171,12 @@ namespace Dev2.Activities.Sharepoint
         {
             if (FilterCriteria != null && FilterCriteria.Any())
             {
-                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
+                var requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 
                 foreach (var varDebug in FilterCriteria)
                 {
                     if(string.IsNullOrEmpty(varDebug.FieldName)) return;
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;
                     if (!string.IsNullOrEmpty(fieldName))
