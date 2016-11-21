@@ -372,7 +372,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                                 if (!testPassed)
                                 {
-                                    failureMessage = failureMessage.AppendLine(string.Join(Environment.NewLine,testRunResults.Select(result => result.Message).ToList()));
+                                    failureMessage = failureMessage.AppendLine(string.Join("",testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
                                 }
                             }
                         }
@@ -461,7 +461,9 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 return new[] { testResult };
             }
@@ -476,7 +478,9 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 return new[] { testResult };
             }
@@ -486,7 +490,8 @@ namespace Dev2.Runtime.ESB.Execution
 
             IList<TestRunResult> ret = new List<TestRunResult>();
             var iter = new WarewolfListIterator();
-            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+            var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
             var c3 = new WarewolfAtomIterator(@from);
@@ -499,7 +504,10 @@ namespace Dev2.Runtime.ESB.Execution
             iter.AddVariableToIterateOn(c3);
             while (iter.HasMoreData())
             {
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) });
+                var val1 = iter.FetchNextValue(c1);
+                var val2 = iter.FetchNextValue(c2);
+                var val3 = iter.FetchNextValue(c3);
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
@@ -508,7 +516,9 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine("Failed").ToString();
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg, val1, variable, val3);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();                   
                 }
                 output.Result = testResult;
                 ret.Add(testResult);
