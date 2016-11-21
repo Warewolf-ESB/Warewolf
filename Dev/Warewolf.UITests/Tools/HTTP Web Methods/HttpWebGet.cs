@@ -28,6 +28,14 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
+        public void HttpWebGetToolEnableGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton.Enabled, "Web GET tool large view generate outputs button is not enabled after selecting a source.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
         public void HttpWebGetToolClickGenerateOutputsButton()
         {
             UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
