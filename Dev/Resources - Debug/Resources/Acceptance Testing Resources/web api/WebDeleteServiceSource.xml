@@ -1,5 +1,5 @@
 
-<Source ID="3032b7fd-f12a-4ab8-be7d-2f4705c31317" Name="WebDeleteServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAACxFygI1mGTL3wSM0ww5plbAAAAAASAAACgAAAAEAAAAD2NmIzAnsp9+1DFXadGJ8bIAAAAwlAKaHeBNTKpBTe+AcY75j1pfqWx9LHAfOf4LWrpUb0w3Ar33LZ6e5VHtkvfNUnUJxobC+f8NTNpOvIriuZKRsXxwtUy+GYBx7OFWne8pZZwWerHT3RhsYjllb+AHjNSaghOMUa7nj8sKW0zIxlXhpAGhR205Bb7w4oWTj04ewyp5XDgQkrx/uDNVvlwjDLs2SGvF4zkeoleoKErQW2XOi3OJ8Rpud1sHj0K5pJCyb+XU4B5olbF5fgZy3EX6CzwvssLrsA+mXsUAAAAqfcuAbsn/2NE1QOG5B7llylMDG0=" Type="WebSource" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="3032b7fd-f12a-4ab8-be7d-2f4705c31317" Name="WebDeleteServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>WebDeleteServiceSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

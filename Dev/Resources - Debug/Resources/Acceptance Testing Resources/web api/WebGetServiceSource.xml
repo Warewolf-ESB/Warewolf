@@ -1,5 +1,5 @@
 
-<Source ID="e541d860-cd10-4aec-b2fe-79eca3c62c25" Name="WebGetServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAADstlfFld4vw+eHae8k5XF9AAAAAASAAACgAAAAEAAAAMEgniXGkJHVdHvEwSNNYu7AAAAASEMbDv3X+8/UcJ8JtBE1ydkd5aVQU9wO4Eb0nAAGvk4/Do0a/5mnenmQHGLxBPPcs4DPywzDDCQYh7uMPdhaP+X9rHy2JPTGwCy9wBTAxx3wyJP0zuxbSjtdm7+Jmpl+2eiEZitZR0PLo6nUqC58PrnysCdX4EQStnGn2Twzvi/8p+qL6aqfZLUXkvfI6LK8TYgx4dTv3Ek0iGwnACB/FOu2eml+Gv3T+nazndubS38txND6AV9aXjOF5so2QJ14FAAAACHsOFEr9XhP2p0TXqiayTOiStYa" Type="WebSource" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="e541d860-cd10-4aec-b2fe-79eca3c62c25" Name="WebGetServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>WebGetServiceSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

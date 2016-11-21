@@ -1,5 +1,5 @@
 
-<Source ID="ab4d5ab5-ad44-421d-8125-adfcc3aa655b" Name="WebPostServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAADvQi2cRziBK+Vtm296WHV7AAAAAASAAACgAAAAEAAAAErXkVS4dne+3VcELgP0PR/IAAAAd8auBmQYVX0V7WyFUQB4tcy2MXkU9J1Pe/NMQ8zZk0D/L0nuhWJSAAlwjbrRRzsfuBSEv9Vd6NHjF9NcYuIn+K4aqeC6ljV7O+/gApMldcdshAjvEcfdnsTSsrbzbfaB71/XUnstLKYMRnbnsDykuBTh3uERAdGzq1+jn6dcFFxpD3LlHCeENMaCq8zS8BwR0oaYkU1/Urq0DjJc8rSJQ3ZL+SVX5Ky6S9LlKSYowNIrCBldGQfVIEXETVs9Re29+2TqGnnjNHAUAAAA/cen9P4XevVZ+rYlRS3myJ2SPac=" Type="WebSource" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="ab4d5ab5-ad44-421d-8125-adfcc3aa655b" Name="WebPostServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>WebPostServiceSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

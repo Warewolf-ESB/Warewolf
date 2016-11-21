@@ -1151,7 +1151,7 @@ Scenario: Test WF with Replace
 #Database Category	  
 Scenario: Test WF with MySql
 		Given I have a workflow "MySqlTestWF"
-		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings as
+		 And "MySqlTestWF" contains a mysql database service "MySqlEmail" with mappings for testing as
 		  | Input to Service | From Variable | Output from Service | To Variable      |
 		  |                  |               | name                | [[rec(*).name]]  |
 		  |                  |               | email               | [[rec(*).email]] |	
@@ -1174,7 +1174,7 @@ Scenario: Test WF with MySql
 
 Scenario: Test WF with Sql Server
 		Given I have a workflow "SqlTestWF"
-		 And "SqlTestWF" contains a sqlserver database service "dbo.FetchPlayers" with mappings as
+		 And "SqlTestWF" contains a sqlserver database service "dbo.FetchPlayers" with mappings for testing as
 		  | Input to Service | From Variable | Output from Service | To Variable      |		 
 		And I save workflow "SqlTestWF"
 		Then the test builder is open with "SqlTestWF"
