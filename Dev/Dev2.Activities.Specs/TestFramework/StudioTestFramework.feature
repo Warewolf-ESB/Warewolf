@@ -2096,13 +2096,10 @@ Scenario: Test WF with Sharepoint Create List Items
 	Then workflow "ShapointCreateListItemsTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Sharepoint Delete File
-	Given I have a workflow "ShapointDeleteFileTestWF"	
-	  And "ShapointDeleteFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	Given I have a workflow "ShapointDeleteFileTestWF"	 
 	And "ShapointDeleteFileTestWF" contains SharepointDeleteFile "TestSharePDeleteFile" as 
-	| Server                 | ServerPath | Result     |
-	| SharePoint Test Server |            | [[Result]] |
+	| Server                 | SharepointList | Result        |
+	| SharePoint Test Server | AccTesting     | [[delResult]] |
 	And I save workflow "ShapointDeleteFileTestWF"
 	Then the test builder is open with "ShapointDeleteFileTestWF"
 	And I click New Test
@@ -2111,7 +2108,7 @@ Scenario: Test WF with Sharepoint Delete File
 	And I Add "TestSharePDeleteFile" as TestStep
 	And I add new StepOutputs as 
 	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | [[delResult]] | =         | 0     |
 	When I save
 	And I run the test
 	Then test result is Passed
