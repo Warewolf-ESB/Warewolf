@@ -2144,13 +2144,13 @@ Scenario: Test WF with Sharepoint Delete List Item
 	Then workflow "ShapointDelItemTestWF" is deleted as cleanup
 
 Scenario: Test WF with Sharepoint Download File
-	Given I have a workflow "ShapointDownloadFileTestWF"	
-	  And "ShapointDownloadFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	Given I have a workflow "ShapointDownloadFileTestWF"
+	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
+	| Server                 | LocalPath                                         | ServerPath | Result       |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml |            | [[Uploaded]] |
 	And "ShapointDownloadFileTestWF" contains SharepointDownloadFile "TestSharePDownloadFile" as 
-		| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result |
-		| SharePoint Test Server |                |              |           |        |
+		| Server                 | ServerPathFrom  | ServerPathTo                                                               | Overwrite | Result         |
+		| SharePoint Test Server | Hello World.xml | C:\ProgramData\Warewolf\Resources\DownloadedFromSharepoint\Hello World.xml | True      | [[Downloaded]] |
 	And I save workflow "ShapointDownloadFileTestWF"
 	Then the test builder is open with "ShapointDownloadFileTestWF"
 	And I click New Test
@@ -2158,8 +2158,8 @@ Scenario: Test WF with Sharepoint Download File
     And test name starts with "Test 1"
 	And I Add "TestSharePDownloadFile" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name  | Condition | Value   |
+	  	 | [[Downloaded]] | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2216,13 +2216,10 @@ Scenario: Test WF with Sharepoint Move File
 	Then workflow "ShapointMoveFileTestWF" is deleted as cleanup
 
 Scenario: Test WF with Sharepoint Read Folder
-	Given I have a workflow "ShapointReadFolderTestWF"	
-	  And "ShapointMoveFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	Given I have a workflow "ShapointReadFolderTestWF"
 	And "ShapointReadFolderTestWF" contains SharepointReadFolder "TestSharePReadFolder" as 
 	| Server                 | ServerPath | Folders | Result     |
-	| SharePoint Test Server |            | True    | [[Result]] |
+	| SharePoint Test Server |            | True    | [[Folders(*).Name]] |
 	And I save workflow "ShapointReadFolderTestWF"
 	Then the test builder is open with "ShapointReadFolderTestWF"
 	And I click New Test
@@ -2230,8 +2227,8 @@ Scenario: Test WF with Sharepoint Read Folder
     And test name starts with "Test 1"
 	And I Add "TestSharePReadFolder" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name       | Condition | Value                 |
+	  	 | [[Folders(1).Name]] | =         | /Shared Documents/bob |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2241,12 +2238,9 @@ Scenario: Test WF with Sharepoint Read Folder
 
 Scenario: Test WF with Sharepoint Read List Item
 	Given I have a workflow "ShapointReadListItemTestWF"	
-	  And "ShapointReadListItemTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
 	And "ShapointReadListItemTestWF" contains SharepointReadListItem "TestSharePReadListItem" as 
-	| Server                 | List                     |
-	| SharePoint Test Server | AcceptanceTesting_Delete |
+	| Server                 | List       |
+	| SharePoint Test Server | AccTesting |
 	And I save workflow "ShapointReadListItemTestWF"
 	Then the test builder is open with "ShapointReadListItemTestWF"
 	And I click New Test
@@ -2254,8 +2248,8 @@ Scenario: Test WF with Sharepoint Read List Item
     And test name starts with "Test 1"
 	And I Add "TestSharePReadListItem" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name           | Condition | Value  |
+	  	 | [[AccTesting(1).Title]] | =         | Mrs    |
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -2265,12 +2259,21 @@ Scenario: Test WF with Sharepoint Read List Item
 
 Scenario: Test WF with Sharepoint Update List Item
 	Given I have a workflow "ShapointUpdateListItemTestWF"	
-	  And "ShapointUpdateListItemTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
-	And "ShapointUpdateListItemTestWF" contains SharepointUploadFile "TestSharePUpdateListItem" as 
-	| Server                 | List                     | Result     |
-	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
+	   And "ShapointCreateListItemsTestWF" contains an Assign "MyAssign" as
+	    | variable                            | value                                                                |
+	    | [[AccTesting().Title]]              | Mrs                                                                  |
+	    | [[AccTesting().Name]]               | Minnie                                                               |
+	    | [[AccTesting().IntField]]           | 2.0                                                                  |
+	    | [[AccTesting().CurrencyField]]      | 2211                                                                 |
+	    | [[AccTesting().DateField]]          | 2016/11/5                                                            |
+	    | [[AccTesting().DateTimeField]]      | 2016/10/10                                                           |
+	    | [[AccTesting().BoolField]]          | True                                                                 |
+	    | [[AccTesting().MultilineTextField]] | <div class="ExternalClassD0D0AB75CC30454599C3D12D077D6D8D">123</div> |
+	    | [[AccTesting().RequiredField]]      | Text                                                                 |
+	    | [[AccTesting().Loc]]                | True                                                                 |	    
+	And "ShapointCreateListItemsTestWF" contains UpdateListItems "TestSharePUpdateListItem" as 
+	| Server                 | List       | Result     |
+	| SharePoint Test Server | AccTesting | [[Result]] |
 	And I save workflow "ShapointUpdateListItemTestWF"
 	Then the test builder is open with "ShapointUpdateListItemTestWF"
 	And I click New Test
@@ -2278,8 +2281,8 @@ Scenario: Test WF with Sharepoint Update List Item
     And test name starts with "Test 1"
 	And I Add "TestSharePUpdateListItem" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name | Condition | Value   |
+	  	 | [[Result]]    | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed
