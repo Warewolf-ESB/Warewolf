@@ -2095,53 +2095,48 @@ Scenario: Test WF with Sharepoint Create List Items
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointCreateListItemsTestWF" is deleted as cleanup
 	
-Scenario: Test WF with Sharepoint Delete File
-	Given I have a workflow "ShapointDeleteFileTestWF"	
-	  And "ShapointDeleteFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
-	And "ShapointDeleteFileTestWF" contains SharepointDeleteFile "TestSharePDeleteFile" as 
-	| Server                 | ServerPath | Result     |
-	| SharePoint Test Server |            | [[Result]] |
-	And I save workflow "ShapointDeleteFileTestWF"
-	Then the test builder is open with "ShapointDeleteFileTestWF"
+Scenario: Test WF with Sharepoint Delete File List
+	Given I have a workflow "ShapointDeleteFileListTestWF"	 
+	And "ShapointDeleteFileListTestWF" contains SharepointDeleteFile "TestSharePDeleteFile" as 
+	| Server                 | SharepointList | Result        |
+	| SharePoint Test Server | AccTesting     | [[delResult]] |
+	And I save workflow "ShapointDeleteFileListTestWF"
+	Then the test builder is open with "ShapointDeleteFileListTestWF"
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePDeleteFile" as TestStep
 	And I add new StepOutputs as 
 	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | [[delResult]] | =         | 0     |
 	When I save
 	And I run the test
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then workflow "ShapointDeleteFileTestWF" is deleted as cleanup
+	Then workflow "ShapointDeleteFileListTestWF" is deleted as cleanup
 	
-Scenario: Test WF with Sharepoint Delete List Item
-	Given I have a workflow "ShapointDelItemTestWF"	
-	  And "ShapointDelItemTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
-	And "ShapointDelItemTestWF" contains SharepointDeleteListItem "TestSharePdeleteListItem" as 
-	| Server                 | List                     | Result     |
-	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
-	And I save workflow "ShapointDelItemTestWF"
-	Then the test builder is open with "ShapointDelItemTestWF"
+Scenario: Test WF with Sharepoint Delete File
+	Given I have a workflow "ShapointDelSingleItemTestWF"		
+	And "ShapointDelSingleItemTestWF" contains SharepointDeleteSingle "TestSharePdeleteListItem" as 
+	| Server                 | ServerPath | Result     |
+	| SharePoint Test Server | 125698.xml | [[Result]] |
+	And I save workflow "ShapointDelSingleItemTestWF"
+	Then the test builder is open with "ShapointDelSingleItemTestWF"
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePdeleteListItem" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition  | Value |
-	  	 | [[Result]]    | Is Numeric | 0     |
+	  	 | Variable Name | Condition | Value |
+	  	 | [[Result]]    | =         |       |
+	And I expect Error "File Not Found"  
 	When I save
 	And I run the test
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then workflow "ShapointDelItemTestWF" is deleted as cleanup
+	Then workflow "ShapointDelSingleItemTestWF" is deleted as cleanup
 
 Scenario: Test WF with Sharepoint Download File
 	Given I have a workflow "ShapointDownloadFileTestWF"
@@ -2168,13 +2163,10 @@ Scenario: Test WF with Sharepoint Download File
 	Then workflow "ShapointDownloadFileTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Sharepoint Upload File
-	Given I have a workflow "ShapointUploadFileTestWF"	
-	  And "ShapointUploadFileTestWF" contains an Assign "MyAssign" as
-	    | variable       | value |
-	    | [[TestResult]] | 0     |
+	Given I have a workflow "ShapointUploadFileTestWF"		 
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | List                     | Result     |
-	| SharePoint Test Server | AcceptanceTesting_Delete | [[Result]] |
+	| Server                 | FileToUpload                                      | serverPath | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | a.xml      | [[Result]] |
 	And I save workflow "ShapointUploadFileTestWF"
 	Then the test builder is open with "ShapointUploadFileTestWF"
 	And I click New Test
@@ -2182,8 +2174,8 @@ Scenario: Test WF with Sharepoint Upload File
     And test name starts with "Test 1"
 	And I Add "TestSharePUploadFile" as TestStep
 	And I add new StepOutputs as 
-	  	 | Variable Name | Condition | Value |
-	  	 | [[Result]]    | =         | 0     |
+	  	 | Variable Name | Condition | Value   |
+	  	 | [[Result]]    | =         | Success |
 	When I save
 	And I run the test
 	Then test result is Passed

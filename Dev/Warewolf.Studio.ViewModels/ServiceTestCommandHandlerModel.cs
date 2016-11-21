@@ -225,14 +225,18 @@ namespace Warewolf.Studio.ViewModels
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
             {
-                var testOutput = new ServiceTestOutput(serviceTestOutput.Variable, serviceTestOutput.Value, serviceTestOutput.From, serviceTestOutput.To)
+                var variable = serviceTestOutput?.Variable ?? "";
+                var value = serviceTestOutput?.Value ?? "";
+                var to = serviceTestOutput?.To ?? "";
+                var @from = serviceTestOutput?.From ?? "";
+
+                var testOutput = new ServiceTestOutput(variable, value, @from, to)
                 {
-                    // ReSharper disable once RedundantCast
-                    AddStepOutputRow = ((ServiceTestStep)testStep).AddNewOutput,
-                    AssertOp = serviceTestOutput.AssertOp,
-                    HasOptionsForValue = serviceTestOutput.HasOptionsForValue,
-                    OptionsForValue = serviceTestOutput.OptionsForValue,
-                    Result = serviceTestOutput.Result
+                    AddStepOutputRow = testStep.AddNewOutput,
+                    AssertOp = serviceTestOutput?.AssertOp ?? "=",
+                    HasOptionsForValue = serviceTestOutput?.HasOptionsForValue ?? false,
+                    OptionsForValue = serviceTestOutput?.OptionsForValue ?? new List<string>(),
+                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPassed}
                 };
 
                 if (testStep.MockSelected)

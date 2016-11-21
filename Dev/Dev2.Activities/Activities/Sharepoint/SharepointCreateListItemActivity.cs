@@ -144,7 +144,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointCreateListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -153,7 +153,7 @@ namespace Dev2.Activities.Sharepoint
                 if (hasErrors)
                 {
                     dataObject.Environment.Assign(Result, "Failed",update);
-                    DisplayAndWriteError("SharepointReadListActivity", allErrors);
+                    DisplayAndWriteError("SharepointCreateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
