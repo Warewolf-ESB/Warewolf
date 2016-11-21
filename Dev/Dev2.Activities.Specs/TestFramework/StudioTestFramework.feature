@@ -2002,7 +2002,7 @@ Scenario: Test WF with Ruby
 Scenario: Test WF with Sharepoint Copy File
 	Given I have a workflow "ShapointCopyFileTestWF"	
 	  And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | FileToUpload                                      | serverPath | Result     |
+	| Server                 | LocalPathFrom                                      | ServerPathTo | Result     |
 	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | e.xml      | [[Result]] |	  
 	And "ShapointCopyFileTestWF" contains SharepointCopyFile "TestSharePCopyFile" as 
 	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
@@ -2148,11 +2148,11 @@ Scenario: Test WF with Sharepoint Upload File
 Scenario: Test WF with Sharepoint Move File
 	Given I have a workflow "ShapointMoveFileTestWF"	
 	And "ShapointMoveFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | FileToUpload                                      | serverPath | Result     |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | B.xml      | [[Result]] |	  
+	| Server                 | LocalPathFrom                                     | ServerPathTo | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | B.xml        | [[Result]] |	  
 	And "ShapointMoveFileTestWF" contains SharepointMoveFile "TestSharePMoveFile" as 
 	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
-	| SharePoint Test Server | B.xml          | c.xml        |           | [[MoveResult]] |
+	| SharePoint Test Server | B.xml          | c.xml        | true      | [[MoveResult]] |
 	And I save workflow "ShapointMoveFileTestWF"
 	Then the test builder is open with "ShapointMoveFileTestWF"
 	And I click New Test
