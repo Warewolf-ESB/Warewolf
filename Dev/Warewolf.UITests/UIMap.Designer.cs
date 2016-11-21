@@ -175,6 +175,18 @@ namespace Warewolf.UITests
                 return this.mCriticalErrorWindow;
             }
         }
+        
+        public WebBrowserErrorWindow WebBrowserErrorWindow
+        {
+            get
+            {
+                if ((this.mWebBrowserErrorWindow == null))
+                {
+                    this.mWebBrowserErrorWindow = new WebBrowserErrorWindow();
+                }
+                return this.mWebBrowserErrorWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -199,6 +211,8 @@ namespace Warewolf.UITests
         private ErrorWindow mErrorWindow;
         
         private CriticalErrorWindow mCriticalErrorWindow;
+        
+        private WebBrowserErrorWindow mWebBrowserErrorWindow;
         #endregion
     }
     
@@ -91416,6 +91430,74 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mCloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WebBrowserErrorWindow : WinWindow
+    {
+        
+        public WebBrowserErrorWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Web Browser";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Web Browser");
+            #endregion
+        }
+        
+        #region Properties
+        public Pane Pane
+        {
+            get
+            {
+                if ((this.mPane == null))
+                {
+                    this.mPane = new Pane(this);
+                }
+                return this.mPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Pane mPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Pane : WinPane
+    {
+        
+        public Pane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinControl.PropertyNames.Name] = "Web Browser";
+            this.WindowTitles.Add("Web Browser");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton OKButton
+        {
+            get
+            {
+                if ((this.mOKButton == null))
+                {
+                    this.mOKButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mOKButton.SearchProperties[WinButton.PropertyNames.Name] = "OK";
+                    this.mOKButton.WindowTitles.Add("Web Browser");
+                    #endregion
+                }
+                return this.mOKButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mOKButton;
         #endregion
     }
 }

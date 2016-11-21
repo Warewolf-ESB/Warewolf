@@ -63,6 +63,7 @@ namespace Warewolf.UITests
             TryPin_Unpinned_Pane_To_Default_Position();
             TryCloseHangingCriticalErrorDialog();
             TryCloseHangingErrorDialog();
+            TryCloseHangingWebBrowserErrorDialog();
 #endif
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
@@ -225,6 +226,26 @@ namespace Warewolf.UITests
             finally
             {
                 Console.WriteLine("No hanging Critical Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+            }
+        }
+
+        public void TryCloseHangingWebBrowserErrorDialog()
+        {
+            var TimeBefore = System.DateTime.Now;
+            try
+            {
+                if (ControlExistsNow(WebBrowserErrorWindow))
+                {
+                    Click_Web_Browser_Error_Messagebox_OK_Button();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Web Browser Error dialog before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("No hanging Web Browser Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -5654,8 +5675,8 @@ namespace Warewolf.UITests
         [When(@"I Collapse Postgre Tool Large View to Small View With Double Click")]
         public void Collapse_Postgre_Tool_Large_View_to_Small_View_With_Double_Click()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom, new Point(145, 5));
+            //Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom, new Point(145, 7));
         }
 
         [When(@"I Open PostWeb RequestTool Large View")]
@@ -6964,6 +6985,12 @@ namespace Warewolf.UITests
         public void Click_Explorer_Localhost_First_Item_Expander()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton, new Point(16, 7));
+        }
+
+        [When(@"I Click Web Browser Error Messagebox OK Button")]
+        public void Click_Web_Browser_Error_Messagebox_OK_Button()
+        {
+            Mouse.Click(WebBrowserErrorWindow.Pane.OKButton, new Point(30, 8));
         }
     }
 }
