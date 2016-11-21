@@ -450,10 +450,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                     }
                     ListItems = ReadListItems;
                 }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
             });
         }
 
