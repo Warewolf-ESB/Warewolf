@@ -1382,12 +1382,27 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointMoveFile ""(.*)"" as")]
         public void GivenContainsSharepointMoveFileAs(string parentName, string activityName, Table table)
         {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
             SharepointMoveFileActivity readFolderItemActivity = new SharepointMoveFileActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                ServerInputPathFrom = serverPathFrom,
+                ServerInputPathTo = serverPathTo,
+
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
