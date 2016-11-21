@@ -28,6 +28,14 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
+        public void HttpWebDeleteToolEnableGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_DELETE_Web_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton.Enabled, "Web DELETE tool large view generate outputs button is not enabled after selecting a source.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
         public void HttpWebDeleteToolClickTestInputsDoneButton()
         {
             UIMap.Select_Test_Source_From_DELETE_Web_Large_View_Source_Combobox();
