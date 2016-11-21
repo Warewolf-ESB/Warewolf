@@ -999,9 +999,9 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
-        public void TryCloseNewPluginSourceWizardTab()
+        public void TryCloseNewDotNetPluginSourceWizardTab()
         {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.CloseButton))
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton))
             {
                 Click_Close_Plugin_Source_Wizard_Tab_Button();
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
@@ -1142,7 +1142,7 @@ namespace Warewolf.UITests
                     throw new Exception("No suitable DLL could be found for this test to use.");
                 }
             }
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
         }
 
@@ -2865,9 +2865,9 @@ namespace Warewolf.UITests
         public void Add_Dotnet_Dll_Source(string sourceName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.DotNetPlugInSourceViewModelsCustom.SearchTextBoxEdit.Text = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.GACTreeItem.ExpansionIndicatorCheckBox, new Point(30, 4));
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.GACTreeItem.FirstTreeItem);
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.FilterTextbox.Text = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.ExpansionIndicatorCheckbox, new Point(30, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.FirstTreeItem);
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             Save_With_Ribbon_Button_And_Dialog(sourceName, true);
             Click_Close_DotNetDll_Tab();
@@ -3075,7 +3075,7 @@ namespace Warewolf.UITests
         [When(@"I Click Close DotNetDll Tab")]
         public void Click_Close_DotNetDll_Tab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetDllPlugInSource.ClosePlugInSourceTabButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
         }
 
         [When(@"I Click Close EmailSource Tab")]
@@ -3099,7 +3099,7 @@ namespace Warewolf.UITests
         [When(@"I Click Close Plugin Source Wizard Tab Button")]
         public void Click_Close_Plugin_Source_Wizard_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.CloseButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
         }
 
         [When(@"I Click Close Server Source Wizard Tab Button")]
@@ -3598,8 +3598,9 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.PluginSourceButton, new Point(22, 13));
             Playback.Wait(1000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.WorkSurfaceContext.NewPluginSourceWizard.ScrollViewer.Tree.Exists, "Select assembly tree does not exist in new plugin source wizard tab.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.Exists, "Select assembly tree does not exist in new plugin source wizard tab.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.RefreshButton.Spinner);
         }
 
         [When(@"I Click NewSource Button FromODBC Tool")]
