@@ -21,6 +21,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
@@ -64,6 +65,7 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.PerformanceCounters.Counters;
@@ -1436,17 +1438,83 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
         public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
         {
+
+            //Load Source based on the name
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sharepointList = table.Rows[0]["List"];
+            var result = table.Rows[0]["Result"];
             SharepointCreateListItemActivity createListItemActivity = new SharepointCreateListItemActivity
             {
                 DisplayName = activityName
-                ,
+            ,
                 SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
-                Result = table.Rows[0]["Result"],
-                SharepointList = table.Rows[0]["List"],
-                
+                Result = result,
+                SharepointList = sharepointList,
+
             };
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var sharepointSource = sources.Single(source => source.ResourceID == createListItemActivity.SharepointServerResourceId);
+            var sharepointListTos = environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            var sharepointListTo = sharepointListTos.Single(to => to.FullName == sharepointList);
+            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
+            {
+                if (columnList != null)
+                {
+                    List<SharepointReadListTo> fieldMappings = columnList.Select(mapping =>
+                    {
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
+                        return sharepointReadListTo;
+                    }).ToList();
+                    if (createListItemActivity.ReadListItems == null || createListItemActivity.ReadListItems.Count == 0)
+                    {
+                        createListItemActivity.ReadListItems = fieldMappings;
+                    }
+                    else
+                    {
+                        foreach (var sharepointReadListTo in fieldMappings)
+                        {
+                            var listTo = sharepointReadListTo;
+                            var readListTo = createListItemActivity.ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
+                            if (readListTo == null)
+                            {
+                                createListItemActivity.ReadListItems.Add(sharepointReadListTo);
+                            }
+                        }
+                    }
+                }
+            });
+
+
+
             _commonSteps.AddVariableToVariableList(table.Rows[0]["Result"]);
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
+        }
+
+        static string GetValidVariableName(ISharepointFieldTo mapping)
+        {
+            var fixedName = mapping.Name.Replace(" ", "").Replace(".", "").Replace(":", "").Replace(",", "");
+            fixedName = XmlConvert.EncodeName(fixedName);
+            var startIndexOfEncoding = fixedName.IndexOf("_", StringComparison.OrdinalIgnoreCase);
+            var endIndexOfEncoding = fixedName.LastIndexOf("_", StringComparison.OrdinalIgnoreCase);
+            if (startIndexOfEncoding > 0 && endIndexOfEncoding > 0)
+            {
+                fixedName = fixedName.Remove(startIndexOfEncoding - 1, endIndexOfEncoding - startIndexOfEncoding);
+            }
+            if (fixedName[0] == 'f' || fixedName[0] == '_' || Char.IsNumber(fixedName[0]))
+            {
+                fixedName = fixedName.Remove(0, 1);
+            }
+            return fixedName;
+        }
+
+        List<ISharepointFieldTo> GetListFields(IEnvironmentModel environmentModel, ISharepointSource source, SharepointListTo list)
+        {
+            var columns = environmentModel.ResourceRepository.GetSharepointListFields(source, list, true);
+            return columns ?? new List<ISharepointFieldTo>();
         }
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
         public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
