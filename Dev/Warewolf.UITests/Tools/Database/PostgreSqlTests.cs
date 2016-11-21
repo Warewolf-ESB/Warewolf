@@ -31,7 +31,7 @@ namespace Warewolf.UITests.Tools
 
         #region Additional test attributes
 
-        //[TestInitialize]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
