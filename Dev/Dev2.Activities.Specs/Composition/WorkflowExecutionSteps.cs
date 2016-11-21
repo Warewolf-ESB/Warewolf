@@ -1406,6 +1406,36 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
+        [Given(@"""(.*)"" contains SharepointCopyFile ""(.*)"" as")]
+        public void GivenContainsSharepointCopyFileAs(string parentName, string activityName, Table table)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var overwrite = table.Rows[0]["Overwrite"];
+            var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
+            SharepointCopyFileActivity readFolderItemActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                ServerInputPathFrom = serverPathFrom,
+                ServerInputPathTo = serverPathTo,
+                Overwrite = bool.Parse(overwrite)
+
+            };
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+        }
+
+
         [Given(@"""(.*)"" contains SharepointReadListItem ""(.*)"" as")]
         public void GivenContainsSharepointReadListItemAs(string parentName, string activityName, Table table)
         {
