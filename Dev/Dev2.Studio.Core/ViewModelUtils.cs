@@ -10,7 +10,7 @@ namespace Dev2
         
         public static void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
         {
-            if (Application.Current != null && Application.Current.Dispatcher != null)
+            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.CheckAccess())
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {

@@ -101,7 +101,7 @@
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="40*" MinWidth="350"/>
                         <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="40*" MinWidth="350"/>
+                        <ColumnDefinition Width="40*" MinWidth="250"/>
                     </Grid.ColumnDefinitions>
 
                     <ListBox Grid.Column="0" Style="{StaticResource TestsListBoxStyle}" 
@@ -116,10 +116,10 @@
                                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ListBoxItemGrid"
                                           Visibility="{Binding IsNewTest,Converter={StaticResource BoolToVisibilityConverterNegative}}" MouseLeftButtonUp="ListBoxItemGrid_OnMouseLeftButtonUp">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30"/>
-                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="25"/>
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
