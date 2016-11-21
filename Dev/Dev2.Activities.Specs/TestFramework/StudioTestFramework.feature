@@ -848,8 +848,8 @@ Scenario: Run Selected Test in Web
 	And save is disabled
 	When I run selected test in Web
 	Then The WebResponse as
-	| Test Name | Result | Message |
-	| Test 1    | Failed |         |
+	| Test Name | Result | Message                                                                |
+	| Test 1    | Failed | Failed: Assert Equal. Expected "Hello World." for 'Message' but got "" |
 
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
@@ -1877,7 +1877,10 @@ Scenario: Test WF with Zip File
 #Loop Constructs
 
 Scenario: Test WF with ForEach which contains assign
-		Given I have a workflow "ForEachWithAssignTestWF"		
+		Given I have a workflow "ForEachWithAssignTestWF"	
+		And "ForEachWithAssignTestWF" contains an Assign "TestAssign" as
+		| variable    | value |
+		| [[rec().a]] | yes   |		
 		And "ForEachWithAssignTestWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
 	    And "ForEachTest" contains an Assign "MyAssign" as
 	    | variable    | value |
@@ -1890,8 +1893,9 @@ Scenario: Test WF with ForEach which contains assign
 		And I Add "ForEachTest" as TestStep
 		And I add new Children StepOutputs as 
 		| Variable Name | Condition | Value |
-		| [[rec(1).a]]  | =         | Test  |
+		| [[rec(1).a]]  | =         | yes  |
 		| [[rec(2).a]]  | =         | Test  |
+		| [[rec(3).a]]  | =         | Test  |
 		When I save
 		And I run the test
 		Then test result is Passed
@@ -1900,11 +1904,14 @@ Scenario: Test WF with ForEach which contains assign
 		Then workflow "ForEachWithAssignTestWF" is deleted as cleanup
 
 Scenario: Test WF with SelectAndApply which contains assign
-		Given I have a workflow "SelectAndApplyWithAssignTestWF"		
+		Given I have a workflow "SelectAndApplyWithAssignTestWF"	
+		And "SelectAndApplyWithAssignTestWF" contains an Assign "TestAssign" as
+		| variable    | value |
+		| [[rec().a]] | yes   |	
 		And "SelectAndApplyWithAssignTestWF" contains a SelectAndApply "SelectAndApplyTest" DataSource "[[rec(*).a]]" Alias "[[f]]"
 	    And "SelectAndApplyTest" contains an Assign "MyAssign" as
 	    | variable    | value |
-	    | [[rec().a]] | Test  |
+	    | [[f]] | Test  |
 		And I save workflow "SelectAndApplyWithAssignTestWF"
 		Then the test builder is open with "SelectAndApplyWithAssignTestWF"
 		And I click New Test
@@ -1914,7 +1921,6 @@ Scenario: Test WF with SelectAndApply which contains assign
 		And I add new Children StepOutputs as 
 		| Variable Name | Condition | Value |
 		| [[rec(1).a]]  | =         | Test  |
-		| [[rec(2).a]]  | =         | Test  |
 		When I save
 		And I run the test
 		Then test result is Passed
