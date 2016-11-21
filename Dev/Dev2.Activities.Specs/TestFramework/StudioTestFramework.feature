@@ -1260,10 +1260,8 @@ Scenario: Test WF with Oracle
 
 Scenario: Test WF with PostGre Sql
 		Given I have a workflow "PostGreTestWF"
-		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings as
-		  | Input to Service | From Variable | Output from Service | To Variable           |
-		  | Prefix           | s             | name                | [[countries(*).Id]]   |
-		  |                  |               | email               | [[countries(*).Name]] |
+		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
+		  | Input to Service | From Variable | Output from Service | To Variable           |		
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
@@ -1271,11 +1269,8 @@ Scenario: Test WF with PostGre Sql
 		And test name starts with "Test 1"
 		And I Add "get_countries" as TestStep
 		And I add new StepOutputs as 
-		| Variable Name         | Condition | Value         |
-		| [[countries(1).Id]]   | =         | 1             |
-		| [[countries(2).Id]]   | =         | 3             |
-		| [[countries(1).Name]] | =         | United States |
-		| [[countries(2).Name]] | =         | South Africa  |	
+		| Variable Name             | Condition | Value          |
+		| [[get_countries(1).id]]   | =         | 2              |
 		When I save
 		And I run the test
 		Then test result is Passed
