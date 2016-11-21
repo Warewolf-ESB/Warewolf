@@ -826,8 +826,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IDebugTreeViewItemViewModel parent;
             if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
             {
-                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { ActivityTypeName = content.ActualType };
-                parent.IsTestView = IsTestView;
+                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                {
+                    IsTestView = IsTestView,
+                    ActivityTypeName = content.ActualType
+                };
                 _contentItemMap.Add(content.ParentID, parent);
             }
             child.Parent = parent;
@@ -842,6 +845,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 child = new DebugStringTreeViewItemViewModel
                 {
+                    IsTestView = IsTestView,
                     Content = content.Message,
                     ActivityTypeName = content.ActualType
                 };
@@ -850,11 +854,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 child = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
                 {
+                    IsTestView = IsTestView,
                     Content = content,
                     ActivityTypeName = content.ActualType
                 };
             }
-            child.IsTestView = IsTestView;
             return child;
         }
 

@@ -98,6 +98,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public bool IsTestSelected { get; set; }
+        public bool IsTestLoading { get; set; }
         public bool TestPassed { get; set; }
         public bool TestFailing { get; set; }
         public bool TestInvalid { get; set; }
