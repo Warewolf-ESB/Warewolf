@@ -1878,11 +1878,13 @@ namespace Warewolf.Studio.ViewModels
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                 }
                 _selectedServiceTest = value;
+                _selectedServiceTest.IsTestLoading = true;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
                 EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
+                _selectedServiceTest.IsTestLoading = false;
             }
         }
 

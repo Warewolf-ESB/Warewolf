@@ -5,7 +5,6 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
