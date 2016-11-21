@@ -106,9 +106,9 @@ namespace Warewolf.Studio.ViewModels
             WorkflowDesignerViewModel = workflowDesignerViewModel;
             WorkflowDesignerViewModel.IsTestView = true;
             WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
+            IsLoading = true;
             AsyncWorker.Start(GetTests, models =>
-            {
-                IsLoading = true;
+            {                
                 var dummyTest = new DummyServiceTest(CreateTests) { TestName = "Create a new test." };
                 models.Add(dummyTest);
                 SelectedServiceTest = dummyTest;
@@ -310,8 +310,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
-            }
-
+            }          
             if (parent.ActivityType == typeof(DsfForEachActivity).Name)
             {
                 var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
@@ -341,7 +340,14 @@ namespace Warewolf.Studio.ViewModels
                                 Parent = parent,
                                 Type = StepType.Assert
                             };
-                            AddOutputs(outputs, childStep);
+                            if (outputs.Count > 0)
+                            {
+                                AddOutputs(outputs, childStep);
+                            }
+                            else
+                            {
+                                AddOutputs(act?.GetOutputs(), childStep);
+                            }
                             SetStepIcon(childStep.ActivityType, childStep);
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
@@ -412,18 +418,54 @@ namespace Warewolf.Studio.ViewModels
                     var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
+                            serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
                             Type = StepType.Assert
                         };
-                        AddOutputs(outputs, childStep);
+                        if (outputs.Count > 0)
+                        {
+                            AddOutputs(outputs, childStep);
+                        }
+                        else
+                        {
+                            var type = Types.FirstOrDefault(x => x.Name == childItem.ActivityTypeName);
+                            if (type != null)
+                            {
+                                var act = Activator.CreateInstance(type) as IDev2Activity;
+                                childStep.StepOutputs =
+                                    AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
+                            }
+                        }
                         SetStepIcon(childStep.ActivityType, childStep);
                         parent.Children.Add(childStep);
                         if (childItem.Children != null && childItem.Children.Count > 0)
                         {
                             AddChildDebugItems(childItemContent, childItem, childStep);
+                        }
+                    }
+                    else
+                    {
+                        var serviceTestStep = exists as ServiceTestStep;
+                        if (serviceTestStep != null)
+                        {
+                            if (outputs.Count > 0)
+                            {
+
+                                AddOutputs(outputs, serviceTestStep);
+                            }
+                            else
+                            {
+                                var type = Types.FirstOrDefault(x => x.Name == childItem.ActivityTypeName);
+                                if (type != null)
+                                {
+                                    var act = Activator.CreateInstance(type) as IDev2Activity;
+                                    serviceTestStep.StepOutputs =
+                                        AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                                }
+                            }
                         }
                     }
                 }
@@ -996,11 +1038,7 @@ namespace Warewolf.Studio.ViewModels
             if (exists == null)
             {
                 var step = CreateServiceTestStep(Guid.Parse(uniqueID), displayName, type, new List<IServiceTestOutput>());
-                var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
-                {
-                    HasOptionsForValue = false,
-                    AddStepOutputRow = s => step.AddNewOutput(s)
-                }).Cast<IServiceTestOutput>().ToList();
+                var serviceTestOutputs = AddOutputsIfHasVariable(outputs, step);
                 step.StepOutputs = serviceTestOutputs.ToObservableCollection();
                 SetParentChild(item, step);
                 {
@@ -1010,6 +1048,28 @@ namespace Warewolf.Studio.ViewModels
             }
             serviceTestStep = null;
             return false;
+        }
+
+        private static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, ServiceTestStep step)
+        {
+            var serviceTestOutputs =
+                outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
+                {
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => step.AddNewOutput(s)
+                }).Cast<IServiceTestOutput>().ToList();
+            return serviceTestOutputs;
+        }
+
+        private static List<IServiceTestOutput> AddOutputs(List<string> outputs, ServiceTestStep step)
+        {
+            var serviceTestOutputs =
+                outputs.Select(output => new ServiceTestOutput(output, "", "", "")
+                {
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => step.AddNewOutput(s)
+                }).Cast<IServiceTestOutput>().ToList();
+            return serviceTestOutputs;
         }
 
         private IServiceTestStep FindExistingStep(string uniqueId)
@@ -1251,6 +1311,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (resourceId == ResourceModel.ID)
             {
+                IsLoading = true;
                 AsyncWorker.Start(() =>
                 {
                     var contextModel = ResourceModel?.Environment?.ResourceRepository?.LoadContextualResourceModel(resourceId);
@@ -1272,7 +1333,7 @@ namespace Warewolf.Studio.ViewModels
                         if (WorkflowDesignerViewModel != null)
                             WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
                     }, DispatcherPriority.Render);
-
+                    IsLoading = false;
                 });
 
             }

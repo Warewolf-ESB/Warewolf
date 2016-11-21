@@ -203,8 +203,32 @@ namespace Dev2.Activities.SelectAndApply
             finally
             {
 
-                dataObject.PopEnvironment();
+                if (dataObject.IsDebugMode())
+                {
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+                        var serviceTestSteps = serviceTestStep?.Children;
+                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
+                        if (serviceTestStep != null)
+                        {
+                            var testRunResult = new TestRunResult();
+                            GetFinalTestRunResult(serviceTestStep, testRunResult, dataObject);
+                            serviceTestStep.Result = testRunResult;
 
+                            var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                            debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                            var debugStates = debugItems.LastOrDefault();
+
+                            var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
+                            DebugItem itemToAdd = new DebugItem();
+                            itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                            debugStates?.AssertResultList?.Add(itemToAdd);
+
+                        }
+                    }
+                }
+                dataObject.PopEnvironment();
                 dataObject.ForEachNestingLevel--;
                 if (allErrors.HasErrors())
                 {
@@ -237,28 +261,7 @@ namespace Dev2.Activities.SelectAndApply
                             }
                         }
                     }
-                    if (dataObject.IsServiceTestExecution)
-                    {
-                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
-                        var serviceTestSteps = serviceTestStep?.Children;
-                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
-                        if (serviceTestStep != null)
-                        {
-                            var testRunResult = new TestRunResult();
-                            GetFinalTestRunResult(serviceTestStep, testRunResult, dataObject);
-                            serviceTestStep.Result = testRunResult;
-
-                            var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                            debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
-                            var debugStates = debugItems.LastOrDefault();
-
-                            var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
-                            DebugItem itemToAdd = new DebugItem();
-                            itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
-                            debugStates?.AssertResultList?.Add(itemToAdd);
-
-                        }
-                    }
+                    
                     DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
                 OnCompleted(dataObject);
@@ -362,10 +365,11 @@ namespace Dev2.Activities.SelectAndApply
 
             IList<TestRunResult> ret = new List<TestRunResult>();
             var iter = new WarewolfListIterator();
-            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+            var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
-            var c3 = new WarewolfAtomIterator(@from);
+            var c3 = new WarewolfAtomIterator(from);
             if (opt.ArgumentCount > 2)
             {
                 c2 = new WarewolfAtomIterator(to);
@@ -388,7 +392,7 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val1, val2, val3);
+                    var actMsg = string.Format(msg, val1, variable, val2, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 if (dataObject.IsDebugMode())
