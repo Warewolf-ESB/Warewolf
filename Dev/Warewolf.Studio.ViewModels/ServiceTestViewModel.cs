@@ -1025,8 +1025,13 @@ namespace Warewolf.Studio.ViewModels
                                     }
                                 };
                             }).Cast<IServiceTestOutput>().ToList();
-                    var step = CreateServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, type, serviceTestOutputs);
-                    return step;
+                    if (serviceTestStep != null)
+                    {
+                        serviceTestStep.StepOutputs = serviceTestOutputs.ToObservableCollection();
+                        SetStepIcon(type, serviceTestStep);
+                   
+                        return serviceTestStep;
+                    }
                 }
             }
             return null;
