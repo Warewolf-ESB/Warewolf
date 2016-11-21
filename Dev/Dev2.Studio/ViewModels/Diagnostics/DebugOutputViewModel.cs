@@ -598,6 +598,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public void Clear()
         {
             RootItems.Clear();
+            _allDebugReceived = false;
             _contentItems.Clear();
             _contentItemMap.Clear();
             _pendingItems.Clear();
