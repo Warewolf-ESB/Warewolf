@@ -3358,7 +3358,8 @@ this.FeatureBackground();
                         "email",
                         "[[rec(*).email]]"});
 #line 1154
-   testRunner.And("\"MySqlTestWF\" contains a mysql database service \"MySqlEmail\" with mappings as", ((string)(null)), table125, "And ");
+   testRunner.And("\"MySqlTestWF\" contains a mysql database service \"MySqlEmail\" with mappings for te" +
+                    "sting as", ((string)(null)), table125, "And ");
 #line 1158
   testRunner.And("I save workflow \"MySqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1159
@@ -3423,7 +3424,7 @@ this.FeatureBackground();
                         "To Variable"});
 #line 1177
    testRunner.And("\"SqlTestWF\" contains a sqlserver database service \"dbo.FetchPlayers\" with mapping" +
-                    "s as", ((string)(null)), table127, "And ");
+                    "s for testing as", ((string)(null)), table127, "And ");
 #line 1179
   testRunner.And("I save workflow \"SqlTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1180
