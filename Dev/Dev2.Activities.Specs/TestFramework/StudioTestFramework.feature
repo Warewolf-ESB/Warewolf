@@ -2141,10 +2141,10 @@ Scenario: Test WF with Sharepoint Delete File
 Scenario: Test WF with Sharepoint Download File
 	Given I have a workflow "ShapointDownloadFileTestWF"
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | LocalPath                                         | ServerPath | Result       |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml |            | [[Uploaded]] |
+	| Server                 | LocalPathFrom                                     | ServerPathTo | Result       |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml |              | [[Uploaded]] |
 	And "ShapointDownloadFileTestWF" contains SharepointDownloadFile "TestSharePDownloadFile" as 
-		| Server                 | ServerPathFrom  | ServerPathTo                                                               | Overwrite | Result         |
+		| Server                 | ServerPathFrom  | LocalPathTo                                                                | Overwrite | Result         |
 		| SharePoint Test Server | Hello World.xml | C:\ProgramData\Warewolf\Resources\DownloadedFromSharepoint\Hello World.xml | True      | [[Downloaded]] |
 	And I save workflow "ShapointDownloadFileTestWF"
 	Then the test builder is open with "ShapointDownloadFileTestWF"
@@ -2165,8 +2165,8 @@ Scenario: Test WF with Sharepoint Download File
 Scenario: Test WF with Sharepoint Upload File
 	Given I have a workflow "ShapointUploadFileTestWF"		 
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | FileToUpload                                      | serverPath | Result     |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | a.xml      | [[Result]] |
+	| Server                 | LocalPathFrom                                     | ServerPathTo | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | a.xml        | [[Result]] |
 	And I save workflow "ShapointUploadFileTestWF"
 	Then the test builder is open with "ShapointUploadFileTestWF"
 	And I click New Test

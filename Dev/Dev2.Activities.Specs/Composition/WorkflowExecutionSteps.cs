@@ -1370,12 +1370,24 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
         public void GivenContainsSharepointDownloadFileAs(string parentName, string activityName, Table table)
         {
-            SharepointFileDownLoadActivity downLoadActivity = new SharepointFileDownLoadActivity
+            var server = table.Rows[0]["Server"];
+            var result = table.Rows[0]["Result"];
+            var serverPath = table.Rows[0]["ServerPathFrom"];
+            var localPath = table.Rows[0]["LocalPathTo"];
+            var downLoadActivity = new SharepointFileDownLoadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
+                ,
+                LocalInputPath = localPath
+                ,
+                ServerInputPath = serverPath
+                ,
+                Result = result
+                
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, downLoadActivity);
         }
 
@@ -1457,7 +1469,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 }
             });
-
+            
             _commonSteps.AddVariableToVariableList("[[AccTesting().Title]]");
             _commonSteps.AddVariableToVariableList("[[AccTesting().Name]]");
             _commonSteps.AddVariableToVariableList("[[AccTesting().IntField]]");
@@ -1749,18 +1761,21 @@ namespace Dev2.Activities.Specs.Composition
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var result = table.Rows[0]["Result"];
             var name = table.Rows[0]["Server"];
-            var filetoUpload = table.Rows[0]["FileToUpload"];
-            var serverPath = table.Rows[0]["serverPath"];
+            var localPathFrom = table.Rows[0]["LocalPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
             SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = sharepointSource.ResourceID,
-                Result = result,
-                LocalInputPath = filetoUpload,
-                ServerInputPath = serverPath
+                SharepointServerResourceId = sharepointSource.ResourceID
+                ,
+                Result = result
+                ,
+                LocalInputPath = localPathFrom
+                ,
+                ServerInputPath = serverPathTo
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
