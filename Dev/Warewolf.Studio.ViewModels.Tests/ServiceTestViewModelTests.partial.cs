@@ -335,7 +335,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             var serviceTestSteps = testFrameworkViewModel.Tests[0].TestSteps;
-            Assert.AreEqual(2, serviceTestSteps.Count);
+            Assert.AreEqual(3, serviceTestSteps.Count);
             Assert.AreEqual("DsfMultiAssignActivity", serviceTestSteps[0].ActivityType);
             Assert.AreEqual("Set the output variable (1)", serviceTestSteps[0].StepDescription);
             Assert.AreEqual(1, serviceTestSteps[0].StepOutputs.Count);
