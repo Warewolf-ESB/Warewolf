@@ -5978,8 +5978,8 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table205 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
-                        "FileToUpload",
-                        "serverPath",
+                        "LocalPathFrom",
+                        "ServerPathTo",
                         "Result"});
             table205.AddRow(new string[] {
                         "SharePoint Test Server",
@@ -6288,8 +6288,8 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table215 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
-                        "LocalPath",
-                        "ServerPath",
+                        "LocalPathFrom",
+                        "ServerPathTo",
                         "Result"});
             table215.AddRow(new string[] {
                         "SharePoint Test Server",
@@ -6303,7 +6303,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table216 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
                         "ServerPathFrom",
-                        "ServerPathTo",
+                        "LocalPathTo",
                         "Overwrite",
                         "Result"});
             table216.AddRow(new string[] {
@@ -6370,8 +6370,8 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
-                        "FileToUpload",
-                        "serverPath",
+                        "LocalPathFrom",
+                        "ServerPathTo",
                         "Result"});
             table218.AddRow(new string[] {
                         "SharePoint Test Server",
@@ -6436,8 +6436,8 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table220 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",
-                        "FileToUpload",
-                        "serverPath",
+                        "LocalPathFrom",
+                        "ServerPathTo",
                         "Result"});
             table220.AddRow(new string[] {
                         "SharePoint Test Server",
@@ -6457,7 +6457,7 @@ this.FeatureBackground();
                         "SharePoint Test Server",
                         "B.xml",
                         "c.xml",
-                        "",
+                        "true",
                         "[[MoveResult]]"});
 #line 2153
  testRunner.And("\"ShapointMoveFileTestWF\" contains SharepointMoveFile \"TestSharePMoveFile\" as", ((string)(null)), table221, "And ");

@@ -1412,6 +1412,8 @@ namespace Dev2.Activities.Specs.Composition
                 Result = result,
                 ServerInputPathFrom = serverPathFrom,
                 ServerInputPathTo = serverPathTo,
+                Overwrite = true
+
 
             };
             _commonSteps.AddVariableToVariableList(result);
@@ -1820,7 +1822,8 @@ namespace Dev2.Activities.Specs.Composition
                 ,
                 LocalInputPath = localPathFrom
                 ,
-                ServerInputPath = serverPathTo
+                ServerInputPath = serverPathTo,
+                
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
