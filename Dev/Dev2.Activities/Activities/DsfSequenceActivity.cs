@@ -217,13 +217,13 @@ namespace Dev2.Activities
                     serviceTestStep.Result = testRunResult;
                 }
             }
-            if (dataObject.IsDebugMode())
-           {
-               _debugOutputs = new List<DebugItem>();
-               _debugOutputs = new List<DebugItem>();
-               DispatchDebugState(dataObject, StateType.Duration,update);
-           }
             OnCompleted(dataObject);
+            if (dataObject.IsDebugMode())
+            {
+                _debugOutputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+                DispatchDebugState(dataObject, StateType.Duration, update);
+            }
         }
 
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
@@ -231,29 +231,39 @@ namespace Dev2.Activities
             ObservableCollection<TestRunResult> resultList = new ObservableCollection<TestRunResult>();
             foreach (var testStep in serviceTestStep.Children)
             {
-                resultList.Add(testStep.Result);
+                if (testStep.Result != null)
+                {
+                    resultList.Add(testStep.Result);
+                }
             }
 
-            testRunResult.RunTestResult = RunResult.TestInvalid;
-
-            var testRunResults = resultList.Any(runResult => runResult.RunTestResult == RunResult.TestInvalid);
-            if (testRunResults)
+            if (resultList.Count == 0)
             {
-                testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_InvalidResult;
-                testRunResult.RunTestResult = RunResult.TestInvalid;
+                testRunResult.RunTestResult = RunResult.TestPassed;
             }
             else
             {
-                testRunResults = resultList.All(runResult => runResult.RunTestResult == RunResult.TestPassed);
+                testRunResult.RunTestResult = RunResult.TestInvalid;
+
+                var testRunResults = resultList.Any(runResult => runResult.RunTestResult == RunResult.TestInvalid);
                 if (testRunResults)
                 {
-                    testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
-                    testRunResult.RunTestResult = RunResult.TestPassed;
+                    testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_InvalidResult;
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
                 }
                 else
                 {
-                    testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_FailureResult;
-                    testRunResult.RunTestResult = RunResult.TestFailed;
+                    testRunResults = resultList.All(runResult => runResult.RunTestResult == RunResult.TestPassed);
+                    if (testRunResults)
+                    {
+                        testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                        testRunResult.RunTestResult = RunResult.TestPassed;
+                    }
+                    else
+                    {
+                        testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                        testRunResult.RunTestResult = RunResult.TestFailed;
+                    }
                 }
             }
         }
@@ -316,6 +326,10 @@ namespace Dev2.Activities
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
+            if (output == null)
+            {
+                return new List<TestRunResult>();
+            }
             if (output.Result != null)
             {
                 output.Result.RunTestResult = RunResult.TestInvalid;
