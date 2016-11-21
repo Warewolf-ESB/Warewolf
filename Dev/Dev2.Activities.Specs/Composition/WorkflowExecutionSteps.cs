@@ -1370,75 +1370,296 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointDownloadFile ""(.*)"" as")]
         public void GivenContainsSharepointDownloadFileAs(string parentName, string activityName, Table table)
         {
-            SharepointFileDownLoadActivity downLoadActivity = new SharepointFileDownLoadActivity
+            var server = table.Rows[0]["Server"];
+            var result = table.Rows[0]["Result"];
+            var serverPath = table.Rows[0]["ServerPathFrom"];
+            var localPath = table.Rows[0]["LocalPathTo"];
+            var downLoadActivity = new SharepointFileDownLoadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
+                ,
+                LocalInputPath = localPath
+                ,
+                ServerInputPath = serverPath
+                ,
+                Result = result
+                
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, downLoadActivity);
         }
 
         [Given(@"""(.*)"" contains SharepointMoveFile ""(.*)"" as")]
         public void GivenContainsSharepointMoveFileAs(string parentName, string activityName, Table table)
         {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
             SharepointMoveFileActivity readFolderItemActivity = new SharepointMoveFileActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                ServerInputPathFrom = serverPathFrom,
+                ServerInputPathTo = serverPathTo,
+
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
+
+        [Given(@"""(.*)"" contains SharepointCopyFile ""(.*)"" as")]
+        public void GivenContainsSharepointCopyFileAs(string parentName, string activityName, Table table)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var overwrite = table.Rows[0]["Overwrite"];
+            var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
+            SharepointCopyFileActivity readFolderItemActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                ServerInputPathFrom = serverPathFrom,
+                ServerInputPathTo = serverPathTo,
+                Overwrite = bool.Parse(overwrite)
+
+            };
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+        }
+
 
         [Given(@"""(.*)"" contains SharepointReadListItem ""(.*)"" as")]
         public void GivenContainsSharepointReadListItemAs(string parentName, string activityName, Table table)
         {
-            var readFolderItemActivity = new SharepointReadListActivity
+            //Load Source based on the name
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sharepointList = table.Rows[0]["List"];
+            SharepointReadListActivity readListActivity = new SharepointReadListActivity
             {
                 DisplayName = activityName
                 ,
                 SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                ,
+                SharepointList = sharepointList
+
             };
-            _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var sharepointSource = sources.Single(source => source.ResourceID == readListActivity.SharepointServerResourceId);
+            var sharepointListTos = environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            var sharepointListTo = sharepointListTos.Single(to => to.FullName == sharepointList);
+            var sharepointFieldsToKeep = new List<ISharepointFieldTo>()
+            {
+                new SharepointFieldTo {InternalName = "Title"},
+                new SharepointFieldTo {InternalName = "Name"},
+                new SharepointFieldTo {InternalName = "IntField"},
+                new SharepointFieldTo {InternalName = "CurrencyField"},
+                new SharepointFieldTo {InternalName = "DateField"},
+                new SharepointFieldTo {InternalName = "DateTimeField"},
+                new SharepointFieldTo {InternalName = "BoolField"},
+                new SharepointFieldTo {InternalName = "MultilineTextField"},
+                new SharepointFieldTo {InternalName = "RequiredField"},
+                new SharepointFieldTo {InternalName = "Loc"}
+            };
+            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>{
+                if (columnList != null)
+                {
+                    List<SharepointReadListTo> fieldMappings = columnList
+                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                    .Select(mapping =>
+                    {
+
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
+                        return sharepointReadListTo;
+                    }).ToList();
+                    if (readListActivity.ReadListItems == null || readListActivity.ReadListItems.Count == 0)
+                    {
+                        readListActivity.ReadListItems = fieldMappings;
+                    }
+                    else
+                    {
+                        foreach (var sharepointReadListTo in fieldMappings)
+                        {
+                            var listTo = sharepointReadListTo;
+                            var readListTo = readListActivity.ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
+                            if (readListTo == null)
+                            {
+                                readListActivity.ReadListItems.Add(sharepointReadListTo);
+                            }
+                        }
+                    }
+
+                }
+            });
+            
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Title]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Name]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().IntField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().CurrencyField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().DateField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().DateTimeField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().BoolField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().MultilineTextField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Loc]] ");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().RequiredField]]");
+            _commonSteps.AddActivityToActivityList(parentName, activityName, readListActivity);
         }
 
         [Given(@"""(.*)"" contains SharepointReadFolder ""(.*)"" as")]
         public void GivenContainsSharepointReadFolderAs(string parentName, string activityName, Table table)
         {
+            var server = table.Rows[0]["Server"];
+            var result = table.Rows[0]["Result"];
             SharepointReadFolderItemActivity readFolderItemActivity = new SharepointReadFolderItemActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
+                ,
+                Result = result
+                ,
+                IsFoldersSelected = true
+                
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
         }
 
-        [Given(@"""(.*)"" contains SharepointDeleteListItem ""(.*)"" as")]
+        [Given(@"""(.*)"" contains SharepointDeleteSingle ""(.*)"" as")]
         public void GivenContainsSharepointDeleteListItemAs(string parentName, string activityName, Table table)
         {
-            var sourceName = table.Rows[0]["Server"];
-            var list = table.Rows[0]["List"];
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var result = table.Rows[0]["Result"];
-            _commonSteps.AddVariableToVariableList(result);
-            _commonSteps.AddVariableToVariableList(result);
-            var deleteListItemActivity = new SharepointDeleteListItemActivity
+            var name = table.Rows[0]["Server"];
+            var serverPath = table.Rows[0]["ServerPath"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
+
+            var deleteListItemActivity = new SharepointDeleteFileActivity
             {
-                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
+                SharepointServerResourceId = sharepointSource.ResourceID
                 ,
                 DisplayName = activityName
                 ,
-                SharepointList = list
+                ServerInputPath = serverPath,
+                Result = result
             };
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
 
         }
+        [Given(@"""(.*)"" contains UpdateListItems ""(.*)"" as")]
+        public void GivenContainsUpdateListItemsAs(string parentName, string activityName, Table table)
+        {
+            //Load Source based on the name
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
 
+            var sharepointList = table.Rows[0]["List"];
+            var result = table.Rows[0]["Result"];
+            SharepointUpdateListItemActivity createListItemActivity = new SharepointUpdateListItemActivity
+            {
+                DisplayName = activityName
+                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
+                ,
+                Result = result
+                ,
+                SharepointList = sharepointList,
+
+            };
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var sharepointSource = sources.Single(source => source.ResourceID == createListItemActivity.SharepointServerResourceId);
+            var sharepointListTos = environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            var sharepointListTo = sharepointListTos.Single(to => to.FullName == sharepointList);
+            var sharepointFieldsToKeep = new List<ISharepointFieldTo>()
+            {
+                new SharepointFieldTo() {InternalName = "Title"},
+                new SharepointFieldTo() {InternalName = "Name"},
+                new SharepointFieldTo() {InternalName = "IntField"},
+                new SharepointFieldTo() {InternalName = "CurrencyField"},
+                new SharepointFieldTo() {InternalName = "DateField"},
+                new SharepointFieldTo() {InternalName = "DateTimeField"},
+                new SharepointFieldTo() {InternalName = "BoolField"},
+                new SharepointFieldTo() {InternalName = "MultilineTextField"},
+                new SharepointFieldTo() {InternalName = "RequiredField"},
+                new SharepointFieldTo() {InternalName = "Loc",},
+            };
+            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
+            {
+                if (columnList != null)
+                {
+                    List<SharepointReadListTo> fieldMappings = columnList
+                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                    .Select(mapping =>
+                    {
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
+                        return sharepointReadListTo;
+                    }).ToList();
+                    if (createListItemActivity.ReadListItems == null || createListItemActivity.ReadListItems.Count == 0)
+                    {
+                        createListItemActivity.ReadListItems = fieldMappings;
+                    }
+                    else
+                    {
+                        foreach (var sharepointReadListTo in fieldMappings)
+                        {
+                            var listTo = sharepointReadListTo;
+                            var readListTo = createListItemActivity.ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
+                            if (readListTo == null)
+                            {
+                                createListItemActivity.ReadListItems.Add(sharepointReadListTo);
+                            }
+                        }
+                    }
+
+                }
+            });
+
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Title]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Name]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().IntField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().CurrencyField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().DateField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().DateTimeField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().BoolField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().MultilineTextField]]");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().Loc]] ");
+            _commonSteps.AddVariableToVariableList("[[AccTesting().RequiredField]]");
+            _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
+
+        }
         [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
         public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
         {
-
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -1579,16 +1800,29 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
-            var server = table.Rows[0]["Server"];
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var result = table.Rows[0]["Result"];
+            var name = table.Rows[0]["Server"];
+            var localPathFrom = table.Rows[0]["LocalPathFrom"];
+            var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
+            var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
             SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
-                Result = "[[Result]]"
-
+                SharepointServerResourceId = sharepointSource.ResourceID
+                ,
+                Result = result
+                ,
+                LocalInputPath = localPathFrom
+                ,
+                ServerInputPath = serverPathTo
             };
-            _commonSteps.AddVariableToVariableList("[[Result]]");
+            _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
         }
 
