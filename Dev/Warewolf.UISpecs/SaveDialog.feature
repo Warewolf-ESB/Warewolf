@@ -1,9 +1,8 @@
 ﻿Feature: SaveDialog
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to save services
+	As a warewolf studio user
+	I want to give the workflow a name and location
 
-@mytag
 Scenario: SaveDialogServiceNameValidation
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button

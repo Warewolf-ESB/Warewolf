@@ -6,16 +6,16 @@ Feature: WebRequest
 
 
 Scenario: Enter a URL to download html  
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed 
-	Then the result should contain the string "Welcome to ASP.NET Web API"
+	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                        | Header |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
+	| URL                                          | Header |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
-	|                     |
-	| [[result]] = String |
+	|                                                                                                                   |
+	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 Scenario: Enter a badly formed URL
 	Given I have the url "www.google.comx" without timeout
@@ -31,72 +31,73 @@ Scenario: Enter a badly formed URL
 
 Scenario: Enter a URL made up of text and variables with no header
     Given I have the url "http://[[site]][[file]]" without timeout
-	And I have a web request variable "[[site]]" equal to "rsaklfsvrtfsbld/IntegrationTestSite/"	
-	And I have a web request variable "[[file]]" equal to "Proxy.ashx?html"
+	And I have a web request variable "[[site]]" equal to "rsaklfsvrtfsbld:9810/api/products/"	
+	And I have a web request variable "[[file]]" equal to "Get"
 	When the web request tool is executed 
-	Then the result should contain the string "Welcome to ASP.NET Web API"
+	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                                                  | Header |
-	| http://[[site]][[file]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
+	| URL                                                                    | Header |
+	| http://[[site]][[file]] = http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
 	|                     |
 	| [[result]] = String |
 
 
 Scenario: Enter a URL and 2 variables each with a header parameter (json)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/json"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "["value1","value2"]"
+	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                   | Header                                                      |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/json" |
+	| URL                                          | Header                                                      |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 	And the debug output as 
-	|                                  |
-	| [[result]] = ["value1","value2"] |
+	|                                                                                                                   |
+	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/xml"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "<string>value1</string>"
+	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                   | Header                                                     |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
+	| URL                                          | Header                                                     |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
-	|                                      |
-	| [[result]] = <string>value1</string> |
+	|                                                                                                                   |
+	| [[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontra |
 
 Scenario: Enter a URL that returns json
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
 	When the web request tool is executed	
-	Then the result should contain the string "["value1","value2"]"
+	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                        | Header |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json |        |
+	| URL                                          | Header |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
-	|                                  |
-	| [[result]] = ["value1","value2"] |
+	|                                                                                                                   |
+	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 Scenario: Enter a URL that returns xml
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml" without timeout
+	Given I have the url "http://rsaklfsvrtfsbld:9810/api/products/Get" without timeout
+	And I have the Header "Content-Type: application/xml"
 	When the web request tool is executed	
-	Then the result should contain the string "<string>value1</string>"
+	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                       | Header |
-	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml |        |
+	| URL                                          | Header |
+	| http://rsaklfsvrtfsbld:9810/api/products/Get |        |
 	And the debug output as 
-	|                                      |
-	| [[result]] = <string>value1</string> |
+	|                                                                                                                   |
+	| [[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontra |
 
 Scenario: Enter a blank URL
 	Given I have the url "" without timeout

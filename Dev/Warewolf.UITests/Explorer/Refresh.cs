@@ -6,24 +6,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
 {
-    /// <summary>
-    /// Summary description for RemoteServer
-    /// </summary>
     [CodedUITest]
     public class Refresh
     {
-        const string WorkflowName = "SavedBlank";
+        const string WorkflowName = "RefreshExplorerAfterDeletingResourceFromDiskUITest";
 
         [TestMethod]
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
-            UIMap.Save_With_Ribbon_Button_And_Dialog(WorkflowName);
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
-            UIMap.Filter_Explorer(WorkflowName);
-            Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.TryGetClickablePoint(out point));
+            UIMap.Filter_Explorer(WorkflowName, false);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Workflow exists in explorer tree after deleting from disk.");
         }
 
         #region Additional test attributes
@@ -32,18 +27,9 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-        }
         UIMap UIMap
         {
             get
