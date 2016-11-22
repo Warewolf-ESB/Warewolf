@@ -36,7 +36,7 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
             UIMap.Make_Workflow_Savable();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World", true);
+            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World");
         }
 
         #region Additional test attributes

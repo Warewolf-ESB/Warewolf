@@ -958,18 +958,6 @@ namespace Warewolf.UITests
             Mouse.Click(comboboxListItemAsLocalhostConnected);
         }
 
-        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
-        public void WhenISaveWithRibbonButtonAndDialogAs(string Name)
-        {
-            Save_With_Ribbon_Button_And_Dialog(Name, false);
-        }
-
-        [When(@"I Save With Ribbon Button And Dialog As ""(.*)"" without filtering the explorer")]
-        public void Save_With_Ribbon_Button_And_Dialog_Without_Filtering(string name)
-        {
-            Save_With_Ribbon_Button_And_Dialog(name, true);
-        }
-
         [When(@"I Enter Dice Roll Values")]
         public void WhenIEnterDiceRollValues()
         {
@@ -982,20 +970,14 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
         }
 
-        public void Save_With_Ribbon_Button_And_Dialog(string Name, bool skipExplorerFilter = false)
+        [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
+        public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            if (!skipExplorerFilter)
-            {
-                Filter_Explorer(Name);
-                Click_Explorer_Refresh_Button();
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Saved " + Name + " does not appear in the explorer tree.");
-            }
         }
 
 
@@ -2865,7 +2847,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.ExpansionIndicatorCheckbox, new Point(30, 4));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.FirstTreeItem);
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-            Save_With_Ribbon_Button_And_Dialog(sourceName, true);
+            Save_With_Ribbon_Button_And_Dialog(sourceName);
             Click_Close_DotNetDll_Tab();
         }
 
