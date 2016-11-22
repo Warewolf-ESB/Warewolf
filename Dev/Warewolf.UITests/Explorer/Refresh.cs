@@ -17,7 +17,7 @@ namespace Warewolf.UITests
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
             File.Delete(resourcesFolder + @"\" + WorkflowName + ".xml");
-            UIMap.Filter_Explorer(WorkflowName);
+            UIMap.Filter_Explorer(WorkflowName, false);
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Workflow exists in explorer tree after deleting from disk.");
         }
 

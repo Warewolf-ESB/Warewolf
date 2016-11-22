@@ -29,6 +29,14 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
+        public void HttpWebPutToolEnableGenerateOutGETsButton()
+        {
+            UIMap.Select_Test_Source_From_PUT_Web_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton.Enabled, "Web PUT tool large view generate outGETs button is not enabled after selecting a source.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
         public void HttpWebPutToolClickGenerateOutputsButton()
         {
             UIMap.Select_Test_Source_From_PUT_Web_Large_View_Source_Combobox();

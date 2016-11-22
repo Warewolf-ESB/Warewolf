@@ -61,6 +61,8 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed_UITest()
         {
             UIMap.Click_Decision_Dialog_Done_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.Exists, "Decision on the design surface does not exist after dragging in from the toolbox and clicking done on the dialog.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging in from the toolbox and clicking done on the dialog.");
             UIMap.CopyAndPaste_Decision_Tool_On_The_Designer();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.DecisionOrSwitchDialog), "Decision large view dialog openned after copy and paste.");
         }
