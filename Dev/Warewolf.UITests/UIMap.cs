@@ -1369,7 +1369,9 @@ namespace Warewolf.UITests
         [When(@"I Deploy ""(.*)"" From Deploy View")]
         public void Deploy_Service_From_Deploy_View(string ServiceName)
         {
+            TryClickMessageBoxOK();
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
+            TryClickMessageBoxOK();
             Select_Deploy_First_Source_Item();
             Click_Deploy_Tab_Deploy_Button();
             TryClickMessageBoxOK();
