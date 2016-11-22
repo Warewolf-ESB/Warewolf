@@ -14,15 +14,35 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Exists, "Web POST large view generate inputs button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.Table.Exists, "Web POST large view headers table generate inputs button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.DoneButton.Exists, "Web POST large view done does not exist.");
-            UIMap.Open_PostWeb_RequestTool_Large_View();
         }
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
         public void HttpWebPostToolClickAddNewSourceButtonOpensNewSourceWizardTab()
         {
-            UIMap.Open_PostWeb_RequestTool_Large_View();
             UIMap.Click_HTTP_Post_Web_Tool_New_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Address Textbox does not exist on new DB source wizard tab after openning it from the Web POST tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Test Connection Button does not exist on new DB source wizard tab after openning it from the Web POST tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.Spinner.Exists, "Spinner does not exist on new DB source wizard tab after openning it from the Web POST tool.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HttpWebPostToolEnableGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_POST_Web_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Enabled, "Web POST tool large view generate outputs button is not enabled after selecting a source.");
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HttpWebPostToolClickGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_POST_Web_Large_View_Source_Combobox();
+            UIMap.Click_Web_Post_Tool_GenerateOutputs_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton.Exists, "Web PUT tool large view generate outputs done button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.CancelButton.Exists, "Web PUT tool large view generate outputs cancel button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.PasteButton.Exists, "Web PUT tool large view generate outputs paste button does not exist.");
         }
 
         [TestMethod]

@@ -79,30 +79,31 @@ namespace Warewolf.ToolsSpecs.Toolbox.Utility.WebRequest
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html\" witho" +
-                    "ut timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"{\"Id\":1,\"Name\":\"Television\",\"Category\":\"Ele" +
+                    "ctronic\",\"Price\":82000.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1965 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1965.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html",
+            table1.AddRow(new string[] {
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
 #line 13
- testRunner.And("the debug inputs as", ((string)(null)), table1965, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1966 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1966.AddRow(new string[] {
-                        "[[result]] = String"});
+            table2.AddRow(new string[] {
+                        "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
+                            "},{ Id :2, Name : Refrigerator ,"});
 #line 16
- testRunner.And("the debug output as", ((string)(null)), table1966, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -125,21 +126,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1967 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1967.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "www.google.comx",
                         ""});
 #line 25
- testRunner.And("the debug inputs as", ((string)(null)), table1967, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1968 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1968.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[result]] ="});
 #line 28
- testRunner.And("the debug output as", ((string)(null)), table1968, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -156,33 +157,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
     testRunner.Given("I have the url \"http://[[site]][[file]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And("I have a web request variable \"[[site]]\" equal to \"rsaklfsvrtfsbld/IntegrationTes" +
-                    "tSite/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[site]]\" equal to \"rsaklfsvrtfsbld:9810/api/produ" +
+                    "cts/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("I have a web request variable \"[[file]]\" equal to \"Proxy.ashx?html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[file]]\" equal to \"Get\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
- testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"{\"Id\":1,\"Name\":\"Television\",\"Category\":\"Ele" +
+                    "ctronic\",\"Price\":82000.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1969 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1969.AddRow(new string[] {
-                        "http://[[site]][[file]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?h" +
-                            "tml",
+            table5.AddRow(new string[] {
+                        "http://[[site]][[file]] = http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
 #line 39
- testRunner.And("the debug inputs as", ((string)(null)), table1969, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1970 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1970.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "[[result]] = String"});
 #line 42
- testRunner.And("the debug output as", ((string)(null)), table1970, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -197,8 +198,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
 this.ScenarioSetup(scenarioInfo);
 #line 48
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\" without ti" +
-                    "meout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
@@ -208,25 +208,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 53
- testRunner.Then("the result should contain the string \"[\"value1\",\"value2\"]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"{\"Id\":1,\"Name\":\"Television\",\"Category\":\"Ele" +
+                    "ctronic\",\"Price\":82000.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 54
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1971 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1971.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
+            table7.AddRow(new string[] {
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/json\""});
 #line 55
- testRunner.And("the debug inputs as", ((string)(null)), table1971, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1972 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1972.AddRow(new string[] {
-                        "[[result]] = [\"value1\",\"value2\"]"});
+            table8.AddRow(new string[] {
+                        "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
+                            "},{ Id :2, Name : Refrigerator ,"});
 #line 58
- testRunner.And("the debug output as", ((string)(null)), table1972, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -241,8 +243,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
 this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\" without ti" +
-                    "meout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
@@ -252,25 +253,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 68
- testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"<Product><Category>Electronic</Category><Id" +
+                    ">1</Id><Name>Television</Name><Price>82000</Price></Product>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 69
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1973 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1973.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
+            table9.AddRow(new string[] {
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         "[[ContentType]]: [[Type]] = Content-Type: application/xml\""});
 #line 70
- testRunner.And("the debug inputs as", ((string)(null)), table1973, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1974 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1974.AddRow(new string[] {
-                        "[[result]] = <string>value1</string>"});
+            table10.AddRow(new string[] {
+                        "[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  " +
+                            "xmlns= http://schemas.datacontra"});
 #line 73
- testRunner.And("the debug output as", ((string)(null)), table1974, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -285,30 +288,31 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
 this.ScenarioSetup(scenarioInfo);
 #line 78
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json\" witho" +
-                    "ut timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 80
- testRunner.Then("the result should contain the string \"[\"value1\",\"value2\"]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"{\"Id\":1,\"Name\":\"Television\",\"Category\":\"Ele" +
+                    "ctronic\",\"Price\":82000.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 81
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1975 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1975.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json",
+            table11.AddRow(new string[] {
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
 #line 82
- testRunner.And("the debug inputs as", ((string)(null)), table1975, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1976 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1976.AddRow(new string[] {
-                        "[[result]] = [\"value1\",\"value2\"]"});
+            table12.AddRow(new string[] {
+                        "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
+                            "},{ Id :2, Name : Refrigerator ,"});
 #line 85
- testRunner.And("the debug output as", ((string)(null)), table1976, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -323,30 +327,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
 this.ScenarioSetup(scenarioInfo);
 #line 90
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml\" withou" +
-                    "t timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld:9810/api/products/Get\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 91
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have the Header \"Content-Type: application/xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 93
+ testRunner.Then("the result should contain the string \"<Product><Category>Electronic</Category><Id" +
+                    ">1</Id><Name>Television</Name><Price>82000</Price></Product>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 94
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1977 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1977.AddRow(new string[] {
-                        "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml",
+            table13.AddRow(new string[] {
+                        "http://rsaklfsvrtfsbld:9810/api/products/Get",
                         ""});
-#line 94
- testRunner.And("the debug inputs as", ((string)(null)), table1977, "And ");
+#line 95
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1978 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1978.AddRow(new string[] {
-                        "[[result]] = <string>value1</string>"});
-#line 97
- testRunner.And("the debug output as", ((string)(null)), table1978, "And ");
+            table14.AddRow(new string[] {
+                        "[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  " +
+                            "xmlns= http://schemas.datacontra"});
+#line 98
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -358,32 +365,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterABlankURL()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a blank URL", ((string[])(null)));
-#line 101
-this.ScenarioSetup(scenarioInfo);
 #line 102
- testRunner.Given("I have the url \"\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 103
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have the url \"\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 104
- testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 105
+ testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1979 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1979.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "\"\"",
                         ""});
-#line 106
- testRunner.And("the debug inputs as", ((string)(null)), table1979, "And ");
+#line 107
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1980 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1980.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "[[result]] ="});
-#line 109
- testRunner.And("the debug output as", ((string)(null)), table1980, "And ");
+#line 110
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -395,32 +402,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatIsANegativeIndexRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that is a negative index recordset", ((string[])(null)));
-#line 113
-this.ScenarioSetup(scenarioInfo);
 #line 114
- testRunner.Given("I have the url \"[[rec(-1).set]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 115
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have the url \"[[rec(-1).set]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 116
- testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 117
+ testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 118
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1981 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1981.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "[[rec(-1).set]] =",
                         ""});
-#line 118
- testRunner.And("the debug inputs as", ((string)(null)), table1981, "And ");
+#line 119
+ testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1982 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1982.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "[[result]] ="});
-#line 121
- testRunner.And("the debug output as", ((string)(null)), table1982, "And ");
+#line 122
+ testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -428,36 +435,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL(string url, string timeoutSeconds, string header, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a number or variable that does not exist as URL", exampleTags);
-#line 125
-this.ScenarioSetup(scenarioInfo);
 #line 126
- testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 127
- testRunner.And(string.Format("I have the Header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I have the Header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
- testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 130
+ testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 131
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1983 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header",
                         "Time Out Seconds"});
-            table1983.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         string.Format("{0}", url),
                         string.Format("{0}", header),
                         string.Format("{0}", timeoutSeconds)});
-#line 131
- testRunner.And("the debug inputs as", ((string)(null)), table1983, "And ");
+#line 132
+ testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1984 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1984.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "[[result]] ="});
-#line 134
- testRunner.And("the debug output as", ((string)(null)), table1984, "And ");
+#line 135
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -574,25 +581,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatIsANullVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that is a null variable", ((string[])(null)));
-#line 148
-this.ScenarioSetup(scenarioInfo);
 #line 149
- testRunner.Given("I have a formatnumber variable \"[[var]]\" equal to NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 150
- testRunner.And("I have the url \"[[var]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a formatnumber variable \"[[var]]\" equal to NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 151
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have the url \"[[var]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 153
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1985 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1985.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "[[var]] =",
                         ""});
-#line 153
- testRunner.And("the debug inputs as", ((string)(null)), table1985, "And ");
+#line 154
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -604,23 +611,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatIsANonExistentVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that is a non existent variable", ((string[])(null)));
-#line 158
-this.ScenarioSetup(scenarioInfo);
 #line 159
- testRunner.Given("I have the url \"[[var]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 160
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have the url \"[[var]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 161
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 162
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1986 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1986.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "[[var]] =",
                         ""});
-#line 162
- testRunner.And("the debug inputs as", ((string)(null)), table1986, "And ");
+#line 163
+ testRunner.And("the debug inputs as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -628,32 +635,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort(string url, string timeoutSeconds, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL to download html with timeout specified too short", exampleTags);
-#line 166
-this.ScenarioSetup(scenarioInfo);
 #line 167
- testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 168
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 169
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 170
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1987 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header",
                         "Time Out Seconds"});
-            table1987.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         string.Format("{0}", url),
                         "",
                         string.Format("{0}", timeoutSeconds)});
-#line 170
- testRunner.And("the debug inputs as", ((string)(null)), table1987, "And ");
+#line 171
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1988 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1988.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "[[result]] = String"});
-#line 173
- testRunner.And("the debug output as", ((string)(null)), table1988, "And ");
+#line 174
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -693,36 +700,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterARecordsetStarInputAndOutput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a recordset star input and output", ((string[])(null)));
-#line 181
-this.ScenarioSetup(scenarioInfo);
 #line 182
+this.ScenarioSetup(scenarioInfo);
+#line 183
  testRunner.Given("I have a web request variable \"[[urls().url]]\" equal to \"http://rsaklfsvrtfsbld/I" +
                     "ntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 183
+#line 184
  testRunner.And("I have a web request variable \"[[urls().url]]\" equal to \"http://tst-ci-remote:314" +
                     "2/secure/Wait?WaitSeconds=15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
- testRunner.And("I have a web request variable \"[[results().res]]\" equal to \"res1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
- testRunner.And("I have the url \"[[urls(*).url]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[results().res]]\" equal to \"res1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186
- testRunner.And("I have web request result as \"[[results(*).res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have the url \"[[urls(*).url]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 187
- testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have web request result as \"[[results(*).res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 189
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1989 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table1989.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "[[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
                         ""});
-            table1989.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "[[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15",
                         ""});
-#line 189
- testRunner.And("the debug inputs as", ((string)(null)), table1989, "And ");
+#line 190
+ testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

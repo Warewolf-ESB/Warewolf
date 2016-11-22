@@ -18,8 +18,6 @@ Scenario: DB Connector
 	And I Save With Ribbon Button And Dialog As "UITestingDBSource"
 	And I Click Close DB Source Wizard Tab Button
 	And I Drag Toolbox SQL Server Tool Onto DesignSurface
-	And I Try Clear Toolbox Filter
-	And I Open Sql Server Tool Large View
 	And I Select UITestingDBSource From SQL Server Large View Source Combobox
 	And I Select GetCountries From SQL Server Large View Action Combobox
 	And I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox
@@ -37,7 +35,6 @@ Scenario: Create Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	When I Drag Toolbox SQL Server Tool Onto DesignSurface
-	And I Open SQL Large View FromContextMenu
 	And I Select NewDatabaseSource FromSqlServerTool
 	And I Change Selected Database ToMySql DataBase
 	And I Change Selected Database ToPostgreSql DataBase
@@ -47,3 +44,4 @@ Scenario: Create Source From Tool
 	And I Click Close DB Source Wizard Tab Button
 	And I Click Close Workflow Tab Button
 	And I Click MessageBox No
+	

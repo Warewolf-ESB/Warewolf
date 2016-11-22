@@ -297,7 +297,7 @@ namespace Dev2.PathOperations
 
         public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args)
         {
-            string result;
+            string result = null;
 
             try
             {
@@ -307,6 +307,10 @@ namespace Dev2.PathOperations
                 {
                     src.Delete(src.IOPath);
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
             finally
             {
