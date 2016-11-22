@@ -5235,7 +5235,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Aatabase source.
+        ///   Looks up a localized string similar to Create a new database source.
         /// </summary>
         public static string NewDataBaseSourceTooltip {
             get {

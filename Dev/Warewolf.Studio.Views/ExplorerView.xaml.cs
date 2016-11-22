@@ -17,7 +17,7 @@ namespace Warewolf.Studio.Views
     {
         public ExplorerView()
         {
-            InitializeComponent();    
+            InitializeComponent();
         }
 
         private Point _startPoint;
@@ -45,19 +45,16 @@ namespace Warewolf.Studio.Views
 
         private void Tree_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed ||
-        e.RightButton == MouseButtonState.Pressed && !_isDragging)
+            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_isDragging)
             {
                 Point position = e.GetPosition(null);
-                if (Math.Abs(position.X - _startPoint.X) >
-                        SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - _startPoint.Y) >
-                        SystemParameters.MinimumVerticalDragDistance)
+                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
                     StartDrag(e);
                 }
             }
-            
+
         }
 
         private void DropTree_DragEnter(object sender, DragEventArgs e)
@@ -67,69 +64,49 @@ namespace Warewolf.Studio.Views
             //{
             //    e.Effects = DragDropEffects.None;
             //}
-//            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
-//            {
-//                e.Effects = DragDropEffects.None;
-//            }
+            //            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
+            //            {
+            //                e.Effects = DragDropEffects.None;
+            //            }
         }
 
         private void DropTree_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
+            try
             {
-                var explorerItemViewModel = e.Data.GetData(typeof (ExplorerItemViewModel)) as ExplorerItemViewModel;
-                if (explorerItemViewModel == null)
+                if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
                 {
-                    e.Handled = true;
-                    return;
-                }
-                var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
-
-                var dropTarget = destination.DataContext as IExplorerItemViewModel;
-
-                if (dropTarget != null && dropTarget.IsFolder)
-                {
-                    var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                    itemViewModel.Move(dropTarget);
-                }
-                var destEnv = destination.DataContext as IEnvironmentViewModel;
-                if (destEnv != null)
-                {
-                    var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                    itemViewModel.Move(destEnv);
-                }
-                else
-                {
-                    return;
-                }                
-                destination.Background = Brushes.Transparent;
-            }
-        }
-
-
-        private void FindDropTarget(TreeView tv, out TreeViewItem pItemNode, DragEventArgs pDragEventArgs)
-        {
-            pItemNode = null;
-
-            DependencyObject k = VisualTreeHelper.HitTest(tv, pDragEventArgs.GetPosition(tv)).VisualHit;
-
-            while (k != null)
-            {
-                if (k is TreeViewItem)
-                {
-                    TreeViewItem treeNode = k as TreeViewItem;
-                    if (treeNode.DataContext is ExplorerViewModel)
+                    var explorerItemViewModel = e.Data.GetData(typeof(ExplorerItemViewModel)) as ExplorerItemViewModel;
+                    if (explorerItemViewModel == null)
                     {
-                        pItemNode = treeNode;
+                        e.Handled = true;
+                        return;
                     }
-                }
-                else if (Equals(k, tv))
-                {
-                    Console.WriteLine("Found treeview instance");
-                    return;
-                }
+                    var destination = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
-                k = VisualTreeHelper.GetParent(k);
+                    var dropTarget = destination.DataContext as IExplorerItemViewModel;
+
+                    if (dropTarget != null && dropTarget.IsFolder)
+                    {
+                        var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                        itemViewModel.Move(dropTarget);
+                    }
+                    var destEnv = destination.DataContext as IEnvironmentViewModel;
+                    if (destEnv != null)
+                    {
+                        var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                        itemViewModel.Move(destEnv);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                    destination.Background = Brushes.Transparent;
+                }
+            }
+            catch (Exception)
+            {
+                _isDragging = false;
             }
         }
 
@@ -151,9 +128,23 @@ namespace Warewolf.Studio.Views
         private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
         {
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            if (treeViewItem != null)
+            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
             {
-                treeViewItem.Background = Brushes.OrangeRed;
+                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                if (environmentViewModel == null)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.Copy;
             }
         }
 
@@ -162,7 +153,7 @@ namespace Warewolf.Studio.Views
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
-                treeViewItem.Background = Brushes.Transparent;
+                e.Effects = DragDropEffects.Copy;
             }
         }
 
@@ -171,31 +162,29 @@ namespace Warewolf.Studio.Views
             _isDragging = false;
         }
 
-        private void ExplorerTree_OnPreviewDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent("myFormat"))
-            {
-                TreeViewItem itemNode;
-                FindDropTarget((TreeView)sender, out itemNode, e);
-                ExplorerItemViewModel dropItem = (itemNode != null && itemNode.IsVisible ? itemNode.DataContext as ExplorerItemViewModel : null);
-                ExplorerItemViewModel dragItem = e.Data.GetData("myFormat") as ExplorerItemViewModel;
-                if (dropItem != null)
-                {
-                    TreeView treeView = sender as TreeView;
-                    Console.WriteLine("Index: " + (ExplorerTree.Items.IndexOf(dropItem) + 1).ToString());
-                    ExplorerTree.Items.Remove(dragItem);
-                    //MyData.Insert(MyData.IndexOf(dropItem) + 1, dragItem);
-                    ExplorerTree.Items.Insert(ExplorerTree.Items.IndexOf(dropItem) >= 1 ? ExplorerTree.Items.IndexOf(dropItem) : 0, dragItem);
-                }
-                _isDragging = false;
-                e.Effects = DragDropEffects.None;
-            }
-        }
-
         void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             var textBox = sender as TextBox;
             textBox?.SelectAll();
+        }
+
+        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool) e.NewValue)
+            {
+                var textBox = sender as TextBox;
+                textBox?.Focus();
+                textBox?.SelectAll();
+            }
+        }
+
+        private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
+            {
+                var textBox = sender as TextBox;
+                textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+            }
         }
     }
 }
