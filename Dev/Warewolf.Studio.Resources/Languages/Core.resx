@@ -3758,7 +3758,7 @@ Please contact your Warewolf System Administrator.</value>
     <value>Create a new server source</value>
   </data>
   <data name="NewDataBaseSourceTooltip" xml:space="preserve">
-    <value>Create a new Aatabase source</value>
+    <value>Create a new database source</value>
   </data>
   <data name="NewWebSourceTooltip" xml:space="preserve">
     <value>Create a new web source</value>
