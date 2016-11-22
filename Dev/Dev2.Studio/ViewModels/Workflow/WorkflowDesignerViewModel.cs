@@ -2237,6 +2237,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (isWorkflow != null)
                 {
                     handled = WorkflowDropFromResourceToolboxItem(dataObject, isWorkflow, true, false);
+                    ApplyIsDraggedInstance(isWorkflow);
                 }
                 else
                 {
@@ -2244,6 +2245,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
             return handled;
+        }
+
+        private static void ApplyIsDraggedInstance(string isWorkflow)
+        {
+            if (isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity")
+                || isWorkflow.Contains("DsfODBCDatabaseActivity") || isWorkflow.Contains("DsfOracleDatabaseActivity")
+                || isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity")
+                || isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity")
+                || isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity")
+                || isWorkflow.Contains("DsfDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"))
+            {
+                IsItemDragged.Instance.IsDragged = true;
+            }
         }
 
         [ExcludeFromCodeCoverage]
@@ -2591,6 +2605,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             PublishMessages(resourceModel);
             OnDispose();
             ActivityDesignerHelper.AddDesignerAttributes(this);
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel);
+            UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
         }

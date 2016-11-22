@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     public class Service
     {
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Resource Tools")]
         public void ResourcePickerTests_CodedUI_DropWorkflowFromToolbox_ExpectResourcePickerToBehaveCorrectly_UITest()
         {
             Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
@@ -21,7 +21,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickCancel_UITest()
         {
             Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
@@ -32,7 +32,7 @@ namespace Warewolf.UITests.Tools
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint));
         }
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickOK_UITest()
         {
             Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
@@ -43,7 +43,7 @@ namespace Warewolf.UITests.Tools
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
         }
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerAndClickOK_ThenDeleteWorkFlowAndDragServiceAgain_UITest()
         {
             Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
@@ -62,9 +62,7 @@ namespace Warewolf.UITests.Tools
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }

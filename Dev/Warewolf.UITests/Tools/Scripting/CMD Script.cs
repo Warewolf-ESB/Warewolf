@@ -28,9 +28,7 @@ namespace Warewolf.UITests.Tools.Scripting
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif
             UIMap.InitializeABlankWorkflow();
         }
 

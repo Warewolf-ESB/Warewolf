@@ -47,8 +47,8 @@ IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF NOT EXIST "%DeploymentDirectory%\Resources" IF EXIST "%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
-IF NOT EXIST "%DeploymentDirectory%\Tests" IF EXIST "%~dp0..\..\Resources - Debug\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Tests" "%DeploymentDirectory%\Tests"
+IF EXIST "%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%DeploymentDirectory%\Resources"
+IF EXIST "%~dp0..\..\Resources - Debug\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Tests" "%DeploymentDirectory%\Tests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
 IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%DeploymentDirectory%\Resources" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
@@ -67,8 +67,8 @@ set /a LoopCounter=0
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
-@echo Waiting 5 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
-waitfor ServerStart /t 5 2>NUL
+@echo Waiting 10 more seconds for %DeploymentDirectory%\ServerStarted file to appear...
+waitfor ServerStart /t 10 2>NUL
 goto MainLoopBody
 
 :StartStudio
