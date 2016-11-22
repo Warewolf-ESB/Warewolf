@@ -1,5 +1,5 @@
 
-<Source ID="532ba82d-794f-42a6-949f-be6a941fdf1e" Name="POST" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA5QK1HTQe9UiGQ6SLyd6WwgQAAAACAAAAAAADZgAAwAAAABAAAAAi7pEmh2MlE9lRLCYnDzSlAAAAAASAAACgAAAAEAAAABfvlCrOULI7EruFazd4zoHIAAAAD+vhorzZt+AIbd9Z5dM6MvAgDQv8DW28zDBjrQ4XfX/AFnBrg28UsLK2kxSm2+pZuzM+9iU2xvF/vSwuDzB8Y+QkEvWf6PYwWshg9GKW4q6hVg+dE9g2ddSXMutX1ogWpyNMAwl0R/HoWMt63QfUqrJetQVwEXg5slCRpRFquCSuCGuPC/6eDwOyupLtusCNRrkpUjU0Os53F2EGW0I1V1OIHq/5YZ4eYzeizAn4uvF/juiTB/7kkykbLP3uwZh1wCT09UFW9JgUAAAAh7XMgbCs1lmutNvDLw6BSuxLbwI=" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="532ba82d-794f-42a6-949f-be6a941fdf1e" Name="POST" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>POST</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

@@ -41,11 +41,10 @@ Scenario: Deploy and Reverse Deploy View Only Workflow
 	Given The Warewolf Studio is running
 	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
-	##Possible version confict dialog
-	And I Try Click Message Box OK
-	##Possible deploy conflict dialog	
-	And I Try Click Message Box OK
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
 	And I Deploy "DeployViewOnly" From Deploy View
-	And I Try Click Message Box OK
+	And I Select localhost (Connected) From Deploy Tab Destination Server Combobox
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Connect Button
+	And I Deploy "DeployViewOnly" From Deploy View
