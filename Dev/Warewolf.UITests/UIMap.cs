@@ -874,18 +874,7 @@ namespace Warewolf.UITests
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            Filter_Explorer(FilterText, true);
-        }
-
-        public void Filter_Explorer(string FilterText, bool skipRefresh = false)
-        {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
-            if (!skipRefresh)
-            {
-                WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            }
         }
 
         public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
@@ -2086,7 +2075,7 @@ namespace Warewolf.UITests
         [When(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
         public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
         {
-            Filter_Explorer(ServiceName, true);
+            Filter_Explorer(ServiceName);
             Show_Explorer_First_Item_Tests_With_Context_Menu();
         }
 
