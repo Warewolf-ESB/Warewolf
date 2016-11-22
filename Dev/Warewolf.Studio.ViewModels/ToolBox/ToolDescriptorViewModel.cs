@@ -18,6 +18,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         bool _isEnabled;
 
         private DataObject _activityType;
+        private DrawingImage _icon;
 
         public ToolDescriptorViewModel(IToolDescriptor tool, bool isEnabled)
         {
@@ -82,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public string Name => Tool.Name;
 
-        public DrawingImage Icon => GetImage(Tool.Icon, Tool.IconUri);
+        public DrawingImage Icon => _icon ?? (_icon= GetImage(Tool.Icon, Tool.IconUri));
 
         DrawingImage GetImage(string icon,string iconUri)
         {
