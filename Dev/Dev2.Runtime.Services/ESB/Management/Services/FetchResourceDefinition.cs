@@ -197,7 +197,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
+        private StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
             Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
                                                                {
