@@ -1373,6 +1373,7 @@ namespace Warewolf.UITests
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
             TryClickMessageBoxOK();
             Select_Deploy_First_Source_Item();
+            TryClickMessageBoxOK();
             Click_Deploy_Tab_Deploy_Button();
             TryClickMessageBoxOK();
             TryClickMessageBoxOK();
