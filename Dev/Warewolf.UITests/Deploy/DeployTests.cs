@@ -61,7 +61,6 @@ namespace Warewolf.UITests
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             UIMap.Deploy_Service_From_Deploy_View("Hello World");
-            UIMap.Assert_Deploy_Was_Successful();
         }
 
         #region Additional test attributes
