@@ -39,19 +39,19 @@ get-childitem "$SolutionDirectory\Resources - Debug\Resources","$env:ProgramData
     $Dev2SourceStringTransform = New-Object Dev2.Common.Utils.StringTransform
     $Dev2SourceStringTransform.SearchRegex = New-Object System.Text.RegularExpressions.Regex "<Source ID=`"[a-fA-F0-9\-]+`" .*ConnectionString=`"([^`"]+)`" .*>"
     $Dev2SourceStringTransform.GroupNumbers = @(1)
-    $Dev2SourceStringTransform.TransformFunction = [Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
+    $Dev2SourceStringTransform.TransformFunction = function:[Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
     $Dev2AbstractFileActivityStringTransform = New-Object Dev2.Common.Utils.StringTransform
     $Dev2AbstractFileActivityStringTransform.SearchRegex = New-Object System.Text.RegularExpressions.Regex "&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=`"([^`"]+)`" .*?&gt;"
     $Dev2AbstractFileActivityStringTransform.GroupNumbers = @(1)
-    $Dev2AbstractFileActivityStringTransform.TransformFunction = [Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
+    $Dev2AbstractFileActivityStringTransform.TransformFunction = function:[Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
     $Dev2AbstractMultipleFilesActivityStringTransform = New-Object Dev2.Common.Utils.StringTransform
     $Dev2AbstractMultipleFilesActivityStringTransform.SearchRegex = New-Object System.Text.RegularExpressions.Regex "&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=`"([^`"]+)`" .*?&gt;"
     $Dev2AbstractMultipleFilesActivityStringTransform.GroupNumbers = @(1)
-    $Dev2AbstractMultipleFilesActivityStringTransform.TransformFunction = [Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
+    $Dev2AbstractMultipleFilesActivityStringTransform.TransformFunction = function:[Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
     $Dev2ZipStringTransform = New-Object Dev2.Common.Utils.StringTransform
     $Dev2ZipStringTransform.SearchRegex = New-Object System.Text.RegularExpressions.Regex "&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=`"([^`"]+)`" .*?&gt;"
     $Dev2ZipStringTransform.GroupNumbers = @(1)
-    $Dev2ZipStringTransform.TransformFunction = [Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
+    $Dev2ZipStringTransform.TransformFunction = function:[Warewolf.Security.Encryption.DpapiWrapper]::DecryptIfEncrypted
 
 	Write-Host Decrypting resource.
     $replacements = New-Object 'system.collections.generic.dictionary[[string],[Dev2.Common.Utils.StringTransform]]'
