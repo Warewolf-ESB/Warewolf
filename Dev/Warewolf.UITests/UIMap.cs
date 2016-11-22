@@ -754,28 +754,16 @@ namespace Warewolf.UITests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        [When(@"I Wait For Spinner ""(.*)""")]
-        public void WaitForSpinner(String control)
+        [When(@"I Wait For Explorer Localhost Spinner")]
+        public void WaitForExplorerLocalhostSpinner()
         {
-            var SpinnerTokens = control.Split(new char[] { '.' });
-            if (SpinnerTokens.Length > 1)
-            {
-                switch (SpinnerTokens[0])
-                {
-                    case "ExplorerTree":
-                        switch (SpinnerTokens[1])
-                        {
-                            case "FirstRemoteServer":
-                                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
-                                break;
-                            case "Localhost":
-                                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                                break;
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
 
-                        }
-                        break;
-                }
-            }
+        [When(@"I Wait For Explorer First Remote Server Spinner")]
+        public void WaitForExplorerFirstRemoteServerSpinner()
+        {
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
@@ -977,7 +965,7 @@ namespace Warewolf.UITests
             WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
 
@@ -3349,7 +3337,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox, new Point(167, 10));
         }
 
-        [When(@"I Click Explorer RemoteServer Connect Button")]
+        [When(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));

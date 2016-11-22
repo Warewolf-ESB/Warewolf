@@ -17,7 +17,7 @@ namespace Warewolf.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ExplorerFeature
     {
         
@@ -131,9 +131,9 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I Select \"Remote Connection Integration\" From Explorer Remote Server Dropdown Lis" +
                     "t", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.And("I Click Explorer RemoteServer Connect Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Explorer Connect Remote Server Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.And("I Wait For Spinner \"ExplorerTree.FirstRemoteServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Wait For Explorer First Remote Server Spinner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
  testRunner.And("I Filter the Explorer with \"workflow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
@@ -141,14 +141,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
  testRunner.And("I Save With Ribbon Button And Dialog As \"LocalWorkflowWithRemoteSubworkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And("I DoubleClick Explorer Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
  testRunner.And("I Click Debug Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 35
  testRunner.And("I Click DebugInput Debug Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 36
  testRunner.And("I Click Debug Output Workflow1 Name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 37
  testRunner.And("I Select Show Dependencies In Explorer Context Menu for service \"LocalWorkflowWit" +
                     "hRemoteSubworkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -162,28 +160,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeployAndReverseDeployViewOnlyWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy and Reverse Deploy View Only Workflow", ((string[])(null)));
-#line 40
+#line 39
 this.ScenarioSetup(scenarioInfo);
-#line 41
+#line 40
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 41
  testRunner.When("I Set Resource Permissions For \"DeployViewOnly\" to Group \"Public\" and Permissions" +
                     " for View to \"true\" and Contribute to \"false\" and Execute to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 42
  testRunner.And("I Click Deploy Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 43
  testRunner.And("I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 44
  testRunner.And("I Click Deploy Tab Destination Server Connect Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 45
  testRunner.And("I Deploy \"DeployViewOnly\" From Deploy View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 46
  testRunner.And("I Select localhost (Connected) From Deploy Tab Destination Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 47
  testRunner.And("I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 48
  testRunner.And("I Click Deploy Tab Source Server Connect Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 49
  testRunner.And("I Deploy \"DeployViewOnly\" From Deploy View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
