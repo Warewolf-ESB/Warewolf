@@ -31,32 +31,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText tabDescription = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription;
-            #endregion
-
-            // Verify that the 'Exists' property of 'TabDescription' label equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.TabDescriptionExists, tabDescription.Exists, "Tab Description Does not exist");
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfControl itemResizer = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.ItemResizer;
-            #endregion
-
-            // Verify that the 'Exists' property of first Indicator next to 'LargeViewContent' custom control equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.ItemResizerExists, itemResizer.Exists, "Comment Tool resize indicator does not exist on Large View");
-        }
-        
-        /// <summary>
         /// Open_UI_Map_Designer_To_Flowchart - Use 'Open_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
         /// </summary>
         public void Open_UI_Map_Designer_To_Flowchart()
@@ -70,30 +44,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
             get
@@ -240,10 +190,6 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
@@ -267,36 +213,6 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'TabDescription' label equals 'True'
-        /// </summary>
-        public bool TabDescriptionExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of first Indicator next to 'LargeViewContent' custom control equals 'True'
-        /// </summary>
-        public bool ItemResizerExists = true;
         #endregion
     }
     
