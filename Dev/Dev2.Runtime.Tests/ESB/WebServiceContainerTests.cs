@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
@@ -182,11 +181,6 @@ namespace Dev2.Tests.Runtime.ESB
 
         #endregion
 
-        [TestMethod]
-        public void DecryptAllPasswords_Test()
-        {
-            File.WriteAllText(@"D:\Repos\GENDEV\Warewolf-ESB\Dev\Resources - Debug\Resources\Acceptance Testing Resources\HTTP Tools Sources\PUT.xml", new Dev2.Runtime.ESB.Management.Services.FetchResourceDefinition().DecryptAllPasswords(new StringBuilder(File.ReadAllText(@"D:\Repos\GENDEV\Warewolf-ESB\Dev\Resources - Debug\Resources\Acceptance Testing Resources\HTTP Tools Sources\PUT.xml"))).ToString());
-        }
     }
 
     internal class FaultyWebServiceContainerMock : WebServiceContainerMock
