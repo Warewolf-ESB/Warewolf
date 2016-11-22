@@ -7034,5 +7034,22 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue.Text = message;
         }
+
+        public void Click_Delete_On_AssignValue_TestStep()
+        {
+            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
+        }
+
+        [When(@"I Click AssigName From DesignSurface")]
+        public void Click_AssigName_From_DesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom, new Point(5, 5));
+        }
+
+        public void Click_MockRadioButton_On_Decision_TestStep()
+        {
+            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
+            Assert.IsTrue(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
     }
 }
