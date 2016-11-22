@@ -36,22 +36,15 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Click DebugInput Debug Button
 	And I Click Debug Output Workflow1 Name
 	And I Select Show Dependencies In Explorer Context Menu for service "LocalWorkflowWithRemoteSubworkflow"
-	And I Click Close Dependecy Tab 
-	And I Click Close Workflow Tab Button
 	
 Scenario: Deploy and Reverse Deploy View Only Workflow
 	Given The Warewolf Studio is running
-	When I Click New Workflow Ribbon Button
-	And I Drag Dice Roll Example Onto DesignSurface
-	And I Save With Ribbon Button and Dialog As "DeployViewOnly" and Append Unique Guid
-	And I Click Close Workflow Tab Button
-	And I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
+	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
-	##Possible version confict dialog
-	And I Try Click Message Box OK
-	##Possible deploy conflict dialog	
-	And I Try Click Message Box OK
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
 	And I Deploy "DeployViewOnly" From Deploy View
-	And I Try Click Message Box OK
+	And I Select localhost (Connected) From Deploy Tab Destination Server Combobox
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Connect Button
+	And I Deploy "DeployViewOnly" From Deploy View
