@@ -38,13 +38,17 @@ namespace Warewolf.Studio.Views
 
         private void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb != null)
+            var originalSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
+            if (originalSource == null)
             {
-                if (!tb.IsKeyboardFocusWithin)
+                TextBox tb = sender as TextBox;
+                if (tb != null)
                 {
-                    e.Handled = true;
-                    tb.Focus();
+                    if (!tb.IsKeyboardFocusWithin)
+                    {
+                        e.Handled = true;
+                        tb.Focus();
+                    }
                 }
             }
         }

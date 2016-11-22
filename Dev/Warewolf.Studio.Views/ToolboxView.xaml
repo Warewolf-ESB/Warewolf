@@ -131,7 +131,7 @@
 										  MouseDoubleClick="SelectAllText"
 										  PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
 										  ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
-										  Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}">
+										  Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}">
 				<i:Interaction.Behaviors>
 					<core:HelpSetter Text="{x:Static languages:Core.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
 				</i:Interaction.Behaviors>
@@ -211,7 +211,7 @@
 				<Style TargetType="ListBox" BasedOn="{StaticResource ListBoxToolboxStyle}">
 					<Setter Property="Visibility" Value="Collapsed"/>
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=Text}" Value="">
+						<DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=DataContext.SearchTerm}" Value="">
 							<Setter Property="Visibility" Value="Visible"/>
 						</DataTrigger>
 					</Style.Triggers>
