@@ -465,63 +465,37 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText ComboboxListItemAsLocalhost
+        public ComboboxListItemAsLocalhost ComboboxListItemAsLocalhost
         {
             get
             {
                 if ((this.mComboboxListItemAsLocalhost == null))
                 {
-                    this.mComboboxListItemAsLocalhost = new WpfText(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsLocalhost.SearchProperties[WpfText.PropertyNames.Name] = "localhost";
-                    this.mComboboxListItemAsLocalhost.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mComboboxListItemAsLocalhost = new ComboboxListItemAsLocalhost(this);
                 }
                 return this.mComboboxListItemAsLocalhost;
             }
         }
         
-        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
-        {
-            get
-            {
-                if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
-                {
-                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
-                }
-                return this.mComboboxListItemAsRemoteConnectionIntegration;
-            }
-        }
-        
-        public WpfCustom ComboboxListItemAsLocalhostConnected
+        public ComboboxListItemAsLocalhostConnected ComboboxListItemAsLocalhostConnected
         {
             get
             {
                 if ((this.mComboboxListItemAsLocalhostConnected == null))
                 {
-                    this.mComboboxListItemAsLocalhostConnected = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsLocalhostConnected.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxListItemAsLocalhostConnected.SearchProperties[WpfControl.PropertyNames.Name] = "localhost (Connected)";
-                    this.mComboboxListItemAsLocalhostConnected.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mComboboxListItemAsLocalhostConnected = new ComboboxListItemAsLocalhostConnected(this);
                 }
                 return this.mComboboxListItemAsLocalhostConnected;
             }
         }
         
-        public WpfCustom ComboboxListItemAsRemoteConnectionIntegrationConnected
+        public ComboboxListItemAsRemoteConnectionIntegrationConnected ComboboxListItemAsRemoteConnectionIntegrationConnected
         {
             get
             {
                 if ((this.mComboboxListItemAsRemoteConnectionIntegrationConnected == null))
                 {
-                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
-                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mComboboxListItemAsRemoteConnectionIntegrationConnected = new ComboboxListItemAsRemoteConnectionIntegrationConnected(this);
                 }
                 return this.mComboboxListItemAsRemoteConnectionIntegrationConnected;
             }
@@ -933,6 +907,18 @@ namespace Warewolf.UITests
                 return this.mUnpinnedTabContextMenu;
             }
         }
+        
+        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
+                }
+                return this.mComboboxListItemAsRemoteConnectionIntegration;
+            }
+        }
         #endregion
         
         #region Fields
@@ -968,13 +954,11 @@ namespace Warewolf.UITests
         
         private WpfText mComboboxListItemAsTSTCIREMOTEConnected;
         
-        private WpfText mComboboxListItemAsLocalhost;
+        private ComboboxListItemAsLocalhost mComboboxListItemAsLocalhost;
         
-        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
+        private ComboboxListItemAsLocalhostConnected mComboboxListItemAsLocalhostConnected;
         
-        private WpfCustom mComboboxListItemAsLocalhostConnected;
-        
-        private WpfCustom mComboboxListItemAsRemoteConnectionIntegrationConnected;
+        private ComboboxListItemAsRemoteConnectionIntegrationConnected mComboboxListItemAsRemoteConnectionIntegrationConnected;
         
         private WpfCustom mComboboxListItemAsHttp;
         
@@ -1027,6 +1011,8 @@ namespace Warewolf.UITests
         private UnpinnedTab mUnpinnedTab;
         
         private UnpinnedTabContextMenu mUnpinnedTabContextMenu;
+        
+        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         #endregion
     }
     
@@ -2958,19 +2944,19 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton ServerListComboBox
+        public WpfButton ToggleButton
         {
             get
             {
-                if ((this.mServerListComboBox == null))
+                if ((this.mToggleButton == null))
                 {
-                    this.mServerListComboBox = new WpfButton(this);
+                    this.mToggleButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mServerListComboBox.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mServerListComboBox.WindowTitles.Add("Warewolf");
+                    this.mToggleButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mToggleButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mServerListComboBox;
+                return this.mToggleButton;
             }
         }
         
@@ -2990,35 +2976,35 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText SelectedItemAsTSTCIREMOTE
+        public WpfText SelectedItemAsRemoteConnectionIntegration
         {
             get
             {
-                if ((this.mSelectedItemAsTSTCIREMOTE == null))
+                if ((this.mSelectedItemAsRemoteConnectionIntegration == null))
                 {
-                    this.mSelectedItemAsTSTCIREMOTE = new WpfText(this);
+                    this.mSelectedItemAsRemoteConnectionIntegration = new WpfText(this);
                     #region Search Criteria
-                    this.mSelectedItemAsTSTCIREMOTE.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE";
-                    this.mSelectedItemAsTSTCIREMOTE.WindowTitles.Add("Warewolf");
+                    this.mSelectedItemAsRemoteConnectionIntegration.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mSelectedItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mSelectedItemAsTSTCIREMOTE;
+                return this.mSelectedItemAsRemoteConnectionIntegration;
             }
         }
         
-        public WpfText SelectedItemAsTSTCIREMOTEConnected
+        public WpfText SelectedItemAsRemoteConnectionIntegrationConnected
         {
             get
             {
-                if ((this.mSelectedItemAsTSTCIREMOTEConnected == null))
+                if ((this.mSelectedItemAsRemoteConnectionIntegrationConnected == null))
                 {
-                    this.mSelectedItemAsTSTCIREMOTEConnected = new WpfText(this);
+                    this.mSelectedItemAsRemoteConnectionIntegrationConnected = new WpfText(this);
                     #region Search Criteria
-                    this.mSelectedItemAsTSTCIREMOTEConnected.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE (Connected)";
-                    this.mSelectedItemAsTSTCIREMOTEConnected.WindowTitles.Add("Warewolf");
+                    this.mSelectedItemAsRemoteConnectionIntegrationConnected.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mSelectedItemAsRemoteConnectionIntegrationConnected.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mSelectedItemAsTSTCIREMOTEConnected;
+                return this.mSelectedItemAsRemoteConnectionIntegrationConnected;
             }
         }
         
@@ -3040,13 +3026,13 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfButton mServerListComboBox;
+        private WpfButton mToggleButton;
         
         private WpfEdit mTextBox;
         
-        private WpfText mSelectedItemAsTSTCIREMOTE;
+        private WpfText mSelectedItemAsRemoteConnectionIntegration;
         
-        private WpfText mSelectedItemAsTSTCIREMOTEConnected;
+        private WpfText mSelectedItemAsRemoteConnectionIntegrationConnected;
         
         private WpfText mSelectedItemAsLocalhost;
         #endregion
@@ -76629,7 +76615,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mRow1.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
                     this.mRow1.SearchProperties[WpfPane.PropertyNames.Name] = "0";
-                    this.mRow1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mRow1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRow1;
@@ -78798,15 +78784,14 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    public class ComboboxListItemAsLocalhost : WpfText
     {
         
-        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+        public ComboboxListItemAsLocalhost(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.SearchProperties[WpfText.PropertyNames.Name] = "localhost";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -78820,7 +78805,81 @@ namespace Warewolf.UITests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "localhost";
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsLocalhostConnected : WpfCustom
+    {
+        
+        public ComboboxListItemAsLocalhostConnected(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "localhost (Connected)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegrationConnected : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegrationConnected(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -85913,6 +85972,43 @@ namespace Warewolf.UITests
         private WpfMenuItem mAutoHide;
         
         private WpfMenuItem mHide;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
         #endregion
     }
     
