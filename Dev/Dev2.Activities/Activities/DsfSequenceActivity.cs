@@ -273,7 +273,6 @@ namespace Dev2.Activities
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
             dataObject.ForEachNestingLevel--;
-            UniqueID = _originalUniqueID.ToString();
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -397,6 +396,11 @@ namespace Dev2.Activities
                 ret.Add(testResult);
             }
             return ret;
+        }
+
+        public Guid GetOriginalID()
+        {
+            return _originalUniqueID;
         }
     }
 }

@@ -505,19 +505,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (_debugState != null)
             {
-                if (remoteID == Guid.Empty)
-                {
-                    switch (_debugState.StateType)
-                    {
-                        case StateType.Before:
-                            _debugState.Outputs.Clear();
-                            break;
-                        case StateType.After:
-                            _debugState.Inputs.Clear();
-                            break;
-                    }
-                }
-
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugState.SourceResourceID = dataObject.SourceResourceID;

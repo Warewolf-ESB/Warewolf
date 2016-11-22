@@ -742,7 +742,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
-                    context.ScheduleFunc<string, bool>(DataFunc, UniqueID, ActivityCompleted);
+                    context.ScheduleFunc(DataFunc, UniqueID, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
                     return;
                 }
