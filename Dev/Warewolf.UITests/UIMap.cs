@@ -64,8 +64,9 @@ namespace Warewolf.UITests
             TryCloseHangingCriticalErrorDialog();
             TryCloseHangingErrorDialog();
             TryCloseHangingWebBrowserErrorDialog();
-#endif
+            TryCloseHangingDecisionDialog();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+#endif
         }
 
         [When(@"I Try Click Message Box OK")]
