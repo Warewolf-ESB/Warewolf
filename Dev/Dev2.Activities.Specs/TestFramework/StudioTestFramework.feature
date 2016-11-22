@@ -1831,62 +1831,10 @@ Scenario: Test WF with Zip File
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "ZipFileTestWF" is deleted as cleanup
 
-#Loop Constructs
-
-#Scenario: Test WF with ForEach which contains assign
-#		Given I have a workflow "ForEachWithAssignTestWF"	
-#		And "ForEachWithAssignTestWF" contains an Assign "TestAssign" as
-#		| variable    | value |
-#		| [[rec().a]] | yes   |		
-#		And "ForEachWithAssignTestWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
-#	    And "ForEachTest" contains an Assign "MyAssign" as
-#	    | variable    | value |
-#	    | [[rec().a]] | Test  |
-#		And I save workflow "ForEachWithAssignTestWF"
-#		Then the test builder is open with "ForEachWithAssignTestWF"
-#		And I click New Test
-#		And a new test is added	
-#		And test name starts with "Test 1"
-#		And I Add "ForEachTest" as TestStep
-#		And I add new Children StepOutputs as 
-#		| Variable Name | Condition | Value |
-#		| [[rec(3).a]]  | =         | Test  |
-#		When I save
-#		And I run the test
-#		Then test result is Passed
-#		When I delete "Test 1"
-#		Then The "DeleteConfirmation" popup is shown I click Ok
-#		Then workflow "ForEachWithAssignTestWF" is deleted as cleanup
-#
-#Scenario: Test WF with SelectAndApply which contains assign
-#		Given I have a workflow "SelectAndApplyWithAssignTestWF"	
-#		And "SelectAndApplyWithAssignTestWF" contains an Assign "TestAssign" as
-#		| variable    | value |
-#		| [[rec().a]] | yes   |	
-#		And "SelectAndApplyWithAssignTestWF" contains a SelectAndApply "SelectAndApplyTest" DataSource "[[rec(*).a]]" Alias "[[f]]"
-#	    And "SelectAndApplyTest" contains an Assign "MyAssign" as
-#	    | variable    | value |
-#	    | [[f]] | Test  |
-#		And I save workflow "SelectAndApplyWithAssignTestWF"
-#		Then the test builder is open with "SelectAndApplyWithAssignTestWF"
-#		And I click New Test
-#		And a new test is added	
-#		And test name starts with "Test 1"
-#		And I Add "SelectAndApplyTest" as TestStep
-#		And I add new Children StepOutputs as 
-#		| Variable Name | Condition | Value |
-#		| [[f]]  | =         | Test  |
-#		When I save
-#		And I run the test
-#		Then test result is Passed
-#		When I delete "Test 1"
-#		Then The "DeleteConfirmation" popup is shown I click Ok
-#		Then workflow "SelectAndApplyWithAssignTestWF" is deleted as cleanup
-
 #Scripting
 Scenario: Test WF with Cmd Script
 	Given I have a workflow "CmdScriptTestWF"	
-	And "SelectAndApplyWithAssignTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
+	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
 	And I save workflow "CmdScriptTestWF"
 	Then the test builder is open with "CmdScriptTestWF"
 	And I click New Test
