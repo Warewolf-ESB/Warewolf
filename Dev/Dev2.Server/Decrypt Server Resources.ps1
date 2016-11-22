@@ -3,16 +3,24 @@ $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $SolutionDirectory = (get-item (Split-Path $Invocation.MyCommand.Path)).parent.FullName
 Write-Host Got solution path as `"$SolutionDirectory`".
 
-Write-Host Starting nuget package restore using nuget.exe at `"$SolutionDirectory\.nuget\nuget.exe`".
-[System.Diagnostics.Process]::Start("""" + $SolutionDirectory + "\.nuget\nuget.exe""", "restore """ + $SolutionDirectory + "\Server.sln""")
-Write-Host Nuget package restore finished.
-
-Write-Host Starting compile using compiler at `"$env:vs120comntools..\IDE\devenv.com`".
-[System.Diagnostics.Process]::Start("""" + $env:vs120comntools + "..\IDE\devenv.com""", """" + $SolutionDirectory + "\Server.sln"" /Build ""Debug""")
-Write-Host Compile finished.
-
 Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll`".
-Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll"
+if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll"
+} else {
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll", please compile that before running this tool.
+    pause
+    exit 1
+}
+Write-Host Assembly loaded.
+
+Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll`".
+if (Test-Path "$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll"
+} else {
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll", please compile that before running this tool.
+    pause
+    exit 1
+}
 Write-Host Assembly loaded.
 
 Write-Host Loading type.
