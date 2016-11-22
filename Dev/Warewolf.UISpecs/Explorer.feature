@@ -26,12 +26,11 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
-	And I Click Explorer RemoteServer Connect Button
-	And I Wait For Spinner "ExplorerTree.FirstRemoteServer"
+	And I Click Explorer Connect Remote Server Button
+	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "workflow1"
 	And I Drag Explorer Remote workflow1 Onto Workflow Design Surface
 	And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflow"
-	And I DoubleClick Explorer Localhost First Item
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
 	And I Click Debug Output Workflow1 Name
