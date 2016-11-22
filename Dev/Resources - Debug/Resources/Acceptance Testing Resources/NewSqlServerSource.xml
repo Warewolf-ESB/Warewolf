@@ -1,5 +1,5 @@
 
-<Source ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082" Name="NewSqlServerSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAACZe0ifuANEL1PzA2oKqLuCAAAAAASAAACgAAAAEAAAABOR7/iTxaNRNiQIHeniog/IAAAAKFNw11Lr0RFXPUC5rGhHXKKrMa+9+hvVY84yYdcMsFJM3ak6uZlwpu1EMW6HP/ilefHidNeg9KQZ/LIB4ckkGAxfqIb4dlZwLAPh0TZsStmJMhBFvvCpousUF09qpYuhoqYamdzs/7YRQMbTr5C01dxBnuIPUEh+kPuLObEpV2LaVX01XAuegdWayy+B0OMKLQm3q5VDx9yX/gLTZAeNjR3BY71ATcfqaKAPspoxXKW33QYXSLDngjVC5I3w21VvPnTytw2GM8sUAAAAWwCF4RMXoE51LI4XMIfC9NVqvyw=" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082" Name="NewSqlServerSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=AdventureWorks2008R2;User ID=testuser;Password=test123;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewSqlServerSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
