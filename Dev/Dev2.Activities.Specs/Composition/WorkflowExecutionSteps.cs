@@ -1193,7 +1193,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            IDbSource dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
+            IDbSource dbSource = dbSources.Single(source => source.Id == "ad08beb0-9e5d-4270-af8d-43abd953afbd".ToGuid());
 
 
             // extract keepIdentity value ;)
