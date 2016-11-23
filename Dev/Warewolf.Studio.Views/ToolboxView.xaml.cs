@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Shapes;
 using Dev2.Common.Interfaces;
 using Infragistics.Windows.DockManager;
 using Warewolf.Studio.ViewModels.ToolBox;
@@ -38,13 +39,18 @@ namespace Warewolf.Studio.Views
 
         private void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb != null)
+            var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
+            var rectSource = e.OriginalSource as Rectangle;
+            if (imageSource == null && rectSource==null)
             {
-                if (!tb.IsKeyboardFocusWithin)
+                TextBox tb = sender as TextBox;
+                if (tb != null)
                 {
-                    e.Handled = true;
-                    tb.Focus();
+                    if (!tb.IsKeyboardFocusWithin)
+                    {
+                        e.Handled = true;
+                        tb.Focus();
+                    }
                 }
             }
         }
