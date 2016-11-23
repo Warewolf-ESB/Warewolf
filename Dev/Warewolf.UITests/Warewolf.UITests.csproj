@@ -74,6 +74,7 @@
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsPermissionsTests.cs" />
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
+    <Compile Include="Settings\Security\SecuritySettingsTests.cs" />
     <Compile Include="Toolbox\ToolboxTests.cs" />
     <Compile Include="Tools\Resources\WCF Service.cs" />
     <Compile Include="Tools\Resources\Com DLL.cs" />
