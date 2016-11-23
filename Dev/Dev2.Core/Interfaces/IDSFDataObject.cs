@@ -37,6 +37,7 @@ namespace Dev2.Interfaces
         bool IsDebug { get; set; }
         Guid WorkspaceID { get; set; }
         Guid ResourceID { get; set; }
+        Guid SourceResourceID { get; set; }
         Guid OriginalInstanceID { get; set; }
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
@@ -103,5 +104,7 @@ namespace Dev2.Interfaces
         Guid DebugEnvironmentId { get; set; }
         bool RemoteNonDebugInvoke { get; set; }
         bool StopExecution { get; set; }
+        IServiceTestModelTO ServiceTest { get; set; }
+        List<Guid> TestsResourceIds { get; set; }
     }
 }

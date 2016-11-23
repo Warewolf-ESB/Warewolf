@@ -112,6 +112,25 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfScriptingActivity
+            {
+                IncludeFile = GetJsTmpFile(),
+                Script = "return \"someValue\".endsWith(\"e\")",
+                ScriptType = enScriptType.JavaScript,
+                Result = "[[scrRes]]"
+            };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[scrRes]]", outputs[0]);
+        }
+        [TestMethod]
         public void DsfScriptingActivity_ShouldReturnResults()
         {
             var activity = new DsfScriptingActivity();

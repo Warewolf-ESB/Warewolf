@@ -18,7 +18,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.FalseArmTextbox.Exists, "False Arm Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Done button does not exist on decision large view after dragging tool in from the toolbox.");
             UIMap.Click_Decision_Dialog_Cancel_Button();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision), "Decision on the design surface does exist after dragging in from the toolbox but clicking cancel on the dialog.");
         }
 
         [TestMethod]

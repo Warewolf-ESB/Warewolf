@@ -310,7 +310,7 @@
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
     <Compile Include="ResourceModelTest.cs" />
-    <Compile Include="ResourceRepositoryTest.cs">
+    <Compile Include="ResourceRepositoryTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Environments\ServerProviderTest.cs" />

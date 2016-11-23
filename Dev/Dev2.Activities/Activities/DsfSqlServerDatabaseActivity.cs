@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
@@ -16,7 +16,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("MicrosoftSQL", "SQL Server", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL Server_Tags")]
+    [ToolDescriptorInfo("MicrosoftSQL", "SQL Server", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Server_Tags")]
     public class DsfSqlServerDatabaseActivity : DsfActivity
     {
 

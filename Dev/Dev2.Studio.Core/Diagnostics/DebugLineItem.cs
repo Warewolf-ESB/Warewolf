@@ -27,6 +27,7 @@ namespace Dev2.Studio.Diagnostics
             Label = result.Label;
             Variable = result.Variable;
             Operator = result.Operator;
+            TestStepHasError = result.HasError;
         }
 
         public string MoreLink { get; set; }
@@ -35,5 +36,6 @@ namespace Dev2.Studio.Diagnostics
         public string Label { get; set; }
         public string Variable { get; set; }
         public string Operator { get; set; }
+        public bool TestStepHasError { get; set; }
     }
 }

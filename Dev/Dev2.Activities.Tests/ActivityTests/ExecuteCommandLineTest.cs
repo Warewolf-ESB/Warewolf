@@ -47,6 +47,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(randomString, activity.CommandFileName);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_GetOutputs")]
+        public void DsfExecuteCommandLineActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfExecuteCommandLineActivity { CommandResult = "[[Bob]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[Bob]]", outputs[0]);
+        }
+
         static string GetRandomString()
         {
             return new Random().Next(0, 1000).ToString(CultureInfo.InvariantCulture);

@@ -11,7 +11,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.TO;
@@ -25,7 +25,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Create List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Create List Item_Tags")]
+    [ToolDescriptorInfo("SharepointLogo", "Create List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Create_List_Item_Tags")]
     public class SharepointCreateListItemActivity : DsfActivityAbstract<string>
     {
         readonly SharepointUtils _sharepointUtils;
@@ -48,6 +48,12 @@ namespace Dev2.Activities.Sharepoint
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject,0);
+        }
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -138,7 +144,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointCreateListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -147,7 +153,7 @@ namespace Dev2.Activities.Sharepoint
                 if (hasErrors)
                 {
                     dataObject.Environment.Assign(Result, "Failed",update);
-                    DisplayAndWriteError("SharepointReadListActivity", allErrors);
+                    DisplayAndWriteError("SharepointCreateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }

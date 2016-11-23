@@ -952,8 +952,28 @@ namespace Dev2.Core.Tests
             SetupForDelete();
             var msg = new DeleteResourcesMessage(null, "", false);
             MainViewModel.Handle(msg);
+            
             PopupController.Verify(s => s.Show(), Times.Never());
         }
+
+        [TestMethod]
+        public void TestFromDebugExpectsNoPoupShown()
+        {
+            CreateFullExportsAndVm();
+            var msg = new NewTestFromDebugMessage();
+            try
+            {
+                MainViewModel.Handle(msg);
+            }
+            catch(Exception)
+            {
+                //Suppress because of real calls happening                
+            }
+            
+            PopupController.Verify(s => s.Show(), Times.Never());
+        }
+
+
 
         [TestMethod]
         [TestCategory("MainViewmodel_Delete")]

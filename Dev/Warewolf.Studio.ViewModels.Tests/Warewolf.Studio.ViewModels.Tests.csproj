@@ -153,6 +153,8 @@
     <Compile Include="MessageBoxViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
+    <Compile Include="ServiceTestStepTests.cs" />
+    <Compile Include="ServiceTestViewModelTests.partial.cs" />
     <Compile Include="SharepointServerSourceModelTests.cs" />
     <Compile Include="SharepointServerSourceViewModelTests.cs" />
     <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
@@ -174,6 +176,12 @@
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
+    </None>
+    <None Include="JsonResources\DebugStates.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JsonResources\sequenceState.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -227,6 +235,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
       <Project>{CC1B89CD-3222-4019-A0D1-58664F92CC47}</Project>

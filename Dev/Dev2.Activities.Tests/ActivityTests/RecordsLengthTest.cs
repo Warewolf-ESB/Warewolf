@@ -97,6 +97,21 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRecordsetLengthActivity_GetOutputs")]
+        public void DsfRecordsetLengthActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Customers()]]";
+            var act = new DsfRecordsetLengthActivity { RecordsetName = recordsetName, RecordsLength = "[[res]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfRecordsetLengthActivity_UpdateForEachInputs")]
         public void DsfRecordsetLengthActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()

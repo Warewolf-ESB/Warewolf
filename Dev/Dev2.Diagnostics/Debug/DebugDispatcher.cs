@@ -96,7 +96,7 @@ namespace Dev2.Diagnostics.Debug
 
             if (isTestExecution)
             {
-                TestDebugMessageRepo.Instance.AddDebugItem(debugState.OriginatingResourceID,testName,debugState);
+                TestDebugMessageRepo.Instance.AddDebugItem(debugState.SourceResourceID,testName,debugState);
                 return;
             }
 

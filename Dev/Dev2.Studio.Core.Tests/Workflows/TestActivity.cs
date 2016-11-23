@@ -31,6 +31,10 @@ namespace Dev2.Core.Tests.Workflows
 
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
+        public List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -49,5 +53,9 @@ namespace Dev2.Core.Tests.Workflows
 
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
+        public List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
     }
 }

@@ -16,7 +16,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -50,6 +50,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RecordsetName = string.Empty;
             Result = string.Empty;
             TreatNullAsZero = true;
+        }
+
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
         }
 
         public bool TreatNullAsZero { get; set; }

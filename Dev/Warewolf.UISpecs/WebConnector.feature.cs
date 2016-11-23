@@ -85,11 +85,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I Click New Web Source Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("I Type TestSite into Web Source Wizard Address Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Type The Testing Site into Web GET Source Wizard Address Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
  testRunner.And("I Click New Web Source Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I Save With Ribbon Button And Dialog As \"UITestingWebSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Save With Ribbon Button And Dialog As \"WebGETUITestingSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I Click Close Web Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15

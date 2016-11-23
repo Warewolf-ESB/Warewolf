@@ -26,10 +26,13 @@ namespace Dev2.Studio.Core.ViewModels
         UIElement DesignerView { get; }
         StringBuilder DesignerText { get; }
         Action<ModelItem> ItemSelectedAction { get; set; }
+        bool IsTestView { get; set; }
+
         void UpdateWorkflowLink(string newLink);
         void Dispose();
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
     }
 }

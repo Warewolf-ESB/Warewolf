@@ -48,6 +48,22 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfMultiAssignObjectActivity_GetOutputs")]
+        public void DsfMultiAssignObjectActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue", fieldCollection.Count));
+            var act = new DsfMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[@test.value1]]", outputs[0]);
+        }
+
+        [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithSpecialCharsInValue()

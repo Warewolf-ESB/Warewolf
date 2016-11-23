@@ -210,7 +210,25 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         #endregion DateTime Tests
 
-        
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDateTimeActivity
+            {
+                DateTime = "", InputFormat = "", OutputFormat = "",TimeModifierType = "",
+                TimeModifierAmount = 1, Result = "[[dt]]",
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[dt]]", outputs[0]);
+        }
 
         #region Private Test Methods
 

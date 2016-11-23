@@ -507,6 +507,27 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TheResult", activity.Result);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var emailSourceForTesting = EmailSourceForTesting();
+            var mock = new Mock<IEmailSender>();
+            mock.Setup(sender =>
+                sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
+                Callback<EmailSource, MailMessage>((client, message) =>
+                { });
+            var act = GetSendEmailActivity(mock);
+            act.Result = "[[Result]]";
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[Result]]", outputs[0]);
+        }
+
         static Mock<IEsbChannel> CreateMockEsbChannel()
         {
             Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();

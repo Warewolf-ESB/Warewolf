@@ -12,9 +12,22 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void MergeFoldersUITest()
         {
-            UIMap.Filter_Explorer("DragAndDropMergeFolder", true);
+            UIMap.Filter_Explorer("DragAndDropMergeFolder");
             UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.SecondSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
+            UIMap.Filter_Explorer("Workflow");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.ThirdSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void MergeFolders_InUnfileredExplorer_UITest()
+        {
+            UIMap.Filter_Explorer("DragAndDropMergeFolder");
+            UIMap.Filter_Explorer(string.Empty);
+            UIMap.Click_Explorer_Localhost_First_Item_Expander();
+            UIMap.Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item();
+            UIMap.Filter_Explorer("Workflow");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.ThirdSubItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
         }
 
         [TestMethod]
@@ -24,7 +37,7 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
             UIMap.Make_Workflow_Savable();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World", true);
+            UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World");
         }
 
         #region Additional test attributes

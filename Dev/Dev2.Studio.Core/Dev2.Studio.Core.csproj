@@ -265,6 +265,14 @@
     <Compile Include="DataList\PartIsUsed.cs" />
     <Compile Include="DataList\RecordsetHandler.cs" />
     <Compile Include="DataList\ScalarHandler.cs" />
+    <Compile Include="Diagnostics\DebugLine.cs" />
+    <Compile Include="Diagnostics\DebugLineGroup.cs" />
+    <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
+    <Compile Include="Diagnostics\DebugLineItem.cs" />
+    <Compile Include="Diagnostics\DebugStateTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\DebugStringTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\DebugTreeViewItemViewModel.cs" />
+    <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
     <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
@@ -272,6 +280,7 @@
     <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
     <Compile Include="Interfaces\IComplexObjectHandler.cs" />
     <Compile Include="Interfaces\IDataListViewModelHelper.cs" />
+    <Compile Include="Interfaces\IDebugTreeViewItemViewModel.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Interfaces\IPartIsUsed.cs" />
@@ -280,6 +289,7 @@
     <Compile Include="Interfaces\IServiceTestCommandHandler.cs" />
     <Compile Include="Interfaces\IServiceTestViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
+    <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />

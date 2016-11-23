@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -17,8 +18,8 @@ namespace Dev2.Studio.Core.Interfaces
         string RunAllTestsUrl { get; set; }
         string TestPassingResult { get; set; }
         ObservableCollection<IServiceTestModel> Tests  { get; set; }
+        bool IsLoading { get; set; }
 
-        
         ICommand DuplicateTestCommand { get; set; }
         ICommand DeleteTestCommand { get; set; }
         ICommand RunAllTestsInBrowserCommand { get; set; }
@@ -32,13 +33,14 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsDirty { get; }
         string ErrorMessage { get; set; }
         IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
-        ICommand AddNewTestStepCommand { get; set; }
         ICommand DeleteTestStepCommand { get; set; }
+        Guid ResourceID { get; }
 
         void Save();
 
         bool HasDuplicates();
         void ShowDuplicatePopup();
         void RefreshCommands();
+        void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models);
     }
 }
