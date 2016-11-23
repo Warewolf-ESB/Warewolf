@@ -3175,7 +3175,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings for testing as")]
         public void GivenContainsAPostgreToolUsingWithMappingsForTestingAs(string parentName, string serviceName, Table table)
         {
-
+            var inputs = GetServiceInputs(table);
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -3193,18 +3193,12 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs = new List<IServiceInput>
-                {
-                    new ServiceInput("Prefix","K"),
-                },
+                Inputs =inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("Prefix","K"),
-                    }
+                    Inputs = inputs
                 },
                 Name = "tab_val_func"
                 ,
