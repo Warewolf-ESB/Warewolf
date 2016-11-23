@@ -135,7 +135,7 @@
         <Setter Property="Background" Value="{StaticResource TreeViewBackgroundTransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="MinHeight" Value="12" />
@@ -231,12 +231,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="22" />
+                            <RowDefinition Height="18" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Expander"
                                       ClickMode="Press"
-                                      Margin="0,4,0,0"
+                                      Margin="0,2,-10,0"
                                       IsChecked="{Binding IsExpanded,
                                                           RelativeSource={RelativeSource TemplatedParent}}"
                                       Style="{StaticResource ExpandCollapseToggleStyle}" />
@@ -294,13 +294,13 @@
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Foreground" Value="{StaticResource BrushMouseOver}" />
                         </Trigger>
-                        <MultiTrigger>
+                        <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <!-- Doing this instead of the commented out bit seems to make the tree view behave more consistently ??? -->
+                                --><!-- Doing this instead of the commented out bit seems to make the tree view behave more consistently ??? --><!--
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
-                        </MultiTrigger>
+                        </MultiTrigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -309,11 +309,7 @@
             <EventTrigger RoutedEvent="TreeViewItem.DragEnter">
                 <BeginStoryboard x:Name="DragHoverStoryboard">
                     <Storyboard>
-                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="{StaticResource Color_026}" />
-                        <!--<Storyboard BeginTime="00:00:00" Duration="0:0:2" Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}}"
-                                    Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                            <ColorAnimation FillBehavior="Stop" From="Black" To="Red" Duration="0:0:0.5" AutoReverse="True"/>
-                        </Storyboard>-->
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="{StaticResource WarewolfDragOver}" />
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
@@ -321,10 +317,6 @@
                 <BeginStoryboard>
                     <Storyboard>
                         <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="Transparent" />
-                        <!--<Storyboard BeginTime="00:00:00" Duration="0:0:2" Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}}"
-                                    Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                            <ColorAnimation FillBehavior="Stop" From="Red" To="Blue" Duration="0:0:0.5" AutoReverse="True"/>
-                        </Storyboard>-->
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>

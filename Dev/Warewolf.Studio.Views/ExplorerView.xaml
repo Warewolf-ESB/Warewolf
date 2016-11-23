@@ -115,7 +115,6 @@
                       Margin="{StaticResource ControlBorderTop}"
                       ItemsSource="{Binding Environments}"
                       Style="{StaticResource TreeViewStyle}"
-                      PreviewMouseLeftButtonDown="Tree_PreviewMouseLeftButtonDown"
                       PreviewMouseLeftButtonUp="ExplorerTree_OnPreviewMouseLeftButtonUp"
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
                       PreviewMouseMove="Tree_MouseMove"
@@ -126,6 +125,8 @@
                 <TreeView.ItemContainerStyle>
                     <Style BasedOn="{StaticResource TreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
@@ -165,6 +166,7 @@
                                            ToolTip="{Binding DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                            ToolTipService.ShowOnDisabled="True"
                                            Style="{StaticResource DeployCheckBoxStyle}"
+                                          Margin="2,0,0,0"
                                            Visibility="{Binding AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 <TextBlock Margin="4,0,0,0"
                                            FontSize="12"
@@ -188,7 +190,24 @@
                             </TextBlock>
 
                             <Grid.ContextMenu>
-                                <ContextMenu x:Name="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
+                                <ContextMenu x:Name="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
+                                             Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <MenuItem Name="NewService"
+                                              Command="{Binding NewServiceCommand}"
+                                              Header="New Workflow Service"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              InputGestureText="[Ctrl+W]"
+                                              ToolTipService.ShowOnDisabled="True"
+                                              IsEnabled="{Binding CanCreateWorkflowService}"
+                                              ToolTip="{Binding NewServiceTooltip}">
+                                        <MenuItem.Icon>
+                                            <Image Style="{StaticResource NewServiceIcon}"/>
+                                        </MenuItem.Icon>
+                                        <MenuItem.InputBindings>
+                                            <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                        </MenuItem.InputBindings>
+                                    </MenuItem>
+
                                     <MenuItem Name="NewFolder"
                                               Command="{Binding CreateFolderCommand}"
                                               CommandParameter="Folder"
@@ -385,9 +404,9 @@
                                                     ToolTip="{Binding Path=DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTipService.ShowOnDisabled="True"
                                                     Style="{StaticResource DeployCheckBoxStyle}"
+                                                  Margin="{StaticResource ControlBorderLeft}"
                                                     Visibility="{Binding Path=AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <TextBlock x:Name="ResourceNameTextBlock"
-                                                    Height="20"
                                                     MinWidth="5"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Center"
@@ -408,9 +427,25 @@
                                         <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
                                                  Style="{StaticResource ExplorerEditTextBoxStyle}"
                                                  Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                 IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                                 HorizontalAlignment="Stretch"
+                                                 HorizontalContentAlignment="Stretch"
+                                                 customControls:TextBoxBehavior.SelectAllTextOnFocus="True"
                                                  KeyDown="UIElement_OnKeyDown"
                                                  Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}" >
+                                                <Setter Property="Margin" Value="0"></Setter>
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsFolder}" Value="False"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Margin" Value="-14,0,0,0" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
                                                Margin="4,0,0,0"
@@ -489,11 +524,13 @@
                                     </Button>
 
                                     <Grid.ContextMenu>
-                                        <ContextMenu x:Name="ExplorerContextMenuManager" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true">
+                                        <ContextMenu x:Name="ExplorerContextMenuManager" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
+                                                     Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <MenuItem Name="Open"
                                                       Command="{Binding OpenCommand}"
                                                       CommandParameter="WorkflowService"
                                                       ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanView}" 
                                                       ToolTip="{Binding OpenTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
@@ -509,6 +546,22 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </MenuItem.Style>
+                                            </MenuItem>
+
+                                            <MenuItem Name="NewService"
+                                                      Command="{Binding NewServiceCommand}"
+                                                      Header="New Workflow Service"
+                                                      Style="{StaticResource MenuItemStyle}"
+                                                      InputGestureText="[Ctrl+W]"
+                                                      ToolTipService.ShowOnDisabled="True"
+                                                      IsEnabled="{Binding CanCreateWorkflowService}"
+                                                      ToolTip="{Binding NewServiceTooltip}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource NewServiceIcon}"/>
+                                                </MenuItem.Icon>
+                                                <MenuItem.InputBindings>
+                                                    <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                                </MenuItem.InputBindings>
                                             </MenuItem>
 
                                             <Separator Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
