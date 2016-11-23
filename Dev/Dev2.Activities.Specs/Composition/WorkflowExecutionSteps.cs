@@ -3205,8 +3205,9 @@ namespace Dev2.Activities.Specs.Composition
                         new ServiceInput("Prefix","K"),
                     }
                 },
-                Name = "get_countries",
-                Id = dbSource.Id,
+                Name = "tab_val_func"
+                ,
+                Id = dbSource.Id
 
             };
             var testResults = dbServiceModel.TestService(databaseService);
@@ -3240,8 +3241,7 @@ namespace Dev2.Activities.Specs.Composition
                 new ServiceInput("Prefix","K"),
             };
             postGreActivity.Outputs = mappings;
-            _commonSteps.AddVariableToVariableList("[[get_countries(1).id]]");
-            _commonSteps.AddVariableToVariableList("[[get_countries(1).name]]");
+            _commonSteps.AddVariableToVariableList("[[V1]]");
             _commonSteps.AddActivityToActivityList(parentName, serviceName, postGreActivity);
         }
 
