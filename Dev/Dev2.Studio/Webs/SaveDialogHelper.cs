@@ -39,7 +39,7 @@ namespace Dev2.Webs
             {
                 if (resourceModel == null)
                 {
-                    throw new ArgumentNullException("resourceModel");
+                    throw new ArgumentNullException(nameof(resourceModel));
                 }
                 IEnvironmentModel environment = resourceModel.Environment;
 
@@ -81,10 +81,7 @@ namespace Dev2.Webs
 
                 var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, selectedPath, header);
 
-                if (loaded != null)
-                {
-                    loaded();
-                }
+                loaded?.Invoke();
                 var messageBoxResult = requestViewModel.ShowSaveDialog();
                 if (messageBoxResult == MessageBoxResult.OK)
                 {
@@ -95,10 +92,7 @@ namespace Dev2.Webs
             }
             catch (Exception)
             {
-                if (loaded != null)
-                {
-                    loaded();
-                }
+                loaded?.Invoke();
                 throw;
             }
         }

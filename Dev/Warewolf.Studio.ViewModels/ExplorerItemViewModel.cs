@@ -1373,7 +1373,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion && !IsFolder && !IsServer;
+                return _canView && !IsResourceVersion && !IsServer;
             }
             set
             {

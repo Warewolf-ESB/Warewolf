@@ -421,7 +421,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Apply(a =>
                 {
-                    if (a.ResourcePath == path)
+                    if (a.ResourcePath.Replace("\\", "\\\\") == path)
                     {
                         a.IsExpanded = true;
                         foundAction(a);

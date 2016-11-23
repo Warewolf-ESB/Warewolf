@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -264,6 +265,18 @@ namespace Warewolf.Studio.ViewModels
                             b.IsSelected = true;
                         });
                     }
+                    _environmentViewModel.CanCreateWorkflowService = false;
+                    _environmentViewModel.ShowContextMenu = true;
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateWorkflowService = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.ShowContextMenu = true);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDuplicate = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugInputs = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugStudio = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugBrowser = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateSchedule = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateTest = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanViewRunAllTests = false);
+                    _environmentViewModel.Children.Flatten(model => model.Children).Where(model => model.IsFolder).Apply(model => model.CanView = true);
                 }
                 catch (Exception)
                 {

@@ -214,9 +214,9 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="6,0,0,0" />
-        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="MinHeight" Value="17" />
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinWidth" Value="17" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="IsThreeState" Value="True"/>
         <Setter Property="Template">
@@ -306,48 +306,48 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="17" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Rectangle Fill="Transparent" />
                         <Rectangle x:Name="normal"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxBackgroundBrush}"
                                    Opacity="1"
                                    Stroke="{StaticResource CheckBoxNormalBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="hover"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxHoverBackgroundBrush}"
                                    Opacity="0"
                                    Stroke="{StaticResource CheckBoxHoverBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="pressed"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxPressedBackgroundBrush}"
                                    Opacity="0"
                                    Stroke="{StaticResource CheckBoxPressedBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="focused"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxFocusedBackgroundBrush}"
                                    Opacity="0"
                                    Stroke="{StaticResource CheckBoxFocusedBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="invalidUnfocused"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxInvalidUnfocusedBackgroundBrush}"
                                    Opacity="0"
                                    Stroke="{StaticResource CheckBoxInvalidUnfocusedBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="invalidFocused"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource CheckBoxInvalidFocusedBackgroundBrush}"
                                    Opacity="0"
                                    Stroke="{StaticResource CheckBoxInvalidFocusedBorderBrush}"

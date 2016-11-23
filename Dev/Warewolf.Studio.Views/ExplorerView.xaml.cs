@@ -22,12 +22,7 @@ namespace Warewolf.Studio.Views
 
         private Point _startPoint;
         private bool _isDragging;
-
-        private void Tree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Store the mouse position
-            _startPoint = e.GetPosition(null);
-        }
+        private bool _canDrag;
 
         private void StartDrag(MouseEventArgs e)
         {
@@ -45,16 +40,18 @@ namespace Warewolf.Studio.Views
 
         private void Tree_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_isDragging)
+            if (_canDrag)
             {
-                Point position = e.GetPosition(null);
-                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_isDragging)
                 {
-                    StartDrag(e);
+                    Point position = e.GetPosition(null);
+                    if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                    {
+                        StartDrag(e);
+                    }
                 }
             }
-
         }
 
         private void DropTree_DragEnter(object sender, DragEventArgs e)
@@ -74,39 +71,44 @@ namespace Warewolf.Studio.Views
         {
             try
             {
-                if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
+                if (_canDrag)
                 {
-                    var explorerItemViewModel = e.Data.GetData(typeof(ExplorerItemViewModel)) as ExplorerItemViewModel;
-                    if (explorerItemViewModel == null)
+                    if (e.Data.GetDataPresent(typeof (ExplorerItemViewModel)))
                     {
-                        e.Handled = true;
-                        return;
-                    }
-                    var destination = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+                        var explorerItemViewModel = e.Data.GetData(typeof (ExplorerItemViewModel)) as ExplorerItemViewModel;
+                        if (explorerItemViewModel == null)
+                        {
+                            e.Handled = true;
+                            return;
+                        }
+                        var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
 
-                    var dropTarget = destination.DataContext as IExplorerItemViewModel;
+                        var dropTarget = destination.DataContext as IExplorerItemViewModel;
 
-                    if (dropTarget != null && dropTarget.IsFolder)
-                    {
-                        var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                        itemViewModel.Move(dropTarget);
+                        if (dropTarget != null && dropTarget.IsFolder)
+                        {
+                            var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                            itemViewModel.Move(dropTarget);
+                        }
+                        var destEnv = destination.DataContext as IEnvironmentViewModel;
+                        if (destEnv != null)
+                        {
+                            var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                            itemViewModel.Move(destEnv);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        destination.Background = Brushes.Transparent;
+                        _canDrag = false;
                     }
-                    var destEnv = destination.DataContext as IEnvironmentViewModel;
-                    if (destEnv != null)
-                    {
-                        var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                        itemViewModel.Move(destEnv);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    destination.Background = Brushes.Transparent;
                 }
             }
             catch (Exception)
             {
                 _isDragging = false;
+                _canDrag = false;
             }
         }
 
@@ -168,22 +170,57 @@ namespace Warewolf.Studio.Views
             textBox?.SelectAll();
         }
 
-        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if ((bool) e.NewValue)
-            {
-                var textBox = sender as TextBox;
-                textBox?.Focus();
-                textBox?.SelectAll();
-            }
-        }
-
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
             {
                 var textBox = sender as TextBox;
-                textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel != null)
+                    explorerItemViewModel.IsRenaming = false;
+            }
+        }
+
+        private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+            _isDragging = false;
+            _canDrag = false;
+        }
+
+        private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+
+                if (e.ClickCount == 2)
+                {
+                    if (explorerItemViewModel != null && !explorerItemViewModel.CanView)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                }
+
+                if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)
+                {
+                    _canDrag = false;
+                }
+                else
+                {
+                    _canDrag = true;
+                    // Store the mouse position
+                    _startPoint = e.GetPosition(null);
+                }
             }
         }
     }
