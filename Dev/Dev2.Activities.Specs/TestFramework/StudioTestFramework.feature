@@ -1259,7 +1259,8 @@ Scenario: Test WF with Oracle Table function
 Scenario: Test WF with PostGre Sql
 		Given I have a workflow "PostGreTestWF"
 		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
-		  | Input to Service | From Variable | Output from Service | To Variable           |		
+		  | ParameterName | ParameterValue |
+		  | Prefix        | K              |  
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
@@ -1279,7 +1280,8 @@ Scenario: Test WF with PostGre Sql
 Scenario: Test WF with PostGre Sql with Table Value Function
 		Given I have a workflow "PostGreTestWF"
 		 And "PostGreTestWF" contains a postgre tool using "tab_val_func" with mappings for testing as
-		  | Input to Service | From Variable | Output from Service | To Variable           |		
+		  | ParameterName | ParameterValue |
+		  | v1            | 1              |
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
