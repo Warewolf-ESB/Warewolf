@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
+
 // ReSharper disable UnusedMemberInSuper.Global
 
 namespace Dev2.Common.Interfaces
@@ -62,6 +64,8 @@ namespace Dev2.Common.Interfaces
         string Value { get; set; }
         string From { get; set; }
         string To { get; set; }
+        [DefaultValue("=")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         string AssertOp { get; set; }
         bool HasOptionsForValue { get; set; }
         List<string> OptionsForValue { get; set; }

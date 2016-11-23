@@ -27,6 +27,23 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.SmallView.Exists, "SQL Server database connector tool small view does not exist after collapsing large view with a double click.");
         }
 
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HttpWebDeleteToolClickAddNewSourceButtonOpensNewSourceWizardTab()
+        {
+            UIMap.Click_Sql_Server_Tool_Large_View_New_Source_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.Exists, "Manage DatabaseSource Control does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Test Connection Button does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ErrorText.Exists, "Error Text does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Exists, "Password TextBox does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Exists, "UserName TextBox does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton.Exists, "UserRadio Button does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.WindowsRadioButton.Exists, "Windows Radio Button does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.CancelTestButton.Exists, "Cancel Test Button does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage.Exists, "Connection Passed Image does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.Spinner.Exists, "Spinner does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

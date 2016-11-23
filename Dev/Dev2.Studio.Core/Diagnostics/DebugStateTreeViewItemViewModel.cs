@@ -64,9 +64,9 @@ namespace Dev2.Studio.Core
 
         protected override void Initialize(IDebugState content)
         {
-            _inputs.Clear();
-            _outputs.Clear();
-            _assertResultList.Clear();
+//            _inputs.Clear();
+//            _outputs.Clear();
+//            _assertResultList.Clear();
 
             if (content == null)
             {

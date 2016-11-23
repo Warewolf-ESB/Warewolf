@@ -534,7 +534,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             scenarioContext.TryGetValue("activity", out sequence);
             if(sequence != null)
             {
-                var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.ToString() == sequence.UniqueID);
+                var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.ToString() == sequence.UniqueID.ToString());
                 var count = innerActivitiesDebugStates.Count();
                 Assert.IsTrue(count > 0);
             }
