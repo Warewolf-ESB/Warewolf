@@ -372,7 +372,7 @@ namespace Dev2.Runtime.ESB.Execution
                                 testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                                 if (!testPassed)
                                 {
-                                    failureMessage = failureMessage.AppendLine(string.Join("",testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
+                                    failureMessage = failureMessage.Append(string.Join("",testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
                                 }
                             }
                         }
@@ -385,7 +385,7 @@ namespace Dev2.Runtime.ESB.Execution
                     testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(test.ErrorContainsText.ToLower());
                     if (!testPassed)
                     {
-                        failureMessage.AppendLine(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, test.ErrorContainsText, "", fetchErrors));
+                        failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, test.ErrorContainsText, "", fetchErrors));
                     }
                 }
                 else if (test.NoErrorExpected)
@@ -413,11 +413,14 @@ namespace Dev2.Runtime.ESB.Execution
                     }
 
                     testPassed = testPassed && testStepPassed;
-                    test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps.Select(step => step.Result?.Message))).ToString();
+                    test.FailureMessage = failureMessage.AppendLine(string.Join("", test.TestSteps?.Select(step => step.Result?.Message))).ToString();
                     test.TestFailing = !testPassed;
                     test.TestPassed = testPassed;
                     test.TestPending = false;
-                    test.TestInvalid = test.TestSteps.Any(step => step.Result?.RunTestResult == RunResult.TestInvalid);
+                    if (test.TestSteps != null)
+                    {
+                        test.TestInvalid = test.TestSteps.Any(step => step.Result?.RunTestResult == RunResult.TestInvalid);
+                    }
                 }
                 test.LastRunDate = DateTime.Now;
 
