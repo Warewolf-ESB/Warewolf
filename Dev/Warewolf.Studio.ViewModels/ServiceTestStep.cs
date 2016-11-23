@@ -8,6 +8,7 @@ using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 namespace Warewolf.Studio.ViewModels
 {
