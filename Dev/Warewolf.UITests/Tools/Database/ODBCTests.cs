@@ -26,7 +26,7 @@ namespace Warewolf.UITests.Tools
         public void ODBCTool_SmallViewUITest()
         {
             UIMap.Collapse_ODBC_Tool_Large_View_to_Small_View_With_Double_Click();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.SourcesComboBox.Exists, "ODBC database connector tool small view does not exist after collapsing large view with a double click.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.SmallView.Exists, "ODBC database connector tool small view does not exist after collapsing large view with a double click.");
         }
 
         #region Additional test attributes

@@ -12,7 +12,6 @@ Scenario: Plugin Connector
 	And I Save With Ribbon Button And Dialog As "UITestingPluginSource"
 	And I Click Close Plugin Source Wizard Tab Button
 	And I Drag DotNet DLL Connector Onto DesignSurface
-	And I Open DotNet DLL Connector Tool Large View
 	And I Select First Item From DotNet DLL Large View Source Combobox
 	And I Select Namespace
 	And I Select Action

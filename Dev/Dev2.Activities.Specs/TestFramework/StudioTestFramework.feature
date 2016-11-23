@@ -915,27 +915,6 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	When I save
 	And I run the test
 	Then test result is Failed
-	
-Scenario: Control Flow - Sequence Debug Run Selected Test passed with create Example Data teststep Passes
-	Given the test builder is open with "Control Flow - Sequence"
-	And Tab Header is "Control Flow - Sequence - Tests"
-	Then there are 3 tests		
-	And I select "ControlFlowExampleWithExampleDataStepTests"
-	And test name starts with "ControlFlowExampleWithExampleDataStepTests"	
-	When I run the test	
-	Then test result is Passed
-	And I select "ControlFlowExampleWithForEachStepTest"
-	And test name starts with "ControlFlowExampleWithForEachStepTest"	
-	When I run the test	
-	Then test result is Passed
-	And I select "ControlFlowExampleWithOrganiseCustomerStepTest"
-	And test name starts with "ControlFlowExampleWithOrganiseCustomerStepTest"	
-	When I run the test	
-	Then test result is Passed	
-	And I run all tests
-	Then all tests pass
-
-
 
 #Data Category
 Scenario: Test WF with Assign
@@ -950,7 +929,7 @@ Scenario: Test WF with Assign
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestAssign" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	| Variable Name | Condition | Value | 
 	| [[rec(1).a]]  | =         | yes   | 
 	| [[rec(2).a]]  | =         | no    | 
@@ -973,7 +952,7 @@ Scenario: Test WF with Assign Object
 		 And a new test is added	
 	   	 And test name starts with "Test 1"
 		 And I Add "TestAssignObject" as TestStep
-		 And I add new StepOutputs as 
+		And I add StepOutputs as 
 		 | Variable Name       | Condition | Value | 
 		 | [[@Person.Name]]    | =         | yes   | 
 		 | [[@Person.Surname]] | =         | no    | 
@@ -998,7 +977,7 @@ Scenario: Test WF with BaseConvert
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestBaseConvert" as TestStep
-		 And I add new StepOutputs as 
+		And I add StepOutputs as 
 		  | Variable Name | Condition | Value         |
 		  | [[a]]         | =         | I was mangled |
 		 When I save
@@ -1024,7 +1003,7 @@ Scenario: Test WF with CaseConvert
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestCaseConvert" as TestStep
-		 And I add new StepOutputs as 
+	 And I add StepOutputs as 
 		 | Variable Name | Condition | Value |
 		 | [[rec(2).a]]  | =         | TEST  |
 		 When I save
@@ -1048,7 +1027,7 @@ Scenario: Test WF with Data split
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestDataSplit" as TestStep
-		 And I add new StepOutputs as 
+		And I add StepOutputs as 
 	  	 | Variable Name   | Condition | Value             |
 	  	 | [[rec(1).Name]] | =         | Brad              |
 	  	 | [[rec(2).Name]] | =         | 5546854           |
@@ -1081,7 +1060,7 @@ Scenario: Test WF with Find Index
 		 And a new test is added	
 		 And test name starts with "Test 1"
 		 And I Add "TestIndex" as TestStep
-		 And I add new StepOutputs as 
+		And I add StepOutputs as 
 		 | Variable Name   | Condition | Value |
 		 | [[indexResult]] | =         | 4     |
 		 When I save
@@ -1109,7 +1088,7 @@ Scenario: Test WF with Data Merge
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "TestDataMerge" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value        |
 		| [[result]]    | =         | TestWarewolf |
 		When I save
@@ -1136,7 +1115,7 @@ Scenario: Test WF with Replace
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "TestReplace" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name     | Condition | Value           |
 		| [[rec(1).a]]      | =         | tREPLACEDst     |
 		| [[rec(2).a]]      | =         | warREPLACEDwolf |		
@@ -1161,7 +1140,7 @@ Scenario: Test WF with MySql
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "MySqlEmail" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name           | Condition | Value              |
 		| [[MySqlEmail(1).name]]  | =         | Monk               |
 		| [[MySqlEmail(1).email]] | =         | dora@explorers.com |		
@@ -1182,7 +1161,7 @@ Scenario: Test WF with Sql Server
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "dbo.FetchPlayers" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name                    | Condition | Value    |
 		| [[dbo_FetchPlayers(1).ID]]       | =         | 285      |
 		| [[dbo_FetchPlayers(1).Name]]     | =         | Syed     |
@@ -1205,7 +1184,7 @@ Scenario: Test WF with Oracle
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "HR.GET_EMP_RS" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name                        | Condition | Value        |
 		| [[HR_GET_EMP_RS(107).DEPARTMENT_ID]] | =         | 110          |
 		| [[HR_GET_EMP_RS(107).EMPLOYEE_ID]]   | =         | 206          |
@@ -1230,7 +1209,7 @@ Scenario: Test WF with PostGre Sql
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "get_countries" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name             | Condition | Value          |
 		| [[get_countries(1).id]]   | =         | 2              |
 		When I save
@@ -1274,7 +1253,7 @@ Scenario: Test WF with SqlBulk Insert
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "BulkInsert" as TestStep
-		And I add new StepOutputs as 
+	And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
 		When I save
@@ -1300,7 +1279,7 @@ Scenario: Test WF with Create
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "Create1" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[res1]]      | =         | Success |
 		When I save
@@ -1327,7 +1306,7 @@ Scenario: Test WF with Create and Delete folder
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "DeleteFolder" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[res2]]      | =         | Success |
 		When I save
@@ -1353,7 +1332,7 @@ Scenario: Test WF with Move
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "Move1" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
 		When I save
@@ -1374,7 +1353,7 @@ Scenario: Test WF with Read Folder
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "ReadFolder" as TestStep
-		And I add new StepOutputs as 
+	And I add StepOutputs as 
 		| Variable Name   | Condition | Value                              |
 		| [[rec(7).Name]] | =         | C:\ProgramData\Warewolf\Workspaces |
 		When I save
@@ -1396,7 +1375,7 @@ Scenario: Test WF with Read File
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "ReadFile" as TestStep
-		And I add new StepOutputs as 
+	And I add StepOutputs as 
 		| Variable Name | Condition | Value |
 		| [[Result]]    | Contains  | Hello |
 		When I save
@@ -1420,7 +1399,7 @@ Scenario: Test WF with Rename File
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "RenameFile" as TestStep
-		And I add new StepOutputs as 
+	And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
 		When I save
@@ -1443,7 +1422,7 @@ Scenario: Test WF with Random
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestRandoms" as TestStep	
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition  | Value |
 	  	 | [[result]]    | Is Numeric |       |
 	When I save
@@ -1468,7 +1447,7 @@ Scenario: Test WF with Aggregate Calculate
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestAgrCalculate" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 8     |
 	When I save
@@ -1489,7 +1468,7 @@ Scenario: Test WF with WebRequest
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestWebRequest" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                                                                                                                                                                                                                                                                                                                                                                                            |
 	  	 | [[Result]]    | Contains  | [{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0},{"Id":2,"Name":"Refrigerator","Category":"Electronic","Price":23000.0},{"Id":3,"Name":"Mobiles","Category":"Electronic","Price":20000.0},{"Id":4,"Name":"Laptops","Category":"Electronic","Price":45000.0},{"Id":5,"Name":"iPads","Category":"Electronic","Price":67000.0},{"Id":6,"Name":"Toys","Category":"Gift Items","Price":15000.0}] |
 	When I save
@@ -1508,7 +1487,7 @@ Scenario: Test WF with RabbitMq Publish
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "DsfPublishRabbitMQActivity" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
 	When I save
@@ -1531,7 +1510,7 @@ Scenario: Test WF with Calculate
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestCalculate" as TestStep
-	And I add new StepOutputs as 
+And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 6     |		 
 	When I save
@@ -1550,7 +1529,7 @@ Scenario: Test WF with Xpath
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "XPathTest" as TestStep
-	And I add new StepOutputs as 
+And I add StepOutputs as 
 	  	 | Variable Name   | Condition | Value        |
 	  	 | [[singleValue]] | =         | Mr.  Johnson |
 	When I save
@@ -1571,7 +1550,7 @@ Scenario: Test WF with SysInfo
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "System info" as TestStep
-	And I add new StepOutputs as 
+And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[a]]         | Is Date   |       |
 	When I save
@@ -1592,7 +1571,7 @@ Scenario: Test WF with FormatNumber
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "Fnumber" as TestStep
-	And I add new StepOutputs as 
+And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 12.34 |
 	When I save
@@ -1616,7 +1595,7 @@ Scenario: Test WF with Count Record
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "Cnt1" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 3     |
 	When I save
@@ -1639,7 +1618,7 @@ Scenario: Test WF with Lenght
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "Len" as TestStep
-	And I add new StepOutputs as 
+And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 2     |
 	When I save
@@ -1665,7 +1644,7 @@ Scenario: Test WF with Find Records
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "FindRecord0" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 2     |
 	When I save
@@ -1689,7 +1668,7 @@ Scenario: Test WF with Delete Records
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "Delet1" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[result]]    | =         | Success |
 	When I save
@@ -1720,7 +1699,7 @@ Scenario: Test WF with Unique Record
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "Unique rec" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name     | Condition | Value |
 	  	 | [[rec(1).unique]] | =         | 10    |
 	  	 | [[rec(2).unique]] | =         | 40    |
@@ -1748,7 +1727,7 @@ Scenario: Test WF with Sort
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "sortRec1" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[rs(1).a]]   | =         | 20    |
 	  	 | [[rs(2).a]]   | =         | 10    |
@@ -1770,7 +1749,7 @@ Scenario: Test WF with DateTime
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "AddDate" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value    |
 	  	 | [[result]]    | =         | 16 03 12 |
 	When I save
@@ -1791,7 +1770,7 @@ Scenario: Test WF with DateTimeDiff
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "DateTimedif" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value         |
 		 | [[result]]      | =         | 259 |		 
 	When I save
@@ -1818,7 +1797,7 @@ Scenario: Test WF with Unzip File
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "UnZipFile" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name   | Condition | Value   |
 		| [[UnZipResult]] | =         | Success |
 		When I save
@@ -1842,7 +1821,7 @@ Scenario: Test WF with Zip File
 		And a new test is added	
 		And test name starts with "Test 1"
 		And I Add "ZipFile" as TestStep
-		And I add new StepOutputs as 
+		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
 		When I save
@@ -1852,69 +1831,17 @@ Scenario: Test WF with Zip File
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "ZipFileTestWF" is deleted as cleanup
 
-#Loop Constructs
-
-Scenario: Test WF with ForEach which contains assign
-		Given I have a workflow "ForEachWithAssignTestWF"	
-		And "ForEachWithAssignTestWF" contains an Assign "TestAssign" as
-		| variable    | value |
-		| [[rec().a]] | yes   |		
-		And "ForEachWithAssignTestWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
-	    And "ForEachTest" contains an Assign "MyAssign" as
-	    | variable    | value |
-	    | [[rec().a]] | Test  |
-		And I save workflow "ForEachWithAssignTestWF"
-		Then the test builder is open with "ForEachWithAssignTestWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "ForEachTest" as TestStep
-		And I add new Children StepOutputs as 
-		| Variable Name | Condition | Value |
-		| [[rec(3).a]]  | =         | Test  |
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "ForEachWithAssignTestWF" is deleted as cleanup
-
-Scenario: Test WF with SelectAndApply which contains assign
-		Given I have a workflow "SelectAndApplyWithAssignTestWF"	
-		And "SelectAndApplyWithAssignTestWF" contains an Assign "TestAssign" as
-		| variable    | value |
-		| [[rec().a]] | yes   |	
-		And "SelectAndApplyWithAssignTestWF" contains a SelectAndApply "SelectAndApplyTest" DataSource "[[rec(*).a]]" Alias "[[f]]"
-	    And "SelectAndApplyTest" contains an Assign "MyAssign" as
-	    | variable    | value |
-	    | [[f]] | Test  |
-		And I save workflow "SelectAndApplyWithAssignTestWF"
-		Then the test builder is open with "SelectAndApplyWithAssignTestWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "SelectAndApplyTest" as TestStep
-		And I add new Children StepOutputs as 
-		| Variable Name | Condition | Value |
-		| [[f]]  | =         | Test  |
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "SelectAndApplyWithAssignTestWF" is deleted as cleanup
-
 #Scripting
 Scenario: Test WF with Cmd Script
 	Given I have a workflow "CmdScriptTestWF"	
-	And "SelectAndApplyWithAssignTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
+	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
 	And I save workflow "CmdScriptTestWF"
 	Then the test builder is open with "CmdScriptTestWF"
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testCmdScript" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value                       |
 	  	 | [[result]]    | Contains  | Volume in drive C is System |   
 	When I save
@@ -1933,7 +1860,7 @@ Scenario: Test WF with JavaScript
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testJavaScript" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 7     |  
 	When I save
@@ -1952,7 +1879,7 @@ Scenario: Test WF with Python
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testPython" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value          |
 	  	 | [[result]]    | =         | not one or two |
 	When I save
@@ -1971,7 +1898,7 @@ Scenario: Test WF with Ruby
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testRuby" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 5     |
 	When I save
@@ -1995,7 +1922,7 @@ Scenario: Test WF with Sharepoint Copy File
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePCopyFile" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[copyResult]] | =         | Success |
 	When I save
@@ -2029,7 +1956,7 @@ Scenario: Test WF with Sharepoint Create List Items
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePCreateItemList" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
 	When I save
@@ -2050,7 +1977,7 @@ Scenario: Test WF with Sharepoint Delete File List
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePDeleteFile" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[delResult]] | =         | 0     |
 	When I save
@@ -2071,7 +1998,7 @@ Scenario: Test WF with Sharepoint Delete File
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePdeleteListItem" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[Result]]    | =         |       |
 	And I expect Error "File Not Found"  
@@ -2096,7 +2023,7 @@ Scenario: Test WF with Sharepoint Download File
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePDownloadFile" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[Downloaded]] | =         | Success |
 	When I save
@@ -2117,7 +2044,7 @@ Scenario: Test WF with Sharepoint Upload File
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePUploadFile" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
 	When I save
@@ -2141,7 +2068,7 @@ Scenario: Test WF with Sharepoint Move File
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePMoveFile" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[MoveResult]] | =         | Success |
 	When I save
@@ -2162,7 +2089,7 @@ Scenario: Test WF with Sharepoint Read Folder
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePReadFolder" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name       | Condition | Value                 |
 	  	 | [[Folders(1).Name]] | =         | /Shared Documents/bob |
 	When I save
@@ -2183,7 +2110,7 @@ Scenario: Test WF with Sharepoint Read List Item
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePReadListItem" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name           | Condition | Value  |
 	  	 | [[AccTesting(1).Title]] | =         | Mrs    |
 	When I save
@@ -2216,7 +2143,7 @@ Scenario: Test WF with Sharepoint Update List Item
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestSharePUpdateListItem" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
 	When I save
@@ -2235,7 +2162,7 @@ Scenario: Test WF with Web Delete
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testWebDelete" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value                                            |
 	  	 | [[Response]]  | =         | The task completed due to an unhandled exception |
 	When I save
@@ -2254,7 +2181,7 @@ Scenario: Test WF with Web Post
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testWebPost" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name   | Condition | Value |
 	  	 | [[Response]] | =         |       |
 	When I save
@@ -2273,7 +2200,7 @@ Scenario: Test WF with Web Get
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testWebGet" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name                    | Condition | Value      |
 	  	 | [[UnnamedArrayData(6).Id]]       | =         | 6          |
 	  	 | [[UnnamedArrayData(6).Name]]     | =         | Toys       |
@@ -2295,7 +2222,7 @@ Scenario: Test WF with Web Put
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "testWebPut" as TestStep
-	And I add new StepOutputs as 
+	And I add StepOutputs as  
 	  	 | Variable Name   | Condition | Value |
 	  	 | [[Response]] | =         |       |     
 	When I save

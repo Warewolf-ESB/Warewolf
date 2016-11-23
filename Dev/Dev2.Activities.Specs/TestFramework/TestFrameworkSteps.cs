@@ -96,7 +96,7 @@ namespace Dev2.Activities.Specs.TestFramework
     [Binding]
     public class StudioTestFrameworkSteps
     {
-       
+
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
@@ -114,7 +114,7 @@ namespace Dev2.Activities.Specs.TestFramework
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-            
+
             //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             //var environmentModel = EnvironmentRepository.Instance.Source;
             //environmentModel.Connect();
@@ -466,7 +466,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
             var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
-            
+
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
@@ -1767,27 +1767,20 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenIAddStepOutputsAs(Table table)
         {
             var serviceTest = GetTestFrameworkFromContext();
-
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First();
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
             foreach (var tableRow in table.Rows)
             {
-                var index = Convert.ToInt32(tableRow["stepIndex"]);
-                var childIndex = Convert.ToInt32(tableRow["ChildIndex"]);
                 var varName = tableRow["Variable Name"];
                 var condition = tableRow["Condition"];
                 var value = tableRow["Value"];
-                var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps[index];
-                if (childIndex < serviceTestStep.Children.Count)
-                    if (serviceTestStep.Children != null)
-                    {
-                        serviceTestStep.Children[childIndex].StepOutputs = new ObservableCollection<IServiceTestOutput>
-                        {
-                            new ServiceTestOutput(varName, value, "", "")
-                            {
-                                AssertOp = condition,
-                            }
-                        };
 
-                    }
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+
+
             }
         }
 

@@ -1,5 +1,5 @@
 
-<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAACozTtclY56m+L6qIrmlG/9AAAAAASAAACgAAAAEAAAAFj55DnUD+wHHLLER91/vOJ4AAAAIYWA6Vp+CJSwRuJcKvA1nrX3+ysJaq0mc+o/GxWodm9cZxJXmlBhJ5GtyL+jWS9GmMdIHqAcSUPen8cf0f0b9ZskvwsOhBF+KeZ3dyvp+jnbCN/PXL74F6vlfIctLuXwSQ79DuUX2O5Kc4mPAlr67N+LZqDgMs75FAAAAE3w8Ss6nc1rwZzIfTeTeBKb7Xrv" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="Server=rsaklfsvrgendev;Database=test;Uid=root;Pwd=admin;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewMySqlSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

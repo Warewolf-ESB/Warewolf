@@ -10,6 +10,8 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
+// ReSharper disable CyclomaticComplexity
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -221,7 +223,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
@@ -230,9 +231,9 @@ namespace Warewolf.Studio.ViewModels
                 var variable = serviceTestOutput?.Variable ?? "";
                 var value = serviceTestOutput?.Value ?? "";
                 var to = serviceTestOutput?.To ?? "";
-                var @from = serviceTestOutput?.From ?? "";
+                var from = serviceTestOutput?.From ?? "";
 
-                var testOutput = new ServiceTestOutput(variable, value, @from, to)
+                var testOutput = new ServiceTestOutput(variable, value, from, to)
                 {
                     AddStepOutputRow = testStep.AddNewOutput,
                     AssertOp = serviceTestOutput?.AssertOp ?? "=",

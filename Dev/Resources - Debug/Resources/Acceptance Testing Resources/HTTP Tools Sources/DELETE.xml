@@ -1,0 +1,9 @@
+
+<Source ID="72f7ba25-275d-4bf1-a5b0-3676b6cadd21" Name="DELETE" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>DELETE</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:54:40.5278326+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="72f7ba25-275d-4bf1-a5b0-3676b6cadd21" VersionId="023a1118-4c19-475b-88e7-05c875fcafdc" />
+</Source>

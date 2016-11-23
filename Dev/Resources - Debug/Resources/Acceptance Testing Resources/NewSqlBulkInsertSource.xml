@@ -1,5 +1,5 @@
 
-<Source ID="ad08beb0-9e5d-4270-af8d-43abd953afbd" Name="NewSqlBulkInsertSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAADR9Bte8tb5BbFLqC5J2WdmAAAAAASAAACgAAAAEAAAAODDdwJeyYOjpBSc5+ViyRzAAAAAcvypC91+QBgCdDPb+6TT517GPchWUPerxeX/gNarHsY4tTKrHxuXQwdfSMYE8HE++dnZNPgY7YSEckdiTn/OXJLnVMfLYKctKHCeEy+ZWPp0b0RMYyz79TZ+diDkhUNu8CdNJ5xX6A9OdGzag5WX+/v83jJ8NF5JOwoCX+ConAa49DWZHwxim5fXrVyEhnbcqXd8nMX2l0nzQDwdhhWcQzvrQBeJ2qXf3g4/RcnlMkYGn+rhw363lAoCi4GjtsypFAAAAF58Wn8aty8dqanuHAeKUJC0EkTU" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="ad08beb0-9e5d-4270-af8d-43abd953afbd" Name="NewSqlBulkInsertSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewSqlBulkInsertSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

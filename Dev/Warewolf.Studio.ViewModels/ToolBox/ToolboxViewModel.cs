@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             BackedUpTools =
                 new ObservableCollection<IToolDescriptorViewModel>(
                     _remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
-            Tools = BackedUpTools;
+            Tools = new AsyncObservableCollection<IToolDescriptorViewModel>(_backedUpTools);
         }
 
         public ICommand ClearFilterCommand { get; set; }
@@ -131,6 +131,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                     if (!string.IsNullOrWhiteSpace(value))
                     {
                         FilterItems(value.ToLowerInvariant());
+                    }
+                    else
+                    {
+                        Tools = new AsyncObservableCollection<IToolDescriptorViewModel>();
                     }
                 }
             }

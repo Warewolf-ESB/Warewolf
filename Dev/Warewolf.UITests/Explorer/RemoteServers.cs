@@ -28,16 +28,13 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void DisconnectedRemoteServerUITest()
         {
+            UIMap.Filter_Explorer("workflow1");
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Click_Explorer_RemoteServer_Edit_Button();
-            UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.Spinner);
-            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            UIMap.Click_MessageBox_No();
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.Spinner);
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
+            UIMap.Click_Explorer_RemoteServer_Connect_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists, "Remote server name still ends with (Connected) in explorer remote server dropdown list after clicking the disconnect button.");
             UIMap.Select_localhost_From_Explorer_Remote_Server_Dropdown_List();
         }
 

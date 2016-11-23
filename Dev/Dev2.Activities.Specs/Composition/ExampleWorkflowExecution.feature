@@ -141,16 +141,16 @@ Scenario: Example Executing Utility - Web Request example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Web Request Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Web Request(1)" in WorkFlow "Utility - Web Request" debug inputs as
-	  | URL                     | Header |
-	  | https://www.google.com/ |        |
-	  And the "Web Request(1)" in Workflow "Utility - Web Request" debug outputs as    
+	  And the "Web Request 1" in WorkFlow "Utility - Web Request" debug inputs as
+	  | URL                  | Header | Time Out Seconds |
+	  | https://warewolf.io/ |        | 100              |
+	  And the "Web Request 1" in Workflow "Utility - Web Request" debug outputs as    
 	  |                         |
-	  | [[GoogleHome]] = String |
-	  And the "Web Request(2)" in WorkFlow "Utility - Web Request" debug inputs as
-	  | URL                                                                                            | Header |
-	  | http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=false = String |        |
-	  And the "Web Request(2)" in Workflow "Utility - Web Request" debug outputs as    
+	  | [[WarewolfHome]] = String |
+	  And the "Web Request 2" in WorkFlow "Utility - Web Request" debug inputs as
+	  | URL                                                                                            | Header |Time Out Seconds |
+	  | http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=false = String |        |100              |
+	  And the "Web Request 2" in Workflow "Utility - Web Request" debug outputs as    
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
@@ -254,20 +254,20 @@ Scenario: Example Executing Data - Data Merge example workflow
 	   
 Scenario: Example Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
-	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
+	  And "Utility - Find Index Test" contains "Data - Find Index" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Utility - Find Index Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Find Index1" in WorkFlow "Utility - Find Index" debug inputs as
+	  And the "Find Index1" in WorkFlow "Data - Find Index" debug inputs as
 	  | In Field | Index            | Characters | Direction     |
 	  | abc      | First Occurrence | b          | Left to Right |
-	  And the "Find Index1" in Workflow "Utility - Find Index" debug outputs as  
+	  And the "Find Index1" in Workflow "Data - Find Index" debug outputs as  
 	  |                  |
 	  | [[WhereIsB]] = 2 |
-	  And the "Find Index2" in WorkFlow "Utility - Find Index" debug inputs as
+	  And the "Find Index2" in WorkFlow "Data - Find Index" debug inputs as
 	  | In Field           | Index           | Characters | Direction     |
 	  | abcbdefghibjklmnop | All Occurrences | b          | Left to Right |
-	  And the "Find Index2" in Workflow "Utility - Find Index" debug outputs as  
+	  And the "Find Index2" in Workflow "Data - Find Index" debug outputs as  
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 

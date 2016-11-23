@@ -63,10 +63,10 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinPluginSourceWizardTab()
+        public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
             UIMap.Click_NewPluginSource_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.PluginSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab);
             UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 

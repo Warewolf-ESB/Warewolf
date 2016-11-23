@@ -1143,7 +1143,6 @@ namespace Dev2.Activities.Specs.Composition
             ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
         }
 
-
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
@@ -1152,8 +1151,8 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = Guid.Empty;
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            Guid workflowId = Guid.Empty;
 
             if (parentWorkflowName != workflowName)
             {
@@ -1171,7 +1170,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
             if (toolSpecificDebug.Count > 1)
             {
@@ -1182,11 +1181,9 @@ namespace Dev2.Activities.Specs.Composition
             }
 
 
-            // ReSharper disable once PossibleNullReferenceException
             _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
-
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
@@ -1196,7 +1193,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            IDbSource dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
+            IDbSource dbSource = dbSources.Single(source => source.Id == "ad08beb0-9e5d-4270-af8d-43abd953afbd".ToGuid());
 
 
             // extract keepIdentity value ;)
