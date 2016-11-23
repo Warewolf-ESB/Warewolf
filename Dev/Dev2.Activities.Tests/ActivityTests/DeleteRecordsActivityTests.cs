@@ -309,6 +309,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_GetOutputs")]
+        public void DsfDeleteRecordActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Numeric()]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]

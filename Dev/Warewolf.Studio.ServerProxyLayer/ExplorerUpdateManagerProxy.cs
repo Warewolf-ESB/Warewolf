@@ -71,7 +71,10 @@ namespace Warewolf.Studio.ServerProxyLayer
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
             if (result?.Status != ExecStatus.Success)
             {
-                throw new WarewolfSaveException(result.Message, null);
+                if(result != null)
+                {
+                    throw new WarewolfSaveException(result.Message, null);
+                }
             }
         }
 

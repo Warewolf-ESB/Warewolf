@@ -516,20 +516,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ComPluginServiceEditSourceHelp.
+        ///   Looks up a localized string similar to Edits the selected COM plugin source connection..
         /// </summary>
         public static string ComPluginServiceEditSourceHelp {
             get {
                 return ResourceManager.GetString("ComPluginServiceEditSourceHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ComPluginServiceMethodNotSelected.
-        /// </summary>
-        public static string ComPluginServiceMethodNotSelected {
-            get {
-                return ResourceManager.GetString("ComPluginServiceMethodNotSelected", resourceCulture);
             }
         }
         
@@ -1003,33 +994,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This service will only execute when the login permissions issues have been resolved..
-        /// </summary>
-        public static string DatabaseServiceExecuteLoginPermission {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteLoginPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This service will only execute when the server is online..
-        /// </summary>
-        public static string DatabaseServiceExecuteOnline {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteOnline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You do not have permissions to View or Execute this resource..
-        /// </summary>
-        public static string DatabaseServiceExecuteViewPermission {
-            get {
-                return ResourceManager.GetString("DatabaseServiceExecuteViewPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create a connection to a new database server..
         /// </summary>
         public static string DatabaseServiceNewSourceHelp {
@@ -1062,15 +1026,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseServiceSourceNotFound {
             get {
                 return ResourceManager.GetString("DatabaseServiceSourceNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source not selected. This service will not execute..
-        /// </summary>
-        public static string DatabaseServiceSourceNotSelected {
-            get {
-                return ResourceManager.GetString("DatabaseServiceSourceNotSelected", resourceCulture);
             }
         }
         
@@ -1583,7 +1538,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.
+        ///   Looks up a localized string similar to The format of the eg. yyyy-dd-mm.
         /// </summary>
         public static string DateTimeDifferenceToolTipInputFormat {
             get {
@@ -1751,7 +1706,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugBrowserToolTip {
             get {
@@ -1796,7 +1751,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugInputsToolTip {
             get {
@@ -1832,6 +1787,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a test for the current workflow.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestHelp {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can only create a test once the workflow is saved.
+        /// </summary>
+        public static string DebugOutputViewAddNewTestUnsavedToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestUnsavedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand/Collapse all.
         /// </summary>
         public static string DebugOutputViewExpandAllHelp {
@@ -1859,7 +1841,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugStudioToolTip {
             get {
@@ -3503,15 +3485,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to less than 0.4.19.1.
-        /// </summary>
-        public static string LessThanServerVersion {
-            get {
-                return ResourceManager.GetString("LessThanServerVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to localhost (Connected).
         /// </summary>
         public static string LocalhostConnectedLabel {
@@ -4349,7 +4322,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOdbcServiceActionsHelpText.
+        ///   Looks up a localized string similar to The Structured Query Language (SQL) of the action you want to perform on the ODBC source..
         /// </summary>
         public static string ManageOdbcServiceActionsHelpText {
             get {
@@ -4646,7 +4619,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you would like the default variables in an object, put the object name in here..
+        ///   Looks up a localized string similar to The name of the [[@Object]] you would like the output to go into.
+        ///    After the object is added to the variable list, you can click on the { } next to the objects name to see the full shape..
         /// </summary>
         public static string MappingsObjectNameHelp {
             get {
@@ -4655,7 +4629,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectNameTooltip.
+        ///   Looks up a localized string similar to The @name of the object you want to put the result into.
         /// </summary>
         public static string MappingsObjectNameTooltip {
             get {
@@ -4664,7 +4638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectOutputHelp.
+        ///   Looks up a localized string similar to Allows you to output the full response into an object (JSON representation)..
         /// </summary>
         public static string MappingsObjectOutputHelp {
             get {
@@ -4673,7 +4647,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MappingsObjectOutputTooltip.
+        ///   Looks up a localized string similar to Check this to put the output into an object.
         /// </summary>
         public static string MappingsObjectOutputTooltip {
             get {
@@ -5447,15 +5421,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceEditSourceHelp {
             get {
                 return ResourceManager.GetString("PluginServiceEditSourceHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Procedure not selected. This service will not execute..
-        /// </summary>
-        public static string PluginServiceMethodNotSelected {
-            get {
-                return ResourceManager.GetString("PluginServiceMethodNotSelected", resourceCulture);
             }
         }
         
@@ -7343,6 +7308,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assert that the error contains some particular text.
+        ///    This allows you to make sure the error you receive, with certain inputs to your service, is the correct error and not due to something else..
+        /// </summary>
+        public static string ServiceTestErrorContainsTextHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorContainsTextHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assert that the error contains some particular text.
+        /// </summary>
+        public static string ServiceTestErrorContainsTextTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorContainsTextTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The test expects an error. If this option is selected, ALL other asserts will be ignored..
         /// </summary>
         public static string ServiceTestErrorExpectedHelpText {
@@ -7415,7 +7399,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of this test. Test names should be unique and indicate what is being tested. The test is always associated with the service running it..
+        ///   Looks up a localized string similar to The name of this test. Test names should be unique and indicate what is being tested. 
+        ///    The test is always associated with the service running it..
         /// </summary>
         public static string ServiceTestNameHelpText {
             get {
@@ -7478,6 +7463,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert from..
+        /// </summary>
+        public static string ServiceTestOutputFromHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputFromHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
+        /// </summary>
+        public static string ServiceTestOutputFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert to..
+        /// </summary>
+        public static string ServiceTestOutputToHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputToHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert to.
+        /// </summary>
+        public static string ServiceTestOutputToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is the final output of the service that will be asserted..
         /// </summary>
         public static string ServiceTestOutputValueHelpText {
@@ -7496,6 +7517,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The final service output you want to make the assert on..
+        /// </summary>
+        public static string ServiceTestOutputVariableHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The output you want to make the assert on.
+        /// </summary>
+        public static string ServiceTestOutputVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string ServiceTestPassedTooltip {
@@ -7510,15 +7549,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestPasswordHelpText {
             get {
                 return ResourceManager.GetString("ServiceTestPasswordHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string ServiceTestPasswordTooltip {
-            get {
-                return ResourceManager.GetString("ServiceTestPasswordTooltip", resourceCulture);
             }
         }
         
@@ -7587,7 +7617,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow.
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow [F7].
         /// </summary>
         public static string ServiceTestRunAllTestsInBrowserTooltip {
             get {
@@ -7596,7 +7626,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run all tests.
+        ///   Looks up a localized string similar to Run all tests [F6].
         /// </summary>
         public static string ServiceTestRunAllTestTooltip {
             get {
@@ -7623,7 +7653,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run this test.
+        ///   Looks up a localized string similar to Run this test [F5].
         /// </summary>
         public static string ServiceTestRunSelectedTestHelpText {
             get {
@@ -7641,7 +7671,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run this test.
+        ///   Looks up a localized string similar to Run this test [F5].
         /// </summary>
         public static string ServiceTestRunSelectedTestTooltip {
             get {
@@ -7677,7 +7707,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertOpsHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert from..
+        /// </summary>
+        public static string ServiceTestStepAssertFromHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertFromHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
+        /// </summary>
+        public static string ServiceTestStepAssertFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of Assert you want to make..
         /// </summary>
         public static string ServiceTestStepAssertOpsHelpText {
             get {
@@ -7686,7 +7734,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertOpsTooltip.
+        ///   Looks up a localized string similar to The type of Assert you want to make.
         /// </summary>
         public static string ServiceTestStepAssertOpsTooltip {
             get {
@@ -7695,7 +7743,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertRadioButtonHelpText.
+        ///   Looks up a localized string similar to Asserts the Result has a type of value at this step..
         /// </summary>
         public static string ServiceTestStepAssertRadioButtonHelpText {
             get {
@@ -7704,7 +7752,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertRadioButtonTooltip.
+        ///   Looks up a localized string similar to Assert this step.
         /// </summary>
         public static string ServiceTestStepAssertRadioButtonTooltip {
             get {
@@ -7713,7 +7761,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertValueHelpText.
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
+        /// </summary>
+        public static string ServiceTestStepAssertToHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertToHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
+        /// </summary>
+        public static string ServiceTestStepAssertToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
         /// </summary>
         public static string ServiceTestStepAssertValueHelpText {
             get {
@@ -7722,7 +7788,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepAssertValueTooltip.
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
         /// </summary>
         public static string ServiceTestStepAssertValueTooltip {
             get {
@@ -7731,7 +7797,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepDeleteStepHelpText.
+        ///   Looks up a localized string similar to The item you want to make the assert on..
+        /// </summary>
+        public static string ServiceTestStepAssertVariableHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool result item to Assert.
+        /// </summary>
+        public static string ServiceTestStepAssertVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this step from the assert list. This step will not be asserted. To add it back, simply click on it in the workflow designer..
         /// </summary>
         public static string ServiceTestStepDeleteStepHelpText {
             get {
@@ -7740,7 +7824,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepDeleteStepTooltip.
+        ///   Looks up a localized string similar to Remove this step.
         /// </summary>
         public static string ServiceTestStepDeleteStepTooltip {
             get {
@@ -7749,7 +7833,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepMockRadioButtonHelpText.
+        ///   Looks up a localized string similar to Mocked values will not execute and will set the value of a result at this step. 
+        ///    Use this when you do not want to execute a service such as a database call or another workflow..
         /// </summary>
         public static string ServiceTestStepMockRadioButtonHelpText {
             get {
@@ -7758,11 +7843,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestStepMockRadioButtonTooltip.
+        ///   Looks up a localized string similar to Mock this step.
         /// </summary>
         public static string ServiceTestStepMockRadioButtonTooltip {
             get {
                 return ResourceManager.GetString("ServiceTestStepMockRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert..
+        /// </summary>
+        public static string ServiceTestStepOptionsForValueHelpText {
+            get {
+                return ResourceManager.GetString("ServiceTestStepOptionsForValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
+        /// </summary>
+        public static string ServiceTestStepOptionsForValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepOptionsForValueTooltip", resourceCulture);
             }
         }
         
@@ -7799,15 +7902,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestUserNameHelpText {
             get {
                 return ResourceManager.GetString("ServiceTestUserNameHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username.
-        /// </summary>
-        public static string ServiceTestUserNameTooltip {
-            get {
-                return ResourceManager.GetString("ServiceTestUserNameTooltip", resourceCulture);
             }
         }
         
@@ -8903,6 +8997,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        public static string StartNodeDebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        public static string StartNodeDebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        public static string StartNodeDebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Switch tool cannot be dropped onto this tool..
         /// </summary>
         public static string SwitchDropNotAllowedMessage {
@@ -9007,7 +9128,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Assign_Object_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Assign Object_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Assign_Object_Tags", resourceCulture);
             }
         }
         
@@ -9025,7 +9146,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Base_Convert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Base Convert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Base_Convert_Tags", resourceCulture);
             }
         }
         
@@ -9034,7 +9155,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Case_Convert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Case Convert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Case_Convert_Tags", resourceCulture);
             }
         }
         
@@ -9043,7 +9164,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Data_Merge_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Data Merge_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Data_Merge_Tags", resourceCulture);
             }
         }
         
@@ -9052,7 +9173,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Data_Split_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Data Split_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Data_Split_Tags", resourceCulture);
             }
         }
         
@@ -9061,7 +9182,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Data_Find_Index_Tags {
             get {
-                return ResourceManager.GetString("Tool_Data_Find Index_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Data_Find_Index_Tags", resourceCulture);
             }
         }
         
@@ -9115,7 +9236,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert_Tags {
             get {
-                return ResourceManager.GetString("Tool_Database_SQL Bulk Insert_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Database_SQL_Bulk_Insert_Tags", resourceCulture);
             }
         }
         
@@ -9124,7 +9245,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Database_SQL_Server_Tags {
             get {
-                return ResourceManager.GetString("Tool_Database_SQL Server_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Database_SQL_Server_Tags", resourceCulture);
             }
         }
         
@@ -9151,7 +9272,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Dropbox_List_Contents_Tags {
             get {
-                return ResourceManager.GetString("Tool_Dropbox_List Contents_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Dropbox_List_Contents_Tags", resourceCulture);
             }
         }
         
@@ -9169,7 +9290,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Email_Exchange_Send_Tags {
             get {
-                return ResourceManager.GetString("Tool_Email_Exchange Send_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Email_Exchange_Send_Tags", resourceCulture);
             }
         }
         
@@ -9178,7 +9299,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Email_SMTP_Send_Tags {
             get {
-                return ResourceManager.GetString("Tool_Email_SMTP Send_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Email_SMTP_Send_Tags", resourceCulture);
             }
         }
         
@@ -9223,7 +9344,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Read_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Read File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Read_File_Tags", resourceCulture);
             }
         }
         
@@ -9232,7 +9353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Read_Folder_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Read Folder_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Read_Folder_Tags", resourceCulture);
             }
         }
         
@@ -9259,7 +9380,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_File_Write_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_File_Write File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_File_Write_File_Tags", resourceCulture);
             }
         }
         
@@ -9304,7 +9425,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_LoopConstruct_For_Each_Tags {
             get {
-                return ResourceManager.GetString("Tool_LoopConstruct_For Each_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_LoopConstruct_For_Each_Tags", resourceCulture);
             }
         }
         
@@ -9313,7 +9434,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_LoopConstruct_Select_and_Apply_Tags {
             get {
-                return ResourceManager.GetString("Tool_LoopConstruct_Select and Apply_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_LoopConstruct_Select_and_Apply_Tags", resourceCulture);
             }
         }
         
@@ -9340,7 +9461,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Recordset_Find_Records_Tags {
             get {
-                return ResourceManager.GetString("Tool_Recordset_Find Records_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Recordset_Find_Records_Tags", resourceCulture);
             }
         }
         
@@ -9367,7 +9488,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Recordset_Unique_Records_Tags {
             get {
-                return ResourceManager.GetString("Tool_Recordset_Unique Records_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Recordset_Unique_Records_Tags", resourceCulture);
             }
         }
         
@@ -9376,7 +9497,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Resources_Com_DLL_Tags {
             get {
-                return ResourceManager.GetString("Tool_Resources_Com DLL_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Resources_Com_DLL_Tags", resourceCulture);
             }
         }
         
@@ -9385,7 +9506,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Resources_Dot_net_DLL_Tags {
             get {
-                return ResourceManager.GetString("Tool_Resources_Dot net DLL_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Resources_Dot_net_DLL_Tags", resourceCulture);
             }
         }
         
@@ -9412,7 +9533,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Scripting_CMD_Script_Tags {
             get {
-                return ResourceManager.GetString("Tool_Scripting_CMD Script_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Scripting_CMD_Script_Tags", resourceCulture);
             }
         }
         
@@ -9430,7 +9551,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Copy_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Copy File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Copy_File_Tags", resourceCulture);
             }
         }
         
@@ -9439,7 +9560,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Create_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Create List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Create_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9448,7 +9569,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Delete_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Delete File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Delete_File_Tags", resourceCulture);
             }
         }
         
@@ -9457,7 +9578,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Delete_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Delete List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Delete_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9466,7 +9587,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Download_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Download File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Download_File_Tags", resourceCulture);
             }
         }
         
@@ -9475,7 +9596,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Move_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Move File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Move_File_Tags", resourceCulture);
             }
         }
         
@@ -9484,7 +9605,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Read_Folder_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Read Folder_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Read_Folder_Tags", resourceCulture);
             }
         }
         
@@ -9493,7 +9614,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Read_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Read List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Read_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9502,7 +9623,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Update_List_Item_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Update List Item_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Update_List_Item_Tags", resourceCulture);
             }
         }
         
@@ -9511,7 +9632,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_SharePoint_Upload_File_Tags {
             get {
-                return ResourceManager.GetString("Tool_SharePoint_Upload File_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_SharePoint_Upload_File_Tags", resourceCulture);
             }
         }
         
@@ -9520,7 +9641,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Aggregate_Calculate_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Aggregate Calculate_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Aggregate_Calculate_Tags", resourceCulture);
             }
         }
         
@@ -9547,7 +9668,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Create_JSON_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Create JSON_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Create_JSON_Tags", resourceCulture);
             }
         }
         
@@ -9556,7 +9677,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Date_Time_Diff_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Date Time Diff_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Diff_Tags", resourceCulture);
             }
         }
         
@@ -9565,7 +9686,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Date_Time_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Date Time_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Tags", resourceCulture);
             }
         }
         
@@ -9574,7 +9695,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Format_Number_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Format Number_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Format_Number_Tags", resourceCulture);
             }
         }
         
@@ -9583,7 +9704,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Consume_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Rabbit MQ Consume_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Consume_Tags", resourceCulture);
             }
         }
         
@@ -9592,7 +9713,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Publish_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Rabbit MQ Publish_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Publish_Tags", resourceCulture);
             }
         }
         
@@ -9606,11 +9727,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to date time format disk cpu memory ram resource language region user roles name domain computer hardware physical.
+        ///   Looks up a localized string similar to date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system.
         /// </summary>
         public static string Tool_Utility_Sys_Info_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Sys Info_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Sys_Info_Tags", resourceCulture);
             }
         }
         
@@ -9619,7 +9740,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// </summary>
         public static string Tool_Utility_Web_Request_Tags {
             get {
-                return ResourceManager.GetString("Tool_Utility_Web Request_Tags", resourceCulture);
+                return ResourceManager.GetString("Tool_Utility_Web_Request_Tags", resourceCulture);
             }
         }
         
@@ -9678,15 +9799,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the toolbox.
-        /// </summary>
-        public static string ToolboxRefreshToolTip {
-            get {
-                return ResourceManager.GetString("ToolboxRefreshToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Search filter for your tools.
         /// </summary>
         public static string ToolboxSearchToolTip {
@@ -9705,16 +9817,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refreshes the content of the toolbox..
-        /// </summary>
-        public static string ToolboxViewRefreshHelp {
-            get {
-                return ResourceManager.GetString("ToolboxViewRefreshHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TreatNullAsZeroHelp.
+        ///   Looks up a localized string similar to If no records exist (NULL), use 0 (Zero) instead.
+        ///    No recordset exists will be treated as a recordset with no records..
         /// </summary>
         public static string TreatNullAsZeroHelp {
             get {
@@ -9723,7 +9827,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TreatNullAsZeroToolTip.
+        ///   Looks up a localized string similar to No recordset will be treated as a recordset with no records.
         /// </summary>
         public static string TreatNullAsZeroToolTip {
             get {
@@ -9980,7 +10084,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ViewApisJsonTooltip.
+        ///   Looks up a localized string similar to View APIs.json url and content.
         /// </summary>
         public static string ViewApisJsonTooltip {
             get {

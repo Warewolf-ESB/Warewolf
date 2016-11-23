@@ -1,0 +1,22 @@
+
+<Source ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082" Name="NewSqlServerSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAl94QjQ2ruk2PVL9oE16EOgQAAAACAAAAAAADZgAAwAAAABAAAAA4bR5oidMzMUkD23S/B7dCAAAAAASAAACgAAAAEAAAAITSeLg4TXUXuhNYtF86EW/IAAAA3MM+7Q/ORxEJGUYJLvJ8/nC5IqugWfHIqVMO3h59lg+bds/S8F1n2/wKsW77ko7STqe+FWdCDbGmxRs6fOMDGbOr5hrS40tRdezFMZgFr2Yp1b/q3/8oheW7m4k2LCjbMeHyvlvBZVRVif60RjHG9IAGLkCr3QfBz0PtFVXlFZnxNGJDO7GEC0cJ9ZKmAXEuhT7eBSofDaLJYpipeyC55K0oxLMDgh72x8FGPSy5NVyMoRimv0v5lxFO9TZg7D+nUmnQFFKI+KsUAAAAz89SL/xqmwoJws057FmBK8MaYD8=" ServerVersion="0.0.6166.24555" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewSqlServerSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-18T13:42:45.9625379+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082" VersionId="56469930-773a-4857-bdd0-c6c146d678c6" />
+</Source>

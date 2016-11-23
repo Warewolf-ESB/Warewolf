@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -85,6 +84,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override bool CanInduceIdle => true;
 
         #endregion Properties
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
         #region Override Methods
 

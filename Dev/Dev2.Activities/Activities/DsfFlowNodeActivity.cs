@@ -19,8 +19,8 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decision;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
@@ -71,7 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _expression.ExpressionText = value;
             }
         }
-
         #endregion
 
         #region CacheMetadata

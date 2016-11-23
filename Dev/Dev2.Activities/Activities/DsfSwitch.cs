@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -16,13 +17,19 @@ namespace Dev2.Activities
     {
               public DsfFlowSwitchActivity Inner;
 
-              public DsfSwitch(DsfFlowSwitchActivity inner)
-            : base("Switch")
+        public DsfSwitch(DsfFlowSwitchActivity inner)
+      : base("Switch")
         {
-                  Inner = inner;
-              }
+            Inner = inner;
+            UniqueID = inner.UniqueID;
+        }
 
-              public DsfSwitch() { }
+       public DsfSwitch() { }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
 
         public Dictionary<string,IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
@@ -56,41 +63,71 @@ namespace Dev2.Activities
             return null;
         }
 
-          public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
-          {
-              _debugOutputs.Clear();
-              _debugInputs.Clear();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new string Result { get; set; }
 
-              try
-              {
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        {
+            _debugOutputs.Clear();
+            _debugInputs.Clear();
+
+            try
+            {
 
 
-                  Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
 
-                InitializeDebug(dataObject);
-                Debug(dataObject, firstOrDefault, ds);
-                  if (firstOrDefault != null)
-                  {
-                      var a = firstOrDefault;
-                      if (Switches.ContainsKey(a))
-                      {
-                          return Switches[a];
-                      }
-                          if (Default != null)
-                          {
-                              var activity = Default.FirstOrDefault();
-                            return activity;
-                      }
-                  }
-              }
-              catch (Exception err)
-              {
-                  dataObject.Environment.Errors.Add(err.Message);
-              }
-              
-              return null;
-          }
+                if (dataObject.IsDebugMode())
+                {
+                    InitializeDebug(dataObject);
+                    Debug(dataObject, firstOrDefault, ds);
+                    DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+                }
+                if (firstOrDefault != null)
+                {
+                    var a = firstOrDefault;
+                    if (Switches.ContainsKey(a))
+                    {
+                        Result = a;
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugOutput(dataObject);
+                        }
+                        
+                        return Switches[a];
+                    }
+                    if (Default != null)
+                    {
+                        Result = "Default";
+                        var activity = Default.FirstOrDefault();
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugOutput(dataObject);
+                        }
+                        return activity;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                dataObject.Environment.Errors.Add(err.Message);
+            }
+            finally
+            {
+                if (dataObject.IsDebugMode())
+                {
+
+                    DispatchDebugState(dataObject, StateType.After, update);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, update);
+                }
+            }
+
+            return null;
+        }
+        
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -111,8 +148,8 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before, 0);
-                DispatchDebugState(dataObject, StateType.After, 0);
+                
+                
                 if(Inner != null)
                 {
                     Inner.SetDebugInputs(_debugInputs);
@@ -127,6 +164,36 @@ namespace Dev2.Activities
             }
         }
 
+        void DebugOutput(IDSFDataObject dataObject)
+        {
+            try
+            {
+
+
+                if (dataObject.IsDebugMode())
+                {
+                    List<DebugItem> result = new List<DebugItem>();
+                    var debugOutputBase = new DebugItemStaticDataParams(Result, "");
+                    DebugItem itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(debugOutputBase.GetDebugItemResult());
+                    result.Add(itemToAdd);
+                    _debugOutputs = result;
+
+                    if (Inner != null)
+                    {
+                        Inner.SetDebugOutputs(_debugOutputs);
+                    }
+
+                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+
+            }
+        }
+
         #endregion
 
         #region Overrides of DsfNativeActivity<string>
@@ -135,6 +202,12 @@ namespace Dev2.Activities
         {
             return _debugInputs;
         }
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        {
+            return _debugOutputs;
+        }
+
 
         #endregion
     }
@@ -147,6 +220,11 @@ namespace Dev2.Activities
             : base(dsfSwitch.DisplayName)
         {
             _dsfSwitch = dsfSwitch;
+        }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
         }
 
         public string ConditionToUse { get; set; }
@@ -178,18 +256,37 @@ namespace Dev2.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
+            bool hasResult = false;
+            InitializeDebug(dataObject);
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                return;
+                var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
+                AddDebugOutputItem(debugItemStaticDataParams);
+                AddDebugAssertResultItem(debugItemStaticDataParams);
+                hasResult = true;
             }
             if (_dsfSwitch.Default != null)
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                return;
+                var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
+                AddDebugOutputItem(debugItemStaticDataParams);
+                AddDebugAssertResultItem(debugItemStaticDataParams);
+                hasResult = true;
             }
-            throw new ArgumentException($"No matching arm for Decision Mock. Mock Arm value '{ConditionToUse}'. Switch Arms True Arm: '{string.Join(",",dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+
+            if (dataObject.IsDebugMode() && hasResult)
+            {
+               
+                DispatchDebugState(dataObject, StateType.After, update);
+                DispatchDebugState(dataObject, StateType.Duration, update);
+            }
+
+            if (!hasResult)
+            {
+                throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+            }
         }
 
         #endregion

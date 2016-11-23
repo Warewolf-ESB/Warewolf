@@ -49,5 +49,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = debugInputs;
         }
+
+        public void SetDebugOutputs(List<DebugItem> debugOutputs)
+        {
+            _debugOutputs = debugOutputs;
+        }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
     }
 }

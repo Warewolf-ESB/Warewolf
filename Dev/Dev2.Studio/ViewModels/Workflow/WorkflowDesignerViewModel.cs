@@ -210,9 +210,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
-            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
-            SetPermission(ResourceModel.UserPermissions);
         }
 
         public void SetPermission(Permissions permission)
@@ -534,7 +533,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.DebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugBrowser");
             }
@@ -562,7 +561,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.DebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugStudio");
             }
@@ -590,7 +589,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.DebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugInputs");
             }
@@ -940,10 +939,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
-                            
-                            mvm.DuplicateResource(explorerItem);
+
+                            if (explorerItem != null)
+                                mvm.DuplicateResource(explorerItem);
                         }
                     }
                 }));
@@ -965,7 +965,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
-                                explorerItem = environmentViewModel.Children.FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
                             }
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] {explorerItem}));
@@ -1470,7 +1470,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             NotifyItemSelected(primarySelection);
             primarySelection.SetProperty("IsSelected", true);
             var selectedItem = primarySelection;
-            ItemSelectedAction?.Invoke(selectedItem);
+            if (IsTestView && selectedItem!=null)
+            {
+                ItemSelectedAction?.Invoke(selectedItem);
+                ClearSelection();
+            }
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
@@ -1603,6 +1607,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
+                SetPermission(ResourceModel.UserPermissions);
+                ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
             }
         }
         
@@ -1649,6 +1655,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         static void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+            instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.Breadcrumb;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
@@ -1699,6 +1706,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 var debugState = args.DebugState;
+                if (IsTestView)
+                {
+                    ClearSelection();
+                    return;
+                }
                 if (debugState != null)
                 {
                     var workSurfaceMappingId = debugState.WorkSurfaceMappingId;
@@ -1726,6 +1738,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             });
         }
+
+        public bool IsTestView { get; set; }
 
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
@@ -1757,6 +1771,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return null;
         }
 
+       
         private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1775,7 +1790,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
-
+        public List<ModelItem> DebugModels => SelectedDebugItems; 
         private void AddModelItemToSelection(ModelItem selectedModelItem)
         {            
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1934,6 +1949,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
+                    ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
                 }
                 else
                 {
@@ -2020,6 +2036,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
             DoWorkspaceSave();
+        }
+
+        public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
+        {
+            var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+            // ReSharper disable MaximumChainedReferences
+            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == workSurfaceMappingId || instanceID == parentID select mi).FirstOrDefault();
+            // ReSharper restore MaximumChainedReferences
+            return selectedModelItem;
         }
 
         /// <summary>
@@ -2607,6 +2632,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            GetWorkflowLink();
         }
 
         private void PublishMessages(IContextualResourceModel resourceModel)

@@ -13,7 +13,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;

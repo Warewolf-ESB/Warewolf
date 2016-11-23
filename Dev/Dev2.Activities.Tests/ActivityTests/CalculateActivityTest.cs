@@ -90,6 +90,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_GetOutputs")]
+        public void DsfCalculateActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCalculateActivity { Expression = @"Sum([[scalar]], 10)", Result = "[[result]]" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[result]]", outputs[0]);
+        }
+
+        [TestMethod]
         public void CalculateActivity_SimpleFunctionHandling_Expected_EvalPerformed()
         {
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Wrappers;
@@ -36,16 +37,16 @@ namespace Dev2.Runtime
             _directoryWrapper = new DirectoryWrapper();
             _fileWrapper = new FileWrapper();
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestPath);
-            Tests = new ConcurrentDictionary<Guid,List<IServiceTestModelTO>>();
+            Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
             _serializer = new Dev2JsonSerializer();
 
         }
 
-        public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; }
+        public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; private set; }
 
         public void SaveTests(Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
         {
-            if (serviceTestModelTos != null && serviceTestModelTos.Count>0)
+            if (serviceTestModelTos != null && serviceTestModelTos.Count > 0)
             {
                 foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
@@ -75,9 +76,9 @@ namespace Dev2.Runtime
         public void UpdateTestsBasedOnIOChange(Guid resourceID, IList<IDev2Definition> inputDefs, IList<IDev2Definition> outputDefs)
         {
             var testsToUpdate = Fetch(resourceID);
-            if(testsToUpdate!=null && testsToUpdate.Count > 0)
+            if (testsToUpdate != null && testsToUpdate.Count > 0)
             {
-                foreach(var serviceTestModelTO in testsToUpdate)
+                foreach (var serviceTestModelTO in testsToUpdate)
                 {
                     serviceTestModelTO.TestFailing = false;
                     serviceTestModelTO.TestPassed = false;
@@ -86,8 +87,37 @@ namespace Dev2.Runtime
 
                     UpdateInputsForTest(serviceTestModelTO, inputDefs);
                     UpdateOutputsForTest(serviceTestModelTO, outputDefs);
+                    UpdateStepOutputsForTest(serviceTestModelTO);
                 }
-                SaveTests(resourceID,testsToUpdate);
+                SaveTests(resourceID, testsToUpdate);
+            }
+        }
+
+        private void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
+        {
+            if(serviceTestModelTo.TestSteps != null)
+            {
+                foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
+                {
+                    if(serviceTestStep.Children != null)
+                    {
+                        var childs = serviceTestStep.Children.Flatten(step => step.Children);
+                        foreach (var child in childs)
+                        {
+                            child.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                            foreach (var serviceTestOutput in child.StepOutputs)
+                            {
+                                serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                            }
+                        }
+                    }
+                    serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                    foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                    {
+                        serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                    }
+
+                }
             }
         }
 
@@ -122,6 +152,7 @@ namespace Dev2.Runtime
                             serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                             {
                                 Variable = dev2Definition.Name,
+                                AssertOp = "=",
                                 Value = ""
                             });
                         }
@@ -145,7 +176,11 @@ namespace Dev2.Runtime
                         serviceTestModelTO.Outputs.Remove(output);
                     }
                 }
-                serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable,testOutput.Variable,StringComparison.InvariantCultureIgnoreCase));
+                foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
+                {
+                    serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                }
+                serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable, testOutput.Variable, StringComparison.InvariantCultureIgnoreCase));
             }
 
         }
@@ -155,23 +190,25 @@ namespace Dev2.Runtime
             var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
             var indexes = serviceTestModelTO.Outputs.Where(output => DataListUtil.ExtractRecordsetNameFromValue(output.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-            if(serviceTestModelTO.Outputs.FirstOrDefault(output => DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable) == rec) == null)
+            if (serviceTestModelTO.Outputs.FirstOrDefault(output => DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable) == rec) == null)
             {
-                if(indexes.Count == 0)
+                if (indexes.Count == 0)
                 {
                     serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                     {
                         Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1"),
+                        AssertOp = "=",
                         Value = ""
                     });
                 }
                 else
                 {
-                    foreach(var index in indexes)
+                    foreach (var index in indexes)
                     {
                         serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
                         {
                             Variable = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, index),
+                            AssertOp = "=",
                             Value = ""
                         });
                     }
@@ -211,7 +248,7 @@ namespace Dev2.Runtime
                     }
                 }
 
-                for (int i = serviceTestModelTO.Inputs.Count-1; i >= 0; i--)
+                for (int i = serviceTestModelTO.Inputs.Count - 1; i >= 0; i--)
                 {
                     var input = serviceTestModelTO.Inputs[i];
                     if (inputDefs.FirstOrDefault(definition =>
@@ -237,9 +274,9 @@ namespace Dev2.Runtime
             var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
             var indexes = serviceTestModelTO.Inputs.Where(input => DataListUtil.ExtractRecordsetNameFromValue(input.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-            if(serviceTestModelTO.Inputs.FirstOrDefault(input => DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable) == rec) == null)
+            if (serviceTestModelTO.Inputs.FirstOrDefault(input => DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable) == rec) == null)
             {
-                if(indexes.Count == 0)
+                if (indexes.Count == 0)
                 {
                     serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
                     {
@@ -250,7 +287,7 @@ namespace Dev2.Runtime
                 }
                 else
                 {
-                    foreach(var index in indexes)
+                    foreach (var index in indexes)
                     {
                         serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
                         {
@@ -267,7 +304,7 @@ namespace Dev2.Runtime
         {
             var dirPath = GetTestPathForResourceId(resourceId);
             _directoryWrapper.CreateIfNotExists(dirPath);
-            if(!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
             {
                 var oldFilePath = Path.Combine(dirPath, $"{serviceTestModelTo.OldTestName}.test");
                 _fileWrapper.Delete(oldFilePath);
@@ -280,16 +317,17 @@ namespace Dev2.Runtime
 
         public void Load()
         {
+            Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
-            foreach(var resourceTestDirectory in resourceTestDirectories)
+            foreach (var resourceTestDirectory in resourceTestDirectories)
             {
                 var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
                 Guid resId;
-                if(Guid.TryParse(resIdString,out resId))
+                if (Guid.TryParse(resIdString, out resId))
                 {
-                    Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory),(id,list)=> GetTestList(resourceTestDirectory));
+                    Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
                 }
-                
+
             }
         }
 
@@ -297,7 +335,7 @@ namespace Dev2.Runtime
         {
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 var reader = new StreamReader(file);
                 var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
@@ -323,10 +361,10 @@ namespace Dev2.Runtime
             {
                 _fileWrapper.Delete(testFilePath);
                 List<IServiceTestModelTO> testList;
-                if(Tests.TryGetValue(resourceID, out testList))
+                if (Tests.TryGetValue(resourceID, out testList))
                 {
                     var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-                    if (foundTestToDelete!=null)
+                    if (foundTestToDelete != null)
                     {
                         testList.Remove(foundTestToDelete);
                     }
@@ -339,12 +377,24 @@ namespace Dev2.Runtime
             var dirPath = GetTestPathForResourceId(resourceId);
             if (_directoryWrapper.Exists(dirPath))
             {
-                _directoryWrapper.Delete(dirPath,true);
+                _directoryWrapper.Delete(dirPath, true);
                 List<IServiceTestModelTO> removedTests;
                 Tests.TryRemove(resourceId, out removedTests);
             }
         }
 
+        public void DeleteAllTests(List<string> testsToIgnore)
+        {
+            var info = new DirectoryInfo(EnvironmentVariables.TestPath);
+            if (!info.Exists)
+                return;
+            var fileInfos = info.GetDirectories();
+            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
+            {
+                DirectoryHelper.CleanUp(fileInfo.FullName);
+            }
+            Load();
+        }
         private static string GetTestPathForResourceId(Guid resourceId)
         {
             var testPath = EnvironmentVariables.TestPath;
@@ -362,7 +412,7 @@ namespace Dev2.Runtime
                 {
                     return foundTestToDelete;
                 }
-            }            
+            }
             return null;
         }
     }

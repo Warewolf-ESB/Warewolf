@@ -58,6 +58,7 @@ namespace Dev2.Activities.Designers2.Core
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
+            
         }
 
         #region Overrides of WorkflowViewElement
@@ -87,11 +88,48 @@ namespace Dev2.Activities.Designers2.Core
 
         public ActivityDesignerTemplate ContentDesignerTemplate => (ActivityDesignerTemplate)Content;
 
+        //don't TAKE OUT... This is used to block the test view workflow
+        public bool IsServiceTestView
+        {
+            get
+            {
+                if (UpdateContentEnabled())
+                    return false;
+                return true;
+            }
+        }
+
+        private bool UpdateContentEnabled()
+        {
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
+            {
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
+                {
+                    if (ContentDesignerTemplate != null)
+                    {
+                        if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
+                            ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
+                            ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
+                        {
+                            ContentDesignerTemplate.IsEnabled = false;
+                        }
+                        ContentDesignerTemplate.RightButtons.Clear();
+                        ContentDesignerTemplate.LeftButtons.Clear();
+                    }
+
+                }
+                return true;
+            }
+            return false;
+        }
+
         //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
             ToggleView(e);
-            if(!(e.OriginalSource is IScrollInfo))
+            if (!(e.OriginalSource is IScrollInfo))
             {
                 e.Handled = true;
             }
@@ -135,6 +173,7 @@ namespace Dev2.Activities.Designers2.Core
                     eventArgs.Handled = true;
                 }
             }
+            UpdateContentEnabled();
         }
 
         void ShowCollapseLargeView()
@@ -183,6 +222,7 @@ namespace Dev2.Activities.Designers2.Core
             BuildInitialContextMenu();
             ApplyBindings(_dataContext);
             ApplyEventHandlers(_dataContext);
+            UpdateContentEnabled();
         }
 
         protected virtual TViewModel CreateViewModel()
@@ -222,10 +262,7 @@ namespace Dev2.Activities.Designers2.Core
             var viewModel = (TViewModel)sender;
 
             var element = Parent as FrameworkElement;
-            if(element != null)
-            {
-                element.SetZIndex(viewModel.ZIndexPosition);
-            }
+            element?.SetZIndex(viewModel.ZIndexPosition);
         }
 
         void OnSelectionChanged(Selection item)
@@ -369,24 +406,35 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            base.OnContextMenuOpening(e);
-
-            if(ViewModel != null && ViewModel.HasLargeView)
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
             {
-                if(ViewModel.ShowLarge)
+                if (dataContext.GetType().Name == "ServiceTestViewModel")
                 {
-                    
-                    var imageSource = ImageAwesome.CreateImageSource(  FontAwesomeIcon.Compress, Brushes.Black);
-                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                    _showCollapseLargeView.Header = "Collapse Large View";
-                    _showCollapseLargeView.Icon = icon;
+                    e.Handled = true;
                 }
-                else if(ViewModel.ShowSmall)
+                else
                 {
-                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                    _showCollapseLargeView.Header = "Show Large View";
-                    _showCollapseLargeView.Icon = icon;
+                    base.OnContextMenuOpening(e);
+
+                    if (ViewModel != null && ViewModel.HasLargeView)
+                    {
+                        if (ViewModel.ShowLarge)
+                        {
+                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
+                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            _showCollapseLargeView.Header = "Collapse Large View";
+                            _showCollapseLargeView.Icon = icon;
+                        }
+                        else if (ViewModel.ShowSmall)
+                        {
+                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            _showCollapseLargeView.Header = "Show Large View";
+                            _showCollapseLargeView.Icon = icon;
+                        }
+                    }
                 }
             }
         }

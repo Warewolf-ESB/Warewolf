@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Newtonsoft.Json;
 // ReSharper disable NonLocalizedString
 

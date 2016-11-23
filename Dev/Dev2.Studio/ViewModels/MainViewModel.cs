@@ -20,6 +20,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -59,6 +60,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.Workflow;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
@@ -77,6 +79,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<SaveAllOpenTabsMessage>,
                                         IHandle<ShowReverseDependencyVisualizer>,
                                         IHandle<FileChooserMessage>,
+                                        IHandle<NewTestFromDebugMessage>,
                                         IShellViewModel
     {
 
@@ -105,7 +108,7 @@ namespace Dev2.Studio.ViewModels
         bool _canDebug = true;
         bool _menuExpanded;
 
-        public Common.Interfaces.Studio.Controller.IPopupController PopupProvider { get; set; }
+        public IPopupController PopupProvider { get; set; }
 
         private IEnvironmentRepository EnvironmentRepository { get; }
 
@@ -415,7 +418,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            Common.Interfaces.Studio.Controller.IPopupController popupController = null, IExplorerViewModel explorer = null)
+            IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
             if (environmentRepository == null)
@@ -533,6 +536,11 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
+        {
+            _worksurfaceContextManager.Handle(message);
+        }
+
+        public void Handle(NewTestFromDebugMessage message)
         {
             _worksurfaceContextManager.Handle(message);
         }
@@ -1008,7 +1016,7 @@ namespace Dev2.Studio.ViewModels
 
             if (success)
             {
-                if (_previousActive != item && Items.Contains(_previousActive))
+                if(_previousActive != item && Items.Contains(_previousActive))
                 {
                     ActivateItem(_previousActive);
                 }
@@ -1043,6 +1051,17 @@ namespace Dev2.Studio.ViewModels
                 if (wfItem != null)
                 {
                     _worksurfaceContextManager.AddWorkspaceItem(wfItem.ResourceModel);
+                }
+                var studioTestViewModel = item?.WorkSurfaceViewModel as StudioTestViewModel;
+                if (studioTestViewModel != null)
+                {
+                    var serviceTestViewModel = studioTestViewModel.ViewModel as ServiceTestViewModel;
+                    EventPublisher.Publish(serviceTestViewModel?.SelectedServiceTest != null
+                        ? new DebugOutputMessage(serviceTestViewModel.SelectedServiceTest?.DebugForTest ?? new List<IDebugState>())
+                        : new DebugOutputMessage(new List<IDebugState>()));
+
+                    if (serviceTestViewModel != null)
+                        serviceTestViewModel.WorkflowDesignerViewModel.IsTestView = true;
                 }
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
@@ -1172,6 +1191,12 @@ namespace Dev2.Studio.ViewModels
             var confirmDelete = popupResult == MessageBoxResult.Yes;
 
             return confirmDelete;
+        }
+
+        public IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel) {IsTestView = true};
+            return workflow;
         }
 
         public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm = true, System.Action actionToDoOnDelete = null)

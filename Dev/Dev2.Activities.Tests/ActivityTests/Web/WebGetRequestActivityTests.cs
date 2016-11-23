@@ -223,6 +223,23 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(Url, act.Url);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebGetRequestActivity_UpdateForEachInputs")]

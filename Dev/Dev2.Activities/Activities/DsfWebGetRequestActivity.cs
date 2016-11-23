@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -66,6 +67,14 @@ namespace Dev2.Activities
             Method = "GET";
             Headers = string.Empty;
         }
+
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
+
 
         #region Overrides of DsfNativeActivity<string>
 

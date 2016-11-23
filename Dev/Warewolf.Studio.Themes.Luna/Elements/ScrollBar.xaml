@@ -214,8 +214,8 @@
     <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Width" Value="12" />
-        <Setter Property="MinWidth" Value="12" />
+        <Setter Property="Width" Value="8" />
+        <Setter Property="MinWidth" Value="8" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -284,8 +284,8 @@
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="MinWidth" Value="0" />
-                <Setter Property="Height" Value="12" />
-                <Setter Property="MinHeight" Value="12" />
+                <Setter Property="Height" Value="8" />
+                <Setter Property="MinHeight" Value="8" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -422,9 +422,9 @@
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
                     <Grid SnapsToDevicePixels="true">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="12" />
+                            <RowDefinition Height="8" />
                             <RowDefinition Height="1" />
-                            <RowDefinition Height="12" />
+                            <RowDefinition Height="8" />
                         </Grid.RowDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">

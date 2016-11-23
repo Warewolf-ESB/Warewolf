@@ -49,6 +49,7 @@ namespace Dev2.Diagnostics.Debug
         {
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
+            AssertResultList = new List<IDebugItem>();
             DisconnectedID = Guid.NewGuid();
 
             IsDurationVisible = true;
@@ -89,6 +90,7 @@ namespace Dev2.Diagnostics.Debug
         ///     Gets or sets the parent ID.
         /// </summary>
         public Guid ParentID { get; set; }
+        public Guid SourceResourceID { get; set; }
 
         /// <summary>
         ///     Gets or sets the server ID.
@@ -220,6 +222,11 @@ namespace Dev2.Diagnostics.Debug
         public List<IDebugItem> Outputs { get; private set; }
 
         /// <summary>
+        ///     Gets the outputs.
+        /// </summary>
+        public List<IDebugItem> AssertResultList { get; private set; }
+
+        /// <summary>
         ///     Gets or sets the server name.
         /// </summary>
         [XmlIgnore]
@@ -341,6 +348,7 @@ namespace Dev2.Diagnostics.Debug
 
             Deserialize(reader, Inputs);
             Deserialize(reader, Outputs);
+            Deserialize(reader, AssertResultList);
         }
 
         public void Write(IByteWriterBase writer)
@@ -371,6 +379,7 @@ namespace Dev2.Diagnostics.Debug
 
             Serialize(writer, Inputs);
             Serialize(writer, Outputs);
+            Serialize(writer, AssertResultList);
         }
 
         #endregion
@@ -539,6 +548,19 @@ namespace Dev2.Diagnostics.Debug
                     reader.ReadEndElement();
                 }
 
+                if(reader.IsStartElement("AssertResultList"))
+                {
+                    AssertResultList = new List<IDebugItem>();
+                    reader.ReadStartElement();
+                    while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
+                    {
+                        var item = new DebugItem();
+                        item.ReadXml(reader);
+                        AssertResultList.Add(item);
+                    }
+                    reader.ReadEndElement();
+                }
+
                 if(reader.IsStartElement("ExecutionOrigin"))
                 {
                     var result = reader.ReadElementString("ExecutionOrigin");
@@ -665,6 +687,20 @@ namespace Dev2.Diagnostics.Debug
                 writer.WriteEndElement();
             }
 
+            //AssertResultList
+            if (AssertResultList.Count > 0)
+            {
+                writer.WriteStartElement("AssertResultList");
+                writer.WriteAttributeString("Count", AssertResultList.Count.ToString(CultureInfo.InvariantCulture));
+
+                var assertListSer = new XmlSerializer(typeof(DebugItem));
+                foreach(var other in AssertResultList)
+                {
+                    assertListSer.Serialize(writer, other);
+                }
+                writer.WriteEndElement();
+            }
+
             //StartBlock
             if(IsFirstStep())
             {
@@ -709,6 +745,7 @@ namespace Dev2.Diagnostics.Debug
                 _isDurationVisible = value;
             }
         }
+        public string ActualType { get; set; }
 
         #region Implementation of IEquatable<IDebugState>
 

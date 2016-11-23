@@ -55,7 +55,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Source has been deleted.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Source has been deleted.");
+            }
         }
 
         [TestMethod]
@@ -78,7 +81,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Queue Name is required.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Queue Name is required.");
+            }
         }
 
         [TestMethod]
@@ -99,7 +105,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) as List<string>;
             //------------Assert Results-------------------------
-            Assert.AreEqual(result[0], "Failure: Queue Name is required.");
+            if(result != null)
+            {
+                Assert.AreEqual(result[0], "Failure: Queue Name is required.");
+            }
         }
 
         [TestMethod]
