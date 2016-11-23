@@ -1173,6 +1173,31 @@ Scenario: Test WF with Sql Server
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "SqlTestWF" is deleted as cleanup
+		
+Scenario: Test WF with Sql Server Table function
+		Given I have a workflow "SqlTestTablefunctionWF"
+		 And "SqlTestTablefunctionWF" contains a sqlserver database service "dbo.func_Nums" with mappings for testing as
+		  | ParameterName    | ParameterValue |
+		  | NumberToGenerate | 5              |
+		And I save workflow "SqlTestTablefunctionWF"
+		Then the test builder is open with "SqlTestTablefunctionWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "dbo.func_Nums" as TestStep
+		And I add StepOutputs as 
+		| Variable Name              | Condition | Value |
+		| [[dbo_func_Nums(1).RowId]] | =         | 1     |
+		| [[dbo_func_Nums(2).RowId]] | =         | 2     |
+		| [[dbo_func_Nums(3).RowId]] | =         | 3     |
+		| [[dbo_func_Nums(4).RowId]] | =         | 4     |
+		| [[dbo_func_Nums(5).RowId]] | =         | 5     |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "SqlTestTablefunctionWF" is deleted as cleanup
 
 Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
