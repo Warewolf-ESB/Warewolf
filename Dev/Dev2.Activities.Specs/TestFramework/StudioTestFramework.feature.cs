@@ -5496,8 +5496,8 @@ this.FeatureBackground();
 #line 1836
  testRunner.Given("I have a workflow \"CmdScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1837
- testRunner.And("\"CmdScriptTestWF\" contains a Cmd Script \"testCmdScript\" ScriptToRun \"dir C:\\Progr" +
-                    "amData\\Warewolf\\Resources\\*.xml\" and result as \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"CmdScriptTestWF\" contains a Cmd Script \"testCmdScript\" ScriptToRun \"echo Kingdom" +
+                    " of KwaZulu Natal\" and result as \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1838
  testRunner.And("I save workflow \"CmdScriptTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1839
@@ -5517,8 +5517,8 @@ this.FeatureBackground();
                         "Value"});
             table195.AddRow(new string[] {
                         "[[result]]",
-                        "Contains",
-                        "Volume in drive C is System"});
+                        "=",
+                        "Kingdom of KwaZulu Natal"});
 #line 1844
  testRunner.And("I add StepOutputs as", ((string)(null)), table195, "And ");
 #line 1847

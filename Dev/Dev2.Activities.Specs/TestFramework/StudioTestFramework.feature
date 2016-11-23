@@ -1834,7 +1834,7 @@ Scenario: Test WF with Zip File
 #Scripting
 Scenario: Test WF with Cmd Script
 	Given I have a workflow "CmdScriptTestWF"	
-	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "dir C:\ProgramData\Warewolf\Resources\*.xml" and result as "[[result]]"	
+	And "CmdScriptTestWF" contains a Cmd Script "testCmdScript" ScriptToRun "echo Kingdom of KwaZulu Natal" and result as "[[result]]"	
 	And I save workflow "CmdScriptTestWF"
 	Then the test builder is open with "CmdScriptTestWF"
 	And I click New Test
@@ -1842,8 +1842,8 @@ Scenario: Test WF with Cmd Script
     And test name starts with "Test 1"
 	And I Add "testCmdScript" as TestStep
 	And I add StepOutputs as  
-	  	 | Variable Name | Condition | Value                       |
-	  	 | [[result]]    | Contains  | Volume in drive C is System |   
+	  	 | Variable Name | Condition | Value                    |
+	  	 | [[result]]    | =         | Kingdom of KwaZulu Natal |  
 	When I save
 	And I run the test
 	Then test result is Passed
