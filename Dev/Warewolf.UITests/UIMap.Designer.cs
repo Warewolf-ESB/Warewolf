@@ -74688,7 +74688,7 @@ namespace Warewolf.UITests
                 {
                     this.mConnectSourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mConnectSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SourceServerConnectbtn_AutoID";
+                    this.mConnectSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SourceConnectServerbtn_AutoID";
                     this.mConnectSourceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
