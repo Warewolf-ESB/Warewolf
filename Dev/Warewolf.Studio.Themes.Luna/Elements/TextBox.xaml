@@ -280,9 +280,9 @@
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
-        <Setter Property="Height" Value="18" />
-        <Setter Property="MinHeight" Value="18" />
-        <Setter Property="Padding" Value="2,3,0,3" />
+        <Setter Property="Height" Value="17" />
+        <Setter Property="MinHeight" Value="17" />
+        <Setter Property="Padding" Value="2,1,0,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
