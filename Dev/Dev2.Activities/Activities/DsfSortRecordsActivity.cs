@@ -15,7 +15,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -67,6 +67,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
+        }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { SortField };
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

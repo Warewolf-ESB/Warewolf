@@ -14,12 +14,14 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Security.Principal;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -55,6 +57,26 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_GetOutputs")]
+        public void DsfActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfActivity { Outputs =  new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping {MappedTo = "[[res1]]"},
+                new ServiceOutputMapping {MappedTo = "[[res2]]"}
+            } };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, outputs.Count);
+            Assert.AreEqual("[[res1]]", outputs[0]);
+            Assert.AreEqual("[[res1]]", outputs[0]);
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

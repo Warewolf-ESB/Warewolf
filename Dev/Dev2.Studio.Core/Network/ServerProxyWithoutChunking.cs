@@ -596,9 +596,7 @@ namespace Dev2.Network
 
             Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
-            var result = new StringBuilder();
-            var resultTask = Task.Run(async () => result = await ExecuteCommandAsync(payload, workspaceId));
-            resultTask.Wait();
+            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId)).ConfigureAwait(false).GetAwaiter().GetResult();
             return result;
 
         }

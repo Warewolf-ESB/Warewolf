@@ -17,8 +17,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
@@ -44,66 +44,71 @@ namespace Dev2.Runtime.ESB.WF
             errors = new ErrorResultTO();
             if(dataObject != null)
             {
-                Guid parentInstanceId;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
-                var hasError = dataObject.Environment.HasErrors();
-                var errorMessage = string.Empty;
-                if(hasError)
-                {
-                    errorMessage = dataObject.Environment.FetchErrors();
-                }
-                if(string.IsNullOrEmpty(existingErrors))
-                {
-                    existingErrors = errorMessage;
-                }
-                else if(!existingErrors.Contains(errorMessage))
-                {
-                    existingErrors += Environment.NewLine + errorMessage;
-                }
-                var name = "localhost";
-                Guid remoteID;
-                var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID,out remoteID) ;
-                if (hasRemote)
-                {
-                    var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
-                    if(res!=null)
-                        name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
-                }
-                var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
-
-                if(interrogateInputs)
-                {
-                    ErrorResultTO invokeErrors;
-                    var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                    var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                    debugState.Inputs.AddRange(inputs);
-                }
-                if(interrogateOutputs)
-                {
-                    ErrorResultTO invokeErrors;
-
-                    var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                    var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                    debugState.Outputs.AddRange(inputs);
-                }
-                if(stateType == StateType.End)
-                {
-                    debugState.NumberOfSteps = dataObject.NumberOfSteps;
-                }
-
-                if(stateType == StateType.Start)
-                {
-                    debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
-                    debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
-                }
-
+                var debugState = GetDebugState(dataObject, stateType, hasErrors, existingErrors, errors, workflowStartTime, interrogateInputs, interrogateOutputs, durationVisible);
                 WriteDebug(dataObject, debugState);
             }
         }
 
-        private void WriteDebug(IDSFDataObject dataObject, DebugState debugState)
+        public DebugState GetDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
+        {
+            Guid parentInstanceId;
+            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+            var hasError = dataObject.Environment.HasErrors();
+            var errorMessage = string.Empty;
+            if(hasError)
+            {
+                errorMessage = dataObject.Environment.FetchErrors();
+            }
+            if(string.IsNullOrEmpty(existingErrors))
+            {
+                existingErrors = errorMessage;
+            }
+            else if(!existingErrors.Contains(errorMessage))
+            {
+                existingErrors += Environment.NewLine + errorMessage;
+            }
+            var name = "localhost";
+            Guid remoteID;
+            var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+            if(hasRemote)
+            {
+                var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                if(res != null)
+                    name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+            }
+            var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
+
+            if(interrogateInputs)
+            {
+                ErrorResultTO invokeErrors;
+                var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
+                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                debugState.Inputs.AddRange(inputs);
+            }
+            if(interrogateOutputs)
+            {
+                ErrorResultTO invokeErrors;
+
+                var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
+                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                debugState.Outputs.AddRange(inputs);
+            }
+            if(stateType == StateType.End)
+            {
+                debugState.NumberOfSteps = dataObject.NumberOfSteps;
+            }
+
+            if(stateType == StateType.Start)
+            {
+                debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
+                debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
+            }
+            return debugState;
+        }
+
+        public void WriteDebug(IDSFDataObject dataObject, DebugState debugState)
         {
             if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
             {
@@ -140,6 +145,7 @@ namespace Dev2.Runtime.ESB.WF
                 SessionID = dataObject.DebugSessionID,
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 ClientID = dataObject.ClientID,
+                SourceResourceID = dataObject.SourceResourceID,
                 Name = stateType.ToString(),
                 HasError = hasErrors || hasError,
                 ErrorMessage = existingErrors,

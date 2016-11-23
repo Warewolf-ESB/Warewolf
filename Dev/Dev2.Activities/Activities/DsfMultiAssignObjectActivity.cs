@@ -26,6 +26,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -38,7 +39,7 @@ using WarewolfParserInterop;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign Object_Tags")]
+    [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object_Tags")]
     public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
     {
         #region Constants
@@ -78,6 +79,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override bool CanInduceIdle => true;
 
         #endregion Properties
+
+        public override List<string> GetOutputs()
+        {
+            return FieldsCollection.Select(dto => dto.FieldName).ToList();
+        }
+
 
         #region Ctor
 

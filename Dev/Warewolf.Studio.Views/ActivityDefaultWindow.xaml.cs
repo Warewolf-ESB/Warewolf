@@ -66,5 +66,15 @@ namespace Warewolf.Studio.Views
         {
             Close();
         }
+
+        public void SetEnableDoneButtonState(bool value)
+        {
+            DoneButton.IsEnabled = value;
+            DoneButton.ToolTip = "Done";
+            if (!value)
+            {
+                DoneButton.ToolTip = "You cannot make changes from the Test framework.";
+            }
+        }
     }
 }

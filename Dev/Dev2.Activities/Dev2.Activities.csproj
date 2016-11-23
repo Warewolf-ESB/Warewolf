@@ -180,6 +180,7 @@
     <Compile Include="Activities\ActivityParser.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\DebugEvalResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemServiceTestStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMockStep.cs" />
     <Compile Include="TO\AssignObjectDTO.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />

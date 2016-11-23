@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -22,7 +23,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Exchange
 {
-    [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange Send_Tags")]
+    [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange_Send_Tags")]
     public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
     {
         private readonly IDev2EmailSender _emailSender;
@@ -74,6 +75,12 @@ namespace Dev2.Activities.Exchange
         /// </summary>
         [FindMissing]
         public new string Result { get; set; }
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
 
         #region Overrides of DsfNativeActivity<string>

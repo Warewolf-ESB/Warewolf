@@ -106,5 +106,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
     }
 }

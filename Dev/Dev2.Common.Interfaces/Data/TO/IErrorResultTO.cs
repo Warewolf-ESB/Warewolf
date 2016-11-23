@@ -53,6 +53,6 @@ namespace Dev2.Common.Interfaces.Data.TO
         ///     Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>
-        string MakeDataListReady(bool AsXML = true);
+        string MakeDataListReady(bool asXml = true);
     }
 }

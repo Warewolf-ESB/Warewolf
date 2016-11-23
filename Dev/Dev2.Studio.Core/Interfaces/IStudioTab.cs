@@ -20,5 +20,7 @@ namespace Dev2.Interfaces
         bool IsDirty { get; }
 
         void Dispose();
+
+        void CloseView();
     }
 }

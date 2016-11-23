@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,19 +45,21 @@ namespace Dev2.Threading
             {
                 try
                 {
-                backgroundAction.Invoke();
-                uiAction.Invoke();
+                    backgroundAction.Invoke();
+                    uiAction.Invoke();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+                    Exceptions.Add(e);
                     onError(e);
+                    
                 }
             });
             task.RunSynchronously();
             return task;
         }
 
-
+        public readonly List<Exception> Exceptions = new List<Exception>();
         /// <summary>
         /// Starts the specified background action and continues with the UI action 
         /// on the thread this was invoked from (typically the UI thread).
@@ -80,9 +83,11 @@ namespace Dev2.Threading
                         uiAction.Invoke();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+                    Exceptions.Add(e);
                     onError(e);
+                  
                 }
             }, cancellationTokenSource.Token);
             task.RunSynchronously();
@@ -131,12 +136,14 @@ namespace Dev2.Threading
             {
                 try
                 {
-                var result = backgroundFunc.Invoke();
-                uiAction.Invoke(result);
+                    var result = backgroundFunc.Invoke();
+                    uiAction.Invoke(result);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+                    Exceptions.Add(e);
                     onError(e);
+                   
                 }
             });
             task.RunSynchronously();
@@ -168,7 +175,9 @@ namespace Dev2.Threading
                 }
                 catch (Exception e)
                 {
+                    Exceptions.Add(e);
                     onError(e);
+                  
                 }
             }, cancellationTokenSource.Token);
             task.RunSynchronously();

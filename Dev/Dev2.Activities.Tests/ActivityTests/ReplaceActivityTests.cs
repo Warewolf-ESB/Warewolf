@@ -386,6 +386,25 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachInputs")]
         public void DsfReplaceActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {

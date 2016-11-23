@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;

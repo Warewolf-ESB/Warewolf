@@ -28,7 +28,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.DataList.Contract;
+using Dev2.Data;
+using Dev2.Data.TO;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -130,12 +131,19 @@ namespace Dev2.Runtime.ESB
                             {
                                 if (dataObject.IsServiceTestExecution)
                                 {
-                                    var testResult = new TestRunResult
+                                    var testResult = new ServiceTestModelTO
                                     {
-                                        Message = "Resource has been deleted",
-                                        Result = RunResult.TestResourceDeleted,
+                                        Result = new TestRunResult
+                                        {
+                                            RunTestResult = RunResult.TestResourceDeleted,
+                                            Message = "Resource has been deleted",
+                                            DebugForTest = new List<IDebugState>(),
+                                            TestName = dataObject.TestName
+                                        },
+                                        TestPassed = false,
+                                        TestInvalid = true,
+                                        FailureMessage = "Resource has been deleted",
                                         TestName = dataObject.TestName,
-                                        DebugForTest = new List<IDebugState>()
                                     };
                                     var ser = new Dev2JsonSerializer();
                                     _request.ExecuteResult = ser.SerializeToBuilder(testResult);
@@ -383,6 +391,7 @@ namespace Dev2.Runtime.ESB
                     OriginalInstanceID = dataObject.OriginalInstanceID,
                     SessionID = dataObject.DebugSessionID,
                     EnvironmentID = dataObject.EnvironmentID,
+                    SourceResourceID = dataObject.SourceResourceID,
                     ClientID = dataObject.ClientID,
                     Server = string.Empty,
                     Version = string.Empty,
