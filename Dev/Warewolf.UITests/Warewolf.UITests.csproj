@@ -67,6 +67,7 @@
     <Compile Include="EmailSource\EmailSourceTests.cs" />
     <Compile Include="Explorer\RemoteServers.cs" />
     <Compile Include="Explorer\Folders.cs" />
+    <Compile Include="Explorer\Context Menu.cs" />
     <Compile Include="Explorer\Rename.cs" />
     <Compile Include="Scheduler\SchedulerTest.cs" />
     <Compile Include="ContextMenu\ConfigureSettings\ConfigureSettingsperfomanceCounterTests.cs" />
