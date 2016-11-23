@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Text;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 

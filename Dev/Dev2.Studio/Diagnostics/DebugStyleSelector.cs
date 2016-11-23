@@ -10,7 +10,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Dev2.ViewModels.Diagnostics;
+using Dev2.Studio.Core;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics

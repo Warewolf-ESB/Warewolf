@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -14,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ServiceTestModelTests
     {
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestModel_Name")]
@@ -24,12 +28,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestModel(Guid.NewGuid());
             var _wasCalled = false;
             testModel.PropertyChanged += (sender, args) =>
-              {
-                  if (args.PropertyName == "TestName")
-                  {
-                      _wasCalled = true;
-                  }
-              };
+            {
+                if (args.PropertyName == "TestName")
+                {
+                    _wasCalled = true;
+                }
+            };
             //------------Execute Test---------------------------
             testModel.TestName = "Test Name";
             //------------Assert Results-------------------------
@@ -47,11 +51,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var serviceTestModel = new ServiceTestModel(resourceId);
             //------------Assert Results-------------------------
-            Assert.AreEqual(resourceId,serviceTestModel.ParentId);
+            Assert.AreEqual(resourceId, serviceTestModel.ParentId);
             Assert.IsTrue(serviceTestModel.NeverRunStringVisibility);
             Assert.IsFalse(serviceTestModel.IsTestRunning);
             Assert.AreEqual("Never run", serviceTestModel.NeverRunString);
-            Assert.AreEqual(0,serviceTestModel.TestSteps.Count);
+            Assert.AreEqual(0, serviceTestModel.TestSteps.Count);
         }
 
 
@@ -127,18 +131,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void TestModel_GivenIsNew_ShouldBeClonable()
-        {
-            //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel(Guid.NewGuid());
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(testModel, typeof(ICloneable));
-        }
-
-
-        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_NameForDisplay")]
         public void TestModel_NameForDisplay_WhenSet_ShouldFirePropertyChanged()
@@ -201,6 +193,50 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.OldTestName = "Old Test Name";
             //------------Assert Results-------------------------
             Assert.AreEqual("Old Test Name", testModel.OldTestName);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_OldTestName")]
+        public void TestModel_DebugForTest_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "DebugForTest")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            var debugForTest = new List<IDebugState>();
+            testModel.DebugForTest = debugForTest;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(ReferenceEquals(debugForTest, testModel.DebugForTest));
+            Assert.IsTrue(_wasCalled);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_OldTestName")]
+        public void TestModel_DuplicateTestTooltip_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "DuplicateTestTooltip")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.DuplicateTestTooltip = "jjj";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("jjj", testModel.DuplicateTestTooltip);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -586,6 +622,28 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("TestModel_ErrorContainsText")]
+        public void TestModel_ErrorContainsText_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "ErrorContainsText")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.ErrorContainsText = "Test";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", testModel.ErrorContainsText);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("TestModel_NoErrorExpected")]
         public void TestModel_NoErrorExpected_WhenSet_ShouldFirePropertyChanged()
         {
@@ -625,6 +683,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.NewTest = true;
             //------------Assert Results-------------------------
             Assert.IsTrue(testModel.NewTest);
+            Assert.IsTrue(_wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("TestModel_NewTest")]
+        public void TestModel_SelectedTestStep_WhenSet_ShouldFirePropertyChanged()
+        {
+            //------------Setup for test--------------------------
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            var _wasCalled = false;
+            testModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "SelectedTestStep")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            testModel.SelectedTestStep = new Mock<IServiceTestStep>().Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testModel.SelectedTestStep);
             Assert.IsTrue(_wasCalled);
         }
 
@@ -673,6 +753,49 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceTestModel_AddRow")]
+        public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewOutPutRow()
+        {
+            //------------Setup for test--------------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "");
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput
+            };
+            //------------Execute Test---------------------------
+            var dataListModel = new DataListModel();
+            var shapeRecordSets = new List<IRecordSet>();
+            var recordSet = new RecordSet
+            {
+                IODirection = enDev2ColumnArgumentDirection.Output,
+                Name = "rec"
+            };
+            var recordSetColumns = new Dictionary<int, List<IScalar>>
+            {
+                {
+                    1, new List<IScalar>
+                    {
+                        new Scalar
+                        {
+                            Name = "a",
+                            IODirection = enDev2ColumnArgumentDirection.Output
+                        }
+                    }
+                }
+            };
+            recordSet.Columns = recordSetColumns;
+            shapeRecordSets.Add(recordSet);
+            dataListModel.ShapeRecordSets = shapeRecordSets;
+            serviceTestModel.AddRow(serviceTestInput, dataListModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, serviceTestModel.Outputs.Count);
+            Assert.AreEqual("rec(2).a", serviceTestModel.Outputs[1].Variable);
+            Assert.AreEqual("", serviceTestModel.Outputs[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void IsDirty_GivenNameChanged_ShouldReurnTrue()
         {
             //---------------Set up test pack-------------------
@@ -681,6 +804,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
                 serviceTestInput
+            };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput("name","vale","","")
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(Guid.NewGuid(), "Switch", new ObservableCollection<IServiceTestOutput>(), StepType.Mock )
+                {
+                    StepOutputs = new ObservableCollection<IServiceTestOutput>
+                    {
+                        new ServiceTestOutput("j","Jvalue","","")
+                    }
+                }
             };
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
@@ -707,7 +844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListModel.ShapeRecordSets = shapeRecordSets;
             serviceTestModel.AddRow(serviceTestInput, dataListModel);
 
-            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs, TestName = "NewTestName" };
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = serviceTestModel.Inputs, TestName = "NewTestName", Outputs = serviceTestModel.Outputs, TestSteps = serviceTestModel.TestSteps };
             serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
 
             serviceTestModel.SetItem(serviceTestModelClone);
@@ -757,10 +894,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListModel.ShapeRecordSets = shapeRecordSets;
             serviceTestModel.AddRow(serviceTestInput, dataListModel);
 
-            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid()) { Inputs = new ObservableCollection<IServiceTestInput>()
+            var serviceTestModelClone = new ServiceTestModel(Guid.NewGuid())
             {
+                Inputs = new ObservableCollection<IServiceTestInput>
+                {
                 new ServiceTestInput("rec(1).a", "valChanges")
-            } };
+            }
+            };
             serviceTestModelClone.AddRow(serviceTestInput, dataListModel);
             serviceTestModel.SetItem(serviceTestModelClone);
             //---------------Assert Precondition----------------
@@ -827,9 +967,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
             var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+
             serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
                 serviceTestInput
+            };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput("name","value","from","to"),
+                new ServiceTestOutput("name2","value","from","to"),
+
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(Guid.NewGuid(), "DsfDecision", new ObservableCollection<IServiceTestOutput>(), StepType.Mock )
             };
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
@@ -875,7 +1026,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
             serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
             {
-                serviceTestInput
+                serviceTestInput,
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(Guid.NewGuid(),typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
             };
             var dataListModel = new DataListModel();
             var shapeRecordSets = new List<IRecordSet>();
@@ -902,7 +1057,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dataListModel.ShapeRecordSets = shapeRecordSets;
             serviceTestModel.AddRow(serviceTestInput, dataListModel);
 
-            
+
             var clone = serviceTestModel.Clone();
             //---------------Assert Precondition----------------
             var isCorrectType = clone is ServiceTestModel;
@@ -918,7 +1073,512 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             var condition = serviceTestModel.Equals(clone);
             Assert.IsFalse(condition);
-           
+
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StepChildrenCompare_GivenSameServiceModelSteps_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(Guid.NewGuid(),typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+            };
+            serviceTestModel.TestSteps = serviceTestSteps;
+            var methodInfo = typeof(ServiceTestModel).GetMethod("StepChildrenCompare", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StepChildrenCompare_GivenDifferentServiceModelSteps_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+            var uniqueId = Guid.NewGuid();
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+            }; ;
+            var methodInfo = typeof(ServiceTestModel).GetMethod("StepChildrenCompare", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
+
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StepChildrenCompare_GivenDifferentServiceModelSteps_ShouldReturnFalse_recursive()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+            var uniqueId = Guid.NewGuid();
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                {
+                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                    {
+                        new ServiceTestOutput("a","b","from","to")
+                    } ,
+                    Children = new ObservableCollection<IServiceTestStep>
+                    {
+                          new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                                {
+                                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                                    {
+                                        new ServiceTestOutput("a","b","from","to")
+                                    } ,
+                                }
+                    }
+                }
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                {
+                    StepOutputs = new ObservableCollection<IServiceTestOutput>
+                    {
+                        new ServiceTestOutput("a","a","from","to")
+                    }
+                     ,
+                    Children = new ObservableCollection<IServiceTestStep>
+                    {
+                          new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                                {
+                                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                                    {
+                                        new ServiceTestOutput("a","b","from","to")
+                                    } ,
+                                }
+                    }
+                }
+            }; ;
+            var methodInfo = typeof(ServiceTestModel).GetMethod("StepChildrenCompare", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StepChildrenCompare_GivenSameServiceModelSteps_ShouldReturnTrue_recursive()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+            var uniqueId = Guid.NewGuid();
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                {
+                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                    {
+                        new ServiceTestOutput("a","b","from","to")
+                    } ,
+                    Children = new ObservableCollection<IServiceTestStep>
+                    {
+                          new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                                {
+                                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                                    {
+                                        new ServiceTestOutput("a","b","from","to")
+                                    } ,
+                                }
+                    }
+                }
+            };
+            serviceTestModel.TestSteps = new ObservableCollection<IServiceTestStep>
+            {
+                new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                {
+                    StepOutputs = new ObservableCollection<IServiceTestOutput>
+                    {
+                        new ServiceTestOutput("a","b","from","to")
+                    }
+                     ,
+                    Children = new ObservableCollection<IServiceTestStep>
+                    {
+                          new ServiceTestStep(uniqueId,typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                                {
+                                     StepOutputs = new ObservableCollection<IServiceTestOutput>
+                                    {
+                                        new ServiceTestOutput("a","b","from","to")
+                                    } ,
+                                }
+                    }
+                }
+            }; ;
+            var methodInfo = typeof(ServiceTestModel).GetMethod("StepChildrenCompare", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OutputCompare_GivenDifferentVariable_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "");
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("OutputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var testModel = new ServiceTestModel
+            {
+                Outputs = new ObservableCollection<IServiceTestOutput>()
+                {
+                    new ServiceTestOutput("rec(1).b", "val", "", "")
+                }
+            };
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OutputCompare_GivenDifferentAssertOp_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "") { AssertOp = "=" };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("OutputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var testModel = new ServiceTestModel
+            {
+                Outputs = new ObservableCollection<IServiceTestOutput>()
+                {
+                    new ServiceTestOutput("rec(1).a", "val", "", "") { AssertOp =">" }
+                }
+            };
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OutputCompare_GivenDifferentFrom_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "a", "") { };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("OutputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var testModel = new ServiceTestModel
+            {
+                Outputs = new ObservableCollection<IServiceTestOutput>()
+                {
+                    new ServiceTestOutput("rec(1).a", "val", "", "") {  }
+                }
+            };
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OutputCompare_GivenDifferentTo_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "a", "b") { };
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("OutputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var testModel = new ServiceTestModel
+            {
+                Outputs = new ObservableCollection<IServiceTestOutput>()
+                {
+                    new ServiceTestOutput("rec(1).a", "val", "a", "") {  }
+                }
+            };
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OutputCompare_GivenDifferentValue_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestOutput("rec(1).a", "val", "", "");
+            serviceTestModel.Outputs = new ObservableCollection<IServiceTestOutput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("OutputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var testModel = new ServiceTestModel();
+            testModel.Outputs = new ObservableCollection<IServiceTestOutput>()
+            {
+                new ServiceTestOutput("rec(1).a", "val1","","")
+            };
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StepOutputsCompare_GivenHasError_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("StepOutputsCompare", BindingFlags.NonPublic | BindingFlags.Static);
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            try
+            {
+                var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.Outputs, default(ObservableCollection<IServiceTestOutput>) });
+            }
+            catch (TargetInvocationException ex)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var b = ex.InnerException.GetType() == typeof(NullReferenceException);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(b);
+            }
+        
+            
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputCompare_GivenNullOther_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("InputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            try
+            {
+                methodInfo.Invoke(serviceTestModel, new object[] { default(ServiceTestModel), true });
+            }
+            catch (TargetInvocationException ex)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var b = ex.InnerException.GetType() == typeof(NullReferenceException);
+
+                Assert.IsTrue(b);
+            }
+
+            //---------------Test Result -----------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputCompare_GivenNull_inputs_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("InputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            var fieldInfo = typeof(ServiceTestModel).GetField("_inputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            Assert.IsNotNull(fieldInfo);
+            //---------------Execute Test ----------------------
+
+            fieldInfo.SetValue(serviceTestModel, default(ObservableCollection<IServiceTestInput>));
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { new ServiceTestModel(), true });
+            //---------------Test Result -----------------------
+            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputCompare_GivenDifferentVariables_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("InputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+
+            var testModel = new ServiceTestModel
+            {
+                Inputs = new ObservableCollection<IServiceTestInput>
+                {
+                    new ServiceTestInput("rec(1).b", "val")
+                }
+            };
+
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputCompare_GivenDifferentValue_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("InputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+
+            var testModel = new ServiceTestModel
+            {
+                Inputs = new ObservableCollection<IServiceTestInput>
+                {
+                    new ServiceTestInput("rec(1).a", "val1")
+                }
+            };
+
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputCompare_GivenDifferentEmptyAsNull_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
+            var serviceTestInput = new ServiceTestInput("rec(1).a", "val");
+            serviceTestModel.Inputs = new ObservableCollection<IServiceTestInput>
+            {
+                serviceTestInput,
+            };
+
+            var methodInfo = typeof(ServiceTestModel).GetMethod("InputCompare", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+
+            var testModel = new ServiceTestModel
+            {
+                Inputs = new ObservableCollection<IServiceTestInput>
+                {
+                    new ServiceTestInput("rec(1).a", "val")
+                    {
+                        EmptyIsNull = true
+                    }
+                }
+            };
+
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
 
         [TestMethod]
@@ -931,7 +1591,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep("",typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep("", "", typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -945,7 +1605,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(null,typeof(DsfDecision).Name,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(null, "", typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -959,7 +1619,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),null,new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", null, new ObservableCollection<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -973,7 +1633,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "",new List<IServiceTestOutput>());
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", "", new ObservableCollection<IServiceTestOutput>());
             //------------Assert Results-------------------------
         }
 
@@ -987,7 +1647,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(),typeof(DsfDecision).Name,null);
+            serviceTestModel.AddTestStep(Guid.NewGuid().ToString(), "", typeof(DsfDecision).Name, null);
             //------------Assert Results-------------------------
         }
 
@@ -1000,17 +1660,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestModel = new ServiceTestModel(Guid.NewGuid());
             var uniqueID = Guid.NewGuid().ToString();
             var activityTypeName = typeof(DsfDecision).Name;
-            var outputs = new List<IServiceTestOutput>();
+            var outputs = new ObservableCollection<IServiceTestOutput>();
             //------------Execute Test---------------------------
-            serviceTestModel.AddTestStep(uniqueID,activityTypeName,outputs);
+            serviceTestModel.AddTestStep(uniqueID, "", activityTypeName, outputs);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,serviceTestModel.TestSteps.Count);
+            Assert.AreEqual(1, serviceTestModel.TestSteps.Count);
             var testStep = serviceTestModel.TestSteps[0];
             Assert.IsNotNull(testStep);
-            Assert.AreEqual(uniqueID,testStep.UniqueId.ToString());
-            Assert.AreEqual(activityTypeName,testStep.ActivityType);
-            Assert.AreEqual(outputs,testStep.StepOutputs);
-            Assert.AreEqual(StepType.Mock,testStep.Type);
-        }        
+            Assert.AreEqual(uniqueID, testStep.UniqueId.ToString());
+            Assert.AreEqual(activityTypeName, testStep.ActivityType);
+            Assert.AreEqual(outputs, testStep.StepOutputs);
+            Assert.AreEqual(StepType.Assert, testStep.Type);
+        }
     }
 }

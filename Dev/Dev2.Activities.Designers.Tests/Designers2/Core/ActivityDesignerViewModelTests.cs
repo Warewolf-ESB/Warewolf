@@ -9,20 +9,28 @@
 */
 
 using System;
+using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
 using Dev2.Core.Tests;
+using Dev2.Core.Tests.Environments;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -410,7 +418,46 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(TestActivity));
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object);
+
+            mockModelItem.Setup(mi => mi.View).Returns(wfd.DesignerView);
+
             return mockModelItem;
+        }
+
+        static WorkflowDesignerViewModel CreateWorkflowDesignerViewModel(IContextualResourceModel resourceModel, IWorkflowHelper workflowHelper = null, bool createDesigner = true, string helperText = null)
+        {
+            return CreateWorkflowDesignerViewModel(null, resourceModel, workflowHelper, createDesigner, helperText);
+        }
+
+        static WorkflowDesignerViewModel CreateWorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resourceModel, IWorkflowHelper workflowHelper = null, bool createDesigner = true, string helperText = null)
+        {
+            eventPublisher = eventPublisher ?? new Mock<IEventAggregator>().Object;
+
+            var popupController = new Mock<IPopupController>();
+
+            if (workflowHelper == null)
+            {
+                var wh = new Mock<IWorkflowHelper>();
+                wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() });
+                if (helperText != null)
+                {
+                    wh.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(new StringBuilder(helperText));
+                }
+                workflowHelper = wh.Object;
+            }
+
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, true);
+
+            return viewModel;
         }
     }
 

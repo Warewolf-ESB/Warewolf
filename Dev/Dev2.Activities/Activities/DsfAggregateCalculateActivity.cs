@@ -8,7 +8,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -21,7 +21,7 @@ using Warewolf.Storage;
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Aggregate Calculate_Tags")]
+    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Aggregate_Calculate_Tags")]
     public class DsfAggregateCalculateActivity : DsfActivityAbstract<string>
     {
 
@@ -172,6 +172,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {

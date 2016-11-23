@@ -32,6 +32,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
             IsSimulationEnabled = false;
         }
 
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
+
         protected override void OnExecute(NativeActivityContext context)
         {
         }

@@ -19,8 +19,8 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.Parsers;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -81,6 +81,11 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public override List<string> GetOutputs()
+        {
+            return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        }
 
         #region Overridden NativeActivity Methods
 

@@ -12,17 +12,26 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Enums;
+using Dev2.Data.TO;
+using Dev2.Data.Util;
+using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -170,8 +179,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private Variable<string> _origOutput = new Variable<string>("origOutput");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         readonly object _forEachExecutionObject = new object();
-        
-
+        private string _childUniqueID;
+        private Guid _originalUniqueID;
 
         #endregion Properties
 
@@ -208,6 +217,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            var isNestedForEach = dataObject.ForEachNestingLevel > 0;
+            if (!isNestedForEach || _originalUniqueID == Guid.Empty)
+            {
+                _originalUniqueID = WorkSurfaceMappingId;
+            }
             UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
 
@@ -728,7 +742,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
-                    context.ScheduleFunc<string, bool>(DataFunc, UniqueID, ActivityCompleted);
+                    context.ScheduleFunc(DataFunc, UniqueID, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
                     return;
                 }
@@ -770,6 +784,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
+
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string>();
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -822,8 +842,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
                 exePayload.InnerActivity = innerA;
-
-                while(itr.HasMore())
+                
+                while (itr.HasMore())
                 {
                     operationalData = exePayload;
                     int idx = exePayload.IndexIterator.FetchNextIndex();
@@ -832,7 +852,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         innerupdate = idx;
                     }
-
+                    _childUniqueID = exeAct.UniqueID;
                     exeAct.Execute(dataObject, innerupdate);
 
                     operationalData.IncIterationCount();
@@ -840,14 +860,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
-                }
-
-                if(dataObject.IsDebugMode())
-                {
-                    _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, 0);
-                }
+                }                
             }
             catch(Exception e)
             {
@@ -863,11 +876,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         RestoreHandlerFn();
                     }
                 }
+                var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+                if (dataObject.IsServiceTestExecution)
+                {
+                    var serviceTestSteps = serviceTestStep?.Children;
+                    UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
+                    if (serviceTestStep != null)
+                    {
+                        var testRunResult = new TestRunResult();
+                        GetFinalTestRunResult(serviceTestStep, testRunResult);
+                        serviceTestStep.Result = testRunResult;
+                        
+                    }
+                }
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
+                if (dataObject.IsDebugMode())
+                {
+                    if (dataObject.IsServiceTestExecution && serviceTestStep!=null)
+                    {
+                        var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                        debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                        var debugStates = debugItems.LastOrDefault();
+
+                        var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
+                        DebugItem itemToAdd = new DebugItem();
+                        itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                        debugStates?.AssertResultList?.Add(itemToAdd);
+                    }
+                    DispatchDebugState(dataObject, StateType.Duration, 0);
+                }
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.ForEachNestingLevel--;
@@ -885,6 +926,141 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
+        }
+
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        {
+            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
+            if (nonPassingSteps != null && nonPassingSteps.Count == 0)
+            {
+                testRunResult.Message = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                testRunResult.RunTestResult = RunResult.TestPassed;
+            }
+            else
+            {
+                if(nonPassingSteps != null)
+                {
+                    var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                    testRunResult.Message = failMessage;
+                }
+                testRunResult.RunTestResult = RunResult.TestFailed;
+            }
+
+
+            
+        }
+
+        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
+        {
+            if (dataObject.IsServiceTestExecution && serviceTestTestSteps!=null)
+            {
+                var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(_childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
+                if (stepToBeAsserted != null)
+                {
+                    GetStepOutputResults(dataObject, stepToBeAsserted);
+                }               
+            }
+        }
+
+        private void GetStepOutputResults(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+            {
+                if(stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
+                }
+                var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                var debugStates = debugItems.LastOrDefault();
+                var factory = Dev2DecisionFactory.Instance();
+                var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
+                var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+
+                var finalResult = new TestRunResult();
+                if(testPassed)
+                {
+                    finalResult.RunTestResult = RunResult.TestPassed;
+                }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+                {
+                    finalResult.RunTestResult = RunResult.TestFailed;
+                    finalResult.Message = serviceTestFailureMessage;
+                }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+                {
+                    finalResult.RunTestResult = RunResult.TestInvalid;
+                    finalResult.Message = serviceTestFailureMessage;
+                }               
+                stepToBeAsserted.Result = finalResult;
+                dataObject.StopExecution = !testPassed;
+            }
+        }
+
+        private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
+        {
+            if (output.Result != null)
+            {
+                output.Result.RunTestResult = RunResult.TestInvalid;
+            }
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+            var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);            
+            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
+
+            IList<TestRunResult> ret = new List<TestRunResult>();
+            var iter = new WarewolfListIterator();
+            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var c1 = new WarewolfAtomIterator(cols1);
+            var c2 = new WarewolfAtomIterator(value);
+            var c3 = new WarewolfAtomIterator(@from);
+            if (opt.ArgumentCount > 2)
+            {
+                c2 = new WarewolfAtomIterator(to);
+            }
+            iter.AddVariableToIterateOn(c1);
+            iter.AddVariableToIterateOn(c2);
+            iter.AddVariableToIterateOn(c3);
+            while (iter.HasMoreData())
+            {
+                var val1 = iter.FetchNextValue(c1);
+                var val2 = iter.FetchNextValue(c2);
+                var val3 = iter.FetchNextValue(c3);
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
+                var testResult = new TestRunResult();
+                if (assertResult)
+                {
+                    testResult.RunTestResult = RunResult.TestPassed;
+                }
+                else
+                {
+                    testResult.RunTestResult = RunResult.TestFailed;
+                    var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
+                    var actMsg = string.Format(msg, val1, val2, val3);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    var msg = testResult.Message;
+                    if (testResult.RunTestResult == RunResult.TestPassed)
+                    {
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                    }
+
+                    var hasError = testResult.RunTestResult == RunResult.TestFailed;
+
+                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
+                    DebugItem itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                    debugState.AssertResultList.Add(itemToAdd);
+                }
+                output.Result = testResult;
+                ret.Add(testResult);
+            }
+            return ret;
         }
 
         #region GetForEachInputs/Outputs

@@ -41,7 +41,12 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
-        Guid ParentID { get; set; }
+        Guid ParentID { get; set; } 
+        
+        /// <summary>
+        ///     Gets or sets the Source Resource ID.
+        /// </summary>
+        Guid SourceResourceID { get; set; }
 
         /// <summary>
         ///     Gets or sets the type of the state.
@@ -117,6 +122,11 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Gets the outputs.
         /// </summary>
         List<IDebugItem> Outputs { get; }
+        
+        /// <summary>
+        ///     Gets the outputs.
+        /// </summary>
+        List<IDebugItem> AssertResultList { get; }
 
         /// <summary>
         ///     Gets or sets the start time.
@@ -165,5 +175,6 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool IsFirstStep();
 
         bool IsDurationVisible { get; set; }
+        string ActualType  { get; set; }
     }
 }

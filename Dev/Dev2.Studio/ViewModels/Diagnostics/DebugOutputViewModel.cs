@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
@@ -32,9 +33,9 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
-using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.Messages;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 // ReSharper disable InconsistentNaming
 // ReSharper disable NonLocalizedString
@@ -54,6 +55,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly List<IDebugState> _contentItems;
         readonly Dictionary<Guid, IDebugTreeViewItemViewModel> _contentItemMap;
         readonly IDebugOutputFilterStrategy _debugOutputFilterStrategy;
+        private readonly IContextualResourceModel _contextualResourceModel;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
         readonly object _syncContext = new object();
@@ -62,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private readonly IDebugOutputViewModelUtil _outputViewModelUtil;
 
         IDebugState _lastStep;
-        DebugStatus _debugStatus;        
+        DebugStatus _debugStatus;
         ICommand _expandAllCommand;
         ICommand _openItemCommand;
         ICommand _selectAllCommand;
@@ -72,11 +74,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         int _depthMax;
         string _searchText = string.Empty;
         bool _expandAllMode = true;
-        bool _highlightError = true;        
+        bool _highlightError = true;
         bool _showDebugStatus = true;
         bool _showDuration = true;
         bool _showInputs = true;
         bool _showOutputs = true;
+        bool _showAssertResult = true;
         bool _showServer = true;
         bool _showTime = true;
         bool _showType = true;
@@ -87,27 +90,63 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _skipOptionsCommandExecute;
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
+        private string _addNewTestTooltip;
 
-        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy)
+        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("debugOutputFilterStrategy", debugOutputFilterStrategy);
             _environmentRepository = environmentRepository;
             _debugOutputFilterStrategy = debugOutputFilterStrategy;
-
+            if (contextualResourceModel != null)
+            {
+                _contextualResourceModel = contextualResourceModel;
+                ResourceID = _contextualResourceModel.ID;
+            }
+            IsTestView = false;
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
             _debugWriterSubscriptionService.Subscribe(msg =>
-            {                
-                Append(msg.DebugState);
+            {
+                Append(msg.DebugState);                
             });
 
             SessionID = Guid.NewGuid();
-            _popup=CustomContainer.Get<IPopupController>();
+            _popup = CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            AddNewTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => AddNewTest(EventPublishers.Aggregator), CanAddNewTest);
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
+        }
+
+        public bool IsTestView { get; set; }
+
+        private void AddNewTest(IEventAggregator eventPublisher)
+        {
+            var newTestFromDebugMessage = new NewTestFromDebugMessage
+            {
+                ResourceID = ResourceID,
+                ResourceModel = _contextualResourceModel,
+                RootItems = RootItems.ToList()
+            };
+            eventPublisher.Publish(newTestFromDebugMessage);
+        }
+
+        public Guid ResourceID { get; set; }
+
+        private bool CanAddNewTest()
+        {
+            var canAddNewTest = RootItems != null && RootItems.Count > 0;
+
+            if (canAddNewTest)
+            {
+                if (_contextualResourceModel != null)
+                    canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
+            }
+            AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestUnsavedToolTip;
+
+            return canAddNewTest;
         }
 
         public int PendingItemCount => _pendingItems.Count;
@@ -120,7 +159,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 _debugStatus = value;
 
-                if(value == DebugStatus.Executing)
+                if (value == DebugStatus.Executing)
                 {
                     _allDebugReceived = false;
                     ClearSelection();
@@ -168,7 +207,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             get { return _depthMin; }
             set
             {
-                if(_depthMin != value)
+                if (_depthMin != value)
                 {
                     _depthMin = value;
                     NotifyOfPropertyChange(() => DepthMin);
@@ -181,11 +220,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             get { return _depthMax; }
             set
             {
-                if(_depthMax != value)
+                if (_depthMax != value)
                 {
                     _depthMax = value;
                     NotifyOfPropertyChange(() => DepthMax);
                 }
+            }
+        }
+
+        public string AddNewTestTooltip
+        {
+            get { return _addNewTestTooltip; }
+            set
+            {
+                _addNewTestTooltip = value;
+                NotifyOfPropertyChange(() => AddNewTestTooltip);
             }
         }
 
@@ -349,7 +398,22 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        
+        /// <summary>
+        ///     Gets a value indicating whether [show assertResult].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [show assertResult]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowAssertResult
+        {
+            get { return _showAssertResult; }
+            set
+            {
+                _showAssertResult = value;
+                NotifyOfPropertyChange(() => ShowAssertResult);
+            }
+        }
+
         /// <summary>
         ///     Gets a value indicating whether [highligh error].
         /// </summary>
@@ -428,6 +492,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
             AddItemToTree(content);
+            ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
         }
 
         private void IsDebugStateLastStep(IDebugState content)
@@ -497,7 +562,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return _showOptionsCommand ?? (_showOptionsCommand = new DelegateCommand(o =>
                 {
-                    if(SkipOptionsCommandExecute)
+                    if (SkipOptionsCommandExecute)
                     {
                         SkipOptionsCommandExecute = false;
                     }
@@ -514,6 +579,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public Guid SessionID { get; }
 
         public ICommand SelectAllCommand => _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll));
+        public ICommand AddNewTestCommand { get; set; }
+        public bool AddNewTestMode { get; set; }
 
         private void SelectAll(object obj)
         {
@@ -524,18 +591,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 item.IsSelected = true;
             });
         }
-        
+
         /// <summary>
         ///     Clears all content and the tree.
         /// </summary>
         public void Clear()
         {
             RootItems.Clear();
+            _allDebugReceived = false;
             _contentItems.Clear();
             _contentItemMap.Clear();
             _pendingItems.Clear();
         }
-        
+
         protected override void OnDispose()
         {
             Clear();
@@ -543,7 +611,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _debugWriterSubscriptionService.Dispose();
             base.OnDispose();
         }
-        
+
 
         /// <summary>
         ///     Expands all nodes.
@@ -553,18 +621,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var node = payload as IDebugTreeViewItemViewModel;
 
-            if(node == null)
+            if (node == null)
             {
-                foreach(var rootNode in RootItems)
+                foreach (var rootNode in RootItems)
                 {
                     ExpandAll(rootNode);
                 }
                 ExpandAllMode = !ExpandAllMode;
                 return;
             }
-            
+
             node.IsExpanded = ExpandAllMode;
-            foreach(var childNode in node.Children)
+            foreach (var childNode in node.Children)
             {
                 ExpandAll(childNode);
             }
@@ -578,7 +646,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var debugState = payload as IDebugState;
 
-            if(debugState?.ActivityType == ActivityType.Workflow)
+            if (debugState?.ActivityType == ActivityType.Workflow)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
                 shellViewModel?.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
@@ -590,7 +658,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </summary>
         private void RebuildTree()
         {
-            lock(_syncContext)
+            lock (_syncContext)
             {
                 _isRebuildingTree = true;
             }
@@ -598,18 +666,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             RootItems.Clear();
             _contentItemMap.Clear();
 
-            foreach(var content in _contentItems)
+            foreach (var content in _contentItems)
             {
                 AddItemToTreeImpl(content);
             }
 
-            lock(_syncContext)
+            lock (_syncContext)
             {
                 _isRebuildingTree = false;
             }
         }
-        
-        
+
+
         public void AddItemToTree(IDebugState content)
         {
             if (_contentItems.Any(a => a.DisconnectedID == content.DisconnectedID))
@@ -649,7 +717,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     }
                 }
                 var debugState = _contentItems.FirstOrDefault(state => state.DisconnectedID == content.DisconnectedID);
-                if(debugState == null)
+                if (debugState == null)
                 {
                     _contentItems.Add(content);
                 }
@@ -684,12 +752,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private void AddItemToTreeImpl(IDebugState content)
         {
-            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
+            if ((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
             }
             Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
-            if(_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
+            if (_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;
                 _lastStep = null;
@@ -699,24 +767,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _dispatchLastDebugState = false;
             }
 
-            if(!string.IsNullOrWhiteSpace(SearchText) && !_debugOutputFilterStrategy.Filter(content, SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText) && !_debugOutputFilterStrategy.Filter(content, SearchText))
             {
                 return;
             }
 
             if (AddTreeViewItemToRootItems(content)) return;
 
-            if(content.IsFinalStep())
+            if (content.IsFinalStep())
             {
                 DebugStatus = DebugStatus.Finished;
             }
         }
-        
+
         private bool AddTreeViewItemToRootItems(IDebugState content)
         {
             if (content.StateType == StateType.Message && content.ParentID == Guid.Empty)
             {
-                RootItems.Add(new DebugStringTreeViewItemViewModel {Content = content.Message});
+                RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message, ActivityTypeName = content.ActualType});
             }
             else
             {
@@ -758,7 +826,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IDebugTreeViewItemViewModel parent;
             if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
             {
-                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository);
+                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                {
+                    IsTestView = IsTestView,
+                    ActivityTypeName = content.ActualType
+                };
                 _contentItemMap.Add(content.ParentID, parent);
             }
             child.Parent = parent;
@@ -770,26 +842,40 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             IDebugTreeViewItemViewModel child;
             if (content.StateType == StateType.Message)
-                child = new DebugStringTreeViewItemViewModel {Content = content.Message};
+            {
+                child = new DebugStringTreeViewItemViewModel
+                {
+                    IsTestView = IsTestView,
+                    Content = content.Message,
+                    ActivityTypeName = content.ActualType
+                };
+            }
             else
-                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) {Content = content};
+            {
+                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                {
+                    IsTestView = IsTestView,
+                    Content = content,
+                    ActivityTypeName = content.ActualType
+                };
+            }
             return child;
         }
-       
+
         void FlushPending()
         {
-            while(_pendingItems.Count > 0)
+            while (_pendingItems.Count > 0)
             {
                 AddItemToTree(_pendingItems[0]);
                 _pendingItems.RemoveAt(0);
             }
         }
-        
+
         public override void NotifyOfPropertyChange(string propertyName)
         {
             base.NotifyOfPropertyChange(propertyName);
 
-            if(propertyName == "IsProcessing")
+            if (propertyName == "IsProcessing")
             {
                 FlushPending();
             }
@@ -804,7 +890,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
             where T : IDebugTreeViewItemViewModel
         {
-            foreach(var debugTreeViewItemViewModel in items.Where(i => i is T))
+            foreach (var debugTreeViewItemViewModel in items.Where(i => i is T))
             {
                 var item = (T)debugTreeViewItemViewModel;                
                 if(item is DebugStateTreeViewItemViewModel)

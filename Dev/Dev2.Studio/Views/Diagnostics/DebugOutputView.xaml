@@ -9,13 +9,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-             xmlns:diagnostics2="clr-namespace:Dev2.ViewModels.Diagnostics"
              xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:diagnostics2="clr-namespace:Dev2.Studio.Core;assembly=Dev2.Studio.Core"
              mc:Ignorable="d"
              Name="DebugOutput"
              d:DataContext="{d:DesignInstance localDiagnostics:DebugOutputViewModel}">
@@ -168,6 +167,24 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="AssertResultVisibility">
+                <Style.Setters>
+                    <Setter Property="FrameworkElement.Margin" Value="0,0,3,0"/>
+                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                </Style.Setters>
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding DataContext.ShowAssertResult, ElementName=DebugOutput}" Value="True" />
+                            <Condition Binding="{Binding Content.AssertResultList, Converter={StaticResource CountToVisibilityConverter}}" Value="Visible" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="OriginVisibility">
                 <Style.Setters>
                     <Setter Property="FrameworkElement.Margin" Value="0,0,3,0"/>
@@ -259,6 +276,89 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="NoErrorBorderStyle" TargetType="Border">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Width" Value="4" />
+                    <Setter Property="Margin" Value="0,3,10,0" />
+                    <Setter Property="CornerRadius" Value="2" />
+                </Style.Setters>
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding HasNoError, Converter={StaticResource NullableBoolToBoolConverter}}" Value="true" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="Green" />
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style x:Key="MockBorderStyle" TargetType="Border">
+                <Style.Setters>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Width" Value="4" />
+                    <Setter Property="Margin" Value="0,3,10,0" />
+                    <Setter Property="CornerRadius" Value="2" />
+                </Style.Setters>
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding MockSelected, Converter={StaticResource BoolToVisibilityConverterPositive}}" Value="Visible" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="Black" />
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="TextBlockDebugOutputServiceTestStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+                <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+                <Setter Property="Foreground" Value="Green" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,0,2,0" />
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <AdornedElementPlaceholder />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="TextBlockDebugOutputServiceTestFailedStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+                <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,0,2,0" />
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <AdornedElementPlaceholder />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -299,6 +399,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -343,6 +444,22 @@
                     <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewExpandAllHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
+            <Button Grid.Column="3"
+                    FontSize="24"
+                    Command="{Binding AddNewTestCommand}"
+                    Margin="3,0,0,-1"
+                    ToolTipService.ShowOnDisabled="True"
+                    ToolTip="{Binding AddNewTestTooltip}"
+                    AutomationProperties.AutomationId="UI_DebugOutputAddNewTestMode_AutoID" >
+                <Button.Content>
+                    <fa:FontAwesome FontSize="14"
+                                FontWeight="Light"
+                                Icon="Flask" />
+                </Button.Content>
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewAddNewTestHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
 
         <Border BorderBrush="LightGray"
@@ -381,11 +498,11 @@
                                                    AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
                                         <TextBlock Grid.Column="1" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
                                                    AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                        <TextBlock Grid.Column="2" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
                                                    AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                                     </Grid>
                                 </StackPanel>
-                                
+
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
                                         VerticalAlignment="Bottom"
@@ -416,8 +533,44 @@
                                                    Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
                                         <TextBlock Grid.Column="2" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
                                                    AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID" />
-                                        <TextBlock Grid.Column="3" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" 
+                                        <TextBlock Grid.Column="3" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" 
                                                    Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
+                                    </Grid>
+                                </StackPanel>
+                                <Button x:Name="MoreLink"
+                                        Focusable="False"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Left"                                        
+                                        Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                        cal:Message.Attach="OpenMoreLink($DataContext)"
+                                        cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+
+                        <DataTemplate x:Key="ServiceTestDebugLineItemTemplate">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Value}" Margin="0,2,0,0" 
+                                                   AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDebugOutputServiceTestStyle}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="False">
+                                                            <Setter Property="Foreground" Value="Green"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
@@ -459,9 +612,25 @@
                                                            ItemTemplate="{StaticResource DebugLineItemTemplate}" 
                                                            GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
 
+                        <diagnostics:DebugLineTemplateSelector x:Key="ServiceTestDebugLineTemplateSelector" 
+                                                           ItemTemplate="{StaticResource ServiceTestDebugLineItemTemplate}" 
+                                                           GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
+
                         <DataTemplate x:Key="DebugLinesTemplate">
                             <Grid>
                                 <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource DebugLineTemplateSelector}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </DataTemplate>
+
+                        <DataTemplate x:Key="ServiceTestDebugLinesTemplate">
+                            <Grid>
+                                <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource ServiceTestDebugLineTemplateSelector}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
@@ -497,9 +666,14 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Border Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
+
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource NoErrorBorderStyle}" />
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource MockBorderStyle}" />
+                                
 
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Margin="-4,0,0,0"/>
                                 <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
@@ -557,17 +731,30 @@
                                                   AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                                 </StackPanel>
 
-                                <TextBlock Grid.Row="8" Grid.Column="1" Text="Origin :" Style="{StaticResource OriginVisibility}"/>
-                                <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding Content.Origin}" Style="{StaticResource OriginVisibility}" />
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding TestDescription}" Style="{StaticResource AssertResultVisibility}" />
+                                <StackPanel Grid.Row="8"
+                                            Grid.Column="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            Grid.IsSharedSizeScope="True" 
+                                            Style="{StaticResource AssertResultVisibility}">
+                                    <ItemsControl ItemsSource="{Binding AssertResultList}"
+                                                  Focusable="False"
+                                                  ItemTemplate="{StaticResource ServiceTestDebugLinesTemplate}"
+                                                  AutomationProperties.AutomationId="UI_DebugOutputAssertResultPanel_AutoId" />
+                                </StackPanel>
 
-                                <TextBlock Grid.Row="9" Grid.Column="1" Text="User :" Style="{StaticResource UserVisibility}"/>
-                                <TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Content.ExecutingUser}" Style="{StaticResource UserVisibility}" />
+                                <TextBlock Grid.Row="9" Grid.Column="1" Text="Origin :" Style="{StaticResource OriginVisibility}"/>
+                                <TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Content.Origin}" Style="{StaticResource OriginVisibility}" />
 
-                                <TextBlock Grid.Row="10" Grid.Column="1" Text="Number of steps" Style="{StaticResource StepsVisibility}"/>
-                                <TextBlock Grid.Row="10" Grid.Column="2" Text="{Binding Content.NumberOfSteps}" Style="{StaticResource StepsVisibility}" />
+                                <TextBlock Grid.Row="10" Grid.Column="1" Text="User :" Style="{StaticResource UserVisibility}"/>
+                                <TextBlock Grid.Row="10" Grid.Column="2" Text="{Binding Content.ExecutingUser}" Style="{StaticResource UserVisibility}" />
 
-                                <TextBlock Grid.Row="11" Grid.Column="1" Text="Error :" Style="{StaticResource ErrorsVisibility}"/>
-                                <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}" />
+                                <TextBlock Grid.Row="11" Grid.Column="1" Text="Number of steps" Style="{StaticResource StepsVisibility}"/>
+                                <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Content.NumberOfSteps}" Style="{StaticResource StepsVisibility}" />
+
+                                <TextBlock Grid.Row="12" Grid.Column="1" Text="Error :" Style="{StaticResource ErrorsVisibility}"/>
+                                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}" />
 
                             </Grid>
                         </HierarchicalDataTemplate>

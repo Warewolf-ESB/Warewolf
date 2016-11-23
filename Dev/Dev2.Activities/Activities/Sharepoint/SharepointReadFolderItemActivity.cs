@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -21,7 +22,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Read Folder", ToolType.Native, "8222E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read Folder_Tags")]
+    [ToolDescriptorInfo("SharepointLogo", "Read Folder", ToolType.Native, "8222E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_Folder_Tags")]
     public class SharepointReadFolderItemActivity : DsfAbstractFileActivity
     {
         public SharepointReadFolderItemActivity() : base("SharePoint Read Folder Items")

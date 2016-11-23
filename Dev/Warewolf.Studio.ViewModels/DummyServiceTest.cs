@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -15,6 +16,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {
+    [ExcludeFromCodeCoverage] //Excluded as this is purely for visual effect
     public class DummyServiceTest : IServiceTestModel, INewServiceResource
     {
 #pragma warning disable 649
@@ -60,6 +62,8 @@ namespace Warewolf.Studio.ViewModels
         public ObservableCollection<IServiceTestOutput> Outputs { get; set; }
         public bool NoErrorExpected { get; set; }
         public bool ErrorExpected { get; set; }
+        public string ErrorContainsText { get; set; }
+
         public bool IsNewTest
         {
             get
@@ -88,11 +92,13 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock)
         {
+            return null;
         }
 
         public bool IsTestSelected { get; set; }
+        public bool IsTestLoading { get; set; }
         public bool TestPassed { get; set; }
         public bool TestFailing { get; set; }
         public bool TestInvalid { get; set; }
@@ -121,9 +127,9 @@ namespace Warewolf.Studio.ViewModels
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        public IServiceTestModel Clone()
         {
-            return MemberwiseClone();
+            return this;
         }
 
         #endregion

@@ -445,6 +445,24 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_GetOutputs")]
+        public void DsfDataSplitActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Clear();
+            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Chars", "|", 2));
+            var act = new DsfDataSplitActivity { SourceString = _source, ResultsCollection = _resultsCollection };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, outputs.Count);
+            Assert.AreEqual("[[recset1(5).field1]]", outputs[0]);
+            Assert.AreEqual("[[recset2(2).field2]]", outputs[1]);
+        }
+
+        [TestMethod]
         public void RecordsetsWithVaryingIndexesExpectedSplitAndInsertAtDifferentIndexes()
         {
 

@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 
 namespace Dev2.Activities.Debug
 {

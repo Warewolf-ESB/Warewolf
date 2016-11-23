@@ -18,31 +18,36 @@ namespace Dev2.Activities.Debug
     {
         readonly string _operand;
 
-        public DebugItemStaticDataParams(string value, string labelText)
+        public DebugItemStaticDataParams(string value, string labelText, bool mockSelected = false)
         {
             Value = value;
             LabelText = labelText;
             Type = DebugItemResultType.Value;
+            MockSelected = mockSelected;
         }
 
-        public DebugItemStaticDataParams(string value, string variable, string labelText)
+        public DebugItemStaticDataParams(string value, string variable, string labelText, bool mockSelected = false)
         {
             Value = value;
             LabelText = labelText;
             Variable = variable;
             Type = DebugItemResultType.Variable;
+            MockSelected = mockSelected;
         }
 
-        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand)
+        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand, bool mockSelected = false)
         {
             Value = value;
             LabelText = labelText;
             _operand = operand;
             Variable = variable;
             Type = DebugItemResultType.Variable;
+            MockSelected = mockSelected;
         }
 
         public string Value { get; }
+
+        public bool MockSelected { get; }
 
         public override string LabelText { get; }
 
@@ -60,7 +65,8 @@ namespace Dev2.Activities.Debug
                         Value = Value,
                         Label = LabelText,
                         Variable = Variable,
-                        Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
+                        Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "=",
+                        MockSelected = MockSelected
                     }};
             return debugItemsResults;
         }

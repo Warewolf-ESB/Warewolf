@@ -94,6 +94,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SwitchTool.feature</DependentUpon>
     </Compile>
+    <Compile Include="TestingFrameworkMocking.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestingFrameworkMocking.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,6 +142,10 @@
     <None Include="SwitchTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SwitchTool.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TestingFrameworkMocking.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TestingFrameworkMocking.feature.cs</LastGenOutput>
     </None>
     <None Include="WebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

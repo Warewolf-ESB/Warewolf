@@ -24,7 +24,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -36,10 +36,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("MicrosoftSQL", "SQL Bulk Insert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL Bulk Insert_Tags")]
+    [ToolDescriptorInfo("MicrosoftSQL", "SQL Bulk Insert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Bulk_Insert_Tags")]
     public class DsfSqlBulkInsertActivity : DsfActivityAbstract<string>
     {
         [NonSerialized]
@@ -79,6 +80,11 @@ namespace Dev2.Activities
         public string Timeout { get; set; }
 
         public string BatchSize { get; set; }
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
         internal ISqlBulkInserter SqlBulkInserter
         {
@@ -174,7 +180,7 @@ namespace Dev2.Activities
         {
 
             SqlBulkCopy sqlBulkCopy;
-            if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
+            if(string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
             }
@@ -216,7 +222,7 @@ namespace Dev2.Activities
                     {
                         foreach(var dataColumnMapping in InputMappings)
                         {
-                            if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                            if(!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                             {
                                 sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
                             }
@@ -243,7 +249,7 @@ namespace Dev2.Activities
             TableName = TableName.Replace("[", "").Replace("]", "");
             if (TableName.Contains("."))
                 TableName = TableName.Substring(TableName.IndexOf(".", StringComparison.Ordinal)+1);
-            if (String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
+            if (string.IsNullOrEmpty(BatchSize) && string.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString)) { TableName = TableName, FieldTerminator = ",", LineTerminator = "\n" };
             }
@@ -282,7 +288,7 @@ namespace Dev2.Activities
 
                     foreach (var dataColumnMapping in InputMappings)
                     {
-                        if (!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                        if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                         {
                             sqlBulkCopy.Columns.Add(  dataColumnMapping.OutputColumn.ColumnName);
                         }
@@ -332,7 +338,7 @@ namespace Dev2.Activities
             {
                 AddDebugInputItemFromEntry(BatchSize, "Batch Size ", executionEnvironment, debugItem, update);
             }
-            if(!String.IsNullOrEmpty(Timeout))
+            if(!string.IsNullOrEmpty(Timeout))
             {
                 AddDebugInputItemFromEntry(Timeout, "Timeout  ", executionEnvironment, debugItem, update);
             }
@@ -380,7 +386,7 @@ namespace Dev2.Activities
             if(timeoutItr != null)
             {
                 var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
-                if(!String.IsNullOrEmpty(timeoutString))
+                if(!string.IsNullOrEmpty(timeoutString))
                 {
                     int parsedValue;
                     if(int.TryParse(timeoutString, out parsedValue))
@@ -391,7 +397,7 @@ namespace Dev2.Activities
             }
             else
             {
-                Int32.TryParse(Timeout, out timeout);
+                int.TryParse(Timeout, out timeout);
             }
         }
 
@@ -400,7 +406,7 @@ namespace Dev2.Activities
             if(batchItr != null)
             {
                 var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
-                if(!String.IsNullOrEmpty(batchSizeString))
+                if(!string.IsNullOrEmpty(batchSizeString))
                 {
                     int parsedValue;
                     if(int.TryParse(batchSizeString, out parsedValue))
@@ -411,7 +417,7 @@ namespace Dev2.Activities
             }
             else
             {
-                Int32.TryParse(BatchSize, out batchSize);
+                int.TryParse(BatchSize, out batchSize);
             }
         }
 
@@ -420,13 +426,13 @@ namespace Dev2.Activities
             var parametersIteratorCollection = new WarewolfListIterator();
             batchIterator = null;
             timeOutIterator = null;
-            if(!String.IsNullOrEmpty(BatchSize))
+            if(!string.IsNullOrEmpty(BatchSize))
             {
                 var batchItr = new WarewolfIterator(executionEnvironment.Eval(BatchSize, update));
                 parametersIteratorCollection.AddVariableToIterateOn(batchItr);
                 batchIterator = batchItr;
             }
-            if(!String.IsNullOrEmpty(Timeout))
+            if(!string.IsNullOrEmpty(Timeout))
             {
                 var timeoutItr = new WarewolfIterator(executionEnvironment.Eval(Timeout, update));
                 parametersIteratorCollection.AddVariableToIterateOn(timeoutItr);
@@ -455,7 +461,7 @@ namespace Dev2.Activities
                 IEnumerable<string> enumerable = values as string[] ?? values.ToArray();
   
 
-                if (IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
+                if (IgnoreBlankRows && enumerable.All(string.IsNullOrEmpty))
                 {
                     continue;
                 }
@@ -481,7 +487,7 @@ namespace Dev2.Activities
                 {
                     errorsResultTo.AddError(ErrorResource.InvalidRecordset + row.InputColumn);
                 }
-                if(String.IsNullOrEmpty(row.InputColumn)) continue;
+                if(string.IsNullOrEmpty(row.InputColumn)) continue;
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter, update);
@@ -548,7 +554,7 @@ namespace Dev2.Activities
    
             foreach(var dataColumnMapping in InputMappings)
             {
-                if(String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                if(string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                 {
                     // Nulls are ok ;)
                     if(dataColumnMapping.OutputColumn.IsNullable)
@@ -585,7 +591,7 @@ namespace Dev2.Activities
                 }
 
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
-                if(dataColumn.DataType == typeof(String))
+                if(dataColumn.DataType == typeof(string))
                 {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }
@@ -613,7 +619,7 @@ namespace Dev2.Activities
             var dataTableToInsert = new DataTable();
             foreach (var dataColumnMapping in InputMappings)
             {
-                if (String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                if (string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                 {
                     // Nulls are ok ;)
                     if (dataColumnMapping.OutputColumn.IsNullable)
@@ -649,8 +655,8 @@ namespace Dev2.Activities
                     }
                 }
 
-                var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = typeof(String) };
-                if (dataColumn.DataType == typeof(String))
+                var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = typeof(string) };
+                if (dataColumn.DataType == typeof(string))
                 {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }

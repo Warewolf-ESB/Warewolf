@@ -123,6 +123,7 @@ namespace Dev2.Tests.Runtime.Services
             //----------------Assert Results-----------------------------------------
             Assert.AreNotEqual(string.Empty, actual);
              string expected = @"<JSON>{
+  ""$id"": ""1"",
   ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
   ""title"": ""Root"",
   ""isFolder"": true,
@@ -130,6 +131,7 @@ namespace Dev2.Tests.Runtime.Services
   ""isLazy"": false,
   ""children"": [
     {
+      ""$id"": ""2"",
       ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
       ""title"": ""Test1"",
       ""isFolder"": true,
@@ -138,6 +140,7 @@ namespace Dev2.Tests.Runtime.Services
       ""children"": []
     },
     {
+      ""$id"": ""3"",
       ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
       ""title"": ""Test2"",
       ""isFolder"": true,
@@ -145,6 +148,7 @@ namespace Dev2.Tests.Runtime.Services
       ""isLazy"": false,
       ""children"": [
         {
+          ""$id"": ""4"",
           ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
           ""title"": ""InnerTest2"",
           ""isFolder"": true,

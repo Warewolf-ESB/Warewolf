@@ -13,9 +13,11 @@
 
 using System;
 using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
@@ -30,6 +32,7 @@ using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Views;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 #endregion
 
@@ -150,8 +153,18 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
+            var dataContext1 = parentContentPane?.DataContext;
+            if (dataContext1 != null)
+            {
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                {
+                    window.SetEnableDoneButtonState(false);
+                }
+            }
 
             var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
                 var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
@@ -190,7 +203,8 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
-
+            window.SetEnableDoneButtonState(true);
+            
             var showDialog = window.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -270,8 +284,19 @@ namespace Dev2.Studio.Controller
                 contentPresenter.Content = large;
             }
 
-            var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
+            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
+            var dataContext1 = parentContentPane?.DataContext;
+            if (dataContext1 != null)
+            {
+                if (dataContext1.GetType().Name == "ServiceTestViewModel")
+                {
+                    window.SetEnableDoneButtonState(false);
+                }
+            }
 
+            var showDialog = window.ShowDialog();
+            window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
                 var dev2DecisionCallbackHandler = new Dev2DecisionCallbackHandler();
@@ -328,11 +353,15 @@ namespace Dev2.Studio.Controller
             else
             {
                 result = property.Value;
-
-                // BUG 9717 - 2013.06.22 - don't show wizard on copy paste
+                
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
                 {
+                    var act = activity as IDev2Activity;
+                    if (act != null)
+                    {
+                        act.UniqueID = Guid.NewGuid().ToString();
+                    }
                     return null;
                 }
             }

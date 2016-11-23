@@ -497,7 +497,7 @@
                                         <DoubleAnimation Duration="0"
                                                          Storyboard.TargetName="DisabledVisualElement"
                                                          Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                                                         To="0.3" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="ReadOnly">

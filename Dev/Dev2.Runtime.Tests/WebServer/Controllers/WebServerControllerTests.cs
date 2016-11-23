@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             //------------Setup for test--------------------------
             var requestVariables = new NameValueCollection
             {
-                { "website", WebSite }, 
+                { "website", WebSite },
                 { "path", "dialogs/SaveDialog.htm" }
             };
             var controller = new TestWebServerController(HttpMethod.Get);
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             //------------Setup for test--------------------------
             var requestVariables = new NameValueCollection
             {
-                { "website", WebSite }, 
+                { "website", WebSite },
                 { "path", "services" }
             };
             var controller = new TestWebServerController(HttpMethod.Get);
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Get);
 
             //------------Execute Test---------------------------
-            switch(requestType)
+            switch (requestType)
             {
                 case WebServerRequestType.WebGetContent:
                     controller.GetContent(WebSite, url);
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             //------------Setup for test--------------------------
             var requestVariables = new NameValueCollection
             {
-                { "website", WebSite }, 
+                { "website", WebSite },
                 { "path", "Service" },
                 { "name", "Resources" },
                 { "action", "PathsAndNames" },
@@ -171,6 +171,56 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
 
             //------------Execute Test---------------------------
             controller.ExecuteSecureWorkflow("HelloWorld");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerController_ExecuteGivenTestsRun_Get_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://rsaklfnkosinath:3142/secure/Hello%20World/.tests";
+            var requestVariables = new NameValueCollection
+            {
+                  { "path", requestUrl },
+                  { "isPublic", false.ToString() },
+                { "servicename", "*" },
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Get, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecuteSecureWorkflow("HelloWorld");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerControllerPublic_ExecuteGivenTestsRun_Get_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://rsaklfnkosinath:3142/Public/Hello%20World/.tests";
+            var requestVariables = new NameValueCollection
+            {
+                  { "path", requestUrl },
+                  { "isPublic", true.ToString() },
+                { "servicename", "*" },
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Get, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecutePublicWorkflow("HelloWorld");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);

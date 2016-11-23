@@ -17,11 +17,12 @@ namespace Dev2.Activities
         readonly CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false, bool mockSelected = false)
         {
             _inputVariable = inputVariable.Trim();
             LabelText = label;
             _isCalculate = isCalculate;
+            MockSelected = mockSelected;
             try
             {
                 if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
@@ -109,6 +110,7 @@ namespace Dev2.Activities
         #region Overrides of DebugOutputBase
 
         public override string LabelText { get; }
+        public bool MockSelected { get; set; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {
@@ -126,7 +128,7 @@ namespace Dev2.Activities
                     {
                         _inputVariable = null;
                     }
-                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText).GetDebugItemResult();
+                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText, MockSelected).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfAtomListresult)
@@ -134,7 +136,7 @@ namespace Dev2.Activities
                 var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
-                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate).GetDebugItemResult();
+                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate, MockSelected).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfRecordSetResult)
@@ -142,11 +144,11 @@ namespace Dev2.Activities
                 var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
                 if (listResult != null)
                 {
-                    return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText,  "=").GetDebugItemResult();
+                    return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText,  "=", MockSelected).GetDebugItemResult();
                 }
             }
 
-            return new DebugItemStaticDataParams("",_inputVariable,LabelText).GetDebugItemResult();
+            return new DebugItemStaticDataParams("",_inputVariable,LabelText, MockSelected).GetDebugItemResult();
         }
 
         #endregion

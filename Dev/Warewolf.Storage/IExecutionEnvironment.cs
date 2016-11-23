@@ -39,7 +39,7 @@ namespace Warewolf.Storage
 
         string ToStar(string expression);
 
-        IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false);
+        IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists = false);
 
         IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update);
 

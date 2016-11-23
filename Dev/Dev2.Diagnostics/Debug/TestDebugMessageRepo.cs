@@ -30,10 +30,10 @@ namespace Dev2.Diagnostics.Debug
                     var key = new Tuple<Guid, string>(resourceID,testName);
                     if(_data.TryGetValue(key, out list))
                     {
-                        if(list.Contains(ds))
+                        if (list.Contains(ds))
                         {
                             var existingItem = list.FirstOrDefault(state => state.Equals(ds));
-                            if(existingItem != null && ds.StateType!=StateType.Duration)
+                            if (existingItem != null && ds.StateType != StateType.Duration)
                             {
                                 list.Add(ds);
                             }
@@ -66,5 +66,22 @@ namespace Dev2.Diagnostics.Debug
 
             return null;
         }
+
+        public IList<IDebugState> GetDebugItems(Guid resourceId, string testName)
+        {
+
+            lock (Lock)
+            {
+                var key = new Tuple<Guid, string>(resourceId, testName);
+                IList<IDebugState> list;
+                if (_data.TryGetValue(key, out list))
+                {
+                    return list;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

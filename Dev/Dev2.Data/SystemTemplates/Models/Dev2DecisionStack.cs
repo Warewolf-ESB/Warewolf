@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Storage;
@@ -111,8 +111,6 @@ namespace Dev2.Data.SystemTemplates.Models
         public static string FromVBPersitableModelToJSON(string val)
         // ReSharper restore InconsistentNaming
         {
-            // ! for old models, __!__ for new modesl ;)
-
             return val.Replace("!", "\"");
 
         }
@@ -134,7 +132,6 @@ namespace Dev2.Data.SystemTemplates.Models
                     start += 2;
                     val = val.Substring(start, end - start);
 
-                    // Convert back for usage ;)
                     return FromVBPersitableModelToJSON(val);
                 }
             }

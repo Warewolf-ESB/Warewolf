@@ -452,6 +452,22 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[recset1(*).field1]]", outputs[0]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_UpdateForEachInputs")]
         public void DsfXPathActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {

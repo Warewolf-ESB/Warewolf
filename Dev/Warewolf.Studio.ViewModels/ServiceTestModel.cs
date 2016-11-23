@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -17,7 +18,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestModel : BindableBase, IServiceTestModel
     {
-
         private string _testName;
         private string _userName;
         private bool _testPassed;
@@ -48,6 +48,8 @@ namespace Warewolf.Studio.ViewModels
         private IList<IDebugState> _debugForTest;
         private IServiceTestStep _selectedTestStep;
         private ObservableCollection<IServiceTestStep> _testSteps;
+        private string _errorContainsText;
+        private bool _isTestLoading;
 
         public string NeverRunString
         {
@@ -111,7 +113,13 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DuplicateTestTooltip);
             }
         }
+        /// <summary>
+        /// For cloning
+        /// </summary>
+        public ServiceTestModel()
+        {
 
+        }
         public ServiceTestModel(Guid resourceId)
         {
             ParentId = resourceId;
@@ -275,6 +283,17 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string ErrorContainsText
+        {
+            get { return _errorContainsText; }
+            set
+            {
+                _errorContainsText = value;
+                OnPropertyChanged(() => ErrorContainsText);
+                OnPropertyChanged(() => IsDirty);
+            }
+        }
+
         public bool IsNewTest
         {
             get
@@ -297,6 +316,19 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isTestSelected = value;
                 OnPropertyChanged(() => IsTestSelected);
+            }
+        }
+
+        public bool IsTestLoading
+        {
+            get
+            {
+                return _isTestLoading;
+            }
+            set
+            {
+                _isTestLoading = value;
+                OnPropertyChanged(() => IsTestLoading);
             }
         }
 
@@ -406,7 +438,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-
                 var isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
@@ -457,7 +488,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _testSteps; }
             set
             {
-                _testSteps = value; 
+                _testSteps = value;
                 OnPropertyChanged(() => TestSteps);
             }
         }
@@ -467,7 +498,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _selectedTestStep; }
             set
             {
-                _selectedTestStep = value; 
+                _selectedTestStep = value;
                 OnPropertyChanged(() => SelectedTestStep);
             }
         }
@@ -477,22 +508,17 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
-        public void AddTestStep(string activityUniqueID, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs)
+        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Assert)
         {
-            if(string.IsNullOrEmpty(activityUniqueID))
-                throw new ArgumentNullException(nameof(activityUniqueID));
+            if (string.IsNullOrEmpty(activityUniqueId))
+                throw new ArgumentNullException(nameof(activityUniqueId));
             if (string.IsNullOrEmpty(activityTypeName))
                 throw new ArgumentNullException(nameof(activityTypeName));
             if (serviceTestOutputs == null)
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, null);
-            var testStepChild1 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
-            var testStepChild2 = new ServiceTestStep(Guid.Parse(activityUniqueID), activityTypeName, serviceTestOutputs, StepType.Mock, testStep);
-
-            testStepChild1.Children.Add(testStepChild2);
-            testStep.Children.Add(testStepChild1);
-
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName };
             TestSteps.Add(testStep);
+            return testStep;
         }
 
         #endregion
@@ -529,8 +555,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (addRow)
                     {
-                        
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum,dataList);
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
                     }
                 }
             }
@@ -547,8 +572,65 @@ namespace Warewolf.Studio.ViewModels
                     var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
                     var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
                     var serviceTestInput = new ServiceTestInput(varName, string.Empty);
-                    serviceTestInput.AddNewAction = ()=>AddRow(serviceTestInput, dataList);
+                    serviceTestInput.AddNewAction = () => AddRow(serviceTestInput, dataList);
                     Inputs.Insert(indexToInsertAt + 1, serviceTestInput);
+                    indexToInsertAt++;
+                }
+                colName = col.Name;
+            }
+        }
+
+        public void AddRow(IServiceTestOutput itemToAdd, IDataListModel dataList)
+        {
+            if (itemToAdd != null && DataListUtil.IsValueRecordset(itemToAdd.Variable))
+            {
+                var recordsetNameFromValue = DataListUtil.ExtractRecordsetNameFromValue(itemToAdd.Variable);
+                IRecordSet recordset = dataList.ShapeRecordSets.FirstOrDefault(set => set.Name == recordsetNameFromValue);
+                if (recordset != null)
+                {
+                    var recsetCols = new List<IScalar>();
+                    foreach (var column in recordset.Columns)
+                    {
+                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                        recsetCols.AddRange(cols);
+                    }
+
+                    var numberOfRows = Outputs.Where(c => DataListUtil.ExtractRecordsetNameFromValue(c.Variable) == recordsetNameFromValue);
+                    IEnumerable<IServiceTestOutput> dataListItems = numberOfRows as IServiceTestOutput[] ?? numberOfRows.ToArray();
+                    var lastItem = dataListItems.Last();
+                    var indexToInsertAt = Outputs.IndexOf(lastItem);
+                    var indexString = DataListUtil.ExtractIndexRegionFromRecordset(lastItem.Variable);
+                    var indexNum = Convert.ToInt32(indexString) + 1;
+                    var lastRow = dataListItems.Where(c => DataListUtil.ExtractIndexRegionFromRecordset(c.Variable) == indexString);
+                    var addRow = false;
+                    foreach (var item in lastRow)
+                    {
+                        if (item.Value != string.Empty)
+                        {
+                            addRow = true;
+                        }
+                    }
+                    if (addRow)
+                    {
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
+                    }
+                }
+            }
+        }
+
+        private void AddBlankRowToRecordset(IServiceTestOutput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum, IDataListModel dataList)
+        {
+            IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+            string colName = null;
+            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            {
+                if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                {
+                    var recSetName = DataListUtil.ExtractRecordsetNameFromValue(dlItem.Variable);
+                    var varName = string.Concat(recSetName, @"(", indexNum, @").", col.Name);
+                    var serviceTestOutput = new ServiceTestOutput(varName, string.Empty, string.Empty, string.Empty);
+                    serviceTestOutput.AddNewAction = () => AddRow(serviceTestOutput, dataList);
+                    Outputs.Insert(indexToInsertAt + 1, serviceTestOutput);
                     indexToInsertAt++;
                 }
                 colName = col.Name;
@@ -564,14 +646,112 @@ namespace Warewolf.Studio.ViewModels
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }            
+            }
 
             var equalsSeq = EqualsSeq(other);
             var inputCompare = InputCompare(other, true);
             var outputCompare = OutputCompare(other, true);
-            var @equals = equalsSeq && inputCompare && outputCompare;
+            var testStepCompare = TestStepCompare(other, true);
+            var @equals = equalsSeq && inputCompare && testStepCompare && outputCompare;
 
             return @equals;
+        }
+
+        private bool TestStepCompare(ServiceTestModel other, bool stepCompare)
+        {
+            if (_testSteps == null)
+            {
+                return true;
+            }
+            if (_testSteps.Count != other._testSteps.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _testSteps.Count; i++)
+            {
+                if (TestSteps[i].Type != other.TestSteps[i].Type)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (TestSteps[i].StepOutputs.Count != other.TestSteps[i].StepOutputs.Count)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (TestSteps[i].Children.Count != other.TestSteps[i].Children.Count)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+
+                if (TestSteps[i].Children.Count > 0)
+                {
+                    var stepChildren = TestSteps[i].Children;
+                    var otherStepChildren = other.TestSteps[i].Children;
+
+                    stepCompare = StepChildrenCompare(stepChildren, otherStepChildren);
+                }
+                if (!stepCompare) continue;
+                var stepOutputs = TestSteps[i].StepOutputs;
+                var otherStepOutputs = other.TestSteps[i].StepOutputs;
+                stepCompare = StepOutputsCompare(stepOutputs, otherStepOutputs);
+            }
+            return stepCompare;
+        }
+
+        private static bool StepChildrenCompare(ObservableCollection<IServiceTestStep> stepChildren, ObservableCollection<IServiceTestStep> otherStepChildren)
+        {
+            bool stepCompare = true;
+            for (int c = 0; c < stepChildren.Count; c++)
+            {
+                if (stepChildren[c].Type != otherStepChildren[c].Type)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+
+                var childStepOutputs = stepChildren[c].StepOutputs;
+                var otherChildStepOutputs = otherStepChildren[c].StepOutputs;
+                stepCompare = StepOutputsCompare(childStepOutputs, otherChildStepOutputs);
+
+                if (stepChildren[c].Children.Count > 0)
+                {
+                    var stepChildren1 = stepChildren[c].Children;
+                    var otherStepChildren1 = otherStepChildren[c].Children;
+
+                    stepCompare = StepChildrenCompare(stepChildren1, otherStepChildren1);
+                }
+            }
+            return stepCompare;
+        }
+
+        private static bool StepOutputsCompare(ObservableCollection<IServiceTestOutput> stepOutputs, ObservableCollection<IServiceTestOutput> otherStepOutputs)
+        {
+            bool stepCompare = true;
+            for (int c = 0; c < stepOutputs.Count; c++)
+            {
+                if (stepOutputs[c].AssertOp != otherStepOutputs[c].AssertOp)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].Value != otherStepOutputs[c].Value)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].From != otherStepOutputs[c].From)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].To != otherStepOutputs[c].To)
+                {
+                    stepCompare = false;
+                }
+            }
+            return stepCompare;
         }
 
         private bool InputCompare(ServiceTestModel other, bool inputCompare)
@@ -610,7 +790,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            if(_outputs.Count!=other._outputs.Count)
+            if (_outputs.Count != other._outputs.Count)
             {
                 return false;
             }
@@ -625,6 +805,21 @@ namespace Warewolf.Studio.ViewModels
                 {
                     outputCompare = false;
                 }
+                if (!outputCompare) continue;
+                if (_outputs[i].AssertOp != other._outputs[i].AssertOp)
+                {
+                    outputCompare = false;
+                }
+                if (!outputCompare) continue;
+                if (_outputs[i].From != other._outputs[i].From)
+                {
+                    outputCompare = false;
+                }
+                if (!outputCompare) continue;
+                if (_outputs[i].To != other._outputs[i].To)
+                {
+                    outputCompare = false;
+                }
             }
             return outputCompare;
         }
@@ -636,6 +831,7 @@ namespace Warewolf.Studio.ViewModels
                    string.Equals(_password, other._password) &&
                    _noErrorExpected == other._noErrorExpected &&
                    _errorExpected == other._errorExpected &&
+                   _errorContainsText == other._errorContainsText &&
                    _enabled == other._enabled &&
                    _authenticationType == other._authenticationType;
         }
@@ -651,138 +847,15 @@ namespace Warewolf.Studio.ViewModels
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        public IServiceTestModel Clone()
         {
-            var memberwiseClone = (ServiceTestModel)MemberwiseClone();
-            if (Inputs != null)
-            {
-                memberwiseClone.Inputs = new ObservableCollection<IServiceTestInput>();
-                var serviceTestInputs = Inputs.ToList();
-                foreach (var serviceTestInput in serviceTestInputs)
-                {
-                    memberwiseClone.Inputs.Add(new ServiceTestInput(serviceTestInput.Variable, serviceTestInput.Value)
-                    {
-                        EmptyIsNull = serviceTestInput.EmptyIsNull
-                    });
-                }
-            }
-            if (Outputs != null)
-            {
-                memberwiseClone.Outputs = new ObservableCollection<IServiceTestOutput>();
-                var serviceTestInputs = Outputs.ToList();
-                foreach (var serviceTestInput in serviceTestInputs)
-                {
-                    memberwiseClone.Outputs.Add(new ServiceTestOutput(serviceTestInput.Variable, serviceTestInput.Value));
-                }
-            }
-            return memberwiseClone;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            IServiceTestModel serviceTestModel = this;
+            var ser = serializer.SerializeToBuilder(serviceTestModel);
+            IServiceTestModel clone = serializer.Deserialize<IServiceTestModel>(ser);
+            return clone;
         }
 
         #endregion
-    }
-
-    public class ServiceTestStep : BindableBase, IServiceTestStep
-    {
-        private string _stepDescription;
-        private List<string> _assertOps;
-        private StepType _type;
-        private string _activityType;
-        private List<IServiceTestOutput> _stepOutputs;
-        private Guid _uniqueId;
-        private IServiceTestStep _parent;
-        private ObservableCollection<IServiceTestStep> _children;
-
-        public ServiceTestStep(Guid uniqueId, string activityTypeName, List<IServiceTestOutput> serviceTestOutputs, StepType stepType, IServiceTestStep parent)
-        {
-            UniqueId = uniqueId;
-            ActivityType = activityTypeName;
-            StepOutputs = serviceTestOutputs;
-            Type = stepType;
-            Parent = parent;
-
-            StepDescription = "New Test Description";
-            AssertOps = new List<string> {"="};
-            Children = new ObservableCollection<IServiceTestStep>();
-        }
-
-        public Guid UniqueId
-        {
-            get { return _uniqueId; }
-            set
-            {
-                _uniqueId = value; 
-                OnPropertyChanged(() => UniqueId);
-            }
-        }
-
-        public string ActivityType
-        {
-            get { return _activityType; }
-            set
-            {
-                _activityType = value; 
-                OnPropertyChanged(() => ActivityType);
-            }
-        }
-
-        public StepType Type
-        {
-            get { return _type; }
-            set
-            {
-                _type = value; 
-                OnPropertyChanged(() => Type);
-            }
-        }
-
-        public List<IServiceTestOutput> StepOutputs
-        {
-            get { return _stepOutputs; }
-            set
-            {
-                _stepOutputs = value; 
-                OnPropertyChanged(() => StepOutputs);
-            }
-        }
-
-        public IServiceTestStep Parent
-        {
-            get { return _parent; }
-            set
-            {
-                _parent = value; 
-                OnPropertyChanged(() => Parent);
-            }
-        }
-
-        public ObservableCollection<IServiceTestStep> Children
-        {
-            get { return _children; }
-            set
-            {
-                _children = value; 
-                OnPropertyChanged(() => Children);
-            }
-        }
-
-        public string StepDescription
-        {
-            get { return _stepDescription; }
-            set
-            {
-                _stepDescription = value; 
-                OnPropertyChanged(() => StepDescription);
-            }
-        }
-
-        public List<string> AssertOps
-        {
-            get { return _assertOps; }
-            set
-            {
-                _assertOps = value;
-                OnPropertyChanged(() => AssertOps);
-            }
-        }
     }
 }

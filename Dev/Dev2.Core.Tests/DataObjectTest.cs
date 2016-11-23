@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -194,6 +195,8 @@ namespace Dev2.Tests
             dataObject.StopExecution = false;
             dataObject.IsServiceTestExecution = true;
             dataObject.TestName = "Test 1";
+            dataObject.SourceResourceID = Guid.NewGuid();
+            dataObject.ServiceTest = new ServiceTestModelTO {TestName = "Test Mock"};
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -206,7 +209,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(59, properties.Length);
+            Assert.AreEqual(62, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -260,8 +263,11 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebugNested, clonedObject.IsDebugNested);
             Assert.AreEqual(dataObject.ForEachNestingLevel, clonedObject.ForEachNestingLevel);
             Assert.AreEqual(dataObject.StopExecution, clonedObject.StopExecution);
+            Assert.AreEqual(dataObject.SourceResourceID, clonedObject.SourceResourceID);
             Assert.AreEqual(dataObject.TestName, clonedObject.TestName);
             Assert.AreEqual(dataObject.IsServiceTestExecution, clonedObject.IsServiceTestExecution);
+            Assert.AreNotEqual(dataObject.ServiceTest, clonedObject.ServiceTest);
+            Assert.AreEqual(dataObject.ServiceTest.TestName, clonedObject.ServiceTest.TestName);
         }
 
         #region Debug Mode Test

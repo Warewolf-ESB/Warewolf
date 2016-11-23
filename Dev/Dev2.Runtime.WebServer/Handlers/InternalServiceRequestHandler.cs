@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Communication;
-using Dev2.DataList.Contract;
+using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
@@ -116,14 +116,15 @@ namespace Dev2.Runtime.WebServer.Handlers
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
 
             var isManagementResource = false;
+            if (!string.IsNullOrEmpty(request.TestName))
+            {
+                dataObject.TestName = request.TestName;
+                dataObject.IsServiceTestExecution = true;
+            }
             if (resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
-                if (!string.IsNullOrEmpty(request.TestName))
-                {
-                    dataObject.TestName = request.TestName;
-                    dataObject.IsServiceTestExecution = true;
-                }
+                dataObject.SourceResourceID = resource.ResourceID;
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
 
