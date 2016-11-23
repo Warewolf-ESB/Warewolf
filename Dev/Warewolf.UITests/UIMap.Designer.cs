@@ -1470,7 +1470,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerContextMenuManager";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
