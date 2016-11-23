@@ -8,9 +8,9 @@ Scenario: Web GET Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click New Web Source Ribbon Button
-	And I Type TestSite into Web Source Wizard Address Textbox
+	And I Type The Testing Site into Web GET Source Wizard Address Textbox
 	And I Click New Web Source Test Connection Button
-	And I Save With Ribbon Button And Dialog As "UITestingWebSource"
+	And I Save With Ribbon Button And Dialog As "WebGETUITestingSource"
 	And I Click Close Web Source Wizard Tab Button
 	And I Drag GET Web Connector Onto DesignSurface
 	And I Select Test Source From GET Web Large View Source Combobox
