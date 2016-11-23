@@ -1218,6 +1218,27 @@ Scenario: Test WF with PostGre Sql
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "PostGreTestWF" is deleted as cleanup
+
+Scenario: Test WF with PostGre Sql with Table Value Function
+		Given I have a workflow "PostGreTestWF"
+		 And "PostGreTestWF" contains a postgre tool using "tab_val_func" with mappings for testing as
+		  | Input to Service | From Variable | Output from Service | To Variable           |		
+		And I save workflow "PostGreTestWF"
+		Then the test builder is open with "PostGreTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "tab_val_func" as TestStep
+		And I add StepOutputs as 
+		| Variable Name          | Condition | Value |
+		| [[tab_val_func(1).v2]] | =         | 1     |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "PostGreTestWF" is deleted as cleanup
+
 Scenario: Test WF with Decision
 		Given I have a workflow "DecisionTestWF"
 		And "DecisionTestWF" contains an Assign "TestAssign" as
