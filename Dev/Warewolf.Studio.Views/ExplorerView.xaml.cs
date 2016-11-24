@@ -93,6 +93,7 @@ namespace Warewolf.Studio.Views
                             }
                         }
                         destination.Background = Brushes.Transparent;
+                        _isDragging = false;
                         _canDrag = false;
                     }
                 }
