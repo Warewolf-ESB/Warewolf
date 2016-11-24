@@ -814,6 +814,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public ICommand NewServiceCommand
+        {
+            get
+            {
+                return _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.NewService("");
+                        }
+                    }
+                }));
+            }
+        }
+
         public ICommand DebugInputsCommand
         {
             get
@@ -2379,6 +2397,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _duplicateTooltip;
         private string _deployTooltip;
         private string _showDependenciesTooltip;
+        private ICommand _newServiceCommand;
 
         /// <summary>
         /// Models the service model changed.
