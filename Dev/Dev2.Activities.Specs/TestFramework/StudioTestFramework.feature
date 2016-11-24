@@ -1519,6 +1519,27 @@ And I add StepOutputs as
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestWF" is deleted as cleanup
+	
+#WOLF-2280
+Scenario: Test WF with Calculate No outPuts
+	Given I have a workflow "CalculateTestNoOutputsWF"
+	And "CalculateTestNoOutputsWF" contains an Assign "values1" as
+      | variable | value |
+      | [[a]]    | 1     |
+      | [[b]]    | 5     |
+	And "CalculateTestNoOutputsWF" contains Calculate "TestCalculate" with formula "Sum([[a]],[[b]])" into ""
+	And I save workflow "CalculateTestNoOutputsWF"
+	Then the test builder is open with "CalculateTestNoOutputsWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestCalculate" as TestStep	 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup
 
 Scenario: Test WF with Xpath
 	Given I have a workflow "XPathTestWF"
