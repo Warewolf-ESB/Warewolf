@@ -1534,6 +1534,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 destination.AddChild(this);
+                // ReSharper disable once PossibleNullReferenceException
                 Parent.RemoveChild(this);
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
