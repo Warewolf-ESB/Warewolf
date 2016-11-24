@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -15,7 +13,7 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer("DragAndDropMergeFolder");
             UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
             UIMap.Filter_Explorer("Workflow");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.ThirdSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         }
 
         [TestMethod]
@@ -39,6 +37,15 @@ namespace Warewolf.UITests
             UIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog("Hello World");
         }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void CreateNewFolderInLocalHostUsingShortcutKeysUITest()
+        {
+            UIMap.Click_LocalHost_Once();
+            UIMap.Create_New_Folder_Using_Shortcut();
+        }
+
 
         #region Additional test attributes
 
