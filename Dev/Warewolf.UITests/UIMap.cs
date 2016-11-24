@@ -1790,12 +1790,16 @@ namespace Warewolf.UITests
         }
 
         [When("I Click Save Ribbon Button Without Expecting a Dialog")]
+        [Given("I Click Save Ribbon Button Without Expecting a Dialog")]
+        [Then("I Click Save Ribbon Button Without Expecting a Dialog")]
         public void Click_Save_Ribbon_Button_Without_Expecting_A_Dialog()
         {
             Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
         }
 
         [When(@"I Click Save Ribbon Button With No Save Dialog")]
+        [Given(@"I Click Save Ribbon Button With No Save Dialog")]
+        [Then(@"I Click Save Ribbon Button With No Save Dialog")]
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
@@ -2246,7 +2250,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton, new Point(35, 10));
         }
 
-        [When(@"I Open Explorer First Item Context Menu")]
+        [When(@"I Open Explorer First Item Context Menu")]        
+        [Given(@"I Open Explorer First Item Context Menu")]        
+        [Then(@"I Open Explorer First Item Context Menu")]        
         public void WhenIOpenExplorerFirstItemContextMenu()
         {
             Open_Explorer_First_Item_With_Context_Menu();
@@ -3110,6 +3116,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Click Close Tests Tab")]
+        [Then(@"I Click Close Tests Tab")]
+        [Given(@"I Click Close Tests Tab")]
         public void Click_Close_Tests_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton, new Point(11, 5));
@@ -3533,6 +3541,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Click MessageBox OK")]
+        [Then(@"I Click MessageBox OK")]
+        [Given(@"I Click MessageBox OK")]
         public void Click_MessageBox_OK()
         {
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
@@ -5482,6 +5492,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Open Explorer First Item Tests With Context Menu")]
+        [Then(@"I Open Explorer First Item Tests With Context Menu")]
+        [Given(@"I Open Explorer First Item Tests With Context Menu")]
         public void Open_Explorer_First_Item_Tests_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
@@ -5995,6 +6007,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Press F6")]
+        [Given(@"I Press F6")]
+        [Then(@"I Press F6")]
         public void Press_F6()
         {
             Keyboard.SendKeys(MainStudioWindow, "{F6}", ModifierKeys.None);
@@ -7017,6 +7031,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
         }
 
+        [Then(@"I Click Create Test From Debug")]
+        [Given(@"I Click Create Test From Debug")]
+        [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
@@ -7056,5 +7073,120 @@ namespace Warewolf.UITests
             Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
             Assert.IsTrue(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
         }
+
+        [Given(@"I have Hello World workflow on the Explorer")]
+        [When(@"I have Hello World workflow on the Explorer")]
+        [Then(@"I have Hello World workflow on the Explorer")]
+        public void GivenIHaveHelloWorldWorkflowOnTheExplorer()
+        {
+            Filter_Explorer("Hello World");
+        }
+        
+        [Given(@"I Click The Create ""(.*)""th test Button")]
+        [When(@"I Click The Create ""(.*)""th test Button")]
+        [Then(@"I Click The Create ""(.*)""th test Button")]
+        public void GivenIClickTheCreateThTestButton(int testIntance)
+        {
+            Click_Create_New_Tests(true, testIntance);
+        }
+        
+        [Then(@"Message box window appears")]
+        [When(@"Message box window appears")]
+        [Given(@"Message box window appears")]
+        public void ThenMessageBoxWindowAppears()
+        {
+            Assert.IsTrue(MessageBoxWindow.Exists);
+        }
+
+        [Then(@"Test tab is open")]
+        [Given(@"Test tab is open")]
+        [When(@"Test tab is open")]
+        public void ThenTestTabIsOpen()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists);
+        }
+
+        [Then(@"I Click Close Clean Workflow Tab")]
+        [When(@"I Click Close Clean Workflow Tab")]
+        [Given(@"I Click Close Clean Workflow Tab")]
+        public void ThenIClickCloseCleanWorkflowTab()
+        {
+            Click_Close_Workflow_Tab_Button();
+        }
+        
+        [Then(@"I click Run ""(.*)""th test expecting ""(.*)""")]
+        [When(@"I click Run ""(.*)""th test expecting ""(.*)""")]
+        [Given(@"I click Run ""(.*)""th test expecting ""(.*)""")]
+        public void ThenIClickRunThTestExpecting(int testInstance, string status)
+        {
+            var statusEnum = GetStatus(status);
+            Click_Run_Test_Button(statusEnum, testInstance);
+        }
+        private TestResultEnum GetStatus(string status)
+        {
+            if (status == "Pending")
+                return TestResultEnum.Pending;
+            else if (status == "Invalid")
+                return TestResultEnum.Invalid;
+            else if (status == "Fail")            
+                return TestResultEnum.Fail;
+            else
+                return TestResultEnum.Pass;
+        }
+
+
+        [Then(@"I Enter ""(.*)"" in the Output test step")]
+        [When(@"I Enter ""(.*)"" in the Output test step")]
+        [Given(@"I Enter ""(.*)"" in the Output test step")]
+        public void ThenIEnterInTheOutputTestStep(string output)
+        {
+            EnterOutMessageValue_On_OutputMessage_TestStep(output);
+        }
+
+        [When(@"I Click Test Tab")]
+        [Then(@"I Click Test Tab")]
+        [Given(@"I Click Test Tab")]
+        public void WhenIClickTestTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
+        }
+
+        [Then(@"The Test step in now ""(.*)""")]
+        [When(@"The Test step in now ""(.*)""")]
+        [Given(@"The Test step in now ""(.*)""")]
+        public void ThenTheTestStepInNow(string status)
+        {
+            Assert.AreEqual(TestResultEnum.Invalid,GetStatus(status));
+        }
+
+        [Then(@"I Click Run all tests button")]
+        [When(@"I Click Run all tests button")]
+        [Given(@"I Click Run all tests button")]
+        public void ThenIClickRunAllTestsButton()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton.DrawHighlight();
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton);
+        }
+
+        [Then(@"I Click workflow tab")]
+        [Given(@"I Click workflow tab")]
+        [When(@"I Click workflow tab")]
+        public void ThenIClickWorkflowTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Exists);
+        }
+
+        [Then(@"I Enter ""(.*)"" in the Assign message tool")]
+        [When(@"I Enter ""(.*)"" in the Assign message tool")]
+        [Given(@"I Enter ""(.*)"" in the Assign message tool")]
+        public void ThenIEnterInTheAssignMessageTool(string message)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = message;
+        }
+
     }
 }
