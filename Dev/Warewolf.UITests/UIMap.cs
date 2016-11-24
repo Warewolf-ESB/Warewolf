@@ -6062,6 +6062,13 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Delete FirstResource FromContextMenu")]
+        public void Delete_FirstResource_FromContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
+        }
+
         [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
         public void Rename_LocalWorkflow_To_SecodWorkFlow()
         {
