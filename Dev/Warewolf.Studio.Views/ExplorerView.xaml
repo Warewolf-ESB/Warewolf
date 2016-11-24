@@ -12,6 +12,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              x:Name="ExplorerViewControl"
+             PreviewMouseLeftButtonDown="ExplorerView_OnPreviewMouseLeftButtonDown"
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
@@ -120,7 +121,6 @@
                       PreviewMouseMove="Tree_MouseMove"
                       SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
                       Drop="DropTree_Drop"
-                      DragEnter="DropTree_DragEnter"
                       DragOver="ExplorerTree_OnDragOver"
                       DragLeave="ExplorerTree_OnDragLeave">
                 <TreeView.ItemContainerStyle>
