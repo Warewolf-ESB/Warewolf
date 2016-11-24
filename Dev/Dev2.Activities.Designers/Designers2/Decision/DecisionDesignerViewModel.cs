@@ -210,7 +210,7 @@ namespace Dev2.Activities.Designers2.Decision
         {
             var val = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() };
             var value = valuecoll.Select(a => a as DecisionTO);
-            foreach (var decisionTo in value.Where(a => !a.IsEmpty()))
+            foreach (var decisionTo in value.Where(a => { return a != null && !a.IsEmpty(); }))
             {
                 var dev2Decision = new Dev2Decision { Col1 = decisionTo.MatchValue };
                 if (!string.IsNullOrEmpty(decisionTo.SearchCriteria))
