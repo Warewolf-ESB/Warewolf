@@ -259,55 +259,40 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (ExplorerTree.SelectedItem == null)
+            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
-                if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                {
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
-                    mainViewModel?.NewServiceCommand.Execute(null);
-                }
+                ExplorerItemShortcuts(e, explorerItemViewModel);
             }
             else
             {
-                var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+                if (environmentViewModel != null && environmentViewModel.IsSelected)
                 {
-                    ExplorerItemShortcuts(e, explorerItemViewModel);
-                }
-                else
-                {
-                    var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
-                    if (environmentViewModel != null)
-                    {
-                        EnvironmentShortcuts(e, environmentViewModel);
-                    }
+                    EnvironmentShortcuts(e, environmentViewModel);
                 }
             }
         }
 
         private static void ExplorerItemShortcuts(KeyEventArgs e, ExplorerItemViewModel explorerItemViewModel)
         {
-            if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if (e.Key == Key.F2)
             {
-                explorerItemViewModel.NewServiceCommand.Execute(null);
+                explorerItemViewModel.IsRenaming = true;
             }
-
-            if (explorerItemViewModel.IsSelected)
+            if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                if (e.Key == Key.F2)
+                explorerItemViewModel.DeployCommand.Execute(null);
+            }
+            if (explorerItemViewModel.IsFolder)
+            {
+                if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    explorerItemViewModel.IsRenaming = true;
+                    explorerItemViewModel.NewServiceCommand.Execute(null);
                 }
-                if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
                 {
-                    explorerItemViewModel.DeployCommand.Execute(null);
-                }
-                if (explorerItemViewModel.IsFolder)
-                {
-                    if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-                    {
-                        explorerItemViewModel.CreateNewFolder();
-                    }
+                    explorerItemViewModel.CreateNewFolder();
                 }
             }
         }
@@ -318,15 +303,9 @@ namespace Warewolf.Studio.Views
             {
                 environmentViewModel.NewServiceCommand.Execute(null);
             }
-            if (environmentViewModel.IsSelected)
+            if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
             {
-                if (environmentViewModel.IsFolder)
-                {
-                    if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-                    {
-                        environmentViewModel.CreateFolder();
-                    }
-                }
+                environmentViewModel.CreateFolder();
             }
         }
 
