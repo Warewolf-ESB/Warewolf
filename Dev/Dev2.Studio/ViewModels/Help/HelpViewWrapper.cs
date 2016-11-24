@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.CustomControls;
@@ -24,7 +25,7 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public WebBrowser WebBrowser => HelpView.WebBrowserHost;
+        public Frame WebBrowser => HelpView.WebBrowserHost;
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
@@ -54,7 +55,7 @@ namespace Dev2.ViewModels.Help
 
         public void Navigate(string uri)
         {
-            HelpView.WebBrowserHost.Navigate(uri);
+            HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
         }
     }
 }
