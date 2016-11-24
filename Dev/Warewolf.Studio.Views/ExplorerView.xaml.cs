@@ -24,7 +24,7 @@ namespace Warewolf.Studio.Views
         private bool _isDragging;
         private bool _canDrag;
 
-        private void StartDrag(MouseEventArgs e)
+        private void StartDrag()
         {
             _isDragging = true;
             var temp = ExplorerTree.SelectedItem as ExplorerItemViewModel;
@@ -48,23 +48,10 @@ namespace Warewolf.Studio.Views
                     if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
                         Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                     {
-                        StartDrag(e);
+                        StartDrag();
                     }
                 }
             }
-        }
-
-        private void DropTree_DragEnter(object sender, DragEventArgs e)
-        {
-            //var explorerItemViewModel = e.Data.GetData(typeof(ExplorerItemViewModel)) as ExplorerItemViewModel;
-            //if (explorerItemViewModel != null && !explorerItemViewModel.IsFolder)
-            //{
-            //    e.Effects = DragDropEffects.None;
-            //}
-            //            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
-            //            {
-            //                e.Effects = DragDropEffects.None;
-            //            }
         }
 
         private void DropTree_Drop(object sender, DragEventArgs e)
@@ -170,15 +157,18 @@ namespace Warewolf.Studio.Views
             if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
             {
                 var textBox = sender as TextBox;
-                var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
-                    explorerItemViewModel.IsRenaming = false;
+                SetIsRenaming(textBox);
             }
         }
-
+        
         private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             var textBox = sender as TextBox;
+            SetIsRenaming(textBox);
+        }
+
+        private static void SetIsRenaming(TextBox textBox)
+        {
             var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
             if (explorerItemViewModel != null)
                 explorerItemViewModel.IsRenaming = false;
@@ -250,16 +240,36 @@ namespace Warewolf.Studio.Views
 
         private void TreeViewItem_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F2)
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null && treeViewItem.IsSelected)
             {
-                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-                if (treeViewItem != null && treeViewItem.IsSelected)
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel != null)
                 {
-                    var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
-                    if (explorerItemViewModel != null)
+                    if (e.Key == Key.F2)
+                    {
                         explorerItemViewModel.IsRenaming = true;
+                    }
+                    if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        //explorerItemViewModel.NewServerCommand.Execute(null);
+                    }
+                    if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        //explorerItemViewModel.DeployCommand.Execute(null);
+                    }
+                    if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+                    {
+                        explorerItemViewModel.CreateNewFolder();
+                    }
                 }
             }
+        }
+
+        private void ExplorerView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isDragging = false;
+            _canDrag = false;
         }
     }
 }
