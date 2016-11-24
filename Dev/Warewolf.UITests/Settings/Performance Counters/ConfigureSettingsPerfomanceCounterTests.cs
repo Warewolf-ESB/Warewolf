@@ -6,20 +6,21 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter
     {
-        private string _serviceName = "Dice Roll";
+        [TestMethod]
+        [TestCategory("Settings")]
+        public void ResettingPerfomanceCounter()
+        {
+            UIMap.Click_Reset_Perfomance_Counter();
+        }
 
         [TestMethod]
+        [TestCategory("Settings")]
         public void ConfigureSettingPerfomanceCounter()
         {
-            UIMap.TryCloseSettingsTab();
-            UIMap.Click_ConfigureSetting_From_Menu();
-            UIMap.Select_PerfomanceCounterTab();
-            UIMap.Click_Reset_Perfomance_Counter();
             UIMap.Click_Select_Resource_Button();
-            UIMap.Select_Service_From_Service_Picker(_serviceName, true);
-            Assert.AreEqual("My Category\\" + _serviceName, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_Settings_Tab_Button();
+            var serviceName = "Hello World";
+            UIMap.Select_Service_From_Service_Picker(serviceName, true);
+            Assert.AreEqual(serviceName, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
         #region Additional test attributes
@@ -29,6 +30,8 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
+            UIMap.Click_ConfigureSetting_From_Menu();
+            UIMap.Select_PerfomanceCounterTab();
         }
 
         UIMap UIMap

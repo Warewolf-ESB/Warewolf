@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     public class ConfigureSettingsLoggingTests
     {
         [TestMethod]
+        [TestCategory("Settings")]
         public void Open_Settings_Tab_With_Ribbon_Button_Click()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
@@ -27,6 +28,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Settings")]
         public void ConfigureSettingLogging()
         {
             UIMap.TryCloseSettingsTab();
