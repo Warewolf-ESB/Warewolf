@@ -120,6 +120,7 @@
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
                       PreviewMouseMove="Tree_MouseMove"
                       SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
+                      KeyUp="ExplorerTree_OnKeyUp"
                       Drop="DropTree_Drop"
                       DragOver="ExplorerTree_OnDragOver"
                       DragLeave="ExplorerTree_OnDragLeave">
@@ -129,7 +130,6 @@
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
-                        <EventSetter Event="KeyDown" Handler="TreeViewItem_KeyDown"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>

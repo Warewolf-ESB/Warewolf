@@ -1534,12 +1534,12 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 destination.AddChild(this);
-                Parent.RemoveChild(this);
+                Parent?.RemoveChild(this);
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                    Parent.AddChild(this);
+                    Parent?.AddChild(this);
                     destination.RemoveChild(this);
                     return false;
                 }

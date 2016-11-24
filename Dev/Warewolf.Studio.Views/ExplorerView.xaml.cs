@@ -157,21 +157,22 @@ namespace Warewolf.Studio.Views
             if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
             {
                 var textBox = sender as TextBox;
-                SetIsRenaming(textBox);
+                var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.ResourceName = textBox.Text;
+                }
             }
         }
         
         private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             var textBox = sender as TextBox;
-            SetIsRenaming(textBox);
-        }
-
-        private static void SetIsRenaming(TextBox textBox)
-        {
             var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
             if (explorerItemViewModel != null)
-                explorerItemViewModel.IsRenaming = false;
+            {
+                explorerItemViewModel.ResourceName = textBox.Text;
+            }
         }
 
         private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -238,38 +239,37 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void TreeViewItem_KeyDown(object sender, KeyEventArgs e)
-        {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            if (treeViewItem != null && treeViewItem.IsSelected)
-            {
-                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
-                {
-                    if (e.Key == Key.F2)
-                    {
-                        explorerItemViewModel.IsRenaming = true;
-                    }
-                    if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        //explorerItemViewModel.NewServerCommand.Execute(null);
-                    }
-                    if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        //explorerItemViewModel.DeployCommand.Execute(null);
-                    }
-                    if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-                    {
-                        explorerItemViewModel.CreateNewFolder();
-                    }
-                }
-            }
-        }
-
         private void ExplorerView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isDragging = false;
             _canDrag = false;
+        }
+
+        private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var treeViewItem = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            if (treeViewItem != null && treeViewItem.IsSelected)
+            {
+                if (e.Key == Key.F2)
+                {
+                    treeViewItem.IsRenaming = true;
+                }
+                if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                {
+                    treeViewItem.DeployCommand.Execute(treeViewItem);
+                }
+                if (treeViewItem.IsFolder)
+                {
+                    if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        treeViewItem.NewServiceCommand.Execute(treeViewItem);
+                    }
+                    if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+                    {
+                        treeViewItem.CreateNewFolder();
+                    }
+                }
+            }
         }
     }
 }
