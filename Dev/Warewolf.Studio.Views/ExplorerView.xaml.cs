@@ -303,6 +303,10 @@ namespace Warewolf.Studio.Views
             {
                 environmentViewModel.NewServiceCommand.Execute(null);
             }
+            if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                environmentViewModel.DeployCommand.Execute(null);
+            }
             if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 environmentViewModel.CreateFolder();
