@@ -1540,7 +1540,7 @@ namespace Warewolf.Studio.ViewModels
                 if (!moveResult)
                 {
                     ShowErrorMessage(Resources.Languages.Core.ExplorerMoveFailedMessage, Resources.Languages.Core.ExplorerMoveFailedHeader);
-                    Parent.AddChild(this);
+                    Parent?.AddChild(this);
                     destination.RemoveChild(this);
                     return false;
                 }

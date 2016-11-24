@@ -187,6 +187,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +225,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -1494,118 +1508,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfMenuItem NewServerSource
-        {
-            get
-            {
-                if ((this.mNewServerSource == null))
-                {
-                    this.mNewServerSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewServerSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServerSource";
-                    this.mNewServerSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewServerSource;
-            }
-        }
-        
-        public WpfMenuItem NewDatabaseSource
-        {
-            get
-            {
-                if ((this.mNewDatabaseSource == null))
-                {
-                    this.mNewDatabaseSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewDatabaseSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDataBaseSource";
-                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewDatabaseSource;
-            }
-        }
-        
-        public WpfMenuItem NewWebServiceSource
-        {
-            get
-            {
-                if ((this.mNewWebServiceSource == null))
-                {
-                    this.mNewWebServiceSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewWebServiceSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewWebSource";
-                    this.mNewWebServiceSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewWebServiceSource;
-            }
-        }
-        
-        public WpfMenuItem NewPluginSource
-        {
-            get
-            {
-                if ((this.mNewPluginSource == null))
-                {
-                    this.mNewPluginSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewPluginSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewPluginSource";
-                    this.mNewPluginSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewPluginSource;
-            }
-        }
-        
-        public WpfMenuItem NewEmailSource
-        {
-            get
-            {
-                if ((this.mNewEmailSource == null))
-                {
-                    this.mNewEmailSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewEmailSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewEmailSource";
-                    this.mNewEmailSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewEmailSource;
-            }
-        }
-        
-        public WpfMenuItem NewDropboxSource
-        {
-            get
-            {
-                if ((this.mNewDropboxSource == null))
-                {
-                    this.mNewDropboxSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewDropboxSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDropboxSource";
-                    this.mNewDropboxSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewDropboxSource;
-            }
-        }
-        
-        public WpfMenuItem NewSharepointSource
-        {
-            get
-            {
-                if ((this.mNewSharepointSource == null))
-                {
-                    this.mNewSharepointSource = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mNewSharepointSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewSharepointSource";
-                    this.mNewSharepointSource.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewSharepointSource;
-            }
-        }
-        
         public WpfMenuItem NewFolder
         {
             get
@@ -1861,26 +1763,88 @@ namespace Warewolf.UITests
                 return this.mNewFolderMenuItem;
             }
         }
+        
+        public WpfMenuItem MakeCurrentVersionMenuItem
+        {
+            get
+            {
+                if ((this.mMakeCurrentVersionMenuItem == null))
+                {
+                    this.mMakeCurrentVersionMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mMakeCurrentVersionMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Rollback";
+                    this.mMakeCurrentVersionMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mMakeCurrentVersionMenuItem;
+            }
+        }
+        
+        public WpfMenuItem OpenVersionMenuItem
+        {
+            get
+            {
+                if ((this.mOpenVersionMenuItem == null))
+                {
+                    this.mOpenVersionMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mOpenVersionMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "OpenVersion";
+                    this.mOpenVersionMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mOpenVersionMenuItem;
+            }
+        }
+        
+        public WpfMenuItem ScheduleMenuItem
+        {
+            get
+            {
+                if ((this.mScheduleMenuItem == null))
+                {
+                    this.mScheduleMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mScheduleMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Schedule";
+                    this.mScheduleMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mScheduleMenuItem;
+            }
+        }
+        
+        public WpfMenuItem ViewApisJsonMenuItem
+        {
+            get
+            {
+                if ((this.mViewApisJsonMenuItem == null))
+                {
+                    this.mViewApisJsonMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewApisJsonMenuItem;
+            }
+        }
+        
+        public SourcesMenuItem SourcesMenuItem
+        {
+            get
+            {
+                if ((this.mSourcesMenuItem == null))
+                {
+                    this.mSourcesMenuItem = new SourcesMenuItem(this);
+                }
+                return this.mSourcesMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfMenuItem mOpen;
         
         private WpfMenuItem mNewWorkflow;
-        
-        private WpfMenuItem mNewServerSource;
-        
-        private WpfMenuItem mNewDatabaseSource;
-        
-        private WpfMenuItem mNewWebServiceSource;
-        
-        private WpfMenuItem mNewPluginSource;
-        
-        private WpfMenuItem mNewEmailSource;
-        
-        private WpfMenuItem mNewDropboxSource;
-        
-        private WpfMenuItem mNewSharepointSource;
         
         private WpfMenuItem mNewFolder;
         
@@ -1913,6 +1877,221 @@ namespace Warewolf.UITests
         private WpfMenuItem mRunAllTestsMenuItem;
         
         private WpfMenuItem mNewFolderMenuItem;
+        
+        private WpfMenuItem mMakeCurrentVersionMenuItem;
+        
+        private WpfMenuItem mOpenVersionMenuItem;
+        
+        private WpfMenuItem mScheduleMenuItem;
+        
+        private WpfMenuItem mViewApisJsonMenuItem;
+        
+        private SourcesMenuItem mSourcesMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesMenuItem : WpfMenuItem
+    {
+        
+        public SourcesMenuItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Sources";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem NewDatabaseSource
+        {
+            get
+            {
+                if ((this.mNewDatabaseSource == null))
+                {
+                    this.mNewDatabaseSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDatabaseSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDataBaseSource";
+                    this.mNewDatabaseSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewDatabaseSource;
+            }
+        }
+        
+        public WpfMenuItem NewDropboxSource
+        {
+            get
+            {
+                if ((this.mNewDropboxSource == null))
+                {
+                    this.mNewDropboxSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDropboxSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDropboxSource";
+                    this.mNewDropboxSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewDropboxSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewDropboxSource;
+            }
+        }
+        
+        public WpfMenuItem NewEmailSource
+        {
+            get
+            {
+                if ((this.mNewEmailSource == null))
+                {
+                    this.mNewEmailSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewEmailSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewEmailSource";
+                    this.mNewEmailSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewEmailSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewEmailSource;
+            }
+        }
+        
+        public WpfMenuItem NewDotnetPluginSource
+        {
+            get
+            {
+                if ((this.mNewDotnetPluginSource == null))
+                {
+                    this.mNewDotnetPluginSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDotnetPluginSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewPluginSource";
+                    this.mNewDotnetPluginSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewDotnetPluginSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewDotnetPluginSource;
+            }
+        }
+        
+        public WpfMenuItem NewServerSource
+        {
+            get
+            {
+                if ((this.mNewServerSource == null))
+                {
+                    this.mNewServerSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewServerSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServerSource";
+                    this.mNewServerSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewServerSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewServerSource;
+            }
+        }
+        
+        public WpfMenuItem NewSharepointSource
+        {
+            get
+            {
+                if ((this.mNewSharepointSource == null))
+                {
+                    this.mNewSharepointSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewSharepointSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewSharepointSource";
+                    this.mNewSharepointSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewSharepointSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewSharepointSource;
+            }
+        }
+        
+        public WpfMenuItem NewWebServiceSource
+        {
+            get
+            {
+                if ((this.mNewWebServiceSource == null))
+                {
+                    this.mNewWebServiceSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWebServiceSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewWebSource";
+                    this.mNewWebServiceSource.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNewWebServiceSource.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewWebServiceSource;
+            }
+        }
+        
+        public WpfMenuItem NewCOMPluginSourceMenuItem
+        {
+            get
+            {
+                if ((this.mNewCOMPluginSourceMenuItem == null))
+                {
+                    this.mNewCOMPluginSourceMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewCOMPluginSourceMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewComPluginSource";
+                    this.mNewCOMPluginSourceMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    #endregion
+                }
+                return this.mNewCOMPluginSourceMenuItem;
+            }
+        }
+        
+        public WpfMenuItem NewExchangeSourceMenuItem
+        {
+            get
+            {
+                if ((this.mNewExchangeSourceMenuItem == null))
+                {
+                    this.mNewExchangeSourceMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewExchangeSourceMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewExchangeSource";
+                    this.mNewExchangeSourceMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    #endregion
+                }
+                return this.mNewExchangeSourceMenuItem;
+            }
+        }
+        
+        public WpfMenuItem NewRabbitMQSourceMenuItem
+        {
+            get
+            {
+                if ((this.mNewRabbitMQSourceMenuItem == null))
+                {
+                    this.mNewRabbitMQSourceMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewRabbitMQSourceMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewRabbitMqSource";
+                    this.mNewRabbitMQSourceMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    #endregion
+                }
+                return this.mNewRabbitMQSourceMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mNewDatabaseSource;
+        
+        private WpfMenuItem mNewDropboxSource;
+        
+        private WpfMenuItem mNewEmailSource;
+        
+        private WpfMenuItem mNewDotnetPluginSource;
+        
+        private WpfMenuItem mNewServerSource;
+        
+        private WpfMenuItem mNewSharepointSource;
+        
+        private WpfMenuItem mNewWebServiceSource;
+        
+        private WpfMenuItem mNewCOMPluginSourceMenuItem;
+        
+        private WpfMenuItem mNewExchangeSourceMenuItem;
+        
+        private WpfMenuItem mNewRabbitMQSourceMenuItem;
         #endregion
     }
     
@@ -65287,10 +65466,24 @@ namespace Warewolf.UITests
                 return this.mUnsavedWorkflowLinkText;
             }
         }
+        
+        public HttpLocalHostText HttpLocalHostText
+        {
+            get
+            {
+                if ((this.mHttpLocalHostText == null))
+                {
+                    this.mHttpLocalHostText = new HttpLocalHostText(this);
+                }
+                return this.mHttpLocalHostText;
+            }
+        }
         #endregion
         
         #region Fields
         private UnsavedWorkflowLinkText mUnsavedWorkflowLinkText;
+        
+        private HttpLocalHostText mHttpLocalHostText;
         #endregion
     }
     
@@ -65326,6 +65519,40 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfHyperlink mHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HttpLocalHostText : WpfText
+    {
+        
+        public HttpLocalHostText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink NewWorkflowHyperLink
+        {
+            get
+            {
+                if ((this.mNewWorkflowHyperLink == null))
+                {
+                    this.mNewWorkflowHyperLink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mNewWorkflowHyperLink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewWorkflowHyperLink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mNewWorkflowHyperLink;
         #endregion
     }
     
@@ -95762,6 +95989,239 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mOKButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                {
+                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                }
+                return this.mUIDev2StudioViewModelsTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    {
+        
+        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentDockManagerCustom UIContentDockManagerCustom
+        {
+            get
+            {
+                if ((this.mUIContentDockManagerCustom == null))
+                {
+                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
+                }
+                return this.mUIContentDockManagerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentDockManagerCustom mUIContentDockManagerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIContentDockManagerCustom : WpfCustom
+    {
+        
+        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
+        {
+            get
+            {
+                if ((this.mUIUI_WorkflowDesigner_Custom == null))
+                {
+                    this.mUIUI_WorkflowDesigner_Custom = new UIUI_WorkflowDesigner_Custom(this);
+                }
+                return this.mUIUI_WorkflowDesigner_Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_WorkflowDesigner_Custom mUIUI_WorkflowDesigner_Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_WorkflowDesigner_Custom : WpfCustom
+    {
+        
+        public UIUI_WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfPane UIScrollViewerPane
+        {
+            get
+            {
+                if ((this.mUIScrollViewerPane == null))
+                {
+                    this.mUIScrollViewerPane = new WpfPane(this);
+                    #region Search Criteria
+                    this.mUIScrollViewerPane.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+                    this.mUIScrollViewerPane.SearchProperties[WpfPane.PropertyNames.AutomationId] = "ScrollViewer";
+                    this.mUIScrollViewerPane.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIScrollViewerPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfPane mUIScrollViewerPane;
         #endregion
     }
 }
