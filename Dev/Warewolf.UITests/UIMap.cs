@@ -864,12 +864,20 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [When(@"I Click Localhost")]
+        [Then(@"I Click Localhost")]
+        [Given(@"I Click Localhost")]
+        public void Click_LocalHost_Once()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
-      
+
         [When(@"I Filter the ToolBox with ""(.*)""")]
         public void Filter_ToolBox(string FilterText)
         {
@@ -6028,7 +6036,7 @@ namespace Warewolf.UITests
         public void Rename_FolderItem_ToNewFolderItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = "Control Flow - Decision2";
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
@@ -6037,7 +6045,7 @@ namespace Warewolf.UITests
         public void Rename_LocalFolder_To_SecondFolder()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "Example";
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
@@ -6388,7 +6396,7 @@ namespace Warewolf.UITests
         [When(@"I Select Action From PostgreTool")]
         public void Select_Action_From_PostgreTool()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(119, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox, new Point(114, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.LargeDataGridTable.Enabled, "Inputs grid is not enabled after selecting an Action.");
         }
@@ -6558,7 +6566,7 @@ namespace Warewolf.UITests
         [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
         public void Select_NewDatabaseSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(72, 14));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(72, 14));
         }
 
         [When(@"I Select NewDatabaseSource FromSqlServerTool")]
@@ -6573,7 +6581,7 @@ namespace Warewolf.UITests
         [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
         public void Select_NewDropboxSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDropboxSource, new Point(119, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDropboxSource, new Point(119, 15));
         }
 
         [When(@"I Select NewEmailSource FromExplorerContextMenu")]
@@ -6595,13 +6603,13 @@ namespace Warewolf.UITests
         [When(@"I Select NewServerSource FromExplorerContextMenu")]
         public void Select_NewServerSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewServerSource, new Point(44, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewServerSource, new Point(44, 13));
         }
 
         [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
         public void Select_NewSharepointSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewSharepointSource, new Point(126, 17));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource, new Point(126, 17));
         }
 
         [When(@"I Select NewSharepointSource FromServer Lookup")]
@@ -6635,7 +6643,7 @@ namespace Warewolf.UITests
         [When(@"I Select NewWebSource FromExplorerContextMenu")]
         public void Select_NewWebSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWebServiceSource, new Point(82, 20));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource, new Point(82, 20));
         }
 
         [When(@"I Select NewWorkflow FromExplorerContextMenu")]
@@ -6992,8 +7000,8 @@ namespace Warewolf.UITests
         public void Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem, new Point(94, 11));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem, new Point(90, 7));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
             Playback.Wait(2000);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
@@ -7056,5 +7064,76 @@ namespace Warewolf.UITests
             Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
             Assert.IsTrue(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
         }
+
+        /// <summary>
+        /// Create_New_Folder_Using_Shortcut - Use 'Create_New_Folder_Using_ShortcutParams' to pass parameters into this method.
+        /// </summary>
+        public void Create_New_Folder_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Mouse.Click(localhost, new Point(74, 8));
+
+            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
+        }
+
+        
+        public void Create_New_Workflow_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Mouse.Click(localhost, new Point(74, 8));
+
+            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
+        }
+        
+        public void Open_Deploy_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Mouse.Click(localhost, new Point(74, 8));
+
+            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Keyboard.SendKeys(localhost, "D", (ModifierKeys.Control));
+        }
+
+        public virtual Create_New_Folder_Using_ShortcutParams Create_New_Folder_Using_ShortcutParams
+        {
+            get
+            {
+                if ((this.mCreate_New_Folder_Using_ShortcutParams == null))
+                {
+                    this.mCreate_New_Folder_Using_ShortcutParams = new Create_New_Folder_Using_ShortcutParams();
+                }
+                return this.mCreate_New_Folder_Using_ShortcutParams;
+            }
+        }
+
+        private Create_New_Folder_Using_ShortcutParams mCreate_New_Folder_Using_ShortcutParams;
+    }
+    /// <summary>
+    /// Parameters to be passed into 'Create_New_Folder_Using_Shortcut'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Create_New_Folder_Using_ShortcutParams
+    {
+
+        #region Fields
+        /// <summary>
+        /// Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+        /// </summary>
+        public string UIWarewolfStudioViewMoTreeItemSendKeys = "f";
+        #endregion
     }
 }
