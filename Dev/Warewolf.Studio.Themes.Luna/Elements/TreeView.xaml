@@ -320,6 +320,13 @@
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
+            <EventTrigger RoutedEvent="TreeViewItem.MouseUp">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="Transparent" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
             </Trigger>
