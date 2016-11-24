@@ -150,7 +150,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.And("I Select NewDatabaseSource FromSqlServerTool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.And("I Enter Testing DB Server Address Into New DB Source Wizard", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Type rsaklfsvrgen into DB Source Wizard Server Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.And("I Click DB Source Wizard Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
