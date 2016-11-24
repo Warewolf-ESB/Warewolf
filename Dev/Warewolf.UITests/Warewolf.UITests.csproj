@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Workflow\WorkflowUITests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
