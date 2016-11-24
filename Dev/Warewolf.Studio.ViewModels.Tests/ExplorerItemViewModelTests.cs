@@ -1346,17 +1346,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var childMockVersion = new Mock<IExplorerItemViewModel>();
             childMockVersion.SetupGet(it => it.ResourceType).Returns("Version");
+            childMockVersion.SetupGet(it => it.ResourceName).Returns("ResourceVersion");
             childMockVersion.SetupGet(it => it.IsVisible).Returns(true);
             var childMockMessage = new Mock<IExplorerItemViewModel>();
             childMockMessage.SetupGet(it => it.ResourceType).Returns("Message");
+            childMockMessage.SetupGet(it => it.ResourceName).Returns("ResourceMessage");
             childMockMessage.SetupGet(it => it.IsVisible).Returns(true);
             var childMockFolder = new Mock<IExplorerItemViewModel>();
             childMockFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childMockFolder.SetupGet(it => it.ResourceName).Returns("ResourceFolder");
             childMockFolder.SetupGet(it => it.IsVisible).Returns(true);
             childMockFolder.SetupGet(it => it.IsFolder).Returns(true);
             childMockFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childMockServer = new Mock<IExplorerItemViewModel>();
             childMockServer.SetupGet(it => it.ResourceType).Returns("Server");
+            childMockServer.SetupGet(it => it.ResourceName).Returns("ResourceServer");
             childMockServer.SetupGet(it => it.IsVisible).Returns(true);
 
             _target.AddChild(childMockVersion.Object);
@@ -1540,13 +1544,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;
             _target.Children.Add(child);
-            var propertyRaised = false;
-            _target.PropertyChanged += (sender, e) => { propertyRaised = e.PropertyName == "Children"; };
+            bool wasCalled = false;
+            _target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Children")
+                {
+                    wasCalled = true;
+                }
+            };
             //act
             _target.RemoveChild(child);
             //assert
             Assert.IsFalse(_target.Children.Contains(child));
-            Assert.IsTrue(propertyRaised);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]
@@ -1558,13 +1568,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = mockChild.Object;
             
             _target.Children.Clear();
-            var propertyRaised = false;
-            _target.PropertyChanged += (sender, e) => { propertyRaised = e.PropertyName == "Children"; };
+
+            bool wasCalled = false;
+            _target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Children")
+                {
+                    wasCalled = true;
+                }
+            };
+
             //act
             _target.AddChild(child);
             //assert
             Assert.IsTrue(_target.Children.Contains(child));
-            Assert.IsTrue(propertyRaised);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]
@@ -1574,6 +1592,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var id = Guid.NewGuid();
             var childSameId = new Mock<IExplorerItemViewModel>();
             childSameId.SetupGet(it => it.ResourceId).Returns(id);
+            childSameId.SetupGet(it => it.ResourceName).Returns("ResourceName");
             childSameId.SetupGet(it => it.IsVisible).Returns(true);
             var childDifferentId = new Mock<IExplorerItemViewModel>();
             childDifferentId.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid);
