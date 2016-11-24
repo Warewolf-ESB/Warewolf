@@ -46,16 +46,6 @@ namespace Warewolf.UITests.Tools.Data
 
         [TestMethod]
         [TestCategory("Data Tools")]
-        public void AssignToolOpenAndCloseLargeViewWithExpandAllToggleUITest()
-        {
-            UIMap.Click_Workflow_ExpandAll();
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists, "Assign tool large view does not exist after clicking expand all toggle button.");
-            UIMap.Click_Workflow_CollapseAll();
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Assign tool small view does not exist after clicking collapse all toggle button.");
-        }
-
-        [TestMethod]
-        [TestCategory("Data Tools")]
         public void AssignDeleteToolUITest()
         {
             UIMap.Delete_Assign_With_Context_Menu();
