@@ -121,6 +121,7 @@
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
                       PreviewMouseMove="Tree_MouseMove"
                       SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
+                      KeyboardNavigation.TabNavigation="Continue"
                       KeyUp="ExplorerTree_OnKeyUp"
                       Drop="DropTree_Drop"
                       DragOver="ExplorerTree_OnDragOver"
@@ -232,8 +233,7 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               ToolTipService.ShowOnDisabled="True"
                                               IsEnabled="{Binding CanDeploy}"
-                                              ToolTip="{Binding DeployTooltip}"
-                                              Visibility="Collapsed">
+                                              ToolTip="{Binding DeployTooltip}">
                                         <MenuItem.Icon>
                                             <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                                         </MenuItem.Icon>

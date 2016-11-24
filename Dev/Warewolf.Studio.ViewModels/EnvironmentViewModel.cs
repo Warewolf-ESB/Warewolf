@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canViewApisJson;
         private string _viewApisJsonTooltip;
         private string _serverVersionTooltip;
+        private bool _canDeploy;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -150,6 +151,11 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 
+            DeployCommand = new DelegateCommand(() =>
+            {
+                shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new [] { this }));
+            });
+
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () =>
             {
@@ -182,6 +188,7 @@ namespace Warewolf.Studio.ViewModels
             AllowEdit = server.AllowEdit;
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
             CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
+            CanDeploy = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
             CreateFolderCommand = new DelegateCommand(CreateFolder);
             Parent = null;
             ResourceType = @"ServerSource";
@@ -438,7 +445,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = permissions.Contribute;
             CanCreateWorkflowService = permissions.Contribute;
             CanDelete = false;
-            CanDeploy = false;
+            CanDeploy = permissions.DeployFrom;
             CanRename = false;
             CanRollback = false;
             CanShowVersions = false;
@@ -695,7 +702,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanDeploy { get; set; }
+        public bool CanDeploy
+        {
+            get { return _canDeploy; }
+            set
+            {
+                _canDeploy = value;
+                OnPropertyChanged(() => CanDeploy);
+            }
+        }
 
         public bool CanShowVersions
         {
