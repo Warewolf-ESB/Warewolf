@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                tempChildren.Insert(0, child);
+                tempChildren.Insert(0, child);               
             }
             _children = tempChildren;
             OnPropertyChanged(() => Children);
@@ -1534,8 +1534,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 destination.AddChild(this);
-                // ReSharper disable once PossibleNullReferenceException
-                Parent.RemoveChild(this);
+                Parent?.RemoveChild(this);
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
@@ -1544,16 +1543,13 @@ namespace Warewolf.Studio.ViewModels
                     destination.RemoveChild(this);
                     return false;
                 }
+                Parent = destination;
                 UpdateResourcePaths(destination);
             }
             catch (Exception ex)
             {
                 ShowErrorMessage(ex.Message, Resources.Languages.Core.ExplorerMoveFailedHeader);
                 return false;
-            }
-            finally
-            {
-                //Server.UpdateRepository.FireItemSaved(true);
             }
             return true;
         }
@@ -1568,7 +1564,6 @@ namespace Warewolf.Studio.ViewModels
                     if (destfolder != null)
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
-                        destfolder.Parent = destination;
 
                         var resourcePath = destfolder.ResourcePath;
                         foreach (var explorerItemViewModel in Children)
@@ -1582,15 +1577,12 @@ namespace Warewolf.Studio.ViewModels
                     foreach (var explorerItemViewModel in Children)
                     {
                         explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                        explorerItemViewModel.Parent = destination;
                     }
                 }
             }
             else if (destination.ResourceType == "ServerSource")
             {
                 ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
-                Parent = destination;
-                Parent.Children.Add(this);
             }
         }
 
