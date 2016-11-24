@@ -1697,12 +1697,12 @@ namespace Warewolf.UITests
         }
 
 
-        public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
+        public void Select_Service_From_Service_Picker(string serviceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
             Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(5, 5));
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
-            if (inSubFolder)
+            if (ControlExistsNow(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1))
             {
                 Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
             }
