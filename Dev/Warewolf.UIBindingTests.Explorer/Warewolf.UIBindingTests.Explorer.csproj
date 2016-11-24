@@ -285,6 +285,10 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+      <Project>{CC1B89CD-3222-4019-A0D1-58664F92CC47}</Project>
+      <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{cb0f5535-5e1d-41f9-a23c-f59fdc816b75}</Project>
       <Name>Warewolf.AcceptanceTesting.Core</Name>

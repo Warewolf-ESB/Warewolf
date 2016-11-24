@@ -1181,6 +1181,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
 
+            // ReSharper disable once PossibleNullReferenceException
             _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
