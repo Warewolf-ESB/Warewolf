@@ -118,6 +118,7 @@
                       PreviewMouseLeftButtonUp="ExplorerTree_OnPreviewMouseLeftButtonUp"
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
                       PreviewMouseMove="Tree_MouseMove"
+                      SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
                       Drop="DropTree_Drop"
                       DragEnter="DropTree_DragEnter"
                       DragOver="ExplorerTree_OnDragOver"
@@ -128,6 +129,7 @@
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
+                        <EventSetter Event="KeyDown" Handler="TreeViewItem_KeyDown"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
@@ -425,12 +427,12 @@
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                         </TextBlock>
-                                        <TextBox GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
-                                                 Style="{StaticResource ExplorerEditTextBoxStyle}"
+                                        <TextBox Style="{StaticResource ExplorerEditTextBoxStyle}"
                                                  Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"
                                                  HorizontalAlignment="Stretch"
                                                  HorizontalContentAlignment="Stretch"
-                                                 customControls:TextBoxBehavior.SelectAllTextOnFocus="True"
+                                                 IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                                 LostFocus="UIElement_OnLostFocus"
                                                  KeyDown="UIElement_OnKeyDown"
                                                  Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
