@@ -246,13 +246,9 @@
         <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding SaveAllCommand}" Key="S" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
         <KeyBinding Command="{Binding QuickDebugCommand}" Key="F6" />
         <KeyBinding Command="{Binding QuickViewInBrowserCommand}" Key="F7" />
-        <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding NewServiceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding SchedulerCommand}" Key="S" Modifiers="Alt" />
     </Window.InputBindings>
 
     <!--  START OF LAYOUT  -->
