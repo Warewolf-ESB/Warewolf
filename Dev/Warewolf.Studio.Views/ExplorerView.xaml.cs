@@ -162,12 +162,7 @@ namespace Warewolf.Studio.Views
         private void ExplorerTree_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isDragging = false;
-        }
-
-        void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            textBox?.SelectAll();
+            _canDrag = false;
         }
 
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
@@ -178,6 +173,24 @@ namespace Warewolf.Studio.Views
                 var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
                 if (explorerItemViewModel != null)
                     explorerItemViewModel.IsRenaming = false;
+            }
+        }
+
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel != null)
+                explorerItemViewModel.IsRenaming = false;
+        }
+
+        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                var textBox = sender as TextBox;
+                textBox?.SelectAll();
+                Keyboard.Focus(textBox);
             }
         }
 
@@ -220,6 +233,31 @@ namespace Warewolf.Studio.Views
                     _canDrag = true;
                     // Store the mouse position
                     _startPoint = e.GetPosition(null);
+                }
+            }
+        }
+
+        private void ExplorerTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var treeView = sender as TreeView;
+            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
+            if (singleEnvironmentExplorerViewModel != null)
+            {
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
+            }
+        }
+
+        private void TreeViewItem_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+                if (treeViewItem != null && treeViewItem.IsSelected)
+                {
+                    var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+                    if (explorerItemViewModel != null)
+                        explorerItemViewModel.IsRenaming = true;
                 }
             }
         }
