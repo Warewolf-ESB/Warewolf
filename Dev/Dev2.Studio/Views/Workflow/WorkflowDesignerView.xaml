@@ -162,6 +162,9 @@
             </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding NewServiceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
+    </UserControl.InputBindings>
 
 
     <Grid cal:Bind.Model="{Binding ., IsAsync=True}">
