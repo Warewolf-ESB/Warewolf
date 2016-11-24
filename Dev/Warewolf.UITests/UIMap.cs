@@ -6041,6 +6041,18 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
         [When(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
@@ -7080,7 +7092,19 @@ namespace Warewolf.UITests
             // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
+        
+        public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
 
+            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Mouse.Click(firstItem, new Point(74, 8));
+
+            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
+        }
         
         public void Create_New_Workflow_Using_Shortcut()
         {

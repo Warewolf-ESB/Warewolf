@@ -6,6 +6,8 @@ namespace Warewolf.UITests.Workflow
     [CodedUITest]
     public class WorkflowUITests
     {
+        private const string Folder = "Acceptance Tests";
+
         [TestMethod]
         public void Shortcut_Control_W_Opens_NewWorkflow()
         {
@@ -16,11 +18,13 @@ namespace Warewolf.UITests.Workflow
 
         [TestMethod]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
-        {
-            UIMap.Filter_Explorer("Acceptance Tests");
+        {            
+            UIMap.Filter_Explorer(Folder);
             UIMap.Click_Explorer_Localhost_First_Item();
-            UIMap.Create_New_Workflow_Using_Shortcut();
+            UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
         }
 
         [TestMethod]
