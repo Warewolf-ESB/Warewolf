@@ -26,6 +26,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.ExtMethods;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -304,6 +305,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (saveResource != null && !saveResource.HasError)
             {
                 _environmentModel.FireWorkflowSaved();
+                var connection = _environmentModel.Connection;
+                var comsController = new CommunicationController();
+                comsController.FetchResourceAffectedMessages(connection, instanceObj.ID).WaitWithPumping();
             }
             return saveResource;
         }

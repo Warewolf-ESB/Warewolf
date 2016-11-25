@@ -123,7 +123,6 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
-                EsbProxy.On<string>("ReceiveResourcesAffectedMemo", OnReceiveResourcesAffectedMemo);
                 EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
@@ -135,8 +134,10 @@ namespace Dev2.Network
         }
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
-        void OnReceiveResourcesAffectedMemo(string objString)
+
+        public async Task FetchResourcesAffectedMemo(Guid resourceId)
         {
+            var objString = await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId);
             var obj = _serializer.Deserialize<CompileMessageList>(objString);
             ReceivedResourceAffectedMessage?.Invoke(obj.ServiceID, obj);
         }
