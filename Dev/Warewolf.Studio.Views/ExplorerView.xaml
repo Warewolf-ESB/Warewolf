@@ -136,6 +136,7 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[Ctrl+W]"
                                               IsEnabled="{Binding CanCreateWorkflowService}"
+                                  FontWeight="SemiBold"
                                               ToolTip="{Binding NewServiceTooltip}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
@@ -299,18 +300,25 @@
                         <MenuItem Name="Open"
 								  Command="{Binding OpenCommand}"
 								  CommandParameter="WorkflowService"
-								  IsEnabled="{Binding CanView}" 
 								  ToolTip="{Binding OpenTooltip}">
                             <MenuItem.Style>
                                 <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                     <Setter Property="Header" Value="Open"></Setter>
+                                    <Setter Property="FontWeight" Value="SemiBold"></Setter>
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding IsFolder}" Value="True"/>
                                                 <Condition Binding="{Binding IsExpanded}" Value="True"/>
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="Header" Value="Close" />
+                                            <Setter Property="Header" Value="Collapse" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Header" Value="Expand" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
