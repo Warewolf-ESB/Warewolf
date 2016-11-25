@@ -254,7 +254,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
                     var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count>0);
-                    if (hasOutputs.HasValue && hasOutputs.Value)
+                    if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
                     {
                         AddOutputs(outputs, serviceTestStep);
                     }
