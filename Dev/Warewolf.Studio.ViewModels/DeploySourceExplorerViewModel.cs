@@ -217,8 +217,16 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="selectedItems"></param>
         private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
-            SelectedEnvironment.AsList()
-                .Apply(a => a.IsResourceChecked = selectedItems.Contains(a));
+            var count = SelectedEnvironment.AsList().Count + 1;
+            var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
+            var count1 = explorerTreeItems.Length;
+
+            if (count == count1)
+            {
+                SelectedEnvironment.IsResourceChecked = true;
+            }
+
+            SelectedEnvironment.AsList().Apply(a => a.IsResourceChecked = explorerTreeItems.Contains(a));
         }
 
         #endregion
