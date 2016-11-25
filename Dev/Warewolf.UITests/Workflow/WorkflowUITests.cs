@@ -17,6 +17,28 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        public void Shortcut_Control_S_Opens_SaveWorkflow_Dialog_For_New_Workflows()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Save_Workflow_Using_Shortcut();
+            Assert.IsTrue(UIMap.SaveDialogWindow.Exists);
+            UIMap.Click_SaveDialog_CancelButton();
+            UIMap.Click_Close_Workflow_Tab_Button();            
+            UIMap.Click_MessageBox_No();
+        }
+        [TestMethod]
+        public void Shortcut_Control_S_Saves_Dirty_Workflows()
+        {
+            UIMap.Filter_Explorer("Hello World");
+            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+            UIMap.Save_Workflow_Using_Shortcut();
+            Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+        }
+
+        [TestMethod]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
         {            
             UIMap.Filter_Explorer(Folder);
