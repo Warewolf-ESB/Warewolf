@@ -287,6 +287,11 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.NewPluginSourceCommand(ResourcePath, Server);
             });
 
+            NewComPluginSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewComPluginSourceCommand(ResourcePath, Server);
+            });
+
             NewWebSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewWebSourceCommand(ResourcePath, Server);
@@ -941,6 +946,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewServerCommand { get; set; }
         public ICommand NewDatabaseSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
+        public ICommand NewComPluginSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
