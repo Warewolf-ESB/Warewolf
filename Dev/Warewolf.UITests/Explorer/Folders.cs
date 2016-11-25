@@ -48,8 +48,7 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer("New Folder");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
-
-
+        
         #region Additional test attributes
 
         [TestInitialize()]
