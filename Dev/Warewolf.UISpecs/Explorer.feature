@@ -80,20 +80,8 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Filter the Explorer with "Examples"
    And I RightClick Explorer First Remote Server First Item
    And I Select Delete FromExplorerContextMenu
-   And I Click MessageBox Yes 
+   And I Click MessageBox Yes
 
-
-Scenario: Checking versions 
-  Given The Warewolf Studio is running  
-  When I open "localhost" server
-  And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
-  Then I should see "5" folders
-  And I Setup  "3" Versions to be returned for "localhost\Folder 1\Resource 1"
-  When I Show Version History for "localhost\Folder 1\Resource 1"
-  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
-  When I search for "Resource 1" in explorer
-  Then I should see the path "localhost\Folder 1\Resource 1"
-  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
 
 Scenario: Clear filter
   Given the explorer is visible
@@ -115,18 +103,15 @@ Scenario: Clear filter
   Then I should see the path "localhost\Folder 2"
 
 Scenario: Renaming Folder And Workflow Service on a remote server
-	Given the explorer is visible
-	And I connect to "Remote Connection Integration" server
-    And I open "Remote Connection Integration" server
-	When I rename "Remote Connection Integration\Folder 2" to "Folder New"
-	Then I should see "18" children for "Folder New"
-	When I open Resource "Folder New"
-	And I create the "Remote Connection Integration\Folder New\Resource 1" of type "WorkflowService" 
-	And I create the "Remote Connection Integration\Folder New\Resource 2" of type "WorkflowService" 
-	Then I should see the path "Remote Connection Integration\Folder New"
-	Then I should see the path "Remote Connection Integration\Folder New\Resource 1"
-	And I should not see the path "Remote Connection Integration\Folder 2"
-	When I rename "Remote Connection Integration\Folder New\Resource 1" to "WorkFlow1"	
-	Then I should see the path "Remote Connection Integration\Folder New\WorkFlow1"
-	When I rename "Remote Connection Integration\Folder New\Resource 2" to "WorkFlow1"	
-	Then Conflict error message occurs
+	Given The Warewolf Studio is running 
+	When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+    And I Click Explorer Connect Remote Server Button
+    And I Wait For Explorer First Remote Server Spinner
+    And I Filter the Explorer with "Examples"
+	When I Rename First Remote Resource FromContextMenu to "Renamed"
+	And I Click Explorer Filter Clear Button
+	When I Filter the Explorer with "Renamed"
+	And I Rename LocalFolder To SecondFolder
+	And I Rename FolderItem ToNewFolderItem
+	And I Wait For Explorer Localhost Spinner
+	

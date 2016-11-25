@@ -6070,6 +6070,18 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Remote_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
         [When(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
@@ -6085,6 +6097,19 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
         }
+
+        [When(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            MainStudioWindow.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.Rename.DrawHighlight();
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
 
         [When(@"I Delete FirstResource FromContextMenu")]
         public void Select_ShowVersionHistory_FromExplorerContextMenu()
