@@ -418,6 +418,7 @@ namespace Dev2.Runtime.Hosting
             MoveVersions(itemToMove, newPath);
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId) });
             _file.Delete($"{DirectoryStructureFromPath(itemToMove.ResourcePath)}.xml");
+            Load(workSpaceId, true);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
