@@ -73,6 +73,6 @@ namespace Dev2.Studio.Core.Interfaces
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
         IHubConnectionWrapper HubConnection { get; }
 
-        Task FetchResourcesAffectedMemo(Guid resourceId);
+        void FetchResourcesAffectedMemo(Guid resourceId);
     }
 }

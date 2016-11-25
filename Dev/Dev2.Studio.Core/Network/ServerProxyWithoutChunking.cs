@@ -135,11 +135,18 @@ namespace Dev2.Network
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
 
-        public async Task FetchResourcesAffectedMemo(Guid resourceId)
+        public void FetchResourcesAffectedMemo(Guid resourceId)
         {
-            var objString = await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId);
-            var obj = _serializer.Deserialize<CompileMessageList>(objString);
-            ReceivedResourceAffectedMessage?.Invoke(obj.ServiceID, obj);
+            if (ReceivedResourceAffectedMessage != null)
+            {
+                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                var obj = _serializer.Deserialize<CompileMessageList>(result);
+                if (obj != null)
+                {
+                    ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
+                }
+            }
+            
         }
 
         void HubConnectionOnClosed()

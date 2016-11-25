@@ -169,7 +169,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
-        public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
+        void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
             
             var msgs = new CompileMessageList { Dependants = new List<string>() };
