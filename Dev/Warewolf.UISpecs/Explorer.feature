@@ -50,6 +50,13 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I RightClick Explorer Localhost First Item
    And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
+   
+ Scenario: Deleting a Folder in localhost
+   Given The Warewolf Studio is running 
+   When I Filter the Explorer with "Examples" 
+   And I RightClick Explorer Localhost First Item
+   And I Select Delete FromExplorerContextMenu
+   And I Click MessageBox Yes 
   
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running  
@@ -65,31 +72,19 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
 
-Scenario: Deleting Resource in localhost Server
-   Given the explorer is visible
-   When I open "localhost" server
-   And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
-   Then I should see "5" folders
-   Then I should see the path "localhost\Folder 1\Resource 1"
-    And I choose to "OK" Any Popup Messages
-   When I delete "localhost\Folder 1\Resource 1"
-   Then I should not see the path "localhost\Folder 1\Resource 1"
+ Scenario: Deleting a Folder in Remote
+   Given The Warewolf Studio is running  
+   When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+   And I Click Explorer Connect Remote Server Button
+   And I Wait For Explorer First Remote Server Spinner
+   And I Filter the Explorer with "Examples"
+   And I RightClick Explorer First Remote Server First Item
+   And I Select Delete FromExplorerContextMenu
+   And I Click MessageBox Yes 
 
-Scenario: Deleting Resource in localhost Server with Tests
-   Given the explorer is visible
-   When I open "localhost" server
-   And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
-   And I create 2 Tests for "localhost\Folder 1\Resource 1"
-   Then "localhost\Folder 1\Resource 1" has 2 tests  
-   Then I should see "5" folders
-   Then I should see the path "localhost\Folder 1\Resource 1"
-    And I choose to "OK" Any Popup Messages
-   When I delete "localhost\Folder 1\Resource 1"
-   Then I should not see the path "localhost\Folder 1\Resource 1"
-   And "localhost\Folder 1\Resource 1" has 0 tests
 
 Scenario: Checking versions 
-  Given the explorer is visible
+  Given The Warewolf Studio is running  
   When I open "localhost" server
   And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
   Then I should see "5" folders

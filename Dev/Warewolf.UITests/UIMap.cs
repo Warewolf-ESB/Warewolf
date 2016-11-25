@@ -6086,6 +6086,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
         }
 
+        [When(@"I Delete FirstResource FromContextMenu")]
+        public void Select_ShowVersionHistory_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowVersionHistory);
+        }
+
         [When(@"I Duplicate FirstResource FromContextMenu")]
         public void Duplicate_FirstResource_FromContextMenu()
         {
