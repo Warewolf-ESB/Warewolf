@@ -115,9 +115,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To assign a value to a variable, put the value in here.
-        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
+        ///   Looks up a localized string similar to To assign a value to a variable, put the value in here.
+        ///= as the first character for maths e.g. =[[qty]]*[[price]].
         /// </summary>
         public static string AssignToolTipNewValue {
             get {
@@ -9637,7 +9636,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv.
+        ///   Looks up a localized string similar to function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv math.
         /// </summary>
         public static string Tool_Utility_Aggregate_Calculate_Tags {
             get {
@@ -9646,7 +9645,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add subtract minus maths divide power compute excel exel.
+        ///   Looks up a localized string similar to add subtract minus maths divide power compute excel exel math times multiply plus equal equals.
         /// </summary>
         public static string Tool_Utility_Calculate_Tags {
             get {
