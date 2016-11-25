@@ -672,6 +672,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         RegularActivityAssertion(dataObject, stepToBeAsserted);
                     }
                 }
+                else
+                {
+                    stepToBeAsserted.Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestPassed
+                    };
+                }
             }
         }
 
@@ -910,10 +917,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
+            if (output == null)
+            {
+                var testResult = new TestRunResult();
+                testResult.RunTestResult = RunResult.TestPassed;
+                return new List<TestRunResult> {testResult};
+            }
             if (output.Result != null)
             {
                 output.Result.RunTestResult = RunResult.TestInvalid;
             }
+
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
 
@@ -1053,6 +1067,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
 
+            var type = GetType();
+            string typeName = type.Name;
+            
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
@@ -1060,7 +1077,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
-                ActualType = GetType().Name,
+                ActualType = typeName,
                 StartTime = startTime ?? DateTime.Now,
                 EndTime = endTime ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
@@ -1216,7 +1233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugAssertResultItem(DebugOutputBase parameters)
         {
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(parameters.GetDebugItemResult());
+            itemToAdd.AddRange(parameters.GetDebugItemResult());            
             _debugState.AssertResultList.Add(itemToAdd);
         }
 
