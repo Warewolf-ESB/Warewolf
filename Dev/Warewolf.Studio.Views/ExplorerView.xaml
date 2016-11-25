@@ -649,6 +649,7 @@
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
+                        <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
@@ -658,7 +659,6 @@
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="44" />
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0"
@@ -701,7 +701,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </StackPanel>
-                            <TextBlock Margin="4,0,0,0"
+                            <TextBlock Margin="4,0,5,0"
                                        Grid.Column="2"
                                        FontSize="12"
                                        Padding="0,4,0,4"
@@ -783,7 +783,7 @@
                                         </StackPanel.Style>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
-                                               Margin="4,0,0,0"
+                                               Margin="4,0,5,0"
                                                FontSize="12"
                                                Padding="0,4,0,4"
                                                Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}">

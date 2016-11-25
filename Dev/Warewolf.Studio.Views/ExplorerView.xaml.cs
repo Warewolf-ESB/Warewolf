@@ -129,17 +129,25 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerTree_OnDragEnter(object sender, DragEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            if (_canDrag)
             {
-                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                var treeView = sender as TreeView;
-                var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
                 {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
+                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                    var treeView = sender as TreeView;
+                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+                    if (itemViewModel != null &&
+                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                    }
                 }
                 else
                 {
@@ -148,23 +156,32 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                e.Effects = DragDropEffects.Copy;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
         }
 
         private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            if (_canDrag)
             {
-                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                var treeView = sender as TreeView;
-                var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
                 {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
+                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                    var treeView = sender as TreeView;
+                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+                    if (itemViewModel != null &&
+                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                    }
                 }
                 else
                 {
@@ -173,7 +190,8 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                e.Effects = DragDropEffects.Copy;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
         }
 
@@ -368,6 +386,11 @@ namespace Warewolf.Studio.Views
                     mainViewModel?.NewServiceCommand.Execute(null);
                 }
             }
+        }
+
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
