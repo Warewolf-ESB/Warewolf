@@ -4,7 +4,7 @@ Feature: DBConnector
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-Scenario: DB Connector
+Scenario: Create and Execute New DB Connector With Variables
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click New Database Source Ribbon Button
@@ -15,7 +15,8 @@ Scenario: DB Connector
 	And I Click UserButton On Database Source
 	And I Enter RunAsUser Username And Password on Database source
 	And I Click DB Source Wizard Test Connection Button
-	And I Select Dev2TestingDB From DB Source Wizard Database Combobox
+	Given The DB Source Wizard Test Succeeded Image Is Visible
+	When I Select Dev2TestingDB From DB Source Wizard Database Combobox
 	And I Save With Ribbon Button And Dialog As "UITestingDBSource"
 	And I Click Close DB Source Wizard Tab Button
 	And I Drag Toolbox SQL Server Tool Onto DesignSurface
@@ -35,11 +36,9 @@ Scenario: DB Connector
 Scenario: Create DB Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	When I Drag Toolbox SQL Server Tool Onto DesignSurface
+	And I Drag Toolbox SQL Server Tool Onto DesignSurface
 	And I Select NewDatabaseSource FromSqlServerTool
 	And I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox
 	And I Click DB Source Wizard Test Connection Button
-	And I Click Close DB Source Wizard Tab Button
-	And I Click Close Workflow Tab Button
-	And I Click MessageBox No
+	Then The DB Source Wizard Test Succeeded Image Is Visible
 	

@@ -1363,7 +1363,15 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is not visible.");
         }
 
-        [When(@"I Deploy ""(.*)"" From Deploy View")]
+        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
+        {
+            var point = new Point();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
+        }
+
+       [When(@"I Deploy ""(.*)"" From Deploy View")]
         public void Deploy_Service_From_Deploy_View(string ServiceName)
         {
             TryClickMessageBoxOK();

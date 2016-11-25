@@ -91,11 +91,12 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
-            UIMap.Press_F6();
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.DrawHighlight();
-            UIMap.Click_Create_Test_From_Debug();
-            UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
+            //UIMap.Press_F6();
+            //UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.DrawHighlight();
+            //UIMap.Click_Create_Test_From_Debug();
+            //UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
+            //UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DrawHighlight();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.Failed.Exists);
         }
 
@@ -108,8 +109,8 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif            
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            //UIMap.Filter_Explorer(HelloWorld);
+            //UIMap.Open_Explorer_First_Item_With_Context_Menu();
         }
 
         UIMap UIMap
