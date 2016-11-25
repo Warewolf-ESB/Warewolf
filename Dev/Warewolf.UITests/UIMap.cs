@@ -878,6 +878,13 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
+        [When(@"I Move FirstSubItem Into FirstItem Folder")]
+        public void Move_FirstSubItem_Into_FirstItem_Folder()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
         [Then(@"I have one item in the explorer")]
         public void ExplorerItemCountEquals()
         {
@@ -5520,6 +5527,14 @@ namespace Warewolf.UITests
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
+        }
+
+        [When(@"I Open Explorer First SubItem With Context Menu")]
+        public void Open_Explorer_FirstSubItem_Item_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
