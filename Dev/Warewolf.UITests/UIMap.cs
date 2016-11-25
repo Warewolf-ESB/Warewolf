@@ -3349,6 +3349,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Click Explorer Localhost First Item")]
+        [Given(@"I Click Explorer Localhost First Item")]
+        [Then(@"I Click Explorer Localhost First Item")]
         public void Click_Explorer_Localhost_First_Item()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
@@ -7117,10 +7119,8 @@ namespace Warewolf.UITests
             WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
 
@@ -7130,10 +7130,8 @@ namespace Warewolf.UITests
             WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(firstItem, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
         }
 
@@ -7142,25 +7140,15 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             #endregion
-
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
         }
 
         public void Open_Deploy_Using_Shortcut()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
-            Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
-            Keyboard.SendKeys(localhost, "D", (ModifierKeys.Control));
+            Keyboard.SendKeys("D", (ModifierKeys.Control));
         }
 
         public void Save_Workflow_Using_Shortcut()
@@ -7169,10 +7157,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(flowchart, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
         }
 
