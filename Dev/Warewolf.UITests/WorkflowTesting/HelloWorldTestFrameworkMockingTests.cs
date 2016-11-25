@@ -112,14 +112,6 @@ namespace Warewolf.UITests
             UIMap.Open_Explorer_First_Item_With_Context_Menu();
         }
 
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
-        }
-
         UIMap UIMap
         {
             get
