@@ -330,7 +330,7 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
             </Trigger>
-            <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
+            <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="False">
                 <Setter Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
