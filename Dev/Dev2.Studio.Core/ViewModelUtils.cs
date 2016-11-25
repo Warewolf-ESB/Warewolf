@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -34,7 +35,17 @@ namespace Dev2
                     var command = commandForCanExecuteChange as Microsoft.Practices.Prism.Commands.DelegateCommand;
                     if (command != null)
                     {
-                        command.RaiseCanExecuteChanged();
+                        if(Application.Current != null)
+                        {
+                            if(Application.Current.Dispatcher != null)
+                            {
+                                Application.Current.Dispatcher.BeginInvoke( new Action(() =>
+                                {
+                                    command.RaiseCanExecuteChanged();
+                                }));
+                            }
+                        }
+
                         return;
                     }
                 }

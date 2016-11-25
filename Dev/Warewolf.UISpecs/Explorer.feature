@@ -37,7 +37,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
 	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
 
- Scenario: Deleting a Resource
+ Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
    When I Click New Workflow Ribbon Button
    And I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
@@ -48,6 +48,20 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
+   And I Select Delete FromExplorerContextMenu
+   And I Click MessageBox Yes 
+  
+ Scenario: Deleting a Resource Remote
+   Given The Warewolf Studio is running  
+   When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+   And I Click Explorer Connect Remote Server Button
+   And I Wait For Explorer First Remote Server Spinner
+   And I Click New Workflow Ribbon Button
+   And I Filter the Explorer with "workflow1"
+   And I Drag Explorer Remote workflow1 Onto Workflow Design Surface
+   And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
+   And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
+   And I RightClick Explorer First Remote Server First Item
    And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
 
