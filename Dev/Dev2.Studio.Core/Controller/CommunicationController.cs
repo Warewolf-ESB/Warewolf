@@ -65,7 +65,7 @@ namespace Dev2.Controller
 
         Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
 
-        Task FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId);
+        void FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId);
     }
 
     public class CommunicationController : ICommunicationController
@@ -243,9 +243,9 @@ namespace Dev2.Controller
             }
         }
 
-        public async Task FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId)
+        public void FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId)
         {
-            await connection.FetchResourcesAffectedMemo(resourceId);
+            connection.FetchResourcesAffectedMemo(resourceId);
         }
 
         /// <summary>
