@@ -317,6 +317,7 @@
 
     <Style x:Key="MenuItemStyle" TargetType="MenuItem">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
         <Style.Triggers>
             <Trigger Property="Role" Value="TopLevelHeader">
                 <Setter Property="Template" Value="{StaticResource TopLevelHeaderTemplateKey}"/>
