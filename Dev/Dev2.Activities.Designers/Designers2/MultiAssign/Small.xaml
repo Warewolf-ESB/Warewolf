@@ -96,7 +96,7 @@
                 <DataGridTemplateColumn IsReadOnly="True" Width="20">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="=" VerticalAlignment="Center" />
+                            <TextBlock Text="→" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -12,6 +12,7 @@ namespace Warewolf.UITests
         private const string Message = "Hello There World";
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {
             UIMap.Press_F6();
@@ -19,6 +20,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ClickNewTestWithUnsavedExistingTest()
         {            
             UIMap.Press_F6();
@@ -30,6 +32,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
             UIMap.Press_F6();
@@ -39,6 +42,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void SettingTestStepToMockDoesNotAffectTestOutput()
         {
             UIMap.Press_F6();
@@ -51,6 +55,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
             UIMap.Press_F6();
@@ -61,6 +66,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
             UIMap.Press_F6();
@@ -71,6 +77,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
             UIMap.Press_F6();
@@ -81,6 +88,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
             UIMap.Press_F6();
@@ -102,14 +110,6 @@ namespace Warewolf.UITests
 #endif            
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Open_Explorer_First_Item_With_Context_Menu();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
         }
 
         UIMap UIMap

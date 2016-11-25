@@ -70,12 +70,12 @@ namespace Warewolf.UISpecs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Source From Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Sharepoint Source From Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SharepointConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SharepointConnector")]
-        public virtual void CreateSourceFromTool()
+        public virtual void CreateSharepointSourceFromTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Source From Tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Sharepoint Source From Tool", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
