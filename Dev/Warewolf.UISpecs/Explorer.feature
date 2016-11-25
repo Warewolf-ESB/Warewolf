@@ -32,11 +32,10 @@ Scenario: Deploy and Reverse Deploy View Only Workflow
 
 Scenario: Opening and Editing workflow from Explorer Remote
 	Given The Warewolf Studio is running
-	And I connect to "Remote Connection Integration" server
-	And I open Remote Connection Integration server
-	And I Connect to Remote Connection Integration
+	When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+	And I Click Explorer Connect Remote Server Button
+	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
-	And "Hello World" tab is opened 
 
 
 Scenario: Searching resources by using filter
