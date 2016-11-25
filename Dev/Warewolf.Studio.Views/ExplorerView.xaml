@@ -125,7 +125,8 @@
                       KeyUp="ExplorerTree_OnKeyUp"
                       Drop="DropTree_Drop"
                       DragOver="ExplorerTree_OnDragOver"
-                      DragLeave="ExplorerTree_OnDragLeave">
+                      DragLeave="ExplorerTree_OnDragLeave"
+                      DragEnter="ExplorerTree_OnDragEnter">
                 <TreeView.Resources>
                     <ContextMenu x:Key="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
                                              Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -648,20 +649,6 @@
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
-                        <!--<Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=EnvironmentDataTemplate, Path=IsSelected}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="ContextMenu" Value="{StaticResource ExplorerEnvironmentMenu}" />
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=ExplorerItemDataTemplate, Path=IsSelected}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="ContextMenu" Value="{StaticResource ExplorerContextMenuManager}" />
-                            </MultiDataTrigger>
-                        </Style.Triggers>-->
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>

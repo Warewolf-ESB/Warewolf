@@ -127,6 +127,31 @@ namespace Warewolf.Studio.Views
             }
         }
 
+        private void ExplorerTree_OnDragEnter(object sender, DragEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            {
+                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                var treeView = sender as TreeView;
+                var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+        }
+
         private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
         {
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
