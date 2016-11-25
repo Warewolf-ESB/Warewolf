@@ -69208,6 +69208,18 @@ namespace Warewolf.UITests
                 return this.mCalculateButton;
             }
         }
+        
+        public RecordsetGroup RecordsetGroup
+        {
+            get
+            {
+                if ((this.mRecordsetGroup == null))
+                {
+                    this.mRecordsetGroup = new RecordsetGroup(this);
+                }
+                return this.mRecordsetGroup;
+            }
+        }
         #endregion
         
         #region Fields
@@ -69218,6 +69230,65 @@ namespace Warewolf.UITests
         private WpfButton mBaseConversion1Button;
         
         private WpfButton mCalculateButton;
+        
+        private RecordsetGroup mRecordsetGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RecordsetGroup : WpfExpander
+    {
+        
+        public RecordsetGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RecordsetName
+        {
+            get
+            {
+                if ((this.mRecordsetName == null))
+                {
+                    this.mRecordsetName = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetName.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mRecordsetName.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetName.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRecordsetName;
+            }
+        }
+        
+        public WpfText RecordsetValue
+        {
+            get
+            {
+                if ((this.mRecordsetValue == null))
+                {
+                    this.mRecordsetValue = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetValue.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
+                    this.mRecordsetValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetValue.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRecordsetValue;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRecordsetName;
+        
+        private WpfText mRecordsetValue;
         #endregion
     }
     

@@ -10,7 +10,7 @@ Scenario: Create and Execute New DB Connector With Variables
 	And I Click New Database Source Ribbon Button
 	And I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
-	Then RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
+	Given RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
 	When I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
 	And I Click UserButton On Database Source
 	And I Enter RunAsUser Username And Password on Database source
@@ -30,8 +30,8 @@ Scenario: Create and Execute New DB Connector With Variables
 	And I Click SQL Server Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
-	And I Click Close Workflow Tab Button
-	And I Click MessageBox No
+	And I Expand Debug Output Recordset
+	Then The GetCountries Recordset Is Visible in Debug Output
 
 Scenario: Create DB Source From Tool
 	Given The Warewolf Studio is running

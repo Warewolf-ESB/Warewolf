@@ -15,16 +15,22 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run All Button does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UrlText.Exists, "Test Url does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "Test 1 does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "Test 2 does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Exists, "Test 3 does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "Test 4 does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.Exists, "Create New Test Button does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists, "Decision test step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists, "Assign To Name Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.Exists, "Set The Output Variable Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
         }
         
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void ClickNewTestWithUnsavedExistingTest()
-        {            
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
+        {
             UIMap.Try_Click_Create_New_Tests();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
@@ -35,8 +41,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass,4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.Exists);
         }
@@ -45,8 +49,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void SettingTestStepToMockDoesNotAffectTestOutput()
         {
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_MockRadioButton_On_Decision_TestStep();
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.AssertHeader.Pending.TryGetClickablePoint(out point));
@@ -58,8 +60,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_Delete_On_AssignValue_TestStep();
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point));
@@ -69,8 +69,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
-            UIMap.Press_F6();
-            UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_MockRadioButton_On_AssignValue_TestStep();
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.Pending.TryGetClickablePoint(out point));
@@ -80,9 +78,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
-            UIMap.Press_F6();
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.DrawHighlight();
-            UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_Delete_On_AssignValue_TestStep();
             UIMap.Click_AssigName_From_DesignSurface();
         }
@@ -91,12 +86,8 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
-            //UIMap.Press_F6();
-            //UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.DrawHighlight();
-            //UIMap.Click_Create_Test_From_Debug();
-            //UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
-            //UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DrawHighlight();
+            UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.Failed.Exists);
         }
 
@@ -109,8 +100,10 @@ namespace Warewolf.UITests
 #if !DEBUG
             UIMap.CloseHangingDialogs();
 #endif            
-            //UIMap.Filter_Explorer(HelloWorld);
-            //UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Filter_Explorer(HelloWorld);
+            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
         }
 
         UIMap UIMap

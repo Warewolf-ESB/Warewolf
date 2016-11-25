@@ -17,7 +17,7 @@ namespace Warewolf.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class DBConnectorFeature
     {
         
@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("I Type rsaklfsvrgen into DB Source Wizard Server Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.Then("RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
  testRunner.When("I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
@@ -129,9 +129,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.And("I Click DebugInput Debug Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
- testRunner.And("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Expand Debug Output Recordset", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And("I Click MessageBox No", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("The GetCountries Recordset Is Visible in Debug Output", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
