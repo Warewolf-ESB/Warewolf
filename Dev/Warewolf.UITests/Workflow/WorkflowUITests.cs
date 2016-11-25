@@ -7,6 +7,7 @@ namespace Warewolf.UITests.Workflow
     public class WorkflowUITests
     {
         private const string Folder = "Acceptance Tests";
+        private const string HelloWorld = "Hello World";
 
         [TestMethod]
         public void Shortcut_Control_W_Opens_NewWorkflow()
@@ -54,7 +55,21 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Click_LocalHost_Once();
             UIMap.Open_Deploy_Using_Shortcut();
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            UIMap.Click_Close_Deploy_Tab_Button();
+        }
+
+        [TestMethod]
+        public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
+        {            
+            UIMap.Filter_Explorer(HelloWorld);
+            UIMap.Click_Explorer_Localhost_First_Item();
+            UIMap.Open_Deploy_Using_Shortcut();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+            UIMap.Click_Close_Deploy_Tab_Button();
         }
 
         #region Additional test attributes
