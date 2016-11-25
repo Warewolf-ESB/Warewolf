@@ -10,6 +10,7 @@ namespace Warewolf.UITests
         private const string RandomWorkFlow = "RandomTool WorkFlow";
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -22,6 +23,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugUsingUnsvaceWorkflow()
         {
             UIMap.Click_Create_Test_From_Debug();
@@ -30,6 +32,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -38,6 +41,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -50,6 +54,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void CreateNewTestThenCreateTestFromDebugOutput()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -69,6 +74,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
