@@ -5398,7 +5398,8 @@ namespace Warewolf.UITests
         [When(@"I Open Decision Large View")]
         public void Open_Decision_Large_View()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision, new Point(55, 39));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.DrawHighlight();
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision);
             Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Decision Dialog does not exist after opening large Decision view");
         }
 
@@ -5516,9 +5517,9 @@ namespace Warewolf.UITests
         [When(@"I Open Explorer First Item With Context Menu")]
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
         [When(@"I Open Find Index Tool Large View")]
@@ -7019,6 +7020,14 @@ namespace Warewolf.UITests
         {
             Drag_Toolbox_Comment_Onto_DesignSurface();
         }
+        
+        public void Move_Assign_Message_Tool_On_The_Design_Surface()
+        {
+            var multiAssign1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            multiAssign1.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(multiAssign1, new Point(94, 11));
+            Mouse.StopDragging(multiAssign1, 70, 3);
+        }
 
         [When(@"I Drag Explorer First Sub Item Onto Second Sub Item")]
         public void Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item()
@@ -7152,6 +7161,19 @@ namespace Warewolf.UITests
 
             // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Keyboard.SendKeys(localhost, "D", (ModifierKeys.Control));
+        }
+
+        public void Save_Workflow_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Mouse.Click(flowchart, new Point(74, 8));
+
+            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
         }
 
         public virtual Create_New_Folder_Using_ShortcutParams Create_New_Folder_Using_ShortcutParams
