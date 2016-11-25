@@ -107,17 +107,24 @@ namespace Warewolf.Studio.Views
 
         private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
-            do
+            try
             {
-                var anchestor = current as T;
-                if (anchestor != null)
+                do
                 {
-                    return anchestor;
+                    var anchestor = current as T;
+                    if (anchestor != null)
+                    {
+                        return anchestor;
+                    }
+                    current = VisualTreeHelper.GetParent(current);
                 }
-                current = VisualTreeHelper.GetParent(current);
+                while (current != null);
+                return null;
             }
-            while (current != null);
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
@@ -198,6 +205,18 @@ namespace Warewolf.Studio.Views
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
+                var environmentViewModel = treeViewItem.DataContext as EnvironmentViewModel;
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+                if (environmentViewModel != null)
+                {
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
+                }
+                else if (explorerItemViewModel != null)
+                {
+                    
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
+                }
+
                 treeViewItem.Focus();
                 e.Handled = true;
             }
