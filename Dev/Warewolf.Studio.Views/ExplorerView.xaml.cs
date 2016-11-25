@@ -313,10 +313,15 @@ namespace Warewolf.Studio.Views
         {
             _isDragging = false;
             _canDrag = false;
-            var treeViewItem = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-            if (treeViewItem != null && treeViewItem.IsSelected)
+            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
-                treeViewItem.IsSelected = false;
+                explorerItemViewModel.IsSelected = false;
+            }
+            else if (environmentViewModel != null && environmentViewModel.IsSelected)
+            {
+                environmentViewModel.IsSelected = false;
             }
         }
 
