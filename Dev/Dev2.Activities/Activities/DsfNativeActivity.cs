@@ -674,10 +674,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    stepToBeAsserted.Result = new TestRunResult
+                    if (stepToBeAsserted != null)
                     {
-                        RunTestResult = RunResult.TestPassed
-                    };
+                        stepToBeAsserted.Result = new TestRunResult
+                        {
+                            RunTestResult = RunResult.TestPassed
+                        };
+                    }
                 }
             }
         }
@@ -937,10 +940,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IList<TestRunResult> ret = new List<TestRunResult>();
             var iter = new WarewolfListIterator();
-            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+            var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
-            var c3 = new WarewolfAtomIterator(@from);
+            var c3 = new WarewolfAtomIterator(from);
             if (opt.ArgumentCount > 2)
             {
                 c2 = new WarewolfAtomIterator(to);
@@ -969,7 +973,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val1, val2, val3);
+                    var actMsg = string.Format(msg, val1, variable, val2, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                     if (testResult.Message.EndsWith(Environment.NewLine))
                     {
