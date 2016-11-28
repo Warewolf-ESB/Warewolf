@@ -18,14 +18,14 @@ namespace Dev2.Services.Security
     {
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>
 
+        // ReSharper disable CSharpWarnings::CS1584
         /// <summary>
         /// Determines whether the specified objects are equal.
         /// </summary>
         /// <returns>
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
-        // ReSharper disable CSharpWarnings::CS1584
-        /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+        /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
         // ReSharper restore CSharpWarnings::CS1584
         public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y)
         {
