@@ -2436,7 +2436,7 @@ this.FeatureBackground();
             table95.AddRow(new string[] {
                         "Test 1",
                         "Failed",
-                        "Failed: Assert Equal. Expected \"Hello World.\" for \'Message\' but got \"\""});
+                        "Failed: Assert Equal. Expected \'Hello World.\' for \'Message\' but got \'\'"});
 #line 850
  testRunner.Then("The WebResponse as", ((string)(null)), table95, "Then ");
 #line hidden
