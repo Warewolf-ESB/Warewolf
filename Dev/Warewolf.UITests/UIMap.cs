@@ -5531,6 +5531,19 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
+        [Given(@"I Right Click On The Folder Count")]
+        [When(@"I Right Click On The Folder Count")]
+        [Then(@"I Right Click On The Folder Count")]
+        public void Right_Click_On_The_Folder_Count()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(211, 8));
+        }
+
         [When(@"I Open Explorer First SubItem With Context Menu")]
         public void Open_Explorer_FirstSubItem_Item_With_Context_Menu()
         {

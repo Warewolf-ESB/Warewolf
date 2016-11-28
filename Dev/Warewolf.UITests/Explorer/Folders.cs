@@ -49,6 +49,14 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
         
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
+        {
+            UIMap.Right_Click_On_The_Folder_Count();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Exists);
+        }
+        
         #region Additional test attributes
 
         [TestInitialize()]
