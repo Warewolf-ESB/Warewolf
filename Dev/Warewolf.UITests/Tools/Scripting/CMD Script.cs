@@ -11,9 +11,16 @@ namespace Warewolf.UITests.Tools.Scripting
     {
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CMDScriptToolUITest()
+        public void CMDScriptToolSmallViewUITest()
         {
-            UIMap.Drag_Toolbox_CMD_Line_Onto_DesignSurface();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ScriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after dragging onto design surface.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.SmallViewContent.ResultIntellisenseTextbox.Exists, "CMD script result textbox does not exist after dragging onto design surface.");
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void CMDScriptToolLargeViewUITest()
+        {
             UIMap.Open_CMD_Line_Tool_Large_View();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.ScriptIntellisenseTextbox.Exists, "CMD script textbox does not exist after openning tool large view with double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine.LargeViewContent.PriorityComboBox.Exists, "CMD script priority combobox does not exist after openning tool large view with double click.");
@@ -30,21 +37,8 @@ namespace Warewolf.UITests.Tools.Scripting
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
             UIMap.InitializeABlankWorkflow();
+            UIMap.Drag_Toolbox_CMD_Line_Onto_DesignSurface();
         }
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {
