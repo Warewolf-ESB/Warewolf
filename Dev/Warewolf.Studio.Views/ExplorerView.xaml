@@ -138,7 +138,6 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[Ctrl+W]"
                                               IsEnabled="{Binding CanCreateWorkflowService}"
-                                  FontWeight="SemiBold"
                                               ToolTip="{Binding NewServiceTooltip}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
