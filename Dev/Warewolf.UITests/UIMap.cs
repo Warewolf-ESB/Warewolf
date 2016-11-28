@@ -65,7 +65,11 @@ namespace Warewolf.UITests
             TryCloseHangingErrorDialog();
             TryCloseHangingWebBrowserErrorDialog();
             TryCloseHangingDecisionDialog();
+            TryCloseSettingsTab();
+            TryCloseWorkflowTestingTab();
+            var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
 #endif
         }
 
@@ -639,7 +643,7 @@ namespace Warewolf.UITests
             }
         }
 
-        public void TryCloseWorkflowTabs()
+        public void TryCloseAllWorkflowTabs()
         {
             var workflowTabCloseButtonExists = true;
             while (workflowTabCloseButtonExists)
@@ -876,6 +880,13 @@ namespace Warewolf.UITests
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+        }
+
+        [When(@"I Move FirstSubItem Into FirstItem Folder")]
+        public void Move_FirstSubItem_Into_FirstItem_Folder()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
         [Then(@"I have one item in the explorer")]
@@ -1362,7 +1373,7 @@ namespace Warewolf.UITests
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
         }
 
@@ -1370,10 +1381,18 @@ namespace Warewolf.UITests
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
             var point = new Point();
-            Assert.IsTrue(!MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is visible.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is not visible.");
+        }
+
+        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
+        {
+            var point = new Point();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
         }
 
         [When(@"I Deploy ""(.*)"" From Deploy View")]
@@ -1471,14 +1490,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
             Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
             Assert.IsTrue(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled, "Resource Delete button is disabled");
-        }
-
-        [When(@"I Check Public Contribute")]
-        public void Check_Public_Contribute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is NOT checked after Checking Contribute.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
         }
 
         public void Scroll_Down_Then_Up_On_The_DataMerge_SmallView()
@@ -1718,12 +1729,12 @@ namespace Warewolf.UITests
         }
 
 
-        public void Select_Service_From_Service_Picker(string serviceName, bool inSubFolder = false)
+        public void Select_Service_From_Service_Picker(string serviceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = serviceName;
             Mouse.Click(ServicePickerDialog.Explorer.Refresh, new Point(5, 5));
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
-            if (inSubFolder)
+            if (ControlExistsNow(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1))
             {
                 Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem2.TreeItem1, new Point(73, 12));
             }
@@ -2737,17 +2748,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
         }
 
-        [When(@"I drag a ""(.*)"" tool")]
-        public void WhenIDragATool(string p0)
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = p0;
-            Playback.Wait(1500);
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile, new Point(2, 10));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 126));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.Exists, "Sharepoint tool does not exist on the Design Surface");
-        }
-
         [When(@"I Click UserButton On Database Source")]
         public void WhenIClickUserButtonOnDatabaseSource()
         {
@@ -2935,8 +2935,36 @@ namespace Warewolf.UITests
         public void Check_Public_Administrator()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked, "Public DeployTo checkbox is NOT checked after Checking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked, "Public DeployFrom checkbox is NOT checked after Checking Administrator.");
+        }
+
+        [When(@"I Check Public Deploy To")]
+        public void Check_Public_Deploy_To()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = true;
+        }
+
+        [When(@"I Check Public Deploy From")]
+        public void Check_Public_Deploy_From()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = true;
+        }
+
+        [When(@"I Check Public View")]
+        public void Check_Public_View()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
+        }
+
+        [When(@"I Check Public Execute")]
+        public void Check_Public_Execute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = true;
+        }
+
+        [When(@"I Check Public Contribute")]
+        public void Check_Public_Contribute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
         }
 
         [When(@"I Click AddNew Web Source From PostWeb tool")]
@@ -3148,7 +3176,7 @@ namespace Warewolf.UITests
         public void Click_ConfigureSetting_From_Menu()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.Exists, "Settings tab does not exist after the Configure/Setting Menu button is clicked");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after the Configure/Setting Menu button is clicked");
         }
 
         [When(@"I Click Connect Control InExplorer")]
@@ -3325,6 +3353,7 @@ namespace Warewolf.UITests
         public void Click_EmailSource_TestConnection_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.PassedText.Exists, "Connection test Failed");
         }
 
@@ -3349,6 +3378,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Click Explorer Localhost First Item")]
+        [Given(@"I Click Explorer Localhost First Item")]
+        [Then(@"I Click Explorer Localhost First Item")]
         public void Click_Explorer_Localhost_First_Item()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
@@ -3736,7 +3767,6 @@ namespace Warewolf.UITests
         [When(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
@@ -4021,21 +4051,6 @@ namespace Warewolf.UITests
         public void Click_WebRequest_Tool_Large_View_Done_Button()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton, new Point(35, 6));
-        }
-
-        [When(@"I Click Workflow CollapseAll")]
-        public void Click_Workflow_CollapseAll()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
-        }
-
-        [When(@"I Click Workflow ExpandAll")]
-        public void Click_Workflow_ExpandAll()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Exists, "Expand all button does not exist");
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
 
         [When(@"I Click Write Done Button")]
@@ -5530,6 +5545,27 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
+        [Given(@"I Right Click On The Folder Count")]
+        [When(@"I Right Click On The Folder Count")]
+        [Then(@"I Right Click On The Folder Count")]
+        public void Right_Click_On_The_Folder_Count()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(211, 8));
+        }
+
+        [When(@"I Open Explorer First SubItem With Context Menu")]
+        public void Open_Explorer_FirstSubItem_Item_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
+        }
+
         [When(@"I Open Find Index Tool Large View")]
         public void Open_Find_Index_Tool_Large_View()
         {
@@ -6070,6 +6106,18 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Remote_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
         [When(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
@@ -6085,6 +6133,19 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
         }
+
+        [When(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            MainStudioWindow.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.Rename.DrawHighlight();
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
 
         [When(@"I Delete FirstResource FromContextMenu")]
         public void Select_ShowVersionHistory_FromExplorerContextMenu()
@@ -6993,7 +7054,19 @@ namespace Warewolf.UITests
         public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
+        }
+
+        [Given(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
+        [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
+        public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
+        {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
+        }
+
+        [When(@"I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox")]
+        public void Type_RSAKLFSVRGENDEV_into_DB_Source_Wizard_Server_Textbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
         }
 
         [When(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
@@ -7086,7 +7159,6 @@ namespace Warewolf.UITests
         public void Click_Create_Test_From_Debug()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
 
@@ -7108,7 +7180,7 @@ namespace Warewolf.UITests
 
         public void Click_Delete_On_AssignValue_TestStep()
         {
-            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
         }
 
         [When(@"I Click AssigName From DesignSurface")]
@@ -7119,8 +7191,21 @@ namespace Warewolf.UITests
 
         public void Click_MockRadioButton_On_Decision_TestStep()
         {
-            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
-            Assert.IsTrue(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
+
+        [When(@"I Expand Debug Output Recordset")]
+        public void Expand_Debug_Output_Recordset()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.Expanded = true;
+        }
+
+        [Then(@"The GetCountries Recordset Is Visible in Debug Output")]
+        public void ThenTheDebugOutputShowsGetCountriesRecordset()
+        {
+            Assert.AreEqual("[[dbo_GetCountries(204).CountryID]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText, "Wrong recordset name in debug output for new DB connector.");
+            Assert.AreEqual("155", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetValue.DisplayText, "Wrong recordset value in debug output for new DB connector.");
         }
 
         /// <summary>
@@ -7132,10 +7217,8 @@ namespace Warewolf.UITests
             WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
 
@@ -7145,10 +7228,8 @@ namespace Warewolf.UITests
             WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(firstItem, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
         }
 
@@ -7157,25 +7238,15 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             #endregion
-
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
         }
 
         public void Open_Deploy_Using_Shortcut()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
-            Mouse.Click(localhost, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
-            Keyboard.SendKeys(localhost, "D", (ModifierKeys.Control));
+            Keyboard.SendKeys("D", (ModifierKeys.Control));
         }
 
         public void Save_Workflow_Using_Shortcut()
@@ -7184,10 +7255,8 @@ namespace Warewolf.UITests
             WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
             Mouse.Click(flowchart, new Point(74, 8));
-
-            // Type 'Control, Shift + f' in 'Warewolf.Studio.ViewModels.EnvironmentViewModel' tree item
+            
             Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
         }
 

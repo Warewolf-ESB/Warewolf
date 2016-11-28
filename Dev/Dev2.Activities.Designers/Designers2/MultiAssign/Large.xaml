@@ -119,10 +119,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn IsReadOnly="True" Width="20" Header="=">
+                <DataGridTemplateColumn IsReadOnly="True" Width="20" Header="→">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="=" VerticalAlignment="Center" />
+                            <TextBlock Text="→" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

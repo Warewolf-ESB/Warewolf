@@ -34,6 +34,19 @@ namespace Warewolf.UITests
             UIMap.Click_Close_Dependecy_Tab();
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Moving_Resource_Into_The_Same_Folder_Does_Not_Create_Duplicate_UITest()
+        {
+            UIMap.Filter_Explorer("LoopTest");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            UIMap.Move_FirstSubItem_Into_FirstItem_Folder();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);            
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem));
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

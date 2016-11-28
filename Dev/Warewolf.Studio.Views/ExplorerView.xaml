@@ -122,6 +122,8 @@
                       PreviewMouseMove="Tree_MouseMove"
                       SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
                       KeyboardNavigation.TabNavigation="Continue"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                       KeyUp="ExplorerTree_OnKeyUp"
                       Drop="DropTree_Drop"
                       DragOver="ExplorerTree_OnDragOver"
@@ -774,6 +776,8 @@
                                                  IsVisibleChanged="UIElement_OnIsVisibleChanged"
                                                  LostFocus="UIElement_OnLostFocus"
                                                  KeyDown="UIElement_OnKeyDown"
+                                                 IsTabStop="False"
+                                                 KeyboardNavigation.TabNavigation="None"
                                                  Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                         <StackPanel.Style>
