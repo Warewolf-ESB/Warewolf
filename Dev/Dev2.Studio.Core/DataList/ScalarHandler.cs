@@ -69,9 +69,9 @@ namespace Dev2.Studio.Core.DataList
         public void SortScalars(bool @ascending)
         {
             IList<IScalarItemModel> newScalarCollection = @ascending ? _vm.ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList() : _vm.ScalarCollection.OrderByDescending(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
-            _vm.ScalarCollection.Clear();
             foreach (var item in newScalarCollection)
             {
+                _vm.ScalarCollection.Remove(item);
                 _vm.ScalarCollection.Add(item);
             }
             _vm.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel(string.Empty));
