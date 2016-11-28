@@ -127,19 +127,27 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
+        private void ExplorerTree_OnDragEnter(object sender, DragEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            if (_canDrag)
             {
-                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                var treeView = sender as TreeView;
-                var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
                 {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
+                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                    var treeView = sender as TreeView;
+                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+                    if (itemViewModel != null &&
+                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                    }
                 }
                 else
                 {
@@ -148,7 +156,42 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                e.Effects = DragDropEffects.Copy;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
+        {
+            if (_canDrag)
+            {
+                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+                {
+                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                    var treeView = sender as TreeView;
+                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+                    if (itemViewModel != null &&
+                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                    }
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
         }
 
@@ -270,10 +313,15 @@ namespace Warewolf.Studio.Views
         {
             _isDragging = false;
             _canDrag = false;
-            var treeViewItem = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-            if (treeViewItem != null && treeViewItem.IsSelected)
+            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
-                treeViewItem.IsSelected = false;
+                explorerItemViewModel.IsSelected = false;
+            }
+            else if (environmentViewModel != null && environmentViewModel.IsSelected)
+            {
+                environmentViewModel.IsSelected = false;
             }
         }
 
@@ -343,6 +391,11 @@ namespace Warewolf.Studio.Views
                     mainViewModel?.NewServiceCommand.Execute(null);
                 }
             }
+        }
+
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
