@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Explorer\ResourceVersion.cs" />
     <Compile Include="Explorer\SearchExplorerResource.cs" />
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
     <Compile Include="Workflow\WorkflowUITests.cs" />

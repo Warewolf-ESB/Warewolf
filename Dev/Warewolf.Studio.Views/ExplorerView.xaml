@@ -125,7 +125,8 @@
                       KeyUp="ExplorerTree_OnKeyUp"
                       Drop="DropTree_Drop"
                       DragOver="ExplorerTree_OnDragOver"
-                      DragLeave="ExplorerTree_OnDragLeave">
+                      DragLeave="ExplorerTree_OnDragLeave"
+                      DragEnter="ExplorerTree_OnDragEnter">
                 <TreeView.Resources>
                     <ContextMenu x:Key="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
                                              Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -135,6 +136,7 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[Ctrl+W]"
                                               IsEnabled="{Binding CanCreateWorkflowService}"
+                                  FontWeight="SemiBold"
                                               ToolTip="{Binding NewServiceTooltip}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
@@ -298,18 +300,25 @@
                         <MenuItem Name="Open"
 								  Command="{Binding OpenCommand}"
 								  CommandParameter="WorkflowService"
-								  IsEnabled="{Binding CanView}" 
 								  ToolTip="{Binding OpenTooltip}">
                             <MenuItem.Style>
                                 <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                     <Setter Property="Header" Value="Open"></Setter>
+                                    <Setter Property="FontWeight" Value="SemiBold"></Setter>
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding IsFolder}" Value="True"/>
                                                 <Condition Binding="{Binding IsExpanded}" Value="True"/>
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="Header" Value="Close" />
+                                            <Setter Property="Header" Value="Collapse" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Header" Value="Expand" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -644,24 +653,11 @@
                 </TreeView.Resources>
                 <TreeView.ItemContainerStyle>
                     <Style BasedOn="{StaticResource TreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
-                        <!--<Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=EnvironmentDataTemplate, Path=IsSelected}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="ContextMenu" Value="{StaticResource ExplorerEnvironmentMenu}" />
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=ExplorerItemDataTemplate, Path=IsSelected}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="ContextMenu" Value="{StaticResource ExplorerContextMenuManager}" />
-                            </MultiDataTrigger>
-                        </Style.Triggers>-->
+                        <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
@@ -671,7 +667,6 @@
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="44" />
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0"
@@ -714,7 +709,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </StackPanel>
-                            <TextBlock Margin="4,0,0,0"
+                            <TextBlock Margin="4,0,5,0"
                                        Grid.Column="2"
                                        FontSize="12"
                                        Padding="0,4,0,4"
@@ -796,7 +791,7 @@
                                         </StackPanel.Style>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
-                                               Margin="4,0,0,0"
+                                               Margin="4,0,5,0"
                                                FontSize="12"
                                                Padding="0,4,0,4"
                                                Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}">

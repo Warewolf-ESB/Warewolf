@@ -4214,6 +4214,14 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
         }
 
+        [When(@"I open ""(.*)"" in Remote Connection Integration")]
+        public void WhenIOpenInRemoteConnectionIntegration(string resourceName)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
+        }
+
+
         [When(@"I Drag GET Web Connector Onto DesignSurface")]
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
         {
@@ -6092,6 +6100,18 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Remote_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
         [When(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
@@ -6106,6 +6126,26 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
+        }
+
+        [When(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            MainStudioWindow.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerEnvironmentContextMenu.Rename.DrawHighlight();
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+
+        [When(@"I Delete FirstResource FromContextMenu")]
+        public void Select_ShowVersionHistory_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowVersionHistory);
         }
 
         [When(@"I Duplicate FirstResource FromContextMenu")]
