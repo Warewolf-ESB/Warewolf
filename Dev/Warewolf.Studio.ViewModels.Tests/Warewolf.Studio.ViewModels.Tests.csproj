@@ -177,6 +177,9 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="JsonResources\DebugStatesWithMockAssign.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="JsonResources\DebugStates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -123,7 +123,6 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
-                EsbProxy.On<string>("ReceiveResourcesAffectedMemo", OnReceiveResourcesAffectedMemo);
                 EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
@@ -135,10 +134,22 @@ namespace Dev2.Network
         }
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
-        void OnReceiveResourcesAffectedMemo(string objString)
+
+        public void FetchResourcesAffectedMemo(Guid resourceId)
         {
-            var obj = _serializer.Deserialize<CompileMessageList>(objString);
-            ReceivedResourceAffectedMessage?.Invoke(obj.ServiceID, obj);
+            if (ReceivedResourceAffectedMessage != null)
+            {
+                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    var obj = _serializer.Deserialize<CompileMessageList>(result);
+                    if (obj != null)
+                    {
+                        ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
+                    }
+                }
+            }
+            
         }
 
         void HubConnectionOnClosed()
