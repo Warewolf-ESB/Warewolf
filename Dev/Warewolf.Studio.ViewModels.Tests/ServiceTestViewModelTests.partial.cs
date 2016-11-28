@@ -180,6 +180,50 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void AddChildDebugItems_GivenMockStep_ShouldAddStep()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("JsonResources\\DebugStatesWithMockAssign.json");
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<DebugState>>(readAllText);
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            var repo = new Mock<IEnvironmentRepository>();
+            var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[0], };
+            var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
+            var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
+            var itemViewModel4 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
+            newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
+            {
+                itemViewModel
+                ,itemViewModel1
+                ,itemViewModel2
+                ,itemViewModel4
+            };
+            //---------------Assert Precondition----------------          
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.PrepopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
+            Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+        }        
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void AddChildDebugItems_GivenTestStepContainsStep_ShouldNotAddStep()
         {
             //---------------Set up test pack-------------------
@@ -252,7 +296,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
-            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
+            var jsonDataFile = "JsonResources\\DebugStates.json";
+            jsonDataFile = GetJsonDataFile(jsonDataFile);
+            var readAllText = File.ReadAllText(jsonDataFile);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
@@ -281,6 +327,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             Assert.AreEqual(0, testSteps.Count);
+        }
+
+        private static string GetJsonDataFile(string jsonDataFile)
+        {
+            var exists = File.Exists(jsonDataFile);
+            if(!exists)
+            {
+                var location = Assembly.GetExecutingAssembly().Location;
+                var dir = Path.GetDirectoryName(location);
+                jsonDataFile = Path.Combine(dir, jsonDataFile);
+                exists = File.Exists(jsonDataFile);
+                if(!exists)
+                {
+                    Assert.Fail("Json Data file not found: " + jsonDataFile);
+                }
+            }
+            return jsonDataFile;
         }
 
         [TestMethod]
