@@ -1600,23 +1600,15 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return false;
                     }
-                    var isDirty = _tests.Any(resource => resource.IsDirty) || _tests.Any(resource => resource.NewTest);
+                    var isDirty = _tests.Any(resource => resource.IsDirty || resource.NewTest);
 
                     var isConnected = ResourceModel.Environment.Connection.IsConnected;
-
                     return isDirty && isConnected;
                 }
-                // ReSharper disable once UnusedVariable
                 catch (Exception)
                 {
-                    //if (!_errorShown)
-                    //{
-                    //    _popupController.ShowCorruptTaskResult(ex.Message);
-                    //    Dev2Logger.Error(ex);
-                    //    _errorShown = true;
-                    //}
+                    return false;
                 }
-                return false;
             }
         }
 
