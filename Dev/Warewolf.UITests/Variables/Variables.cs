@@ -29,6 +29,23 @@ namespace Warewolf.UITests
             Assert.AreNotEqual("Gender", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem5.ScrollViewerPane.NameTextbox.Text);
         }
 
+        //Todo: Functionality for this has not yet been added
+        /// <summary>
+        /// When you manually type in Variables in the variable list,
+        /// We will expect the Delete Icons to be Enabled since 
+        /// The variabled we are adding are not used Yet
+        /// For more info: SM
+        /// </summary>
+
+        //[TestMethod]
+        //public void Add_Variables()
+        //{
+        //    UIMap.Add_Variables("Name,Surname");
+        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Enabled);
+        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.DeleteButton.Enabled);
+        //}
+
+
         [TestMethod]
         public void Recordsets_Usage_in_Debug_Input()
         {
