@@ -825,7 +825,7 @@ namespace Warewolf.Studio.ViewModels
                         else
                         {
                             var asyncWorker = CustomContainer.Get<IAsyncWorker>();
-                            asyncWorker?.Start(() =>
+                            //asyncWorker?.Start(() =>
                             {
                                 ShellViewModel.SetRefreshExplorerState(true);
                                 if (_explorerRepository.Rename(this, NewName(newName)))
@@ -844,16 +844,17 @@ namespace Warewolf.Studio.ViewModels
                                     UpdateResourcePaths(this);
                                     _resourceName = newName;
                                 }
-                            }, () =>
-                            {
-                                if (!IsRenaming)
-                                {
-                                    _resourceName = newName;
-                                }
-                                IsRenaming = false;
-                                OnPropertyChanged(() => ResourceName);
-                                ShellViewModel.SetRefreshExplorerState(false);
-                            });
+                            }
+//                            , () =>
+//                            {
+//                                if (!IsRenaming)
+//                                {
+//                                    _resourceName = newName;
+//                                }
+//                                IsRenaming = false;
+//                                OnPropertyChanged(() => ResourceName);
+//                                ShellViewModel.SetRefreshExplorerState(false);
+//                            });
                         }
                     }
                     if (!IsRenaming)

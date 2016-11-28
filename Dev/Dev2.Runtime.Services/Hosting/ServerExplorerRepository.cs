@@ -120,11 +120,32 @@ namespace Dev2.Runtime.Hosting
             }
             if (itemToRename.ResourceType == "Folder")
             {
-                return RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
+                var moveResult = RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
+                if (moveResult.Status == ExecStatus.Fail)
+                {
+                    return moveResult;
+                }
+                RenameChildrenPaths(itemToRename);
+                return moveResult;
             }
             itemToRename.DisplayName = newName;
             return RenameExplorerItem(itemToRename, workSpaceId);
 
+        }
+
+        private void RenameChildrenPaths(IExplorerItem itemToRename)
+        {
+            var results = new List<ResourceCatalogResult>();
+            IEnumerable<IResource> resourcesToRename =
+                ResourceCatalogue.GetResourceList(GlobalConstants.ServerWorkspaceID)
+                                 .Where(
+                                     a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(itemToRename.DisplayName.Trim()));
+
+            foreach(var resource in resourcesToRename)
+            {
+                ResourceCatalogResult result = ResourceCatalogue.RenameResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, itemToRename.DisplayName, itemToRename.ResourcePath);
+                results.Add(result);
+            }
         }
 
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
@@ -141,11 +162,11 @@ namespace Dev2.Runtime.Hosting
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
-            if (result.Status == ExecStatus.Success)
-            {
-                ResourceCatalog.Instance.Reload();
-                Load(workSpaceId, true);
-            }
+//            if (result.Status == ExecStatus.Success)
+//            {
+//                ResourceCatalog.Instance.Reload();
+//                Load(workSpaceId, true);
+//            }
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -161,8 +182,9 @@ namespace Dev2.Runtime.Hosting
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
-                    ResourceCatalog.Instance.Reload();
-                    Load(workSpaceId, true);
+                    
+//                    ResourceCatalog.Instance.Reload();
+//                    Load(workSpaceId, true);
                 }
                 else
                 {
@@ -417,15 +439,27 @@ namespace Dev2.Runtime.Hosting
 
         private void UpdateChildrenPaths(IExplorerItem itemToMove, string newPath)
         {
+            if (itemToMove == null)
+            {
+                return;
+            }
             if (itemToMove.IsFolder)
             {
-                itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+                if (!string.IsNullOrWhiteSpace(itemToMove.ResourcePath))
+                {
+                    itemToMove.ResourcePath = newPath + "\\" + itemToMove.DisplayName;
+                }
+                else
+                {
+                    itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+                }
+                
             }
             else
             {
                 MoveSingeItem(itemToMove, newPath, GlobalConstants.ServerWorkspaceID);
             }
-            if (itemToMove.Children.Count > 0)
+            if (itemToMove.Children !=null &&  itemToMove.Children.Count > 0)
             {
                 itemToMove.Children.ForEach(item => UpdateChildrenPaths(item,newPath));
             }
