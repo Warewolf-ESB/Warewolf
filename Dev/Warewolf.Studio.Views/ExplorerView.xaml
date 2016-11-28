@@ -774,6 +774,8 @@
                                                  IsVisibleChanged="UIElement_OnIsVisibleChanged"
                                                  LostFocus="UIElement_OnLostFocus"
                                                  KeyDown="UIElement_OnKeyDown"
+                                                 IsTabStop="False"
+                                                 KeyboardNavigation.TabNavigation="None"
                                                  Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                         <StackPanel.Style>
