@@ -365,7 +365,10 @@ namespace Warewolf.Studio.Views
             }
             if (e.Key == Key.Delete)
             {
-                explorerItemViewModel.DeleteCommand.Execute(null);
+                if (!explorerItemViewModel.IsRenaming)
+                {
+                    explorerItemViewModel.DeleteCommand.Execute(null);
+                }
             }
         }
 
