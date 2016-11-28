@@ -1369,7 +1369,7 @@ namespace Warewolf.UITests
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
         }
 
