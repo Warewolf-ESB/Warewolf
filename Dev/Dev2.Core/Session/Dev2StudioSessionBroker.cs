@@ -216,7 +216,7 @@ namespace Dev2.Session
                                 // now push back into the Dictionary
                                 foreach (SaveDebugTO dto in settings)
                                 {
-                                    if (dto.ServiceName.Length > 0)
+                                    if (!string.IsNullOrEmpty(dto.ServiceName))
                                     {
                                         var tmp = new DebugTO();
                                         tmp.CopyFromSaveDebugTO(dto);
