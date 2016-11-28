@@ -313,6 +313,10 @@ namespace Warewolf.Studio.Views
         {
             _isDragging = false;
             _canDrag = false;
+
+            var explorerView = sender as ExplorerView;
+            var singleEnvironmentExplorerViewModel = explorerView?.DataContext as SingleEnvironmentExplorerViewModel;
+            if (singleEnvironmentExplorerViewModel != null) return;
             var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
             var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
             if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
