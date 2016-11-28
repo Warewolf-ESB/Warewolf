@@ -162,7 +162,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             if (graph.Nodes.Count > 1)
             {
                 var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
-                    StringResources.Delete_Error_Title,
+                    string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
                     MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
                 if (result == MessageBoxResult.OK)
                 {
