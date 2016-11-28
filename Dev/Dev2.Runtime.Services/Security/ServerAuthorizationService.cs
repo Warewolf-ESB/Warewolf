@@ -179,6 +179,7 @@ namespace Dev2.Runtime.Security
 
                 case WebServerRequestType.WebExecuteGetLogFile:
                 case WebServerRequestType.EsbSendMemo:
+                case WebServerRequestType.EsbFetchResourcesAffectedMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:
                 case WebServerRequestType.EsbSendDebugState:

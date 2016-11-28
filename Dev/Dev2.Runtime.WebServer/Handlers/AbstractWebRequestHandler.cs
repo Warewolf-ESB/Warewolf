@@ -523,8 +523,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (interTestRequest.ExecuteResult != null)
                     {
-                        var r = serializer.Deserialize<Dev2.Common.Interfaces.TestRunResult>(interTestRequest.ExecuteResult.ToString());
-                        result = new ServiceTestModelTO() { Result = r, TestName = r.TestName };
+                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString());
+                        result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
                     }
                 }
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
@@ -544,22 +544,22 @@ namespace Dev2.Runtime.WebServer.Handlers
             else if (result.Result.RunTestResult == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
-                resObj.Add("Message", result.Result.Message);
+                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine,""));
             }
             else if (result.Result.RunTestResult == RunResult.TestInvalid)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
-                resObj.Add("Message", result.Result.Message);
+                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
             }
             else if (result.Result.RunTestResult == RunResult.TestResourceDeleted)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourceDeleteResult);
-                resObj.Add("Message", result.Result.Message);
+                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
             }
             else if (result.Result.RunTestResult == RunResult.TestResourcePathUpdated)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourcpathUpdatedResult);
-                resObj.Add("Message", result.Result.Message);
+                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
             }
 
             else if (result.Result.RunTestResult == RunResult.TestPending)
