@@ -4,7 +4,7 @@ Feature: SharepointConnector
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-Scenario: Create Source From Tool
+Scenario: Create Sharepoint Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I drag a "Sharepoint" tool
