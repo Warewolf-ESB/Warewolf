@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
 // ReSharper disable UnusedMember.Global
 
@@ -398,7 +399,8 @@ namespace Dev2.Runtime.Hosting
                 var oldPath = itemToMove.ResourcePath;
                 Directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(newPath));
                 MoveVersionFolder(oldPath, newPath);
-                Load(workSpaceId, true);
+                UpdateChildrenPaths(itemToMove, newPath);
+                //Load(workSpaceId, true);
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
             // ReSharper disable once RedundantIfElseBlock
@@ -413,12 +415,29 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        private void UpdateChildrenPaths(IExplorerItem itemToMove, string newPath)
+        {
+            if (itemToMove.IsFolder)
+            {
+                itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+            }
+            else
+            {
+                MoveSingeItem(itemToMove, newPath, GlobalConstants.ServerWorkspaceID);
+            }
+            if (itemToMove.Children.Count > 0)
+            {
+                itemToMove.Children.ForEach(item => UpdateChildrenPaths(item,newPath));
+            }
+        }
+
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
             MoveVersions(itemToMove, newPath);
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId) });
             _file.Delete($"{DirectoryStructureFromPath(itemToMove.ResourcePath)}.xml");
-            Load(workSpaceId, true);
+            itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+            //Load(workSpaceId, true);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
