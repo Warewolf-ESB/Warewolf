@@ -72,5 +72,7 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
         IHubConnectionWrapper HubConnection { get; }
+
+        void FetchResourcesAffectedMemo(Guid resourceId);
     }
 }
