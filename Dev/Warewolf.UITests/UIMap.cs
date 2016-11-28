@@ -26,9 +26,9 @@ namespace Warewolf.UITests
     [Binding]
     public partial class UIMap
     {
-        const int _lenientSearchTimeout = 150000;
+        const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
-        const int _strictSearchTimeout = 15000;
+        const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
         public void SetPlaybackSettings()
@@ -66,6 +66,7 @@ namespace Warewolf.UITests
             TryCloseHangingWebBrowserErrorDialog();
             TryCloseHangingDecisionDialog();
             TryCloseSettingsTab();
+            TryCloseWorkflowTestingTab();
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
@@ -642,7 +643,7 @@ namespace Warewolf.UITests
             }
         }
 
-        public void TryCloseWorkflowTabs()
+        public void TryCloseAllWorkflowTabs()
         {
             var workflowTabCloseButtonExists = true;
             while (workflowTabCloseButtonExists)
@@ -872,7 +873,7 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
-      
+
         [When(@"I Filter the ToolBox with ""(.*)""")]
         public void Filter_ToolBox(string FilterText)
         {
@@ -1363,6 +1364,14 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is not visible.");
         }
 
+        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
+        {
+            var point = new Point();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
+        }
+
         [When(@"I Deploy ""(.*)"" From Deploy View")]
         public void Deploy_Service_From_Deploy_View(string ServiceName)
         {
@@ -1791,8 +1800,7 @@ namespace Warewolf.UITests
         {
             Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
         }
-
-        [When(@"I Click Save Ribbon Button With No Save Dialog")]
+        
         [Given(@"I Click Save Ribbon Button With No Save Dialog")]
         [Then(@"I Click Save Ribbon Button With No Save Dialog")]
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
@@ -2587,6 +2595,10 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.FileOrFolderComboBox.TextEdit.Text = resourcesFolder;
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.DestinationComboBox.TextEdit.Text = resourcesFolderCopy;
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.LargeViewContentCustom.ResultComboBox.TextEdit.Text = "[[results]]";
+        }
+        public void Enter_Text_Into_CommentTool(string comment)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text = comment;
         }
 
         public void Enter_Text_Into_Delete_Tool()
@@ -6948,6 +6960,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
         }
 
+        [Given(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
         [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
         public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
         {
@@ -7066,7 +7079,7 @@ namespace Warewolf.UITests
 
         public void Click_Delete_On_AssignValue_TestStep()
         {
-            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
         }
 
         [When(@"I Click AssigName From DesignSurface")]
@@ -7075,12 +7088,45 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom, new Point(5, 5));
         }
 
-        public void Click_MockRadioButton_On_Decision_TestStep()
+        /// <summary>
+        /// Expand_Comment_Tool_Size
+        /// </summary>
+        public int Expand_Comment_Tool_Size()
         {
-            Mouse.Click(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
-            Assert.IsTrue(this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+            #region Variable Declarations
+            WpfControl itemResizer = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.ItemResizer;
+            WpfCustom commentActivityCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom;
+            #endregion
+
+            var defaultHeight = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Height;
+            commentActivityCustom.EnsureClickable(new Point(226, 335));
+            Mouse.StartDragging(itemResizer);
+            Mouse.StopDragging(commentActivityCustom, new Point(0, 350));
+            var newHeight = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Height;
+
+            Assert.IsTrue(newHeight > defaultHeight);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
+            return newHeight;
         }
 
+        public void Click_MockRadioButton_On_Decision_TestStep()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
+
+        [When(@"I Expand Debug Output Recordset")]
+        public void Expand_Debug_Output_Recordset()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.Expanded = true;
+        }
+
+        [Then(@"The GetCountries Recordset Is Visible in Debug Output")]
+        public void ThenTheDebugOutputShowsGetCountriesRecordset()
+        {
+            Assert.AreEqual("[[dbo_GetCountries(204).CountryID]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText, "Wrong recordset name in debug output for new DB connector.");
+            Assert.AreEqual("155", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetValue.DisplayText, "Wrong recordset value in debug output for new DB connector.");
+        }
         [Given(@"I have Hello World workflow on the Explorer")]
         [When(@"I have Hello World workflow on the Explorer")]
         [Then(@"I have Hello World workflow on the Explorer")]

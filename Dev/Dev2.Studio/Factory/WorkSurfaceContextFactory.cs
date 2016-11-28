@@ -17,6 +17,7 @@ using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 
@@ -64,6 +65,10 @@ namespace Dev2.Studio.Factory
         {
 
             var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext) as WorkSurfaceKey;
+            if(vm is HelpViewModel)
+            {
+                key.ResourceID = Guid.Empty;
+            }
             if (vm is SchedulerViewModel || vm is SettingsViewModel)
                 key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);

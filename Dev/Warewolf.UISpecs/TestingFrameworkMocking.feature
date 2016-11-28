@@ -23,6 +23,6 @@ Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
 	And I Click Run all tests button
 	Then I Click workflow tab
 	And I Enter "Hello There World" in the Assign message tool
-	When I Click Save Ribbon Button With No Save Dialog
+	When I Click Save Ribbon Button Without Expecting a Dialog
 	When I Click Test Tab
 	Then The Test step in now "Invalid"
