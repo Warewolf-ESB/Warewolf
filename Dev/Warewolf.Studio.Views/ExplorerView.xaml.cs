@@ -238,8 +238,8 @@ namespace Warewolf.Studio.Views
             if ((bool)e.NewValue)
             {
                 var textBox = sender as TextBox;
-                textBox?.SelectAll();
                 Keyboard.Focus(textBox);
+                textBox?.SelectAll();
             }
         }
 
@@ -278,7 +278,7 @@ namespace Warewolf.Studio.Views
 
                 if (e.ClickCount == 2)
                 {
-                    if (explorerItemViewModel != null && !explorerItemViewModel.CanView)
+                    if (explorerItemViewModel != null && !explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder)
                     {
                         e.Handled = true;
                         return;
@@ -362,6 +362,10 @@ namespace Warewolf.Studio.Views
                 {
                     explorerItemViewModel.CreateNewFolder();
                 }
+            }
+            if (e.Key == Key.Delete)
+            {
+                explorerItemViewModel.DeleteCommand.Execute(null);
             }
         }
 
