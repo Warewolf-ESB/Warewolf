@@ -13,6 +13,10 @@
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         Title="WarewolfMessageBox"
+        KeyboardNavigation.TabNavigation="Cycle"
+        Loaded="MessageBoxView_OnLoaded"
+        PreviewKeyDown="MessageBoxView_OnPreviewKeyDown"
+        KeyDown="MessageBoxView_OnKeyDown"
         Topmost="False">
 
     <Window.Resources>
@@ -64,6 +68,7 @@
                 <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
+                        x:Name="BtnYesCommand"
                         Visibility="{Binding Path=IsYesButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Command="{Binding Path=YesCommand}" 
                         cal:Message.Attach="Yes" 
@@ -71,6 +76,7 @@
                 <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
+                        x:Name="BtnNoCommand"
                         Visibility="{Binding Path=IsNoButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Command="{Binding Path=NoCommand}" 
                         cal:Message.Attach="No" 
@@ -81,10 +87,12 @@
                         Visibility="{Binding Path=IsOkButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Command="{Binding Path=OkCommand}" 
                         cal:Message.Attach="Ok" 
+                        x:Name="BtnOkCommand"
                         Content="OK" />
                 <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
+                        x:Name="BtnCancelCommand"
                         Visibility="{Binding Path=IsCancelButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Command="{Binding Path=CancelCommand}" 
                         cal:Message.Attach="Cancel" 

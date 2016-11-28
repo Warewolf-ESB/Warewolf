@@ -108,9 +108,9 @@
             <Trigger Property="Button.IsPressed" Value="True">
                 <Setter Property="Control.Foreground" Value="White" />
             </Trigger>
-            <!--<Trigger Property="Control.IsFocused" Value="True">
+            <Trigger Property="Button.IsFocused" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
-            </Trigger>-->
+            </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="SplashPageButtonTransparentStyle" TargetType="{x:Type Button}">

@@ -44,18 +44,16 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// RecordedMethod1
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void RecordedMethod1()
+        public void AssertMethod1()
         {
             #region Variable Declarations
-            WpfCustom uIDsfMultiAssignActiviCustom = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignActiviCustom;
+            WpfText folderCount = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FolderCount;
             #endregion
 
-            // Move 'DsfMultiAssignActivity' custom control
-            //System parameter 'Show window contents while dragging' is not set.This could lead to incorrect recording of drag actions.
-            Mouse.StartDragging(uIDsfMultiAssignActiviCustom, new Point(81, 15));
-            Mouse.StopDragging(uIDsfMultiAssignActiviCustom, 70, 3);
+            // Verify that the 'Exists' property of '( 277 )' label equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.FolderCountExists, folderCount.Exists);
         }
         
         #region Properties
@@ -68,6 +66,18 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -214,10 +224,24 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
+        
+        public UIWarewolfDEV2NKOSINATWindow UIWarewolfDEV2NKOSINATWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2NKOSINATWindow == null))
+                {
+                    this.mUIWarewolfDEV2NKOSINATWindow = new UIWarewolfDEV2NKOSINATWindow();
+                }
+                return this.mUIWarewolfDEV2NKOSINATWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -242,6 +266,8 @@ namespace Warewolf.UITests
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        
+        private UIWarewolfDEV2NKOSINATWindow mUIWarewolfDEV2NKOSINATWindow;
         #endregion
     }
     
@@ -257,6 +283,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '( 277 )' label equals 'True'
+        /// </summary>
+        public bool FolderCountExists = true;
         #endregion
     }
     
@@ -1485,7 +1526,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerContextMenuManager";
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "ContextMenu";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3566,6 +3607,23 @@ namespace Warewolf.UITests
                 return this.mExpansionToggleButton;
             }
         }
+        
+        public WpfText FolderCount
+        {
+            get
+            {
+                if ((this.mFolderCount == null))
+                {
+                    this.mFolderCount = new WpfText(this);
+                    #region Search Criteria
+                    this.mFolderCount.SearchProperties[WpfText.PropertyNames.Name] = "( 277 )";
+                    this.mFolderCount.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFolderCount.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFolderCount;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3582,6 +3640,8 @@ namespace Warewolf.UITests
         private ThirdSubItem1 mThirdSubItem;
         
         private WpfCheckBox mExpansionToggleButton;
+        
+        private WpfText mFolderCount;
         #endregion
     }
     
@@ -4911,10 +4971,28 @@ namespace Warewolf.UITests
                 return this.mExecuteIcon;
             }
         }
+        
+        public WpfEdit ItemEdit
+        {
+            get
+            {
+                if ((this.mItemEdit == null))
+                {
+                    this.mItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mItemEdit.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mItemEdit;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfButton mExecuteIcon;
+        
+        private WpfEdit mItemEdit;
         #endregion
     }
     
@@ -65493,12 +65571,26 @@ namespace Warewolf.UITests
                 return this.mHttpLocalHostText;
             }
         }
+        
+        public UrlWithRenamedFolder UrlWithRenamedFolder
+        {
+            get
+            {
+                if ((this.mUrlWithRenamedFolder == null))
+                {
+                    this.mUrlWithRenamedFolder = new UrlWithRenamedFolder(this);
+                }
+                return this.mUrlWithRenamedFolder;
+            }
+        }
         #endregion
         
         #region Fields
         private UnsavedWorkflowLinkText mUnsavedWorkflowLinkText;
         
         private HttpLocalHostText mHttpLocalHostText;
+        
+        private UrlWithRenamedFolder mUrlWithRenamedFolder;
         #endregion
     }
     
@@ -65568,6 +65660,44 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfHyperlink mNewWorkflowHyperLink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UrlWithRenamedFolder : WpfText
+    {
+        
+        public UrlWithRenamedFolder(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Acceptance Tests_Renamed/LoopTest.json?<DataList>" +
+                "</DataList>";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UrlWithRenamedFolderHyperlink
+        {
+            get
+            {
+                if ((this.mUrlWithRenamedFolderHyperlink == null))
+                {
+                    this.mUrlWithRenamedFolderHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUrlWithRenamedFolderHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "http://rsaklfsanele:3142/secure/Acceptance Tests_Renamed/LoopTest.json?<DataList>" +
+                        "</DataList>";
+                    this.mUrlWithRenamedFolderHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUrlWithRenamedFolderHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUrlWithRenamedFolderHyperlink;
         #endregion
     }
     
@@ -69280,7 +69410,7 @@ namespace Warewolf.UITests
                     this.mCreateTestFromDebugButton = new WpfButton(this);
                     #region Search Criteria
                     this.mCreateTestFromDebugButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DebugOutputAddNewTestMode_AutoID";
-                    this.mCreateTestFromDebugButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCreateTestFromDebugButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mCreateTestFromDebugButton;
@@ -69450,6 +69580,18 @@ namespace Warewolf.UITests
                 return this.mCalculateButton;
             }
         }
+        
+        public RecordsetGroup RecordsetGroup
+        {
+            get
+            {
+                if ((this.mRecordsetGroup == null))
+                {
+                    this.mRecordsetGroup = new RecordsetGroup(this);
+                }
+                return this.mRecordsetGroup;
+            }
+        }
         #endregion
         
         #region Fields
@@ -69460,6 +69602,65 @@ namespace Warewolf.UITests
         private WpfButton mBaseConversion1Button;
         
         private WpfButton mCalculateButton;
+        
+        private RecordsetGroup mRecordsetGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RecordsetGroup : WpfExpander
+    {
+        
+        public RecordsetGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RecordsetName
+        {
+            get
+            {
+                if ((this.mRecordsetName == null))
+                {
+                    this.mRecordsetName = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetName.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mRecordsetName.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetName.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRecordsetName;
+            }
+        }
+        
+        public WpfText RecordsetValue
+        {
+            get
+            {
+                if ((this.mRecordsetValue == null))
+                {
+                    this.mRecordsetValue = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetValue.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
+                    this.mRecordsetValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetValue.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRecordsetValue;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRecordsetName;
+        
+        private WpfText mRecordsetValue;
         #endregion
     }
     
@@ -71936,7 +72137,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run this test", PropertyExpressionOperator.Contains));
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -72170,7 +72371,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run this test", PropertyExpressionOperator.Contains));
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -72403,7 +72604,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run this test", PropertyExpressionOperator.Contains));
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -72636,7 +72837,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run this test", PropertyExpressionOperator.Contains));
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -72869,7 +73070,7 @@ namespace Warewolf.UITests
                 {
                     this.mRunButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run this test";
+                    this.mRunButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run this test", PropertyExpressionOperator.Contains));
                     this.mRunButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -73340,7 +73541,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "StepTestDataTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73456,7 +73657,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73489,7 +73690,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73535,9 +73736,8 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
-            this.SearchProperties[WpfTable.PropertyNames.ClassName] = "Dev2DataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73584,7 +73784,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73636,6 +73836,18 @@ namespace Warewolf.UITests
                 return this.mAssertValueCell;
             }
         }
+        
+        public Cell4 Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell4(this);
+                }
+                return this.mCell;
+            }
+        }
         #endregion
         
         #region Fields
@@ -73646,6 +73858,8 @@ namespace Warewolf.UITests
         private StatusViewCell mStatusViewCell;
         
         private AssertValueCell mAssertValueCell;
+        
+        private Cell4 mCell;
         #endregion
     }
     
@@ -73659,7 +73873,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73674,7 +73888,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -73698,7 +73912,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73713,7 +73927,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertOperatorComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOps_AutoID";
                     this.mAssertOperatorComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertOperatorComboBox;
@@ -73738,7 +73952,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73753,7 +73967,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -73777,7 +73991,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73792,7 +74006,44 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mAssertValue;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAssertValue;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell4 : WpfCustom
+    {
+        
+        public Cell4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AssertValue
+        {
+            get
+            {
+                if ((this.mAssertValue == null))
+                {
+                    this.mAssertValue = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
+                    this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -73816,7 +74067,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73832,7 +74083,7 @@ namespace Warewolf.UITests
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
                     this.mHeaderItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mHeaderItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHeaderItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mHeaderItem;
@@ -73850,7 +74101,7 @@ namespace Warewolf.UITests
                     this.mResult.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mResult.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
                     this.mResult.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mResult.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mResult.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mResult;
@@ -73880,7 +74131,7 @@ namespace Warewolf.UITests
                     this.mValue.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mValue.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
                     this.mValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mValue;
@@ -73910,7 +74161,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
             this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73927,7 +74178,7 @@ namespace Warewolf.UITests
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMockRadioButton;
@@ -73946,7 +74197,7 @@ namespace Warewolf.UITests
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepAssertRadioButtonTooltip";
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
                     this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertRadioButton;
@@ -73971,7 +74222,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -73986,7 +74237,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -74003,7 +74254,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -74020,7 +74271,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -74037,7 +74288,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -74054,7 +74305,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -74084,7 +74335,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74117,7 +74368,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74164,7 +74415,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74211,7 +74462,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74286,7 +74537,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74301,7 +74552,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -74325,7 +74576,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74340,7 +74591,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertOperatorComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOps_AutoID";
                     this.mAssertOperatorComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertOperatorComboBox;
@@ -74364,7 +74615,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74397,7 +74648,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_OptionsForValue_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74412,7 +74663,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mNameInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Name Input";
                     this.mNameInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mNameInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mNameInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNameInputListItem;
@@ -74429,7 +74680,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mBlankInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Blank Input";
                     this.mBlankInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mBlankInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mBlankInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mBlankInputListItem;
@@ -74456,7 +74707,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74471,7 +74722,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -74495,7 +74746,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74511,7 +74762,7 @@ namespace Warewolf.UITests
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
                     this.mHeaderItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mHeaderItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHeaderItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mHeaderItem;
@@ -74529,7 +74780,7 @@ namespace Warewolf.UITests
                     this.mResult.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mResult.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
                     this.mResult.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mResult.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mResult.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mResult;
@@ -74559,7 +74810,7 @@ namespace Warewolf.UITests
                     this.mValue.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mValue.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
                     this.mValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mValue;
@@ -74589,7 +74840,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
             this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74606,7 +74857,7 @@ namespace Warewolf.UITests
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMockRadioButton;
@@ -74625,7 +74876,7 @@ namespace Warewolf.UITests
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepAssertRadioButtonTooltip";
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
                     this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertRadioButton;
@@ -74650,7 +74901,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74665,7 +74916,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -74682,7 +74933,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -74699,7 +74950,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -74716,7 +74967,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -74733,7 +74984,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -74763,7 +75014,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74796,7 +75047,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74842,7 +75093,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74875,7 +75126,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74922,7 +75173,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -74969,7 +75220,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75044,7 +75295,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75059,7 +75310,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -75083,7 +75334,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75098,7 +75349,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertOperatorComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOps_AutoID";
                     this.mAssertOperatorComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertOperatorComboBox;
@@ -75122,7 +75373,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75155,7 +75406,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_OptionsForValue_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75170,7 +75421,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mNameInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Name Input";
                     this.mNameInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mNameInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mNameInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNameInputListItem;
@@ -75187,7 +75438,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mBlankInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Blank Input";
                     this.mBlankInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mBlankInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mBlankInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mBlankInputListItem;
@@ -75214,7 +75465,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75229,7 +75480,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -75253,7 +75504,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75269,7 +75520,7 @@ namespace Warewolf.UITests
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
                     this.mHeaderItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mHeaderItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHeaderItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mHeaderItem;
@@ -75287,7 +75538,7 @@ namespace Warewolf.UITests
                     this.mResult.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mResult.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
                     this.mResult.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mResult.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mResult.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mResult;
@@ -75317,7 +75568,7 @@ namespace Warewolf.UITests
                     this.mValue.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mValue.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
                     this.mValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mValue;
@@ -75347,7 +75598,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
             this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75364,7 +75615,7 @@ namespace Warewolf.UITests
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMockRadioButton;
@@ -75383,7 +75634,7 @@ namespace Warewolf.UITests
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepAssertRadioButtonTooltip";
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
                     this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertRadioButton;
@@ -75408,7 +75659,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75423,7 +75674,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -75440,7 +75691,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -75457,7 +75708,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -75474,7 +75725,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -75491,7 +75742,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -75522,7 +75773,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75537,7 +75788,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -75554,7 +75805,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -75571,7 +75822,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -75588,7 +75839,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -75605,7 +75856,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -75635,7 +75886,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75662,7 +75913,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -75679,7 +75930,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -75696,7 +75947,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -75713,7 +75964,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -75730,7 +75981,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -75762,7 +76013,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75794,7 +76045,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75827,7 +76078,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75874,7 +76125,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75921,7 +76172,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -75996,7 +76247,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76011,7 +76262,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -76035,7 +76286,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76050,7 +76301,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertOperatorComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOps_AutoID";
                     this.mAssertOperatorComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertOperatorComboBox;
@@ -76074,7 +76325,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76107,7 +76358,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_OptionsForValue_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76122,7 +76373,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mNameInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Name Input";
                     this.mNameInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mNameInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mNameInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNameInputListItem;
@@ -76139,7 +76390,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mBlankInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Blank Input";
                     this.mBlankInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mBlankInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mBlankInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mBlankInputListItem;
@@ -76166,7 +76417,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76181,7 +76432,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -76205,7 +76456,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76221,7 +76472,7 @@ namespace Warewolf.UITests
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
                     this.mHeaderItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mHeaderItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHeaderItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mHeaderItem;
@@ -76239,7 +76490,7 @@ namespace Warewolf.UITests
                     this.mResult.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mResult.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
                     this.mResult.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mResult.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mResult.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mResult;
@@ -76269,7 +76520,7 @@ namespace Warewolf.UITests
                     this.mValue.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mValue.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
                     this.mValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mValue;
@@ -76299,7 +76550,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
             this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76316,7 +76567,7 @@ namespace Warewolf.UITests
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMockRadioButton;
@@ -76335,7 +76586,7 @@ namespace Warewolf.UITests
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepAssertRadioButtonTooltip";
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
                     this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertRadioButton;
@@ -76360,7 +76611,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76375,7 +76626,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -76392,7 +76643,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -76409,7 +76660,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -76426,7 +76677,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -76443,7 +76694,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -76473,7 +76724,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76508,7 +76759,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfExpander.PropertyNames.ClassName] = "Expander";
             this.SearchProperties[WpfExpander.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ServiceTestStep";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76555,7 +76806,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76602,7 +76853,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76677,7 +76928,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76692,7 +76943,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValue.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValue;
@@ -76716,7 +76967,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76731,7 +76982,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertOperatorComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOps_AutoID";
                     this.mAssertOperatorComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertOperatorComboBox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertOperatorComboBox;
@@ -76755,7 +77006,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.Instance] = "4";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76788,7 +77039,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_OptionsForValue_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76803,7 +77054,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mNameInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Name Input";
                     this.mNameInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mNameInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mNameInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNameInputListItem;
@@ -76820,7 +77071,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mBlankInputListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Blank Input";
                     this.mBlankInputListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mBlankInputListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mBlankInputListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mBlankInputListItem;
@@ -76847,7 +77098,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76862,7 +77113,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -76886,7 +77137,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76902,7 +77153,7 @@ namespace Warewolf.UITests
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mHeaderItem.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
                     this.mHeaderItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mHeaderItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mHeaderItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mHeaderItem;
@@ -76920,7 +77171,7 @@ namespace Warewolf.UITests
                     this.mResult.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mResult.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
                     this.mResult.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mResult.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mResult.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mResult;
@@ -76950,7 +77201,7 @@ namespace Warewolf.UITests
                     this.mValue.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
                     this.mValue.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
                     this.mValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mValue.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mValue;
@@ -76980,7 +77231,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
             this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -76997,7 +77248,7 @@ namespace Warewolf.UITests
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMockRadioButton;
@@ -77016,7 +77267,7 @@ namespace Warewolf.UITests
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepAssertRadioButtonTooltip";
                     this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
                     this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertRadioButton;
@@ -77041,7 +77292,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77056,7 +77307,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mDeleteAssertButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
                     this.mDeleteAssertButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDeleteAssertButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteAssertButton;
@@ -77073,7 +77324,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mInvalid.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mInvalid.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mInvalid.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mInvalid.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mInvalid;
@@ -77090,7 +77341,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPending.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPending.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPending.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPending.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPending;
@@ -77107,7 +77358,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mFailed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mFailed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFailed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mFailed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mFailed;
@@ -77124,7 +77375,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mPassed.SearchProperties[WpfText.PropertyNames.Name] = "?";
                     this.mPassed.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mPassed.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mPassed.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPassed;
@@ -77141,7 +77392,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mToolIcon.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
                     this.mToolIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mToolIcon.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mToolIcon.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mToolIcon;
@@ -77173,7 +77424,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77206,7 +77457,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77221,7 +77472,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mRandomExpanderHeader.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
                     this.mRandomExpanderHeader.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRandomExpanderHeader.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mRandomExpanderHeader.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRandomExpanderHeader;
@@ -77258,7 +77509,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77291,7 +77542,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77325,7 +77576,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77340,7 +77591,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValueEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValueEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValueEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValueEdit.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValueEdit;
@@ -77362,7 +77613,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77395,7 +77646,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77428,7 +77679,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77461,7 +77712,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77496,7 +77747,7 @@ namespace Warewolf.UITests
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77511,7 +77762,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mAssertValueResultEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_AutoID";
                     this.mAssertValueResultEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mAssertValueResultEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mAssertValueResultEdit.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mAssertValueResultEdit;
@@ -77534,7 +77785,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77567,7 +77818,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77600,7 +77851,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77633,7 +77884,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77666,7 +77917,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77699,7 +77950,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign a value to Name if blank (1)(MultiAssignDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -77713,7 +77964,7 @@ namespace Warewolf.UITests
                     this.mDisplayNameEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mDisplayNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameBox";
-                    this.mDisplayNameEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDisplayNameEdit.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDisplayNameEdit;
@@ -78807,7 +79058,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -78839,7 +79090,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DeployView";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -79609,10 +79860,24 @@ namespace Warewolf.UITests
                 return this.mSourceServerName;
             }
         }
+        
+        public LocalHost1 LocalHost
+        {
+            get
+            {
+                if ((this.mLocalHost == null))
+                {
+                    this.mLocalHost = new LocalHost1(this);
+                }
+                return this.mLocalHost;
+            }
+        }
         #endregion
         
         #region Fields
         private SourceServerName mSourceServerName;
+        
+        private LocalHost1 mLocalHost;
         #endregion
     }
     
@@ -79675,6 +79940,76 @@ namespace Warewolf.UITests
                     this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ResourceNameCheckBox";
                     this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mCheckBox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LocalHost1 : WpfTreeItem
+    {
+        
+        public LocalHost1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Item1 Item1
+        {
+            get
+            {
+                if ((this.mItem1 == null))
+                {
+                    this.mItem1 = new Item1(this);
+                }
+                return this.mItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Item1 mItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Item1 : WpfTreeItem
+    {
+        
+        public Item1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ResourceNameCheckBox";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
                 return this.mCheckBox;
@@ -82801,6 +83136,23 @@ namespace Warewolf.UITests
                 return this.mPassedText;
             }
         }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
         #endregion
         
         #region Fields
@@ -82825,6 +83177,8 @@ namespace Warewolf.UITests
         private WpfEdit mHostTextBoxEdit;
         
         private WpfText mPassedText;
+        
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -91262,13 +91616,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public localhost1 localhost
+        public localhost2 localhost
         {
             get
             {
                 if ((this.mlocalhost == null))
                 {
-                    this.mlocalhost = new localhost1(this);
+                    this.mlocalhost = new localhost2(this);
                 }
                 return this.mlocalhost;
             }
@@ -91276,15 +91630,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private localhost1 mlocalhost;
+        private localhost2 mlocalhost;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class localhost1 : WpfTreeItem
+    public class localhost2 : WpfTreeItem
     {
         
-        public localhost1(UITestControl searchLimitContainer) : 
+        public localhost2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93075,13 +93429,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Localhost2 Localhost
+        public Localhost3 Localhost
         {
             get
             {
                 if ((this.mLocalhost == null))
                 {
-                    this.mLocalhost = new Localhost2(this);
+                    this.mLocalhost = new Localhost3(this);
                 }
                 return this.mLocalhost;
             }
@@ -93089,15 +93443,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Localhost2 mLocalhost;
+        private Localhost3 mLocalhost;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Localhost2 : WpfTreeItem
+    public class Localhost3 : WpfTreeItem
     {
         
-        public Localhost2(UITestControl searchLimitContainer) : 
+        public Localhost3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -96032,10 +96386,24 @@ namespace Warewolf.UITests
                 return this.mUIUI_SplitPane_AutoIDCustom;
             }
         }
+        
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
         #endregion
     }
     
@@ -96086,6 +96454,18 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public UIDev2ViewModelsDeployTabPage UIDev2ViewModelsDeployTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsDeployTabPage == null))
+                {
+                    this.mUIDev2ViewModelsDeployTabPage = new UIDev2ViewModelsDeployTabPage(this);
+                }
+                return this.mUIDev2ViewModelsDeployTabPage;
+            }
+        }
+        
         public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
         {
             get
@@ -96100,19 +96480,21 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private UIDev2ViewModelsDeployTabPage mUIDev2ViewModelsDeployTabPage;
+        
         private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    public class UIDev2ViewModelsDeployTabPage : WpfTabPage
     {
         
-        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+        public UIDev2ViewModelsDeployTabPage(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.DeployWorksurfaceViewModel";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
@@ -96184,6 +96566,206 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public UISourceNavigationViewCustom UISourceNavigationViewCustom
+        {
+            get
+            {
+                if ((this.mUISourceNavigationViewCustom == null))
+                {
+                    this.mUISourceNavigationViewCustom = new UISourceNavigationViewCustom(this);
+                }
+                return this.mUISourceNavigationViewCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISourceNavigationViewCustom mUISourceNavigationViewCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISourceNavigationViewCustom : WpfCustom
+    {
+        
+        public UISourceNavigationViewCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceNavigationView";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ExplorerTreeTree ExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mExplorerTreeTree == null))
+                {
+                    this.mExplorerTreeTree = new ExplorerTreeTree(this);
+                }
+                return this.mExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ExplorerTreeTree mExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerTreeTree : WpfTree
+    {
+        
+        public ExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem1
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIWarewolfStudioViewMoTreeItem1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    {
+        
+        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom1 UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom1(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom1 mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom1 : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentDockManagerCustom1 UIContentDockManagerCustom
+        {
+            get
+            {
+                if ((this.mUIContentDockManagerCustom == null))
+                {
+                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom1(this);
+                }
+                return this.mUIContentDockManagerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentDockManagerCustom1 mUIContentDockManagerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIContentDockManagerCustom1 : WpfCustom
+    {
+        
+        public UIContentDockManagerCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
         public UIUI_WorkflowDesigner_Custom UIUI_WorkflowDesigner_Custom
         {
             get
@@ -96233,194 +96815,332 @@ namespace Warewolf.UITests
                 return this.mUIScrollViewerPane;
             }
         }
-        
-        public UIUserControl_1Custom UIUserControl_1Custom
-        {
-            get
-            {
-                if ((this.mUIUserControl_1Custom == null))
-                {
-                    this.mUIUserControl_1Custom = new UIUserControl_1Custom(this);
-                }
-                return this.mUIUserControl_1Custom;
-            }
-        }
         #endregion
         
         #region Fields
         private WpfPane mUIScrollViewerPane;
-        
-        private UIUserControl_1Custom mUIUserControl_1Custom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUserControl_1Custom : WpfCustom
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
     {
         
-        public UIUserControl_1Custom(UITestControl searchLimitContainer) : 
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIScrollViewerPane UIScrollViewerPane
+        public UIExplorerTreeTree UIExplorerTreeTree
         {
             get
             {
-                if ((this.mUIScrollViewerPane == null))
+                if ((this.mUIExplorerTreeTree == null))
                 {
-                    this.mUIScrollViewerPane = new UIScrollViewerPane(this);
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
                 }
-                return this.mUIScrollViewerPane;
+                return this.mUIExplorerTreeTree;
             }
         }
         #endregion
         
         #region Fields
-        private UIScrollViewerPane mUIScrollViewerPane;
+        private UIExplorerTreeTree mUIExplorerTreeTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIScrollViewerPane : WpfPane
+    public class UIExplorerTreeTree : WpfTree
     {
         
-        public UIScrollViewerPane(UITestControl searchLimitContainer) : 
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIActivityBuilderCustom UIActivityBuilderCustom
+        public UIWarewolfStudioViewMoTreeItem2 UIWarewolfStudioViewMoTreeItem
         {
             get
             {
-                if ((this.mUIActivityBuilderCustom == null))
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
                 {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem2(this);
                 }
-                return this.mUIActivityBuilderCustom;
+                return this.mUIWarewolfStudioViewMoTreeItem;
             }
         }
         #endregion
         
         #region Fields
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
+        private UIWarewolfStudioViewMoTreeItem2 mUIWarewolfStudioViewMoTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIActivityBuilderCustom : WpfCustom
+    public class UIWarewolfStudioViewMoTreeItem2 : WpfTreeItem
     {
         
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
+        public UIWarewolfStudioViewMoTreeItem2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        public UIWarewolfStudioViewMoTreeItem1 UIWarewolfStudioViewMoTreeItem1
         {
             get
             {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
+                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
                 {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                    this.mUIWarewolfStudioViewMoTreeItem1 = new UIWarewolfStudioViewMoTreeItem1(this);
                 }
-                return this.mUIWorkflowItemPresenteCustom;
+                return this.mUIWarewolfStudioViewMoTreeItem1;
             }
         }
         #endregion
         
         #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        private UIWarewolfStudioViewMoTreeItem1 mUIWarewolfStudioViewMoTreeItem1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
+    public class UIWarewolfStudioViewMoTreeItem1 : WpfTreeItem
     {
         
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+        public UIWarewolfStudioViewMoTreeItem1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
+        public WpfButton UIExpanderButton
         {
             get
             {
-                if ((this.mUIFlowchartCustom == null))
+                if ((this.mUIExpanderButton == null))
                 {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfMultiAssignActiviCustom
-        {
-            get
-            {
-                if ((this.mUIDsfMultiAssignActiviCustom == null))
-                {
-                    this.mUIDsfMultiAssignActiviCustom = new WpfCustom(this);
+                    this.mUIExpanderButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIDsfMultiAssignActiviCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-                    this.mUIDsfMultiAssignActiviCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Set the output variable (1)(MultiAssignDesigner)";
-                    this.mUIDsfMultiAssignActiviCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mUIExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIExpanderButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIDsfMultiAssignActiviCustom;
+                return this.mUIExpanderButton;
+            }
+        }
+        
+        public WpfImage UIResourceImageImage
+        {
+            get
+            {
+                if ((this.mUIResourceImageImage == null))
+                {
+                    this.mUIResourceImageImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIResourceImageImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ResourceImage";
+                    this.mUIResourceImageImage.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIResourceImageImage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIResourceImageImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUIDsfMultiAssignActiviCustom;
+        private WpfButton mUIExpanderButton;
+        
+        private WpfImage mUIResourceImageImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2NKOSINATWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2NKOSINATWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\NKOSINATHI.SANGWENI)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom1 UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom1(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom1 mUIUI_ExplorerControl_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom1 : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree1 UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree1(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree1 mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree1 : WpfTree
+    {
+        
+        public UIExplorerTreeTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoTreeItem3 UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem3(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoTreeItem3 mUIWarewolfStudioViewMoTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem3 : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoTreeItem11 UIWarewolfStudioViewMoTreeItem1
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem1 = new UIWarewolfStudioViewMoTreeItem11(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoTreeItem11 mUIWarewolfStudioViewMoTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem11 : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIExpanderButton
+        {
+            get
+            {
+                if ((this.mUIExpanderButton == null))
+                {
+                    this.mUIExpanderButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIExpanderButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mUIExpanderButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIExpanderButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIExpanderButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIExpanderButton;
         #endregion
     }
 }
