@@ -849,7 +849,7 @@ Scenario: Run Selected Test in Web
 	When I run selected test in Web
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                |
-	| Test 1    | Failed | Failed: Assert Equal. Expected "Hello World." for 'Message' but got "" |
+	| Test 1    | Failed | Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
 
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
