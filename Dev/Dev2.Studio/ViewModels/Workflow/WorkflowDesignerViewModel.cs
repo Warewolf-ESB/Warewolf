@@ -98,7 +98,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class FromToolBox
     {
-        
     }
 
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
@@ -1655,7 +1654,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         static void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
-            instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.Breadcrumb;
+            instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.All;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
@@ -2626,14 +2625,35 @@ namespace Dev2.Studio.ViewModels.Workflow
             var unsavedName = resourceModel.ResourceName;
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
-            OnDispose();
+            DisposeDesigner();
             ActivityDesignerHelper.AddDesignerAttributes(this);
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel);
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
             NewWorkflowNames.Instance.Remove(unsavedName);
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
-            GetWorkflowLink();
+        }
+
+        private void DisposeDesigner()
+        {
+            if (_wd != null)
+            {
+                _wd.ModelChanged -= WdOnModelChanged;
+                _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
+
+                _wd.View.PreviewDrop -= ViewPreviewDrop;
+                _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
+
+                _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
+                _virtualizedContainerService = null;
+                _virtualizedContainerServicePopulateAllMethod = null;
+            }
+
+            DesignerManagementService?.Dispose();
+            if (ModelService != null)
+            {
+                ModelService.ModelChanged -= ModelServiceModelChanged;
+            }
+            _debugSelectionChangedService?.Unsubscribe();
         }
 
         private void PublishMessages(IContextualResourceModel resourceModel)
