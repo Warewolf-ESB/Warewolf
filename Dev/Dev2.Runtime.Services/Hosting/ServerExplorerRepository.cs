@@ -120,12 +120,16 @@ namespace Dev2.Runtime.Hosting
             }
             if (itemToRename.ResourceType == "Folder")
             {
+                var oldPath = itemToRename.ResourcePath;
                 var moveResult = RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
-                if (moveResult.Status == ExecStatus.Fail)
+                itemToRename.ResourcePath = itemToRename.ResourcePath.Replace(itemToRename.ResourcePath, newName);
+                var resourcesRenameResult = RenameChildrenPaths(oldPath, newName);
+                itemToRename.DisplayName = newName;
+                if (moveResult.Status == ExecStatus.Fail || resourcesRenameResult.Status == ExecStatus.Fail)
                 {
-                    return moveResult;
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, string.Join(Environment.NewLine, moveResult.Message, resourcesRenameResult.Message));
                 }
-                RenameChildrenPaths(itemToRename);
+                
                 return moveResult;
             }
             itemToRename.DisplayName = newName;
@@ -133,19 +137,13 @@ namespace Dev2.Runtime.Hosting
 
         }
 
-        private void RenameChildrenPaths(IExplorerItem itemToRename)
+        private ResourceCatalogResult RenameChildrenPaths(string oldPath, string newName)
         {
-            var results = new List<ResourceCatalogResult>();
-            IEnumerable<IResource> resourcesToRename =
+            var resourcesToRename =
                 ResourceCatalogue.GetResourceList(GlobalConstants.ServerWorkspaceID)
-                                 .Where(
-                                     a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(itemToRename.DisplayName.Trim()));
-
-            foreach(var resource in resourcesToRename)
-            {
-                ResourceCatalogResult result = ResourceCatalogue.RenameResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, itemToRename.DisplayName, itemToRename.ResourcePath);
-                results.Add(result);
-            }
+                    .Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(oldPath)).ToList();
+            ResourceCatalogResult result = ResourceCatalogue.RenameCategory(GlobalConstants.ServerWorkspaceID, oldPath, newName, resourcesToRename);
+            return result;
         }
 
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
@@ -162,11 +160,6 @@ namespace Dev2.Runtime.Hosting
                 return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName, itemToRename.ResourcePath);
-//            if (result.Status == ExecStatus.Success)
-//            {
-//                ResourceCatalog.Instance.Reload();
-//                Load(workSpaceId, true);
-//            }
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -182,9 +175,6 @@ namespace Dev2.Runtime.Hosting
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
-                    
-//                    ResourceCatalog.Instance.Reload();
-//                    Load(workSpaceId, true);
                 }
                 else
                 {
@@ -219,14 +209,22 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Guid id)
         {
-            var items = Load(Guid.Empty);
-            return Find(items, id);
+            //var items = Load(Guid.Empty);
+            if (_root == null)
+            {
+                Load(Guid.Empty,true);
+            }
+            return Find(_root, id);
         }
 
         public IExplorerItem Find(Func<IExplorerItem, bool> predicate)
         {
-            var items = Load(Guid.Empty);
-            return Find(items, predicate);
+            //var items = Load(Guid.Empty);
+            if (_root == null)
+            {
+                Load(Guid.Empty, true);
+            }
+            return Find(_root, predicate);
         }
 
         public List<string> LoadDuplicate()
@@ -420,21 +418,15 @@ namespace Dev2.Runtime.Hosting
                 }
                 var oldPath = itemToMove.ResourcePath;
                 Directory.Move(DirectoryStructureFromPath(oldPath), DirectoryStructureFromPath(newPath));
-                MoveVersionFolder(oldPath, newPath);
                 UpdateChildrenPaths(itemToMove, newPath);
-                //Load(workSpaceId, true);
                 return new ExplorerRepositoryResult(ExecStatus.Success, "");
             }
-            // ReSharper disable once RedundantIfElseBlock
-            else
+            IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
+            if (item.Any())
             {
-                IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId).Where(a => a.GetResourcePath(workSpaceId) == newPath);
-                if (item.Any())
-                {
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
-                }
-                return MoveSingeItem(itemToMove, newPath, workSpaceId);
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
+            return MoveSingeItem(itemToMove, newPath, workSpaceId);
         }
 
         private void UpdateChildrenPaths(IExplorerItem itemToMove, string newPath)
@@ -468,14 +460,15 @@ namespace Dev2.Runtime.Hosting
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
             MoveVersions(itemToMove, newPath);
-            ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId) });
-            _file.Delete($"{DirectoryStructureFromPath(itemToMove.ResourcePath)}.xml");
-            itemToMove.ResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
-            //Load(workSpaceId, true);
+            var newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+            var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
+            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
+            var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".xml"}";
+            _file.Move(source, destination);
+            ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { resource });
+            itemToMove.ResourcePath = newResourcePath;
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
-
-
 
         void MoveVersions(IExplorerItem itemToMove, string newPath)
         {
