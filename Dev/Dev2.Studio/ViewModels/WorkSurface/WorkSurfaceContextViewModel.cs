@@ -39,6 +39,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -549,7 +550,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 var vm = model;
                 vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-                ViewModelUtils.RaiseCanExecuteChanged(model.DebugOutputViewModel?.AddNewTestCommand);
+
+                if (Application.Current != null && Application.Current.Dispatcher != null)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
+                    {
+                        ViewModelUtils.RaiseCanExecuteChanged(model.DebugOutputViewModel?.AddNewTestCommand);
+                    }), DispatcherPriority.Background);
+                }
+            
             }
         }
 
