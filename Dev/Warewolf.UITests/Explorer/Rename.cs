@@ -22,6 +22,13 @@ namespace Warewolf.UITests
             UIMap.Click_Explorer_Refresh_Button();
             var itemEdit = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ResourceNameTextBlock;
             Assert.AreEqual("Control Flow - Decision2", itemEdit.DisplayText);
+
+            // Cleanup
+            var resourcesDestFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Examples";            
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Example";            
+            Assert.IsTrue(Directory.Exists(resourcesFolder));
+            if (!Directory.Exists(resourcesDestFolder))
+                Directory.Move(resourcesFolder, resourcesDestFolder);
         }
 
         [TestMethod]
@@ -61,6 +68,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UrlWithRenamedFolder.UrlWithRenamedFolderHyperlink.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UrlWithRenamedFolder.UrlWithRenamedFolderHyperlink.Alt.Contains(AcceptanceTestsRenamed));
             Directory.Move(renamedFolder, resourcesFolder);
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         #region Additional test attributes

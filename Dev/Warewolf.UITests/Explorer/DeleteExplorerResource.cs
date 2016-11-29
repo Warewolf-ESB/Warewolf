@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests
@@ -10,11 +11,14 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DeleteExplorerResource
     {
+        const string flowSwitch = "Control Flow - Switch";
+        const string flowSequence = "Control Flow - Sequence";
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void Delete_ExplorerResource()
-        {
-            UIMap.Filter_Explorer("Control Flow - Switch");
+        {            
+            UIMap.Filter_Explorer(flowSwitch);
             UIMap.Delete_FirstResource_FromContextMenu();
             UIMap.Click_MessageBox_Yes();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
@@ -23,12 +27,16 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        public void DeletedResourceIsRemovedFromResources(string resourceName)
+        public void DeletedResourceIsRemovedFromResources()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             Assert.IsTrue(Directory.Exists(resourcesFolder));
+            UIMap.Filter_Explorer(flowSequence);
+            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Click_MessageBox_Yes();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
-            var firstOrDefault = allFiles.FirstOrDefault(s => s.StartsWith(resourceName));
+            var firstOrDefault = allFiles.FirstOrDefault(s => s.StartsWith(flowSequence));
             Assert.IsNull(firstOrDefault);
         }
 
