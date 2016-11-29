@@ -231,6 +231,10 @@ namespace Dev2.Network
         }
         public IHubConnectionWrapper HubConnection => _wrappedConnection.HubConnection;
 
+        public void FetchResourcesAffectedMemo(Guid resourceId)
+        {
+            _wrappedConnection.FetchResourcesAffectedMemo(resourceId);
+        }
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         public event EventHandler PermissionsChanged;

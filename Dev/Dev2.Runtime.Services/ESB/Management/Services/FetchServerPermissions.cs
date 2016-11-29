@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public AuthorizationContext GetAuthorizationContextForService()
         {
-            return AuthorizationContext.Administrator;
+            return AuthorizationContext.Any;
         }
         
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

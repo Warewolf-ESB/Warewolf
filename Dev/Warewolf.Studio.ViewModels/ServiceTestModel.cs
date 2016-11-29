@@ -50,6 +50,7 @@ namespace Warewolf.Studio.ViewModels
         private ObservableCollection<IServiceTestStep> _testSteps;
         private string _errorContainsText;
         private bool _isTestLoading;
+        private bool _isValidatingIsDirty;
 
         public string NeverRunString
         {
@@ -438,6 +439,11 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+                if (_isValidatingIsDirty)
+                {
+                    return false;
+                }
+                _isValidatingIsDirty = true;
                 var isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
@@ -457,6 +463,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     NameForDisplay = TestName;
                 }
+                _isValidatingIsDirty = false;
                 return isDirty;
             }
         }
