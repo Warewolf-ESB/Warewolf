@@ -12,8 +12,6 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.RightClick_Explorer_Localhost_First_Item();
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists, "New Workflow Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DebugInputsMenuItem.Exists, "DebugInputsMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DebugStudioMenuItem.Exists, "DebugStudioMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DebugBrowserMenuItem.Exists, "DebugBrowserMenuItem Context menu item does not exist on explorer context menu for workflows.");

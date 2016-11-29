@@ -892,12 +892,11 @@ namespace Warewolf.UITests
         [Then(@"I have one item in the explorer")]
         public void ExplorerItemCountEquals()
         {
-            var uiTestControl = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
-            var controlExistsNow = ControlExistsNow(uiTestControl);
-            Assert.IsFalse(controlExistsNow);
+            var secondItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
+            Assert.IsFalse(ControlExistsNow(secondItem), "Second Item exists in the Explorer Exists");
         }
 
-        [When(@"I Filter the ToolBox with ""(.*)""")]
+       [When(@"I Filter the ToolBox with ""(.*)""")]
         public void Filter_ToolBox(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = FilterText;
@@ -3382,7 +3381,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Explorer Localhost First Item")]
         public void Click_Explorer_Localhost_First_Item()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
         [When(@"I Click Explorer Remote Server Dropdown List")]
@@ -7131,6 +7130,8 @@ namespace Warewolf.UITests
         public void Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.EnsureClickable(new Point(90, 7));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.DrawHighlight();
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
             Playback.Wait(2000);
@@ -7140,7 +7141,15 @@ namespace Warewolf.UITests
         [When(@"I Click Explorer Localhost First Item Expander")]
         public void Click_Explorer_Localhost_First_Item_Expander()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton, new Point(16, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton);
+        }
+
+        [When(@"I Expand Explorer Localhost First Item By Double Click")]
+        [Given(@"I Expand Explorer Localhost First Item By Double Click")]
+        [Then(@"I Expand Explorer Localhost First Item By Double Click")]
+        public void Double_Click_Explorer_Localhost_First_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
         [When(@"I Click Web Browser Error Messagebox OK Button")]

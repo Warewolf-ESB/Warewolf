@@ -1580,7 +1580,7 @@ namespace Warewolf.UITests
                 {
                     this.mShowServerVersion = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
+                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersionItem";
                     this.mShowServerVersion.WindowTitles.Add("Warewolf");
                     #endregion
                 }
