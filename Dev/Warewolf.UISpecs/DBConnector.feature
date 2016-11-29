@@ -10,7 +10,8 @@ Scenario: DB Connector
 	And I Click New Database Source Ribbon Button
 	And I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
-	And I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
+	Then RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
+	When I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
 	And I Click UserButton On Database Source
 	And I Enter RunAsUser Username And Password on Database source
 	And I Click DB Source Wizard Test Connection Button
@@ -31,15 +32,12 @@ Scenario: DB Connector
 	And I Click Close Workflow Tab Button
 	And I Click MessageBox No
 
-Scenario: Create Source From Tool
+Scenario: Create DB Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	When I Drag Toolbox SQL Server Tool Onto DesignSurface
 	And I Select NewDatabaseSource FromSqlServerTool
-	And I Change Selected Database ToMySql DataBase
-	And I Change Selected Database ToPostgreSql DataBase
-	And I Change Selected Database ToOracle DataBase
-	And I Change Selected Database ToODBC DataBase
+	And I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox
 	And I Click DB Source Wizard Test Connection Button
 	And I Click Close DB Source Wizard Tab Button
 	And I Click Close Workflow Tab Button
