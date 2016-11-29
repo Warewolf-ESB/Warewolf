@@ -20,8 +20,6 @@ Scenario: Unsaved Tests Contain a Star in their Name
 	Then The Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
 	Then The Added Test "Has No" Unsaved Star
-	Then I delete Second Added Test
-	Then I delete Added Test
 
 Scenario: Run Passing Tests
 	When I Click New Workflow Ribbon Button
