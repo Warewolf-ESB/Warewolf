@@ -16,6 +16,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Control Flow - Decision");
             UIMap.Rename_LocalFolder_To_SecondFolder();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Rename_FolderItem_ToNewFolderItem();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Explorer_Refresh_Button();
@@ -31,6 +32,7 @@ namespace Warewolf.UITests
             var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Renamed";
             UIMap.Filter_Explorer(Folder);
             UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(renamedFolder));
             //Put back the Original Name
             Directory.Move(renamedFolder, resourcesFolder);
