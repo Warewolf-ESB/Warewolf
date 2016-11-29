@@ -366,6 +366,269 @@
         </Setter>
     </Style>
 
+    <Style x:Key="AutoCompleteBoxWithWrapStyle" TargetType="controls:AutoCompleteBox">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="TextBoxStyle" Value="{StaticResource NoAcceptReturnTextBoxStyle}"/>
+        <Setter Property="MinWidth" Value="45" />
+        <Setter Property="MinHeight" Value="25"/>
+        <Setter Property="Padding" Value="2,3,0,3"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:AutoCompleteBox">
+                    <Grid Opacity="{TemplateBinding Opacity}">
+                        <Border x:Name="TextBorder" BorderThickness="1" Height="Auto" BorderBrush="{StaticResource TextBoxBorderBrush}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="PART_CalculateModePrefix"
+                                           Text="fx"
+                                           VerticalAlignment="Top"
+                                           Visibility="Collapsed"
+                                           Foreground="Gray"
+                                           FontStyle="Italic" />
+                                <TextBox Padding="{TemplateBinding Padding}" 
+                                         Background="{TemplateBinding Background}" 
+                                         IsTabStop="True" 
+                                         Grid.Column="1"
+                                         x:Name="Text" 
+                                         Style="{TemplateBinding TextBoxStyle}"
+                                         BorderThickness="0" 
+                                         BorderBrush="Transparent" 
+                                         Foreground="{TemplateBinding Foreground}" 
+                                         Margin="0" />
+                            </Grid>
+                        </Border>
+
+                        <Border x:Name="ValidationErrorElement" 
+                                Visibility="Collapsed" 
+                                BorderBrush="#FFDB000C" 
+                                BorderThickness="1" 
+                                CornerRadius="0">
+                            <ToolTipService.ToolTip>
+                                <ToolTip x:Name="validationTooltip" 
+                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+                                         Template="{StaticResource CommonValidationToolTipTemplate}" 
+                                         Placement="Right" 
+                                         PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToolTip.Triggers>
+                                        <EventTrigger RoutedEvent="Canvas.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsHitTestVisible">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <system:Boolean>true</system:Boolean>
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ToolTip.Triggers>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                            <Grid Height="12" 
+                                  HorizontalAlignment="Right" 
+                                  Margin="1,-4,-4,0" 
+                                  VerticalAlignment="Top" 
+                                  Width="12" 
+                                  Background="Transparent">
+                                <Path Fill="#FFDC000C" Margin="1,3,0,0" Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z" />
+                                <Path Fill="#ffffff" Margin="1,3,0,0" Data="M 0,0 L2,0 L 8,6 L8,8" />
+                            </Grid>
+                        </Border>
+
+                        <ContentPresenter x:Name="PART_DefaultTextHost"
+                                          AllowDrop="{TemplateBinding AllowDrop}"
+                                          Height="{TemplateBinding Height}"
+                                          TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
+                                          TextBlock.FontStyle="Italic"
+                                          TextBlock.Foreground="{StaticResource WarewolfHeaderWatermarkGreyBrush}"
+                                          MinWidth="{TemplateBinding MinWidth}"
+                                          MaxWidth="{TemplateBinding MaxWidth}"
+                                          Content="{TemplateBinding DefaultText}"
+                                          MaxHeight="{TemplateBinding MaxHeight}"
+                                          ContentTemplate="{TemplateBinding DefaultTextTemplate}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          IsHitTestVisible="False"
+                                          Margin="0,3,0,0"
+                                          Visibility="Collapsed" />
+                        <Popup x:Name="Popup">
+                            <Grid Opacity="{TemplateBinding Opacity}">
+                                <Border x:Name="PopupBorder" HorizontalAlignment="Stretch" Opacity="0" BorderThickness="0">
+                                    <Border.RenderTransform>
+                                        <TranslateTransform X="1" Y="1" />
+                                    </Border.RenderTransform>
+                                    <Border.Background>
+                                        <SolidColorBrush Color="Transparent" />
+                                    </Border.Background>
+                                    <Border HorizontalAlignment="Stretch" 
+                                            Opacity="1.0" Padding="0" 
+                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            CornerRadius="0">
+                                        <Border.RenderTransform>
+                                            <TransformGroup>
+                                                <TranslateTransform X="-1" Y="-1" />
+                                            </TransformGroup>
+                                        </Border.RenderTransform>
+                                        <Border.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Transparent" Offset="0" />
+                                                <GradientStop Color="Transparent" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <ListBox x:Name="Selector" 
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                                 Style="{StaticResource ListBoxStyle}"
+                                                 Background="{TemplateBinding Background}" 
+                                                 Foreground="{TemplateBinding Foreground}" 
+                                                 BorderThickness="0" 
+                                                 ItemTemplate="{TemplateBinding ItemTemplate}" />
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="PopupStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" To="PopupOpened" />
+                                    <VisualTransition GeneratedDuration="0:0:0.2" To="PopupClosed" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="PopupOpened">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PopupBorder" Storyboard.TargetProperty="Opacity" To="1.0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PopupClosed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PopupBorder" Storyboard.TargetProperty="Opacity" To="0.0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="TextBorder"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="TextBorder"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="TextBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.3" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ReadOnly">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="TextBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid" />
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Boolean>True</system:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ui:IntellisenseTextBox.AllowUserCalculateMode" Value="True" />
+                                <Condition Property="ui:IntellisenseTextBox.IsInCalculateMode" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_CalculateModePrefix" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="AllowUserInsertLine" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Style" TargetName="Text" Value="{StaticResource AcceptReturnWithWrapTextBoxStyle}" />
+                                <Setter TargetName="Text" Property="Padding" Value="2,6,0,3"/>
+                                <Setter TargetName="PART_DefaultTextHost" Property="Margin" Value="0,3,0,0"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="AllowUserInsertLine" Value="True" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Margin" TargetName="PART_DefaultTextHost" Value="0,3,0,0"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger SourceName="Text" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TextBorder" Property="BorderBrush" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                        </Trigger>
+                        <Trigger Property="HasError" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ActivityIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource AutoCompleteBoxStyle}" >
         <Setter Property="AcceptsReturn" Value="False"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
