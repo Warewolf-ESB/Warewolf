@@ -2309,22 +2309,9 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
-        public void Click_DebugInput_Debug_Button_For_UnpinnedWindow()
+        public void Debug_Unpinned_Workflow_With_F6()
         {
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Enabled, "DebugF6Button is not enabled after clicking RunDebug from Menu.");
-            Mouse.Click(MainStudioWindow.DebugInputDialog.DebugF6Button, new Point(34, 10));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.Exists, "Debug Output does not exist after clicking Debug button from Debug Dialog");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SettingsButton.Exists, "Output SettingsButton does not exist after clicking Debug button from Debug Dialog");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Exists, "Output SearchTextBox does not exist after clicking Debug button from Debug Dialog");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Exists, "DebugOutputTree does not exist after clicking Debug button from Debug Dialog");
-        }
-
-        public void Debug_Unpinned_Workflow_With_Ribbon_Button()
-        {
-            Toggle_Between_Studio_and_Unpinned_Tab();
-            Click_Debug_Ribbon_Button();
-            Click_DebugInput_Debug_Button_For_UnpinnedWindow();
-            Toggle_Between_Studio_and_Unpinned_Tab();
+            Press_F6();
             WaitForSpinner(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
@@ -2868,6 +2855,8 @@ namespace Warewolf.UITests
         {
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
             Playback.Wait(100);
+            Point point;
+            Assert.IsFalse(MainStudioWindow.UnpinnedTab.TryGetClickablePoint(out point), "Unpinned pane still visible after Alt+TAB");
         }
 
         public void Show_Explorer_First_Item_Tests_With_Context_Menu()
@@ -3171,17 +3160,10 @@ namespace Warewolf.UITests
         [When(@"I Click Debug Output Assign Cell")]
         public void Click_Debug_Output_Assign_Cell()
         {
-            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox.DisplayText, "Wrong variable name in debug output");
+            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Wrong variable name in debug output");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button, new Point(21, 9));
             Assert.AreEqual("IsPrimarySelection=True IsSelection=True IsCurrentLocation=null IsCurrentContext=" +
                             "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus, "Multiassign small view is not selected.");
-        }
-
-        [When(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
-        public void Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab()
-        {
-            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox.DisplayText, "Wrong variable name in debug output");
-            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button, new Point(21, 9));
         }
 
         [When(@"I Click Debug Output BaseConvert Cell")]
@@ -3216,9 +3198,7 @@ namespace Warewolf.UITests
         [When(@"I Click DebugInput Debug Button")]
         public void Click_DebugInput_Debug_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.DebugF6Button.Enabled, "DebugF6Button is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.DebugF6Button, new Point(34, 10));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.Exists, "Debug output does not exist");
         }
 
         [When(@"I Click DebugInput ViewInBrowser Button")]
