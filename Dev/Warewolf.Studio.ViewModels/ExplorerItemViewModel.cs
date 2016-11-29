@@ -36,6 +36,7 @@ using Warewolf.Studio.Core.Popup;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable NotAccessedField.Local
+// ReSharper disable UnusedMember.Global
 
 namespace Warewolf.Studio.ViewModels
 {
