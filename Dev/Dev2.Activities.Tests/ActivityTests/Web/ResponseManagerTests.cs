@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                  "\"Status\": \"Success\"" +
                                  "}";
             var environment = new ExecutionEnvironment();
-            
+
             var responseManager = new ResponseManager()
             {
                 IsObject = true,
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var evalRes = environment.Eval("[[@weather]]", 0);
                 Assert.IsNotNull(evalRes);
                 var stringResult = CommonFunctions.evalResultToString(evalRes);
-                Assert.AreEqual(response.Replace(" ",""),stringResult.Replace(Environment.NewLine,"").Replace(" ",""));
+                Assert.AreEqual(response.Replace(" ", ""), stringResult.Replace(Environment.NewLine, "").Replace(" ", ""));
                 var propRes = environment.Eval("[[@weather.RelativeHumidity]]", 0);
                 Assert.IsNotNull(propRes);
             }
@@ -285,6 +285,86 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
             //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotThrowException()
+        {
+            //---------------Set up test pack-------------------
+            var mockoutPutDesc = new Mock<IOutputDescription>();
+            var service = new Mock<WebService>();
+            var outPutDesc = service.Object.GetOutputDescription();
+            mockoutPutDesc.SetupGet(description => description.DataSourceShapes);
+            var responseManager = new ResponseManager()
+            {
+                OutputDescription = outPutDesc,
+                Outputs = new List<IServiceOutputMapping>()
+            };
+            var environment = new ExecutionEnvironment();
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            responseManager.PushResponseIntoEnvironment(string.Empty, 1, dataObjectMock.Object);
+            //---------------Test Result -----------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotAssignOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var mockoutPutDesc = new Mock<IOutputDescription>();
+            var serviceXml = XmlResource.Fetch("WebService");
+            var service = new WebService(serviceXml) { RequestResponse = string.Empty };
+            var outPutDesc = service.GetOutputDescription();
+            mockoutPutDesc.SetupGet(description => description.DataSourceShapes);
+            var responseManager = new ResponseManager()
+            {
+                OutputDescription = outPutDesc,
+                Outputs = new List<IServiceOutputMapping>()
+            };
+            var env = new Mock<IExecutionEnvironment>();
+            env.Setup(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));
+            env.Setup(environment => environment.AddError(It.IsAny<string>()));
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(env.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            responseManager.PushResponseIntoEnvironment(string.Empty, 1, dataObjectMock.Object);
+            //---------------Test Result -----------------------
+            env.Verify(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+            env.Verify(environment => environment.AddError(It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotAaddError()
+        {
+            //---------------Set up test pack-------------------
+            var mockoutPutDesc = new Mock<IOutputDescription>();
+            mockoutPutDesc.SetupGet(description => description.DataSourceShapes).Returns(new List<IDataSourceShape>());
+            var responseManager = new ResponseManager()
+            {
+                OutputDescription = mockoutPutDesc.Object,
+                Outputs = new List<IServiceOutputMapping> {  }
+            };
+            var env = new Mock<IExecutionEnvironment>();
+            env.Setup(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));
+            env.Setup(environment => environment.AddError(It.IsAny<string>()));
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(env.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            responseManager.PushResponseIntoEnvironment(string.Empty, 1, dataObjectMock.Object);
+            //---------------Test Result -----------------------
+            env.Verify(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+            env.Verify(environment => environment.AddError(It.IsAny<string>()), Times.Never);
         }
     }
 }
