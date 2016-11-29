@@ -5494,7 +5494,7 @@ namespace Warewolf.UITests
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer context menu does not exist after right clicking the first explorer item.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open, new Point(30, 11));
         }
 
