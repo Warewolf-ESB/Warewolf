@@ -89,7 +89,6 @@ namespace Dev2.Services.Security
             LogStart();
             _permissionsLock.EnterWriteLock();
             var previousPermissions = _permissions.ToList();
-            Dev2Logger.Error(previousPermissions);
             List<WindowsGroupPermission> newPermissions;
             try
             {
