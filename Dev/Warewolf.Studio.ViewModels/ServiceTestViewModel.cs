@@ -1309,7 +1309,7 @@ namespace Warewolf.Studio.ViewModels
                         Dev2JsonSerializer ser = new Dev2JsonSerializer();
                         var dds = ser.Deserialize<Dev2DecisionStack>(eval);
 
-                        var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                        var exists = SelectedServiceTest.TestSteps?.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
                         if (exists == null)
                         {
