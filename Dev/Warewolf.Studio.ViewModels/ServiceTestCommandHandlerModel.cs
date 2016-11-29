@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
                             return serviceTestOutput;
                         }).ToObservableCollection();
 
-                        if (selectedServiceTest.TestSteps != null)
+                        if (selectedServiceTest.TestSteps != null && res.TestSteps!=null)
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
