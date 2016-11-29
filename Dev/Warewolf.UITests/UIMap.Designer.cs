@@ -187,6 +187,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +225,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -1486,7 +1500,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewWorkflow = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServiceItem";
                     this.mNewWorkflow.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1550,7 +1564,7 @@ namespace Warewolf.UITests
                 {
                     this.mDeploy = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Deploy";
+                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DeployItem";
                     this.mDeploy.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1806,7 +1820,7 @@ namespace Warewolf.UITests
                 {
                     this.mViewApisJsonMenuItem = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJsonItem";
                     this.mViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -102824,6 +102838,128 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mOKButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemMenu UIItemMenu
+        {
+            get
+            {
+                if ((this.mUIItemMenu == null))
+                {
+                    this.mUIItemMenu = new UIItemMenu(this);
+                }
+                return this.mUIItemMenu;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemMenu mUIItemMenu;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemMenu : WpfMenu
+    {
+        
+        public UIItemMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UIViewApisJsonMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewApisJsonMenuItem == null))
+                {
+                    this.mUIViewApisJsonMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJsonItem";
+                    this.mUIViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIViewApisJsonMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UIViewSwaggerMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewSwaggerMenuItem == null))
+                {
+                    this.mUIViewSwaggerMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIViewSwaggerMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
+                    this.mUIViewSwaggerMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIViewSwaggerMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UIShowVersionHistoryMenuItem
+        {
+            get
+            {
+                if ((this.mUIShowVersionHistoryMenuItem == null))
+                {
+                    this.mUIShowVersionHistoryMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIShowVersionHistoryMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ShowHideVersions";
+                    this.mUIShowVersionHistoryMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIShowVersionHistoryMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UIShowDependenciesMenuItem
+        {
+            get
+            {
+                if ((this.mUIShowDependenciesMenuItem == null))
+                {
+                    this.mUIShowDependenciesMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIShowDependenciesMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Dependencies";
+                    this.mUIShowDependenciesMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIShowDependenciesMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUIViewApisJsonMenuItem;
+        
+        private WpfMenuItem mUIViewSwaggerMenuItem;
+        
+        private WpfMenuItem mUIShowVersionHistoryMenuItem;
+        
+        private WpfMenuItem mUIShowDependenciesMenuItem;
         #endregion
     }
 }
