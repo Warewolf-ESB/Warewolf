@@ -332,7 +332,8 @@
 								  Style="{StaticResource MenuItemStyle}"
 								  InputGestureText="[Ctrl+W]"
 								  IsEnabled="{Binding CanCreateWorkflowService}"
-								  ToolTip="{Binding NewServiceTooltip}">
+								  ToolTip="{Binding NewServiceTooltip}"
+                                  Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
                             </MenuItem.Icon>
