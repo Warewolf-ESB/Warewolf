@@ -116,7 +116,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
-            AddNewTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => AddNewTest(EventPublishers.Aggregator), CanAddNewTest);
+            AddNewTestCommand = new DelegateCommand(o => AddNewTest(EventPublishers.Aggregator), o=> CanAddNewTest());
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
 
@@ -139,10 +139,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var canAddNewTest = RootItems != null && RootItems.Count > 0;
 
-            if (canAddNewTest)
+            if (canAddNewTest && !IsTestView)
             {
                 if (_contextualResourceModel != null)
+                {
                     canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
+                }
             }
             AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestUnsavedToolTip;
 
@@ -487,12 +489,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 _allDebugReceived = true;
                 _continueDebugDispatch = true;
+                ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
             }
 
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
             AddItemToTree(content);
-            ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
+            
         }
 
         private void IsDebugStateLastStep(IDebugState content)

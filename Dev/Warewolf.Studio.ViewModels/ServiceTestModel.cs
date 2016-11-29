@@ -119,7 +119,10 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public ServiceTestModel()
         {
-
+            NeverRunString = "Never run";
+            NeverRunStringVisibility = true;
+            IsTestRunning = false;
+            TestSteps = new ObservableCollection<IServiceTestStep>();
         }
         public ServiceTestModel(Guid resourceId)
         {
@@ -492,7 +495,14 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestStep> TestSteps
         {
-            get { return _testSteps; }
+            get
+            {
+                if (_testSteps == null)
+                {
+                    _testSteps = new ObservableCollection<IServiceTestStep>();
+                }
+                return _testSteps;
+            }
             set
             {
                 _testSteps = value;
