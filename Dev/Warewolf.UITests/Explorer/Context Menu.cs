@@ -32,13 +32,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.OpenVersionMenuItem.Exists, "OpenVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
         }
 
-
-        [TestMethod]
-        [TestCategory("Explorer")]
-        public void ExplorerWorkflowOpenContextMenuItemsUITest()
-        {
-        }
-
         #region Additional test attributes
 
         [TestInitialize]

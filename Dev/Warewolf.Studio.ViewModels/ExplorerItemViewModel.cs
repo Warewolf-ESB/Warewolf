@@ -22,7 +22,6 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -37,6 +36,7 @@ using Warewolf.Studio.Core.Popup;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable NotAccessedField.Local
+// ReSharper disable UnusedMember.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -824,36 +824,24 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            var asyncWorker = CustomContainer.Get<IAsyncWorker>();
-                            asyncWorker?.Start(() =>
+                            ShellViewModel.SetRefreshExplorerState(true);
+                            if(_explorerRepository.Rename(this, NewName(newName)))
                             {
-                                ShellViewModel.SetRefreshExplorerState(true);
-                                if (_explorerRepository.Rename(this, NewName(newName)))
+                                if(!ResourcePath.Contains("\\"))
                                 {
-                                    if (!ResourcePath.Contains("\\"))
+                                    if(_resourceName != null)
                                     {
-                                        if (_resourceName != null)
-                                        {
-                                            ResourcePath = ResourcePath.Replace(_resourceName, newName);
-                                        }
+                                        ResourcePath = ResourcePath.Replace(_resourceName, newName);
                                     }
-                                    else
-                                    {
-                                        ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
-                                    }
-                                    UpdateResourcePaths(this);
-                                    _resourceName = newName;
                                 }
-                            }, () =>
-                            {
-                                if (!IsRenaming)
+                                else
                                 {
-                                    _resourceName = newName;
+                                    ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
                                 }
-                                IsRenaming = false;
-                                OnPropertyChanged(() => ResourceName);
-                                ShellViewModel.SetRefreshExplorerState(false);
-                            });
+                                UpdateResourcePaths(this);
+                                _resourceName = newName;
+                            }
+                            ShellViewModel.SetRefreshExplorerState(false);
                         }
                     }
                     if (!IsRenaming)
@@ -861,6 +849,7 @@ namespace Warewolf.Studio.ViewModels
                         _resourceName = newName;
                     }
                     IsRenaming = false;
+                    
                     OnPropertyChanged(() => ResourceName);
                 }
             }
