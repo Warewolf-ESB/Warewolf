@@ -63,6 +63,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="DeploySpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeploySpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="PluginConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,6 +117,10 @@
     <None Include="DBConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DBConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="DeploySpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeploySpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
