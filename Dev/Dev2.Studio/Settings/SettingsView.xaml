@@ -6,9 +6,9 @@
              xmlns:settings="clr-namespace:Dev2.Settings"
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
-    xmlns:fa="http://schemas.fontawesome.io/icons/"
-    xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
-    Padding="10"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
+             Padding="5"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -34,9 +34,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-
-
 
         <Border Grid.Row="1" BorderThickness="0,0,0,0" Margin="{StaticResource ElementBorderTop}">
             <Grid>
@@ -78,27 +75,26 @@
             </Grid>
         </Border>
         <Grid Grid.Row="2" >
-            <StackPanel Orientation="Horizontal"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            Visibility="{Binding IsSavedSuccessVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                    <fa:ImageAwesome Width="14" 
+            <fa:ImageAwesome Width="14" 
                              Height="14" 
-                             Margin="{StaticResource ControlBorderLeft}" 
                              Foreground="{StaticResource WareWolfOrangeBrush}" 
                              Icon="Check" 
-                             HorizontalAlignment="Right" />
-                </StackPanel>
+                             Visibility="{Binding IsSavedSuccessVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
 
-                <TextBlock Foreground="{StaticResource ValidationErrorElement}"
-                           Text="{Binding Errors}"
-                           VerticalAlignment="Center"
-                           Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                           AutomationProperties.AutomationId="UI_Errors_AutoID" />
-            </StackPanel>
+            <TextBlock Grid.Column="1" 
+                       Foreground="{StaticResource ValidationErrorElement}"
+                       Margin="{StaticResource ControlBorderLeft}" 
+                       Text="{Binding Errors}"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                       AutomationProperties.AutomationId="UI_Errors_AutoID" />
+
         </Grid>
     </Grid>
 </UserControl>

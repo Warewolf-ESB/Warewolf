@@ -20,6 +20,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
+        private Version _serverVersion;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
         {
@@ -70,6 +71,8 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
+                environmentViewModel.Server.GetServerVersion();
+                environmentViewModel.Server.GetMinSupportedVersion();
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
 
             }
@@ -209,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());        
+        public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedServer.GetServerVersion()));
 
         /// <summary>
         /// used to select a list of items from the explorer
@@ -252,6 +255,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _environments.Remove(environmentModel);
             }
+            _statsArea.Calculate(new List<IExplorerTreeItem>());
             OnPropertyChanged(() => Environments);
         }
 

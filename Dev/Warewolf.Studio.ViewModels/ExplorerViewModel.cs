@@ -178,10 +178,9 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async Task Refresh(bool refresh)
         {
             IsRefreshing = true;
-            foreach (var environmentViewModel in Environments)
+            foreach (var environmentViewModel in Environments.Where(model => model.IsSelected))
             {
                 await RefreshEnvironment(environmentViewModel, refresh);
-
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
@@ -190,10 +189,8 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
-
-
             IsRefreshing = true;
-
+            environmentViewModel.IsConnecting = true;
             if (environmentViewModel.IsConnected)
             {
                 environmentViewModel.ForcedRefresh = true;
@@ -205,6 +202,7 @@ namespace Warewolf.Studio.ViewModels
             }
             environmentViewModel.ForcedRefresh = false;
             IsRefreshing = false;
+            environmentViewModel.IsConnecting = false;
         }
 
         public virtual void Filter(string filter)
