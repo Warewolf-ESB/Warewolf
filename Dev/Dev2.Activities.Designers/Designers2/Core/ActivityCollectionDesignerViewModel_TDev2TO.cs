@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers2.Core
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+           
         }
 
         public int ItemCount => ModelItemCollection.Count;
@@ -91,17 +92,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if (oldItem != null)
+            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
+            if (dto != null && dto.CanRemove())
             {
-                var dto = oldItem.GetCurrentValue() as TDev2TOFn;
-                if (dto != null && dto.CanRemove())
+                // old row is blank so remove
+                if (ModelItemCollection != null)
                 {
-                    // old row is blank so remove
-                    if (ModelItemCollection != null)
-                    {
-                        var index = ModelItemCollection.IndexOf(oldItem) + 1;
-                        RemoveDto(dto, index);
-                    }
+                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                    RemoveDto(dto, index);
                 }
             }
             if (newItem != null)
@@ -312,10 +310,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             else
             {
-                if (ModelItemCollection != null)
-                {
-                    ModelItemCollection.Insert(idx, dto);                    
-                }
+                ModelItemCollection?.Insert(idx, dto);
             }
             RunValidation(idx);
         }
