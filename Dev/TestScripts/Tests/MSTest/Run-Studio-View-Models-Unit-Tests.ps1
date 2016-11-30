@@ -31,8 +31,8 @@ $FullArgsList = " `"$WorkspaceDir\Warewolf.Studio.ViewModels.Tests.dll`" /logger
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
 
-# Run VSTest with full argument string.
-Start-Process -FilePath "$env:vs140comntools..\IDE\MSTest.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
+# Write full command including full argument string.
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
