@@ -47,7 +47,7 @@ $TestSettingsFile = "$PSScriptRoot\OtherUISpecs.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = "`"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)`""
+$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)`""
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList

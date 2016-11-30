@@ -49,10 +49,10 @@ $TestSettingsFile = "$PSScriptRoot\ConflictingViewExecutePermissionsSecuritySpec
 
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = "`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=ConflictingContributeViewExecutePermissionsSecurity`""
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=ConflictingContributeViewExecutePermissionsSecurity`""
 } else {
 	# Create full VSTest argument string.
-	$FullArgsList = "`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 # Start server under test
 cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
