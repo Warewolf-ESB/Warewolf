@@ -3346,6 +3346,24 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
         public Checkbox Checkbox
         {
             get
@@ -3384,6 +3402,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfCustom mSpinner;
+        
         private Checkbox mCheckbox;
         
         private FirstItem mFirstItem;
@@ -4787,6 +4807,24 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
         public Checkbox1 Checkbox
         {
             get
@@ -4831,6 +4869,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfCustom mSpinner;
+        
         private Checkbox1 mCheckbox;
         
         private FirstItem2 mFirstItem;
@@ -12456,6 +12496,21 @@ namespace Warewolf.UITests
                 return this.mContentPane;
             }
         }
+        
+        public WpfText TabDescription
+        {
+            get
+            {
+                if ((this.mTabDescription == null))
+                {
+                    this.mTabDescription = new WpfText(this);
+                    #region Search Criteria
+                    this.mTabDescription.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTabDescription;
+            }
+        }
         #endregion
         
         #region Fields
@@ -12466,6 +12521,8 @@ namespace Warewolf.UITests
         private WpfText mWorkflow1ciremoteText;
         
         private ContentPane mContentPane;
+        
+        private WpfText mTabDescription;
         #endregion
     }
     
@@ -45390,10 +45447,29 @@ namespace Warewolf.UITests
                 return this.mCommentComboBox;
             }
         }
+        
+        public WpfControl ItemResizer
+        {
+            get
+            {
+                if ((this.mItemResizer == null))
+                {
+                    this.mItemResizer = new WpfControl(this);
+                    #region Search Criteria
+                    this.mItemResizer.SearchProperties[WpfControl.PropertyNames.ControlType] = "Indicator";
+                    this.mItemResizer.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemResizer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemResizer;
+            }
+        }
         #endregion
         
         #region Fields
         private CommentComboBox mCommentComboBox;
+        
+        private WpfControl mItemResizer;
         #endregion
     }
     
@@ -65669,7 +65745,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -65702,7 +65778,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -69470,21 +69546,39 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfText VariableTextbox
+        public WpfText VariableTextbox1
         {
             get
             {
-                if ((this.mVariableTextbox == null))
+                if ((this.mVariableTextbox1 == null))
                 {
-                    this.mVariableTextbox = new WpfText(this);
+                    this.mVariableTextbox1 = new WpfText(this);
                     #region Search Criteria
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mVariableTextbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableTextbox.WindowTitles.Add("Warewolf");
+                    this.mVariableTextbox1.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mVariableTextbox1.SearchProperties[WpfText.PropertyNames.Instance] = "1";
+                    this.mVariableTextbox1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mVariableTextbox1.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mVariableTextbox;
+                return this.mVariableTextbox1;
+            }
+        }
+        
+        public WpfText VariableTextbox2
+        {
+            get
+            {
+                if ((this.mVariableTextbox2 == null))
+                {
+                    this.mVariableTextbox2 = new WpfText(this);
+                    #region Search Criteria
+                    this.mVariableTextbox2.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mVariableTextbox2.SearchProperties[WpfText.PropertyNames.Instance] = "2";
+                    this.mVariableTextbox2.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mVariableTextbox2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mVariableTextbox2;
             }
         }
         
@@ -69550,10 +69644,29 @@ namespace Warewolf.UITests
                 return this.mRecordsetGroup;
             }
         }
+        
+        public WpfText ValueTextbox1
+        {
+            get
+            {
+                if ((this.mValueTextbox1 == null))
+                {
+                    this.mValueTextbox1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mValueTextbox1.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
+                    this.mValueTextbox1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mValueTextbox1.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mValueTextbox1;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfText mVariableTextbox;
+        private WpfText mVariableTextbox1;
+        
+        private WpfText mVariableTextbox2;
         
         private WpfButton mAssign1Button;
         
@@ -69562,6 +69675,8 @@ namespace Warewolf.UITests
         private WpfButton mCalculateButton;
         
         private RecordsetGroup mRecordsetGroup;
+        
+        private WpfText mValueTextbox1;
         #endregion
     }
     
@@ -69575,7 +69690,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -69590,7 +69705,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mRecordsetName.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
                     this.mRecordsetName.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetName.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mRecordsetName.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRecordsetName;
@@ -69607,7 +69722,7 @@ namespace Warewolf.UITests
                     #region Search Criteria
                     this.mRecordsetValue.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
                     this.mRecordsetValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetValue.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mRecordsetValue.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRecordsetValue;
@@ -79678,17 +79793,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText LocalhostText
+        public LocalhostText LocalhostText
         {
             get
             {
                 if ((this.mLocalhostText == null))
                 {
-                    this.mLocalhostText = new WpfText(this);
-                    #region Search Criteria
-                    this.mLocalhostText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
-                    this.mLocalhostText.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mLocalhostText = new LocalhostText(this);
                 }
                 return this.mLocalhostText;
             }
@@ -79702,7 +79813,44 @@ namespace Warewolf.UITests
         
         private WpfText mConnectedRemoteConnectionText;
         
-        private WpfText mLocalhostText;
+        private LocalhostText mLocalhostText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LocalhostText : WpfText
+    {
+        
+        public LocalhostText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
@@ -97118,6 +97266,34 @@ namespace Warewolf.UITests
                 return this.mStatusBar;
             }
         }
+        
+        public CommentTreeItem2 CommentTreeItem
+        {
+            get
+            {
+                if ((this.mCommentTreeItem == null))
+                {
+                    this.mCommentTreeItem = new CommentTreeItem2(this);
+                }
+                return this.mCommentTreeItem;
+            }
+        }
+        
+        public WpfButton CreateTestFromDebugButton
+        {
+            get
+            {
+                if ((this.mCreateTestFromDebugButton == null))
+                {
+                    this.mCreateTestFromDebugButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCreateTestFromDebugButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DebugOutputAddNewTestMode_AutoID";
+                    this.mCreateTestFromDebugButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mCreateTestFromDebugButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -97132,6 +97308,10 @@ namespace Warewolf.UITests
         private DebugOutputTree1 mDebugOutputTree;
         
         private StatusBar1 mStatusBar;
+        
+        private CommentTreeItem2 mCommentTreeItem;
+        
+        private WpfButton mCreateTestFromDebugButton;
         #endregion
     }
     
@@ -97210,21 +97390,21 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfText VariableTextbox
+        public WpfText VariableTextbox2
         {
             get
             {
-                if ((this.mVariableTextbox == null))
+                if ((this.mVariableTextbox2 == null))
                 {
-                    this.mVariableTextbox = new WpfText(this);
+                    this.mVariableTextbox2 = new WpfText(this);
                     #region Search Criteria
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
-                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mVariableTextbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableTextbox.WindowTitles.Add("Warewolf");
+                    this.mVariableTextbox2.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mVariableTextbox2.SearchProperties[WpfText.PropertyNames.Instance] = "2";
+                    this.mVariableTextbox2.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mVariableTextbox2.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mVariableTextbox;
+                return this.mVariableTextbox2;
             }
         }
         
@@ -97278,16 +97458,107 @@ namespace Warewolf.UITests
                 return this.mCalculateButton;
             }
         }
+        
+        public RecordsetGroup1 RecordsetGroup
+        {
+            get
+            {
+                if ((this.mRecordsetGroup == null))
+                {
+                    this.mRecordsetGroup = new RecordsetGroup1(this);
+                }
+                return this.mRecordsetGroup;
+            }
+        }
+        
+        public WpfText ValueTextbox5
+        {
+            get
+            {
+                if ((this.mValueTextbox5 == null))
+                {
+                    this.mValueTextbox5 = new WpfText(this);
+                    #region Search Criteria
+                    this.mValueTextbox5.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
+                    this.mValueTextbox5.SearchProperties[WpfText.PropertyNames.Instance] = "5";
+                    this.mValueTextbox5.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mValueTextbox5.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mValueTextbox5;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfText mVariableTextbox;
+        private WpfText mVariableTextbox2;
         
         private WpfButton mAssign1Button;
         
         private WpfButton mBaseConversion1Button;
         
         private WpfButton mCalculateButton;
+        
+        private RecordsetGroup1 mRecordsetGroup;
+        
+        private WpfText mValueTextbox5;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RecordsetGroup1 : WpfExpander
+    {
+        
+        public RecordsetGroup1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RecordsetName
+        {
+            get
+            {
+                if ((this.mRecordsetName == null))
+                {
+                    this.mRecordsetName = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetName.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mRecordsetName.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetName.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRecordsetName;
+            }
+        }
+        
+        public WpfText RecordsetValue
+        {
+            get
+            {
+                if ((this.mRecordsetValue == null))
+                {
+                    this.mRecordsetValue = new WpfText(this);
+                    #region Search Criteria
+                    this.mRecordsetValue.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputValueTextBlock_AutoID";
+                    this.mRecordsetValue.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mRecordsetValue.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRecordsetValue;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRecordsetName;
+        
+        private WpfText mRecordsetValue;
         #endregion
     }
     
@@ -97431,6 +97702,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mSpinner;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CommentTreeItem2 : WpfTreeItem
+    {
+        
+        public CommentTreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CommentButton
+        {
+            get
+            {
+                if ((this.mCommentButton == null))
+                {
+                    this.mCommentButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCommentButton.SearchProperties[WpfButton.PropertyNames.Name] = "Comment";
+                    this.mCommentButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCommentButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mCommentButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCommentButton;
         #endregion
     }
     

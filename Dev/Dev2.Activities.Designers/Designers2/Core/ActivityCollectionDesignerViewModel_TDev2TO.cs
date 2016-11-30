@@ -241,7 +241,12 @@ namespace Dev2.Activities.Designers2.Core
 
         ModelItem GetModelItem(int indexNumber)
         {
-            return ModelItemCollection[indexNumber - 1];
+            var index = indexNumber - 1;
+            if (ItemCount < index)
+            { 
+                index = ItemCount==0 ? 0 : ItemCount - 1;
+            }
+            return ModelItemCollection[index];
         }
 
         protected TDev2TOFn GetDto(int indexNumber)

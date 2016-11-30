@@ -950,11 +950,18 @@ namespace Dev2.Studio.ViewModels
 
         public async void ShowStartPage()
         {
-            _worksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            if (workSurfaceContextViewModel != null)
+            if (workSurfaceContextViewModel == null)
             {
-                await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
+                var helpViewModel = _worksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
+                if (helpViewModel != null)
+                {
+                    await helpViewModel.LoadBrowserUri(Version.CommunityPageUri);
+                }
+            }
+            else
+            {
+                ActivateItem(workSurfaceContextViewModel);
             }
         }
 
