@@ -13,7 +13,7 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              x:Name="ExplorerViewControl"
              KeyUp="ExplorerView_OnKeyUp"
-             PreviewMouseLeftButtonDown="ExplorerView_OnPreviewMouseLeftButtonDown"
+             
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
@@ -674,7 +674,7 @@
                             <Button Grid.Column="0"
                                     Command="{Binding RefreshCommand}"
                                     Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}"
-                                    Visibility="{Binding ElementName=FilterRefreshButton, Path=Visibility}">
+                                    Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                 <Grid>
                                     <Image Width="18"
                                             Height="18"
@@ -688,8 +688,6 @@
                             </Button>
 
                             <views:CircularProgressBar Grid.Column="0" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                            <views:CircularProgressBar Grid.Column="0" Visibility="{Binding ElementName=FilterRefreshProgressBar, Path=Visibility}" />
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <CheckBox x:Name="EnvironmentNameCheckBox"
                                            ClickMode="Press"

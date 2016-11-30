@@ -16,8 +16,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
@@ -1015,6 +1018,17 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
+        public IExplorerTreeItem FindByPath(string path)
+        {
+            var allChildren = Children.Flatten(model => model.Children);
+            var found = allChildren.FirstOrDefault(model => model.ResourcePath == path);
+            if (found != null)
+            {
+                return found;
+            }
+            return this;            
+        }
+
         public void Filter(string filter)
         {
             _filter = filter;
@@ -1129,6 +1143,36 @@ namespace Warewolf.Studio.ViewModels
                 itemCreated.CanEdit = false;
             }
             itemCreated.SetPermissions(explorerItem.Permissions, isDeploy);
+            if (isDialog)
+            {
+                SetPropertiesForDialog(itemCreated);
+            }
+            return itemCreated;
+        }
+
+
+        public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
+        {
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            {
+                ResourceName = explorerItem.ResourceName,
+                ResourceId = explorerItem.ID,
+                ResourceType = explorerItem.ResourceType.ToString(),
+                ResourcePath = explorerItem.GetSavePath(),
+                AllowResourceCheck = isDeploy,
+                ShowContextMenu = !isDeploy,
+                IsFolder = false,
+                IsService = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService,
+                IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
+                IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
+            };
+            if (isDeploy)
+            {
+                itemCreated.CanExecute = false;
+                itemCreated.CanView = false;
+                itemCreated.CanEdit = false;
+            }
+            itemCreated.SetPermissions(explorerItem.UserPermissions, isDeploy);
             if (isDialog)
             {
                 SetPropertiesForDialog(itemCreated);
