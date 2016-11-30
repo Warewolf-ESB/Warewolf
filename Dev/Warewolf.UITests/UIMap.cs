@@ -7147,7 +7147,7 @@ namespace Warewolf.UITests
         [When(@"I Expand Explorer Localhost First Item By Double Click")]
         [Given(@"I Expand Explorer Localhost First Item By Double Click")]
         [Then(@"I Expand Explorer Localhost First Item By Double Click")]
-        public void Double_Click_Explorer_Localhost_First_Item()
+        public void Expand_Explorer_Localhost_First_Item_With_Double_Click()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
