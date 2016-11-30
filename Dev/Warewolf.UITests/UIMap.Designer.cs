@@ -3346,6 +3346,24 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
         public Checkbox Checkbox
         {
             get
@@ -3384,6 +3402,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfCustom mSpinner;
+        
         private Checkbox mCheckbox;
         
         private FirstItem mFirstItem;
@@ -4787,6 +4807,24 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
         public Checkbox1 Checkbox
         {
             get
@@ -4831,6 +4869,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfCustom mSpinner;
+        
         private Checkbox1 mCheckbox;
         
         private FirstItem2 mFirstItem;
@@ -79678,17 +79718,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText LocalhostText
+        public LocalhostText LocalhostText
         {
             get
             {
                 if ((this.mLocalhostText == null))
                 {
-                    this.mLocalhostText = new WpfText(this);
-                    #region Search Criteria
-                    this.mLocalhostText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
-                    this.mLocalhostText.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mLocalhostText = new LocalhostText(this);
                 }
                 return this.mLocalhostText;
             }
@@ -79702,7 +79738,44 @@ namespace Warewolf.UITests
         
         private WpfText mConnectedRemoteConnectionText;
         
-        private WpfText mLocalhostText;
+        private LocalhostText mLocalhostText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LocalhostText : WpfText
+    {
+        
+        public LocalhostText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mSpinner;
         #endregion
     }
     
