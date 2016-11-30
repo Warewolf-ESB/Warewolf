@@ -1,5 +1,5 @@
 ####################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio 2015.
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio 2017.
 ####################################################################################
 # File Extensions
 ####################################################################################
@@ -26,6 +26,12 @@
 *.playlist
 *.sln.DotSettings
 *.sln.DotSettings.user
+
+####################################################################################
+# Visual Studio
+####################################################################################
+.vs/**
+Dev/.vs/**
 
 ####################################################################################
 # Compile outputs
@@ -108,3 +114,4 @@ bin
 /Dev/WarewolfParserInterop
 /Dev/Warewolf.Testing
 /Dev/Warewolf.Studio.Views
+/Dev/.vs/AcceptanceTesting.sqlite
