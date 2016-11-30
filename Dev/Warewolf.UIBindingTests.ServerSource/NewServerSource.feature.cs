@@ -414,6 +414,85 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating and And editing server source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        public virtual void CreatingAndAndEditingServerSource()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating and And editing server source", new string[] {
+                        "ServerSource"});
+#line 147
+this.ScenarioSetup(scenarioInfo);
+#line 148
+ testRunner.Given("Warewolf server is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 149
+ testRunner.And("I create new server source to Gendev as \"GenDevSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Protocol",
+                        "ServerName",
+                        "Authentication",
+                        "port"});
+            table1.AddRow(new string[] {
+                        "http",
+                        "rsaklfsvrGenDev",
+                        "Windows",
+                        "3142"});
+#line 150
+ testRunner.When("I change the values as", ((string)(null)), table1, "When ");
+#line 153
+ testRunner.And("I save \"GenDevSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+ testRunner.When("I open \"GenDevSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Protocol",
+                        "ServerName",
+                        "Authentication",
+                        "port"});
+            table2.AddRow(new string[] {
+                        "http",
+                        "rsaklfsvrGenDev",
+                        "Windows",
+                        "3142"});
+#line 155
+ testRunner.Then("the server source has correct values as", ((string)(null)), table2, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Protocol",
+                        "ServerName",
+                        "Authentication",
+                        "port"});
+            table3.AddRow(new string[] {
+                        "https",
+                        "rsaklfsvrGenDev",
+                        "public",
+                        "3143"});
+#line 158
+ testRunner.When("I change the values as", ((string)(null)), table3, "When ");
+#line 161
+ testRunner.And("I save \"GenDevSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.When("I open \"GenDevSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Protocol",
+                        "ServerName",
+                        "Authentication",
+                        "port"});
+            table4.AddRow(new string[] {
+                        "https",
+                        "rsaklfsvrGenDev",
+                        "public",
+                        "3143"});
+#line 163
+ testRunner.Then("the server source has correct values as", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
