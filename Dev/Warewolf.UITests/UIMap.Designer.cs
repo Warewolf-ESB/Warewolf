@@ -43,6 +43,19 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfHyperlink uISpecifiedvaluedoesnoHyperlink = this.UIWarewolfDEV2NKOSINATWindow.UIFlowchartCustom1.UISpecifiedvaluedoesnoText.UISpecifiedvaluedoesnoHyperlink;
+            #endregion
+
+            // Right-Click 'Specified value does not have a ':' separator. Par...' link
+            Mouse.Click(uISpecifiedvaluedoesnoHyperlink, MouseButtons.Right, ModifierKeys.None, new Point(88, 12));
+        }
+        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -187,6 +200,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIWarewolfDEV2NKOSINATWindow UIWarewolfDEV2NKOSINATWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2NKOSINATWindow == null))
+                {
+                    this.mUIWarewolfDEV2NKOSINATWindow = new UIWarewolfDEV2NKOSINATWindow();
+                }
+                return this.mUIWarewolfDEV2NKOSINATWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +238,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIWarewolfDEV2NKOSINATWindow mUIWarewolfDEV2NKOSINATWindow;
         #endregion
     }
     
@@ -13597,6 +13624,18 @@ namespace Warewolf.UITests
                 return this.mWcfService;
             }
         }
+        
+        public Adornert_numbernText Adornert_numbernText
+        {
+            get
+            {
+                if ((this.mAdornert_numbernText == null))
+                {
+                    this.mAdornert_numbernText = new Adornert_numbernText(this);
+                }
+                return this.mAdornert_numbernText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -13771,6 +13810,8 @@ namespace Warewolf.UITests
         private ComDll1 mComDll;
         
         private WcfService mWcfService;
+        
+        private Adornert_numbernText mAdornert_numbernText;
         #endregion
     }
     
@@ -65312,6 +65353,41 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Adornert_numbernText : WpfText
+    {
+        
+        public Adornert_numbernText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink NumbernHyperlink
+        {
+            get
+            {
+                if ((this.mNumbernHyperlink == null))
+                {
+                    this.mNumbernHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mNumbernHyperlink.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mNumbernHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mNumbernHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TopScrollViewerPane : WpfPane
     {
         
@@ -102673,6 +102749,126 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mOKButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2NKOSINATWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2NKOSINATWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\NKOSINATHI.SANGWENI)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        
+        public UIFlowchartCustom1 UIFlowchartCustom1
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom1 == null))
+                {
+                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
+                }
+                return this.mUIFlowchartCustom1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
+        
+        private UIFlowchartCustom1 mUIFlowchartCustom1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom1 : WpfCustom
+    {
+        
+        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "BrokenDeleteWeb(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISpecifiedvaluedoesnoText UISpecifiedvaluedoesnoText
+        {
+            get
+            {
+                if ((this.mUISpecifiedvaluedoesnoText == null))
+                {
+                    this.mUISpecifiedvaluedoesnoText = new UISpecifiedvaluedoesnoText(this);
+                }
+                return this.mUISpecifiedvaluedoesnoText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISpecifiedvaluedoesnoText mUISpecifiedvaluedoesnoText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISpecifiedvaluedoesnoText : WpfText
+    {
+        
+        public UISpecifiedvaluedoesnoText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UISpecifiedvaluedoesnoHyperlink
+        {
+            get
+            {
+                if ((this.mUISpecifiedvaluedoesnoHyperlink == null))
+                {
+                    this.mUISpecifiedvaluedoesnoHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUISpecifiedvaluedoesnoHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Specified value does not have a \':\' separator.\r\nParameter name: header";
+                    this.mUISpecifiedvaluedoesnoHyperlink.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUISpecifiedvaluedoesnoHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUISpecifiedvaluedoesnoHyperlink;
         #endregion
     }
 }
