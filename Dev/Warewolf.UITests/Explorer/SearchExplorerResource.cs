@@ -12,6 +12,7 @@ namespace Warewolf.UITests
         public void Search_ExplorerResource()
         {
             UIMap.Filter_Explorer("Error WF");
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.ExplorerItemCountEquals();
         }
 
@@ -20,6 +21,7 @@ namespace Warewolf.UITests
         public void Search_ExplorerFolder()
         {
             UIMap.Filter_Explorer("Examples");
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.ExplorerItemCountEquals();
         }
       

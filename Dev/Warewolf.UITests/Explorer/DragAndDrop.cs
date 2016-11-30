@@ -12,12 +12,14 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void DragAndDropServiceFromExplorerUITest()
         {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
+            UIMap.TryClearExplorerFilter();
             var resourcesDestFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
             UIMap.Drag_Explorer_First_Item_Onto_The_Second_Item();
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(resourcesFolder));
-            Directory.Move(resourcesFolder, resourcesDestFolder);
+            if (!Directory.Exists(resourcesDestFolder))
+                Directory.Move(resourcesFolder, resourcesDestFolder);
             UIMap.Click_Explorer_Refresh_Button();
         }
     

@@ -1580,7 +1580,7 @@ namespace Warewolf.UITests
                 {
                     this.mShowServerVersion = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
+                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersionItem";
                     this.mShowServerVersion.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -99995,7 +99995,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
@@ -100012,7 +100012,7 @@ namespace Warewolf.UITests
                 {
                     this.mTreeItem11 = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+                    this.mTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
                     this.mTreeItem11.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mTreeItem11.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mTreeItem11.WindowTitles.Add("Warewolf");
@@ -100053,7 +100053,7 @@ namespace Warewolf.UITests
                 {
                     this.mTreeItem1 = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+                    this.mTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
                     this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mTreeItem1.WindowTitles.Add("Warewolf");
@@ -102855,111 +102855,90 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIItemMenu UIItemMenu
+        public UIExplorerViewCustom UIExplorerViewCustom
         {
             get
             {
-                if ((this.mUIItemMenu == null))
+                if ((this.mUIExplorerViewCustom == null))
                 {
-                    this.mUIItemMenu = new UIItemMenu(this);
+                    this.mUIExplorerViewCustom = new UIExplorerViewCustom(this);
                 }
-                return this.mUIItemMenu;
+                return this.mUIExplorerViewCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemMenu mUIItemMenu;
+        private UIExplorerViewCustom mUIExplorerViewCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemMenu : WpfMenu
+    public class UIExplorerViewCustom : WpfCustom
     {
         
-        public UIItemMenu(UITestControl searchLimitContainer) : 
+        public UIExplorerViewCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfMenuItem UIViewApisJsonMenuItem
+        public UIExplorerTreeTree UIExplorerTreeTree
         {
             get
             {
-                if ((this.mUIViewApisJsonMenuItem == null))
+                if ((this.mUIExplorerTreeTree == null))
                 {
-                    this.mUIViewApisJsonMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJsonItem";
-                    this.mUIViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
                 }
-                return this.mUIViewApisJsonMenuItem;
-            }
-        }
-        
-        public WpfMenuItem UIViewSwaggerMenuItem
-        {
-            get
-            {
-                if ((this.mUIViewSwaggerMenuItem == null))
-                {
-                    this.mUIViewSwaggerMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIViewSwaggerMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
-                    this.mUIViewSwaggerMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIViewSwaggerMenuItem;
-            }
-        }
-        
-        public WpfMenuItem UIShowVersionHistoryMenuItem
-        {
-            get
-            {
-                if ((this.mUIShowVersionHistoryMenuItem == null))
-                {
-                    this.mUIShowVersionHistoryMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIShowVersionHistoryMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ShowHideVersions";
-                    this.mUIShowVersionHistoryMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIShowVersionHistoryMenuItem;
-            }
-        }
-        
-        public WpfMenuItem UIShowDependenciesMenuItem
-        {
-            get
-            {
-                if ((this.mUIShowDependenciesMenuItem == null))
-                {
-                    this.mUIShowDependenciesMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIShowDependenciesMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Dependencies";
-                    this.mUIShowDependenciesMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIShowDependenciesMenuItem;
+                return this.mUIExplorerTreeTree;
             }
         }
         #endregion
         
         #region Fields
-        private WpfMenuItem mUIViewApisJsonMenuItem;
+        private UIExplorerTreeTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIExplorerTreeTree : WpfTree
+    {
         
-        private WpfMenuItem mUIViewSwaggerMenuItem;
+        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
         
-        private WpfMenuItem mUIShowVersionHistoryMenuItem;
+        #region Properties
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
+        #endregion
         
-        private WpfMenuItem mUIShowDependenciesMenuItem;
+        #region Fields
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem;
         #endregion
     }
 }
