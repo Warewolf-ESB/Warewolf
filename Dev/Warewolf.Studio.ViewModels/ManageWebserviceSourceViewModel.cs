@@ -66,10 +66,10 @@ namespace Warewolf.Studio.ViewModels
             _updateManager = updateManager;
             _warewolfserverName = updateManager.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
-            _hostName = String.Empty;
-            _defaultQuery = String.Empty;
-            _userName = String.Empty;
-            _password = String.Empty;
+            _hostName = string.Empty;
+            _defaultQuery = string.Empty;
+            _userName = string.Empty;
+            _password = string.Empty;
             HeaderText = Resources.Languages.Core.WebserviceNewHeaderLabel;
             Header = Resources.Languages.Core.WebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
@@ -168,13 +168,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (String.IsNullOrEmpty(HostName))
+            if (string.IsNullOrEmpty(HostName))
             {
                 return false;
             }
             if (AuthenticationType == AuthenticationType.User)
             {
-                return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
+                return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
             }
             return true;
         }
@@ -285,12 +285,16 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupProgressSpinner()
         {
-            Dispatcher.CurrentDispatcher.Invoke(() =>
+
+            if (Application.Current != null && Application.Current.Dispatcher != null)
             {
-                Testing = true;
-                TestFailed = false;
-                TestPassed = false;
-            });
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Testing = true;
+                    TestFailed = false;
+                    TestPassed = false;
+                }), DispatcherPriority.Background);
+            }
             _updateManager.TestConnection(ToNewSource());
         }
 
@@ -563,7 +567,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty => String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
+        public bool IsEmpty => string.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
 
         protected override void OnDispose()
         {

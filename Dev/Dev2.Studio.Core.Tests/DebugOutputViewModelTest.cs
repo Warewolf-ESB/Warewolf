@@ -1243,6 +1243,29 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(bool.Parse(invoke.ToString()));
         }
+
+        [TestMethod]
+        [Owner("Hagshen Naidu")]
+        public void CanAddNewTest_GivenIsTestView_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var mockedEnvRepo = new Mock<IEnvironmentRepository>();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mock = new Mock<IEventAggregator>();
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            mock.Setup(aggregator => aggregator.Publish(newTestFromDebugMessage)).Verifiable();
+            resourceModel.Setup(model => model.IsWorkflowSaved).Returns(false);
+            var debugOutpuViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object, resourceModel.Object);
+            debugOutpuViewModel.IsTestView = true;
+            debugOutpuViewModel.RootItems.Add(new DebugStateTreeViewItemViewModel(new Mock<IEnvironmentRepository>().Object));
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var execute = debugOutpuViewModel.AddNewTestCommand.CanExecute(null);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(execute);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void AddNewTest_GivenEventAggregator_ShouldPublishCorrectly()

@@ -62,14 +62,8 @@ if ($TestList -eq "") {
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
-# Start server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
-
-# Run VSTest with full argument string.
-Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
-
-# Stop server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Cleanup.bat
+# Write full command including full argument string.
+Out-File -LiteralPath $WorkspaceDir\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
@@ -81,16 +75,8 @@ $PlayList = "<Playlist Version=`"1.0`">"
 Get-ChildItem "$testResultsFolder" -Filter *.trx | `
 Foreach-Object{
 	[xml]$trxContent = Get-Content $_.FullName
-	if ($trxContent.TestRun.Results.UnitTestResult.count -le 0) {
-		Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
-		Continue
-	}
 	foreach( $TestResult in $trxContent.TestRun.Results.UnitTestResult) {
 		if ($TestResult.outcome -eq "Passed") {
-			Continue
-		}
-		if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -le 0) {
-			Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
 			Continue
 		}
 		foreach( $TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {

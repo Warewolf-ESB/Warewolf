@@ -29,6 +29,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "MakeCurrentVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.OpenVersionMenuItem.Exists, "OpenVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
         }
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Explorer_Server_ContextMenuItems_UITest()
+        {            
+            UIMap.RightClick_localhost();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists, "New Workflow Context menu item does not exist on explorer context menu for workflows.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewFolder.Exists, "New Folder Context menu item does not exist on explorer context menu for workflows.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Deploy.Exists, "Deploy Context menu item does not exist on explorer context menu for workflows.");            
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "SourcesMenuItem does not exist on explorer context menu for workflows.");            
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory.Exists, "Show Version History Context menu item does not exist on explorer context menu for workflows.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem.Exists, "ViewApisJsonMenuItem Context menu item does not exist on explorer context menu for workflows.");            
+        }
 
         #region Additional test attributes
 

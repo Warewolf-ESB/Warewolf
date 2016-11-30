@@ -9,10 +9,8 @@
 */
 
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Services.Events;
@@ -23,6 +21,7 @@ using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
 using Dev2.Studio.Core;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
@@ -89,7 +88,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
         }
 
-        public async Task LoadBrowserUri(string uri)
+        public Task LoadBrowserUri(string uri)
         {
             Uri = uri;
 
@@ -100,49 +99,24 @@ namespace Dev2.Studio.ViewModels.Help
             else
             {
                 IsViewAvailable = true;
-
-                var hasConnection = await _network.HasConnectionAsync(uri);
-                if (hasConnection)
-                {
-
-
-                    HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
-                    HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
-                                                                                                     {
-                                                                                                         HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                                                                                                         HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                                                                                                     });
-                    Execute.OnUIThread(() =>
-                    {
-                        HelpViewWrapper.Navigate(Uri);
-                    });
-
-                }
-                else
+                HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
                 {
                     ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
                     Execute.OnUIThread(() =>
-                                       {
-                                           HelpViewWrapper.Navigate(ResourcePath);
-                                           HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                                           HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                                       });
-
-                }
+                    {
+                        HelpViewWrapper.Navigate(ResourcePath);
+                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                    });
+                };
+                HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
+                {
+                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                });
+                Execute.OnUIThread(() => { HelpViewWrapper.Navigate(Uri); });
             }
-        }
-
-        public void SuppressJavaScriptsErrors(WebBrowser webBrowser)
-        {
-            FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
-            if(fiComWebBrowser == null)
-            {
-                return; 
-            }
-
-            object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
-
-            objComWebBrowser?.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
+            return Task.FromResult(true);
         }
 
         #region Overrides of Screen
@@ -154,7 +128,6 @@ namespace Dev2.Studio.ViewModels.Help
             if (close)
             {
                 EventPublisher.Unsubscribe(this);
-                HelpViewWrapper?.WebBrowser?.Dispose();
                 HelpViewDisposed = true;
             }
             base.OnDeactivate(close);
