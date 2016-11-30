@@ -704,7 +704,6 @@ Scenario: Run a test with mock step
 	  | [[Message]] | Hello World. |
 	When I delete "Test 1"	
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	#And test folder is cleaned
 @s3
 @TestFramework
 Scenario: Run a test with mock step assign
@@ -735,7 +734,6 @@ Scenario: Run a test with mock step assign
 	  | [[Message]] | hello mock |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok	
-	#And test folder is cleaned
 @s4
 Scenario: Run a test with Assert step assign
 	Given the test builder is open with existing service "Hello World"	
