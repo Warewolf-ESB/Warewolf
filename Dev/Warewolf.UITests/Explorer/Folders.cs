@@ -25,7 +25,7 @@ namespace Warewolf.UITests
         public void MergeFolders_InUnfileredExplorer_UITest()
         {
             UIMap.TryClearExplorerFilter();
-            UIMap.Double_Click_Explorer_Localhost_First_Item();
+            UIMap.Expand_Explorer_Localhost_First_Item_With_Double_Click();
             UIMap.Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item();
             UIMap.Filter_Explorer("Workflow");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.ThirdSubItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
