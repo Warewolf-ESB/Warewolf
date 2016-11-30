@@ -211,6 +211,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSource;
         private bool _isScheduleVisible;
         private bool _isDuplicateVisible;
+        private string _newWcfSourceTooltip;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -290,6 +291,11 @@ namespace Warewolf.Studio.ViewModels
             NewComPluginSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewComPluginSourceCommand(ResourcePath, Server);
+            });
+
+            NewWcfSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewWcfSourceCommand(ResourcePath, Server);
             });
 
             NewWebSourceSourceCommand = new DelegateCommand(o =>
@@ -936,6 +942,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewDatabaseSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
         public ICommand NewComPluginSourceCommand { get; set; }
+        public ICommand NewWcfSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
@@ -1115,6 +1122,7 @@ namespace Warewolf.Studio.ViewModels
                 NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWebSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewComPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewWcfSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWcfSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewEmailSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewExchangeSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewRabbitMqSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
@@ -1912,6 +1920,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _newComPluginSourceTooltip = value; 
                 OnPropertyChanged(() => NewComPluginSourceTooltip);
+            }
+        }
+        public string NewWcfSourceTooltip
+        {
+            get { return _newWcfSourceTooltip; }
+            set
+            {
+                _newWcfSourceTooltip = value; 
+                OnPropertyChanged(() => NewWcfSourceTooltip);
             }
         }
         public string NewEmailSourceTooltip

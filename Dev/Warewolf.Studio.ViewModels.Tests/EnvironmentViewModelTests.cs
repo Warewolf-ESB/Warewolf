@@ -469,12 +469,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = new Mock<IExplorerItemViewModel>();
             child.SetupGet(it => it.ResourceId).Returns(Guid.Empty);
             child.SetupGet(it => it.IsVisible).Returns(true);
+            child.SetupGet(it => it.ResourceName).Returns("child");
             _target.AddChild(child.Object);
             var id = Guid.NewGuid();
             var child2 = new Mock<IExplorerItemViewModel>();
             child2.SetupGet(it => it.IsVisible).Returns(true);
             child2.SetupGet(it => it.ResourceId).Returns(id);
             child2.SetupGet(it => it.IsExpanded).Returns(false);
+            child2.SetupGet(it => it.ResourceName).Returns("child2");
             _target.AddChild(child2.Object);
 
             //act

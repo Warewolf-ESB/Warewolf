@@ -13,7 +13,6 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              x:Name="ExplorerViewControl"
              KeyUp="ExplorerView_OnKeyUp"
-             
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
@@ -237,6 +236,16 @@
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewComPluginSourceCommand}"
                                                   Header="New COM Plugin Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewComPluginSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewWcfSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewWcfSourceCommand}"
+                                                  Header="New Wcf Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewComPluginSourceTooltip}">
                                 <MenuItem.Icon>

@@ -56,34 +56,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        public void TestRefreshEvent()
-        {
-            //arrange
-            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
-            _localhostServerMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
-            _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
-            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
-            environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
-
-            _target.Environments.Add(environmentViewModelMock.Object);
-            _target.SearchText = "someText";
-            _target.Environments.Remove(_target.Environments.First(it => it is EnvironmentViewModel));
-            
-            //act
-            studioUpdateManagerMock.Raise(it => it.ItemSaved+=null,false);
-
-            //assert
-            environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
-            environmentViewModelMock.Verify(it => it.Filter("someText"));
-        }
-
-        [TestMethod]
         public void TestRefreshCommand()
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+            environmentViewModelMock.SetupGet(it => it.ResourceName).Returns("localhostServerResourceName");
+
+            var environmentId = _target.ConnectControlViewModel.SelectedConnection.EnvironmentID;
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.ResourceName).Returns("localhostServerResourceName");
+            mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
+            environmentViewModelMock.SetupGet(it => it.Server).Returns(mockServer.Object);
             
             _target.Environments.Add(environmentViewModelMock.Object);
             _target.SearchText = "someText";
