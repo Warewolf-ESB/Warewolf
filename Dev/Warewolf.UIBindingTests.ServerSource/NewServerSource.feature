@@ -141,3 +141,25 @@ Scenario: Editing Saved Server Source Authentication with external server addres
 	And server Password field is "Collapsed"
 	And "Test" is "Enabled"
 	And "Save" is "Disabled"
+
+
+@ServerSource
+Scenario: Creating and And editing server source
+	Given Warewolf server is running
+	And I create new server source to Gendev as "GenDevSource"
+	When I change the values as
+	| Protocol | ServerName      | Authentication | port |
+	| http     | rsaklfsvrGenDev | Windows        | 3142 |
+	And I save "GenDevSource"
+	When I open "GenDevSource"
+	Then the server source has correct values as 
+	| Protocol | ServerName      | Authentication | port |
+	| http     | rsaklfsvrGenDev | Windows        | 3142 |
+	When I change the values as
+	| Protocol | ServerName      | Authentication | port |
+	| https    | rsaklfsvrGenDev | public         | 3143 |
+	And I save "GenDevSource"
+	When I open "GenDevSource"
+	Then the server source has correct values as
+	| Protocol | ServerName      | Authentication | port |
+	| https    | rsaklfsvrGenDev | public         | 3143 |
