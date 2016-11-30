@@ -182,10 +182,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public override void FromModel(IWebServiceSource webServiceSource)
@@ -237,6 +234,8 @@ namespace Warewolf.Studio.ViewModels
                     var src = ToSource();
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
+                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     Item = src;
                     _webServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -278,7 +277,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception != null ? exception.Message : "Failed";
+                TestMessage = exception?.Message ?? "Failed";
             });
 
 
@@ -306,7 +305,7 @@ namespace Warewolf.Studio.ViewModels
                 UserName = UserName,
                 Name = ResourceName,
                 DefaultQuery = DefaultQuery,
-                Id = _webServiceSource == null ? Guid.NewGuid() : _webServiceSource.Id
+                Id = _webServiceSource?.Id ?? Guid.NewGuid()
             };
         }
 
@@ -321,7 +320,7 @@ namespace Warewolf.Studio.ViewModels
                     UserName = UserName,
                     DefaultQuery = DefaultQuery,
                     Name = ResourceName,
-                    Id = _webServiceSource == null ?  SelectedGuid : _webServiceSource.Id
+                    Id = _webServiceSource?.Id ?? SelectedGuid
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock
@@ -568,8 +567,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            if (RequestServiceNameViewModel != null) 
-                RequestServiceNameViewModel.Dispose();
+            RequestServiceNameViewModel?.Dispose();
             Dispose(true);
         }
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -589,7 +587,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_token != null) _token.Dispose();
+                    _token?.Dispose();
                 }
 
                 // Dispose unmanaged resources.

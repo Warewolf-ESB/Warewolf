@@ -120,6 +120,11 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewComPluginSource(resourcePath);
         }
+        public void NewWcfSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewWcfSource(resourcePath);
+        }
         public void NewDatabaseSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);

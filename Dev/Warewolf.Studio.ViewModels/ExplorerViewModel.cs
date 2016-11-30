@@ -178,13 +178,16 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async Task Refresh(bool refresh)
         {
             IsRefreshing = true;
-            foreach (var environmentViewModel in Environments.Where(model => model.IsSelected))
+            var environmentId = ConnectControlViewModel?.SelectedConnection.EnvironmentID;
+            var resourceName = ConnectControlViewModel?.SelectedConnection.ResourceName.Replace("(Connected)", "").Trim();
+            var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.ResourceName.Replace("(Connected)", "").Trim() == resourceName);
+            foreach (var environmentViewModel in environmentViewModels)
             {
                 await RefreshEnvironment(environmentViewModel, refresh);
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
-            ConnectControlViewModel.LoadNewServers();
+            ConnectControlViewModel?.LoadNewServers();
         }
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
@@ -432,10 +435,6 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            if (server?.UpdateRepository != null)
-            {
-                server.UpdateRepository.ItemSaved += async refresh => await Refresh(refresh);
-            }
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
         }
     }

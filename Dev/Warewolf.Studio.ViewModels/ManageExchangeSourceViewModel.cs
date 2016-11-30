@@ -129,11 +129,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public override void Save()
@@ -162,14 +158,17 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_emailServiceSource == null)
             {
-                var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+                var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+                var res = requestServiceNameViewModel.ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
                     var src = ToSource();
-                    src.Name = RequestServiceNameViewModel.Result.ResourceName.Name;
-                    src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                    src.Name = requestServiceNameViewModel.ResourceName.Name;
+                    src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                     Save(src);
+                    if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
                     Item = src;
                     _emailServiceSource = src;
                     ResourceName = _emailServiceSource.Name;
