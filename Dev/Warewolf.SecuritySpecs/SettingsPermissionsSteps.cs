@@ -304,7 +304,8 @@ namespace Dev2.Activities.Specs.Permissions
             settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
             var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
             settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
-            resourceRepository.WriteSettings(environmentModel, settings);
+            var SettingsWriteResult = resourceRepository.WriteSettings(environmentModel, settings);
+            Assert.IsFalse(SettingsWriteResult.HasError, "Cannot setup for security spec.\n Error writing initial resource permissions settings to localhost server.\n" + SettingsWriteResult.Message);
         }
 
         [Then(@"""(.*)"" should have ""(.*)""")]

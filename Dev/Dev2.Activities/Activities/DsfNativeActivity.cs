@@ -672,6 +672,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         RegularActivityAssertion(dataObject, stepToBeAsserted);
                     }
                 }
+                else
+                {
+                    if (stepToBeAsserted != null)
+                    {
+                        stepToBeAsserted.Result = new TestRunResult
+                        {
+                            RunTestResult = RunResult.TestPassed
+                        };
+                    }
+                }
             }
         }
 
@@ -910,10 +920,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
+            if (output == null)
+            {
+                var testResult = new TestRunResult();
+                testResult.RunTestResult = RunResult.TestPassed;
+                return new List<TestRunResult> {testResult};
+            }
             if (output.Result != null)
             {
                 output.Result.RunTestResult = RunResult.TestInvalid;
             }
+
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
 
@@ -923,10 +940,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IList<TestRunResult> ret = new List<TestRunResult>();
             var iter = new WarewolfListIterator();
-            var cols1 = dataObject.Environment.EvalAsList(DataListUtil.AddBracketsToValueIfNotExist(output.Variable), 0);
+            var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+            var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
-            var c3 = new WarewolfAtomIterator(@from);
+            var c3 = new WarewolfAtomIterator(from);
             if (opt.ArgumentCount > 2)
             {
                 c2 = new WarewolfAtomIterator(to);
@@ -955,7 +973,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val1, val2, val3);
+                    var actMsg = string.Format(msg, val1, variable, val2, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                     if (testResult.Message.EndsWith(Environment.NewLine))
                     {
@@ -1053,6 +1071,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
 
+            var type = GetType();
+            string typeName = type.Name;
+            
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
@@ -1060,7 +1081,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
-                ActualType = GetType().Name,
+                ActualType = typeName,
                 StartTime = startTime ?? DateTime.Now,
                 EndTime = endTime ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
@@ -1216,7 +1237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugAssertResultItem(DebugOutputBase parameters)
         {
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(parameters.GetDebugItemResult());
+            itemToAdd.AddRange(parameters.GetDebugItemResult());            
             _debugState.AssertResultList.Add(itemToAdd);
         }
 

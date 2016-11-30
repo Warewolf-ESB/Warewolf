@@ -45,7 +45,7 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
-
+        static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         public EsbHub()
         {
         }
@@ -169,16 +169,41 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
-        public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
+        void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
+            
             var msgs = new CompileMessageList { Dependants = new List<string>() };
             messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
             msgs.MessageList = messages;
             msgs.ServiceID = resourceId;
             var serializedMemo = _serializer.Serialize(msgs);
-            var hubCallerConnectionContext = Clients;
+            if (!ResourceAffectedMessagesCache.ContainsKey(resourceId))
+            {
+                ResourceAffectedMessagesCache.Add(resourceId, serializedMemo);
+            }
+        }
 
-            hubCallerConnectionContext.All.ReceiveResourcesAffectedMemo(serializedMemo);
+        public async Task<string> FetchResourcesAffectedMemo(Guid resourceId)
+        {
+            try
+            {
+                string value;
+                if (ResourceAffectedMessagesCache.TryGetValue(resourceId, out value))
+                {
+                    var task = new Task<string>(() => value);
+                    ResourceAffectedMessagesCache.Remove(resourceId);
+                    task.Start();
+                    return await task;
+                }
+            }
+            catch (Exception e)
+            {
+                // ReSharper disable InvokeAsExtensionMethod
+                Dev2Logger.Error(this, e);
+                // ReSharper restore InvokeAsExtensionMethod
+            }
+
+            return null;
         }
 
         public void SendDebugState(DebugState debugState)
