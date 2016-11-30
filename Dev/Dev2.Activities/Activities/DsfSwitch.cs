@@ -257,22 +257,31 @@ namespace Dev2.Activities
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
             bool hasResult = false;
-            InitializeDebug(dataObject);
+            if (dataObject.IsDebugMode())
+            {
+                InitializeDebug(dataObject);
+            }
             if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
             {
                 NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
-                AddDebugOutputItem(debugItemStaticDataParams);
-                AddDebugAssertResultItem(debugItemStaticDataParams);
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                }
                 hasResult = true;
             }
             if (_dsfSwitch.Default != null)
             {
                 var activity = _dsfSwitch.Default;
                 NextNodes = activity;
-                var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
-                AddDebugOutputItem(debugItemStaticDataParams);
-                AddDebugAssertResultItem(debugItemStaticDataParams);
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                }
                 hasResult = true;
             }
 

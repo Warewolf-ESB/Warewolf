@@ -37,23 +37,23 @@ Scenario Outline: Setting Selected Resource Permissions for users
         Then "<Resource>" should have "<Permissions>"
 		And resources should not have "<Rights>" 
 Examples: 
-        | No | Resource Rights           | User Group | Resources | Rights              | Resource                                      | Permissions               |
-        | 1  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 2  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 3  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 4  | View                      | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View                      |
-        | 5  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 6  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 7  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 7  | Execute                   | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Execute                   |
-        | 8  | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 9  | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 10 | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 11 | Contribute, View, Execute | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
-        | 12 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 13 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 14 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
-        | 15 | View, Execute             | Users      | All       |None| Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | No | Resource Rights           | User Group | Resources | Rights | Resource                                      | Permissions               |
+        | 1  | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 2  | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 3  | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 4  | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
+        | 5  | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 6  | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 7  | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 7  | Execute                   | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Execute                   |
+        | 8  | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 9  | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 10 | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 11 | Contribute, View, Execute | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | Contribute, View, Execute |
+        | 12 | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 13 | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 14 | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
+        | 15 | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
 
 @OverlappingUserGroupsPermissionsSecurity
 Scenario Outline: Setting Selected Resource Permissions for users overlapping groups
