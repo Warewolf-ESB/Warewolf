@@ -3400,7 +3400,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
         public void Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab()
         {
-            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox.DisplayText, "Wrong variable name in debug output");
+            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Wrong variable name in debug output");
             Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button, new Point(21, 9));
         }
 
