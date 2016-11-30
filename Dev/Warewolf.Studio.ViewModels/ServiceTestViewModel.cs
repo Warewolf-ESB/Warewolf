@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Activities;
@@ -173,7 +172,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             AddStepFromDebug(debugState, debugItemContent);
                         }
-                        else if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name && debugItemContent.ActualType != typeof(TestMockDecisionStep).Name && debugItemContent.ActualType != typeof(TestMockSwitchStep).Name && debugItemContent.ActualType != typeof(TestMockStep).Name)
+                        else if (debugItemContent.ActivityType != ActivityType.Workflow && debugItemContent.ActualType != typeof(DsfCommentActivity).Name && debugItemContent.ActualType != typeof(TestMockDecisionStep).Name && debugItemContent.ActualType != typeof(TestMockSwitchStep).Name)
                         {
                             ProcessRegularDebugItem(debugItemContent, debugState);
                         }
@@ -192,7 +191,7 @@ namespace Warewolf.Studio.ViewModels
             else if(actualType == typeof(DsfSwitch).Name)
             {
                 SwitchFromDebug(debugItemContent);
-            }
+            }            
             else
             {
                 AddStepFromDebug(debugState, debugItemContent);
@@ -254,9 +253,32 @@ namespace Warewolf.Studio.ViewModels
                 if (exists == null)
                 {
                     var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
-                    AddOutputs(outputs, serviceTestStep);
+                    var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count>0);
+                    if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
+                    {
+                        AddOutputs(outputs, serviceTestStep);
+                    }
+                    else
+                    {
+                        var type = Types.FirstOrDefault(x => x.Name == debugState.ActivityTypeName);
+                        if (type != null)
+                        {
+                            var act = Activator.CreateInstance(type) as IDev2Activity;
+                            serviceTestStep.StepOutputs =
+                                AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                        }
+                    }
                     if (serviceTestStep != null)
                     {
+                        if(debugState.ActivityTypeName == typeof(TestMockStep).Name)
+                        {
+                            var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+                            var val = model.GetCurrentValue();
+                            serviceTestStep.MockSelected = true;
+                            serviceTestStep.AssertSelected = false;
+                            serviceTestStep.Type = StepType.Mock;
+                            serviceTestStep.ActivityType = val.GetType().Name;
+                        }
                         SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                     }
                 }
@@ -1287,7 +1309,7 @@ namespace Warewolf.Studio.ViewModels
                         Dev2JsonSerializer ser = new Dev2JsonSerializer();
                         var dds = ser.Deserialize<Dev2DecisionStack>(eval);
 
-                        var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                        var exists = SelectedServiceTest.TestSteps?.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
                         if (exists == null)
                         {
@@ -1344,14 +1366,12 @@ namespace Warewolf.Studio.ViewModels
                     SelectedServiceTest = dummyTest;
                     Tests = models;
                     SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
-
-                    Application.Current?.Dispatcher?.Invoke(() =>
+                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
+                    if (WorkflowDesignerViewModel != null)
                     {
-                        var mainViewModel = CustomContainer.Get<IMainViewModel>();
-                        WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
-                        if (WorkflowDesignerViewModel != null)
-                            WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
-                    }, DispatcherPriority.Render);
+                        WorkflowDesignerViewModel.ItemSelectedAction = ItemSelectedAction;
+                    }
                     IsLoading = false;
                 });
 
@@ -1580,23 +1600,15 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return false;
                     }
-                    var isDirty = _tests.Any(resource => resource.IsDirty) || _tests.Any(resource => resource.NewTest);
+                    var isDirty = _tests.Any(resource => resource.IsDirty || resource.NewTest);
 
                     var isConnected = ResourceModel.Environment.Connection.IsConnected;
-
                     return isDirty && isConnected;
                 }
-                // ReSharper disable once UnusedVariable
                 catch (Exception)
                 {
-                    //if (!_errorShown)
-                    //{
-                    //    _popupController.ShowCorruptTaskResult(ex.Message);
-                    //    Dev2Logger.Error(ex);
-                    //    _errorShown = true;
-                    //}
+                    return false;
                 }
-                return false;
             }
         }
 

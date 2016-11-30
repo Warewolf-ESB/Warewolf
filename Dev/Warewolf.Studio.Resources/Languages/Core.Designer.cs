@@ -9645,7 +9645,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add subtract minus maths divide power compute excel exel math times multiply plus equal equals.
+        ///   Looks up a localized string similar to add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum.
         /// </summary>
         public static string Tool_Utility_Calculate_Tags {
             get {
