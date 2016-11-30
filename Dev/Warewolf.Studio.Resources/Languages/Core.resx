@@ -440,7 +440,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>object</value>
   </data>
   <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
-    <value>add subtract minus maths divide power compute excel exel math times multiply plus equal equals</value>
+    <value>add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum</value>
   </data>
   <data name="Tool_Utility_Date_Time_Tags" xml:space="preserve">
     <value>year month week day hour second split format add subtract</value>

@@ -366,6 +366,7 @@ namespace Dev2.Runtime
                     var foundTestToDelete = testList.FirstOrDefault(to => to.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
                     if (foundTestToDelete != null)
                     {
+                        Dev2Logger.Debug("Removing Test: "+testName+Environment.NewLine+Environment.StackTrace);
                         testList.Remove(foundTestToDelete);
                     }
                 }

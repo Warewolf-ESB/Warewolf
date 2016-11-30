@@ -67,6 +67,14 @@ namespace Dev2
                         return;
                     }
                 }
+                if (typeOfCommand == typeof(DelegateCommand))
+                {
+                    var command = commandForCanExecuteChange as DelegateCommand;
+                    if (command != null)
+                    {
+                        command.RaiseCanExecuteChanged();
+                    }
+                }
                 if (typeOfCommand == typeof(AuthorizeCommand))
                 {
                     var command = commandForCanExecuteChange as AuthorizeCommand;

@@ -635,6 +635,14 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
     </Style>
+    <Style x:Key="AcceptReturnWithWrapTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MultiLineTextBoxStyle}">
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+    </Style>
 
     <!--  *********************************  No Border TextBox Style  *********************************  -->
     <Style x:Key="XamGridTextBoxStyle" TargetType="TextBox">
