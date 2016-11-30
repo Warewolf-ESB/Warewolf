@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Dev2.Common;
 
 namespace Dev2.Activities.Designers2.Core.Adorners
 {
@@ -61,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         static void OnIsAdornerVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var adorner = (AdornerControl)d;
-            adorner.Toggle();
+            adorner?.Toggle();
         }
 
         protected override Int32 VisualChildrenCount => 1;
@@ -190,17 +191,24 @@ namespace Dev2.Activities.Designers2.Core.Adorners
 
         void Toggle()
         {
-            if(IsAdornerVisible)
+            try
             {
-                AddLogicalChild(Content);
-                AddVisualChild(Content);
-                AdornerLayer.Add(this);
+                if(IsAdornerVisible)
+                {
+                    AddLogicalChild(Content);
+                    AddVisualChild(Content);
+                    AdornerLayer?.Add(this);
+                }
+                else
+                {
+                    AdornerLayer?.Remove(this);
+                    RemoveLogicalChild(Content);
+                    RemoveVisualChild(Content);
+                }
             }
-            else
+            catch(Exception e)
             {
-                AdornerLayer.Remove(this);
-                RemoveLogicalChild(Content);
-                RemoveVisualChild(Content);
+                Dev2Logger.Error("Error toggling adorner: ",e);
             }
         }
     }

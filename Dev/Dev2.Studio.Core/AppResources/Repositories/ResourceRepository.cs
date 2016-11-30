@@ -304,6 +304,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (saveResource != null && !saveResource.HasError)
             {
                 _environmentModel.FireWorkflowSaved();
+                var connection = _environmentModel.Connection;
+                var comsController = new CommunicationController();
+                comsController.FetchResourceAffectedMessages(connection, instanceObj.ID);
             }
             return saveResource;
         }
