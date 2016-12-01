@@ -1172,31 +1172,6 @@ Scenario: Test WF with Sql Server
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "SqlTestWF" is deleted as cleanup
-		
-Scenario: Test WF with Sql Server Table function
-		Given I have a workflow "SqlTestTablefunctionWF"
-		 And "SqlTestTablefunctionWF" contains a sqlserver database service "dbo.func_Nums" with mappings for testing as
-		  | ParameterName    | ParameterValue |
-		  | NumberToGenerate | 5              |
-		And I save workflow "SqlTestTablefunctionWF"
-		Then the test builder is open with "SqlTestTablefunctionWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "dbo.func_Nums" as TestStep
-		And I add StepOutputs as 
-		| Variable Name              | Condition | Value |
-		| [[dbo_func_Nums(1).RowId]] | =         | 1     |
-		| [[dbo_func_Nums(2).RowId]] | =         | 2     |
-		| [[dbo_func_Nums(3).RowId]] | =         | 3     |
-		| [[dbo_func_Nums(4).RowId]] | =         | 4     |
-		| [[dbo_func_Nums(5).RowId]] | =         | 5     |
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "SqlTestTablefunctionWF" is deleted as cleanup
 
 Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
@@ -1224,36 +1199,6 @@ Scenario: Test WF with Oracle
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "oracleTestWF" is deleted as cleanup
 		
-Scenario: Test WF with Oracle Table function
-		Given I have a workflow "oracleTestTableFunctionWF"
-		 And "oracleTestTableFunctionWF" contains a oracle database service "HR.GET_TAB_TF" with mappings as
-		  | ParameterName | ParameterValue |
-		  | P_ROWS        | 5              |
-		And I save workflow "oracleTestTableFunctionWF"
-		Then the test builder is open with "oracleTestTableFunctionWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "HR.GET_TAB_TF" as TestStep
-		And I add StepOutputs as 
-		| Variable Name                    | Condition | Value             |
-		| [[HR_GET_TAB_TF(1).ID]]          | =         | 1                 |
-		| [[HR_GET_TAB_TF(1).DESCRIPTION]] | =         | Description for 1 |
-		| [[HR_GET_TAB_TF(2).ID]]          | =         | 2                 |
-		| [[HR_GET_TAB_TF(2).DESCRIPTION]] | =         | Description for 2 |
-		| [[HR_GET_TAB_TF(3).ID]]          | =         | 3                 |
-		| [[HR_GET_TAB_TF(3).DESCRIPTION]] | =         | Description for 3 |
-		| [[HR_GET_TAB_TF(4).ID]]          | =         | 4                 |
-		| [[HR_GET_TAB_TF(4).DESCRIPTION]] | =         | Description for 4 |
-		| [[HR_GET_TAB_TF(5).ID]]          | =         | 5                 |
-		| [[HR_GET_TAB_TF(5).DESCRIPTION]] | =         | Description for 5 |		
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "oracleTestTableFunctionWF" is deleted as cleanup
-
 Scenario: Test WF with PostGre Sql
 		Given I have a workflow "PostGreTestWF"
 		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
@@ -1268,27 +1213,6 @@ Scenario: Test WF with PostGre Sql
 		And I add StepOutputs as 
 		| Variable Name             | Condition | Value          |
 		| [[get_countries(1).id]]   | =         | 2              |
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "PostGreTestWF" is deleted as cleanup
-
-Scenario: Test WF with PostGre Sql with Table Value Function
-		Given I have a workflow "PostGreTestWF"
-		 And "PostGreTestWF" contains a postgre tool using "tab_val_func" with mappings for testing as
-		  | ParameterName | ParameterValue |
-		  | v1            | 1              |
-		And I save workflow "PostGreTestWF"
-		Then the test builder is open with "PostGreTestWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "tab_val_func" as TestStep
-		And I add StepOutputs as 
-		| Variable Name          | Condition | Value |
-		| [[tab_val_func(1).v2]] | =         | 1     |
 		When I save
 		And I run the test
 		Then test result is Passed
