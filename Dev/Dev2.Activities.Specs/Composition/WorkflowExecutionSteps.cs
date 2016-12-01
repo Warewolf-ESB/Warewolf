@@ -1181,7 +1181,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
 
-            _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
+            _commonSteps.ThenTheDebugOutputAs(table, outputState?.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]

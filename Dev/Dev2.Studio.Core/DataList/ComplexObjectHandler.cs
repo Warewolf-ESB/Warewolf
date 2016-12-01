@@ -98,14 +98,14 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void SortComplexObjects(bool @ascending)
+        public void SortComplexObjects(bool ascending)
         {
-            IList<IComplexObjectItemModel> newRecsetCollection = @ascending ? _vm.ComplexObjectCollection.OrderBy(c => c.DisplayName).ToList() : _vm.ComplexObjectCollection.OrderByDescending(c => c.DisplayName).ToList();
-            _vm.ComplexObjectCollection.Clear();
-            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
+            IList<IComplexObjectItemModel> newComplexCollection = ascending ? _vm.ComplexObjectCollection.Where(model => !model.IsBlank).OrderBy(c => c.DisplayName).ToList() : _vm.ComplexObjectCollection.Where(model => !model.IsBlank).OrderByDescending(c => c.DisplayName).ToList();
+            for (int i = 0; i < newComplexCollection.Count; i++)
             {
-                _vm.ComplexObjectCollection.Add(item);
-            }
+                var itemModel = newComplexCollection[i];
+                _vm.ComplexObjectCollection.Move(_vm.ComplexObjectCollection.IndexOf(itemModel), i);
+            }            
         }
 
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)

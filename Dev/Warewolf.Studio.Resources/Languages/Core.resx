@@ -648,7 +648,7 @@ The window will be reloaded when you click OK.</value>
     <value>Test the connection to the SharePoint server</value>
   </data>
   <data name="MenuNewServiceHelp" xml:space="preserve">
-    <value>Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;	&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/getting-started/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
+    <value>Create a new Warewolf Hosted Web Service. This flow based service is the start of all orchestration in Warewolf.&lt;br/&gt;	&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/getting-started/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
   <data name="MenuSaveTabHelp" xml:space="preserve">
     <value>Saves the active tab in the studio</value>
@@ -4082,5 +4082,8 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="DebugOutputViewAddNewTestUnsavedToolTip" xml:space="preserve">
     <value>You can only create a test once the workflow is saved</value>
+  </data>
+  <data name="ServiceViewInBrowserTooltip" xml:space="preserve">
+    <value>Execute this flow as a REST api</value>
   </data>
 </root>
