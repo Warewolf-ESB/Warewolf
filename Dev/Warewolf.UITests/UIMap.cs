@@ -367,22 +367,6 @@ namespace Warewolf.UITests
             Click_New_Workflow_Ribbon_Button();
         }
 
-        public void CleanupABlankWorkflow()
-        {
-            Playback.PlaybackError -= OnError;
-            try
-            {
-                TryClearToolboxFilter();
-                TryClearExplorerFilter();
-                Click_Close_Workflow_Tab_Button();
-                Click_MessageBox_No();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error during test cleanup: " + e.Message);
-            }
-        }
-
         [When(@"I Click Assign tool VariableTextbox")]
         public void Click_Assign_tool_VariableTextbox()
         {
