@@ -101,22 +101,25 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
-                foreach (var scalarItemModel in _scalarCollection)
+                for (int index = _scalarCollection.Count - 1; index >= 0; index--)
                 {
+                    var scalarItemModel = _scalarCollection[index];
                     scalarItemModel.Filter(searchText);
                 }
             }
             if (_recsetCollection != null && _recsetCollection.Count > 1)
             {
-                foreach (var recordSetItemModel in _recsetCollection)
+                for(int index = _recsetCollection.Count-1; index >= 0; index--)
                 {
+                    var recordSetItemModel = _recsetCollection[index];
                     recordSetItemModel.Filter(searchText);
                 }
             }
             if (_complexObjectCollection != null && _complexObjectCollection.Count > 0)
             {
-                foreach (var complexObjectItemModel in _complexObjectCollection)
+                for (int index = _complexObjectCollection.Count - 1; index >= 0; index--)
                 {
+                    var complexObjectItemModel = _complexObjectCollection[index];
                     complexObjectItemModel.Filter(searchText);
                 }
             }
@@ -472,7 +475,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
             Provider.VariableList = new ObservableCollection<string>(items);
         }
-
+        
         private IEnumerable<string> RefreshTries(IEnumerable<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
@@ -746,9 +749,18 @@ namespace Dev2.Studio.ViewModels.DataList
             try
             {
                 IsSorting = true;
-                _scalarHandler.SortScalars(_toggleSortOrder);
-                _recordsetHandler.SortRecset(_toggleSortOrder);
-                _complexObjectHandler.SortComplexObjects(_toggleSortOrder);
+                if (_scalarCollection.Any(model => !model.IsBlank))
+                {
+                    _scalarHandler.SortScalars(_toggleSortOrder);
+                }
+                if (_recsetCollection.Any(model => !model.IsBlank))
+                {
+                    _recordsetHandler.SortRecset(_toggleSortOrder);
+                }
+                if (_complexObjectCollection.Any(model => !model.IsBlank))
+                {
+                    _complexObjectHandler.SortComplexObjects(_toggleSortOrder);
+                }
                 _toggleSortOrder = !_toggleSortOrder;
                 WriteToResourceModel();
             }
