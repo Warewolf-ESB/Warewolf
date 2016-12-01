@@ -4083,4 +4083,7 @@ Please contact your Warewolf System Administrator.</value>
   <data name="DebugOutputViewAddNewTestUnsavedToolTip" xml:space="preserve">
     <value>You can only create a test once the workflow is saved</value>
   </data>
+  <data name="ServiceViewInBrowserTooltip" xml:space="preserve">
+    <value>Execute this flow as a REST api</value>
+  </data>
 </root>
