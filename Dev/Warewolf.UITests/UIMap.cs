@@ -7056,7 +7056,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
 
+        [Given(@"I Select Deploy FromExplorerContextMenu")]
         [When(@"I Select Deploy FromExplorerContextMenu")]
+        [Then(@"I Select Deploy FromExplorerContextMenu")]
         public void Select_Deploy_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Deploy, new Point(57, 11));
@@ -7909,5 +7911,60 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
         }
+
+        [Given(@"I Filter the Explorer with ""(.*)""")]
+        public void GivenIFilterTheExplorerWith(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I Select Deploy FromExplorerContextMenu")]
+        public void GivenISelectDeployFromExplorerContextMenu()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I Filter Deploy Source With ""(.*)""")]
+        public void GivenIFilterDeploySourceWith(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Filtered Resourse Is Checked For Deploy")]
+        public void ThenFilteredResourseIsCheckedForDeploy()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Deploy Button Is Enabled")]
+        public void ThenDeployButtonIsEnabled()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Deploy Version Conflict Window Shows")]
+        public void ThenDeployVersionConflictWindowShows()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"I Click MessageBox Cancel")]
+        public void ThenIClickMessageBoxCancel()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Deploy Window Is Still Open")]
+        public void ThenDeployWindowIsStillOpen()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Destination Deploy Information Clears")]
+        public void ThenDestinationDeployInformationClears()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }
