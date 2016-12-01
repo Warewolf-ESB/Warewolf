@@ -195,15 +195,14 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void SortRecset(bool @ascending)
+        public void SortRecset(bool ascending)
         {
-            IList<IRecordSetItemModel> newRecsetCollection = @ascending ? _vm.RecsetCollection.OrderBy(c => c.DisplayName).ToList() : _vm.RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
-            _vm.RecsetCollection.Clear();
-            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
+            IList<IRecordSetItemModel> newRecsetCollection = ascending ? _vm.RecsetCollection.Where(model => !model.IsBlank).OrderBy(c => c.DisplayName).ToList() : _vm.RecsetCollection.Where(model => !model.IsBlank).OrderByDescending(c =>  c.DisplayName).ToList();
+            for (int i = 0; i < newRecsetCollection.Count; i++)
             {
-                _vm.RecsetCollection.Add(item);
+                var recordSetItemModel = newRecsetCollection[i];
+                _vm.RecsetCollection.Move(_vm.RecsetCollection.IndexOf(recordSetItemModel), i);
             }
-            AddRecordSet();
         }
 
         public void AddRecordSets(XmlNode xmlNode)
