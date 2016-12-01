@@ -6588,8 +6588,8 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             MainStudioWindow.DrawHighlight();
-            MainStudioWindow.ExplorerEnvironmentContextMenu.DrawHighlight();
-            MainStudioWindow.ExplorerEnvironmentContextMenu.Rename.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.Rename.DrawHighlight();
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
@@ -7987,13 +7987,15 @@ namespace Warewolf.UITests
         [Then(@"Filter Textbox is cleared")]
         public void ThenFilterTextboxIsCleared()
         {
-            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText.DisplayText));
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text));
         }
 
+        [Given(@"Filter Textbox has ""(.*)""")]
+        [When(@"Filter Textbox has ""(.*)""")]
         [Then(@"Filter Textbox has ""(.*)""")]
         public void ThenFilterTextboxHas(string filterText)
         {
-            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText.DisplayText);
+            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
     }
 }

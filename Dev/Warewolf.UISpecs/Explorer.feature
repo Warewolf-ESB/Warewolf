@@ -81,7 +81,6 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Click MessageBox Yes
    And I Click Explorer Connect Remote Server Button
 
-
 Scenario: Clear filter  
    Given The Warewolf Studio is running 
    When I Filter the Explorer with "Hello World"
@@ -94,7 +93,7 @@ Scenario: Renaming Folder And Workflow Service on a remote server
 	When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
     And I Click Explorer Connect Remote Server Button
     And I Wait For Explorer First Remote Server Spinner
-    And I Filter the Explorer with "Examples"
+    And I Filter the Explorer with "Load Test Resources"
 	When I Rename First Remote Resource FromContextMenu to "Renamed"
 	And I Click Explorer Filter Clear Button
 	When I Filter the Explorer with "Renamed"
