@@ -882,7 +882,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
 
+        [Given(@"I Filter the Explorer with ""(.*)""")]
         [When(@"I Filter the Explorer with ""(.*)""")]
+        [Then(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
@@ -4573,13 +4575,29 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         [When(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
+        [Then(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+        }
+
+        [Given(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        [When(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        [Then(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        public void Drag_Explorer_workflow_Onto_Workflow_Design_Surface()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
@@ -5379,7 +5397,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
-        [When(@"I Enter DeployViewOnly Into Deploy Source Filter")]
+        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = SearchTextboxText;
@@ -6572,8 +6592,8 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             MainStudioWindow.DrawHighlight();
-            MainStudioWindow.ExplorerEnvironmentContextMenu.DrawHighlight();
-            MainStudioWindow.ExplorerEnvironmentContextMenu.Rename.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.Rename.DrawHighlight();
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
@@ -7056,7 +7076,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
 
+        [Given(@"I Select Deploy FromExplorerContextMenu")]
         [When(@"I Select Deploy FromExplorerContextMenu")]
+        [Then(@"I Select Deploy FromExplorerContextMenu")]
         public void Select_Deploy_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Deploy, new Point(57, 11));
@@ -7908,6 +7930,64 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
+        }
+        
+        [Then(@"Filtered Resourse Is Checked For Deploy")]
+        public void ThenFilteredResourseIsCheckedForDeploy()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+        }
+
+        [Then(@"Deploy Button Is Enabled")]
+        public void ThenDeployButtonIsEnabled()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+        }
+
+        [Then(@"Deploy Version Conflict Window Shows")]
+        public void ThenDeployVersionConflictWindowShows()
+        {
+            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists);
+        }
+
+        [Given(@"I Click MessageBox Cancel")]
+        [When(@"I Click MessageBox Cancel")]
+        [Then(@"I Click MessageBox Cancel")]
+        public void ThenIClickMessageBoxCancel()
+        {
+            Mouse.Click(MessageBoxWindow.CancelButton);
+        }
+
+        [Given(@"Deploy Window Is Still Open")]
+        [When(@"Deploy Window Is Still Open")]
+        [Then(@"Deploy Window Is Still Open")]
+        public void ThenDeployWindowIsStillOpen()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.Exists);
+        }
+
+        [Then(@"Destination Deploy Information Clears")]
+        public void ThenDestinationDeployInformationClears()
+        {
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton.Enabled);
+        }
+
+        [Given(@"Filter Textbox is cleared")]
+        [When(@"Filter Textbox is cleared")]
+        [Then(@"Filter Textbox is cleared")]
+        public void ThenFilterTextboxIsCleared()
+        {
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text));
+        }
+
+        [Given(@"Filter Textbox has ""(.*)""")]
+        [When(@"Filter Textbox has ""(.*)""")]
+        [Then(@"Filter Textbox has ""(.*)""")]
+        public void ThenFilterTextboxHas(string filterText)
+        {
+            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
     }
 }

@@ -98033,6 +98033,38 @@ namespace Warewolf.UITests
                 return this.mSaveBeforeAddingTest;
             }
         }
+        
+        public WpfText DeployVersionConflicText
+        {
+            get
+            {
+                if ((this.mDeployVersionConflicText == null))
+                {
+                    this.mDeployVersionConflicText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDeployVersionConflicText.SearchProperties[WpfText.PropertyNames.Name] = "Deploy Version Conflicts";
+                    this.mDeployVersionConflicText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeployVersionConflicText;
+            }
+        }
+        
+        public WpfText DeployConflictsText
+        {
+            get
+            {
+                if ((this.mDeployConflictsText == null))
+                {
+                    this.mDeployConflictsText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDeployConflictsText.SearchProperties[WpfText.PropertyNames.Name] = "Deploy Conflicts";
+                    this.mDeployConflictsText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeployConflictsText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -98053,6 +98085,10 @@ namespace Warewolf.UITests
         private WpfText mResourcesDeployedSucText;
         
         private WpfText mSaveBeforeAddingTest;
+        
+        private WpfText mDeployVersionConflicText;
+        
+        private WpfText mDeployConflictsText;
         #endregion
     }
     
