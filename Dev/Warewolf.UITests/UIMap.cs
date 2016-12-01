@@ -4587,10 +4587,10 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
-        [Given(@"I Drag Explorer workflow(.*) Onto Workflow Design Surface")]        
-        [When(@"I Drag Explorer workflow(.*) Onto Workflow Design Surface")]        
-        [Then(@"I Drag Explorer workflow(.*) Onto Workflow Design Surface")]        
-        public void Drag_Explorer_workflow1_Onto_Workflow_Design_Surface()
+        [Given(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        [When(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        [Then(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        public void Drag_Explorer_workflow_Onto_Workflow_Design_Surface()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Explorer first remote server does not contain any items.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
@@ -7995,6 +7995,5 @@ namespace Warewolf.UITests
         {
             Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText.DisplayText);
         }
-
     }
 }

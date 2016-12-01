@@ -34,7 +34,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
    Given The Warewolf Studio is running
    When I Click New Workflow Ribbon Button
    And I Filter the Explorer with "workflow1"
-   And I Drag Explorer workflow1 Onto Workflow Design Surface
+   And I Drag Explorer workflow Onto Workflow Design Surface
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
