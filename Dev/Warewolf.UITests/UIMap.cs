@@ -7981,5 +7981,20 @@ namespace Warewolf.UITests
         {
             ScenarioContext.Current.Pending();
         }
+
+        [Given(@"Filter Textbox is cleared")]
+        [When(@"Filter Textbox is cleared")]
+        [Then(@"Filter Textbox is cleared")]
+        public void ThenFilterTextboxIsCleared()
+        {
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText.DisplayText));
+        }
+
+        [Then(@"Filter Textbox has ""(.*)""")]
+        public void ThenFilterTextboxHas(string filterText)
+        {
+            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.FilterText.DisplayText);
+        }
+
     }
 }
