@@ -7914,6 +7914,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute this flow as a REST api.
+        /// </summary>
+        public static string ServiceViewInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceViewInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {
