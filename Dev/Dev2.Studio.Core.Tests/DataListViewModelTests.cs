@@ -1131,9 +1131,6 @@ namespace Dev2.Core.Tests
 
         #endregion AddMode Tests
 
-        #region AddRecordSet Tests
-
-        #endregion AddRecordSet Tests
 
         #region WriteDataToResourceModel Tests
 
@@ -1156,7 +1153,11 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("zzz"));
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("ttt"));
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("aaa"));
-            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("zzz"));
+            var recordSetItemModel = DataListItemModelFactory.CreateRecordSetItemModel("zzz");
+            recordSetItemModel.Children.Add(new RecordSetFieldItemModel("aaa",recordSetItemModel));
+            recordSetItemModel.Children.Add(new RecordSetFieldItemModel("xxx", recordSetItemModel));
+            recordSetItemModel.Children.Add(new RecordSetFieldItemModel("bbb", recordSetItemModel));
+            _dataListViewModel.RecsetCollection.Add(recordSetItemModel);
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("ttt"));
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("aaa"));
 
@@ -1220,6 +1221,36 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void SortOnceExpectedSorts_ShouldSortRecsetfields()
+        {
+            Setup();
+            SortInitialization();
+
+            Assert.IsNotNull(_dataListViewModel.ScalarCollection);
+            Assert.IsNotNull(_dataListViewModel.RecsetCollection);
+            Assert.IsNotNull(_dataListViewModel.ComplexObjectCollection);
+
+            Assert.IsTrue(_dataListViewModel.ScalarCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.ComplexObjectCollection.Count >= 1);
+
+            Assert.IsTrue(_dataListViewModel.CanSortItems);
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+            Assert.IsFalse(_dataListViewModel.IsSorting);
+
+            //Recset List Asserts
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("zzz", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].Children[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("bbb", _dataListViewModel.RecsetCollection[3].Children[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("xxx", _dataListViewModel.RecsetCollection[3].Children[2].DisplayName, "Sort datalist left recset list unsorted");
+            SortCleanup();
+        }
+
+        [TestMethod]
         public void SortTwiceExpectedSortsDescendingOrder()
         {
             Setup();
@@ -1245,11 +1276,34 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void SortTwiceExpectedSortsDescendingOrder_IncludingRecordsetFields()
+        {
+            Setup();
+            SortInitialization();
+
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+            //Execute Twice
+            _dataListViewModel.SortCommand.Execute(null);
+
+            //Recset List Asserts
+            Assert.AreEqual("zzz", _dataListViewModel.RecsetCollection[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("xxx", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("bbb", _dataListViewModel.RecsetCollection[0].Children[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[0].Children[2].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
+
+            SortCleanup();
+        }
+
+        [TestMethod]
         public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
         {
             //Initialize
             Setup();
-            for (var i = 5000; i > 0; i--)
+            for (var i = 2500; i > 0; i--)
             {
                 _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
             }
@@ -1264,7 +1318,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar3000", _dataListViewModel.ScalarCollection[3000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 5000 variables. Took {endTime}");
+            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
 
             SortCleanup();
         }
