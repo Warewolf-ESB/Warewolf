@@ -1245,7 +1245,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void SortLargeListOfScalarsExpectedLessThan100Milliseconds()
+        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
         {
             //Initialize
             Setup();
