@@ -333,6 +333,27 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void Sort_ScalarCollection()
+        {
+            //---------------------------Setup----------------------------------------------------------
+            Setup();
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Name", "your firstname", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Surname", "your lastname", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Age", "your age", enDev2ColumnArgumentDirection.Both));
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].Name);
+            Assert.AreEqual("Name", _dataListViewModel.ScalarCollection[1].Name);
+            Assert.AreEqual("Surname", _dataListViewModel.ScalarCollection[2].Name);
+            Assert.AreEqual("Age", _dataListViewModel.ScalarCollection[3].Name);
+            //-------------------------Execute Test ------------------------------------------
+            _dataListViewModel.SortCommand.Execute(null);
+            //-------------------------Assert Result------------------------------------------
+            Assert.AreEqual("Age", _dataListViewModel.ScalarCollection[0].Name);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[1].Name);
+            Assert.AreEqual("Name", _dataListViewModel.ScalarCollection[2].Name);
+            Assert.AreEqual("Surname", _dataListViewModel.ScalarCollection[3].Name);
+        }
+
+        [TestMethod]
         public void SetUnusedDataListItemsWhenTwoRecsetsSameNameExpectedBothMarkedAsUnused()
         {
             //---------------------------Setup----------------------------------------------------------
