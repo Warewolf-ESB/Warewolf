@@ -44,6 +44,7 @@ namespace Dev2.Settings.Security
         bool _isUpdatingHelpText;
         private static IDomain _domain;
 
+        // ReSharper disable once UnusedMember.Global
         public SecurityViewModel()
         {
             
