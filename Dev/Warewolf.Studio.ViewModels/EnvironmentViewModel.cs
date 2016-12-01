@@ -16,8 +16,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
@@ -67,6 +70,7 @@ namespace Warewolf.Studio.ViewModels
         private string _viewApisJsonTooltip;
         private string _serverVersionTooltip;
         private bool _canDeploy;
+        private string _newWcfSourceTooltip;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -107,6 +111,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 UpdateActiveEnvironment(shellViewModel);
                 shellViewModel.NewComPluginSource(ResourcePath);
+            });
+            NewWcfSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewWcfSource(ResourcePath);
             });
 
             NewWebSourceSourceCommand = new DelegateCommand(() =>
@@ -601,6 +610,15 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NewComPluginSourceTooltip);
             }
         }
+        public string NewWcfSourceTooltip
+        {
+            get { return _newWcfSourceTooltip; }
+            set
+            {
+                _newWcfSourceTooltip = value;
+                OnPropertyChanged(() => NewWcfSourceTooltip);
+            }
+        }
         public string NewEmailSourceTooltip
         {
             get { return _newEmailSourceTooltip; }
@@ -686,6 +704,7 @@ namespace Warewolf.Studio.ViewModels
                 NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWebSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewComPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewWcfSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWcfSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewEmailSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewExchangeSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewRabbitMqSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
@@ -877,6 +896,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewDatabaseSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
         public ICommand NewComPluginSourceCommand { get; set; }
+        public ICommand NewWcfSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
@@ -1015,6 +1035,25 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
+        public IExplorerTreeItem FindByPath(string path)
+        {
+            var allChildren = Children.Flatten(model => model.Children);
+            if (path.EndsWith("\\"))
+            {
+                path = path.TrimEnd('\\');
+            }
+            if (path.StartsWith("\\"))
+            {
+                path = path.TrimStart('\\');
+            }
+            var found = allChildren.FirstOrDefault(model => model.ResourcePath == path);
+            if (found != null)
+            {
+                return found;
+            }
+            return this;            
+        }
+
         public void Filter(string filter)
         {
             _filter = filter;
@@ -1129,6 +1168,36 @@ namespace Warewolf.Studio.ViewModels
                 itemCreated.CanEdit = false;
             }
             itemCreated.SetPermissions(explorerItem.Permissions, isDeploy);
+            if (isDialog)
+            {
+                SetPropertiesForDialog(itemCreated);
+            }
+            return itemCreated;
+        }
+
+
+        public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
+        {
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            {
+                ResourceName = explorerItem.ResourceName,
+                ResourceId = explorerItem.ID,
+                ResourceType = explorerItem.ServerResourceType,
+                ResourcePath = explorerItem.GetSavePath(),
+                AllowResourceCheck = isDeploy,
+                ShowContextMenu = !isDeploy,
+                IsFolder = false,
+                IsService = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService,
+                IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
+                IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
+            };
+            if (isDeploy)
+            {
+                itemCreated.CanExecute = false;
+                itemCreated.CanView = false;
+                itemCreated.CanEdit = false;
+            }
+            itemCreated.SetPermissions(explorerItem.UserPermissions, isDeploy);
             if (isDialog)
             {
                 SetPropertiesForDialog(itemCreated);

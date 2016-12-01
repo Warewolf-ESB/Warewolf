@@ -10,6 +10,7 @@ namespace Warewolf.Studio.ViewModels
     {
         bool _isLoading;
         private bool _deployTests;
+        private Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
         #region Implementation of IDeployDestinationExplorerViewModel
@@ -25,6 +26,8 @@ namespace Warewolf.Studio.ViewModels
         private void ServerConnected(object sender, IServer server)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == server.EnvironmentID);
+            environmentViewModel?.Server?.GetServerVersion();
+            environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;           
         }
 
@@ -78,7 +81,8 @@ namespace Warewolf.Studio.ViewModels
         public event ServerSate ServerStateChanged;
         public virtual Version MinSupportedVersion => Version.Parse(SelectedEnvironment.Server.GetMinSupportedVersion());
 
-        public virtual Version ServerVersion => Version.Parse(SelectedEnvironment.Server.GetServerVersion());
+        public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedEnvironment.Server.GetServerVersion()));
+
         public bool DeployTests
         {
             get

@@ -122,12 +122,16 @@ namespace Dev2.Runtime.Hosting
             {
                 var oldPath = itemToRename.ResourcePath;
                 var moveResult = RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
+                if (moveResult.Status != ExecStatus.Success)
+                {
+                    return new ExplorerRepositoryResult(moveResult.Status, moveResult.Message);
+                }
                 itemToRename.ResourcePath = itemToRename.ResourcePath.Replace(itemToRename.ResourcePath, newName);
                 var resourcesRenameResult = RenameChildrenPaths(oldPath, newName);
                 itemToRename.DisplayName = newName;
-                if (moveResult.Status == ExecStatus.Fail || resourcesRenameResult.Status == ExecStatus.Fail)
+                if (resourcesRenameResult.Status != ExecStatus.Success)
                 {
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, string.Join(Environment.NewLine, moveResult.Message, resourcesRenameResult.Message));
+                    return new ExplorerRepositoryResult(resourcesRenameResult.Status, resourcesRenameResult.Message);
                 }
                 
                 return moveResult;
