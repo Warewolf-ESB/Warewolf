@@ -4,7 +4,7 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	Given I Filter the Explorer with "Hello World"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
-	And I Filter Deploy Source With "Hello World"
+	And I Enter "Hello World" Into Deploy Source Filter	
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Close Deploy Tab Button
 	
@@ -25,7 +25,7 @@ Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder 
 	Given I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
-	And I Filter Deploy Source With "Unit Tests"
+	And I Enter "Unit Tests" Into Deploy Source Filter	
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Close Deploy Tab Button
 
