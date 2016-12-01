@@ -35,10 +35,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event ServerSaved ServerSaved;
 
-        public void FireItemSaved(bool forcedRefresh)
-        {
-        }
-
         public void FireServerSaved()
         {
             var handler = ServerSaved;

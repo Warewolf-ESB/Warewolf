@@ -333,6 +333,7 @@ namespace Warewolf.Studio.ViewModels
 
         async void ServerConnected(object _, IServer server)
         {
+            SearchText = string.Empty;
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
             _environments.Add(environmentModel);

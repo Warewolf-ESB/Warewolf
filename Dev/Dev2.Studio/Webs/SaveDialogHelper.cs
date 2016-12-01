@@ -10,9 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -69,7 +71,10 @@ namespace Dev2.Webs
                     selectedPath = selectedPath.Substring(0, lastIndexOf);
                 }
                 selectedPath = selectedPath.Replace("\\", "\\\\");
-                var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+                //var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
 
                 var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
                 var lastHeaderIndexOf = header.LastIndexOf("\\", StringComparison.Ordinal);
@@ -79,7 +84,7 @@ namespace Dev2.Webs
                     header = header.Replace("\\", "");
                 }
 
-                var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, selectedPath, header);
+                var requestViewModel = await RequestServiceNameViewModel.CreateAsync(environmentViewModel, selectedPath, header);
 
                 loaded?.Invoke();
                 var messageBoxResult = requestViewModel.ShowSaveDialog();

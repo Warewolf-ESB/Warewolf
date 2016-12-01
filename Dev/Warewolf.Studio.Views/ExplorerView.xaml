@@ -116,6 +116,7 @@
                       Margin="{StaticResource ControlBorderTop}"
                       ItemsSource="{Binding Environments}"
                       Style="{StaticResource TreeViewStyle}"
+                      DataContextChanged="ExplorerTree_OnDataContextChanged"
                       PreviewMouseLeftButtonUp="ExplorerTree_OnPreviewMouseLeftButtonUp"
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
                       PreviewMouseMove="Tree_MouseMove"
@@ -132,12 +133,13 @@
                     <ContextMenu x:Key="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
                                              Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
                         <MenuItem Name="NewService"
-                                              Command="{Binding NewServiceCommand}"
-                                              Header="New Workflow Service"
-                                              Style="{StaticResource MenuItemStyle}"
-                                              InputGestureText="[Ctrl+W]"
-                                              IsEnabled="{Binding CanCreateWorkflowService}"
-                                              ToolTip="{Binding NewServiceTooltip}">
+                                Command="{Binding NewServiceCommand}"
+                                Header="New Workflow Service"
+                                Style="{StaticResource MenuItemStyle}"
+                                InputGestureText="[Ctrl+W]"
+                                IsEnabled="{Binding CanCreateWorkflowService}"
+                                ToolTip="{Binding NewServiceTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
                             </MenuItem.Icon>
@@ -147,50 +149,53 @@
                         </MenuItem>
 
                         <MenuItem Name="NewFolder"
-                                              Command="{Binding CreateFolderCommand}"
-                                              CommandParameter="Folder"
-                                              Style="{StaticResource MenuItemStyle}"
-                                              Header="{x:Static languages:Core.NewFolderLabel}"
-                                              InputGestureText="[Ctrl+Shift+F]"
-                                              IsEnabled="{Binding CanCreateFolder}" 
-                                              ToolTip="{Binding NewFolderTooltip}"/>
+                                    Command="{Binding CreateFolderCommand}"
+                                    CommandParameter="Folder"
+                                    Style="{StaticResource MenuItemStyle}"
+                                    Header="{x:Static languages:Core.NewFolderLabel}"
+                                    InputGestureText="[Ctrl+Shift+F]"
+                                    IsEnabled="{Binding CanCreateFolder}" 
+                                    ToolTip="{Binding NewFolderTooltip}"/>
 
-                        <Separator />
+                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                         <!--Set Visibility to collapsed until we add functionality for deploy on server-->
                         <MenuItem Name="Deploy"
-                                              Command="{Binding DeployCommand}"
-                                              CommandParameter="{Binding Path=Data}"
-                                              Header="Deploy"
-                                              Style="{StaticResource MenuItemStyle}"
-                                              IsEnabled="{Binding CanDeploy}"
-                                              ToolTip="{Binding DeployTooltip}">
+                                Command="{Binding DeployCommand}"
+                                CommandParameter="{Binding Path=Data}"
+                                Header="Deploy"
+                                Style="{StaticResource MenuItemStyle}"
+                                IsEnabled="{Binding CanDeploy}"
+                                ToolTip="{Binding DeployTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem.Icon>
                                 <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                             </MenuItem.Icon>
                         </MenuItem>
 
                         <MenuItem Name="ServerVersion"
-                                              Command="{Binding ShowServerVersionCommand}"
-                                              Header="Server Version"
-                                              Style="{StaticResource MenuItemStyle}"
-                                              IsEnabled="{Binding CanShowServerVersion}" 
-                                              ToolTip="{Binding ServerVersionTooltip}"/>
+                                Command="{Binding ShowServerVersionCommand}"
+                                Header="Server Version"
+                                Style="{StaticResource MenuItemStyle}"
+                                IsEnabled="{Binding CanShowServerVersion}" 
+                                ToolTip="{Binding ServerVersionTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                         <MenuItem Name="ViewApisJson"
-                                              Command="{Binding ViewApisJsonCommand}"
-                                              Header="View Apis.Json"
-                                              Style="{StaticResource MenuItemStyle}"
-                                              IsEnabled="{Binding CanViewApisJson}" 
-                                              ToolTip="{Binding ViewApisJsonTooltip}">
+                                Command="{Binding ViewApisJsonCommand}"
+                                Header="View Apis.Json"
+                                Style="{StaticResource MenuItemStyle}"
+                                IsEnabled="{Binding CanViewApisJson}" 
+                                ToolTip="{Binding ViewApisJsonTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource ViewApisJsonIcon}"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
-                        <Separator />
+                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
-                        <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}">
+                        <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem Name="NewServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewServerCommand}"
@@ -310,11 +315,13 @@
                         <MenuItem Name="Open"
 								  Command="{Binding OpenCommand}"
 								  CommandParameter="WorkflowService"
+                                  IsEnabled="{Binding CanView}"
 								  ToolTip="{Binding OpenTooltip}">
                             <MenuItem.Style>
                                 <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Header" Value="Open"></Setter>
-                                    <Setter Property="FontWeight" Value="SemiBold"></Setter>
+                                    <Setter Property="Header" Value="Open"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -330,6 +337,12 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Header" Value="Expand" />
                                         </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </MenuItem.Style>
@@ -338,11 +351,23 @@
                         <MenuItem Name="NewServiceItem"
 								  Command="{Binding NewServiceCommand}"
 								  Header="New Workflow Service"
-								  Style="{StaticResource MenuItemStyle}"
 								  InputGestureText="[Ctrl+W]"
 								  IsEnabled="{Binding CanCreateWorkflowService}"
-								  ToolTip="{Binding NewServiceTooltip}"
-                                  Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+								  ToolTip="{Binding NewServiceTooltip}">
+                            <MenuItem.Style>
+                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
                             </MenuItem.Icon>
@@ -401,7 +426,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
 
-                        <Separator Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                         <MenuItem Name="NewFolderFromItem"
 								  Command="{Binding CreateFolderCommand}"
@@ -429,9 +454,22 @@
 								  Command="{Binding DeleteCommand}"
 								  CommandParameter="{Binding Data}"
 								  Header="Delete"
-								  Style="{StaticResource MenuItemStyle}"
 								  IsEnabled="{Binding CanDelete}"
 								  ToolTip="{Binding DeleteTooltip}">
+                            <MenuItem.Style>
+                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsFolder}" Value="False"/>
+                                                <Condition Binding="{Binding IsSaveDialog}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
                             <MenuItem.Icon>
                                 <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="TrashOutline" />
                             </MenuItem.Icon>
@@ -450,7 +488,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
 
-                        <Separator />
+                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
 
                         <MenuItem Name="Test"
 								  Command="{Binding CreateTestCommand}"
@@ -481,7 +519,8 @@
 								  Header="Deploy"
 								  Style="{StaticResource MenuItemStyle}"
 								  IsEnabled="{Binding CanDeploy}"
-								  ToolTip="{Binding DeployTooltip}">
+								  ToolTip="{Binding DeployTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem.Icon>
                                 <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                             </MenuItem.Icon>
@@ -555,9 +594,38 @@
 								  ToolTip="{Binding OpenVersionTooltip}"
 								  Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <Separator Visibility="{Binding IsFolder, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Separator>
+                            <Separator.Style>
+                                <Style TargetType="{x:Type Separator}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Separator.Style>
+                        </Separator>
 
-                        <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsFolder, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <MenuItem Header="Sources">
+                            <MenuItem.Style>
+                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
                             <MenuItem Name="NewServerSourceItem"
 									  Style="{StaticResource MenuItemStyle}"
 									  Command="{Binding NewServerCommand}"
@@ -784,6 +852,7 @@
                                                  LostFocus="UIElement_OnLostFocus"
                                                  KeyDown="UIElement_OnKeyDown"
                                                  IsTabStop="False"
+                                                 Loaded="FrameworkElement_OnLoaded"
                                                  KeyboardNavigation.TabNavigation="None"
                                                  Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 

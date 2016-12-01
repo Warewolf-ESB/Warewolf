@@ -71,8 +71,11 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
-                environmentViewModel.Server.GetServerVersion();
-                environmentViewModel.Server.GetMinSupportedVersion();
+
+                if (_serverVersion == null)
+                {
+                    _serverVersion = Version.Parse(SelectedServer.GetServerVersion());
+                }
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
 
             }

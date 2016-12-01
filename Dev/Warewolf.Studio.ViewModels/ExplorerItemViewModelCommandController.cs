@@ -195,11 +195,6 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        internal void CreateFolderCommand(IExplorerRepository explorerRepository, string resourcePath, string name, Guid id)
-        {
-            explorerRepository.CreateFolder(resourcePath, name, id);
-        }
-
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
         {
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
@@ -222,7 +217,8 @@ namespace Warewolf.Studio.ViewModels
                 IsSelected = true,
                 IsRenaming = true,
                 CanDelete =  true,
-                IsFolder = true
+                IsFolder = true,
+                IsNewFolder = true
             };
             return child;
         }

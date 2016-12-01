@@ -58,6 +58,7 @@ namespace Dev2.Common.Interfaces
 
         ObservableCollection<IExplorerItemViewModel> Children { get; set; }
         Action<IExplorerItemViewModel> SelectAction { get; set; }
+        bool IsSaveDialog { get; set; }
 
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);

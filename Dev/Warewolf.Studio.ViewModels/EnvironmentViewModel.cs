@@ -18,7 +18,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.Core;
@@ -71,6 +70,7 @@ namespace Warewolf.Studio.ViewModels
         private string _serverVersionTooltip;
         private bool _canDeploy;
         private string _newWcfSourceTooltip;
+        private bool _isSaveDialog;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -284,6 +284,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsSaveDialog
+        {
+            get { return _isSaveDialog; }
+            set
+            {
+                _isSaveDialog = value;
+                OnPropertyChanged(() => IsSaveDialog);
+            }
+        }
+
         public bool AreVersionsVisible { get; set; }
 
         public void CreateFolder()
@@ -291,7 +301,6 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             var id = Guid.NewGuid();
             var name = GetChildNameFromChildren();
-            Server.ExplorerRepository.CreateFolder("root", name, id);
             var child = new ExplorerItemViewModel(Server, this, a => { SelectAction(a); }, _shellViewModel, _controller)
             {
                 ResourceName = name,
@@ -301,7 +310,8 @@ namespace Warewolf.Studio.ViewModels
                 ResourcePath = name,
                 IsSelected = true,
                 IsRenaming = true,
-                IsVisible = true
+                IsVisible = true,
+                IsNewFolder = true
             };
             if (_isDialog)
             {
@@ -1191,6 +1201,12 @@ namespace Warewolf.Studio.ViewModels
                 IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
                 IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
             };
+
+            if (string.IsNullOrWhiteSpace(itemCreated.ResourcePath))
+            {
+                itemCreated.ResourcePath = itemCreated.ResourceName;
+            }
+
             if (isDeploy)
             {
                 itemCreated.CanExecute = false;
