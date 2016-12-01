@@ -51,7 +51,6 @@ namespace Warewolf.Studio.ViewModels
 #pragma warning restore 1998
         {
             _environmentViewModel = environmentViewModel;
-            _environmentViewModel.RefreshCommand?.Execute(null);
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;
@@ -61,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
-            environmentViewModel.CanShowServerVersion = false;
             return this;
         }
 
@@ -253,49 +251,36 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
+            
+            try
             {
-
-                try
+                if (!string.IsNullOrEmpty(_selectedPath))
                 {
-                    if (!string.IsNullOrEmpty(_selectedPath))
+                    _environmentViewModel.SelectItem(_selectedPath, b =>
                     {
-                        _environmentViewModel.SelectItem(_selectedPath, b =>
-                        {
-                            _environmentViewModel.SelectAction(b);
-                            b.IsSelected = true;
-                        });
-                    }
-                    _environmentViewModel.CanCreateWorkflowService = false;
-                    _environmentViewModel.ShowContextMenu = true;
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateWorkflowService = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.ShowContextMenu = true);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDuplicate = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugInputs = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugStudio = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanDebugBrowser = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateSchedule = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanCreateTest = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanViewRunAllTests = false);
-                    _environmentViewModel.Children.Flatten(model => model.Children).Where(model => model.IsFolder).Apply(model => model.CanView = true);
+                        _environmentViewModel.SelectAction(b);
+                        b.IsSelected = true;
+                    });
                 }
-                catch (Exception)
-                {
-                    //
-                }
-                finally
-                {
-                    HasLoaded = a.Result;
-                }
+                _environmentViewModel.IsSaveDialog = true;
+                _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
+            }
+            catch (Exception)
+            {
+                //
+            }
 
-
-
-                ValidateName();
-            }, TaskContinuationOptions.ExecuteSynchronously);
+            ValidateName();
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
             _view.ShowView();
+
+            _environmentViewModel.IsSaveDialog = false;
+            var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
+            if (windowsGroupPermission != null)
+                _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+            _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             return ViewResult;
         }

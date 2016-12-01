@@ -131,28 +131,7 @@ namespace Warewolf.Studio.Views
         {
             if (_canDrag)
             {
-                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
-                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
-                {
-                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                    var treeView = sender as TreeView;
-                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-                    if (itemViewModel != null &&
-                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        e.Effects = DragDropEffects.Copy;
-                    }
-                }
-                else
-                {
-                    e.Effects = DragDropEffects.Copy;
-                }
+                ValidateDragEnter(sender, e);
             }
             else
             {
@@ -165,23 +144,29 @@ namespace Warewolf.Studio.Views
         {
             if (_canDrag)
             {
-                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
-                var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+                ValidateDragEnter(sender, e);
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private static void ValidateDragEnter(object sender, DragEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            var treeView = sender as TreeView;
+            var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            {
+                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                
+                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
                 {
-                    var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                    var treeView = sender as TreeView;
-                    var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-                    if (itemViewModel != null &&
-                        (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        e.Effects = DragDropEffects.Copy;
-                    }
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
                 }
                 else
                 {
@@ -190,8 +175,15 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
+                if (itemViewModel != null && explorerItemViewModel.ResourcePath.Contains(itemViewModel.ResourceName))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
             }
         }
 
@@ -252,7 +244,7 @@ namespace Warewolf.Studio.Views
 
         private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue)
+            //if ((bool)e.NewValue)
             {
                 var textBox = sender as TextBox;
                 Keyboard.Focus(textBox);
@@ -270,11 +262,14 @@ namespace Warewolf.Studio.Views
                 if (environmentViewModel != null)
                 {
                     treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = environmentViewModel;
                 }
                 else if (explorerItemViewModel != null)
                 {
-                    
                     treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = explorerItemViewModel;
                 }
 
                 treeViewItem.Focus();
@@ -404,6 +399,19 @@ namespace Warewolf.Studio.Views
         private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            Keyboard.Focus(textBox);
+            textBox?.SelectAll();
+        }
+
+        private void ExplorerTree_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ExplorerTree?.Items?.Refresh();
+            ExplorerTree?.UpdateLayout();
         }
     }
 }

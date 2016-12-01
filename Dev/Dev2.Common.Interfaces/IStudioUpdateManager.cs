@@ -48,7 +48,6 @@ namespace Dev2.Common.Interfaces
     {
         string TestConnection(IWcfServerSource wcfServerSource);
         event ServerSaved ServerSaved;
-        void FireItemSaved(bool forcedRefresh);
         void FireServerSaved();
     }
 

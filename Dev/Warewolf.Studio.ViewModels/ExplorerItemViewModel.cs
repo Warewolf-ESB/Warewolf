@@ -212,6 +212,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _isScheduleVisible;
         private bool _isDuplicateVisible;
         private string _newWcfSourceTooltip;
+        private bool _isNewFolder;
+        private bool _isSaveDialog;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -562,7 +564,6 @@ namespace Warewolf.Studio.ViewModels
                 IsExpanded = true;
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
-                _explorerItemViewModelCommandController.CreateFolderCommand(_explorerRepository, ResourcePath, name, id);
                 var child = _explorerItemViewModelCommandController.CreateChild(name, id, Server, this, SelectAction);
 
                 AddChild(child);
@@ -830,12 +831,13 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            ShellViewModel.SetRefreshExplorerState(true);
-                            if(_explorerRepository.Rename(this, NewName(newName)))
+                            if (IsNewFolder)
                             {
-                                if(!ResourcePath.Contains("\\"))
+                                Server.ExplorerRepository.CreateFolder(Parent == null ? "root" : Parent.ResourcePath, NewName(newName), ResourceId);
+
+                                if (!ResourcePath.Contains("\\"))
                                 {
-                                    if(_resourceName != null)
+                                    if (_resourceName != null)
                                     {
                                         ResourcePath = ResourcePath.Replace(_resourceName, newName);
                                     }
@@ -846,8 +848,29 @@ namespace Warewolf.Studio.ViewModels
                                 }
                                 UpdateResourcePaths(this);
                                 _resourceName = newName;
+                                IsNewFolder = false;
                             }
-                            ShellViewModel.SetRefreshExplorerState(false);
+                            else
+                            {
+                                ShellViewModel.SetRefreshExplorerState(true);
+                                if (_explorerRepository.Rename(this, NewName(newName)))
+                                {
+                                    if (!ResourcePath.Contains("\\"))
+                                    {
+                                        if (_resourceName != null)
+                                        {
+                                            ResourcePath = ResourcePath.Replace(_resourceName, newName);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase) + 1) + newName;
+                                    }
+                                    UpdateResourcePaths(this);
+                                    _resourceName = newName;
+                                }
+                                ShellViewModel.SetRefreshExplorerState(false);
+                            }
                         }
                     }
                     if (!IsRenaming)
@@ -1112,7 +1135,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanCreateSource
         {
-            get { return _canCreateSource; }
+            get { return _canCreateSource && !IsSaveDialog; }
             set
             {
                 _canCreateSource = value;
@@ -1135,7 +1158,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanViewSwagger
         {
-            get { return _canViewSwagger; }
+            get { return _canViewSwagger && !IsSaveDialog; }
             set
             {
                 _canViewSwagger = value;
@@ -1147,7 +1170,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanViewApisJson
         {
-            get { return _canViewApisJson; }
+            get { return _canViewApisJson && !IsSaveDialog; }
             set
             {
                 _canViewApisJson = value;
@@ -1159,12 +1182,22 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService
         {
-            get { return _canCreateWorkflowService; }
+            get { return _canCreateWorkflowService && !IsSaveDialog; }
             set
             {
                 _canCreateWorkflowService = value;
                 NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Core.NewServiceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateWorkflowService);
+            }
+        }
+
+        public bool IsSaveDialog
+        {
+            get { return _isSaveDialog; }
+            set
+            {
+                _isSaveDialog = value; 
+                OnPropertyChanged(() => IsSaveDialog);
             }
         }
 
@@ -1195,7 +1228,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDuplicate;
+                return _canDuplicate && !IsSaveDialog;
             }
             set
             {
@@ -1208,7 +1241,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canCreateTest && IsService;
+                return _canCreateTest && IsService && !IsSaveDialog;
             }
             set
             {
@@ -1221,7 +1254,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canViewRunAllTests && IsService;
+                return _canViewRunAllTests && IsService && !IsSaveDialog;
             }
             set
             {
@@ -1235,6 +1268,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+                if (IsSaveDialog && IsFolder)
+                {
+                    return true;
+                }
                 return _canDelete;
             }
             set
@@ -1270,7 +1307,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDebugInputs;
+                return _canDebugInputs && !IsSaveDialog;
             }
             set
             {
@@ -1284,7 +1321,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDebugStudio;
+                return _canDebugStudio && !IsSaveDialog;
             }
             set
             {
@@ -1298,7 +1335,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDebugBrowser;
+                return _canDebugBrowser && !IsSaveDialog;
             }
             set
             {
@@ -1310,7 +1347,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanCreateSchedule
         {
-            get { return _canCreateSchedule; }
+            get { return _canCreateSchedule && !IsSaveDialog; }
             set
             {
                 _canCreateSchedule = value;
@@ -1323,7 +1360,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDeploy;
+                return _canDeploy && !IsSaveDialog;
             }
             set
             {
@@ -1376,7 +1413,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion && !IsFolder && !IsServer;
+                return _canView && !IsResourceVersion;
             }
             set
             {
@@ -1392,7 +1429,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canShowDependencies && !IsFolder;
+                return _canShowDependencies && !IsFolder && !IsSaveDialog;
             }
             set
             {
@@ -1418,7 +1455,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return IsService && _canShowVersions;
+                return IsService && _canShowVersions && !IsSaveDialog;
             }
             set
             {
@@ -1517,6 +1554,19 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _isVisible = value;
                     OnPropertyChanged(() => IsVisible);
+                }
+            }
+        }
+
+        public bool IsNewFolder
+        {
+            get { return _isNewFolder; }
+            set
+            {
+                if (_isNewFolder != value)
+                {
+                    _isNewFolder = value;
+                    OnPropertyChanged(() => IsNewFolder);
                 }
             }
         }
@@ -1721,7 +1771,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDependenciesVisible
         {
-            get { return _isDependenciesVisible; }
+            get { return _isDependenciesVisible && !IsSaveDialog; }
             set
             {
                 _isDependenciesVisible = value; 
@@ -1731,7 +1781,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsScheduleVisible
         {
-            get { return _isScheduleVisible; }
+            get { return _isScheduleVisible && !IsSaveDialog; }
             set
             {
                 _isScheduleVisible = value;
@@ -1741,7 +1791,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDuplicateVisible
         {
-            get { return _isDuplicateVisible; }
+            get { return _isDuplicateVisible && !IsSaveDialog; }
             set
             {
                 _isDuplicateVisible = value;
@@ -1751,7 +1801,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsViewSwaggerVisible
         {
-            get { return _isViewSwaggerVisible; }
+            get { return _isViewSwaggerVisible && !IsSaveDialog; }
             set
             {
                 _isViewSwaggerVisible = value;
@@ -1761,7 +1811,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsShowVersionHistoryVisible
         {
-            get { return _isShowVersionHistoryVisible; }
+            get { return _isShowVersionHistoryVisible && !IsSaveDialog; }
             set
             {
                 _isShowVersionHistoryVisible = value;
@@ -1771,7 +1821,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsRollbackVisible
         {
-            get { return _isRollbackVisible; }
+            get { return _isRollbackVisible && !IsSaveDialog; }
             set
             {
                 _isRollbackVisible = value;
@@ -1781,7 +1831,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsOpenVersionVisible
         {
-            get { return _isOpenVersionVisible; }
+            get { return _isOpenVersionVisible && !IsSaveDialog; }
             set
             {
                 _isOpenVersionVisible = value;
@@ -1801,7 +1851,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsCreateTestVisible
         {
-            get { return _isCreateTestVisible; }
+            get { return _isCreateTestVisible && !IsSaveDialog; }
             set
             {
                 _isCreateTestVisible = value;
@@ -1811,7 +1861,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsRunAllTestsVisible
         {
-            get { return _isRunAllTestsVisible; }
+            get { return _isRunAllTestsVisible && !IsSaveDialog; }
             set
             {
                 _isRunAllTestsVisible = value;
@@ -1821,7 +1871,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsViewJsonApisVisible
         {
-            get { return _isViewJsonApisVisible; }
+            get { return _isViewJsonApisVisible && !IsSaveDialog; }
             set
             {
                 _isViewJsonApisVisible = value;
@@ -1831,7 +1881,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDebugInputsVisible
         {
-            get { return _isDebugInputsVisible; }
+            get { return _isDebugInputsVisible && !IsSaveDialog; }
             set
             {
                 _isDebugInputsVisible = value;
@@ -1841,7 +1891,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDebugStudioVisible
         {
-            get { return _isDebugStudioVisible; }
+            get { return _isDebugStudioVisible && !IsSaveDialog; }
             set
             {
                 _isDebugStudioVisible = value;
@@ -1851,7 +1901,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDebugBrowserVisible
         {
-            get { return _isDebugBrowserVisible; }
+            get { return _isDebugBrowserVisible && !IsSaveDialog; }
             set
             {
                 _isDebugBrowserVisible = value;
