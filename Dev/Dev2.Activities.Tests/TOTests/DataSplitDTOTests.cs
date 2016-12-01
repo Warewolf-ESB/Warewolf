@@ -299,7 +299,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[h&]]", At = "1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "OutputVariable", "Variable name [[h&]] contains invalid character(s)");
+            Verify_RuleSet(dto, "OutputVariable", "Variable name [[h&]] contains invalid character(s). Only use alphanumeric _ and - ");
         }
 
 

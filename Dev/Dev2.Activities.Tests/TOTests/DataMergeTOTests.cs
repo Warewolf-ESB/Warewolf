@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[ddd&]]", MergeType = DataMergeDTO.MergeTypeNone, Alignment = "Right", At = "1", Padding = " " };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "Input", "Variable name [[ddd&]] contains invalid character(s)");
+            Verify_RuleSet(dto, "Input", "Variable name [[ddd&]] contains invalid character(s). Only use alphanumeric _ and - ");
 
         }
 
