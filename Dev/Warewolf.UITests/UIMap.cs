@@ -882,7 +882,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
 
+        [Given(@"I Filter the Explorer with ""(.*)""")]
         [When(@"I Filter the Explorer with ""(.*)""")]
+        [Then(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
@@ -5395,7 +5397,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
-        [When(@"I Enter DeployViewOnly Into Deploy Source Filter")]
+        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = SearchTextboxText;
@@ -7927,59 +7931,47 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
         }
-
-        [Given(@"I Filter the Explorer with ""(.*)""")]
-        public void GivenIFilterTheExplorerWith(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I Select Deploy FromExplorerContextMenu")]
-        public void GivenISelectDeployFromExplorerContextMenu()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I Filter Deploy Source With ""(.*)""")]
-        public void GivenIFilterDeploySourceWith(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
+        
         [Then(@"Filtered Resourse Is Checked For Deploy")]
         public void ThenFilteredResourseIsCheckedForDeploy()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
         }
 
         [Then(@"Deploy Button Is Enabled")]
         public void ThenDeployButtonIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
         }
 
         [Then(@"Deploy Version Conflict Window Shows")]
         public void ThenDeployVersionConflictWindowShows()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists);
         }
 
+        [Given(@"I Click MessageBox Cancel")]
+        [When(@"I Click MessageBox Cancel")]
         [Then(@"I Click MessageBox Cancel")]
         public void ThenIClickMessageBoxCancel()
         {
-            ScenarioContext.Current.Pending();
+            Mouse.Click(MessageBoxWindow.CancelButton);
         }
 
+        [Given(@"Deploy Window Is Still Open")]
+        [When(@"Deploy Window Is Still Open")]
         [Then(@"Deploy Window Is Still Open")]
         public void ThenDeployWindowIsStillOpen()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.Exists);
         }
 
         [Then(@"Destination Deploy Information Clears")]
         public void ThenDestinationDeployInformationClears()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton.Enabled);
         }
 
         [Given(@"Filter Textbox is cleared")]
