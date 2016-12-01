@@ -173,14 +173,16 @@ namespace Dev2.Studio.ViewModels.DataList
                     return _scalarCollection.Where(model => model.IsVisible).ToObservableCollection();
                 }
                 _scalarCollection = new ObservableCollection<IScalarItemModel>();
-                _scalarCollection.CollectionChanged += (o, args) =>
-                {
-                    RemoveItemPropertyChangeEvent(args);
-                    AddItemPropertyChangeEvent(args);
-                };
+                _scalarCollection.CollectionChanged += OnScalarCollectionOnCollectionChanged;
                 return _scalarCollection;
             }
         }
+
+        private void OnScalarCollectionOnCollectionChanged(object o, NotifyCollectionChangedEventArgs args)
+        {
+            RemoveItemPropertyChangeEvent(args);
+            AddItemPropertyChangeEvent(args);
+        }        
 
         public ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection
         {
