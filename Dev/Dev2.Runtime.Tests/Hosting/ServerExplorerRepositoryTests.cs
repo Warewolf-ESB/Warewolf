@@ -249,7 +249,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameItem(explorerItem, "bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: bob");
-            Assert.AreEqual(result.Status, ExecStatus.NoMatch);
+            Assert.AreEqual(ExecStatus.NoMatch, result.Status);
         }
 
 
@@ -377,6 +377,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var dir = new Mock<IDirectory>();
             var guid = Guid.NewGuid();
             var res = new Mock<IResource>();
+            res.Setup(resource => resource.GetResourcePath(It.IsAny<Guid>())).Returns("");
             var explorerItem = new ServerExplorerItem(
                 "dave", guid,
                 "DbSource",
