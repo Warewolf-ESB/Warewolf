@@ -74,7 +74,10 @@ namespace Dev2
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            InitializeDebug(dataObject);
+            if (dataObject.IsDebugMode())
+            {
+                InitializeDebug(dataObject);
+            }
             AddRecordsetsOutputs(Outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
             foreach (var output in Outputs)
             {
@@ -88,11 +91,14 @@ namespace Dev2
                 {
                     dataObject.Environment.Assign(variable, value, 0);
                 }
-                var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
                 if (dataObject.IsServiceTestExecution)
                 {
-                    AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
-                    AddDebugAssertResultItem(res);
+                    if (dataObject.IsDebugMode())
+                    {
+                        var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
+                        AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
+                        AddDebugAssertResultItem(res);
+                    }
                 }
             }
             if (dataObject.IsDebugMode())
