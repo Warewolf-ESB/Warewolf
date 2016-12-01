@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml;
 using Dev2.Common;
@@ -201,6 +202,8 @@ namespace Dev2.Studio.Core.DataList
             for (int i = 0; i < newRecsetCollection.Count; i++)
             {
                 var recordSetItemModel = newRecsetCollection[i];
+                IList<IRecordSetFieldItemModel> recSetChildrenSorted = ascending ? recordSetItemModel.Children.Where(model => !model.IsBlank).OrderBy(c => c.DisplayName).ToList() : recordSetItemModel.Children.Where(model => !model.IsBlank).OrderByDescending(c => c.DisplayName).ToList();
+                recordSetItemModel.Children = new ObservableCollection<IRecordSetFieldItemModel>(recSetChildrenSorted);
                 _vm.RecsetCollection.Move(_vm.RecsetCollection.IndexOf(recordSetItemModel), i);
             }
         }
