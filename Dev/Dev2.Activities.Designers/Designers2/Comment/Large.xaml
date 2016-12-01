@@ -44,6 +44,7 @@
                                 MinHeight="40"
                                 WrapInBrackets="False" 
                                 HorizontalScrollBarVisibility="Auto"
+                                Style="{StaticResource AutoCompleteBoxWithWrapStyle}"
                                 ToolTip="{x:Static languages:Core.CommentToolTipComment}"
                                 Text="{Binding Path=ModelItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Commenttxt_AutoID}"

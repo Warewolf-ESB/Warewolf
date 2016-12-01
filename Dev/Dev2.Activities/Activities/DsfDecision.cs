@@ -367,6 +367,11 @@ namespace Dev2.Activities
     {
         private readonly DsfDecision _dsfDecision;
 
+        // ReSharper disable once UnusedMember.Global
+        public TestMockDecisionStep():base("Mock Decision")
+        {            
+        }
+
         public TestMockDecisionStep(DsfDecision dsfDecision)
             : base(dsfDecision.DisplayName)
         {
@@ -403,22 +408,32 @@ namespace Dev2.Activities
         {
             var trueArmText = _dsfDecision.Conditions.TrueArmText;
             var falseArmText = _dsfDecision.Conditions.FalseArmText;
-            InitializeDebug(dataObject);
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+            }
             bool hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;
-                var debugItemStaticDataParams = new DebugItemStaticDataParams(falseArmText, "", true);
-                AddDebugOutputItem(debugItemStaticDataParams);
-                AddDebugAssertResultItem(debugItemStaticDataParams);
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(falseArmText, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                }
+
                 hasResult = true;
             }
             if (NameOfArmToReturn == trueArmText)
             {
                 NextNodes = _dsfDecision.TrueArm;
-                var debugItemStaticDataParams = new DebugItemStaticDataParams(trueArmText, "", true);
-                AddDebugOutputItem(debugItemStaticDataParams);
-                AddDebugAssertResultItem(debugItemStaticDataParams);
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams(trueArmText, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                }
                 hasResult = true;
             }
             if (dataObject.IsDebugMode() && hasResult)

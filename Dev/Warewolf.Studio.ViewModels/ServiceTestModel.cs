@@ -50,6 +50,7 @@ namespace Warewolf.Studio.ViewModels
         private ObservableCollection<IServiceTestStep> _testSteps;
         private string _errorContainsText;
         private bool _isTestLoading;
+        private bool _isValidatingIsDirty;
 
         public string NeverRunString
         {
@@ -118,7 +119,10 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public ServiceTestModel()
         {
-
+            NeverRunString = "Never run";
+            NeverRunStringVisibility = true;
+            IsTestRunning = false;
+            TestSteps = new ObservableCollection<IServiceTestStep>();
         }
         public ServiceTestModel(Guid resourceId)
         {
@@ -438,6 +442,11 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+                if (_isValidatingIsDirty)
+                {
+                    return false;
+                }
+                _isValidatingIsDirty = true;
                 var isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
@@ -457,6 +466,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     NameForDisplay = TestName;
                 }
+                _isValidatingIsDirty = false;
                 return isDirty;
             }
         }
@@ -485,7 +495,14 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestStep> TestSteps
         {
-            get { return _testSteps; }
+            get
+            {
+                if (_testSteps == null)
+                {
+                    _testSteps = new ObservableCollection<IServiceTestStep>();
+                }
+                return _testSteps;
+            }
             set
             {
                 _testSteps = value;

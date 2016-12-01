@@ -76,16 +76,8 @@ $PlayList = "<Playlist Version=`"1.0`">"
 Get-ChildItem "$testResultsFolder" -Filter *.trx | `
 Foreach-Object{
 	[xml]$trxContent = Get-Content $_.FullName
-	if ($trxContent.TestRun.Results.UnitTestResult.count -le 0) {
-		Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
-		Continue
-	}
 	foreach( $TestResult in $trxContent.TestRun.Results.UnitTestResult) {
 		if ($TestResult.outcome -eq "Passed") {
-			Continue
-		}
-		if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -le 0) {
-			Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
 			Continue
 		}
 		foreach( $TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
