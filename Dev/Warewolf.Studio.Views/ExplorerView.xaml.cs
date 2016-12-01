@@ -208,6 +208,23 @@ namespace Warewolf.Studio.Views
         {
             _isDragging = false;
             _canDrag = false;
+
+            if (e.OriginalSource.GetType() == typeof (ScrollViewer))
+            {
+                var explorerView = sender as ExplorerView;
+                var singleEnvironmentExplorerViewModel = explorerView?.DataContext as SingleEnvironmentExplorerViewModel;
+                if (singleEnvironmentExplorerViewModel != null) return;
+                var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+                if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
+                {
+                    explorerItemViewModel.IsSelected = false;
+                }
+                else if (environmentViewModel != null && environmentViewModel.IsSelected)
+                {
+                    environmentViewModel.IsSelected = false;
+                }
+            }
         }
 
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
@@ -306,26 +323,6 @@ namespace Warewolf.Studio.Views
             {
                 var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
                 singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
-            }
-        }
-
-        private void ExplorerView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _isDragging = false;
-            _canDrag = false;
-
-            var explorerView = sender as ExplorerView;
-            var singleEnvironmentExplorerViewModel = explorerView?.DataContext as SingleEnvironmentExplorerViewModel;
-            if (singleEnvironmentExplorerViewModel != null) return;
-            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-            var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
-            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
-            {
-                explorerItemViewModel.IsSelected = false;
-            }
-            else if (environmentViewModel != null && environmentViewModel.IsSelected)
-            {
-                environmentViewModel.IsSelected = false;
             }
         }
 

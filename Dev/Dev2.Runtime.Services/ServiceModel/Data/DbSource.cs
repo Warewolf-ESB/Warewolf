@@ -57,13 +57,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                     
                     break;
                 default:
+                    ResourceType = "DbSource";
                     ServerType = enSourceType.Unknown;
                     break;
             }
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ResourceType = ServerType.ToString();
-            ResourceType = "DbSource";
             ConnectionString = connectionString;
         }
 

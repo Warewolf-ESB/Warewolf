@@ -2711,6 +2711,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
+            if (environmentViewModel != null)
+            {
+                var item = environmentViewModel.FindByPath(resourceModel.GetSavePath());
+                var viewModel = environmentViewModel as EnvironmentViewModel;
+                var savedItem = viewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
+                item.AddChild(savedItem);
+            }
             resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.IsWorkflowSaved = true;
         }

@@ -51,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
 #pragma warning restore 1998
         {
             _environmentViewModel = environmentViewModel;
+            _environmentViewModel.RefreshCommand?.Execute(null);
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;

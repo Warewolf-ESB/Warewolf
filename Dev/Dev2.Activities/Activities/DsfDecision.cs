@@ -367,6 +367,11 @@ namespace Dev2.Activities
     {
         private readonly DsfDecision _dsfDecision;
 
+        // ReSharper disable once UnusedMember.Global
+        public TestMockDecisionStep():base("Mock Decision")
+        {            
+        }
+
         public TestMockDecisionStep(DsfDecision dsfDecision)
             : base(dsfDecision.DisplayName)
         {
