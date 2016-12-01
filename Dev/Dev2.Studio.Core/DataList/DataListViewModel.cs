@@ -749,9 +749,18 @@ namespace Dev2.Studio.ViewModels.DataList
             try
             {
                 IsSorting = true;
-                _scalarHandler.SortScalars(_toggleSortOrder);
-                _recordsetHandler.SortRecset(_toggleSortOrder);
-                _complexObjectHandler.SortComplexObjects(_toggleSortOrder);
+                if (_scalarCollection.Any(model => !model.IsBlank))
+                {
+                    _scalarHandler.SortScalars(_toggleSortOrder);
+                }
+                if (_recsetCollection.Any(model => !model.IsBlank))
+                {
+                    _recordsetHandler.SortRecset(_toggleSortOrder);
+                }
+                if (_complexObjectCollection.Any(model => !model.IsBlank))
+                {
+                    _complexObjectHandler.SortComplexObjects(_toggleSortOrder);
+                }
                 _toggleSortOrder = !_toggleSortOrder;
                 WriteToResourceModel();
             }
