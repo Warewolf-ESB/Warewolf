@@ -458,14 +458,14 @@
 								  ToolTip="{Binding DeleteTooltip}">
                             <MenuItem.Style>
                                 <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Visibility" Value="Visible" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsFolder}" Value="False"/>
+                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
                                                 <Condition Binding="{Binding IsSaveDialog}" Value="True"/>
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>

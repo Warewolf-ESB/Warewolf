@@ -270,6 +270,7 @@ namespace Warewolf.Studio.ViewModels
                 //
             }
 
+            HasLoaded = true;
             ValidateName();
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
