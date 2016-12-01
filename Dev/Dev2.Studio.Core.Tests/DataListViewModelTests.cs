@@ -354,6 +354,57 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void Sort_RecordSetCollection()
+        {
+            //---------------------------Setup----------------------------------------------------------
+            Setup();
+            _dataListViewModel.RecsetCollection.Add(new RecordSetItemModel("Name"));
+            _dataListViewModel.RecsetCollection.Add(new RecordSetItemModel("Surname"));
+            _dataListViewModel.RecsetCollection.Add(new RecordSetItemModel("Age"));
+            _dataListViewModel.RecsetCollection.Add(new RecordSetItemModel("Race"));
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[0].Name);
+            Assert.AreEqual("Name", _dataListViewModel.RecsetCollection[1].Name);
+            Assert.AreEqual("Surname", _dataListViewModel.RecsetCollection[2].Name);
+            Assert.AreEqual("Age", _dataListViewModel.RecsetCollection[3].Name);
+            Assert.AreEqual("Race", _dataListViewModel.RecsetCollection[4].Name);
+            //-------------------------Execute Test ------------------------------------------
+            _dataListViewModel.SortCommand.Execute(null);
+            //-------------------------Assert Result------------------------------------------
+            Assert.AreEqual("Age", _dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[1].DisplayName);
+            Assert.AreEqual("Name", _dataListViewModel.RecsetCollection[2].DisplayName);
+            Assert.AreEqual("Race", _dataListViewModel.RecsetCollection[3].DisplayName);
+            Assert.AreEqual("Surname", _dataListViewModel.RecsetCollection[4].DisplayName);
+        }
+
+        [TestMethod]
+        public void Sort_RecordSetFieldsCollection()
+        {
+            //---------------------------Setup----------------------------------------------------------
+            Setup();
+            var car = _dataListViewModel.RecsetCollection.Single();
+            car.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Driver", "Whos is Driving it", car));
+            car.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Year_Bought", "When the car was bought", car));
+            car.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Customer", "Customer who bought the car", car));
+            car.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Sales_Agent", "Sales person", car));
+            Assert.AreEqual("Make", car.Children[0].DisplayName);            
+            Assert.AreEqual("Model", car.Children[1].DisplayName);            
+            Assert.AreEqual("Driver", car.Children[2].DisplayName);            
+            Assert.AreEqual("Year_Bought", car.Children[3].DisplayName);            
+            Assert.AreEqual("Customer", car.Children[4].DisplayName);            
+            Assert.AreEqual("Sales_Agent", car.Children[5].DisplayName);            
+            //-------------------------Execute Test ------------------------------------------
+            _dataListViewModel.SortCommand.Execute(null);
+            //-------------------------Assert Result------------------------------------------
+            Assert.AreEqual("Customer", car.Children[0].DisplayName);
+            Assert.AreEqual("Driver", car.Children[1].DisplayName);
+            Assert.AreEqual("Make", car.Children[2].DisplayName);
+            Assert.AreEqual("Model", car.Children[3].DisplayName);
+            Assert.AreEqual("Sales_Agent", car.Children[4].DisplayName);
+            Assert.AreEqual("Year_Bought", car.Children[5].DisplayName);
+        }
+
+        [TestMethod]
         public void SetUnusedDataListItemsWhenTwoRecsetsSameNameExpectedBothMarkedAsUnused()
         {
             //---------------------------Setup----------------------------------------------------------
