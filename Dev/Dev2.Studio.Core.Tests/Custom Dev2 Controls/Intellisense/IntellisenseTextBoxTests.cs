@@ -645,7 +645,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecodsetFieldsAndTextMultipleRecordSetFields_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.RecordsetFields,
+                AllowMultipleVariables = true
+            };
             textBox.Text = "[[rec(*).warewolf]],[[rec(*).soa]]";
             Assert.IsFalse(textBox.HasError);
         }
