@@ -5197,6 +5197,30 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
 
+        [When(@"I Add Variables The Variable List")]
+        [Given(@"I Add Variables The Variable List")]
+        [Then(@"I Add Variables The Variable List")]
+        public void Add_Variables(string variables)
+        {
+            var strings = variables.Split(',');
+            if(!string.IsNullOrEmpty(strings[0]))
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text = strings?[0];
+            if(!string.IsNullOrEmpty(strings[1]))
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text = strings?[1];
+            if(!string.IsNullOrEmpty(strings[2]))
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem3.ScrollViewerPane.NameTextbox.Text = strings?[2];
+            if(!string.IsNullOrEmpty(strings[3]))
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem4.ScrollViewerPane.NameTextbox.Text = strings?[3];
+        }
+
+        [Given(@"I Sort Variable List")]
+        [When(@"I Sort Variable List")]
+        [Then(@"I Sort Variable List")]        
+        public void Click_Sort_Variable_List()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.Sort);            
+        }
+
         [When(@"I Open Assign Tool On Unpinned Tab Large View")]
         public void Open_Assign_Tool_On_Unpinned_Tab_Large_View()
         {
@@ -7202,6 +7226,32 @@ namespace Warewolf.UITests
         public void ThenIEnterInTheAssignMessageTool(string message)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = message;
+        }
+
+        [Given(@"I Filter Variable List ""(.*)""")]
+        [When(@"I Filter Variable List ""(.*)""")]
+        [Then(@"I Filter Variable List ""(.*)""")]
+        public void Filter_VariableList(string text)
+        {
+            #region Variable Declarations
+            WpfEdit searchText = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox;
+            #endregion
+
+            searchText.Text = text;
+        }
+
+        [Given(@"I Click Clear Variable List Filter")]
+        [When(@"I Click Clear Variable List Filter")]
+        [Then(@"I Click Clear Variable List Filter")]
+        public void Click_Clear_Variable_List_Filter()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton);
+        }
+
+        public void Set_Input_Output_Variables()
+        {
+           MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
+           MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.OutputCheckbox.Checked = true;
         }
 
     }
