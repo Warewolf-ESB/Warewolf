@@ -48,6 +48,13 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
   
+ Scenario: Filter Should Clear On Connection Of Remote Server
+   Given The Warewolf Studio is running 
+   When I Filter the Explorer with "Hello World" 
+   When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+   And I Click Explorer Connect Remote Server Button
+   Then Filter Textbox is cleared
+  
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running  
    When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
@@ -75,24 +82,12 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Click Explorer Connect Remote Server Button
 
 
-Scenario: Clear filter
-  Given the explorer is visible
-  And I open "localhost" server
-  When I open Resource "Folder 1"
-  And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
-  Then I should see the path "localhost\Folder 1\Resource 1"
-  When I search for "Folder 1" in explorer
-  Then I should see the path "localhost\Folder 1"
-  Then I should not see the path "localhost\Folder 1\Resource 1"
-  Then I should not see the path "localhost\Folder 2"
-  When I search for "Resource 1" in explorer
-  When I open Resource "Folder 1"
-  Then I should see the path "localhost\Folder 1\Resource 1"
-  When I clear "Explorer" Filter
-  Then I should see the path "localhost\Folder 2"
-  Then I should see the path "localhost\Folder 2"
-  Then I should see the path "localhost\Folder 2"
-  Then I should see the path "localhost\Folder 2"
+Scenario: Clear filter  
+   Given The Warewolf Studio is running 
+   When I Filter the Explorer with "Hello World"
+   Then Filter Textbox has "Hello World"
+   And I Click Explorer Filter Clear Button
+   Then Filter Textbox is cleared
 
 Scenario: Renaming Folder And Workflow Service on a remote server
 	Given The Warewolf Studio is running 
