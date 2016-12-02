@@ -485,17 +485,39 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 var valueToSet = tableRow["Value"];
-                if (!string.IsNullOrEmpty(valueToSet))
+                var varName = tableRow["Variable Name"];
+                var containsKey = tableRow.ContainsKey("EmptyIsNull");
+                bool isNull = false;
+                if (containsKey)
                 {
-                    var varName = tableRow["Variable Name"];
+                    var emptyIsNull = tableRow["EmptyIsNull"];
+                    isNull = bool.Parse(emptyIsNull);
+                }
+
+                if (string.IsNullOrEmpty(valueToSet) && !string.IsNullOrEmpty(varName))
+                {
                     var foundInput = inputs.FirstOrDefault(input => input.Variable == varName);
                     if (foundInput != null)
                     {
                         foundInput.Value = valueToSet;
+                        foundInput.EmptyIsNull = isNull;
                     }
                 }
             }
         }
+
+        [Then(@"the service debug assert message is ""(.*)"" with ""(.*)""")]
+        public void ThenTheServiceDebugAssertMessageIsWith(string assertString, string expectedError)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            Assert.AreEqual(serviceTestViewModel.SelectedServiceTest.ErrorContainsText, expectedError);
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            var actualAssetMessage = debugForTest.Last().AssertResultList.First().ResultsList.First().Value;
+            var errorExpected = actualAssetMessage.Split('\n').Last();
+            Assert.AreEqual(assertString + expectedError, errorExpected);
+        }
+
+
 
 
         [Then(@"I update outputs as")]
@@ -1694,6 +1716,90 @@ namespace Dev2.Activities.Specs.TestFramework
                 var modelItem = ModelItemUtils.CreateModelItem(flowNode);
                 var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
                 methodInfo.Invoke(serviceTest, new object[] { modelItem });
+            }
+        }
+
+        [Then(@"I remove all Test Steps")]
+        [When(@"I remove all Test Steps")]
+        public void ThenIRemoveAllTestSteps()
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            serviceTestViewModel.SelectedServiceTest.TestSteps.Clear();
+        }
+
+        [Then(@"I remove outputs from TestStep ""(.*)""")]
+        public void ThenIRemoveOutputsFromTestStep(string stepName)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().TrimStart().Equals(stepName));
+            serviceTestStep.StepOutputs.Clear();
+        }
+
+
+        [Then(@"I Add Decision ""(.*)"" as TestStep")]
+        public void ThenIAddDecisionAsTestStep(string actNameToFind)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+
+                while (searchNode != null)
+                {
+
+                    bool isCorr;
+                    var node = searchNode as FlowDecision;
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+                    bool isCorr;
+                    var node = searchNode as FlowDecision;
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
+                }
             }
         }
 

@@ -578,6 +578,41 @@ Scenario: Run a test with single scalar inputs and outputs
 	And test folder is cleaned
 
 @TestFramework
+Scenario: Run a test expectiing error 
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          |       | true        |
+	And I expect Error "variable not found"
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I remove outputs from TestStep "If [[Name]] <> (Not Equal)"
+	And I save
+	When I run the test
+	Then the service debug assert message is "Passed:Expected Error Contains " with "variable not found"
+	Then service debug inputs as
+		| Variable | Value |
+		| [[Name]] |       |
+	And the service debug outputs as
+	  | Variable    | Value |
+	  | [[Message]] |       |
+	
+	Then test result is Passed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+@TestFramework
 Scenario: Run a test with single scalar inputs and outputs failure
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
