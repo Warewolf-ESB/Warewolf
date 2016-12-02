@@ -149,17 +149,17 @@ Scenario: Creating and And editing server source
 	And I create new server source to Gendev as "GenDevSource"
 	When I change the values as
 	| Protocol | ServerName      | Authentication | port |
-	| http     | rsaklfsvrGenDev | Windows        | 3142 |
+	| http     | SANDBOX-1 | Windows        | 3142 |
 	And I save "GenDevSource"
 	When I open "GenDevSource"
 	Then the server source has correct values as 
 	| Protocol | ServerName      | Authentication | port |
-	| http     | rsaklfsvrGenDev | Windows        | 3142 |
+	| http     | SANDBOX-1 | Windows        | 3142 |
 	When I change the values as
 	| Protocol | ServerName      | Authentication | port |
-	| https    | rsaklfsvrGenDev | public         | 3143 |
+	| https    | SANDBOX-1 | public         | 3143 |
 	And I save "GenDevSource"
 	When I open "GenDevSource"
 	Then the server source has correct values as
-	| Protocol | ServerName      | Authentication | port |
-	| https    | rsaklfsvrGenDev | public         | 3143 |
+	| Protocol | ServerName | Authentication | port |
+	| https    | SANDBOX-1  | public         | 3143 |
