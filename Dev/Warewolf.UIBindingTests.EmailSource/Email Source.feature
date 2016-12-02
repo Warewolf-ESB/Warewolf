@@ -75,6 +75,26 @@ Scenario: Fail Send
 	And "Save" is "Disabled"
 
 @EmailSource
+Scenario: Fail Send Shows correct error message
+	Given I open New Email Source
+	Then "New Email Source" tab is opened
+	And I type Host as ""
+	And I type Username as "warewolf@dev2.co.za"
+	And I type Password as "Dev_tech*"
+	And "Enable SSL" input is "False"
+	And "Port" input is "25"
+	And "Timeout" input is "10000"
+	And "Send" is "Enabled"
+	And "Save" is "Disabled"
+	And I type From as "warewolf@dev2.co.za"
+	And I type To as "queries@dev2.co.za"
+	Then "Send" is "Enabled"
+	And Send is "Unsuccessful"
+	Then Send is "Failed to Send: One or more errors occurred"
+	And "Save" is "Disabled"
+	And the error message is "The SMTP host was not specified."
+
+@EmailSource
 Scenario: Edit saves From and To
 	Given I open "Test Email Source"
 	Then "Test Email Source" tab is opened
