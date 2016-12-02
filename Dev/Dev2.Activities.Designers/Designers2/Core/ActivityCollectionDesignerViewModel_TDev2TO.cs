@@ -22,6 +22,8 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 //using Dev2.Interfaces;
 
@@ -119,7 +121,21 @@ namespace Dev2.Activities.Designers2.Core
                     ? currentName.IndexOf(" (", StringComparison.Ordinal)
                     : currentName.IndexOf("(", StringComparison.Ordinal));
             }
-            currentName = currentName + " (" + (ItemCount - 1) + ")";
+            var count = ItemCount - 2;
+            if (ItemCount > 0)
+            {
+                var indexNumber = ItemCount - 1;
+                var dto = GetDto(indexNumber);
+                if (dto.CanAdd())
+                {
+                    count = indexNumber;
+                }
+            }
+            if (count < 0)
+            {
+                count = 0;
+            }
+            currentName = currentName + " (" + count + ")";
             DisplayName = currentName;
         }
 
@@ -127,10 +143,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             var result = new List<IActionableErrorInfo>();
             result.AddRange(ValidateThis());
-
             ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
-
-            //Errors = result.Count == 0 ? 0 : result;
             Errors = result.Count == 0 ? null : result;
         }
 
@@ -244,6 +257,10 @@ namespace Dev2.Activities.Designers2.Core
             { 
                 index = ItemCount==0 ? 0 : ItemCount - 1;
             }
+            if (index < 0)
+            {
+                index = 0;
+            }
             return ModelItemCollection[index];
         }
 
@@ -269,27 +286,12 @@ namespace Dev2.Activities.Designers2.Core
                 if (overwrite)
                     _initialDto = new TDev2TOFn();
                 AddDto(lastIndex);
-                UpdateDisplayName();
                 if (GetType() == typeof(DataMergeDesignerViewModel))
                     RunValidation(ModelItemCount - 1);
             }
+            UpdateDisplayName();
         }
-        //void AddBlankRowForOverwriteVariabled()
-        //{
-        //    var lastDto = GetLastDto();
-        //    var index = ItemCount + 1;
-        //    var isLastRowBlank = lastDto.CanRemove();
-        //    if (!isLastRowBlank)
-        //    {
-        //        var lastIndex = index + 1;
-        //        _initialDto = new TDev2TOFn();
-        //        AddDto(lastIndex);
-        //        UpdateDisplayName();
-        //        if (GetType() == typeof(DataMergeDesignerViewModel))
-        //            RunValidation(ModelItemCount - 1);
-        //    }
-        //}
-
+        
         protected virtual void RunValidation(int index)
         {
         }
