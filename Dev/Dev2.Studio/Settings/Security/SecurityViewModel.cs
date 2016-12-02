@@ -649,6 +649,11 @@ namespace Dev2.Settings.Security
                 {
                     serverPermissionCompare = false;
                 }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].IsDeleted != serverPermissions[i].IsDeleted)
+                {
+                    serverPermissionCompare = false;
+                }
             }
             return serverPermissionCompare;
         }
@@ -704,6 +709,7 @@ namespace Dev2.Settings.Security
                 {
                     resourcePermissionCompare = false;
                 }
+                if (!resourcePermissionCompare) continue;
                 if (ResourcePermissions[i].IsDeleted != resourcePermissions[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;
