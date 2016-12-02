@@ -66,15 +66,13 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void SortScalars(bool @ascending)
+        public void SortScalars(bool ascending)
         {
-            IList<IScalarItemModel> newScalarCollection = @ascending ? _vm.ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList() : _vm.ScalarCollection.OrderByDescending(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
-            _vm.ScalarCollection.Clear();
-            foreach (var item in newScalarCollection)
+            IList<IScalarItemModel> newScalarCollection = @ascending ? _vm.ScalarCollection.Where(c => !c.IsBlank).OrderBy(c => c.DisplayName).ToList() : _vm.ScalarCollection.Where(c => !c.IsBlank).OrderByDescending(c => c.DisplayName).ToList();
+            for (int i = 0; i < newScalarCollection.Count; i++)
             {
-                _vm.ScalarCollection.Add(item);
-            }
-            _vm.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel(string.Empty));
+                _vm.ScalarCollection.Move(_vm.ScalarCollection.IndexOf(newScalarCollection[i]), i);
+            }            
         }
 
         public void FixNamingForScalar(IDataListItemModel scalar)

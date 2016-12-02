@@ -15,10 +15,10 @@ namespace Dev2.Common.Interfaces
     [Flags]
     public enum enIntellisensePartType
     {
-        All,
-        RecordsetsOnly,
-        ScalarsOnly,
-        RecordsetFields,
-        JsonObject
+        All = 0,
+        RecordsetsOnly = 1,
+        ScalarsOnly = 2,
+        RecordsetFields = 4,
+        JsonObject = 8
     }
 }
