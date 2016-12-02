@@ -438,7 +438,7 @@ this.ScenarioSetup(scenarioInfo);
                         "port"});
             table1.AddRow(new string[] {
                         "http",
-                        "rsaklfsvrGenDev",
+                        "SANDBOX-1",
                         "Windows",
                         "3142"});
 #line 150
@@ -455,7 +455,7 @@ this.ScenarioSetup(scenarioInfo);
                         "port"});
             table2.AddRow(new string[] {
                         "http",
-                        "rsaklfsvrGenDev",
+                        "SANDBOX-1",
                         "Windows",
                         "3142"});
 #line 155
@@ -468,7 +468,7 @@ this.ScenarioSetup(scenarioInfo);
                         "port"});
             table3.AddRow(new string[] {
                         "https",
-                        "rsaklfsvrGenDev",
+                        "SANDBOX-1",
                         "public",
                         "3143"});
 #line 158
@@ -485,7 +485,7 @@ this.ScenarioSetup(scenarioInfo);
                         "port"});
             table4.AddRow(new string[] {
                         "https",
-                        "rsaklfsvrGenDev",
+                        "SANDBOX-1",
                         "public",
                         "3143"});
 #line 163
