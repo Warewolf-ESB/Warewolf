@@ -370,7 +370,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
         }
 
-        [TestMethod]
+         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
@@ -629,7 +629,32 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBoxTest.IsInCalculateMode);
         }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsAllAndTextIsRecordset_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.All };
+            textBox.Text = "[[People(*)]]";
+            Assert.IsFalse(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecodsetFieldsAndTextMultipleRecordSetFields_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.RecordsetFields,
+                AllowMultipleVariables = true
+            };
+            textBox.Text = "[[rec(*).warewolf]],[[rec(*).soa]]";
+            Assert.IsFalse(textBox.HasError);
+        }
         
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("IntellisenseTextBoxTests_ValidateText")]

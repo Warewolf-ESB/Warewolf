@@ -117,6 +117,7 @@
                                                     AcceptsReturn="True"
                                                     AllowUserInsertLine="False"
                                                     MaxHeight="80"
+                                                    FilterType="RecordsetFields,RecordsetsOnly,ScalarsOnly"
                                                     Text="{Binding SourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                     Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"

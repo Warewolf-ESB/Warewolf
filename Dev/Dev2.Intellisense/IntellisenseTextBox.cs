@@ -383,7 +383,7 @@ namespace Dev2.UI
             
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
-            ValidateText(text);
+            EnsureErrorStatus();
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
@@ -423,16 +423,9 @@ namespace Dev2.UI
                         ToolTip = _originalToolTip;
                         HasError = false;
                     }
-                }
-                if (FilterType != enIntellisensePartType.RecordsetsOnly)
-                {
-                    if (error.Item1.IsRecordSetNameExpression)
-                    {
-                        HasError = true;
-                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Recordset only is not allowed";
-                    }                    
-                }
+                }                
             }
+            
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
