@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
             //------------Execute Test---------------------------
             var displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
             //------------Assert Results-------------------------
-            Assert.AreEqual("Assign(0)", displayName);
+            Assert.AreEqual("Assign (0)", displayName);
         }
 
         [TestMethod]
@@ -63,12 +63,12 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
             dsfMultiAssignActivityViewModel.ModelItemCollection.Add(ModelItemUtils.CreateModelItem(activityDto));
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityDesignerViewModel));
-            Assert.AreEqual("Assign(0)", displayName);
+            Assert.AreEqual("Assign (0)", displayName);
             //------------Execute Test---------------------------
-            dsfMultiAssignActivityViewModel.InsertAt(0);
+            dsfMultiAssignActivityViewModel.UpdateDisplayName();
             //------------Assert Results-------------------------
             displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
-            Assert.AreEqual("Assign(1)", displayName);
+            Assert.AreEqual("Assign (1)", displayName);
 
         }
 
