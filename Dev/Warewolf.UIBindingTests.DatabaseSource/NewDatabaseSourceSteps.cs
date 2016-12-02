@@ -383,6 +383,14 @@ namespace Warewolf.UIBindingTests.DatabaseSource
             Assert.AreEqual(password,viewModel.Password);
         }
 
+        [Then(@"the error message is ""(.*)""")]
+        public void ThenTheErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
+
         [Then(@"Test Connecton is ""(.*)""")]
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)

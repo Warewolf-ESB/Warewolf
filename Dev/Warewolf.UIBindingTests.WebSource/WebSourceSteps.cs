@@ -313,6 +313,13 @@ namespace Warewolf.UIBindingTests.WebSource
             Assert.AreEqual(password, viewModel.Password);
         }
 
+        [When(@"the error message is ""(.*)""")]
+        public void WhenTheErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [Given(@"""(.*)"" is ""(.*)""")]
         [When(@"""(.*)"" is ""(.*)""")]
         [Then(@"""(.*)"" is ""(.*)""")]

@@ -133,6 +133,13 @@ namespace Warewolf.UIBindingTests.SharepointSource
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
 
+        [When(@"the error message is ""(.*)""")]
+        public void WhenTheErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [When(@"Test Connecton is ""(.*)""")]
         public void WhenTestConnectonIs(string successString)
         {
