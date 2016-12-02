@@ -704,6 +704,10 @@ namespace Dev2.Settings.Security
                 {
                     resourcePermissionCompare = false;
                 }
+                if (ResourcePermissions[i].IsDeleted != resourcePermissions[i].IsDeleted)
+                {
+                    resourcePermissionCompare = false;
+                }
             }
             return resourcePermissionCompare;
         }
