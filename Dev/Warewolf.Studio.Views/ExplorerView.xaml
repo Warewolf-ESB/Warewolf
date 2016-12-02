@@ -74,7 +74,7 @@
                                               HorizontalAlignment="Stretch"
                                               ClearSearchCommand="{Binding ClearSearchTextCommand}"
                                               ClearSearchToolTip="{Binding ExplorerClearSearchTooltip}"
-                                              LabelText="Filter"
+                                              LabelText="Search Resources and Examples"
                                               Style="{StaticResource SearchTextboxStyle}"
                                               Text="{Binding SearchText, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                               ToolTip="{Binding SearchToolTip}">
