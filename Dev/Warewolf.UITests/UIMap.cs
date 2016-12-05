@@ -8151,5 +8151,30 @@ namespace Warewolf.UITests
         {
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
         }
+
+        [Given(@"FolderToMove is child of FolderToRename")]
+        [When(@"FolderToMove is child of FolderToRename")]
+        [Then(@"FolderToMove is child of FolderToRename")]
+        public void FolderToMoveIsChildOfFolderToRename()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I Move FolderToMove into FolderToRename")]
+        [When(@"I Move FolderToMove into FolderToRename")]
+        [Then(@"I Move FolderToMove into FolderToRename")]
+        public void MoveFolderToMoveIntoFolderToRename()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I Move FolderToRename into localhost")]
+        [When(@"I Move FolderToRename into localhost")]
+        [Then(@"I Move FolderToRename into localhost")]
+        public void ThenIMoveFolderToRenameIntoLocalhost()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }

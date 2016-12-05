@@ -103,14 +103,30 @@ Scenario: Delete Resource From Save Dialog
 	Then Explorer Does Not Contain Item "ResourceToDelete"
 
 
-Scenario: Delete Resource From Save Dialog
+Scenario: Move Resource To Localhost From Save Dialog
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
-	And I Filter Save Dialog Explorer with "ResourceToDelete"
-	And I RightClick Save Dialog Localhost First Item
-	And I Select Delete From SaveDialog ExplorerContextMenu
-	And I Click MessageBox Yes
-	And I Filter the Explorer with "ResourceToDelete"
-	Then Explorer Does Not Contain Item "ResourceToDelete"
+	And I Filter Save Dialog Explorer with "ResourceToMove"
+	And I Move resource to localhost
+	And I Filter Save Dialog Explorer with "FolderToMove"
+	Then Explorer Does Not Contain Item "ResourceToMove"
+
+Scenario: Move Folder To FolderToRename From Save Dialog
+	Given I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "ResourceTo"
+	And I Move FolderToMove into FolderToRename
+	And I Filter Save Dialog Explorer with "FolderToMove"
+	Then FolderToMove is child of FolderToRename
+
+Scenario: Move Folder To Same Location From Save Dialog
+	Given I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "FolderToRename"
+	And I Move FolderToRename into localhost
+	And I Filter Save Dialog Explorer with "FolderToRename"
+	Then FolderToMove is child of FolderToRename
 
