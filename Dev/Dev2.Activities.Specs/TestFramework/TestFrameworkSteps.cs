@@ -1664,6 +1664,25 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"Test debug results contain pending results")]
+        public void ThenTestDebugResultsContainPendingResults()
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(test.DebugForTest);
+            var debugStates = test.DebugForTest;
+            var serviceEndDebug = debugStates[debugStates.Count - 1];
+            var hasPendingResults = serviceEndDebug.AssertResultList.Any(item =>
+            {
+                dynamic dynaItem = item;
+                var pendingResuls = dynaItem.PendingResults;
+                return pendingResuls != null;
+            });
+            Assert.IsTrue(hasPendingResults);
+        }
+
+
         [Then(@"I add mock steps as")]
         public void ThenIAddMockStepsAs(Table table)
         {

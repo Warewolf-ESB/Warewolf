@@ -576,7 +576,8 @@ Scenario: Run a test with single scalar inputs and outputs
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
-	
+
+@TestFramework	
 Scenario: Run a passing test and change step type
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -655,6 +656,26 @@ Scenario: Run a test expecting error
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
+
+Scenario: Run a test with invalid and pending results
+Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value    | EmptyIsNull |
+	| Name          | [[Home]] |             |
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Blank Input"
+	And I update outputs as
+         | Variable Name | Value    |
+         | Message       | [[Home]] |
+    Then Test debug results contain pending results
+
 
 @TestFramework
 Scenario: Run a test with single scalar inputs and outputs failure
