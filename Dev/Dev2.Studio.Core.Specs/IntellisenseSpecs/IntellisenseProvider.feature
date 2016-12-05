@@ -210,3 +210,21 @@ Scenario Outline: Insert for RecordsetFields FilterType and Default Provider
 	| 9        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | b b                     | 1     |                                                   |              | b b                     | Default  | 1             |
 	| 10       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec().a]],[[rec().a]] | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]],[[rec().a]] | Default  | 11            |
 	| 11       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec [[rec().a]]       | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]] [[rec().a]] | Default  | 12            |
+
+
+Scenario Outline: Validation messages when Invalid Variables  
+	Given the current text in the textbox is '<Variable>'
+	And the provider used is 'Default'	
+	Then the result has the error '<Error>'
+Examples: 
+	| No | Variable                                  | Error                                                                                                                |
+	| 1  | [[my(-1).var]]                            | Recordset index [ -1 ] is not greater than zero                                                                      |
+	| 2  | [[rec"()".a]]                             | Variable name [[rec"()".a]] contains invalid character(s). Only use alphanumeric _ and -                             |
+	| 3  | [[rec.a]]                                 | Variable name [[rec.a]] contains invalid character(s). Only use alphanumeric _ and -                                 |
+	| 4  | [[1]]                                     | Recordset field [[1]] begins with a number                                                                           |
+	| 5  | [[@]]                                     | Variable name [[@]] contains invalid character(s). Only use alphanumeric _ and -                                     |
+	| 6  | [[var#]]                                  | Variable name [[var#]] contains invalid character(s). Only use alphanumeric _ and -                                  |
+	| 7  | [[var]]00]]                               | Invalid region detected: A close ]] without a related open [[                                                        |
+	| 8  | [[]]                                      | Variable name [[]] contains invalid character(s). Only use alphanumeric _ and -                                      |
+	| 9  | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | Variable name [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] contains invalid character(s). Only use alphanumeric _ and - |
+	| 10 | [[var]]00[[                               | Invalid region detected: An open [[ without a related close ]]                                                       |
