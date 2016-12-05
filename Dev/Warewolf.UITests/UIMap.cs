@@ -803,7 +803,7 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
-        
+
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
@@ -890,6 +890,14 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
+        [Given(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        [When(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        [Then(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        public void Filter_Save_Dialog_Explorer(string FilterText)
+        {
+            SaveDialogWindow.ExplorerView.SearchTextBox.Text = FilterText;
+        }
+
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
         public void Move_FirstSubItem_Into_FirstItem_Folder()
         {
@@ -904,7 +912,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(ControlExistsNow(secondItem), "Second Item exists in the Explorer Exists");
         }
 
-       [When(@"I Filter the ToolBox with ""(.*)""")]
+        [When(@"I Filter the ToolBox with ""(.*)""")]
         public void Filter_ToolBox(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = FilterText;
@@ -1159,7 +1167,7 @@ namespace Warewolf.UITests
 
         [Given(@"I Click Debug Ribbon Button")]
         [When(@"I Click Debug Ribbon Button")]
-        [Then(@"I Click Debug Ribbon Button")]        
+        [Then(@"I Click Debug Ribbon Button")]
         public void Click_Debug_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
@@ -3079,7 +3087,7 @@ namespace Warewolf.UITests
 
         [Given(@"I Check Public View")]
         [When(@"I Check Public View")]
-        [Then(@"I Check Public View")]        
+        [Then(@"I Check Public View")]
         public void Check_Public_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
@@ -3362,7 +3370,7 @@ namespace Warewolf.UITests
 
         [Given(@"I Click Close Workflow Tab Button")]
         [When(@"I Click Close Workflow Tab Button")]
-        [Then(@"I Click Close Workflow Tab Button")]        
+        [Then(@"I Click Close Workflow Tab Button")]
         public void Click_Close_Workflow_Tab_Button()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton.Exists, "Close tab button does not exist");
@@ -3656,7 +3664,7 @@ namespace Warewolf.UITests
 
         [Given(@"I Click Explorer Connect Remote Server Button")]
         [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]       
+        [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
@@ -4138,7 +4146,9 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(50, 12));
         }
 
+        [Given(@"I Click Save Ribbon Button to Open Save Dialog")]
         [When(@"I Click Save Ribbon Button to Open Save Dialog")]
+        [Then(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
@@ -4596,9 +4606,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
-        [Given(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
-        [When(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
-        [Then(@"I Drag Explorer workflow Onto Workflow Design Surface")]        
+        [Given(@"I Drag Explorer workflow Onto Workflow Design Surface")]
+        [When(@"I Drag Explorer workflow Onto Workflow Design Surface")]
+        [Then(@"I Drag Explorer workflow Onto Workflow Design Surface")]
         public void Drag_Explorer_workflow_Onto_Workflow_Design_Surface()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Explorer first remote server does not contain any items.");
@@ -4987,7 +4997,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         [When(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
+        [Then(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
@@ -6825,9 +6837,18 @@ namespace Warewolf.UITests
         [Given(@"I RightClick Localhost")]
         [When(@"I RightClick Localhost")]
         [Then(@"I RightClick Localhost")]
-        public void RightClick_localhost()
+        public void RightClick_Localhost()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I RightClick Save Dialog Localhost")]
+        [When(@"I RightClick Save Dialog Localhost")]
+        [Then(@"I RightClick Save Dialog Localhost")]
+        public void RightClick_Save_Dialog_Localhost()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
         }
 
         [When(@"I RightClick FindIndex OnDesignSurface")]
@@ -7277,7 +7298,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource, new Point(82, 20));
         }
 
+        [Given(@"I Select NewWorkflow FromExplorerContextMenu")]
         [When(@"I Select NewWorkflow FromExplorerContextMenu")]
+        [Then(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(30, 11));
@@ -7630,7 +7653,7 @@ namespace Warewolf.UITests
         {
             Drag_Toolbox_Comment_Onto_DesignSurface();
         }
-        
+
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
         {
             var multiAssign1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
@@ -7762,7 +7785,7 @@ namespace Warewolf.UITests
         {
             Filter_Explorer("Hello World");
         }
-        
+
         [Given(@"I Click The Create ""(.*)""th test Button")]
         [When(@"I Click The Create ""(.*)""th test Button")]
         [Then(@"I Click The Create ""(.*)""th test Button")]
@@ -7770,7 +7793,7 @@ namespace Warewolf.UITests
         {
             Click_Create_New_Tests(true, testIntance);
         }
-        
+
         [Then(@"Message box window appears")]
         [When(@"Message box window appears")]
         [Given(@"Message box window appears")]
@@ -7794,7 +7817,7 @@ namespace Warewolf.UITests
         {
             Click_Close_Workflow_Tab_Button();
         }
-        
+
         [Then(@"I click Run ""(.*)""th test expecting ""(.*)""")]
         [When(@"I click Run ""(.*)""th test expecting ""(.*)""")]
         [Given(@"I click Run ""(.*)""th test expecting ""(.*)""")]
@@ -7809,7 +7832,7 @@ namespace Warewolf.UITests
                 return TestResultEnum.Pending;
             else if (status == "Invalid")
                 return TestResultEnum.Invalid;
-            else if (status == "Fail")            
+            else if (status == "Fail")
                 return TestResultEnum.Fail;
             else
                 return TestResultEnum.Pass;
@@ -7837,7 +7860,7 @@ namespace Warewolf.UITests
         [Given(@"The Test step in now ""(.*)""")]
         public void ThenTheTestStepInNow(string status)
         {
-            Assert.AreEqual(TestResultEnum.Invalid,GetStatus(status));
+            Assert.AreEqual(TestResultEnum.Invalid, GetStatus(status));
         }
 
         [Then(@"I Click Run all tests button")]
@@ -7880,7 +7903,7 @@ namespace Warewolf.UITests
             #endregion
 
             Mouse.Click(localhost, new Point(74, 8));
-            
+
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
 
@@ -7891,7 +7914,7 @@ namespace Warewolf.UITests
             #endregion
 
             Mouse.Click(firstItem, new Point(74, 8));
-            
+
             Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
         }
 
@@ -7900,9 +7923,9 @@ namespace Warewolf.UITests
             #region Variable Declarations
             WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
             #endregion
-            
+
             Mouse.Click(localhost, new Point(74, 8));
-            
+
             Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
         }
 
@@ -7918,7 +7941,7 @@ namespace Warewolf.UITests
             #endregion
 
             Mouse.Click(flowchart, new Point(74, 8));
-            
+
             Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
         }
 
@@ -7940,7 +7963,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
         }
-        
+
         [Then(@"Filtered Resourse Is Checked For Deploy")]
         public void ThenFilteredResourseIsCheckedForDeploy()
         {
@@ -7998,5 +8021,18 @@ namespace Warewolf.UITests
         {
             Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
-    }
+
+        [Given(@"Unit Tests Url Exists")]
+        [When(@"Unit Tests Url Exists")]
+        [Then(@"Unit Tests Url Exists")]
+        public void UnitTestUrlExists()
+        {
+            #region Variable Declarations
+            WpfHyperlink unitTestsUrlWorkflowUrlHyperlink = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnitTestsUrlWorkflowUrlText.UnitTestsUrlWorkflowUrlHyperlink;
+            #endregion
+
+            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unit Tests/Unsaved...' link equals 'True'
+            Assert.IsTrue(unitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
+        }       
+    }   
 }

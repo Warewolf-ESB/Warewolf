@@ -1,11 +1,35 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests
+namespace Warewolf.UITests.SaveDialog
 {
     [CodedUITest]
     public class SaveDialogTests
-    {     
+    {
+        private const string HelloWorld = "Hello World";
+        private const string FolderToRename = "FolderToRename";
+        private const string FolderRenamed = "FolderToRename_Renamed";
+
+        [TestMethod]
+        public void Server_Context_Menu_Has_New_Folder_Only()
+        {
+            UIMap.RightClick_Save_Dialog_Localhost();
+        }
+
+        [TestMethod]
+        public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
+        {
+            UIMap.Filter_Save_Dialog_Explorer(FolderToRename);
+            UIMap.RightClick_Save_Dialog_Localhost();
+        }
+
+        [TestMethod]
+        public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
+        {            
+            UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
+            UIMap.RightClick_Save_Dialog_Localhost();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
