@@ -383,7 +383,7 @@ namespace Dev2.UI
             
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
-            ValidateText(text);
+            EnsureErrorStatus();
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
@@ -393,9 +393,9 @@ namespace Dev2.UI
             {
                 _originalToolTip = ToolTip;
             }
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType != enIntellisensePartType.JsonObject)
             {
-                var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
                 if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
                 {
                     ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
@@ -424,15 +424,21 @@ namespace Dev2.UI
                         HasError = false;
                     }
                 }
-                if (FilterType != enIntellisensePartType.RecordsetsOnly)
+            }else
+            {
+                if (error.Item2 != string.Empty)
                 {
-                    if (error.Item1.IsRecordSetNameExpression)
-                    {
-                        HasError = true;
-                        ToolTip = error.Item2 != string.Empty ? error.Item2 : "Recordset only is not allowed";
-                    }                    
+                    ToolTip = error.Item2;
+                    HasError = true;
                 }
+                else
+                {
+                    ToolTip = _originalToolTip;
+                    HasError = false;
+                }
+                
             }
+            
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
