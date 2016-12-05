@@ -64,6 +64,7 @@
     <Compile Include="Explorer\ResourceVersion.cs" />
     <Compile Include="Explorer\SearchExplorerResource.cs" />
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
+    <Compile Include="SaveDialog\SaveDialogTests.cs" />
     <Compile Include="Workflow\WorkflowUITests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
