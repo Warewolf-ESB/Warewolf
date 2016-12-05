@@ -98533,10 +98533,24 @@ namespace Warewolf.UITests
                 return this.mlocalhost;
             }
         }
+        
+        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
         private localhost2 mlocalhost;
+        
+        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
         #endregion
     }
     
@@ -98864,6 +98878,43 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem1
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIWarewolfStudioViewMoTreeItem1.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SaveDialogContextMenu : WpfMenu
     {
         
@@ -98924,6 +98975,22 @@ namespace Warewolf.UITests
                 return this.mDeleteMenuItem;
             }
         }
+        
+        public WpfMenuItem UINewFolderMenuItem
+        {
+            get
+            {
+                if ((this.mUINewFolderMenuItem == null))
+                {
+                    this.mUINewFolderMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUINewFolderMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
+                    this.mUINewFolderMenuItem.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUINewFolderMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -98932,6 +98999,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mRenameMenuItem;
         
         private WpfMenuItem mDeleteMenuItem;
+        
+        private WpfMenuItem mUINewFolderMenuItem;
         #endregion
     }
     
