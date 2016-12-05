@@ -378,26 +378,7 @@ namespace Dev2.Runtime.ESB.Execution
                         }
                     }
                 }
-                var fetchErrors = DataObject.Environment.FetchErrors();
-                var hasErrors = DataObject.Environment.HasErrors();
-                if (test.ErrorExpected)
-                {
-                    var testErrorContainsText = test.ErrorContainsText ?? "";
-                    testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(testErrorContainsText.ToLower());
-                    if (!testPassed)
-                    {
-                        failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, testErrorContainsText, "", fetchErrors));
-                    }
-                }
-                else if (test.NoErrorExpected)
-                {
-                    testPassed = !hasErrors && testPassed;
-                    if (hasErrors)
-                    {
-
-                        failureMessage.AppendLine(fetchErrors);
-                    }
-                }
+                testPassed = ValidateError(test, testPassed, failureMessage);
                 if (test.TestSteps != null)
                 {
                     var testStepPassed = true;
@@ -454,6 +435,29 @@ namespace Dev2.Runtime.ESB.Execution
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
         }
 
+        private bool ValidateError(IServiceTestModelTO test, bool testPassed, StringBuilder failureMessage)
+        {
+            var fetchErrors = DataObject.Environment.FetchErrors();
+            var hasErrors = DataObject.Environment.HasErrors();
+            if(test.ErrorExpected)
+            {
+                var testErrorContainsText = test.ErrorContainsText ?? "";
+                testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(testErrorContainsText.ToLower());
+                if(!testPassed)
+                {
+                    failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, testErrorContainsText, fetchErrors));
+                }
+            }
+            else if(test.NoErrorExpected)
+            {
+                testPassed = !hasErrors && testPassed;
+                if(hasErrors)
+                {
+                    failureMessage.AppendLine(fetchErrors);
+                }
+            }
+            return testPassed;
+        }
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {

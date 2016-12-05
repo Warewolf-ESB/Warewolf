@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -784,9 +785,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.IsServiceTestExecution)
             {
-                bool assertPassed;
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children?? new List<IServiceTestStep>().ToObservableCollection());
-                var assertSteps = serviceTestSteps?.Where(step => step.Type == StepType.Assert
+                var testSteps = serviceTestSteps as IList<IServiceTestStep> ?? serviceTestSteps?.ToList();
+                UpdateToPending(testSteps);
+                var assertSteps = testSteps?.Where(step => step.Type == StepType.Assert
                                                                              && step.UniqueId == Guid.Parse(UniqueID)
                                                                              && step.ActivityType != typeof(DsfForEachActivity).Name
                                                                              && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name
@@ -795,11 +797,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                     {
-
                         if (stepToBeAsserted.Result != null)
                         {
                             stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
                         }
+                        bool assertPassed;
                         if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
                         {
                             var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
@@ -891,6 +893,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             dataObject.StopExecution = !testPassed;
                         }
+                    }
+                }
+            }
+        }
+
+        private void UpdateToPending(IList<IServiceTestStep> testSteps)
+        {
+            if (testSteps != null)
+            {
+                foreach(var serviceTestStep in testSteps)
+                {
+                    if (serviceTestStep.Result != null)
+                    {
+                        serviceTestStep.Result.RunTestResult = RunResult.TestPending;
+                    }
+                    UpdateToPending(serviceTestStep.StepOutputs);
+                    if(serviceTestStep.Children!=null && serviceTestStep.Children.Count > 0)
+                    {
+                        UpdateToPending(serviceTestStep.Children);
+                    }
+                }
+            }
+        }
+
+        private void UpdateToPending(ObservableCollection<IServiceTestOutput> stepOutputs)
+        {
+            if(stepOutputs!=null && stepOutputs.Count > 0)
+            {
+                foreach(var serviceTestOutput in stepOutputs)
+                {
+                    if (serviceTestOutput.Result != null)
+                    {
+                        serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
                     }
                 }
             }
