@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Download;
@@ -48,6 +49,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             dropBoxDownloadViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxDownloadViewModel);
+            Assert.IsFalse(dropBoxDownloadViewModel.ShowLarge);
+            Assert.AreEqual(dropBoxDownloadViewModel.ThumbVisibility, Visibility.Collapsed);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxDownloadViewModel, typeof(ActivityDesignerViewModel));
         }
