@@ -24,31 +24,31 @@ Feature: DeployTab
 #Wolf-1106 Deploying items from one server to the next with the same name
 
 Scenario: Deploy Tab
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 And selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 Then I select Destination Server as "localhost"
+	 And destination "localhost" is connected
 	 Then "Deploy" is "Disabled"
 	 And the validation message is "Source and Destination cannot be the same."	  
 
 
 Scenario: Deploy is successfull
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 Then I select Destination Server as "DestinationServer"
-	 And destination is connected
-	 When I select "Examples\Utility - Date and Time" from Source Server
+	 And destination "DestinationServer" is connected
+	 When I select "Utility - Date and Time" from Source Server
 	 And I deploy 
 	 Then deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Conflicting resources on Source and Destination server
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
@@ -60,17 +60,17 @@ Scenario: Conflicting resources on Source and Destination server
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Conflicting resources on Source and Destination server deploy is not successful
-      Given I have deploy tab opened
+	  Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click Cancel on Resource exists in the destination server popup	 
 	 Then deploy is not successfull
 	 
 Scenario: Deploying a connector with a source
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	  And selected Source Server is "localhost"
 	 And source is connected
 	 When selected Destination Server is "DestinationServer"
@@ -86,10 +86,10 @@ Scenario: Deploying a connector with a source
 	 And the Deploy validation message is "2 Resources Deployed Successfully."
 
 Scenario: Selected for deploy items type is showing on deploy tab
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I select "DB Service\FetchPlayers" from Source Server
@@ -100,10 +100,10 @@ Scenario: Selected for deploy items type is showing on deploy tab
 
 
 Scenario: Deploy Summary is showing new and overiding resources 
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 Then New Resource is "1"
@@ -119,7 +119,7 @@ Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I deploy
@@ -127,10 +127,10 @@ Scenario: Deploying items from one server to the next with the same name
 
 #Wolf-312
 Scenario: Warning message no longer appears
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
@@ -143,8 +143,8 @@ Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "DestinationServer"
-     And destination is connected
+	 When selected Destination Server is "DestinationServer"
+	 And destination is connected
 	 And destination Server Version is "0.0.0.1"
 	 And I select "Utility - Date and Time" from Source Server
 	 When I deploy 	
@@ -153,23 +153,23 @@ Scenario: Deploying to an Older server version
 
 
 Scenario: Deploy Based on permission Deploy To
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 And I select "Examples\bob" from Source Server
-     And I cannot deploy to destination
+	 And I cannot deploy to destination
 	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 Then "Deploy" is "Disabled" 
 	 And the validation message is "Destination server permission Deploy To not allowed."
 
 Scenario: Deploy Based on permission Deploy From
-     Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And I cannot deploy from source
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 And I select "Examples\bob" from Source Server
-     When selected Destination Server is "DestinationServer"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 
 Scenario: Deploy resource Tests message
