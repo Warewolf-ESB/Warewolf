@@ -34,7 +34,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
 	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server New Remote Server Item
+	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled
 	When I Click Deploy Ribbon Button
@@ -47,7 +47,7 @@ Scenario: Deploy Disconnect Clears Destination
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
 	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server New Remote Server Item
+	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled
 	When I Click Deploy Ribbon Button

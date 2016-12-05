@@ -3511,6 +3511,13 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
+        [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
+        {
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
+        }
 
         [Given(@"I Click Deploy Tab Source Server Combobox")]
         [When(@"I Click Deploy Tab Source Server Combobox")]
@@ -7317,7 +7324,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
         }
 
+        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
+        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
