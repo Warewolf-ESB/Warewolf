@@ -98115,6 +98115,22 @@ namespace Warewolf.UITests
                 return this.mDeployConflictsText;
             }
         }
+        
+        public WpfText DeleteConfirmation
+        {
+            get
+            {
+                if ((this.mDeleteConfirmation == null))
+                {
+                    this.mDeleteConfirmation = new WpfText(this);
+                    #region Search Criteria
+                    this.mDeleteConfirmation.SearchProperties[WpfText.PropertyNames.Name] = "Are you sure?";
+                    this.mDeleteConfirmation.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeleteConfirmation;
+            }
+        }
         #endregion
         
         #region Fields
@@ -98139,6 +98155,8 @@ namespace Warewolf.UITests
         private WpfText mDeployVersionConflicText;
         
         private WpfText mDeployConflictsText;
+        
+        private WpfText mDeleteConfirmation;
         #endregion
     }
     
@@ -98516,17 +98534,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTreeItem UIWarewolfStudioViewMoTreeItem
+        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
         {
             get
             {
                 if ((this.mUIWarewolfStudioViewMoTreeItem == null))
                 {
-                    this.mUIWarewolfStudioViewMoTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
-                    this.mUIWarewolfStudioViewMoTreeItem.WindowTitles.Add("SaveDialogView");
-                    #endregion
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
                 }
                 return this.mUIWarewolfStudioViewMoTreeItem;
             }
@@ -98536,7 +98550,7 @@ namespace Warewolf.UITests
         #region Fields
         private localhost2 mlocalhost;
         
-        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem;
+        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
         #endregion
     }
     
@@ -98598,6 +98612,30 @@ namespace Warewolf.UITests
                 return this.mSecondItem;
             }
         }
+        
+        public WarewolfStudioViewMoTreeItem13 WarewolfStudioViewMoTreeItem13
+        {
+            get
+            {
+                if ((this.mWarewolfStudioViewMoTreeItem13 == null))
+                {
+                    this.mWarewolfStudioViewMoTreeItem13 = new WarewolfStudioViewMoTreeItem13(this);
+                }
+                return this.mWarewolfStudioViewMoTreeItem13;
+            }
+        }
+        
+        public WarewolfStudioViewMoTreeItem12 WarewolfStudioViewMoTreeItem12
+        {
+            get
+            {
+                if ((this.mWarewolfStudioViewMoTreeItem12 == null))
+                {
+                    this.mWarewolfStudioViewMoTreeItem12 = new WarewolfStudioViewMoTreeItem12(this);
+                }
+                return this.mWarewolfStudioViewMoTreeItem12;
+            }
+        }
         #endregion
         
         #region Fields
@@ -98606,6 +98644,10 @@ namespace Warewolf.UITests
         private FirstItem3 mFirstItem;
         
         private WpfTreeItem mSecondItem;
+        
+        private WarewolfStudioViewMoTreeItem13 mWarewolfStudioViewMoTreeItem13;
+        
+        private WarewolfStudioViewMoTreeItem12 mWarewolfStudioViewMoTreeItem12;
         #endregion
     }
     
@@ -98696,10 +98738,28 @@ namespace Warewolf.UITests
                 return this.mResourceImageImage;
             }
         }
+        
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
         #endregion
         
         #region Fields
         private ResourceImageImage9 mResourceImageImage;
+        
+        private WpfEdit mUIItemEdit;
         #endregion
     }
     
@@ -98738,6 +98798,138 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WarewolfStudioViewMoTreeItem13 : WpfTreeItem
+    {
+        
+        public WarewolfStudioViewMoTreeItem13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "9";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WarewolfStudioViewMoTreeItem12 : WpfTreeItem
+    {
+        
+        public WarewolfStudioViewMoTreeItem12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "9";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem1
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIWarewolfStudioViewMoTreeItem1.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem1;
+            }
+        }
+        
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem11
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem11 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem11 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem11.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIWarewolfStudioViewMoTreeItem11.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem11;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem1;
+        
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem11;
         #endregion
     }
     
