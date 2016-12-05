@@ -233,7 +233,7 @@
                                 ToolTip="{x:Static languages:Core.ManageEmailSendTooltip}"
                                 Command="{Binding Path=SendCommand}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.ServerTestConnectionHelp}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:Core.EmailSourceTestHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                     </StackPanel>
