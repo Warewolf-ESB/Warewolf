@@ -37,6 +37,42 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfMultiAssignActivityViewModel_Construct")]
+        public void DsfMultiAssignActivityViewModel_Construct_ShouldHaveCorrectDisplayName()
+        {
+            //------------Setup for test--------------------------
+            var dsfMultiAssignActivityViewModel = CreateDsfMultiAssignActivityViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityDesignerViewModel));
+            //------------Execute Test---------------------------
+            var displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Assign (0)", displayName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfMultiAssignActivityViewModel_Construct")]
+        public void DsfMultiAssignActivityViewModel_AddNewRow_ShouldUpdateDisplayName()
+        {
+            //------------Setup for test--------------------------
+            var dsfMultiAssignActivityViewModel = CreateDsfMultiAssignActivityViewModel();
+            var displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
+            var activityDto = new ActivityDTO("[[a]]", "Value", 2);
+            dsfMultiAssignActivityViewModel.ModelItemCollection.Add(ModelItemUtils.CreateModelItem(activityDto));
+            //---------------Assert Precondition----------------
+            Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityDesignerViewModel));
+            Assert.AreEqual("Assign (0)", displayName);
+            //------------Execute Test---------------------------
+            dsfMultiAssignActivityViewModel.UpdateDisplayName();
+            //------------Assert Results-------------------------
+            displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual("Assign (1)", displayName);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfMultiAssignActivityViewModel_Construct")]
         public void DsfMultiAssignActivityViewModel_Construct_IsInstanceOfActivityCollectionViewModelBaseOfActivityDTO_True()
