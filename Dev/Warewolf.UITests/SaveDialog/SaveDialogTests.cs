@@ -16,12 +16,15 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
             Assert.IsTrue(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+            UIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
             UIMap.RightClick_Save_Dialog_Localhost();
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
+            UIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
@@ -31,6 +34,7 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.RightClick_Save_Dialog_Localhost_First_Item();
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
+            UIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
@@ -40,6 +44,7 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.RightClick_Save_Dialog_Localhost_First_Item();
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.Exists);
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            UIMap.Click_SaveDialog_CancelButton();
         }
 
         #region Additional test attributes
