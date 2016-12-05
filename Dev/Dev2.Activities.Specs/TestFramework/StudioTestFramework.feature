@@ -576,9 +576,53 @@ Scenario: Run a test with single scalar inputs and outputs
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
+	
+Scenario: Run a passing test and change step type
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I Add "Set the output variable (1)" as TestStep
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And All test pieces are pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value      |
+	| Message       | Hello Bob. |
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	And I save
+	When I run the test
+	Then test result is Passed
+	When I change step "If [[Name]] <> (Not Equal)" to Mock
+	Then step "Set the output variable (1)" is Pending
+	And step "If [[Name]] <> (Not Equal)" is Pending
+	And service debug inputs as
+		| Variable | Value |
+		| [[Name]] | Bob   |
+	And the service debug outputs as
+	  | Variable    | Value      |
+	  | [[Message]] | Hello Bob. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
 
 @TestFramework
-Scenario: Run a test expectiing error 
+Scenario: Run a test expecting error 
 	Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
 	When I click New Test
