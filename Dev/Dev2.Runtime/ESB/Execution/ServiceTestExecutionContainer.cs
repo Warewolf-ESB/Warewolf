@@ -332,6 +332,52 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        private void UpdateToPending(IList<IServiceTestStep> testSteps)
+        {
+            if (testSteps != null)
+            {
+                foreach (var serviceTestStep in testSteps)
+                {
+                    if (serviceTestStep != null)
+                    {
+                        if (serviceTestStep.Result != null)
+                        {
+                            serviceTestStep.Result.RunTestResult = RunResult.TestPending;
+                        }
+                        else
+                        {
+                            serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
+                        }
+                        UpdateToPending(serviceTestStep.StepOutputs);
+                        if (serviceTestStep.Children != null && serviceTestStep.Children.Count > 0)
+                        {
+                            UpdateToPending(serviceTestStep.Children);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void UpdateToPending(IEnumerable<IServiceTestOutput> stepOutputs)
+        {
+            var serviceTestOutputs = stepOutputs as IList<IServiceTestOutput> ?? stepOutputs.ToList();
+            if (serviceTestOutputs.Count > 0)
+            {
+                foreach (var serviceTestOutput in serviceTestOutputs)
+                {
+                    if (serviceTestOutput?.Result != null)
+                    {
+                        serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
+                    }
+                    else
+                    {
+                        serviceTestOutput.Result = new TestRunResult {RunTestResult = RunResult.TestPending};
+                    }
+                }
+            }
+        }
+
+
         private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
@@ -362,6 +408,7 @@ namespace Dev2.Runtime.ESB.Execution
                     if (!dataObject.StopExecution)
                     {
                         dataObject.ServiceTest = test;
+                        UpdateToPending(test.TestSteps);
                         EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue, test.TestSteps);
                         if (!dataObject.StopExecution)
                         {
