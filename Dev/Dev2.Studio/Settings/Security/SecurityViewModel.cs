@@ -44,6 +44,7 @@ namespace Dev2.Settings.Security
         bool _isUpdatingHelpText;
         private static IDomain _domain;
 
+        // ReSharper disable once UnusedMember.Global
         public SecurityViewModel()
         {
             
@@ -648,6 +649,11 @@ namespace Dev2.Settings.Security
                 {
                     serverPermissionCompare = false;
                 }
+                if (!serverPermissionCompare) continue;
+                if (ServerPermissions[i].IsDeleted != serverPermissions[i].IsDeleted)
+                {
+                    serverPermissionCompare = false;
+                }
             }
             return serverPermissionCompare;
         }
@@ -700,6 +706,11 @@ namespace Dev2.Settings.Security
                 }
                 if (!resourcePermissionCompare) continue;
                 if (ResourcePermissions[i].Contribute != resourcePermissions[i].Contribute)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourcePermissions[i].IsDeleted != resourcePermissions[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;
                 }
