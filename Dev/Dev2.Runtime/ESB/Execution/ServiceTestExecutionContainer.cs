@@ -445,7 +445,7 @@ namespace Dev2.Runtime.ESB.Execution
                 testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(testErrorContainsText.ToLower());
                 if(!testPassed)
                 {
-                    failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals, testErrorContainsText, fetchErrors));
+                    failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, fetchErrors));
                 }
             }
             else if(test.NoErrorExpected)
