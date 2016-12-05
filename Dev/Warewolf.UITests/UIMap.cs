@@ -8144,6 +8144,15 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
         }
 
+        [Given(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [When(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [Then(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        public void ExplorerItemsAppearOnTheSaveDialogExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+        }
+
         [Given(@"Resource Does not Open")]
         [When(@"Resource Does not Open")]
         [Then(@"Resource Does not Open")]

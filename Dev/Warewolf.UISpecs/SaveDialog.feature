@@ -37,6 +37,16 @@ Scenario: Double Click Item In Save Dialog Does Not Open Resource
 	And I Click SaveDialog CancelButton
 	Then Resource Does not Open
 
+Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
+	Given I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "Hello World"
+	And I Click SaveDialog CancelButton
+	Then Explorer Items appear on the Explorer Tree
+	And I Click Save Ribbon Button to Open Save Dialog
+	Then Explorer Items appear on the Save Dialog Explorer Tree
+
 Scenario: Close Save Dialog Removes Explorer Filter
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface

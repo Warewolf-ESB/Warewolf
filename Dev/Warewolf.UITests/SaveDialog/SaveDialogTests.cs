@@ -17,14 +17,18 @@ namespace Warewolf.UITests.SaveDialog
             Assert.IsTrue(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
             UIMap.Click_SaveDialog_CancelButton();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
-
+        
         [TestMethod]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
             UIMap.RightClick_Save_Dialog_Localhost();
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
             UIMap.Click_SaveDialog_CancelButton();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -33,8 +37,10 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.Filter_Save_Dialog_Explorer(FolderToRename);
             UIMap.RightClick_Save_Dialog_Localhost_First_Item();
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
             UIMap.Click_SaveDialog_CancelButton();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -45,6 +51,8 @@ namespace Warewolf.UITests.SaveDialog
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.Exists);
             Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
             UIMap.Click_SaveDialog_CancelButton();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
