@@ -53,6 +53,8 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             vm.IsPrefetchFocused = false;
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
+            Assert.IsFalse(vm.ShowLarge);
+            Assert.AreEqual(vm.ThumbVisibility, Visibility.Collapsed);
             Assert.AreEqual("Q1", vm.QueueName);
             Assert.IsTrue(vm.ReQueue);
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);

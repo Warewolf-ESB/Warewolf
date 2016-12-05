@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
@@ -43,6 +44,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var dropBoxDeleteViewModel = CreateMockViewModel();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxDeleteViewModel);
+            Assert.IsFalse(dropBoxDeleteViewModel.ShowLarge);
+            Assert.AreEqual(dropBoxDeleteViewModel.ThumbVisibility, Visibility.Collapsed);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxDeleteViewModel, typeof(ActivityDesignerViewModel));
         }

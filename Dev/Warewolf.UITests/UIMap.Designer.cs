@@ -13801,17 +13801,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton DoneButton
+        public DoneButton DoneButton
         {
             get
             {
                 if ((this.mDoneButton == null))
                 {
-                    this.mDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mDoneButton.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mDoneButton = new DoneButton(this);
                 }
                 return this.mDoneButton;
             }
@@ -13833,7 +13829,7 @@ namespace Warewolf.UITests
         #region Fields
         private LargeViewContentCustom mLargeViewContentCustom;
         
-        private WpfButton mDoneButton;
+        private DoneButton mDoneButton;
         
         private SmallViewContentCustom mSmallViewContentCustom;
         #endregion
@@ -14296,6 +14292,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DoneButton : WpfButton
+    {
+        
+        public DoneButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfControl ItemResizer
+        {
+            get
+            {
+                if ((this.mItemResizer == null))
+                {
+                    this.mItemResizer = new WpfControl(this);
+                    #region Search Criteria
+                    this.mItemResizer.SearchProperties[WpfControl.PropertyNames.ControlType] = "Indicator";
+                    this.mItemResizer.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemResizer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemResizer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfControl mItemResizer;
         #endregion
     }
     
@@ -58334,13 +58367,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DoneButton DoneButton
+        public DoneButton1 DoneButton
         {
             get
             {
                 if ((this.mDoneButton == null))
                 {
-                    this.mDoneButton = new DoneButton(this);
+                    this.mDoneButton = new DoneButton1(this);
                 }
                 return this.mDoneButton;
             }
@@ -58396,7 +58429,7 @@ namespace Warewolf.UITests
         
         private LargeView23 mLargeView;
         
-        private DoneButton mDoneButton;
+        private DoneButton1 mDoneButton;
         
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
         
@@ -60389,10 +60422,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DoneButton : WpfButton
+    public class DoneButton1 : WpfButton
     {
         
-        public DoneButton(UITestControl searchLimitContainer) : 
+        public DoneButton1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -91618,13 +91651,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public DoneButton1 DoneButton
+        public DoneButton2 DoneButton
         {
             get
             {
                 if ((this.mDoneButton == null))
                 {
-                    this.mDoneButton = new DoneButton1(this);
+                    this.mDoneButton = new DoneButton2(this);
                 }
                 return this.mDoneButton;
             }
@@ -91680,7 +91713,7 @@ namespace Warewolf.UITests
         
         private LargeView32 mLargeView;
         
-        private DoneButton1 mDoneButton;
+        private DoneButton2 mDoneButton;
         
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
         
@@ -93673,10 +93706,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DoneButton1 : WpfButton
+    public class DoneButton2 : WpfButton
     {
         
-        public DoneButton1(UITestControl searchLimitContainer) : 
+        public DoneButton2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
