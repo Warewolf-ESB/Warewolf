@@ -865,8 +865,16 @@ namespace Warewolf.UITests
         {
             var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
             Mouse.DoubleClick(firstItem);
-
         }
+
+        [Given(@"I Double Click Resource On The Save Dialog")]
+        [When(@"I Double Click Resource On The Save Dialog")]
+        [Then(@"I Double Click Resource On The Save Dialog")]
+        public void ThenIDoubleClickResourceOnTheSaveDialog()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
         public void Filter_ServicePicker_Explorer(string FilterText)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
@@ -4155,7 +4163,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
+        [Given(@"I Click SaveDialog CancelButton")]
         [When(@"I Click SaveDialog CancelButton")]
+        [Then(@"I Click SaveDialog CancelButton")]
         public void Click_SaveDialog_CancelButton()
         {
             Mouse.Click(SaveDialogWindow.CancelButton, new Point(6, 7));
@@ -6851,6 +6861,14 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
         }
 
+        [Given(@"I RightClick Save Dialog Localhost First Item")]
+        [When(@"I RightClick Save Dialog Localhost First Item")]
+        [Then(@"I RightClick Save Dialog Localhost First Item")]
+        public void RightClick_Save_Dialog_Localhost_First_Item()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
         [When(@"I RightClick FindIndex OnDesignSurface")]
         public void RightClick_FindIndex_OnDesignSurface()
         {
@@ -7213,6 +7231,32 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(216, 7));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject.Exists, "System.Random item does not exist in the DotNet DLL tool ClassName dropdown");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject, new Point(137, 7));
+        }
+
+        [Given(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        public void Select_NewFolder_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
+        }
+
+        [Given(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        public void Select_Rename_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
+        }
+
+        [Given(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        public void Select_Delete_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem);
+            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.DeleteConfirmation.Exists);
         }
 
         [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
@@ -8033,6 +8077,79 @@ namespace Warewolf.UITests
 
             // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unit Tests/Unsaved...' link equals 'True'
             Assert.IsTrue(unitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
-        }       
-    }   
+        }
+
+        [Given(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        [When(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        [Then(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        public void Rename_Folder_From_Save_Dialog(string filterText)
+        {
+            #region Variable Declarations            
+            WpfEdit uIItemEdit = SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            #endregion
+            uIItemEdit.Text = filterText;
+        }
+
+        [Given(@"I Name New Folder as ""(.*)""")]
+        [When(@"I Name New Folder as ""(.*)""")]
+        [Then(@"I Name New Folder as ""(.*)""")]
+        public void Name_New_Folder_From_Save_Dialog(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.WarewolfStudioViewMoTreeItem12.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.WarewolfStudioViewMoTreeItem13.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
+
+        [Given(@"Explorer Contain Item ""(.*)""")]
+        [When(@"Explorer Contain Item ""(.*)""")]
+        [Then(@"Explorer Contain Item ""(.*)""")]
+        public void ExplorerContainItem(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text);
+        }
+
+        [Given(@"Explorer Does Not Contain Item ""(.*)""")]
+        [When(@"Explorer Does Not Contain Item ""(.*)""")]
+        [Then(@"Explorer Does Not Contain Item ""(.*)""")]
+        public void ExplorerDoesNotContainItem(string p0)
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+        }
+
+        [Given(@"Explorer Contain Sub Item ""(.*)""")]
+        [When(@"Explorer Contain Sub Item ""(.*)""")]
+        [Then(@"Explorer Contain Sub Item ""(.*)""")]
+        public void ExplorerContainSubFolder(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text);
+        }
+
+        [Given(@"Explorer Items appear on the Explorer Tree")]
+        [When(@"Explorer Items appear on the Explorer Tree")]
+        [Then(@"Explorer Items appear on the Explorer Tree")]
+        public void ExplorerItemsAppearOnTheExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
+        }
+
+        [Given(@"Resource Does not Open")]
+        [When(@"Resource Does not Open")]
+        [Then(@"Resource Does not Open")]
+        public void ThenResourceDoesNotOpen()
+        {
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
+        }
+    }
 }

@@ -11,6 +11,14 @@ namespace Warewolf.UITests.SaveDialog
         private const string FolderRenamed = "FolderToRename_Renamed";
 
         [TestMethod]
+        public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
+        {
+            UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
+            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+        }
+
+        [TestMethod]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
             UIMap.RightClick_Save_Dialog_Localhost();
@@ -20,14 +28,18 @@ namespace Warewolf.UITests.SaveDialog
         public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
         {
             UIMap.Filter_Save_Dialog_Explorer(FolderToRename);
-            UIMap.RightClick_Save_Dialog_Localhost();
+            UIMap.RightClick_Save_Dialog_Localhost_First_Item();
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
         }
 
         [TestMethod]
         public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
         {            
             UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
-            UIMap.RightClick_Save_Dialog_Localhost();
+            UIMap.RightClick_Save_Dialog_Localhost_First_Item();
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.Exists);
+            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
         }
 
         #region Additional test attributes
