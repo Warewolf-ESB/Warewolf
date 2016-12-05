@@ -208,7 +208,8 @@ namespace Warewolf.Studio.ViewModels
 
         void Select(IExplorerTreeItem explorerTreeItem)
         {
-            var item = SelectedEnvironment?.AsList().FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
+            var explorerItemViewModels = SelectedEnvironment?.AsList();
+            var item = explorerItemViewModels?.FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
             if (item != null)
             {               
                 item.IsSelected = true;
