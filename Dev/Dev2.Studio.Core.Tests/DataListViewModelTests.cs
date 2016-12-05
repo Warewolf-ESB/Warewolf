@@ -1436,7 +1436,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Recordset name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Recordset name [[TestScalar.]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1452,7 +1452,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel.Children[0]);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.Children[0].HasError);
-            Assert.AreEqual("Recordset field name Child@ contains invalid character(s)", dataListItemModel.Children[0].ErrorMessage);
+            Assert.AreEqual("Recordset field name Child@ contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.Children[0].ErrorMessage);
         }
 
         [TestMethod]
@@ -1572,7 +1572,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Scalar name [[TestScalar!]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar!]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1588,7 +1588,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Scalar name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar.]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1604,7 +1604,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Scalar name [[TestScalar.ad]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar.ad]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1620,7 +1620,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Scalar name [[TestScalar()]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar()]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]

@@ -149,7 +149,7 @@ namespace Dev2.Data.Util
             {
                 var dataListVerifyPart = new DataListVerifyPart(name, "");
                 var displayName = displayString == "Recordset field" ? name : DataListUtil.OpeningSquareBrackets + name + DataListUtil.ClosingSquareBrackets;
-                var intellisenseResult = IntellisenseFactory.CreateErrorResult(1, 1, dataListVerifyPart, displayString + " name " + displayName + " contains invalid character(s)", enIntellisenseErrorCode.SyntaxError, true);
+                var intellisenseResult = IntellisenseFactory.CreateErrorResult(1, 1, dataListVerifyPart, displayString + " name " + displayName + " contains invalid character(s). Only use alphanumeric _ and - ", enIntellisenseErrorCode.SyntaxError, true);
                 try
                 {
                     if (!string.IsNullOrEmpty(name))
