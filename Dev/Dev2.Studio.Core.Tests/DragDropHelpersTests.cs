@@ -171,7 +171,42 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(canDoDrop);
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DragDropHelpers_PreventDrop")]
+        public void DragDropHelpers_PreventDrop_DropResourceOntoItself_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            AppSettings.LocalHost = "http://localhost";
+            var resourceId = Guid.NewGuid();
+            var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object,
+                a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object)
+            {
+                ResourceType = "WorkflowService",
+                ResourceId = resourceId,
+                CanExecute = true,
+                CanView = true,
+                IsService = true,
+                IsSource = false
+            };
+
+            var dataContext = new Mock<IWorkflowDesignerViewModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(model => model.ID).Returns(resourceId);
+            var differentEnvironment = new Mock<IEnvironmentModel>();
+            differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
+            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+            differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
+            var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            //------------Execute Test---------------------------
+            bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ExplorerItemViewModel" }, data));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canDoDrop);
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DragDropHelpers_PreventDrop")]
