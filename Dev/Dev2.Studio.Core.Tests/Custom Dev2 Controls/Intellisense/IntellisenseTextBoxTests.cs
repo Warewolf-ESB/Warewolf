@@ -676,6 +676,26 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             testHelper.OnKeyDown(new KeyEventArgs(null, mockPresentationSource.Object, 0, Key.Escape));
             Assert.IsFalse(testHelper.IsDropDownOpen);
         }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_InvalidJsonArrayIndex_ShouldError()
+        {
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+                .Returns(default(IList<IntellisenseProviderResult>));
+
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject, IntellisenseProvider = intellisenseProvider.Object };
+            textBox.Text = "[[@this.new(1).val(x).s]]";
+            Assert.IsTrue(textBox.HasError);
+            Assert.AreEqual("Index [ x ] is not a number. Index must be numeric.", textBox.ToolTip.ToString());
+        }
     }
 
     public class IntellisenseTextBoxTestHelper : IntellisenseTextBox
