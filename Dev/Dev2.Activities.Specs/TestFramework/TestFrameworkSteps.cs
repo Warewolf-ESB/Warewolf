@@ -494,7 +494,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     isNull = bool.Parse(emptyIsNull);
                 }
 
-                if (string.IsNullOrEmpty(valueToSet) && !string.IsNullOrEmpty(varName))
+                if (!string.IsNullOrEmpty(varName))
                 {
                     var foundInput = inputs.FirstOrDefault(input => input.Variable == varName);
                     if (foundInput != null)
@@ -517,7 +517,43 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(assertString + expectedError, errorExpected);
         }
 
+        [Then(@"All test pieces are pending")]
+        public void ThenAllTestPiecesArePending()
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var testPending = serviceTestViewModel.SelectedServiceTest.TestPending;
+            Assert.IsTrue(testPending);
+            var stepsPending = serviceTestViewModel.SelectedServiceTest.TestSteps.All(step => ((ServiceTestStep)step).TestPending);
+            var serviceTestSteps = serviceTestViewModel.SelectedServiceTest.TestSteps.Flatten(step => step.Children).ToList();
+            var allPending = serviceTestSteps.All(step => ((ServiceTestStep)step).TestPending && ((ServiceTestStep)step).Result.RunTestResult == RunResult.TestPending);
+            var allOutputsPending = serviceTestViewModel.SelectedServiceTest.Outputs.All(output => ((ServiceTestOutput)output).TestPending && output.Result?.RunTestResult == RunResult.TestPending);
+            Assert.IsTrue(stepsPending);
+            Assert.IsTrue(allPending);
+            Assert.IsTrue(allOutputsPending);
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            foreach (var serviceTestStep in serviceTestSteps)
+            {
+                var allStepOutPutspending = serviceTestStep.StepOutputs.All(output => output.Result?.RunTestResult == RunResult.TestPending);
+                Assert.IsTrue(allStepOutPutspending);
+            }
+        }
 
+        [When(@"I change step ""(.*)"" to Mock")]
+        public void WhenIChangeStepToMock(string stepname)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(stepname));
+            serviceTestStep.Type = StepType.Mock;
+        }
+
+        [Then(@"step ""(.*)"" is Pending")]
+        public void ThenStepIsPending(string stepname)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(stepname));
+            var testPending = ((ServiceTestStep)serviceTestStep).TestPending;
+            Assert.IsTrue(testPending);
+        }
 
 
         [Then(@"I update outputs as")]
@@ -528,9 +564,9 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 var valueToSet = tableRow["Value"];
-                if (!string.IsNullOrEmpty(valueToSet))
+                var varName = tableRow["Variable Name"];
+                if (!string.IsNullOrEmpty(varName))
                 {
-                    var varName = tableRow["Variable Name"];
                     var foundInput = outputs.FirstOrDefault(output => output.Variable == varName);
                     if (foundInput != null)
                     {
@@ -597,6 +633,17 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(test.TestPassed);
             Assert.IsFalse(test.TestFailing);
         }
+
+        [Then(@"I change Decision ""(.*)"" arm to ""(.*)""")]
+        public void ThenIChangeDecisionArmTo(string decisionName, string ArmInput)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(decisionName));
+            var serviceTestOutput = serviceTestStep.StepOutputs.Single();
+            var value = serviceTestOutput.OptionsForValue.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase));
+            serviceTestOutput.Value = value;
+        }
+
 
         [Then(@"test result is invalid")]
         public void ThenTestResultIsInvalid()
