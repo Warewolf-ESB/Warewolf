@@ -144,7 +144,7 @@
                                                    UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static languages:Core.DropBoxFileListFileNameToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListFileName}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListFileNameHelp}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ToPath"
                                          SourcePropertyValue="{Binding ToPath,
@@ -177,7 +177,7 @@
                          IsChecked="{Binding IsFilesSelected}"
                          ToolTip="{x:Static languages:Core.DropboxReadFilesToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFiles}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
@@ -187,7 +187,7 @@
                          IsChecked="{Binding IsFoldersSelected}"
                          ToolTip="{x:Static languages:Core.DropboxReadFoldersToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFolders}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFoldersHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
@@ -197,7 +197,7 @@
                          IsChecked="{Binding IsFilesAndFoldersSelected}"
                          ToolTip="{x:Static languages:Core.DropboxReadFilesFoldersToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesFolders}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesFoldersHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </Grid>
@@ -225,7 +225,7 @@
                       IsChecked="{Binding IsRecursive}"
                       ToolTip="{x:Static languages:Core.DropBoxFileListRecursiveToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListRecursive}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListRecursiveHelp}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
 

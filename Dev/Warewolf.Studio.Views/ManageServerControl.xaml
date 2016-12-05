@@ -90,7 +90,7 @@
                          MinWidth="35"
                          x:Name="PortTextBox"
                          Text="{Binding SelectedPort, UpdateSourceTrigger=PropertyChanged}" 
-                         ToolTip="{x:Static languages:Core.ServerSourceDialogAddressPortTip}">
+                         ToolTip="{x:Static languages:Core.ServerSourceDialogAddressPortTooltip}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.ServerSelectPortHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
