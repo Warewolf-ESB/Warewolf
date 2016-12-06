@@ -29,10 +29,20 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " `"$SolutionDir\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll`" /logger:trx" + $TestList
+$FullArgsList = " `"$SolutionDir\Dev2.Activities.Tests\bin\Debug\Dev2.Activities.Tests.dll`" /logger:trx" + $TestList
 
-# Display full command including full argument string.
-Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+# Write DotCover Runner XML
+Out-File -LiteralPath "$PSScriptRoot\DotCoverRunner.xml" -Encoding default -InputObject @"
+<AnalyseParams>
+	<TargetExecutable>$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe</TargetExecutable>
+	<TargetArguments>$FullArgsList</TargetArguments>
+	<Output>$PSScriptRoot\ActivitiesDesignersUnitTestsDotCoverOutput.dcvr</Output>
+	<Scope>
+		<ScopeEntry>$SolutionDir\Dev2.Activities.Tests\bin\Debug\**\*.dll</ScopeEntry>
+		<ScopeEntry>$SolutionDir\Dev2.Activities.Tests\bin\Debug\**\*.exe</ScopeEntry>
+	</Scope>
+</AnalyseParams>
+"@
 
-# Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+#Write DotCover Runner Batch File
+Out-File -LiteralPath $PSScriptRoot\RunDotCover.bat -Encoding default -InputObject "`"$env:LocalAppData\JetBrains\Installations\dotCover07\dotCover.exe`" cover `"$PSScriptRoot\DotCoverRunner.xml`" /LogFile=`"$PSScriptRoot\DotCoverRunner.xml.log`""
