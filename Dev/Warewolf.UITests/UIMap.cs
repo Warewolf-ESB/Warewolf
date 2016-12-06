@@ -422,7 +422,7 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(DecisionOrSwitchDialog.Exists);
+            Assert.IsTrue(DecisionOrSwitchDialog.Exists, "DecisionSwitch Dialog did not open");
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(34, 10));
             Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
@@ -574,6 +574,55 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
+
+        [Given(@"I Try Connect To Remote Server")]
+        [When(@"I Try Connect To Remote Server")]
+        [Then(@"I Try Connect To Remote Server")]
+        public void TryConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+            {
+                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
+            }
+            else
+            {
+                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+                Click_Explorer_RemoteServer_Connect_Button();
+            }
+        }
+
+        [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        public void ThenITryRemoveFromRemoteServerExplorer(string ResourceName)
+        {
+            TryConnectToRemoteServer();
+            Filter_Explorer(ResourceName);
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
+                {
+                    MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.DrawHighlight();
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    RightClick_Explorer_First_Remote_Server_First_Item();
+                    Select_Delete_FromExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
+            }
+            finally
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton))
+                    TryClearExplorerFilter();
+            }
+        }
+
 
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
@@ -1335,7 +1384,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
 
+        [Given(@"I Click Deploy Ribbon Button")]
         [When(@"I Click Deploy Ribbon Button")]
+        [Then(@"I Click Deploy Ribbon Button")]
         public void Click_Deploy_Ribbon_Button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
@@ -1564,7 +1615,7 @@ namespace Warewolf.UITests
             var currentTest = GetCurrentTest(testInstance);
             var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
             Mouse.Click(selectedTestDeleteButton);
-            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.Exists, "Delete Confirmation MessageBox did not Open");
         }
 
         private static WpfText GetSelectedTestRunTimeDisplay(WpfListItem test, int instance)
@@ -1709,13 +1760,13 @@ namespace Warewolf.UITests
             }
 
             if (containsStar)
-                Assert.IsTrue(description.Contains("*"));
+                Assert.IsTrue(description.Contains("*"), "Description does not contain *");
             else
-                Assert.IsFalse(description.Contains("*"));
+                Assert.IsFalse(description.Contains("*"), "Description contains *");
             if (instance == 0)
             {
                 var descriptions = testsListBox.GetContent();
-                Assert.IsFalse(descriptions.Contains("*"));
+                Assert.IsFalse(descriptions.Contains("*"), "Description contains *");
             }
         }
 
@@ -8392,6 +8443,14 @@ namespace Warewolf.UITests
 
             Mouse.StartDragging(uIActivityDefaultWindoWindow, new Point(396, 387));
             Mouse.StopDragging(uIActivityDefaultWindoWindow, new Point(0, 450));
+        }
+
+        [Given(@"Destination Remote Server Is Connected")]
+        [When(@"Destination Remote Server Is Connected")]
+        [Then(@"Destination Remote Server Is Connected")]
+        public void ThenDestinationRemoteServerIsConnected()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote Server is Disconnected");
         }
     }
 }
