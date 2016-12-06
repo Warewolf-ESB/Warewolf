@@ -104,8 +104,12 @@ namespace Dev2.Core.Tests
             data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(model => model.ID).Returns(Guid.NewGuid);
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
             dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
+
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
             //------------Execute Test---------------------------
             bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ExplorerItemViewModel" }, data));
@@ -124,8 +128,11 @@ namespace Dev2.Core.Tests
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
             var differentEnvironment = new Mock<IEnvironmentModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(model => model.ID).Returns(Guid.NewGuid);
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
             dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
             differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
             CustomContainer.Register(new Mock<IPopupController>().Object);
