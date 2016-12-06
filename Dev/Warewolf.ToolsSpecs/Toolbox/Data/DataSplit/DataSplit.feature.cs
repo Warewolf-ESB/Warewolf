@@ -3323,7 +3323,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 620
 this.ScenarioSetup(scenarioInfo);
 #line 621
- testRunner.Given("A string to split with value \"a\\n2ff\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("A string to split with new line value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 622
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \"\\r\\n\" and Include \"unsel" +
                     "ected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
