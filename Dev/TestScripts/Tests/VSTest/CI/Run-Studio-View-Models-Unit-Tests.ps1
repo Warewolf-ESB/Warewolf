@@ -29,7 +29,7 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " `"$WorkspaceDir\Warewolf.Studio.ViewModels.Tests.dll`" /logger:trx" + $TestList
+$FullArgsList = " `"$SolutionDir\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
