@@ -66,10 +66,10 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
                      "Variable name " + lang + " begins with a number")
                 | false -> 
                     (WarewolfAtomExpression(DataStorage.DataString lang), 
-                     "Variable name " + lang + " contains invalid character(s)")
+                     "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
             else 
                 (WarewolfAtomExpression(DataStorage.DataString lang), 
-                 "Variable name " + lang + " contains invalid character(s)")
+                 "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
           else
             (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)                           
     else (WarewolfAtomExpression(parseAtom lang), "")
@@ -99,8 +99,8 @@ and checkForInvalidVariables (lang : LanguageExpression list) =
             let startswithNum, _ = System.Int32.TryParse(data.[2].ToString())
             match startswithNum with
             | true -> (ComplexExpression lang, "Recordset field " + data + " begins with a number")
-            | false -> (ComplexExpression lang, "Variable name " + data + " contains invalid character(s)")
-        else (ComplexExpression lang, "Variable name " + data + " contains invalid character(s)")
+            | false -> (ComplexExpression lang, "Variable name " + data + " contains invalid character(s). Only use alphanumeric _ and - ")
+        else (ComplexExpression lang, "Variable name " + data + " contains invalid character(s). Only use alphanumeric _ and - ")
     else 
         let parsed = parseLanguageExpressionAndValidate data
         
@@ -113,7 +113,7 @@ and checkForInvalidVariables (lang : LanguageExpression list) =
                 (ComplexExpression lang, "invalid variable name")
             | (ComplexExpression _, _) -> parsed
             | (WarewolfAtomExpression _, _) -> parsed
-            | (JsonIdentifierExpression _, _) -> failwith "Obsolete"
+            | (JsonIdentifierExpression _, _) -> parsed
         res
 
 and verifyComplexExpression (lang : LanguageExpression list) = 
