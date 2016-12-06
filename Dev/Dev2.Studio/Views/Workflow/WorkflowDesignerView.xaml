@@ -183,7 +183,7 @@
                     <TextBlock Margin="0,5,0,0" 
                                TextWrapping="Wrap"
                                VerticalAlignment="Top"
-                               ToolTip="{x:Static languages:Core.ServiceViewInBrowserTooltip}"
+                               ToolTip="{x:Static languages:Tooltips.ServiceViewInBrowserTooltip}"
                                MaxWidth="{Binding ElementName=ScrollViewer, Path=ActualWidth}"
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                ScrollViewer.VerticalScrollBarVisibility="Auto"

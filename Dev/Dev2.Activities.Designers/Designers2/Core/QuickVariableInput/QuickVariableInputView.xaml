@@ -80,11 +80,11 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"
                      TextWrapping="Wrap"           
-                     ToolTip="{x:Static languages:Core.QuickVariableVariableListToolTip}"
+                     ToolTip="{x:Static languages:Tooltips.QuickVariableVariableListToolTip}"
                      AutomationProperties.AutomationId="QviVariableListBox"
                      attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableVariableListHelpText}"
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableVariableListHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -101,11 +101,11 @@
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
                           ItemsSource="{Binding SplitTypeList}"
                           SelectedValue="{Binding SplitType}"
-                          ToolTip="{x:Static languages:Core.QuickVariableSplitAndAtToolTip}"
+                          ToolTip="{x:Static languages:Tooltips.QuickVariableSplitAndAtToolTip}"
                           AutomationProperties.AutomationId="QviSplitOnCombobox"
                           HorizontalAlignment="Stretch">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableSplitAndAtHelpText}"
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableSplitAndAtHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </ComboBox>
@@ -113,10 +113,10 @@
                          Text="{Binding SplitToken, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsSplitTokenEnabled}"
                          AutomationProperties.AutomationId="QviSplitOnCharacter"
-                         ToolTip="{x:Static languages:Core.QuickVariableSplitAndAtToolTip}"
+                         ToolTip="{x:Static languages:Tooltips.QuickVariableSplitAndAtToolTip}"
                          attached:FocusSetter.IsFocused="{Binding IsSplitOnFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableSplitAndAtHelpText}"
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableSplitAndAtHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -128,10 +128,10 @@
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
-                     ToolTip="{x:Static languages:Core.QuickVariablePrefixWithToolTip}"
+                     ToolTip="{x:Static languages:Tooltips.QuickVariablePrefixWithToolTip}"
                      attached:FocusSetter.IsFocused="{Binding IsPrefixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.QuickVariablePrefixWithHelpText}"
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariablePrefixWithHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -142,10 +142,10 @@
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
-                     ToolTip="{x:Static languages:Core.QuickVariableSuffixWithToolTip}"
+                     ToolTip="{x:Static languages:Tooltips.QuickVariableSuffixWithToolTip}"
                      attached:FocusSetter.IsFocused="{Binding IsSuffixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableSuffixWithHelpText}"
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableSuffixWithHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -160,11 +160,11 @@
                              IsChecked="True"
                              Margin="{StaticResource ControlBorderRight}"
                              VerticalAlignment="Center"
-                             ToolTip="{x:Static languages:Core.QuickVariableAppendToolTip}"
+                             ToolTip="{x:Static languages:Tooltips.QuickVariableAppendToolTip}"
                              AutomationProperties.AutomationId="AppendOption"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableAppendHelpText}"
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableAppendHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
@@ -172,11 +172,11 @@
                              Content="Replace"
                              IsChecked="{Binding Overwrite}"
                              AutomationProperties.AutomationId="ReplaceOption"
-                             ToolTip="{x:Static languages:Core.QuickVariableReplaceToolTip}"
+                             ToolTip="{x:Static languages:Tooltips.QuickVariableReplaceToolTip}"
                              VerticalAlignment="Center"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:Core.QuickVariableReplaceHelpText}"
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.QuickVariableReplaceHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>

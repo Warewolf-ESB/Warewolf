@@ -668,11 +668,11 @@
                 <Setter Property="Control.Foreground" Value="White" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="ToolTip" Value="{x:Static languages:Core.TestsDeleteSelectedTestDisabledTooltip}" />
+                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.TestsDeleteSelectedTestDisabledTooltip}" />
                 <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
-                <Setter Property="ToolTip" Value="{x:Static languages:Core.TestsDeleteSelectedTestEnabledTooltip}" />
+                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.TestsDeleteSelectedTestEnabledTooltip}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -683,7 +683,7 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
-        <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestRunSelectedTestTooltip}"/>
+        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ServiceTestRunSelectedTestTooltip}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -754,7 +754,7 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
-        <Setter Property="ToolTip" Value="{x:Static languages:Core.ServiceTestStopSelectedTestTooltip}"/>
+        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ServiceTestStopSelectedTestTooltip}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

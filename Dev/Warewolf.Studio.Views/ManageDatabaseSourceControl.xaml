@@ -70,13 +70,13 @@
                                x:Name="ServerTypeComboBox"
                                ItemsSource="{Binding Types}" 
                                Focusable="True"
-                               ToolTip="{x:Static languages:Core.ManageDbSourceServerTypeTooltip}"
+                               ToolTip="{x:Static languages:Tooltips.ManageDbSourceServerTypeTooltip}"
                                Style="{StaticResource XamComboEditorStyle}"
                                IsEditable="False"
                                views:FocusExtension.IsFocused="True"
                                SelectedItem="{Binding ServerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerTypesHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceServerTypesHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ig:XamComboEditor>
             <TextBlock VerticalAlignment="Center"
@@ -94,7 +94,7 @@
                                       AllowUserInsertLine="False"
                                       Margin="{StaticResource ControlBorderTop}"
                                       Style="{StaticResource AutoCompleteBoxStyle}"
-                                      ToolTip="{x:Static languages:Core.ManageDbSourceServerNameTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.ManageDbSourceServerNameTooltip}"
                                       FilterMode="Contains"
                                       ValueMemberPath="Name" 
                                       MaxDropDownHeight="200"
@@ -102,7 +102,7 @@
                                       SelectedItem="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                       Text="{Binding EmptyServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
             <TextBlock VerticalAlignment="Center" 
@@ -116,26 +116,26 @@
                         Orientation="Horizontal" >
                 <RadioButton x:Name="WindowsRadioButton"
                              IsEnabled="{Binding Path=CanSelectWindows}"
-                             ToolTip="{x:Static languages:Core.WindowsAuthenticationToolTip}" 
+                             ToolTip="{x:Static languages:Tooltips.WindowsAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}" 
                              Content="Windows">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.WindowsAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.WindowsAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
                 <RadioButton x:Name="UserRadioButton" 
                              IsEnabled="{Binding Path=CanSelectUser}"
-                             ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
+                             ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.User}}" 
                              Content="User">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.UserAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.UserAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
             </StackPanel>
@@ -156,10 +156,10 @@
             <TextBox x:Name="UserNameTextBox" 
                      Grid.Row="0" 
                      Grid.Column="1" 
-                     ToolTip="{x:Static languages:Core.ManageDbSourceUserNameTooltip}"
+                     ToolTip="{x:Static languages:Tooltips.ManageDbSourceUserNameTooltip}"
                      Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
             <TextBlock Grid.Row="1" 
@@ -170,11 +170,11 @@
                          Grid.Row="1" 
                          Grid.Column="1"
                          Margin="{StaticResource ControlBorderTop}"
-                         ToolTip="{x:Static languages:Core.ManageDbSourcePasswordTooltip}"
+                         ToolTip="{x:Static languages:Tooltips.ManageDbSourcePasswordTooltip}"
                          customControls:PasswordBoxAssistant.BindPassword="true"
                          customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
         </Grid>
@@ -193,12 +193,12 @@
                 <ig:XamComboEditor x:Name="DatabaseComboxBox" 
                                    Margin="{StaticResource ControlBorderTop}"
                                    ItemsSource="{Binding DatabaseNames}" 
-                                   ToolTip="{x:Static languages:Core.ManageDbSourceDatabaseTooltip}"
+                                   ToolTip="{x:Static languages:Tooltips.ManageDbSourceDatabaseTooltip}"
                                    IsEditable="False"
                                    Style="{StaticResource XamComboEditorStyle}"
                                    SelectedItem="{Binding DatabaseName}" >
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceDatabasesHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceDatabasesHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </ig:XamComboEditor>
             </StackPanel>
@@ -236,9 +236,9 @@
                     Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding TestCommand}" 
                     Content="{x:Static languages:Core.TestConnectionLabel}" 
-                    ToolTip="{x:Static languages:Core.ManageDbSourceTestTooltip}">
+                    ToolTip="{x:Static languages:Tooltips.ManageDbSourceTestTooltip}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button Width="120" 
@@ -246,9 +246,9 @@
                     Command="{Binding CancelTestCommand}" 
                     Content="{x:Static languages:Core.CancelTest}" 
                     x:Name="CancelTestButton"
-                    ToolTip="{x:Static languages:Core.ManageDbSourceCancelTestTooltip}">
+                    ToolTip="{x:Static languages:Tooltips.ManageDbSourceCancelTestTooltip}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceCancelHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceCancelHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </StackPanel>

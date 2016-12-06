@@ -136,12 +136,12 @@
                                 x:Name="Dependencies"
                                 Content="Select All Dependencies"
                                 Command="{Binding SelectDependenciesCommand}"
-                                ToolTip="{x:Static languages:Core.DeploySelectDependenciesTooltip}"
+                                ToolTip="{x:Static languages:Tooltips.DeploySelectDependenciesTooltip}"
                                 Width="Auto"
                                 Style="{StaticResource ButtonOrangeStyle}"
                                 Margin="{StaticResource ElementBorder}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.DeploySelectDependenciesHelp}" DataContext="{Binding}"/>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.DeploySelectDependenciesHelp}" DataContext="{Binding}"/>
                             </i:Interaction.Behaviors>
                         </Button>
                         <TextBlock Text="Also Deploy Tests?" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
@@ -179,13 +179,13 @@
                             <TextBlock Grid.Column="1" Grid.Row="0" Text="Override" Margin="{StaticResource ElementBorder}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
 
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="NewResourcesView" Command="{Binding NewResourcesViewCommand}" ToolTip="{x:Static languages:Core.DeployNewResourcesViewHelp}" >
+                                <Hyperlink x:Name="NewResourcesView" Command="{Binding NewResourcesViewCommand}" ToolTip="{x:Static languages:HelpText.DeployNewResourcesViewHelp}" >
                                     <TextBlock Text="{Binding NewResourcesCount}" FontSize="28"/>
                                 </Hyperlink>
                             </TextBlock>
 
                             <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="OverridesCountView" Command="{Binding OverridesViewCommand}" ToolTip="{x:Static languages:Core.DeployOverridesCountViewHelp}" >
+                                <Hyperlink x:Name="OverridesCountView" Command="{Binding OverridesViewCommand}" ToolTip="{x:Static languages:HelpText.DeployOverridesCountViewHelp}" >
                                     <TextBlock Text="{Binding OverridesCount}" FontSize="28"/>
                                 </Hyperlink>
                             </TextBlock>
@@ -198,14 +198,14 @@
                         <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID"
                                 Content="Deploy"
                                 Command="{Binding DeployCommand}"
-                                ToolTip="{x:Static languages:Core.DeployCommandTooltip}"
+                                ToolTip="{x:Static languages:Tooltips.DeployCommandTooltip}"
                                 Style="{StaticResource ButtonOrangeStyle}"
                                 Margin="{StaticResource ControlBorderRight}"
                                 MaxWidth="50"
                                 MinWidth="50" 
                                 x:Name="Deploy">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.DeployCommandHelp}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.DeployCommandHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                         <customControls:CircularProgressBar Height="22"

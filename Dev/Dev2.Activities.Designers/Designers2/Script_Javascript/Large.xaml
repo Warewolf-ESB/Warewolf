@@ -59,9 +59,9 @@
                                     Margin="{StaticResource ControlBorderRight}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AttachmentsTxt_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ScriptingToolTipIncludeFile}">
+                                    ToolTip="{x:Static languages:Tooltips.ScriptingToolTipIncludeFile}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.IncludeFile"
                                          SourcePropertyValue="{Binding ModelItem.ScriptSource, UpdateSourceTrigger=PropertyChanged}"
@@ -74,7 +74,7 @@
                     ToolTip="Choose Script Source File"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpIncludeFile}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -96,9 +96,9 @@
                       Margin="-6,0,0,0"
                       Content="Escape sequences in variables"
                       IsChecked="{Binding Path=ModelItem.EscapeScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Core.ScriptingToolTipEscapeScript}">
+                      ToolTip="{x:Static languages:Tooltips.ScriptingToolTipEscapeScript}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpEscapeScript}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.EscapeScript"
                                          SourcePropertyValue="{Binding  ModelItem.EscapeScript, UpdateSourceTrigger=PropertyChanged}"
@@ -117,7 +117,7 @@
                                      MinHeight="53"
                                      FilterType="All"
                                      Margin="0,-1,0,0"
-                                     ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
+                                     ToolTip="{x:Static languages:Tooltips.ScriptingToolTipScript}"
                                      AllowUserCalculateMode="False"
                                      IsInCalculateMode="True"
                                      VerticalContentAlignment="Top"
@@ -127,7 +127,7 @@
                     <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
                 </ui:IntellisenseTextBox.DefaultText>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpScript}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Script"
                                          SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
@@ -144,11 +144,11 @@
                                     DefaultText="[[Result]]"
                                     Margin="{StaticResource ControlBorderTop}"
                                     FilterType="All"
-                                    ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
+                                    ToolTip="{x:Static languages:Tooltips.ScriptingToolTipResult}"
                                     Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="Result"
                                          SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

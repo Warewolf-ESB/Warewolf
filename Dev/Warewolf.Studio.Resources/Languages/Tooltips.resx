@@ -604,7 +604,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
     <value>Enter the IP address, domain name or computer name of the server you want to connect to</value>
   </data>
-  <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
+  <data name="ServerSourceDialogAddressPortTooltip" xml:space="preserve">
     <value>Enter the port on the server</value>
   </data>
   <data name="SequenceTooltipSequence" xml:space="preserve">
@@ -960,6 +960,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MenuLockToolTip" xml:space="preserve">
     <value>Lock / unlock the menu</value>
+  </data>
+  <data name="MenuHelpToolTip" xml:space="preserve">
+    <value>Knowledge Base</value>
   </data>
   <data name="MenuDownloadToolTip" xml:space="preserve">
     <value>A new version of Warewolf is available for download</value>

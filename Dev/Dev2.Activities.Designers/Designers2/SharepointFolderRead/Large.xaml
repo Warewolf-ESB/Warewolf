@@ -68,11 +68,11 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                      ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
+                      ToolTip="{x:Static languages:Tooltips.SharepointToolTipServer}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpServer}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpServer}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
             <Button Grid.Column="2"
@@ -82,7 +82,7 @@
                     ToolTip="Edit Sharepoint Server Source"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SharepointEditServerHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointEditServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
@@ -94,7 +94,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SharePointReadFolderInputPathToolTip}"
+                                ToolTip="{x:Static languages:Tooltips.SharePointReadFolderInputPathToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
                 <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -103,7 +103,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SharePointReadFolderHelpFolder}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharePointReadFolderHelpFolder}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ServerInputPath"
                                      SourcePropertyValue="{Binding  ModelItem.ServerInputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -115,7 +115,7 @@
                     Orientation="Horizontal"
                     Margin="0,-3,0,0"
                     Grid.Row="2"
-                    ToolTip="{x:Static languages:Core.ReadFolderToolTipRead}">
+                    ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipRead}">
                 <RadioButton Margin="{StaticResource ControlBorderRight}"
                          IsChecked="{Binding Path=ModelItem.IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
                 <RadioButton Margin="{StaticResource ControlBorderRight}"
@@ -123,7 +123,7 @@
                 <RadioButton Margin="{StaticResource ControlBorderRight}"
                          IsChecked="{Binding Path=ModelItem.IsFilesAndFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files &amp; Folders</RadioButton>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpRead}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpRead}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </StackPanel>
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Result"  Margin="0,-3,0,0"/>
@@ -136,11 +136,11 @@
                                 Margin="0,-3,0,0"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpResult}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

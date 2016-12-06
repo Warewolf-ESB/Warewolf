@@ -113,11 +113,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
-                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Name"
                                                          SourcePropertyValue="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
@@ -148,11 +148,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
-                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -186,7 +186,7 @@
                         <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
                         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Behaviors>
-                                <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </TextBox>
                         <Button x:Name="TestInputButton"
@@ -195,11 +195,11 @@
                                 Content="Generate Outputs"
                                 Width="Auto"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                                ToolTip="{x:Static languages:Tooltips.ManageDbServiceTestActionTooltip}"
                                 HorizontalAlignment="Right"
                                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
                             <i:Interaction.Behaviors>
-                                <core1:HelpSetter Text="{x:Static languages:Core.WebServiceTestCommandHelp}" DataContext="{Binding}" />
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceTestCommandHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                     </Grid>

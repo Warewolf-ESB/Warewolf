@@ -69,31 +69,31 @@
                       x:Name="SourcesComboBox"
                       DisplayMemberPath="Name" 
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static languages:Core.ManageExchangeServiceSourcesTooltip}"
+                      ToolTip="{x:Static languages:Tooltips.ManageExchangeServiceSourcesTooltip}"
                       ItemsSource="{Binding SourceRegion.Sources}"
                       SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ExchangeServiceSourceTypesHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ExchangeServiceSourceTypesHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
             <Button Grid.Column="2" 
                     x:Name="SourceEditButton" 
                     Margin="{StaticResource ControlBorderRight}"
                     Content="..."
-                    ToolTip="{x:Static languages:Core.ManageExchangeServiceEditSourceTooltip}"
+                    ToolTip="{x:Static languages:Tooltips.ManageExchangeServiceEditSourceTooltip}"
                     Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ExchangeServiceEditSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ExchangeServiceEditSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="3" x:Name="SourceNewButton" 
                     Content="{x:Static languages:Core.New}" 
                     Width="Auto"
                     Style="{StaticResource ButtonOrangeStyle}" 
-                    ToolTip="{x:Static languages:Core.ManageExchangeServiceNewSourceTooltip}"
+                    ToolTip="{x:Static languages:Tooltips.ManageExchangeServiceNewSourceTooltip}"
                     Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ExchangeServiceNewSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ExchangeServiceNewSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -104,13 +104,13 @@
                                 DefaultText="Account or email address"
                                 AllowUserInsertLine="False"
                                 Text="{Binding ModelItem.To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipTo}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipTo}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsToFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpTo}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpTo}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.To"
                                      SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
@@ -124,13 +124,13 @@
                                 DefaultText="Account or email address"
                                 AllowUserInsertLine="False"
                                 Text="{Binding ModelItem.Cc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipCc}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipCc}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsCcFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cctxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpCc}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpCc}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Cc"
                                      SourcePropertyValue="{Binding ModelItem.Cc, UpdateSourceTrigger=PropertyChanged}"
@@ -144,13 +144,13 @@
                                 DefaultText="Account or email address"
                                 AllowUserInsertLine="False"
                                 Text="{Binding ModelItem.Bcc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipBcc}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipBcc}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsBccFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Bcctxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpBcc}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpBcc}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Bcc"
                                      SourcePropertyValue="{Binding ModelItem.Bcc, UpdateSourceTrigger=PropertyChanged}"
@@ -164,13 +164,13 @@
                                 DefaultText="Message Subject"
                                 AllowUserInsertLine="False"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipSubject}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipSubject}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSubjectFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_subjecttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpSubject}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpSubject}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Subject"
                                      SourcePropertyValue="{Binding ModelItem.Subject, UpdateSourceTrigger=PropertyChanged}"
@@ -192,9 +192,9 @@
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsAttachmentsFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AttachmentsTxt_AutoID}"
-                                    ToolTip="{x:Static languages:Core.EmailToolTipAttachments}">
+                                    ToolTip="{x:Static languages:Tooltips.EmailToolTipAttachments}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpAttachments}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpAttachments}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Attachments"
                                          SourcePropertyValue="{Binding ModelItem.Attachments, UpdateSourceTrigger=PropertyChanged}"
@@ -207,7 +207,7 @@
                     ToolTip="Choose Attachments"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ChooseAttachmentsBtn_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ChooseAttachmentsHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ChooseAttachmentsHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -227,11 +227,11 @@
                                 VerticalScrollBarVisibility="Auto"
                                 HorizontalScrollBarVisibility="Auto"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipBody}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipBody}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpBody}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpBody}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Body"
                                      SourcePropertyValue="{Binding ModelItem.Body, UpdateSourceTrigger=PropertyChanged}"
@@ -260,7 +260,7 @@
                     Command="{Binding TestEmailAccountCommand}"
                     ToolTip="Test Email">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.TestEmailAccountHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.TestEmailAccountHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </StackPanel>
@@ -272,12 +272,12 @@
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.EmailToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resultstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName=" ModelItem.Result"
                                      SourcePropertyValue="{Binding  ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

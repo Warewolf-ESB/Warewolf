@@ -798,7 +798,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SettingsSecurityResourceHelpResource, viewModel.HelpText);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource, viewModel.HelpText);
         }
 
         [TestMethod]

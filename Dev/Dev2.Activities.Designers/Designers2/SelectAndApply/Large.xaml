@@ -67,7 +67,7 @@
                                 DefaultText="[[Datasource]]"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.DataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SelectAndApplyDataSourceToolTip}"
+                                ToolTip="{x:Static languages:Tooltips.SelectAndApplyDataSourceToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -77,7 +77,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SelectAndApplyDataSourceHelpText}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SelectAndApplyDataSourceHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DataSource"
                                      SourcePropertyValue="{Binding  ModelItem.DataSource, UpdateSourceTrigger=PropertyChanged}"
@@ -93,7 +93,7 @@
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SelectAndApplyAliasToolTip}"
+                                ToolTip="{x:Static languages:Tooltips.SelectAndApplyAliasToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -103,7 +103,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SelectAndApplyAliasHelpText}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SelectAndApplyAliasHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Alias"
                                      SourcePropertyValue="{Binding  ModelItem.Alias, UpdateSourceTrigger=PropertyChanged}"

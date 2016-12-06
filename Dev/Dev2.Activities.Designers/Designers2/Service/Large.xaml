@@ -117,7 +117,7 @@
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:HelpText.ServiceHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="MapsTo"
                                                              SourcePropertyValue="{Binding MapsTo, UpdateSourceTrigger=PropertyChanged}"
@@ -183,7 +183,7 @@
                                     </TextBlock>
                                     <Button Command="{Binding Path=ViewComplexObjectsCommand}"
                                             Grid.Column="2"
-                                            ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                            ToolTip="{x:Static languages:Tooltips.ViewJsonObjectTooltip}"
                                             VerticalAlignment="Center"
                                             Style="{StaticResource ButtonTransparentStyle}"
                                             Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
@@ -247,7 +247,7 @@
                                     </TextBlock>
                                     <Button Command="{Binding Path=ViewComplexObjectsCommand}"
                                             Grid.Column="1"
-                                            ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                            ToolTip="{x:Static languages:Tooltips.ViewJsonObjectTooltip}"
                                             VerticalAlignment="Center"
                                             Style="{StaticResource ButtonTransparentStyle}"
                                             Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
@@ -272,7 +272,7 @@
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding Value, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpOutput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:HelpText.ServiceHelpOutput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="Value"
                                                              SourcePropertyValue="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
@@ -316,7 +316,7 @@
                   IsChecked="{Binding RunWorkflowAsync, NotifyOnTargetUpdated=True}">
             Execute workflow asynchronously
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpRunWorkflowAsync}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ServiceHelpRunWorkflowAsync}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
             </i:Interaction.Behaviors>
         </CheckBox>
 

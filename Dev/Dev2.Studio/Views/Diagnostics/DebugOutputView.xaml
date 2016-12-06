@@ -408,13 +408,13 @@
                                            x:Name="SearchTextBox" 
                                            Style="{StaticResource SearchTextboxStyle}"
                                            ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
-                                           ClearSearchToolTip="{x:Static languages:Core.DebugOutputClearSearchTooltip}"
+                                           ClearSearchToolTip="{x:Static languages:Tooltips.DebugOutputClearSearchTooltip}"
                                            LabelText="Filter"
                                            HorizontalAlignment="Stretch"
-                                           ToolTip="{x:Static languages:Core.DebugOutputSearchToolTip}"
+                                           ToolTip="{x:Static languages:Tooltips.DebugOutputSearchToolTip}"
                                            Text="{Binding Path=SearchText, Delay=450, UpdateSourceTrigger=PropertyChanged}" >
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewFilterSearchHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DebugOutputViewFilterSearchHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </customControls1:SearchTextBox>
 
@@ -422,14 +422,14 @@
                     x:Name="OptionsButton"
                     Command="{Binding ShowOptionsCommand}"
                     Margin="3,0,0,-1"
-                    ToolTip="{x:Static languages:Core.DebugOutputOptionsToolTip}"
+                    ToolTip="{x:Static languages:Tooltips.DebugOutputOptionsToolTip}"
                     AutomationProperties.AutomationId="UI_DebugOutputOptionsButton_AutoID">
                 <Button.Content>
                     <fa:FontAwesome Icon="Gear" FontSize="16"></fa:FontAwesome>
                 </Button.Content>
                 <i:Interaction.Behaviors>
                     <b:ButtonPopupWorkaroundBehavior IsInWorkaroundState="{Binding SkipOptionsCommandExecute, Mode=TwoWay}" />
-                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewOptionsHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DebugOutputViewOptionsHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
 
@@ -438,10 +438,10 @@
                     FontSize="24"
                     Command="{Binding ExpandAllCommand}"
                     Margin="3,0,0,-1"
-                    ToolTip="{x:Static languages:Core.ExpandCollapseAllToolTip}"
+                    ToolTip="{x:Static languages:Tooltips.ExpandCollapseAllToolTip}"
                     AutomationProperties.AutomationId="UI_DebugOutputExpandAllMode_AutoID" >
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewExpandAllHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DebugOutputViewExpandAllHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="3"
@@ -457,7 +457,7 @@
                                 Icon="Flask" />
                 </Button.Content>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DebugOutputViewAddNewTestHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DebugOutputViewAddNewTestHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>

@@ -93,7 +93,7 @@
                        TextAlignment="Right" />
             <CheckBox Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
                       Content="Update duplicated relationships?" IsChecked="{Binding FixReferences}" Margin="{StaticResource ControlBorderBottomRight}"
-                      ToolTip="{x:Static languages:Core.DuplicateCheckBoxTooltip}"/>
+                      ToolTip="{x:Static languages:Tooltips.DuplicateCheckBoxTooltip}"/>
             <views:CircularProgressBar     Width="25"
                                            Height="25"
                                            Padding="2.5"
@@ -106,7 +106,7 @@
                     Content="Duplicate"
                     Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverter}}" 
                     Style="{StaticResource ButtonStyle}"
-                    ToolTip="{x:Static languages:Core.DuplicateButtonTooltip}"/>
+                    ToolTip="{x:Static languages:Tooltips.DuplicateButtonTooltip}"/>
            
             <Button x:Name="OkButton"
                     Width="60"
@@ -115,7 +115,7 @@
                     Content="Save"
                     Visibility="{Binding IsDuplicate, Converter={StaticResource BoolToVisibilityConverterNegative}}" 
                     Style="{StaticResource ButtonStyle}"
-                    ToolTip="{x:Static languages:Core.SaveButtonTooltip}"/>
+                    ToolTip="{x:Static languages:Tooltips.SaveButtonTooltip}"/>
             
             <Button x:Name="CancelButton"
                     Width="60"
@@ -123,7 +123,7 @@
                     Content="Cancel"
                     Margin="{StaticResource ControlBorderBottomRight}"
                     Style="{StaticResource ButtonStyle}"
-                    ToolTip="{x:Static languages:Core.CancelButtonTooltip}"/>
+                    ToolTip="{x:Static languages:Tooltips.CancelButtonTooltip}"/>
         </DockPanel>
     </Grid>
 </Window>

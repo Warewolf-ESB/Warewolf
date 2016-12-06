@@ -51,11 +51,11 @@
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static languages:Core.RabbitMQToolTipSource}"
+                      ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsRabbitMQSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="SelectedRabbitMQSource"
                                          SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
@@ -66,21 +66,21 @@
                     Content="..."
                     Width="Auto"
                     Margin="{StaticResource ControlBorderRight}"
-                    ToolTip="{x:Static languages:Core.EditRabbitMQSourceHelp}"
+                    ToolTip="{x:Static languages:HelpText.EditRabbitMQSourceHelp}"
                     Command="{Binding EditRabbitMQSourceCommand}"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRabbitMQSourceBtn_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="2"
                     Content="{x:Static languages:Core.New}"
                     Width="Auto"
                     Style="{StaticResource ButtonOrangeStyle}"
-                    ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
+                    ToolTip="{x:Static languages:HelpText.NewRabbitMQSourceHelp}"
                     Command="{Binding NewRabbitMQSourceCommand}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.NewRabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.NewRabbitMQSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -90,14 +90,14 @@
                                 DefaultText="Queue Name"
                                 AllowUserInsertLine="False"
                                 Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RabbitMQToolTipQueueName}"
+                                ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsQueueNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpQueueName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpQueueName}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                             SourcePropertyName="QueueName"
                                             SourcePropertyValue="{Binding QueueName, UpdateSourceTrigger=PropertyChanged}"
@@ -110,14 +110,14 @@
                                 DefaultText="Response "
                                 AllowUserInsertLine="False"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
+                                ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpResponse}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpResponse}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                             SourcePropertyName="Response"
                                             SourcePropertyValue="{Binding Response, UpdateSourceTrigger=PropertyChanged}"
