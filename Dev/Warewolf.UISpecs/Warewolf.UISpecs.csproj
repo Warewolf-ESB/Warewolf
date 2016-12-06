@@ -68,6 +68,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="RemoteServes.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RemoteServes.feature</DependentUpon>
+    </Compile>
     <Compile Include="SaveDialog.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -121,6 +126,10 @@
     <None Include="PluginConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="RemoteServes.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RemoteServes.feature.cs</LastGenOutput>
     </None>
     <None Include="SaveDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -18,6 +18,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Done button does not exist on decision large view after dragging tool in from the toolbox.");
             UIMap.Click_Decision_Dialog_Cancel_Button();
         }
+
         [TestMethod]
         [TestCategory("Tools")]
         public void DecisionTool_LargeViewResize_UITest()
