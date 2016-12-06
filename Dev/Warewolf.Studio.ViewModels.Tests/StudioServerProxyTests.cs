@@ -157,9 +157,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void StudioServerProxy_VersionManager_GetVersions_ServerDown_ShowPopup()
         {
             //------------Setup for test--------------------------
-            var environmentConnection = new Mock<IEnvironmentConnection>().Object;
-
-            var versionManagerProxy = new VersionManagerProxy(new CommunicationControllerFactory(), environmentConnection);
+            var environmentConnection = new Mock<IEnvironmentConnection>();
+            environmentConnection.Setup(a => a.DisplayName).Returns("localhost");
+            var versionManagerProxy = new VersionManagerProxy(new CommunicationControllerFactory(), environmentConnection.Object);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
