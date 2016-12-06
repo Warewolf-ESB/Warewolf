@@ -115,6 +115,16 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewPluginSource(resourcePath);
         }
+        public void NewComPluginSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewComPluginSource(resourcePath);
+        }
+        public void NewWcfSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewWcfSource(resourcePath);
+        }
         public void NewDatabaseSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
@@ -185,11 +195,6 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        internal void CreateFolderCommand(IExplorerRepository explorerRepository, string resourcePath, string name, Guid id)
-        {
-            explorerRepository.CreateFolder(resourcePath, name, id);
-        }
-
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
         {
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
@@ -212,7 +217,8 @@ namespace Warewolf.Studio.ViewModels
                 IsSelected = true,
                 IsRenaming = true,
                 CanDelete =  true,
-                IsFolder = true
+                IsFolder = true,
+                IsNewFolder = true
             };
             return child;
         }

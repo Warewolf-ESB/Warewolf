@@ -308,9 +308,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var env = _target.Environments.First();
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
+            explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("Resource1");
             var explorerItemViewModelResourceCheckedMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelResourceCheckedMock.SetupGet(it => it.IsVisible).Returns(true);
             explorerItemViewModelResourceCheckedMock.SetupGet(it => it.IsResourceChecked).Returns(true);
+            explorerItemViewModelResourceCheckedMock.SetupGet(it => it.ResourceName).Returns("Resource2");
             env.AddChild(explorerItemViewModelMock.Object);
             env.AddChild(explorerItemViewModelResourceCheckedMock.Object);
 

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -59,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
-            environmentViewModel.CanShowServerVersion = false;
             return this;
         }
 
@@ -251,37 +251,37 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
+            
+            try
             {
-
-                try
+                if (!string.IsNullOrEmpty(_selectedPath))
                 {
-                    if (!string.IsNullOrEmpty(_selectedPath))
+                    _environmentViewModel.SelectItem(_selectedPath, b =>
                     {
-                        _environmentViewModel.SelectItem(_selectedPath, b =>
-                        {
-                            _environmentViewModel.SelectAction(b);
-                            b.IsSelected = true;
-                        });
-                    }
+                        _environmentViewModel.SelectAction(b);
+                        b.IsSelected = true;
+                    });
                 }
-                catch (Exception)
-                {
-                    //
-                }
-                finally
-                {
-                    HasLoaded = a.Result;
-                }
+                _environmentViewModel.IsSaveDialog = true;
+                _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
+            }
+            catch (Exception)
+            {
+                //
+            }
 
-
-
-                ValidateName();
-            }, TaskContinuationOptions.ExecuteSynchronously);
+            HasLoaded = true;
+            ValidateName();
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
             _view.ShowView();
+
+            _environmentViewModel.IsSaveDialog = false;
+            var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
+            if (windowsGroupPermission != null)
+                _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+            _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             return ViewResult;
         }

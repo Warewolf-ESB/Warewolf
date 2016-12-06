@@ -27,27 +27,17 @@ Scenario: Deploy Tab
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 Then "Deploy" is "Disabled"
-	 And the validation message is "Source and Destination cannot be the same."	 
-	 
-Scenario: Deploy button is enabling when selecting resource in source side
-     Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-	 And source is connected
-     When selected Destination Server is "Remote"
-	 And destination is connected
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 Then "Deploy" is "Enabled" 
-	 When "Remote" is Disconnected
-	 Then "Deploy" is "Disabled"
+	 And the validation message is "Source and Destination cannot be the same."	  
+
 
 Scenario: Deploy is successfull
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+	 Then I select Destination Server as "DestinationServer"
 	 And destination is connected
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
@@ -58,7 +48,7 @@ Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
@@ -73,7 +63,7 @@ Scenario: Conflicting resources on Source and Destination server deploy is not s
       Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click Cancel on Resource exists in the destination server popup	 
@@ -83,59 +73,23 @@ Scenario: Deploying a connector with a source
      Given I have deploy tab opened
 	  And selected Source Server is "localhost"
 	 And source is connected
-	 When selected Destination Server is "Remote"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 Then New Resource is "0"	 
 	 When I select "DB Service\FetchPlayers" from Source Server
 	 Then "Deploy" is "Enabled" 
 	 And "Select All Dependencies" is "Enabled"
 	 When I Select All Dependecies
-	 Then "sqlServers\DemoDB" from Source Server is "Selected"
+	 Then  I select "sqlServers\DemoDB" from Source Server
 	 And I deploy 
 	 Then deploy is successfull
 	 And the Deploy validation message is "2 Resources Deployed Successfully."
-
-Scenario: Filtering and clearing filter on source side
-     Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-     When I type "Date and Time" in Source Server filter
-	 Then visibility of "Examples\Utility - Date and Time" from Source Server is "Visible"
-	 And visibility of "Examples\Data - Data - Data Split" from Source Server is "Not Visible"
-	 And visibility of "Examples\Control Flow - Switch" from Source Server is "Not Visible"
-	 And visibility of "Examples\Control Flow - Sequence" from Source Server is "Not Visible"
-	 And visibility of "Examples\File and Folder - Copy" from Source Server is "Not Visible"
-	 And visibility of "Examples\File and Folder - Create" from Source Server is "Not Visible"
-	 When I type "" in Source Server filter
-	 Then  visibility of "Examples\Utility - Date and Time" from Source Server is "Visible"
-	 And visibility of "Examples\Data - Data - Data Split" from Source Server is "Visible"
-	 And visibility of "Examples\Control Flow - Switch" from Source Server is "Visible"
-	 And visibility of "Examples\Control Flow - Sequence" from Source Server is "Visible"
-	 And visibility of "Examples\File and Folder - Copy" from Source Server is "Visible"
-	 And visibility of "Examples\File and Folder - Create" from Source Server is "Visible"
-
-Scenario: Deploying with filter enabled
-     Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-	 And source is connected
-     When selected Destination Server is "Remote"
-	 And destination is connected
-     When I type "Date and Time" in Source Server filter
-	 Then visibility of "Examples\Utility - Date and Time" from Source Server is "Visible"
-	 And visibility of "Examples\Data - Data - Data Split" from Source Server is "Not Visible"
-	 And visibility of "Examples\Control Flow - Switch" from Source Server is "Not Visible"
-	 And visibility of "Examples\Control Flow - Sequence" from Source Server is "Not Visible"
-	 And visibility of "Examples\File and Folder - Copy" from Source Server is "Not Visible"
-	 And visibility of "Examples\File and Folder - Create" from Source Server is "Not Visible"
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 When I deploy 
-	 Then deploy is successfull
-	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Selected for deploy items type is showing on deploy tab
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I select "DB Service\FetchPlayers" from Source Server
@@ -149,7 +103,7 @@ Scenario: Deploy Summary is showing new and overiding resources
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 Then New Resource is "1"
@@ -159,38 +113,13 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 And Override is "0"
 	 When I Unselect "Examples\bob" from Source Server
 	 Then Override is "0"
-
-Scenario: Deploy is enabled when I change server after validation thrown
-     Given I have deploy tab opened
-	  And selected Source Server is "localhost"
-	 And source is connected
-     When selected Destination Server is "localhost"
-	 And destination is connected
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 Then "Deploy" is "Disabled" 
-	 And the validation message is "Source and Destination cannot be the same."
-     When selected Destination Server is "Remote"
-	 And destination is connected
-	 Then "Deploy" is "Enabled" 
-	  And the validation message is ""
-#
-#Scenario: Deploy is disabled when I select resource with only View Permissions
-#     Given I have deploy tab opened
-#	 And selected Source Server is "localhost"
-#	 And source is connected
-#     When selected Destination Server is "Remote"
-#	 And destination is connected
-#	 When I select "Examples\bob" from Source Server
-#	 Then "Deploy" is "Disabled" 
-
-#new feature?
 	
 #Wolf-1106
 Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I deploy
@@ -201,7 +130,7 @@ Scenario: Warning message no longer appears
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
@@ -214,7 +143,7 @@ Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
      And destination is connected
 	 And destination Server Version is "0.0.0.1"
 	 And I select "Utility - Date and Time" from Source Server
@@ -223,23 +152,13 @@ Scenario: Deploying to an Older server version
 	 Then deploy is successfull
 
 
-Scenario: Select All resources to deploy
-    Given I have deploy tab opened
-	And selected Source Server is "localhost"
-	 And source is connected
-     When selected Destination Server is "Remote"
-	 And destination is connected
-	And I check "localhost" on Source Server
-	Then "All" the resources are checked
-	And "Deploy" is "Enabled"
-
 Scenario: Deploy Based on permission Deploy To
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 And I select "Examples\bob" from Source Server
      And I cannot deploy to destination
-	 When selected Destination Server is "Remote"
+	 When selected Destination Server is "DestinationServer"
 	 And destination is connected
 	 Then "Deploy" is "Disabled" 
 	 And the validation message is "Destination server permission Deploy To not allowed."
@@ -250,18 +169,14 @@ Scenario: Deploy Based on permission Deploy From
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 And I select "Examples\bob" from Source Server
-     When selected Destination Server is "Remote"
+     When selected Destination Server is "DestinationServer"
 	 And destination is connected
 
 Scenario: Deploy resource Tests message
 	 Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-	 And source is connected
-	 When selected Destination Server is "Remote"
-	 And destination is connected
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 And I select deploy Reource Test
-	 And deploy is enabled
+	 When I select Destination Server as "DestinationServer"
+	 Then source is connected
+	 And destination "DestinationServer" is connected
 	 And I deploy
 	 Then deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."

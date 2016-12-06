@@ -5217,7 +5217,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Aatabase source.
+        ///   Looks up a localized string similar to Create a new database source.
         /// </summary>
         public static string NewDataBaseSourceTooltip {
             get {
@@ -5330,6 +5330,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NewSharepointSourceTooltip {
             get {
                 return ResourceManager.GetString("NewSharepointSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new wcf source.
+        /// </summary>
+        public static string NewWcfSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewWcfSourceTooltip", resourceCulture);
             }
         }
         

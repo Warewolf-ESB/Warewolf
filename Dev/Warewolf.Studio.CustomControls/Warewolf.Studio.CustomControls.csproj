@@ -117,6 +117,7 @@
     <Compile Include="CheckBoxColumnContentProvider.cs" />
     <Compile Include="CustomViewModel.cs" />
     <Compile Include="DataPresenterHelpers.cs" />
+    <Compile Include="DragDropExtension.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="TextBoxColumn.cs" />

@@ -274,18 +274,15 @@
     </Style>
 
     <Style x:Key="ExplorerEditTextBoxStyle" TargetType="TextBox">
-        <Setter Property="Height" Value="20"/>
-        <Setter Property="MinHeight" Value="20"/>
-        <Setter Property="Width" Value="200"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height" Value="17" />
+        <Setter Property="MinHeight" Value="17" />
+        <Setter Property="Padding" Value="2,1,0,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -306,6 +303,11 @@
                                                                        Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -433,7 +435,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="True">
-                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
                             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

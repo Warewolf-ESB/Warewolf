@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -10,17 +9,6 @@ namespace Dev2.Common.Interfaces
 
         void RequestClose();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        bool HasServer(string serverName);
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void CreateNewFolder(string newFolderName, string rootPath);
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        IExplorerView GetExplorerView();
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void OpenFolder(string folderName);
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void EnterName(string serviceName);
@@ -31,23 +19,9 @@ namespace Dev2.Common.Interfaces
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         string GetValidationMessage();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        List<IExplorerTreeItem> GetFoldersVisible();
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void Filter(string filter);
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Cancel();
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void PerformActionOnContextMenu(string menuAction, string itemName, string path);
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        IExplorerTreeItem GetCurrentItem();
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void CreateNewFolderInFolder(string newFolderName, string currentFolder);
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Save();
