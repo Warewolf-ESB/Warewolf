@@ -61,18 +61,17 @@ jsonIdentifierExpression :
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =tryParseIndex($5) ;}}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Star  ;}}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Last  ;}}
-    |OPENLANGUAGE ATIDF VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression { ObjectName = $3; Next = $5; }}	
+    |OPENLANGUAGE ATIDF VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression { ObjectName = $3; Next = $5; }}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =tryParseIndex($5) ;}}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =Star ;}}
     |OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $7; Index =Last ;}}
-	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index = tryParseIndex(IndexExpression $5) ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index = IndexExpression $5 ;}}
 
 nestedJsonIdentifier : 
     | VARNAME  { NameExpression  {Name= $1} }
 	| VARNAME OPENBRACKET index CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =tryParseIndex($3)  } }
 	| VARNAME OPENBRACKET STAR CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =Star  } }
-	| VARNAME OPENBRACKET CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =Last  } }	
-	| VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier {IndexNestedNameExpression { ObjectName = $1; Next = $6; Index = tryParseIndex(IndexExpression $3) ;}}
+	| VARNAME OPENBRACKET CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =Last  } }
 	| VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$6 ; Index =tryParseIndex($3)  } }
 	| VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$6 ; Index =Star  } }
 	| VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$5 ; Index =Last  } }
