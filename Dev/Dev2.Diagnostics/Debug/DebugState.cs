@@ -724,8 +724,7 @@ namespace Dev2.Diagnostics.Debug
 
         public bool IsFinalStep()
         {
-            return StateType == StateType.End &&
-                   OriginalInstanceID == ID && ParentID==Guid.Empty;
+            return StateType == StateType.End && OriginalInstanceID == ID && ParentID==Guid.Empty;
         }
 
         public bool IsFirstStep()
