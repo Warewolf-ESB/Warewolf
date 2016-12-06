@@ -79,6 +79,20 @@ Scenario: Rename Folder From Save Dialog
 	Then I Click Close Workflow Tab Button
 	And I Click MessageBox No
 
+Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save Dialog
+	Given I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "New Created Folder2"
+	And I RightClick Save Dialog Localhost
+	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Enter New Folder Name as "New Created Folder2"
+	And I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "New Created Folder2"
+	And I RightClick Save Dialog Localhost First Item
+	And Context Menu Has Two Items
+	Then I Click Close Workflow Tab Button
+
 Scenario: Create New Folder In Localhost Server From Save Dialog
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
