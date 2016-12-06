@@ -2633,6 +2633,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sends a test email from this account so you can confirm its working..
+        /// </summary>
+        public static string EmailSourceTestHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The time allowed for the operation to connect before throwing an error..
         /// </summary>
         public static string EmailSourceTimeoutHelp {
@@ -4907,7 +4916,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/getting-started/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Create a new Warewolf Hosted Web Service. This flow based service is the start of all orchestration in Warewolf.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/getting-started/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string MenuNewServiceHelp {
             get {
@@ -7910,6 +7919,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestWindowsHelpText {
             get {
                 return ResourceManager.GetString("ServiceTestWindowsHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute this flow as a REST api.
+        /// </summary>
+        public static string ServiceViewInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceViewInBrowserTooltip", resourceCulture);
             }
         }
         

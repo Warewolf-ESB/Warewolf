@@ -87,7 +87,23 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
 
             //assert
-            VerifyCollection(vm, 3, expectedItemsByIndexNumber);
+            Assert.AreEqual(3, vm.ItemCount);
+            Assert.AreEqual(string.Format("Activity ({0})", 2), vm.ModelItem.GetProperty("DisplayName"));
+
+            // ReSharper disable PossibleNullReferenceException
+            var mic = vm.ModelItem.Properties[vm.CollectionName].Collection;
+
+            for(var j = 0; j < 3; j++)
+            {
+                var dto1 = (ActivityDTO)mic[j].GetCurrentValue();
+                var expectedIndexNumber = j + 1;
+                Assert.AreEqual(j == 3 - 1, dto1.CanRemove());
+                ActivityDTO expectedDto;
+                if(expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out expectedDto))
+                {
+                    Assert.AreSame(expectedDto, dto1);
+                }
+            }
         }
 
         [TestMethod]
@@ -949,9 +965,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             //------------Assert Results-------------------------
             var expectedItemCount = startItemCount + 1;
-            var expectedNonBlankItemCount = expectedItemCount - 1;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
-            Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
             // ReSharper disable PossibleNullReferenceException
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
@@ -1092,9 +1106,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         void Verify_CollectionUnchanged(List<ActivityDTO> items, TestActivityDesignerCollectionViewModelItemsInitialized viewModel)
         {
             var expectedItemCount = items.Count;
-            var expectedNonBlankItemCount = expectedItemCount - 1;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
-            Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
             // ReSharper disable PossibleNullReferenceException
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
@@ -1112,7 +1124,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
         static void VerifyCollection(ActivityCollectionDesignerViewModel<ActivityDTO> viewModel, int expectedItemCount, Dictionary<int, ActivityDTO> expectedItemsByIndexNumber = null, bool allRowsBlank = false)
         {
-            var expectedNonBlankItemCount = expectedItemCount - 1;
+            var expectedNonBlankItemCount = expectedItemCount - 2;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 

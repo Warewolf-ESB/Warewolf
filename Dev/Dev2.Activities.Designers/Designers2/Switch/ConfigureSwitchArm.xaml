@@ -15,7 +15,7 @@
         <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
     </UserControl.Resources>
 
-    <Grid Margin="{StaticResource ElementBorder}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,18 +24,25 @@
         <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
             <TextBlock Margin="5" Text="Switch Flow" Style="{StaticResource SourceHeader}" />
         </StackPanel>
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="{StaticResource ControlBorderTop}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Path=SwitchVariable, StringFormat=Switch on {0} when the case is:}" Margin="{StaticResource ControlBorderRight}" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    WrapInBrackets="False"
-                                    AllowUserInsertLine="False"
-                                    Text="{Binding Path=SwitchExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
-            </ui:IntellisenseTextBox>
+
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=SwitchVariable, StringFormat=Switch on {0} when the case is:}" Margin="{StaticResource ControlBorderRight}" />
+                <ui:IntellisenseTextBox Grid.Column="1"
+                                        WrapInBrackets="False"
+                                        AllowUserInsertLine="False"
+                                        Text="{Binding Path=SwitchExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
+                </ui:IntellisenseTextBox>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
