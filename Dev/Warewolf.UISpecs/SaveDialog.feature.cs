@@ -270,11 +270,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Server From Save Dialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Then Open Context Menu Server From Save Dialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
-        public virtual void CreateNewFolderInLocalhostServerFromSaveDialog()
+        public virtual void CreateNewFolderInLocalhostThenOpenContextMenuServerFromSaveDialog()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Server From Save Dialog", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Then Open Context Menu Server From Save Dialog", ((string[])(null)));
 #line 82
 this.ScenarioSetup(scenarioInfo);
 #line 83
@@ -284,18 +284,54 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 86
- testRunner.And("I Filter Save Dialog Explorer with \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Filter Save Dialog Explorer with \"New Created Folder2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
  testRunner.And("I RightClick Save Dialog Localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
  testRunner.And("I Select New_Folder From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.And("I Name New Folder as \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter New Folder Name as \"New Created Folder2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.And("I Filter the Explorer with \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
- testRunner.Then("Explorer Contain Item \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Filter Save Dialog Explorer with \"New Created Folder2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
+ testRunner.And("I RightClick Save Dialog Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+ testRunner.And("Context Menu Has Two Items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+ testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Server From Save Dialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        public virtual void CreateNewFolderInLocalhostServerFromSaveDialog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Server From Save Dialog", ((string[])(null)));
+#line 96
+this.ScenarioSetup(scenarioInfo);
+#line 97
+ testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 98
+ testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+ testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 100
+ testRunner.And("I Filter Save Dialog Explorer with \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+ testRunner.And("I RightClick Save Dialog Localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.And("I Select New_Folder From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("I Name New Folder as \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("I Filter the Explorer with \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.Then("Explorer Contain Item \"New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -307,25 +343,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateNewFolderInExistingFolderAsASubFolderFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Existing Folder As A Sub Folder From Save Dialog", ((string[])(null)));
-#line 94
+#line 108
 this.ScenarioSetup(scenarioInfo);
-#line 95
+#line 109
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 110
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 111
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 98
+#line 112
  testRunner.And("I Filter Save Dialog Explorer with \"Acceptance Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 113
  testRunner.And("I RightClick Save Dialog Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 114
  testRunner.And("I Select New Folder From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 115
  testRunner.And("I Name New Sub Folder as \"New Created Sub Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 116
  testRunner.Then("Explorer Contain Sub Item \"New Created Sub Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 117
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -337,31 +373,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenameResourceFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Resource From Save Dialog", ((string[])(null)));
-#line 105
+#line 119
 this.ScenarioSetup(scenarioInfo);
-#line 106
+#line 120
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 107
+#line 121
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 122
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
+#line 123
  testRunner.And("I Filter Save Dialog Explorer with \"ResourceToRename\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 124
  testRunner.And("I RightClick Save Dialog Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 125
  testRunner.And("I Select Rename From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 126
  testRunner.And("I Rename Save Dialog Explorer First Item To \"ResourceRenamed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 127
  testRunner.And("I Click SaveDialog CancelButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 128
  testRunner.And("I Filter the Explorer with \"ResourceRenamed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 129
  testRunner.Then("Explorer Contain Item \"ResourceRenamed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 116
+#line 130
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 117
+#line 131
  testRunner.And("I Click MessageBox No", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -373,31 +409,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteResourceFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Resource From Save Dialog", ((string[])(null)));
-#line 119
+#line 133
 this.ScenarioSetup(scenarioInfo);
-#line 120
+#line 134
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 121
+#line 135
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 136
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 123
+#line 137
  testRunner.And("I Filter Save Dialog Explorer with \"ResourceToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 138
  testRunner.And("I RightClick Save Dialog Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 139
  testRunner.And("I Select Delete From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 140
  testRunner.And("I Click MessageBox Yes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 141
  testRunner.And("I Click SaveDialog CancelButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 142
  testRunner.And("I Filter the Explorer with \"ResourceToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 143
  testRunner.Then("Explorer Does Not Contain Item \"ResourceToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 144
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 131
+#line 145
  testRunner.And("I Click MessageBox No", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -409,25 +445,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MoveResourceToLocalhostFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Resource To Localhost From Save Dialog", ((string[])(null)));
-#line 133
+#line 147
 this.ScenarioSetup(scenarioInfo);
-#line 134
+#line 148
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
+#line 149
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 150
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 137
+#line 151
  testRunner.And("I Filter Save Dialog Explorer with \"ResourceToMove\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 152
  testRunner.And("I Move resource to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 153
  testRunner.And("I Filter Save Dialog Explorer with \"FolderToMove\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 154
  testRunner.Then("Explorer Does Not Contain Item \"ResourceToMove\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 141
+#line 155
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
+#line 156
  testRunner.And("I Click MessageBox No", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -439,25 +475,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MoveFolderToFolderToRenameFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Folder To FolderToRename From Save Dialog", ((string[])(null)));
-#line 144
+#line 158
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 159
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 160
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 161
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 148
+#line 162
  testRunner.And("I Filter Save Dialog Explorer with \"ResourceTo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 163
  testRunner.And("I Move FolderToMove into FolderToRename", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 164
  testRunner.And("I Filter Save Dialog Explorer with \"FolderToMove\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 165
  testRunner.Then("\"FolderToMove\" is child of \"FolderToRename\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 166
  testRunner.And("I Click SaveDialog CancelButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 167
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -469,27 +505,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MoveFolderToSameLocationFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Folder To Same Location From Save Dialog", ((string[])(null)));
-#line 155
+#line 169
 this.ScenarioSetup(scenarioInfo);
-#line 156
+#line 170
  testRunner.Given("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 157
+#line 171
  testRunner.And("I Drag Toolbox MultiAssign Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
+#line 172
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 159
+#line 173
  testRunner.And("I Filter Save Dialog Explorer with \"FolderToRename\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 174
  testRunner.And("I Move FolderToRename into localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 175
  testRunner.And("I Filter Save Dialog Explorer with \"FolderToRename\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 176
  testRunner.Then("\"FolderToRename\" is child of localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 163
+#line 177
  testRunner.And("I Click SaveDialog CancelButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 178
  testRunner.Then("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 165
+#line 179
  testRunner.And("I Click MessageBox No", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

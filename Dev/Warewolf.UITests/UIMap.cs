@@ -8124,6 +8124,42 @@ namespace Warewolf.UITests
             Mouse.Click(saveButton, new Point(22, 16));
         }
 
+        [Given(@"I Enter New Folder Name as ""(.*)""")]
+        [When(@"I Enter New Folder Name as ""(.*)""")]
+        [Then(@"I Enter New Folder Name as ""(.*)""")]
+        public void ThenIEnterNewFolderNameAs(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+        }
+        [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
+        [When(@"I Enter New Sub Folder Name as ""(.*)""")]
+        [Then(@"I Enter New Sub Folder Name as ""(.*)""")]
+        public void ThenIEnterNewSubFolderNameAs(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+        }
+
+
         [Given(@"I Name New Sub Folder as ""(.*)""")]
         [When(@"I Name New Sub Folder as ""(.*)""")]
         [Then(@"I Name New Sub Folder as ""(.*)""")]
@@ -8250,6 +8286,16 @@ namespace Warewolf.UITests
             var folder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Unit Tests";
             var allFiles = Directory.GetFiles(folder, "*.xml", SearchOption.AllDirectories);
             Assert.IsTrue(allFiles.Any(p=>p.Contains(serviceName)));
+        }
+
+        [Given(@"Context Menu Has Two Items")]
+        [When(@"Context Menu Has Two Items")]
+        [Then(@"Context Menu Has Two Items")]
+        public void ThenContextMenuHasTwoItems()
+        {
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem));
         }
     }
 }
