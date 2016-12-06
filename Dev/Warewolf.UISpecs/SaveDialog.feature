@@ -27,15 +27,22 @@ Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Select
 	And Unit Tests Url Exists
 	And I Drag Toolbox MultiAssign Onto DesignSurface   
 	And I Click Save Ribbon Button to Open Save Dialog
+	And Explorer Contain Item "Unit Tests"
+	Then I Enter Service Name Into Save Dialog As "TestService"
+	And I Click SaveDialog Save Button
+	And "TestService" Resource Exists In Windows Directory "C:\ProgramData\Warewolf\Resources\Unit Tests"
+	Then I Click Close Workflow Tab Button
 
 Scenario: Double Click Item In Save Dialog Does Not Open Resource
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "Hello World"
-	And I Double Click Resource On The Service Picker
+	And I Double Click Resource On The Save Dialog
 	And I Click SaveDialog CancelButton
-	Then Resource Does not Open
+	Then Resource Did not Open
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
 	Given I Click New Workflow Ribbon Button
@@ -46,6 +53,7 @@ Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
 	Then Explorer Items appear on the Explorer Tree
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then Explorer Items appear on the Save Dialog Explorer Tree
+	Then I Click Close Workflow Tab Button
 
 Scenario: Close Save Dialog Removes Explorer Filter
 	Given I Click New Workflow Ribbon Button
@@ -54,6 +62,8 @@ Scenario: Close Save Dialog Removes Explorer Filter
 	And I Filter Save Dialog Explorer with "Hello World"
 	And I Click SaveDialog CancelButton
 	Then Explorer Items appear on the Explorer Tree
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
 
 Scenario: Rename Folder From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -66,17 +76,20 @@ Scenario: Rename Folder From Save Dialog
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "FolderRenamed"
 	Then Explorer Contain Item "FolderRenamed"
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create New Folder In Localhost Server From Save Dialog
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "New Created Folder"
 	And I RightClick Save Dialog Localhost
-	And I Select New Folder From SaveDialog ExplorerContextMenu
+	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Name New Folder as "New Created Folder"
-	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "New Created Folder"
-	Then Explorer Contain Item "New Created Folder"
+	Then Explorer Contain Item "New Created Folder"	
+	Then I Click Close Workflow Tab Button
 
 Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -85,9 +98,9 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I Filter Save Dialog Explorer with "Acceptance Tests"
 	And I RightClick Save Dialog Localhost First Item
 	And I Select New Folder From SaveDialog ExplorerContextMenu
-	And I Name New Folder as "New Created Sub Folder"
-	And I Click SaveDialog CancelButton
+	And I Name New Sub Folder as "New Created Sub Folder"
 	Then Explorer Contain Sub Item "New Created Sub Folder"
+	Then I Click Close Workflow Tab Button
 
 Scenario: Rename Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -99,7 +112,9 @@ Scenario: Rename Resource From Save Dialog
 	And I Rename Save Dialog Explorer First Item To "ResourceRenamed"
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "ResourceRenamed"
-	Then Explorer Contain Item "ResourceRenamed"
+	Then Explorer Contain Item "ResourceRenamed"	
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Delete Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -109,9 +124,11 @@ Scenario: Delete Resource From Save Dialog
 	And I RightClick Save Dialog Localhost First Item
 	And I Select Delete From SaveDialog ExplorerContextMenu
 	And I Click MessageBox Yes
+	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "ResourceToDelete"
 	Then Explorer Does Not Contain Item "ResourceToDelete"
-
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Move Resource To Localhost From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -121,6 +138,8 @@ Scenario: Move Resource To Localhost From Save Dialog
 	And I Move resource to localhost
 	And I Filter Save Dialog Explorer with "FolderToMove"
 	Then Explorer Does Not Contain Item "ResourceToMove"
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Move Folder To FolderToRename From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -129,7 +148,9 @@ Scenario: Move Folder To FolderToRename From Save Dialog
 	And I Filter Save Dialog Explorer with "ResourceTo"
 	And I Move FolderToMove into FolderToRename
 	And I Filter Save Dialog Explorer with "FolderToMove"
-	Then FolderToMove is child of FolderToRename
+	Then "FolderToMove" is child of "FolderToRename"
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
 
 Scenario: Move Folder To Same Location From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -138,5 +159,8 @@ Scenario: Move Folder To Same Location From Save Dialog
 	And I Filter Save Dialog Explorer with "FolderToRename"
 	And I Move FolderToRename into localhost
 	And I Filter Save Dialog Explorer with "FolderToRename"
-	Then FolderToMove is child of FolderToRename
+	Then "FolderToRename" is child of localhost
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 

@@ -804,7 +804,9 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
+        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
+        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Save);
@@ -872,7 +874,7 @@ namespace Warewolf.UITests
         [Then(@"I Double Click Resource On The Save Dialog")]
         public void ThenIDoubleClickResourceOnTheSaveDialog()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+            Mouse.DoubleClick(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem);
         }
 
         public void Filter_ServicePicker_Explorer(string FilterText)
@@ -1029,7 +1031,9 @@ namespace Warewolf.UITests
         }
 
 
+        [Given(@"I Click SaveDialog Save Button")]
         [When(@"I Click SaveDialog Save Button")]
+        [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
@@ -3585,6 +3589,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.DuplicateButton.Exists, "Duplicate button does not exist");
             Mouse.Click(SaveDialogWindow.DuplicateButton, new Point(26, 10));
             Assert.IsTrue(SaveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);        
         }
 
         [Given(@"I Click EditSharepointSource Button")]
@@ -7238,6 +7243,14 @@ namespace Warewolf.UITests
         [Then(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
         public void Select_NewFolder_From_SaveDialog_ExplorerContextMenu()
         {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem);
+        }
+
+        [Given(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        public void Select_New_Folder_From_SaveDialog_ExplorerContextMenu()
+        {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
 
@@ -7347,7 +7360,7 @@ namespace Warewolf.UITests
         [Then(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow);
         }
 
         [When(@"I Select NewWorkFlowService From ContextMenu")]
@@ -8096,8 +8109,29 @@ namespace Warewolf.UITests
         public void Name_New_Folder_From_Save_Dialog(string name)
         {
             #region Variable Declarations
-            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.WarewolfStudioViewMoTreeItem12.UIItemEdit;
-            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.WarewolfStudioViewMoTreeItem13.UIItemEdit;
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
+
+        [Given(@"I Name New Sub Folder as ""(.*)""")]
+        [When(@"I Name New Sub Folder as ""(.*)""")]
+        [Then(@"I Name New Sub Folder as ""(.*)""")]
+        public void I_Name_New_Sub_Folder_As(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
             WpfButton saveButton = this.SaveDialogWindow.SaveButton;
             #endregion
 
@@ -8124,7 +8158,7 @@ namespace Warewolf.UITests
         [Then(@"Explorer Does Not Contain Item ""(.*)""")]
         public void ExplorerDoesNotContainItem(string p0)
         {
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
         }
 
         [Given(@"Explorer Contain Sub Item ""(.*)""")]
@@ -8153,20 +8187,41 @@ namespace Warewolf.UITests
             Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
         }
 
-        [Given(@"Resource Does not Open")]
-        [When(@"Resource Does not Open")]
-        [Then(@"Resource Does not Open")]
-        public void ThenResourceDoesNotOpen()
+        [Given(@"Resource Did not Open")]
+        [When(@"Resource Did not Open")]
+        [Then(@"Resource Did not Open")]
+        public void ResourceDidNotOpen()
         {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
         }
 
-        [Given(@"FolderToMove is child of FolderToRename")]
-        [When(@"FolderToMove is child of FolderToRename")]
-        [Then(@"FolderToMove is child of FolderToRename")]
-        public void FolderToMoveIsChildOfFolderToRename()
+        [Given(@"""(.*)"" is child of ""(.*)""")]
+        [When(@"""(.*)"" is child of ""(.*)""")]
+        [Then(@"""(.*)"" is child of ""(.*)""")]
+        public void ThenIsChildOf(string child, string parent)
         {
-            ScenarioContext.Current.Pending();
+            Assert.AreEqual(parent, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
+        }
+
+        [Given(@"""(.*)"" is child of localhost")]
+        [When(@"""(.*)"" is child of localhost")]
+        [Then(@"""(.*)"" is child of localhost")]
+        public void ThenIsChildOfLocalhost(string child)
+        {
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Exists);
+            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+        }
+
+        [Given(@"I Move resource to localhost")]
+        [When(@"I Move resource to localhost")]
+        [Then(@"I Move resource to localhost")]
+        public void MoveResourceToLocalhost()
+        {
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
         }
 
         [Given(@"I Move FolderToMove into FolderToRename")]
@@ -8174,16 +8229,27 @@ namespace Warewolf.UITests
         [Then(@"I Move FolderToMove into FolderToRename")]
         public void MoveFolderToMoveIntoFolderToRename()
         {
-            ScenarioContext.Current.Pending();
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.ThirdItem.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.ThirdItem, new Point(90, 11));
         }
 
         [Given(@"I Move FolderToRename into localhost")]
         [When(@"I Move FolderToRename into localhost")]
         [Then(@"I Move FolderToRename into localhost")]
-        public void ThenIMoveFolderToRenameIntoLocalhost()
+        public void MoveFolderToRenameIntoLocalhost()
         {
-            ScenarioContext.Current.Pending();
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
         }
 
+        [Then(@"""(.*)"" Resource Exists In Windows Directory ""(.*)""")]
+        public void ResourceExistsInWindowsDirectory(string serviceName, string path)
+        {
+            var folder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Unit Tests";
+            var allFiles = Directory.GetFiles(folder, "*.xml", SearchOption.AllDirectories);
+            Assert.IsTrue(allFiles.Any(p=>p.Contains(serviceName)));
+        }
     }
 }
