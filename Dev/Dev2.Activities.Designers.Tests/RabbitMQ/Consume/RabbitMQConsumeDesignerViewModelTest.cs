@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm);
             Assert.IsTrue(vm.HasLargeView);
             Assert.IsFalse(vm.ShowLarge);
-            Assert.AreEqual(Visibility.Visible, vm.ThumbVisibility);
+            Assert.AreEqual(Visibility.Collapsed, vm.ThumbVisibility);
             Assert.IsNotNull(vm.EditRabbitMQSourceCommand);
             Assert.IsNotNull(vm.NewRabbitMQSourceCommand);
             Assert.IsNotNull(vm.RabbitMQSources);
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm.EditRabbitMQSourceCommand);
             Assert.IsNotNull(vm.NewRabbitMQSourceCommand);
             Assert.IsFalse(vm.ShowLarge);
-            Assert.AreEqual(vm.ThumbVisibility, Visibility.Visible);
+            Assert.AreEqual(vm.ThumbVisibility, Visibility.Collapsed);
             Assert.IsNotNull(vm.RabbitMQSources);
             Assert.IsFalse(vm.IsRabbitMQSourceFocused);
             Assert.IsFalse(vm.IsQueueNameFocused);
