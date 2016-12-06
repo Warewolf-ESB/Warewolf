@@ -813,6 +813,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public ICommand NewServiceCommand
+        {
+            get
+            {
+                return _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.NewService("");
+                        }
+                    }
+                }));
+            }
+        }
+
         public ICommand DebugInputsCommand
         {
             get
@@ -1610,6 +1628,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
             }
         }
+
         
         private void SetHashTable()
         {
@@ -2377,6 +2396,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _duplicateTooltip;
         private string _deployTooltip;
         private string _showDependenciesTooltip;
+        private ICommand _newServiceCommand;
 
         /// <summary>
         /// Models the service model changed.
@@ -2520,6 +2540,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
+                
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
 
                 _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
@@ -2690,6 +2711,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
+            if (environmentViewModel != null)
+            {
+                var item = environmentViewModel.FindByPath(resourceModel.GetSavePath());
+                var viewModel = environmentViewModel as EnvironmentViewModel;
+                var savedItem = viewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
+                item.AddChild(savedItem);
+            }
             resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.IsWorkflowSaved = true;
         }

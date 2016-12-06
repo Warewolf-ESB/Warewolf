@@ -104,14 +104,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, true, savedPath); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, true, savedPath); });
             return saveResult;
         }
 
         internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "")
         {
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath); });
             return saveResult;
         }
 
@@ -285,7 +285,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
+        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
         {
             var fileManager = new TxFileManager();
             using (TransactionScope tx = new TransactionScope())
@@ -299,17 +299,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
                         return;
                     }
-                    if (savedPath.EndsWith("\\"))
-                    {
-                        savedPath = savedPath.TrimEnd('\\');
-                    }
-                    if (savedPath.StartsWith("\\"))
-                    {
-                        savedPath = savedPath.TrimStart('\\');
-                    }
-                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    var directoryName = Path.Combine(workspacePath, savedPath);
-                    resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
+                    var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
 
                     #region Save to disk
 
@@ -338,6 +328,24 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
         }
+
+        public string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath)
+        {
+            if(savedPath.EndsWith("\\"))
+            {
+                savedPath = savedPath.TrimEnd('\\');
+            }
+            if(savedPath.StartsWith("\\"))
+            {
+                savedPath = savedPath.TrimStart('\\');
+            }
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var directoryName = Path.Combine(workspacePath, savedPath);
+            var resourceFilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
+            resource.FilePath = resourceFilePath;
+            return directoryName;
+        }
+
         #endregion
     }
 }

@@ -142,7 +142,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Error.
+        ///   Looks up a localized string similar to Error Deleting - {0}.
         /// </summary>
         public static string Delete_Error_Title {
             get {

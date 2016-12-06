@@ -456,7 +456,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var envMock = new Mock<IEnvironmentConnection>();
             var controller = new Mock<ICommunicationController>();
             var envModel = new Mock<IEnvironmentViewModel>();
-            envModel.Setup(model => model.Server.UpdateRepository.FireItemSaved(true)).Verifiable("Explorer Not Refreshed");
             var selectedItemMock = new Mock<IExplorerViewModel>();
             var item = new Mock<IExplorerTreeItem>();
             item.Setup(model => model.ResourceName).Returns("name");
@@ -497,7 +496,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var envMock = new Mock<IEnvironmentConnection>();
             var controller = new Mock<ICommunicationController>();
             var envModel = new Mock<IEnvironmentViewModel>();
-            envModel.Setup(model => model.Server.UpdateRepository.FireItemSaved(true)).Verifiable("Explorer Not Refreshed");
             var selectedItemMock = new Mock<IExplorerViewModel>();
             var itemObj = new Mock<IExplorerItemViewModel>();
             itemObj.Setup(model => model.IsFolder).Returns(true);

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Activities.Presentation;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using Dev2.Common;
+using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Interfaces;
-using Infragistics.Controls.Menus;
-using Infragistics.DragDrop;
+using Dev2.Interfaces;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -20,607 +15,403 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ExplorerView.xaml
     /// </summary>
-    public partial class ExplorerView : IExplorerView
+    public partial class ExplorerView
     {
-        private readonly ExplorerViewTestClass _explorerViewTestClass;
-        private bool _exceptionThrown;
-        private string _errorMessage;
-        private static bool _allowDrop;
-
         public ExplorerView()
         {
             InitializeComponent();
-            _explorerViewTestClass = new ExplorerViewTestClass(this);            
         }
 
-        #region ExplorerViewTestClass
-        // ReSharper disable once ConvertToAutoProperty
-        public ExplorerViewTestClass ExplorerViewTestClass => _explorerViewTestClass;
+        private Point _startPoint;
+        private bool _isDragging;
+        private bool _canDrag;
 
-        public IServer SelectedServer => ConnectControl.SelectedServer;
-
-        public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
+        private void StartDrag()
         {
-            return ExplorerViewTestClass.OpenEnvironmentNode(nodeName);
-        }
-        public IEnvironmentViewModel OpenEnvironment(string nodeName)
-        {
-            return ((IExplorerViewModel)DataContext).Environments.FirstOrDefault(a => a.DisplayName.Contains(nodeName));
-        }
-
-        public List<IExplorerTreeItem> GetFoldersVisible()
-        {
-            return ExplorerViewTestClass.GetFoldersVisible();
-        }
-
-        public IExplorerTreeItem OpenFolderNode(string folderName)
-        {
-            return ExplorerViewTestClass.OpenFolderNode(folderName);
-        }
-
-        public IExplorerTreeItem OpenItem(string resourceName, string folderName)
-        {
-            return ExplorerViewTestClass.OpenItem(resourceName, folderName);
-        }
-
-        public void Move(string originalPath, string destinationPath)
-        {
-            ExplorerViewTestClass.Move(originalPath, destinationPath);
-        }
-
-        public int GetVisibleChildrenCount(string folderName)
-        {
-            return ExplorerViewTestClass.GetVisibleChildrenCount(folderName);
-        }
-
-        public void PerformFolderRename(string originalFolderName, string newFolderName)
-        {
-            ExplorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
-        }
-
-        public void PerformSearch(string searchTerm)
-        {
-            ExplorerViewTestClass.PerformSearch(searchTerm);
-        }
-
-        public void AddNewFolder(string folder, string server)
-        {
-            ExplorerViewTestClass.PerformFolderAdd(folder, server);
-        }
-
-        public void VerifyItemExists(string path)
-        {
-            ExplorerViewTestClass.VerifyItemExists(path);
-        }
-
-        public void DeletePath(string path, object env)
-        {
-            ExplorerViewTestClass.DeletePath(path, (IEnvironmentModel)env);
-        }
-
-        public void AddNewFolderFromPath(string path)
-        {
-            ExplorerViewTestClass.PerformFolderAdd(path);
-        }
-
-        public void AddNewResource(string path, string itemType)
-        {
-            ExplorerViewTestClass.PerformItemAdd(path);
-        }
-
-        public void AddResources(int resourceNumber, string path, string type, string name)
-        {
-            ExplorerViewTestClass.AddChildren(resourceNumber, path, type, name);
-        }
-
-        public int GetResourcesVisible(string path)
-        {
-            return ExplorerViewTestClass.GetFoldersResourcesVisible(path);
-        }
-
-        #endregion
-
-        void ExplorerTree_OnInitializeNode(object sender, InitializeNodeEventArgs e)
-        {
-            var xamDataTreeNode = e.Node;
-            var dataItem = xamDataTreeNode?.Data as IExplorerItemViewModel;
-            if (dataItem == null)
+            _isDragging = true;
+            var temp = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            if (temp != null)
             {
-                return;
+                var dragData = new DataObject();
+                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, temp.ActivityName);
+                dragData.SetData(temp);
+                DragDrop.DoDragDrop(this, dragData, DragDropEffects.Copy);
             }
-            if (!dataItem.IsRenaming)
+            _isDragging = false;
+        }
+
+        private void Tree_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_canDrag)
             {
-                return;
-            }
-            if (dataItem.ResourceName.StartsWith(Studio.Resources.Languages.Core.NewFolderLabel))
-            {
-                ExplorerTree.EnterEditMode(xamDataTreeNode);
+                if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_isDragging)
+                {
+                    Point position = e.GetPosition(null);
+                    if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                    {
+                        StartDrag();
+                    }
+                }
             }
         }
 
-        void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void DropTree_Drop(object sender, DragEventArgs e)
         {
-            var textBox = sender as TextBox;
-            textBox?.SelectAll();
-        }
-
-        void ExplorerTree_OnNodeExitedEditMode(object sender, NodeEventArgs e)
-        {
-            var dataItem = e.Node.Data as IExplorerItemViewModel;
-            if (dataItem == null)
+            try
             {
-                return;
+                if (_canDrag)
+                {
+                    if (e.Data.GetDataPresent(typeof (ExplorerItemViewModel)))
+                    {
+                        var explorerItemViewModel = e.Data.GetData(typeof (ExplorerItemViewModel)) as ExplorerItemViewModel;
+                        if (explorerItemViewModel == null)
+                        {
+                            e.Handled = true;
+                            return;
+                        }
+                        var destination = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+
+                        if (!Equals(explorerItemViewModel.Parent, destination.DataContext))
+                        {
+                            var dropTarget = destination.DataContext as IExplorerItemViewModel;
+
+                            if (dropTarget != null && dropTarget.IsFolder)
+                            {
+                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                itemViewModel.Move(dropTarget);
+                            }
+                            var destEnv = destination.DataContext as IEnvironmentViewModel;
+                            if (destEnv != null)
+                            {
+                                var itemViewModel = (IExplorerItemViewModel) explorerItemViewModel;
+                                itemViewModel.Move(destEnv);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        destination.Background = Brushes.Transparent;
+                        _isDragging = false;
+                        _canDrag = false;
+                    }
+                }
             }
-            if (dataItem.IsRenaming && dataItem.ResourceName.StartsWith(Studio.Resources.Languages.Core.NewFolderLabel))
+            catch (Exception)
             {
-                ExplorerTree.EnterEditMode(e.Node);
+                _isDragging = false;
+                _canDrag = false;
             }
         }
 
-        void ExplorerTree_OnMouseUp(object sender, MouseButtonEventArgs e)
+        private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
-            ResetDragEvents();
-            e.Handled = true;
+            try
+            {
+                do
+                {
+                    var anchestor = current as T;
+                    if (anchestor != null)
+                    {
+                        return anchestor;
+                    }
+                    current = VisualTreeHelper.GetParent(current);
+                }
+                while (current != null);
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public bool CancelDrag { get; set; }
-
-        void ExplorerView_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ExplorerTree_OnDragEnter(object sender, DragEventArgs e)
         {
-            if (e.ButtonState == MouseButtonState.Released)
+            if (_canDrag)
             {
-                ResetDragEvents();
+                ValidateDragEnter(sender, e);
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
         }
 
-        private void ExplorerTree_OnNodeDraggingStart(object sender, DragDropStartEventArgs e)
+        private void ExplorerTree_OnDragOver(object sender, DragEventArgs e)
         {
-            var tree = sender as XamDataTree;
-            if (tree != null)
+            if (_canDrag)
             {
-                if (tree.DataContext.GetType() == typeof(SingleEnvironmentExplorerViewModel) || Mouse.LeftButton == MouseButtonState.Released)
+                ValidateDragEnter(sender, e);
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private static void ValidateDragEnter(object sender, DragEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            var treeView = sender as TreeView;
+            var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
+            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            {
+                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
+                
+                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
                 {
-                    ResetDragDropTemplate(e);
-                    StopDragging();
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
                 }
                 else
                 {
-                    if (tree.DataContext.GetType() == typeof(ExplorerViewModel))
-                    {
-                        var xamDataTreeNodeControl = e.DragSource as XamDataTreeNodeControl;
-                        if (xamDataTreeNodeControl != null &&
-                            xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
-                        {
-                            DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
-                            dragSource.DragOver += DragSourceDragOver;
-                            dragSource.Drop += DragSourceDrop;
-                            dragSource.DragLeave += DragSourceDragLeave;
-                            dragSource.DragEnd += DragSourceDragEnd;
-                        }
-                    }
+                    e.Effects = DragDropEffects.Copy;
+                }
+            }
+            else
+            {
+                if (itemViewModel != null && explorerItemViewModel.ResourcePath.Contains(itemViewModel.ResourceName))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Copy;
                 }
             }
         }
 
-        private void DragSourceDragOver(object sender, DragDropMoveEventArgs e)
+        private void ExplorerTree_OnDragLeave(object sender, DragEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Released)
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null)
             {
-                ResetDragDropTemplate(e);
-                StopDragging();
+                e.Effects = DragDropEffects.Copy;
             }
-            else
+        }
+
+        private void ExplorerTree_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDragging = false;
+            _canDrag = false;
+
+            if (e.OriginalSource.GetType() == typeof (ScrollViewer))
             {
-                var dropTarget = e.DropTarget as XamDataTreeNodeControl;
-                var dragSource = e.DragSource as XamDataTreeNodeControl;
-                if (dropTarget != null && dragSource != null)
+                var explorerView = sender as ExplorerView;
+                var singleEnvironmentExplorerViewModel = explorerView?.DataContext as SingleEnvironmentExplorerViewModel;
+                if (singleEnvironmentExplorerViewModel != null) return;
+                var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+                if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
                 {
-                    if (ValidateBeforeAndAfterState(e))
+                    explorerItemViewModel.IsSelected = false;
+                }
+                else if (environmentViewModel != null && environmentViewModel.IsSelected)
+                {
+                    environmentViewModel.IsSelected = false;
+                }
+            }
+        }
+
+        private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Tab)
+            {
+                var textBox = sender as TextBox;
+                var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.ResourceName = textBox.Text;
+                }
+            }
+        }
+        
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel != null)
+            {
+                explorerItemViewModel.ResourceName = textBox.Text;
+            }
+        }
+
+        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //if ((bool)e.NewValue)
+            {
+                var textBox = sender as TextBox;
+                Keyboard.Focus(textBox);
+                textBox?.SelectAll();
+            }
+        }
+
+        private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null)
+            {
+                var environmentViewModel = treeViewItem.DataContext as EnvironmentViewModel;
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+                if (environmentViewModel != null)
+                {
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = environmentViewModel;
+                }
+                else if (explorerItemViewModel != null)
+                {
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = explorerItemViewModel;
+                }
+
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+            _isDragging = false;
+            _canDrag = false;
+        }
+
+        private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+
+                if (e.ClickCount == 2)
+                {
+                    if (explorerItemViewModel != null && !explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder)
+                    {
+                        e.Handled = true;
                         return;
+                    }
+                }
 
-                    if (dropTarget.Node.Data.GetType() == typeof(ExplorerItemViewModel))
-                    {
-                        ValidateExplorerItemNode(e, dragSource, dropTarget);
-                    }
-                    else if (dropTarget.Node.Data.GetType() == typeof(EnvironmentViewModel))
-                    {
-                        ValidateEnvironmentNode(e, dragSource, dropTarget);
-                    }
+                if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)
+                {
+                    _canDrag = false;
                 }
                 else
                 {
-                    ValidateWorksurfaceNode(e, dragSource);
+                    _canDrag = true;
+                    // Store the mouse position
+                    _startPoint = e.GetPosition(null);
                 }
             }
         }
 
-        private static bool ValidateBeforeAndAfterState(DragDropMoveEventArgs e)
+        private void ExplorerTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            Grid gridBefore = (Grid)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropBeforeElem");
-            if (gridBefore?.Visibility == Visibility.Visible)
+            var treeView = sender as TreeView;
+            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
+            if (singleEnvironmentExplorerViewModel != null)
             {
-                SetDropNotAllowedStyle(e);
-                return true;
-            }
-
-            Grid gridAfter = (Grid)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropAfterElem");
-            if (gridAfter?.Visibility == Visibility.Visible)
-            {
-                SetDropNotAllowedStyle(e);
-                return true;
-            }
-            return false;
-        }
-
-        private void ValidateWorksurfaceNode(DragDropMoveEventArgs e, XamDataTreeNodeControl dragSource)
-        {
-            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
-            if (dropActivity == null || dragSource == null)
-            {
-                return;
-            }
-            var sourceNodeData = dragSource.Node.Data as IExplorerItemViewModel;
-            if (sourceNodeData != null && sourceNodeData.ResourceType == "WorkflowService")
-            {
-                var dragData = new DataObject();
-                var context = dragSource.DataContext as XamDataTreeNodeDataContext;
-                if (context != null)
-                {
-                    var dataContext = context.Data as ExplorerItemViewModel;
-
-                    if (dataContext != null)
-                    {
-                        dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dataContext.ActivityName);
-                        dragData.SetData(dataContext);
-                    }
-                    if (!CancelDrag)
-                    {
-                        try
-                        {
-                            DragDropManager.EndDrag(true);
-                        }
-                        catch
-                        {
-                            //Something
-                        }
-                    }
-                    DragDrop.DoDragDrop(e.DragSource, dragData, DragDropEffects.Copy);
-                }
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
             }
         }
 
-        private void ValidateEnvironmentNode(DragDropMoveEventArgs e, XamDataTreeNodeControl sourceNodeData, XamDataTreeNodeControl dropTarget)
+        private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var destination = dropTarget.Node.Data as IEnvironmentViewModel;
-            var source = sourceNodeData.Node.Data as IExplorerItemViewModel;
-
-            if (destination != null && source != null)
+            var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+            if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
-                if (Equals(source.Parent, destination))
-                {
-                    SetDropNotAllowedStyle(e);
-                }
-                else if (!ValidateDragDrop(source, destination))
-                {
-                    SetDropAllowedStyle(e);
-                    ClearException(e);
-                    var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
-                    if (checkExists != null)
-                    {
-                        SetException(e, "The destination folder has a resource with the same name");
-                    }
-                }
-                else
-                {
-                    SetDropNotAllowedStyle(e);
-                }
-            }
-        }
-
-        private void ValidateExplorerItemNode(DragDropMoveEventArgs e, XamDataTreeNodeControl sourceNodeData, XamDataTreeNodeControl dropTarget)
-        {
-            var destination = dropTarget.Node.Data as IExplorerItemViewModel;
-            var source = sourceNodeData.Node.Data as IExplorerItemViewModel;
-
-            if (destination != null && source != null)
-            {
-                IEnvironmentViewModel vmDestination = GetEnv(destination);
-
-                if (Equals(source.Parent, destination))
-                {
-                    SetDropNotAllowedStyle(e);
-                }
-                else if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
-                {
-                    SetDropAllowedStyle(e);
-                    ClearException(e);
-                    var checkExists = dropTarget.Node.Nodes.FirstOrDefault(o => Equals(o.Data, source));
-                    if (checkExists != null)
-                    {
-                        SetException(e, "The destination folder has a resource with the same name");
-                    }
-                    else if (!source.CanMove)
-                    {
-                        SetException(e, Warewolf.Resource.Errors.ErrorResource.InvalidMovePermissionErrorMessage);
-                    }
-                }
-                else
-                {
-                    SetDropNotAllowedStyle(e);
-                }
-            }
-        }
-
-        private static void SetDropAllowedStyle(DragDropMoveEventArgs e)
-        {
-            e.DropNotAllowedCursorTemplate = null;
-            e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
-            e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
-            e.OperationType = OperationType.Move;
-
-            Rectangle rect = (Rectangle)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
-            if (rect != null)
-            {
-                rect.Stroke = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
-            }
-            e.DropTarget.AllowDrop = true;
-            _allowDrop = true;
-        }
-
-        private static void SetDropNotAllowedStyle(DragDropMoveEventArgs e)
-        {
-            e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-            e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-            e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-            e.OperationType = OperationType.DropNotAllowed;
-
-            Rectangle rect = (Rectangle)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
-            if (rect != null)
-            {
-                rect.Stroke = Application.Current.TryFindResource("TransparentBrush") as SolidColorBrush;
-                rect.Opacity = 0.0;
-            }
-            e.DropTarget.AllowDrop = false;
-            _allowDrop = false;
-        }
-
-        void DragSourceDrop(object sender, DropEventArgs e)
-        {
-            if (_allowDrop)
-            {
-                // Disconnect the events for memory reasons.
-                var src = DragDropManager.GetDragSource(e.DragSource);
-                src.DragLeave -= DragSourceDragLeave;
-                src.DragOver -= DragSourceDragOver;
-                src.Drop -= DragSourceDrop;
-
-                if (!_exceptionThrown)
-                {
-                    var dropTarget = e.DropTarget as XamDataTreeNodeControl;
-                    var dragSource = e.DragSource as XamDataTreeNodeControl;
-                    if (dropTarget != null && dragSource != null)
-                    {
-                        var dropNodeData = dropTarget.Node.Data;
-                        var sourceNodeData = dragSource.Node.Data;
-                        if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
-                        {
-                            var destination = dropNodeData as IExplorerItemViewModel;
-                            var source = sourceNodeData as IExplorerItemViewModel;
-                            if (destination != null && source != null)
-                            {
-                                IEnvironmentViewModel vmDestination = GetEnv(destination);
-
-                                if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
-                                {
-                                    source.Move(destination);
-                                }
-                                else
-                                {
-                                    e.OperationType = OperationType.DropNotAllowed;
-                                }
-                            }
-                            ResetDragDropTemplate(e);
-                        }
-                        else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
-                        {
-                            var destination = dropNodeData as IEnvironmentViewModel;
-                            var source = sourceNodeData as IExplorerItemViewModel;
-
-                            if (destination != null && source != null)
-                            {
-                                if (!ValidateDragDrop(source, destination))
-                                {
-                                    source.Move(destination);
-                                }
-                                else
-                                {
-                                    e.OperationType = OperationType.DropNotAllowed;
-                                }
-                            }
-                            ResetDragDropTemplate(e);
-                        }
-                    }
-                }
+                ExplorerItemShortcuts(e, explorerItemViewModel);
             }
             else
             {
-                ShowDropNotAllowedError(e);
-            }
-        }
-
-        private static void ShowDropNotAllowedError(DropEventArgs e)
-        {
-            var dropActivity = Infragistics.Windows.Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
-            var dragSource = e.DragSource as XamDataTreeNodeControl;
-            if (dropActivity == null || dragSource == null)
-            {
-                return;
-            }
-            var sourceNodeData = dragSource.Node.Data as IExplorerItemViewModel;
-            if (sourceNodeData != null && sourceNodeData.ResourceType != "WorkflowService")
-            {
-                sourceNodeData.ShowErrorMessage(Studio.Resources.Languages.Core.ExplorerDropNotAllowedMessage,
-                    Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
-            }
-        }
-
-        private void ClearException(DragDropMoveEventArgs e)
-        {
-            e.OperationType = OperationType.Move;
-            _exceptionThrown = false;
-            _errorMessage = "";
-        }
-        private void SetException(DragDropMoveEventArgs e, string errorMessage)
-        {
-            e.OperationType = OperationType.DropNotAllowed;
-            _exceptionThrown = true;
-            _errorMessage = errorMessage;
-        }
-
-        private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
-        {
-            CancelDrag = false;
-            IEnvironmentViewModel vmSource = GetEnv(source);
-
-            if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
-            {
-                CancelDrag = true;
-            }
-            if ((source.ResourceType == "ServerSource" || source.IsServer) &&
-                string.IsNullOrWhiteSpace(source.ResourcePath))
-            {
-                CancelDrag = true;
-            }
-            return CancelDrag;
-        }
-
-        void DragSourceDragLeave(object sender, DragDropEventArgs e)
-        {
-            // Reset the cursor template
-            if (Mouse.LeftButton == MouseButtonState.Released)
-            {
-                StopDragging();
-            }
-            ResetDragDropTemplate(e);
-        }
-
-        private void DragSourceDragEnd(object sender, DragDropEventArgs e)
-        {
-            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
-            var dragSource = e.DragSource as XamDataTreeNodeControl;
-            if (dropTarget != null && dragSource != null)
-            {
-                var dropNodeData = dropTarget.Node.Data;
-                var sourceNodeData = dragSource.Node.Data;
-                if (dropNodeData != null)
+                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
+                if (environmentViewModel != null && environmentViewModel.IsSelected)
                 {
-                    if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
-                    {
-                        var source = sourceNodeData as IExplorerItemViewModel;
-                        if (source != null && _exceptionThrown)
-                        {
-                            e.OperationType = OperationType.DropNotAllowed;
-                            source.ShowErrorMessage(_errorMessage, "Move not allowed");
-                            _exceptionThrown = false;
-                            _errorMessage = "";
-                            ResetDragDropTemplate(e);
-                        }
-                        ExplorerTree.ScrollNodeIntoView(dragSource.Node);
-                    }
-                    else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
-                    {
-                        var source = sourceNodeData as IExplorerItemViewModel;
-                        if (source != null && _exceptionThrown)
-                        {
-                            e.OperationType = OperationType.DropNotAllowed;
-                            source.ShowErrorMessage(_errorMessage, "Move not allowed");
-                            _exceptionThrown = false;
-                            _errorMessage = "";
-                            ResetDragDropTemplate(e);
-                        }
-                        ExplorerTree.ScrollNodeIntoView(dragSource.Node);
-                    }
+                    EnvironmentShortcuts(e, environmentViewModel);
                 }
             }
         }
 
-        private static void ResetDragDropTemplate(DragDropEventArgs e)
+        private static void ExplorerItemShortcuts(KeyEventArgs e, ExplorerItemViewModel explorerItemViewModel)
         {
-            try
+            if (e.Key == Key.F2)
             {
-                e.DropNotAllowedCursorTemplate = null;
-                e.CopyCursorTemplate = null;
-                e.MoveCursorTemplate = null;
-                Rectangle rect = (Rectangle)Infragistics.Windows.Utilities.GetDescendantFromName((XamDataTreeNodeControl)e.DropTarget, "DropOntoElem");
-                if (rect != null)
+                explorerItemViewModel.IsRenaming = true;
+            }
+            if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                explorerItemViewModel.DeployCommand.Execute(null);
+            }
+            if (explorerItemViewModel.IsFolder)
+            {
+                if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    rect.Stroke = Application.Current.TryFindResource("TransparentBrush") as SolidColorBrush;
-                    rect.Opacity = 0.0;
+                    explorerItemViewModel.NewServiceCommand.Execute(null);
                 }
-                e.DropTarget.AllowDrop = false;
-                _allowDrop = false;
+                if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+                {
+                    explorerItemViewModel.CreateNewFolder();
+                }
             }
-            catch (Exception ex)
+            if (e.Key == Key.Delete)
             {
-                Dev2Logger.Error(ex.Message, ex);
+                if (!explorerItemViewModel.IsRenaming)
+                {
+                    explorerItemViewModel.DeleteCommand.Execute(null);
+                }
             }
         }
 
-        private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
+        private static void EnvironmentShortcuts(KeyEventArgs e, EnvironmentViewModel environmentViewModel)
         {
-            ResetDragEvents();
-        }
-
-
-        void ResetDragEvents()
-        {
-            CancelDrag = false;
-            Mouse.SetCursor(Cursors.Arrow);
-        }
-
-        IEnvironmentViewModel GetEnv(IExplorerTreeItem source)
-        {
-            var x = source;
-            var env = source as IEnvironmentViewModel;
-            if (env != null)
-                return env;
-            return GetEnv(x.Parent);
-        }
-
-        void StopDragging()
-        {
-            CancelDrag = true;
-            try
+            if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                DragDropManager.EndDrag(true);
+                environmentViewModel.NewServiceCommand.Execute(null);
             }
-            // ReSharper disable once UnusedVariable
-            catch (Exception)
+            if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                //aaa
+                environmentViewModel.DeployCommand.Execute(null);
+            }
+            if (e.Key == Key.F && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                environmentViewModel.CreateFolder();
             }
         }
 
-        private void XamContextMenu_Opening(object sender, OpeningEventArgs e)
+        private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var node = ((XamDataTreeNodeDataContext)((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content).Node;
-
-            if (node?.NodeLayout?.Tree != null)
+            if (ExplorerTree.SelectedItem == null)
             {
-                var clickedNode = node;
-                clickedNode.IsActive = true;
+                if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                {
+                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    mainViewModel?.NewServiceCommand.Execute(null);
+                }
             }
         }
 
-        private void ExplorerTree_OnNodeEnteredEditMode(object sender, TreeEditingNodeEventArgs e)
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
-            var dataItem = e.Node.Data as IExplorerItemViewModel;
-            if (dataItem == null)
-            {
-                return;
-            }
-            dataItem.IsRenaming = true;
+            e.Handled = true;
+        }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            Keyboard.Focus(textBox);
+            textBox?.SelectAll();
+        }
+
+        private void ExplorerTree_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ExplorerTree?.Items?.Refresh();
+            ExplorerTree?.UpdateLayout();
         }
     }
 }
