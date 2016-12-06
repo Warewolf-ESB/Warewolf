@@ -618,7 +618,7 @@ Scenario: Split text format into recordset - With Escape value
 	|   | [[rec(4).id]] = d      |
 
 Scenario: Split text format into recordset - With NewLine value
-	Given A string to split with value "a\n2ff"
+	Given A string to split with new line value
 	And  assign to variable "[[rec().id]]" split type "Chars" at "\r\n" and Include "unselected" and Escape "" 
 	When the data split tool is executed
 	Then the split recordset "[[rec(*).id]]" will be
