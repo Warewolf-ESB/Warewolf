@@ -84,10 +84,10 @@
                                                     WrapInBrackets="True"
                                                     Margin="0,0,1,1"
                                                     Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.SystemInformationToolTipResult}"
+                                                    ToolTip="{x:Static languages:Tooltips.SystemInformationToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.SystemInformationHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.SystemInformationHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Result"
                                                          SourcePropertyValue="{Binding Result, UpdateSourceTrigger=PropertyChanged}"
@@ -121,9 +121,9 @@
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{x:Static languages:Core.SystemInformationToolTipSysInfoType}">
+                                      ToolTip="{x:Static languages:Tooltips.SystemInformationToolTipSysInfoType}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.SystemInformationHelpSysInfoType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.SystemInformationHelpSysInfoType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="EnTypeOfSystemInformation"
                                                          SourcePropertyValue="{Binding EnTypeOfSystemInformation, UpdateSourceTrigger=PropertyChanged}"

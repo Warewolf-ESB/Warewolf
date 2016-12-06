@@ -68,10 +68,10 @@
                     <TextBox x:Name="EndpointUrlTxtBox" 
                              Grid.Row="0" 
                              Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ManageWcfEndpointTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ManageWcfEndpointTooltip}"
                              Text="{Binding EndpointUrl, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.WcfSourceHostNameHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.WcfSourceHostNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                 </Grid>
@@ -127,10 +127,10 @@
                                 Height="30" 
                                
                                 Content="{x:Static languages:Core.TestConnectionLabel}" 
-                                ToolTip="{x:Static languages:Core.ManageEmailSendTooltip}"
+                                ToolTip="{x:Static languages:Tooltips.ManageEmailSendTooltip}"
                                 Command="{Binding Path=TestCommand}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.ServerTestConnectionHelp}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.ServerTestConnectionHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                     </StackPanel>

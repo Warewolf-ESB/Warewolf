@@ -33,6 +33,7 @@ using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
+
 namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
@@ -462,12 +463,12 @@ namespace Dev2.Settings.Security
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
-                        HelpText = Core.SettingsSecurityServerHelpWindowsGroup;
+                        HelpText = Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityServerHelpWindowsGroup;
                         break;
 
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
-                        HelpText = Core.SettingsSecurityResourceHelpResource;
+                        HelpText = Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource;
                         break;
                 }
             }

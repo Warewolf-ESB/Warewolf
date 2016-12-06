@@ -912,9 +912,6 @@
   <data name="MenuHelp" xml:space="preserve">
     <value>A quick link to the Knowledge Base and other helpful resources.</value>
   </data>
-  <data name="MenuHelpToolTip" xml:space="preserve">
-    <value>Knowledge Base</value>
-  </data>
   <data name="MenuLockMenuHelp" xml:space="preserve">
     <value>Lock the Menu bar either open or closed, or Unlock to allow dynamic menu opening on mouse over.</value>
   </data>

@@ -146,7 +146,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
                 }
             }
-            AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Core.DebugOutputViewAddNewTestUnsavedToolTip;
+            AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestUnsavedToolTip;
 
             return canAddNewTest;
         }

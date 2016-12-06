@@ -1234,7 +1234,7 @@
                                         CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
                                         x:Name="DeleteButton"
                                         Grid.Column="1"
-                                        ToolTip="{x:Static languages:Core.DeleteVariableListObjectTooltip}"
+                                        ToolTip="{x:Static languages:Tooltips.DeleteVariableListObjectTooltip}"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>
@@ -1522,7 +1522,7 @@
                                         x:Name="ViewObjectsButton"
                                         Grid.Column="0"
                                         Margin="-5,0,0,0"
-                                        ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                        ToolTip="{x:Static languages:Tooltips.ViewJsonObjectTooltip}"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>
@@ -1558,7 +1558,7 @@
                                         CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
                                         x:Name="DeleteButton"
                                         Grid.Column="1"
-                                        ToolTip="{x:Static languages:Core.DeleteVariableListObjectTooltip}"
+                                        ToolTip="{x:Static languages:Tooltips.DeleteVariableListObjectTooltip}"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>

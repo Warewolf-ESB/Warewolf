@@ -54,14 +54,14 @@
                                 DefaultText="[[Recordset()]]"
                                 AllowUserInsertLine="False"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static languages:Core.CountToolTipRecordset}"
+                                ToolTip="{x:Static languages:Tooltips.CountToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CountHelpRecordset}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CountHelpRecordset}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="RecordsetNameValue"
                                      SourcePropertyValue="{Binding RecordsetNameValue, UpdateSourceTrigger=PropertyChanged}"
@@ -83,11 +83,11 @@
                       Grid.Column="1"
                       Grid.Row="0"
                       Margin="-6,-0,0,0"
-                      ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
+                      ToolTip="{x:Static languages:Tooltips.TreatNullAsZeroToolTip}"
                       IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.TreatNullAsZeroHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
 
@@ -97,13 +97,13 @@
                                 Margin="0,-1,0,0"
                                 DefaultText="[[Count]]"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.CountToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.CountToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.CountHelpResult}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.CountHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CountNumber"
                                      SourcePropertyValue="{Binding ModelItem.CountNumber, UpdateSourceTrigger=PropertyChanged}"

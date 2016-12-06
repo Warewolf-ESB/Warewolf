@@ -47,7 +47,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RenameToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Tooltips.RenameToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -57,7 +57,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RenameHelpFileFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RenameHelpFileFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputPath"
                                      SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -74,7 +74,7 @@
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RenameToolTipNewName}"
+                                ToolTip="{x:Static languages:Tooltips.RenameToolTipNewName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NewNametxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -84,7 +84,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RenameHelpNewName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RenameHelpNewName}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputPath"
                                      SourcePropertyValue="{Binding ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -100,12 +100,12 @@
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.RenameToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.RenameToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RenameHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RenameHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

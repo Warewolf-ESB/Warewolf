@@ -19,7 +19,7 @@
                                MaxHeight="Infinity"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
-                               ToolTip="{x:Static languages:Core.SequenceTooltipSequence}">
+                               ToolTip="{x:Static languages:Tooltips.SequenceTooltipSequence}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -38,7 +38,7 @@
             <sap:WorkflowItemsPresenter x:Uid="sad:WorkflowItemsPresenter_1"
                                         x:Name="ActivitiesPresenter"
                                         HintText="AddMode New Activity"
-                                        ToolTip="{x:Static languages:Core.SequenceTooltipSequence}"
+                                        ToolTip="{x:Static languages:Tooltips.SequenceTooltipSequence}"
                                         IsDefaultContainer="true">
                 <sap:WorkflowItemsPresenter.CommandBindings>
                     <CommandBinding Command="Copy" Executed="CopyCommandExecuted"
@@ -73,7 +73,7 @@
                     </ItemsPanelTemplate>
                 </sap:WorkflowItemsPresenter.ItemsPanel>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.SequenceHelpSequence}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SequenceHelpSequence}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ActivitiesPresenter_AutoID">

@@ -82,9 +82,9 @@
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     AutomationProperties.AutomationId="UI_TextBox_AutoID"
-                                                    ToolTip="{x:Static languages:Core.AssignObjectToolTipVariable}">
+                                                    ToolTip="{x:Static languages:Tooltips.AssignObjectToolTipVariable}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.AssignObjectHelpVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.AssignObjectHelpVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldName"
                                                          SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
@@ -120,9 +120,9 @@
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static languages:Core.AssignToolTipNewValue}">
+                                                    ToolTip="{x:Static languages:Tooltips.AssignToolTipNewValue}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.AssignObjectHelpNewValue}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.AssignObjectHelpNewValue}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldValue"
                                                          SourcePropertyValue="{Binding FieldValue, UpdateSourceTrigger=PropertyChanged}"

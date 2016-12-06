@@ -74,102 +74,102 @@
                         <TextBlock Grid.Row="7" Grid.Column="0">Trace: Log detailed system information. Includes events from all the levels above</TextBlock>
                         
                         <RadioButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogOffTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogOffTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogOffHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogOffHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogFatalTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogFatalTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogFatalHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogFatalHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogErrorTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogErrorTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogErrorHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogErrorHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogWarnTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogWarnTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogWarnHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogWarnHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogInfoTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogInfoTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogInfoHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogInfoHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogDebugTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogDebugTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogDebugHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogDebugHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerEventLogTraceTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerEventLogTraceTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogTraceHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerEventLogTraceHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogOffTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogOffTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogOffHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogOffHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogFatalTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogFatalTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogFatalHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogFatalHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogErrorTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogErrorTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogErrorHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogErrorHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogWarnTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogWarnTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogWarnHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogWarnHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogInfoTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogInfoTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogInfoHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogInfoHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogDebugTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogDebugTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogDebugHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogDebugHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" GroupName="Server_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewServerFileLogTraceTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewServerFileLogTraceTooltip}"
                                      IsChecked="{Binding ServerFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerFileLogTraceHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewServerFileLogTraceHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
                     </Grid>
@@ -240,114 +240,114 @@
                         <TextBlock Grid.Row="6" Grid.Column="0">Debug: Log all system activity including executions. Also logs fatal, error, warning and info events</TextBlock>
                         <TextBlock Grid.Row="7" Grid.Column="0">Trace: Log detailed system information. Includes events from all the levels above</TextBlock>
                         <RadioButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogOffTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogOffTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogOffHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogOffHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogFatalTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogFatalTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogFatalHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogFatalHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogErrorTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogErrorTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogErrorHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogErrorHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogWarnTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogWarnTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogWarnHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogWarnHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogInfoTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogInfoTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogInfoHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogInfoHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogDebugTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogDebugTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogDebugHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogDebugHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" GroupName="Studio_EventLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioEventLogTraceTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogTraceTooltip}"
                                      IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioEventLogTraceHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioEventLogTraceHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogOffTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogOffTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogOffHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogOffHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogFatalTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogFatalTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogFatalHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogFatalHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogErrorTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogErrorTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogErrorHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogErrorHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogWarnTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogWarnTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogWarnHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogWarnHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogInfoTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogInfoTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogInfoHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogInfoHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogDebugTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogDebugTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogDebugHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogDebugHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" GroupName="Studio_FileLog_Settings" 
-                                     ToolTip="{x:Static languages:Core.LoggingViewStudioFileLogTraceTooltip}"
+                                     ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogTraceTooltip}"
                                      IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewStudioFileLogTraceHelpText}" 
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewStudioFileLogTraceHelpText}" 
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>

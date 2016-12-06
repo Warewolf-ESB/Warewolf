@@ -56,7 +56,7 @@
                                 MinHeight="53"
                                 FilterType="All" 
                                 WrapInBrackets="False" 
-                                ToolTip="{x:Static languages:Core.CMDLineToolTipCMD}"
+                                ToolTip="{x:Static languages:Tooltips.CMDLineToolTipCMD}"
                                 Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
@@ -67,7 +67,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CMDLineHelpCMD}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CMDLineHelpCMD}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandFileName"
                                      SourcePropertyValue="{Binding  ModelItem.CommandFileName, UpdateSourceTrigger=PropertyChanged}"
@@ -83,12 +83,12 @@
                                 WrapInBrackets="True" 
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                ToolTip="{x:Static languages:Core.CMDLineToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.CMDLineToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 HorizontalAlignment="Stretch"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CMDLineHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CMDLineHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandResult"
                                      SourcePropertyValue="{Binding ModelItem.CommandResult, UpdateSourceTrigger=PropertyChanged}"

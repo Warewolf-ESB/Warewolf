@@ -74,9 +74,9 @@
                       SelectedItem="{Binding SelectedSource,
                                              Mode=TwoWay,
                                              UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Core.DropboxSourceToolTip}">
+                      ToolTip="{x:Static languages:Tooltips.DropboxSourceToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxSourceToolTip}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Tooltips.DropboxSourceToolTip}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="SelectedSource"
                                          SourcePropertyValue="{Binding SelectedSource,
@@ -91,7 +91,7 @@
                     Command="{Binding Path=EditDropboxSourceCommand,
                                       Mode=TwoWay}"
                     Content="..."
-                    ToolTip="{x:Static languages:Core.DropBoxToolTipEditSource}">
+                    ToolTip="{x:Static languages:Tooltips.DropBoxToolTipEditSource}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="" />
                 </i:Interaction.Behaviors>
@@ -104,7 +104,7 @@
                                       Mode=TwoWay}"
                     Content="{x:Static languages:Core.New}"
                     Style="{StaticResource ButtonOrangeStyle}"
-                    ToolTip="{x:Static languages:Core.DropBoxToolTipNewSource}">
+                    ToolTip="{x:Static languages:Tooltips.DropBoxToolTipNewSource}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="" />
                 </i:Interaction.Behaviors>
@@ -142,9 +142,9 @@
                                     Text="{Binding ToPath,
                                                    Mode=TwoWay,
                                                    UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.DropBoxFileListFileNameToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.DropBoxFileListFileNameToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListFileNameHelp}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropBoxFileListFileNameHelp}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ToPath"
                                          SourcePropertyValue="{Binding ToPath,
@@ -175,9 +175,9 @@
                          Content="Files"
                          GroupName="ReturnData"
                          IsChecked="{Binding IsFilesSelected}"
-                         ToolTip="{x:Static languages:Core.DropboxReadFilesToolTip}">
+                         ToolTip="{x:Static languages:Tooltips.DropboxReadFilesToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesHelp}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropboxReadFilesHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
@@ -185,9 +185,9 @@
                          Content="Folders"
                          GroupName="ReturnData"
                          IsChecked="{Binding IsFoldersSelected}"
-                         ToolTip="{x:Static languages:Core.DropboxReadFoldersToolTip}">
+                         ToolTip="{x:Static languages:Tooltips.DropboxReadFoldersToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFoldersHelp}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropboxReadFoldersHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
@@ -195,9 +195,9 @@
                          Content="Files &amp; Folders"
                          GroupName="ReturnData"
                          IsChecked="{Binding IsFilesAndFoldersSelected}"
-                         ToolTip="{x:Static languages:Core.DropboxReadFilesFoldersToolTip}">
+                         ToolTip="{x:Static languages:Tooltips.DropboxReadFilesFoldersToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesFoldersHelp}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropboxReadFilesFoldersHelp}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </Grid>
@@ -223,9 +223,9 @@
                       Margin="-6,0,0,0"
                       Content="Load Sub folders"
                       IsChecked="{Binding IsRecursive}"
-                      ToolTip="{x:Static languages:Core.DropBoxFileListRecursiveToolTip}">
+                      ToolTip="{x:Static languages:Tooltips.DropBoxFileListRecursiveToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListRecursiveHelp}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropBoxFileListRecursiveHelp}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
 
@@ -251,10 +251,10 @@
                                     Text="{Binding Result,
                                                    Mode=TwoWay,
                                                    UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.DropboxResultHelpText}"
+                                    ToolTip="{x:Static languages:HelpText.DropboxResultHelpText}"
                                     WrapInBrackets="True">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxResultHelpText}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropboxResultHelpText}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="Result"
                                          SourcePropertyValue="{Binding Result,
