@@ -328,6 +328,28 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Trigger")]
+        public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyFalse()
+        {
+            //------------Setup for test--------------------------
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+
+            var mock = new Mock<IScheduleTrigger>();
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, mock.Object, "TestWf",Guid.NewGuid().ToString());
+
+            schedulerViewModel.SelectedTask = scheduleResource;
+            //------------Execute Test---------------------------
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+            //------------Assert Results-------------------------
+            schedulerViewModel.SelectedTask.Status = SchedulerStatus.Enabled;
+            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.SelectedTask.Status = SchedulerStatus.Disabled;
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+        }
+
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_RunAsapIfScheduleMissed")]
         public void SchedulerViewModel_RunAsapIfScheduleMissed_SetRunAsapIfScheduleMissed_IsDirtyTrue()
