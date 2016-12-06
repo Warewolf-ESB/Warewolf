@@ -694,7 +694,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject, IntellisenseProvider = intellisenseProvider.Object };
             textBox.Text = "[[@this.new(1).val(x).s]]";
             Assert.IsTrue(textBox.HasError);
-            Assert.AreEqual("Index [ x ] is not a number. Index must be numeric.", textBox.ToolTip.ToString());
+            Assert.AreEqual("Variable name [[@this.new(1).val(x).s]] contains invalid character(s). Only use alphanumeric _ and - ", textBox.ToolTip.ToString());
         }
     }
 
