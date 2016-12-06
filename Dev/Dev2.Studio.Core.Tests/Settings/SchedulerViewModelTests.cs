@@ -1652,9 +1652,13 @@ namespace Dev2.Core.Tests.Settings
             env.Setup(a => a.IsConnected).Returns(true);
             var svr = new Mock<IServer>();
             svr.Setup(a => a.IsConnected).Returns(true);
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.DisplayName).Returns("localhost");
+            env.Setup(a => a.Connection).Returns(mockConnection.Object);
+
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popupController.Object, new SynchronousAsyncWorker(), svr.Object, a => env.Object);
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
-
+            schedulerViewModel.CurrentEnvironment = env.Object;
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
             schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
@@ -1667,25 +1671,12 @@ namespace Dev2.Core.Tests.Settings
 
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
 
-            schedulerViewModel.NewCommand.Execute(null);
-            Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
-            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[1].Name);
-            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[1].OldName);
-            Assert.IsTrue(schedulerViewModel.TaskList[1].IsDirty);
-            Assert.AreEqual(SchedulerStatus.Enabled, schedulerViewModel.TaskList[1].Status);
-            Assert.AreEqual(string.Empty, schedulerViewModel.TaskList[1].WorkflowName);
-            Assert.AreEqual(schedulerViewModel.SelectedTask, schedulerViewModel.TaskList[1]);
-
             env.Setup(a => a.IsConnected).Returns(false);
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(connection => connection.DisplayName).Returns("localhost");
-            env.Setup(a => a.Connection).Returns(mockConnection.Object);
+            
             schedulerViewModel.CurrentEnvironment = env.Object;
 
             schedulerViewModel.NewCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
-            //popupController.Verify(a => a.Show("Server: localhost has disconnected. Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Hand, null, false, true, false, false));
             popupController.Verify(a => a.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false));
         }
 
