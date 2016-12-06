@@ -393,9 +393,9 @@ namespace Dev2.UI
             {
                 _originalToolTip = ToolTip;
             }
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType != enIntellisensePartType.JsonObject)
             {
-                var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
                 if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
                 {
                     ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
@@ -423,7 +423,20 @@ namespace Dev2.UI
                         ToolTip = _originalToolTip;
                         HasError = false;
                     }
-                }                
+                }
+            }else
+            {
+                if (error.Item2 != string.Empty)
+                {
+                    ToolTip = error.Item2;
+                    HasError = true;
+                }
+                else
+                {
+                    ToolTip = _originalToolTip;
+                    HasError = false;
+                }
+                
             }
             
         }
