@@ -1996,7 +1996,7 @@ namespace WarewolfParsingTest
             }
             catch(Exception e)
             {
-                Assert.AreEqual("Index [ x ] is not a number. Index must be numeric.", e.Message);
+                Assert.AreEqual("parse error", e.Message);
             }
         }
 
