@@ -345,7 +345,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             const string Content = "File [[contains&]] Stored Here";
             const string ExpectedResult = "File [[contains&]] Stored Here";
-            const string ExpectedMessageFormat = "Label - Variable name [[contains&]] contains invalid character(s)";
+            const string ExpectedMessageFormat = "Label - Variable name [[contains&]] contains invalid character(s). Only use alphanumeric _ and - ";
 
             var viewModel = VerifyValidateFileContent(Content, ExpectedResult);
             Assert.AreEqual(1, viewModel.Errors.Count);
@@ -398,7 +398,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             const string Password = "[[password&]]";
             const string ExpectedResult = "[[password&]]";
-            const string ExpectedMessageFormat = "Label - Variable name [[password&]] contains invalid character(s)";
+            const string ExpectedMessageFormat = "Label - Variable name [[password&]] contains invalid character(s). Only use alphanumeric _ and - ";
 
             var viewModel = VerifyValidateArchivePassword(Password, ExpectedResult);
             

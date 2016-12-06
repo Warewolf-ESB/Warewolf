@@ -2429,6 +2429,159 @@ this.ScenarioSetup(scenarioInfo);
             this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("11", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec [[rec().a]]", "5", "[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]] [[rec().a]]", "Default", "12", ((string[])(null)));
 #line hidden
         }
+        
+        public virtual void ValidationMessagesWhenInvalidVariables(string no, string variable, string error, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Invalid Variables", exampleTags);
+#line 215
+this.ScenarioSetup(scenarioInfo);
+#line 216
+ testRunner.Given(string.Format("the current text in the textbox is \'{0}\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 217
+ testRunner.And("the provider used is \'Default\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 218
+ testRunner.Then(string.Format("the result has the error \'{0}\'", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[my(-1).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [ -1 ] is not greater than zero")]
+        public virtual void ValidationMessagesWhenInvalidVariables_1()
+        {
+            this.ValidationMessagesWhenInvalidVariables("1", "[[my(-1).var]]", "Recordset index [ -1 ] is not greater than zero", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec\"()\".a]] contains invalid character(s). Only use alphanumeric " +
+            "_ and -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_2()
+        {
+            this.ValidationMessagesWhenInvalidVariables("2", "[[rec\"()\".a]]", "Variable name [[rec\"()\".a]] contains invalid character(s). Only use alphanumeric " +
+                    "_ and -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec.a]] contains invalid character(s). Only use alphanumeric _ an" +
+            "d -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_3()
+        {
+            this.ValidationMessagesWhenInvalidVariables("3", "[[rec.a]]", "Variable name [[rec.a]] contains invalid character(s). Only use alphanumeric _ an" +
+                    "d -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset field [[1]] begins with a number")]
+        public virtual void ValidationMessagesWhenInvalidVariables_4()
+        {
+            this.ValidationMessagesWhenInvalidVariables("4", "[[1]]", "Recordset field [[1]] begins with a number", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[@]] contains invalid character(s). Only use alphanumeric _ and -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_5()
+        {
+            this.ValidationMessagesWhenInvalidVariables("5", "[[@]]", "Variable name [[@]] contains invalid character(s). Only use alphanumeric _ and -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var#]] contains invalid character(s). Only use alphanumeric _ and" +
+            " -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_6()
+        {
+            this.ValidationMessagesWhenInvalidVariables("6", "[[var#]]", "Variable name [[var#]] contains invalid character(s). Only use alphanumeric _ and" +
+                    " -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
+        public virtual void ValidationMessagesWhenInvalidVariables_7()
+        {
+            this.ValidationMessagesWhenInvalidVariables("7", "[[var]]00]]", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[]] contains invalid character(s). Only use alphanumeric _ and -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_8()
+        {
+            this.ValidationMessagesWhenInvalidVariables("8", "[[]]", "Variable name [[]] contains invalid character(s). Only use alphanumeric _ and -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]] contains invalid characte" +
+            "r(s). Only use alphanumeric _ and -")]
+        public virtual void ValidationMessagesWhenInvalidVariables_9()
+        {
+            this.ValidationMessagesWhenInvalidVariables("9", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "Variable name [[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]] contains invalid characte" +
+                    "r(s). Only use alphanumeric _ and -", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation messages when Invalid Variables: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: An open [[ without a related close ]]")]
+        public virtual void ValidationMessagesWhenInvalidVariables_10()
+        {
+            this.ValidationMessagesWhenInvalidVariables("10", "[[var]]00[[", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+#line hidden
+        }
     }
 }
 #pragma warning restore
