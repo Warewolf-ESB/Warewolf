@@ -7114,7 +7114,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
         }
 
+        [Given(@"I Select Delete FromExplorerContextMenu")]
         [When(@"I Select Delete FromExplorerContextMenu")]
+        [Then(@"I Select Delete FromExplorerContextMenu")]
         public void Select_Delete_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
@@ -8123,6 +8125,19 @@ namespace Warewolf.UITests
             // Click 'Save' button
             Mouse.Click(saveButton, new Point(22, 16));
         }
+        
+        [Given(@"I Dont Name The Created Folder")]
+        [When(@"I Dont Name The Created Folder")]
+        [Then(@"I Dont Name The Created Folder")]
+        public void ThenIDontNameTheCreatedFolder()
+        {
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+
+            Keyboard.SendKeys(newFolderEdit, "{Enter}", ModifierKeys.None);
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
 
         [Given(@"I Enter New Folder Name as ""(.*)""")]
         [When(@"I Enter New Folder Name as ""(.*)""")]
@@ -8141,6 +8156,7 @@ namespace Warewolf.UITests
             // Type '{Enter}' in text box
             Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
         }
+
         [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
         [When(@"I Enter New Sub Folder Name as ""(.*)""")]
         [Then(@"I Enter New Sub Folder Name as ""(.*)""")]
@@ -8295,7 +8311,14 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.SourcesMenuItem));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem));
+        }
+
+        [Then(@"Folder Is Removed From Explorer")]
+        public void ThenFolderIsRemovedFromExplorer()
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
         }
     }
 }

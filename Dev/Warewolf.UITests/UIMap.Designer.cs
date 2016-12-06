@@ -98964,6 +98964,22 @@ namespace Warewolf.UITests
                 return this.mUINewFolderMenuItem;
             }
         }
+        
+        public WpfMenuItem SourcesMenuItem
+        {
+            get
+            {
+                if ((this.mSourcesMenuItem == null))
+                {
+                    this.mSourcesMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mSourcesMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Sources";
+                    this.mSourcesMenuItem.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mSourcesMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -98974,6 +98990,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mDeleteMenuItem;
         
         private WpfMenuItem mUINewFolderMenuItem;
+        
+        private WpfMenuItem mSourcesMenuItem;
         #endregion
     }
     
