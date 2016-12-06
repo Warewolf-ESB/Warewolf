@@ -370,7 +370,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
         }
 
-        [TestMethod]
+         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
@@ -629,7 +629,32 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBoxTest.IsInCalculateMode);
         }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsAllAndTextIsRecordset_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.All };
+            textBox.Text = "[[People(*)]]";
+            Assert.IsFalse(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecodsetFieldsAndTextMultipleRecordSetFields_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.RecordsetFields,
+                AllowMultipleVariables = true
+            };
+            textBox.Text = "[[rec(*).warewolf]],[[rec(*).soa]]";
+            Assert.IsFalse(textBox.HasError);
+        }
         
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("IntellisenseTextBoxTests_ValidateText")]
@@ -650,6 +675,26 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             IntellisenseTextBoxTestHelper testHelper = new IntellisenseTextBoxTestHelper();
             testHelper.OnKeyDown(new KeyEventArgs(null, mockPresentationSource.Object, 0, Key.Escape));
             Assert.IsFalse(testHelper.IsDropDownOpen);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_InvalidJsonArrayIndex_ShouldError()
+        {
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+                .Returns(default(IList<IntellisenseProviderResult>));
+
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject, IntellisenseProvider = intellisenseProvider.Object };
+            textBox.Text = "[[@this.new(1).val(x).s]]";
+            Assert.IsTrue(textBox.HasError);
+            Assert.AreEqual("Variable name [[@this.new(1).val(x).s]] contains invalid character(s). Only use alphanumeric _ and - ", textBox.ToolTip.ToString());
         }
     }
 

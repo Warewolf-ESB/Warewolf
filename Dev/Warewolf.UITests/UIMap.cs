@@ -367,22 +367,6 @@ namespace Warewolf.UITests
             Click_New_Workflow_Ribbon_Button();
         }
 
-        public void CleanupABlankWorkflow()
-        {
-            Playback.PlaybackError -= OnError;
-            try
-            {
-                TryClearToolboxFilter();
-                TryClearExplorerFilter();
-                Click_Close_Workflow_Tab_Button();
-                Click_MessageBox_No();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error during test cleanup: " + e.Message);
-            }
-        }
-
         [When(@"I Click Assign tool VariableTextbox")]
         public void Click_Assign_tool_VariableTextbox()
         {
@@ -7123,7 +7107,6 @@ namespace Warewolf.UITests
             var newHeight = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Height;
 
             Assert.IsTrue(newHeight > defaultHeight, "Comment tool height has not changed after dragging the resize indicator downward.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"), "Workflow tab name does not contain the unsaved star after resizing the comment tool on the design surface.");
             return newHeight;
         }
 

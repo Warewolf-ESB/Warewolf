@@ -130,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'Results' - Variable name [[a$]] contains invalid character(s)", viewModel.Errors[0].Message);
+            Assert.AreEqual("'Results' - Variable name [[a$]] contains invalid character(s). Only use alphanumeric _ and - ", viewModel.Errors[0].Message);
         }
 
         [TestMethod]
