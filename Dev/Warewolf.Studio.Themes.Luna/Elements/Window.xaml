@@ -26,6 +26,40 @@
         <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
         <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
     </Style>
+    
+    <Style x:Key="SwitchMainWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessStyle}">
+        <Setter Property="Height" Value="280"/>
+        <Setter Property="MinHeight" Value="280"/>
+        <Setter Property="Width" Value="425"/>
+        <Setter Property="MinWidth" Value="425"/>
+    </Style>
+
+    <Style x:Key="SwitchCaseWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessStyle}">
+        <Setter Property="Height" Value="110"/>
+        <Setter Property="MinHeight" Value="110"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="MinWidth" Value="400"/>
+    </Style>
+
+    <Style x:Key="WindowBorderlessResizeStyle" TargetType="Window">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
+    </Style>
+    
+    <Style x:Key="DecisionWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessResizeStyle}">
+        <Setter Property="Height" Value="390"/>
+        <Setter Property="MinHeight" Value="390"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="MinWidth" Value="400"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+    </Style>
 
     <Style x:Key="ModalDialogStyle" TargetType="Window">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
