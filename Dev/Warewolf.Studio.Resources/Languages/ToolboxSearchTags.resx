@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,44 +58,274 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="javascript_Tag" xml:space="preserve">
+    <value>javascript</value>
+  </data>
+  <data name="Tool_WebMethod_Put_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Post_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Get_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Delete_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Xpath_Tags" xml:space="preserve">
+    <value>xml</value>
+  </data>
+  <data name="Tool_Utility_Web_Request_Tags" xml:space="preserve">
+    <value>header page content html</value>
+  </data>
+  <data name="Tool_Utility_Sys_Info_Tags" xml:space="preserve">
+    <value>date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system</value>
+  </data>
+  <data name="Tool_Utility_Random_Tags" xml:space="preserve">
+    <value>guid generate </value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Publish_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Consume_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Format_Number_Tags" xml:space="preserve">
+    <value>decimal round</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Tags" xml:space="preserve">
+    <value>year month week day hour second split format add subtract</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Diff_Tags" xml:space="preserve">
+    <value>year month week day hour second split format compare datepart part</value>
+  </data>
+  <data name="Tool_Utility_Create_JSON_Tags" xml:space="preserve">
+    <value>object</value>
+  </data>
+  <data name="Tool_Utility_Comment_Tags" xml:space="preserve">
+    <value>note</value>
+  </data>
+  <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
+    <value>add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum</value>
+  </data>
+  <data name="Tool_Utility_Aggregate_Calculate_Tags" xml:space="preserve">
+    <value>function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv math</value>
+  </data>
+  <data name="Tool_SharePoint_Upload_File_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Update_List_Item_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_List_Item_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_Folder_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Move_File_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Download_File_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_List_Item_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_File_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Create_List_Item_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Copy_File_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Scripting_Script_Tags" xml:space="preserve">
+    <value>javascript python ruby</value>
+  </data>
+  <data name="Tool_Scripting_CMD_Script_Tags" xml:space="preserve">
+    <value>command line shell</value>
+  </data>
+  <data name="Tool_Resources_WCF_Tags" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Service_Tags" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Dot_net_DLL_Tags" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Com_DLL_Tags" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Recordset_Unique_Records_Tags" xml:space="preserve">
+    <value>distinct</value>
+  </data>
+  <data name="Tool_Recordset_Sort_Tags" xml:space="preserve">
+    <value>order by</value>
+  </data>
+  <data name="Tool_Recordset_Length_Tags" xml:space="preserve">
+    <value>max index</value>
+  </data>
+  <data name="Tool_Recordset_Find_Records_Tags" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="Tool_Recordset_Delete_Tags" xml:space="preserve">
+    <value>remove</value>
+  </data>
+  <data name="Tool_Recordset_Count_Tags" xml:space="preserve">
+    <value>total</value>
+  </data>
+  <data name="Tool_LoopConstruct_Select_and_Apply_Tags" xml:space="preserve">
+    <value>repeat update function</value>
+  </data>
+  <data name="Tool_LoopConstruct_For_Each_Tags" xml:space="preserve">
+    <value>repeat while</value>
+  </data>
+  <data name="Tool_Flow_Switch_Tags" xml:space="preserve">
+    <value>match branch case</value>
+  </data>
+  <data name="Tool_Flow_Sequence_Tags" xml:space="preserve">
+    <value>consolidate cleanup group nest</value>
+  </data>
+  <data name="Tool_Flow_Decision_Tags" xml:space="preserve">
+    <value>assert is match true false</value>
+  </data>
+  <data name="Tool_File_Zip_Tags" xml:space="preserve">
+    <value>archive directory folder</value>
+  </data>
+  <data name="Tool_File_Write_File_Tags" xml:space="preserve">
+    <value>append overwrite content data set</value>
+  </data>
+  <data name="Tool_File_Unzip_Tags" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Rename_Tags" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Read_Folder_Tags" xml:space="preserve">
+    <value>directory</value>
+  </data>
+  <data name="Tool_File_Read_File_Tags" xml:space="preserve">
+    <value>open get content data</value>
+  </data>
+  <data name="Tool_File_Move_Tags" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Delete_Tags" xml:space="preserve">
+    <value>remove directory folder</value>
+  </data>
+  <data name="Tool_File_Create_Tags" xml:space="preserve">
+    <value>new directory folder</value>
+  </data>
+  <data name="Tool_File_Copy_Tags" xml:space="preserve">
+    <value>duplicate directory folder</value>
+  </data>
+  <data name="Tool_Email_SMTP_Send_Tags" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Email_Exchange_Send_Tags" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Dropbox_Upload_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_List_Contents_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Download_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Delete_Tags" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Database_SQL_Server_Tags" xml:space="preserve">
+    <value>stored procedure function data source microsoft</value>
+  </data>
+  <data name="Tool_Database_SQL_Bulk_Insert_Tags" xml:space="preserve">
+    <value>source microsoft</value>
+  </data>
+  <data name="Tool_Database_PostgreSQL_Tags" xml:space="preserve">
+    <value>stored procedure function data source connector</value>
+  </data>
+  <data name="Tool_Database_Oracle_Tags" xml:space="preserve">
+    <value>stored procedure function data source</value>
+  </data>
+  <data name="Tool_Database_ODBC_Tags" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Database_MySQL_Tags" xml:space="preserve">
+    <value>stored procedure function data source</value>
+  </data>
+  <data name="Tool_Data_Replace_Tags" xml:space="preserve">
+    <value>find</value>
+  </data>
+  <data name="Tool_Data_Find_Index_Tags" xml:space="preserve">
+    <value>search string position</value>
+  </data>
+  <data name="Tool_Data_Data_Split_Tags" xml:space="preserve">
+    <value>csv file seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Data_Merge_Tags" xml:space="preserve">
+    <value>csv join concatenate seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Case_Convert_Tags" xml:space="preserve">
+    <value>upper lower title camel sentence</value>
+  </data>
+  <data name="Tool_Data_Base_Convert_Tags" xml:space="preserve">
+    <value>text binary base 64 base64 hex</value>
+  </data>
+  <data name="Tool_Data_Assign_Tags" xml:space="preserve">
+    <value>declare setup variable set</value>
+  </data>
+  <data name="Tool_Data_Assign_Object_Tags" xml:space="preserve">
+    <value>json array declare setup variable set</value>
+  </data>
+  <data name="ruby_Tag" xml:space="preserve">
+    <value>ruby</value>
+  </data>
+  <data name="python_Tag" xml:space="preserve">
+    <value>python</value>
+  </data>
 </root>

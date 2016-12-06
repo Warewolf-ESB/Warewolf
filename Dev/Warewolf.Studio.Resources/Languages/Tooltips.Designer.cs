@@ -59,5 +59,4735 @@ namespace Warewolf.Studio.Resources.Languages {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using anonymous security credentials.
+        /// </summary>
+        internal static string AnonymousAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("AnonymousAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only objects go in here. To assign a value to an object, put the object path in here..
+        /// </summary>
+        internal static string AssignObjectToolTipVariable {
+            get {
+                return ResourceManager.GetString("AssignObjectToolTipVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To assign a value to a variable, put the value in here.
+        ///= as the first character for maths e.g. =[[qty]]*[[price]].
+        /// </summary>
+        internal static string AssignToolTipNewValue {
+            get {
+                return ResourceManager.GetString("AssignToolTipNewValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///To assign a value to a variable, put the variable here.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string AssignToolTipVariable {
+            get {
+                return ResourceManager.GetString("AssignToolTipVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and data goes in here.
+        ///To convert Text, Hex, Binary and Base64, put the data to be converted in here..
+        /// </summary>
+        internal static string BaseConversionToolTipBaseInput {
+            get {
+                return ResourceManager.GetString("BaseConversionToolTipBaseInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of data you are converting from.
+        ///e.g. If the data is Binary and you would like Text, then select Binary here..
+        /// </summary>
+        internal static string BaseConversionToolTipFromtype {
+            get {
+                return ResourceManager.GetString("BaseConversionToolTipFromtype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of data you are converting to.
+        ///e.g. If the data is Binary and you would like Text, then select Text here..
+        /// </summary>
+        internal static string BaseConversionToolTipTotype {
+            get {
+                return ResourceManager.GetString("BaseConversionToolTipTotype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel like calculation.
+        /// </summary>
+        internal static string CalculateForAggregatesToolTipFx {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the calculation result..
+        /// </summary>
+        internal static string CalculateForAggregatesToolTipResult {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel like calculation.
+        /// </summary>
+        internal static string CalculateToolTipFx {
+            get {
+                return ResourceManager.GetString("CalculateToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the calculation result..
+        /// </summary>
+        internal static string CalculateToolTipResult {
+            get {
+                return ResourceManager.GetString("CalculateToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel this action.
+        /// </summary>
+        internal static string CancelButtonTooltip {
+            get {
+                return ResourceManager.GetString("CancelButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of conversion you would like to make..
+        /// </summary>
+        internal static string CaseConversionToolTipConvertToCasetype {
+            get {
+                return ResourceManager.GetString("CaseConversionToolTipConvertToCasetype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To convert the case of some text, put the variable containing the text here..
+        /// </summary>
+        internal static string CaseConversionToolTipTextInput {
+            get {
+                return ResourceManager.GetString("CaseConversionToolTipTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to clear the filter text..
+        /// </summary>
+        internal static string ClearVariableListFilterTooltip {
+            get {
+                return ResourceManager.GetString("ClearVariableListFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here. 
+        ///To execute a command line action or actions, enter them in here. 
+        ///Acts like a batch file. Any user driven task will simply be ignored..
+        /// </summary>
+        internal static string CMDLineToolTipCMD {
+            get {
+                return ResourceManager.GetString("CMDLineToolTipCMD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process priority for execution. 
+        ///Very helpful for long running processes that need/don’t need to be resource intensive..
+        /// </summary>
+        internal static string CMDLineToolTipPrioritytype {
+            get {
+                return ResourceManager.GetString("CMDLineToolTipPrioritytype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed..
+        /// </summary>
+        internal static string CMDLineToolTipResult {
+            get {
+                return ResourceManager.GetString("CMDLineToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected COM plugin source connection.
+        /// </summary>
+        internal static string ComManagePluginServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a COM DLL.
+        /// </summary>
+        internal static string ComManagePluginServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the COM plugin you want to use.
+        /// </summary>
+        internal static string ComManagePluginServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The programmatic identifier you want to use.
+        /// </summary>
+        internal static string ComManagePluginSourceAssemblyNameTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceAssemblyNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter criteria.
+        /// </summary>
+        internal static string ComManagePluginSourceClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter for the COM DLL you want .
+        /// </summary>
+        internal static string ComManagePluginSourceFilterTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the available COM DLL.
+        /// </summary>
+        internal static string ComManagePluginSourceRefreshTooltip {
+            get {
+                return ResourceManager.GetString("ComManagePluginSourceRefreshTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
+        ///You can connect comments into the process flow and they will simply be skipped during execution. 
+        ///However, they will appear in the debug output..
+        /// </summary>
+        internal static string CommentToolTipComment {
+            get {
+                return ResourceManager.GetString("CommentToolTipComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Warewolf server you want to use or click New Remote Server....
+        /// </summary>
+        internal static string ConnectControlConnectionsToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlConnectionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the selected server.
+        /// </summary>
+        internal static string ConnectControlEditConnectionToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlEditConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect / disconnect the selected server.
+        /// </summary>
+        internal static string ConnectControlToggleConnectionToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlToggleConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are copying to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string CopyToolTipDestination {
+            get {
+                return ResourceManager.GetString("CopyToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To copy a file or folder, put the full path and file or folder name here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string CopyToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("CopyToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string CopyToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("CopyToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string CopyToolTipPassword {
+            get {
+                return ResourceManager.GetString("CopyToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Copy action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string CopyToolTipResult {
+            get {
+                return ResourceManager.GetString("CopyToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source.
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string CopyToolTipUsername {
+            get {
+                return ResourceManager.GetString("CopyToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy the current resource Url.
+        /// </summary>
+        internal static string CopyUrlToolTip {
+            get {
+                return ResourceManager.GetString("CopyUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the name in here..
+        /// </summary>
+        internal static string CountToolTipRecordset {
+            get {
+                return ResourceManager.GetString("CountToolTipRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here. 
+        ///Returns a number specifying how many records/indexes are in the recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset() will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string CountToolTipResult {
+            get {
+                return ResourceManager.GetString("CountToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g.[[rec(*).name]] 
+        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. 
+        ///e.g.  [[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] or simply [[rec(*)]].
+        /// </summary>
+        internal static string CreateJSONToolTipInput {
+            get {
+                return ResourceManager.GetString("CreateJSONToolTipInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset..
+        /// </summary>
+        internal static string CreateJSONToolTipName {
+            get {
+                return ResourceManager.GetString("CreateJSONToolTipName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the inputs in JSON format.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string CreateJSONToolTipResult {
+            get {
+                return ResourceManager.GetString("CreateJSONToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a file or folder, put the full path and file or folder name here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string CreateToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("CreateToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string CreateToolTipForceOverWrite {
+            get {
+                return ResourceManager.GetString("CreateToolTipForceOverWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string CreateToolTipPassword {
+            get {
+                return ResourceManager.GetString("CreateToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Create action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string CreateToolTipResult {
+            get {
+                return ResourceManager.GetString("CreateToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string CreateToolTipUsername {
+            get {
+                return ResourceManager.GetString("CreateToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows this variable to be passed into the service.
+        /// </summary>
+        internal static string DataListInputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListInputCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will return this variable as a response.
+        /// </summary>
+        internal static string DataListOutputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListOutputCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The variable name you want to declare, without the [[ ]] braces.
+        /// </summary>
+        internal static string DataListVariableInputTooltip {
+            get {
+                return ResourceManager.GetString("DataListVariableInputTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.
+        ///E.g. Text is normally left and numbers normally right..
+        /// </summary>
+        internal static string DataMergeToolTipAlignType {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipAlignType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To join two or more pieces of data together list them in the order you would like them joined. 
+        ///If you use recordset (*) notation, the list will be repeated for every record..
+        /// </summary>
+        internal static string DataMergeToolTipInput {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, 
+        ///you can specify what makes up the padding e.g. 0 for numbers or blank space for text..
+        /// </summary>
+        internal static string DataMergeToolTipPadding {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipPadding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here. Returns the merged string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string DataMergeToolTipResult {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line or Tab.
+        /// </summary>
+        internal static string DataMergeToolTipUsing {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any..
+        /// </summary>
+        internal static string DataMergeToolTipWithtype {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipWithtype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. 
+        ///e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters..
+        /// </summary>
+        internal static string DataSplitToolTipEscape {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipEscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you would like the data or item you are splitting on to be included in the result data, select this checkbox..
+        /// </summary>
+        internal static string DataSplitToolTipInclude {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipInclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). 
+        ///Selecting Backwards will process from the end of the data (right) to the beginning (left)..
+        /// </summary>
+        internal static string DataSplitToolTipProcessDirection {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipProcessDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the split data in the pattern as described by the results.
+        ///The variable pattern will be repeated until the end of the input data.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string DataSplitToolTipResults {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards..
+        /// </summary>
+        internal static string DataSplitToolTipSkipBlankRows {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipSkipBlankRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To split a value into one or more variables, put the value in here.
+        ///You can process entire file content or just trim the white space from a variable..
+        /// </summary>
+        internal static string DataSplitToolTipString {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line, Tab or End.
+        /// </summary>
+        internal static string DataSplitToolTipUsing {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select where you would like to split the data..
+        /// </summary>
+        internal static string DataSplitToolTipWithtype {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipWithtype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
+        /// </summary>
+        internal static string DateTimeDifferenceToolTipDatetime1 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipDatetime1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
+        /// </summary>
+        internal static string DateTimeDifferenceToolTipDatetime2 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipDatetime2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format of the eg. yyyy-dd-mm.
+        /// </summary>
+        internal static string DateTimeDifferenceToolTipInputFormat {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipInputFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the unit of time to output the difference in..
+        /// </summary>
+        internal static string DateTimeDifferenceToolTipOutputType {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipOutputType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the difference in time between the two date times.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string DateTimeDifferenceToolTipResult {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.
+        ///Leave this field blank if you do not want to change the date time..
+        /// </summary>
+        internal static string DateTimeToolTipAddtime {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipAddtime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To format a date time, or to add/subtract from a date time, put it in here.
+        ///Leaving this field blank will give you the system date time..
+        /// </summary>
+        internal static string DateTimeToolTipDatetime {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipDatetime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+        ///Leaving this field blank will assume the system date time format.
+        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        /// </summary>
+        internal static string DateTimeToolTipInputformat {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipInputformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
+        ///Leaving this field blank will assume the same as the Input Format.
+        ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        /// </summary>
+        internal static string DateTimeToolTipOutputformat {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipOutputformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted and/or added/subtracted date time.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string DateTimeToolTipResult {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the unit of time to add or subtract. This is ignored if the unit is blank or 0..
+        /// </summary>
+        internal static string DateTimeToolTipTimeType {
+            get {
+                return ResourceManager.GetString("DateTimeToolTipTimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This data is used for testing and not at run time..
+        /// </summary>
+        internal static string DbInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DbInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service.
+        /// </summary>
+        internal static string DebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("DebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service.
+        /// </summary>
+        internal static string DebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("DebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter box.
+        /// </summary>
+        internal static string DebugOutputClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("DebugOutputClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust the debug output.
+        /// </summary>
+        internal static string DebugOutputOptionsToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputOptionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter the debug output information.
+        /// </summary>
+        internal static string DebugOutputSearchToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        internal static string DebugOutputViewAddNewTestToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can only create a test once the workflow is saved.
+        /// </summary>
+        internal static string DebugOutputViewAddNewTestUnsavedToolTip {
+            get {
+                return ResourceManager.GetString("DebugOutputViewAddNewTestUnsavedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service.
+        /// </summary>
+        internal static string DebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("DebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service  [F5] or [F6] or [F7].
+        /// </summary>
+        internal static string DebugToolTip {
+            get {
+                return ResourceManager.GetString("DebugToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the folder and its resources.
+        /// </summary>
+        internal static string DeleteFolderTooltip {
+            get {
+                return ResourceManager.GetString("DeleteFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the resource.
+        /// </summary>
+        internal static string DeleteItemTooltip {
+            get {
+                return ResourceManager.GetString("DeleteItemTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Delete a file or folder, put the full path and file or folder name to delete in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string DeleteToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("DeleteToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string DeleteToolTipPassword {
+            get {
+                return ResourceManager.GetString("DeleteToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to * in Recordset will execute every index in the given recordset..
+        /// </summary>
+        internal static string DeleteToolTipRecords {
+            get {
+                return ResourceManager.GetString("DeleteToolTipRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the Delete action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string DeleteToolTipResult {
+            get {
+                return ResourceManager.GetString("DeleteToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string DeleteToolTipUsername {
+            get {
+                return ResourceManager.GetString("DeleteToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to delete unused variable of this object..
+        /// </summary>
+        internal static string DeleteVariableListObjectTooltip {
+            get {
+                return ResourceManager.GetString("DeleteVariableListObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View which resources are dependant on the current resource.
+        /// </summary>
+        internal static string DependenciesToolTip {
+            get {
+                return ResourceManager.GetString("DependenciesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to Deploy to source server resources to the destination server..
+        /// </summary>
+        internal static string DeployCommandTooltip {
+            get {
+                return ResourceManager.GetString("DeployCommandTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically select dependent resources. WARNING: Overwriting Sources on the destination is not recommended..
+        /// </summary>
+        internal static string DeploySelectDependenciesTooltip {
+            get {
+                return ResourceManager.GetString("DeploySelectDependenciesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move current resource between Warewolf servers.
+        /// </summary>
+        internal static string DeployToolTip {
+            get {
+                return ResourceManager.GetString("DeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute this command on an unsaved workflow.
+        /// </summary>
+        internal static string DisabledToolTip {
+            get {
+                return ResourceManager.GetString("DisabledToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard coded values or variables..
+        /// </summary>
+        internal static string DotNetInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DotNetInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a ClassName or a fully qualified ClassName(Namespace+ClassName) to help find the correct action..
+        /// </summary>
+        internal static string DotNetPluginServiceSelectNamespaceToolTip {
+            get {
+                return ResourceManager.GetString("DotNetPluginServiceSelectNamespaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file or folder you want to delete on Dropbox.
+        /// </summary>
+        internal static string DropBoxDeleteFileNameTooltip {
+            get {
+                return ResourceManager.GetString("DropBoxDeleteFileNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	This is the name of the file that will be downloaded from Dropbox.	NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        /// </summary>
+        internal static string DropBoxDownloadFileNameTooltip {
+            get {
+                return ResourceManager.GetString("DropBoxDownloadFileNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///This is the name of the file that will be read from Dropbox.
+        ///NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        /// </summary>
+        internal static string DropBoxDownloadToolTipLocalDestination {
+            get {
+                return ResourceManager.GetString("DropBoxDownloadToolTipLocalDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The folder on Dropbox to list.
+        /// </summary>
+        internal static string DropBoxFileListFileNameToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get the sub folders information as well..
+        /// </summary>
+        internal static string DropBoxFileListRecursiveToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListRecursiveToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
+        /// </summary>
+        internal static string DropboxOperationToolTip {
+            get {
+                return ResourceManager.GetString("DropboxOperationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get the files and folders.
+        /// </summary>
+        internal static string DropboxReadFilesFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesFoldersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just get the files.
+        /// </summary>
+        internal static string DropboxReadFilesToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just get the folders.
+        /// </summary>
+        internal static string DropboxReadFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFoldersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Dropbox source that the file operation will be performed on..
+        /// </summary>
+        internal static string DropboxSourceToolTip {
+            get {
+                return ResourceManager.GetString("DropboxSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the Dropbox connection properties..
+        /// </summary>
+        internal static string DropBoxToolTipEditSource {
+            get {
+                return ResourceManager.GetString("DropBoxToolTipEditSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///The file must be available on the local file system..
+        /// </summary>
+        internal static string DropBoxToolTipLocalSource {
+            get {
+                return ResourceManager.GetString("DropBoxToolTipLocalSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a New Dropbox connection..
+        /// </summary>
+        internal static string DropBoxToolTipNewSource {
+            get {
+                return ResourceManager.GetString("DropBoxToolTipNewSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate the Resource(s).
+        /// </summary>
+        internal static string DuplicateButtonTooltip {
+            get {
+                return ResourceManager.GetString("DuplicateButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked).
+        /// </summary>
+        internal static string DuplicateCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DuplicateCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate the current resource.
+        /// </summary>
+        internal static string DuplicateToolTip {
+            get {
+                return ResourceManager.GetString("DuplicateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a semicolon ;.
+        /// </summary>
+        internal static string EmailToolTipAttachments {
+            get {
+                return ResourceManager.GetString("EmailToolTipAttachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        /// </summary>
+        internal static string EmailToolTipBcc {
+            get {
+                return ResourceManager.GetString("EmailToolTipBcc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The main body of the email goes in here..
+        /// </summary>
+        internal static string EmailToolTipBody {
+            get {
+                return ResourceManager.GetString("EmailToolTipBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the body type to HTML (Checked) or plain text (Unchecked).
+        /// </summary>
+        internal static string EmailTooltipBodyCheckbox {
+            get {
+                return ResourceManager.GetString("EmailTooltipBodyCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        /// </summary>
+        internal static string EmailToolTipCc {
+            get {
+                return ResourceManager.GetString("EmailToolTipCc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To send an email, enter the email address of the account you want to send from.
+        ///If you are on a domain, you still need to provide the email address of the account you are sending from.
+        ///If you leave it blank, the account used to setup the Email Source will be used..
+        /// </summary>
+        internal static string EmailToolTipFromAddress {
+            get {
+                return ResourceManager.GetString("EmailToolTipFromAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        /// </summary>
+        internal static string EmailToolTipMailSource {
+            get {
+                return ResourceManager.GetString("EmailToolTipMailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the password, if there is one, for the account you are sending from..
+        /// </summary>
+        internal static string EmailToolTipPassword {
+            get {
+                return ResourceManager.GetString("EmailToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the message priority..
+        /// </summary>
+        internal static string EmailToolTipPriorityType {
+            get {
+                return ResourceManager.GetString("EmailToolTipPriorityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the send action..
+        /// </summary>
+        internal static string EmailToolTipResult {
+            get {
+                return ResourceManager.GetString("EmailToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the subject for your email..
+        /// </summary>
+        internal static string EmailToolTipSubject {
+            get {
+                return ResourceManager.GetString("EmailToolTipSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        /// </summary>
+        internal static string EmailToolTipTo {
+            get {
+                return ResourceManager.GetString("EmailToolTipTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand or collapse all execution nodes..
+        /// </summary>
+        internal static string ExpandCollapseAllToolTip {
+            get {
+                return ResourceManager.GetString("ExpandCollapseAllToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter on connected resources.
+        /// </summary>
+        internal static string ExplorerClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ExplorerClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have view permission on this item. Click to open.
+        /// </summary>
+        internal static string ExplorerItemEditToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerItemEditToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have execute permission on this item. Click to execute.
+        /// </summary>
+        internal static string ExplorerItemExecuteToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerItemExecuteToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the connected resources.
+        /// </summary>
+        internal static string ExplorerRefreshToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerRefreshToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter the connected resources.
+        /// </summary>
+        internal static string ExplorerSearchToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put  the index of the string you are looking for in here..
+        /// </summary>
+        internal static string FindIndexToolTipCharacters {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the direction to search in..
+        /// </summary>
+        internal static string FindIndexToolTipDirectionType {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipDirectionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select which index(s) you would like found..
+        /// </summary>
+        internal static string FindIndexToolTipIndexType {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipIndexType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the character index(s) of a string inside another string, put the string to be searched here..
+        /// </summary>
+        internal static string FindIndexToolTipInField {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the index(s) of the found string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record. 
+        ///If you are finding All Occurrences and using a scalar, the results will be comma separated..
+        /// </summary>
+        internal static string FindIndexToolTipResult {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value that the search will start at, this must be a number, date or time and must be the same type as the &quot;To&quot; type..
+        /// </summary>
+        internal static string FindToolTipFrom {
+            get {
+                return ResourceManager.GetString("FindToolTipFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here..
+        /// </summary>
+        internal static string FindToolTipInFields {
+            get {
+                return ResourceManager.GetString("FindToolTipInFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of information you want to match on..
+        /// </summary>
+        internal static string FindToolTipLookForMatchType {
+            get {
+                return ResourceManager.GetString("FindToolTipLookForMatchType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Match data.
+        /// </summary>
+        internal static string FindToolTipMatch {
+            get {
+                return ResourceManager.GetString("FindToolTipMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will only return rows where each field specified meets the match criteria if selected..
+        /// </summary>
+        internal static string FindToolTipRequireAllFieldsToMatch {
+            get {
+                return ResourceManager.GetString("FindToolTipRequireAllFieldsToMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will only return rows that match all of the criteria if selected..
+        /// </summary>
+        internal static string FindToolTipRequireAllMatchesToBeTrue {
+            get {
+                return ResourceManager.GetString("FindToolTipRequireAllMatchesToBeTrue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the indexes of the successful matches.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///If there are multiple results and a scalar is used, then each result will be separated with a comma..
+        /// </summary>
+        internal static string FindToolTipResult {
+            get {
+                return ResourceManager.GetString("FindToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value that the search will end at, this must be a number, date or time and must be the same type as the &quot;From&quot; type..
+        /// </summary>
+        internal static string FindToolTipTo {
+            get {
+                return ResourceManager.GetString("FindToolTipTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///[[Customer(2).ID]],
+        ///[[Customer(3).ID]].
+        ///* in Range allows you to input a range of indexes.
+        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+        ///* in Recordset will execute every index in the given recordset.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ForEachToolTipForEachType {
+            get {
+                return ResourceManager.GetString("ForEachToolTipForEachType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15..
+        /// </summary>
+        internal static string FormatNumberToolTipDecimalsToShow {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipDecimalsToShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To format a number, put the number in here..
+        /// </summary>
+        internal static string FormatNumberToolTipNumber {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string FormatNumberToolTipResult {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How would you like to round the number?
+        ///None: No rounding is done
+        ///Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+        ///Up: 1-9 all round up
+        ///Down: 1-9 all round down.
+        /// </summary>
+        internal static string FormatNumberToolTipRoundType {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipRoundType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand..
+        /// </summary>
+        internal static string FormatNumberToolTipRoundvalue {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipRoundvalue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard coded values or variables..
+        /// </summary>
+        internal static string InputDefaultValueToolTip {
+            get {
+                return ResourceManager.GetString("InputDefaultValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use NULL when empty..
+        /// </summary>
+        internal static string InputEmptyIsNullToolTip {
+            get {
+                return ResourceManager.GetString("InputEmptyIsNullToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
+        /// </summary>
+        internal static string LengthToolTipRecordset {
+            get {
+                return ResourceManager.GetString("LengthToolTipRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset..
+        /// </summary>
+        internal static string LengthToolTipResult {
+            get {
+                return ResourceManager.GetString("LengthToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerEventLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerEventLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Fatal events.
+        /// </summary>
+        internal static string LoggingViewServerEventLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerEventLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logging.
+        /// </summary>
+        internal static string LoggingViewServerEventLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerEventLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerEventLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logging..
+        /// </summary>
+        internal static string LoggingViewServerFileLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewServerFileLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioEventLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Studio Error and Studio Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioEventLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Fatal events.
+        /// </summary>
+        internal static string LoggingViewStudioEventLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioEventLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logging.
+        /// </summary>
+        internal static string LoggingViewStudioEventLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioEventLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioEventLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioEventLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Studio Error and Studio Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Studio Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Studio logging..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        internal static string LoggingViewStudioFileLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewStudioFileLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the procedure or function you want to perform on the database.
+        /// </summary>
+        internal static string ManageDbServiceActionsTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbServiceActionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected database source.
+        /// </summary>
+        internal static string ManageDbServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a database.
+        /// </summary>
+        internal static string ManageDbServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the database you want to use.
+        /// </summary>
+        internal static string ManageDbServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the procedure or function.
+        /// </summary>
+        internal static string ManageDbServiceTestActionTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbServiceTestActionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the execution of the test.
+        /// </summary>
+        internal static string ManageDbSourceCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the database you want to use.
+        /// </summary>
+        internal static string ManageDbSourceDatabaseTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceDatabaseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for the account.
+        /// </summary>
+        internal static string ManageDbSourcePasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourcePasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name or URL of the server that hosts the database.
+        /// </summary>
+        internal static string ManageDbSourceServerNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceServerNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of database you want to connect to.
+        /// </summary>
+        internal static string ManageDbSourceServerTypeTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceServerTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the connection to the database server.
+        /// </summary>
+        internal static string ManageDbSourceTestTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Name.
+        /// </summary>
+        internal static string ManageDbSourceUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the files you want to attach.
+        /// </summary>
+        internal static string ManageEmailAttachmentAddDriveTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailAttachmentAddDriveTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attach the selected files to the email.
+        /// </summary>
+        internal static string ManageEmailAttachmentAttachTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailAttachmentAttachTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel changes and close window.
+        /// </summary>
+        internal static string ManageEmailAttachmentCancelTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailAttachmentCancelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The full path of the files you would like to attach.
+        /// </summary>
+        internal static string ManageEmailAttachmentDriveNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailAttachmentDriveNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Does the server require SSL?.
+        /// </summary>
+        internal static string ManageEmailEnableSslNoTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailEnableSslNoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Does the server require SSL?.
+        /// </summary>
+        internal static string ManageEmailEnableSslYesTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailEnableSslYesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address of the sending account.
+        /// </summary>
+        internal static string ManageEmailFromTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Server Name.
+        /// </summary>
+        internal static string ManageEmailHostNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password of the account.
+        /// </summary>
+        internal static string ManageEmailPasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port used by the mail server.
+        /// </summary>
+        internal static string ManageEmailPortTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send the test email.
+        /// </summary>
+        internal static string ManageEmailSendTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailSendTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout in seconds when trying to send email.
+        /// </summary>
+        internal static string ManageEmailTimeoutTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailTimeoutTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address to send the test email to.
+        /// </summary>
+        internal static string ManageEmailToTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email account name of the sender.
+        /// </summary>
+        internal static string ManageEmailUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageEmailUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected connection source.
+        /// </summary>
+        internal static string ManageExchangeServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageExchangeServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to an exchange server.
+        /// </summary>
+        internal static string ManageExchangeServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageExchangeServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the connection you want to use.
+        /// </summary>
+        internal static string ManageExchangeServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageExchangeServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate the key with the provider.
+        /// </summary>
+        internal static string ManageOAuthAuthoriseTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthAuthoriseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application key provided by the app.
+        /// </summary>
+        internal static string ManageOAuthKeyTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthKeyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the provider you want to use.
+        /// </summary>
+        internal static string ManageOAuthTypeTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOdbcServiceActionsTooltip.
+        /// </summary>
+        internal static string ManageOdbcServiceActionsTooltip {
+            get {
+                return ResourceManager.GetString("ManageOdbcServiceActionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected plugin source connection.
+        /// </summary>
+        internal static string ManagePluginServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a plugin.
+        /// </summary>
+        internal static string ManagePluginServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the plugin you want to use.
+        /// </summary>
+        internal static string ManagePluginServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The full path or GAC name of the DLL you want to use.
+        /// </summary>
+        internal static string ManagePluginSourceAssemblyNameTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceAssemblyNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter criteria.
+        /// </summary>
+        internal static string ManagePluginSourceClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter for the file you want or GAC entry.
+        /// </summary>
+        internal static string ManagePluginSourceFilterTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh the available files and GAC entries.
+        /// </summary>
+        internal static string ManagePluginSourceRefreshTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceRefreshTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publish the test message.
+        /// </summary>
+        internal static string ManagePublishTooltip {
+            get {
+                return ResourceManager.GetString("ManagePublishTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RabbitMQ server name.
+        /// </summary>
+        internal static string ManageRabbitMQHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for the RabbitMQ server.
+        /// </summary>
+        internal static string ManageRabbitMQPasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port used by the RabbitMQ server.
+        /// </summary>
+        internal static string ManageRabbitMQPortTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name for the RabbitMQ server.
+        /// </summary>
+        internal static string ManageRabbitMQUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual host for the RabbitMQ server.
+        /// </summary>
+        internal static string ManageRabbitMQVirtualHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQVirtualHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Endpoint Url.
+        /// </summary>
+        internal static string ManageWcfEndpointTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfEndpointTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected source connection.
+        /// </summary>
+        internal static string ManageWcfServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a Wcf Service.
+        /// </summary>
+        internal static string ManageWcfServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Source you want to use.
+        /// </summary>
+        internal static string ManageWcfServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste the full response in here.
+        /// </summary>
+        internal static string ManageWebPasteResponseTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebPasteResponseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected webservice host connection.
+        /// </summary>
+        internal static string ManageWebServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a webservice.
+        /// </summary>
+        internal static string ManageWebServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste a customized response instead.
+        /// </summary>
+        internal static string ManageWebServicePasteTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServicePasteTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The body of the request.
+        /// </summary>
+        internal static string ManageWebServiceRequestBodyTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestBodyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the webservice host you want to use.
+        /// </summary>
+        internal static string ManageWebServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the test execution.
+        /// </summary>
+        internal static string ManageWebSourceCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional default query.
+        /// </summary>
+        internal static string ManageWebSourceDefaultQueryTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceDefaultQueryTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The base URL of the webservice.
+        /// </summary>
+        internal static string ManageWebSourceHostNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account password.
+        /// </summary>
+        internal static string ManageWebSourcePasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourcePasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the webservice source connection.
+        /// </summary>
+        internal static string ManageWebSourceTestTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the account.
+        /// </summary>
+        internal static string ManageWebSourceUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser.
+        /// </summary>
+        internal static string ManageWebSourceViewInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebSourceViewInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The @name of the object you want to put the result into.
+        /// </summary>
+        internal static string MappingsObjectNameTooltip {
+            get {
+                return ResourceManager.GetString("MappingsObjectNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this to put the output into an object.
+        /// </summary>
+        internal static string MappingsObjectOutputTooltip {
+            get {
+                return ResourceManager.GetString("MappingsObjectOutputTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new database source.
+        /// </summary>
+        internal static string MenuDatabaseToolTip {
+            get {
+                return ResourceManager.GetString("MenuDatabaseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move resources between Warewolf servers [CTRL+D].
+        /// </summary>
+        internal static string MenuDeployToolTip {
+            get {
+                return ResourceManager.GetString("MenuDeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of Warewolf is available for download.
+        /// </summary>
+        internal static string MenuDownloadToolTip {
+            get {
+                return ResourceManager.GetString("MenuDownloadToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lock / unlock the menu.
+        /// </summary>
+        internal static string MenuLockToolTip {
+            get {
+                return ResourceManager.GetString("MenuLockToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new service [CTRL+W].
+        /// </summary>
+        internal static string MenuNewServiceToolTip {
+            get {
+                return ResourceManager.GetString("MenuNewServiceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new plugin source.
+        /// </summary>
+        internal static string MenuPluginToolTip {
+            get {
+                return ResourceManager.GetString("MenuPluginToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save this tab [CTRL+S].
+        /// </summary>
+        internal static string MenuSaveToolTip {
+            get {
+                return ResourceManager.GetString("MenuSaveToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        internal static string MenuSchedulerToolTip {
+            get {
+                return ResourceManager.GetString("MenuSchedulerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure settings.
+        /// </summary>
+        internal static string MenuSettingsToolTip {
+            get {
+                return ResourceManager.GetString("MenuSettingsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new web source.
+        /// </summary>
+        internal static string MenuWebServiceToolTip {
+            get {
+                return ResourceManager.GetString("MenuWebServiceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are moving to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string MoveToolTipDestination {
+            get {
+                return ResourceManager.GetString("MoveToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Move a file or folder, put the full path and file or folder name to move in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string MoveToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("MoveToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string MoveToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("MoveToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string MoveToolTipPassword {
+            get {
+                return ResourceManager.GetString("MoveToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Move action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string MoveToolTipResult {
+            get {
+                return ResourceManager.GetString("MoveToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string MoveToolTipUsername {
+            get {
+                return ResourceManager.GetString("MoveToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+        ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
+        /// </summary>
+        internal static string NativeActivityToolTipCallthiswebservice {
+            get {
+                return ResourceManager.GetString("NativeActivityToolTipCallthiswebservice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+        ///If you have also called a web service / Warewolf workflow, that will finish executing first.
+        ///If the workflow is nested, the calling workflow will resume..
+        /// </summary>
+        internal static string NativeActivityToolTipEndtheworkflow {
+            get {
+                return ResourceManager.GetString("NativeActivityToolTipEndtheworkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
+        ///If left empty the result will still be placed in the result variable. This will cause the error to be handled.
+        /// </summary>
+        internal static string NativeActivityToolTipPuterrorinthisvariable {
+            get {
+                return ResourceManager.GetString("NativeActivityToolTipPuterrorinthisvariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new com plugin source.
+        /// </summary>
+        internal static string NewComPluginSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewComPluginSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Aatabase source.
+        /// </summary>
+        internal static string NewDataBaseSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewDataBaseSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new dropbox source.
+        /// </summary>
+        internal static string NewDropboxSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewDropboxSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new email source.
+        /// </summary>
+        internal static string NewEmailSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewEmailSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new exchange source.
+        /// </summary>
+        internal static string NewExchangeSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewExchangeSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new folder.
+        /// </summary>
+        internal static string NewFolderTooltip {
+            get {
+                return ResourceManager.GetString("NewFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new plugin source.
+        /// </summary>
+        internal static string NewPluginSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewPluginSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new rabbitmq source.
+        /// </summary>
+        internal static string NewRabbitMqSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewRabbitMqSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new server source.
+        /// </summary>
+        internal static string NewServerSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewServerSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new service [CTRL+W].
+        /// </summary>
+        internal static string NewServiceTooltip {
+            get {
+                return ResourceManager.GetString("NewServiceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new sharepoint source.
+        /// </summary>
+        internal static string NewSharepointSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewSharepointSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new web source.
+        /// </summary>
+        internal static string NewWebSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewWebSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have permissions to execute this command.
+        /// </summary>
+        internal static string NoPermissionsToolTip {
+            get {
+                return ResourceManager.GetString("NoPermissionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this version.
+        /// </summary>
+        internal static string OpenVersionTooltip {
+            get {
+                return ResourceManager.GetString("OpenVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the corresponding password.
+        /// </summary>
+        internal static string PasswordToolTip {
+            get {
+                return ResourceManager.GetString("PasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select method to execute..
+        /// </summary>
+        internal static string PluginServiceSelectActionToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectActionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a namespace to help find the correct action..
+        /// </summary>
+        internal static string PluginServiceSelectNamespaceToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectNamespaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Append to existing variables.
+        /// </summary>
+        internal static string QuickVariableAppendToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableAppendToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds this to the front of the variables.
+        /// </summary>
+        internal static string QuickVariablePrefixWithToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariablePrefixWithToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces existing variables in the tool.
+        /// </summary>
+        internal static string QuickVariableReplaceToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableReplaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Criteria for splitting the above data.
+        /// </summary>
+        internal static string QuickVariableSplitAndAtToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableSplitAndAtToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds this to end of the variables.
+        /// </summary>
+        internal static string QuickVariableSuffixWithToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableSuffixWithToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rough data with the variables in it.
+        /// </summary>
+        internal static string QuickVariableVariableListToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableVariableListToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aknowledge message after consume?.
+        /// </summary>
+        internal static string RabbitMQToolTipAcknowledge {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipAcknowledge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto-delete to delete queue after Consumer are done with it..
+        /// </summary>
+        internal static string RabbitMQToolTipIsAutoDelete {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsAutoDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue durable to back up Queue incase of a crash..
+        /// </summary>
+        internal static string RabbitMQToolTipIsDurable {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsDurable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue exclusive so that it&apos;s accessable only inside the current connection..
+        /// </summary>
+        internal static string RabbitMQToolTipIsExclusive {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsExclusive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message you want to publish goes in here..
+        /// </summary>
+        internal static string RabbitMQToolTipMessage {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide number of processes that can run concurrently..
+        /// </summary>
+        internal static string RabbitMQToolTipPrefetch {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipPrefetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from..
+        /// </summary>
+        internal static string RabbitMQToolTipQueueName {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requeue the response in the Queue..
+        /// </summary>
+        internal static string RabbitMQToolTipReQueue {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipReQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put response variables here..
+        /// </summary>
+        internal static string RabbitMQToolTipResponse {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here..
+        /// </summary>
+        internal static string RabbitMQToolTipResult {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one..
+        /// </summary>
+        internal static string RabbitMQToolTipSource {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How long you want the Consumer to delay when checking for messages in the queue..
+        /// </summary>
+        internal static string RabbitMQToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipTimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Determines the character length to generate..
+        /// </summary>
+        internal static string RandomToolTipLength {
+            get {
+                return ResourceManager.GetString("RandomToolTipLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To generate a random number put the lowest/smallest number you would like in here..
+        /// </summary>
+        internal static string RandomToolTipRangeFrom {
+            get {
+                return ResourceManager.GetString("RandomToolTipRangeFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To generate a random number put the highest/largest number you would like in here..
+        /// </summary>
+        internal static string RandomToolTipRangeTo {
+            get {
+                return ResourceManager.GetString("RandomToolTipRangeTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the randomly generated result.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string RandomToolTipResult {
+            get {
+                return ResourceManager.GetString("RandomToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of random information to generate.
+        ///Letters: Alphabetical letters only.
+        ///Numbers: Numbers only.
+        ///Letters and Numbers: A random combination of letters and numbers.
+        ///GUID: A randomly generated Globally Unique Identifier..
+        /// </summary>
+        internal static string RandomToolTipType {
+            get {
+                return ResourceManager.GetString("RandomToolTipType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To upload a file, put the full path and file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string ReadFileToolTipFilename {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ReadFileToolTipPassword {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the file.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string ReadFileToolTipResult {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ReadFileToolTipUsername {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To read the content of a folder, put the full path in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string ReadFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ReadFolderToolTipPassword {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files will only return files.
+        ///Folders will only return folders.
+        ///Files and Folders will return everything..
+        /// </summary>
+        internal static string ReadFolderToolTipRead {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the folder specified. 
+        ///Each item found will be returned as a separate result so this tool is best used with a recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string ReadFolderToolTipResult {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ReadFolderToolTipUsername {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter local file or folder path.
+        /// </summary>
+        internal static string ReadLocalFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename folder.
+        /// </summary>
+        internal static string RenameFolderTooltip {
+            get {
+                return ResourceManager.GetString("RenameFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename resource.
+        /// </summary>
+        internal static string RenameItemTooltip {
+            get {
+                return ResourceManager.GetString("RenameItemTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To rename a file or folder, put the full path and file or folder name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string RenameToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("RenameToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string RenameToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("RenameToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path and new name of the resource here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string RenameToolTipNewName {
+            get {
+                return ResourceManager.GetString("RenameToolTipNewName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string RenameToolTipPassword {
+            get {
+                return ResourceManager.GetString("RenameToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Rename action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string RenameToolTipResult {
+            get {
+                return ResourceManager.GetString("RenameToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string RenameToolTipUsername {
+            get {
+                return ResourceManager.GetString("RenameToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put the information you are looking for in here..
+        /// </summary>
+        internal static string ReplaceToolTipFind {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipFind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///To search and replace a string, put the variable containing the string to search in here..
+        /// </summary>
+        internal static string ReplaceToolTipInFields {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipInFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put the replacement information in here..
+        /// </summary>
+        internal static string ReplaceToolTipReplaceWith {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipReplaceWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the count of the number of replacements.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string ReplaceToolTipResult {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rool back to this version.
+        /// </summary>
+        internal static string RollbackTooltip {
+            get {
+                return ResourceManager.GetString("RollbackTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for this resource.
+        /// </summary>
+        internal static string RunAllTestsToolTip {
+            get {
+                return ResourceManager.GetString("RunAllTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the Resource.
+        /// </summary>
+        internal static string SaveButtonTooltip {
+            get {
+                return ResourceManager.GetString("SaveButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this scheduled task.
+        /// </summary>
+        internal static string SchedulerDeleteTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerDeleteTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new scheduled task.
+        /// </summary>
+        internal static string SchedulerNewScheduleTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerNewScheduleTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How much History should the system keep?.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipHistoryRecords {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipHistoryRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What name do you want to give this Schedule?.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipName {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule will use this password for the above username.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipPassword {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows a missed trigger to be executed.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipRun {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule should execute as this user.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipUsername {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a workflow to be triggered.
+        /// </summary>
+        internal static string SchedulerSettingsToolTipWorkFlow {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipWorkFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable or Disable the schedule.
+        /// </summary>
+        internal static string SchedulerStatusAltTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerStatusAltTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule a service to run.
+        /// </summary>
+        internal static string ScheduleToolTip {
+            get {
+                return ResourceManager.GetString("ScheduleToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this box if you want to ignore Escape Sequences (&apos;\t&apos;, &apos;\n&apos; etc)..
+        /// </summary>
+        internal static string ScriptingToolTipEscapeScript {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipEscapeScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This allows you to include .js files as external script sources..
+        /// </summary>
+        internal static string ScriptingToolTipIncludeFile {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipIncludeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What type of scripting language do you want to use?.
+        /// </summary>
+        internal static string ScriptingToolTipLanguageType {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipLanguageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the output of the script, if any..
+        /// </summary>
+        internal static string ScriptingToolTipResult {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To run a programming script, put the script you want to execute in here..
+        /// </summary>
+        internal static string ScriptingToolTipScript {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specify an alias for the selected data. 
+        ///This needs to conform to variable notation..
+        /// </summary>
+        internal static string SelectAndApplyAliasToolTip {
+            get {
+                return ResourceManager.GetString("SelectAndApplyAliasToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only collections go in here.
+        ///You can use the (*) or () notation for record sets or objects..
+        /// </summary>
+        internal static string SelectAndApplyDataSourceToolTip {
+            get {
+                return ResourceManager.GetString("SelectAndApplyDataSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
+        ///To execute more than one item in a loop construct etc. put the activities in a sequence first 
+        ///and then put the sequence into the loop construct.
+        ///Error handling operates as a catch all for all items in the sequence..
+        /// </summary>
+        internal static string SequenceTooltipSequence {
+            get {
+                return ResourceManager.GetString("SequenceTooltipSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the port on the server.
+        /// </summary>
+        internal static string ServerSourceDialogAddressPortTip {
+            get {
+                return ResourceManager.GetString("ServerSourceDialogAddressPortTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the IP address, domain name or computer name of the server you want to connect to.
+        /// </summary>
+        internal static string ServerSourceDialogAddressToolTip {
+            get {
+                return ResourceManager.GetString("ServerSourceDialogAddressToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the protocol you want to connect on.
+        /// </summary>
+        internal static string ServerSourceDialogProtocolToolTip {
+            get {
+                return ResourceManager.GetString("ServerSourceDialogProtocolToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using Public credentials only.
+        /// </summary>
+        internal static string ServerSourceDialogPublicToolTip {
+            get {
+                return ResourceManager.GetString("ServerSourceDialogPublicToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the connection to the server using these credentials.
+        /// </summary>
+        internal static string ServerSourceDialogsTestToolTip {
+            get {
+                return ResourceManager.GetString("ServerSourceDialogsTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the version of this server.
+        /// </summary>
+        internal static string ServerVersionTooltip {
+            get {
+                return ResourceManager.GetString("ServerVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the procedure or function.
+        /// </summary>
+        internal static string ServiceTestActionTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestActionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the test execution and return to mappings.
+        /// </summary>
+        internal static string ServiceTestCancelButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestCancelButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have permissions to duplicate a test.
+        /// </summary>
+        internal static string ServiceTestDisabledDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDisabledDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accept these results and continue.
+        /// </summary>
+        internal static string ServiceTestDoneButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDoneButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate this test.
+        /// </summary>
+        internal static string ServiceTestDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable or Ignore this test.
+        /// </summary>
+        internal static string ServiceTestEnableRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestEnableRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assert that the error contains some particular text.
+        /// </summary>
+        internal static string ServiceTestErrorContainsTextTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorContainsTextTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects an error.
+        /// </summary>
+        internal static string ServiceTestErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        internal static string ServiceTestFailingTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestFailingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input value to test against.
+        /// </summary>
+        internal static string ServiceTestInputValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestInputValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        internal static string ServiceTestInvalidTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestInvalidTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test has never run before.
+        /// </summary>
+        internal static string ServiceTestNeverRunTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNeverRunTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please save this test before duplicating it.
+        /// </summary>
+        internal static string ServiceTestNewTestDisabledDuplicateSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNewTestDisabledDuplicateSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new test.
+        /// </summary>
+        internal static string ServiceTestNewTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNewTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The test expects no error.
+        /// </summary>
+        internal static string ServiceTestNoErrorExpectedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestNoErrorExpectedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
+        /// </summary>
+        internal static string ServiceTestOutputFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert to.
+        /// </summary>
+        internal static string ServiceTestOutputToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output value to test against.
+        /// </summary>
+        internal static string ServiceTestOutputValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The output you want to make the assert on.
+        /// </summary>
+        internal static string ServiceTestOutputVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestOutputVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passed.
+        /// </summary>
+        internal static string ServiceTestPassedTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestPassedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        internal static string ServiceTestPendingTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestPendingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the tests for this workflow [F7].
+        /// </summary>
+        internal static string ServiceTestRunAllTestsInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllTestsInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests [F6].
+        /// </summary>
+        internal static string ServiceTestRunAllTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunAllTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to execute this test externaly.
+        /// </summary>
+        internal static string ServiceTestRunSelectedTestInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunSelectedTestInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run this test [F5].
+        /// </summary>
+        internal static string ServiceTestRunSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestRunSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert from.
+        /// </summary>
+        internal static string ServiceTestStepAssertFromTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertFromTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of Assert you want to make.
+        /// </summary>
+        internal static string ServiceTestStepAssertOpsTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertOpsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assert this step.
+        /// </summary>
+        internal static string ServiceTestStepAssertRadioButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
+        /// </summary>
+        internal static string ServiceTestStepAssertToTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertToTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
+        /// </summary>
+        internal static string ServiceTestStepAssertValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool result item to Assert.
+        /// </summary>
+        internal static string ServiceTestStepAssertVariableTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepAssertVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this step.
+        /// </summary>
+        internal static string ServiceTestStepDeleteStepTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepDeleteStepTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mock this step.
+        /// </summary>
+        internal static string ServiceTestStepMockRadioButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepMockRadioButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the item you want to assert.
+        /// </summary>
+        internal static string ServiceTestStepOptionsForValueTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStepOptionsForValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop this test.
+        /// </summary>
+        internal static string ServiceTestStopSelectedTestTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestStopSelectedTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute this flow as a REST api.
+        /// </summary>
+        internal static string ServiceViewInBrowserTooltip {
+            get {
+                return ResourceManager.GetString("ServiceViewInBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes performance counters.
+        /// </summary>
+        internal static string SettingsPerfCounterRemoveResourceTooltip {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterRemoveResourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average execution time of this resource..
+        /// </summary>
+        internal static string SettingsPerfCounterResourceToolTipAvgExecTime {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceToolTipAvgExecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of concurrent requests of this resource..
+        /// </summary>
+        internal static string SettingsPerfCounterResourceToolTipConReq {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceToolTipConReq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of requests per second of this resource..
+        /// </summary>
+        internal static string SettingsPerfCounterResourceToolTipReqPerSec {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceToolTipReqPerSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resource picker.
+        /// </summary>
+        internal static string SettingsPerfCounterResourceToolTipResource {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceToolTipResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total number of errors of this resource..
+        /// </summary>
+        internal static string SettingsPerfCounterResourceToolTipTotErrors {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceToolTipTotErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average execution time of all resources..
+        /// </summary>
+        internal static string SettingsPerfCounterServerToolTipAvgExecTime {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerToolTipAvgExecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of concurrent requests on the server..
+        /// </summary>
+        internal static string SettingsPerfCounterServerToolTipConcurrentReq {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerToolTipConcurrentReq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorization failures on this server..
+        /// </summary>
+        internal static string SettingsPerfCounterServerToolTipNotAuthErrors {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerToolTipNotAuthErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of requests per second on this server..
+        /// </summary>
+        internal static string SettingsPerfCounterServerToolTipReqPerSec {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerToolTipReqPerSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total number of errors on this server..
+        /// </summary>
+        internal static string SettingsPerfCounterServerTooltipTotalErrors {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerTooltipTotalErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of times a workflow was requested and it didn&apos;t exist..
+        /// </summary>
+        internal static string SettingsPerfCounterServerToolTipWfNotFound {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterServerToolTipWfNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit and Delete this workflow.
+        /// </summary>
+        internal static string SettingsSecurityResourceToolTipContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipContribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and Debug this workflow.
+        /// </summary>
+        internal static string SettingsSecurityResourceToolTipExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
+        /// </summary>
+        internal static string SettingsSecurityResourceToolTipResource {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open and inspect this resource.
+        /// </summary>
+        internal static string SettingsSecurityResourceToolTipView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Windows Group.
+        /// </summary>
+        internal static string SettingsSecurityResourceToolTipWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amend security and admin tasks.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipAdministrator {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit, Create and Delete workflows and services.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipContribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy resources off this server.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipDeployFrom {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipDeployFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy resources to this server.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipDeployTo {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipDeployTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and Debug workflows.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open and inspect resources.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Windows Group.
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a SFTP Key, put the full path and file or folder name here..
+        /// </summary>
+        internal static string SftpPrivateKeyValueTooltip {
+            get {
+                return ResourceManager.GetString("SftpPrivateKeyValueTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of items deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string SharepointDelteToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointDelteToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server download file path.
+        /// </summary>
+        internal static string SharePointDownloadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointDownloadPathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server file path.
+        /// </summary>
+        internal static string SharePointFilePathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointFilePathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string SharepointInsertToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server folder or
+        ///file path.
+        /// </summary>
+        internal static string SharePointReadFolderInputPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointReadFolderInputPathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the test connection to the SharePoint server.
+        /// </summary>
+        internal static string SharepointSourceCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("SharepointSourceCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for the username used to connect to SharePoint.
+        /// </summary>
+        internal static string SharepointSourcePasswordTooltip {
+            get {
+                return ResourceManager.GetString("SharepointSourcePasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SharePoint URL.
+        /// </summary>
+        internal static string SharepointSourceServerNameTooltip {
+            get {
+                return ResourceManager.GetString("SharepointSourceServerNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the connection to the SharePoint server.
+        /// </summary>
+        internal static string SharepointSourceTestTooltip {
+            get {
+                return ResourceManager.GetString("SharepointSourceTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username used to connect to SharePoint.
+        /// </summary>
+        internal static string SharepointSourceUserNameTooltip {
+            get {
+                return ResourceManager.GetString("SharepointSourceUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the field you want to match on..
+        /// </summary>
+        internal static string SharepointToolTipFieldToFilterOn {
+            get {
+                return ResourceManager.GetString("SharepointToolTipFieldToFilterOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a list to read from.
+        ///If the list has changed or recently added to the source, click the refresh button..
+        /// </summary>
+        internal static string SharepointToolTipList {
+            get {
+                return ResourceManager.GetString("SharepointToolTipList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured SharePoint server source or &quot;New SharePoint Server Source...&quot; to add a new one..
+        /// </summary>
+        internal static string SharepointToolTipServer {
+            get {
+                return ResourceManager.GetString("SharepointToolTipServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To read list item data into a variable, put the variable here..
+        /// </summary>
+        internal static string SharepointToolTipToVariable {
+            get {
+                return ResourceManager.GetString("SharepointToolTipToVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server upload folder path.
+        /// </summary>
+        internal static string SharePointUploadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointUploadPathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show or hide the versions of this resource.
+        /// </summary>
+        internal static string ShowHideVersionsTooltip {
+            get {
+                return ResourceManager.GetString("ShowHideVersionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
+        ///To sort on more than one field, perform the sort action for each field you would like to sort on, 
+        ///ending with the priority sort..
+        /// </summary>
+        internal static string SortToolTipSortField {
+            get {
+                return ResourceManager.GetString("SortToolTipSortField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the order of the sorting.
+        ///Forward will go 1-9 then a-Z.
+        ///Backward will go Z-a then 9-1..
+        /// </summary>
+        internal static string SortToolTipSortOrderType {
+            get {
+                return ResourceManager.GetString("SortToolTipSortOrderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
+        ///The default is 0 which will do everything in 1 batch.
+        ///If you specify 50, then 50 rows will be bulk inserted at a time..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipBatchSize {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipBatchSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check constraints while data is being inserted. By default, constraints are not checked..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipCheckConstraints {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipCheckConstraints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipDatabase {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipFireTriggers {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipFireTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipInputColumn {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipInputColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        /// </summary>
+        internal static string SQLBulkInsertToolTipInputData {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertToolTipInputData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preserve source identity values. When not specified, identity values are assigned by the destination..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipKeepIdentity {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipKeepIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipKeepTableLock {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipKeepTableLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or the record numbers with errors.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipResult {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blank records will not be added to the SQL table..
+        /// </summary>
+        internal static string SQLBulkInsertToolTipSkipblankrows {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertToolTipSkipblankrows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.
+        ///If the table schema has changed or recently added to the source, click the refresh button..
+        /// </summary>
+        internal static string SQLBulkInsertToolTipTable {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertToolTipTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
+        ///All batches in total must complete within this time period.
+        ///The default is 0 which will be no time constraint.
+        ///If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+        ///Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipTimeout {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction..
+        /// </summary>
+        internal static string SqlBulkInsertToolTipUseInternalTransaction {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipUseInternalTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F7].
+        /// </summary>
+        internal static string StartNodeDebugBrowserToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugBrowserToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F5].
+        /// </summary>
+        internal static string StartNodeDebugInputsToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugInputsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and debug your workflow service [F6].
+        /// </summary>
+        internal static string StartNodeDebugStudioToolTip {
+            get {
+                return ResourceManager.GetString("StartNodeDebugStudioToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the type of system information selected..
+        /// </summary>
+        internal static string SystemInformationToolTipResult {
+            get {
+                return ResourceManager.GetString("SystemInformationToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of system information you would like to use..
+        /// </summary>
+        internal static string SystemInformationToolTipSysInfoType {
+            get {
+                return ResourceManager.GetString("SystemInformationToolTipSysInfoType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View the current tests for this resource.
+        /// </summary>
+        internal static string TestEditorToolTip {
+            get {
+                return ResourceManager.GetString("TestEditorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an enabled test.
+        /// </summary>
+        internal static string TestsDeleteSelectedTestDisabledTooltip {
+            get {
+                return ResourceManager.GetString("TestsDeleteSelectedTestDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this test.
+        /// </summary>
+        internal static string TestsDeleteSelectedTestEnabledTooltip {
+            get {
+                return ResourceManager.GetString("TestsDeleteSelectedTestEnabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the filter box.
+        /// </summary>
+        internal static string ToolboxClearSearchTooltip {
+            get {
+                return ResourceManager.GetString("ToolboxClearSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search filter for your tools.
+        /// </summary>
+        internal static string ToolboxSearchToolTip {
+            get {
+                return ResourceManager.GetString("ToolboxSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No recordset will be treated as a recordset with no records.
+        /// </summary>
+        internal static string TreatNullAsZeroToolTip {
+            get {
+                return ResourceManager.GetString("TreatNullAsZeroToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To identify unique information in a recordset, put the comma separated fields that need to be unique in here..
+        /// </summary>
+        internal static string UniqueToolTipInFields {
+            get {
+                return ResourceManager.GetString("UniqueToolTipInFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. 
+        ///If there are multiple fields being returned, there should be multiple Results fields specified. 
+        ///Use a comma to separate the variables..
+        /// </summary>
+        internal static string UniqueToolTipResults {
+            get {
+                return ResourceManager.GetString("UniqueToolTipResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? 
+        ///Use a comma separated list of the fields.
+        ///Where multiple rows are the same, the first one will be deemed Unique..
+        /// </summary>
+        internal static string UniqueToolTipReturnFields {
+            get {
+                return ResourceManager.GetString("UniqueToolTipReturnFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no archive password being used to open the file..
+        /// </summary>
+        internal static string UnzipToolTipArchivePassword {
+            get {
+                return ResourceManager.GetString("UnzipToolTipArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are unzipping to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string UnzipToolTipDestination {
+            get {
+                return ResourceManager.GetString("UnzipToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string UnzipToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("UnzipToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string UnzipToolTipPassword {
+            get {
+                return ResourceManager.GetString("UnzipToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Unzip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string UnzipToolTipResult {
+            get {
+                return ResourceManager.GetString("UnzipToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string UnzipToolTipUsername {
+            get {
+                return ResourceManager.GetString("UnzipToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To unzip a file, put the full path and zip file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string UnzipToolTipZipname {
+            get {
+                return ResourceManager.GetString("UnzipToolTipZipname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using a specific account.
+        /// </summary>
+        internal static string UserAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("UserAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the user name you want to connect with.
+        /// </summary>
+        internal static string UserNameToolTip {
+            get {
+                return ResourceManager.GetString("UserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View APIs.json url and content.
+        /// </summary>
+        internal static string ViewApisJsonTooltip {
+            get {
+                return ResourceManager.GetString("ViewApisJsonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to see the JSON representation of this object..
+        /// </summary>
+        internal static string ViewJsonObjectTooltip {
+            get {
+                return ResourceManager.GetString("ViewJsonObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        /// </summary>
+        internal static string ViewSwaggerToolTip {
+            get {
+                return ResourceManager.GetString("ViewSwaggerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test data for the execution.
+        /// </summary>
+        internal static string WebInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here..
+        /// </summary>
+        internal static string WebRequestToolTipHeader {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a single variable goes in here.
+        ///Returns the response text of the web get request..
+        /// </summary>
+        internal static string WebRequestToolTipResult {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The length of time to wait for a web request to complete before failing.
+        /// </summary>
+        internal static string WebRequestToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipTimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To traverse and retrieve the raw response from a webpage, enter it in here..
+        /// </summary>
+        internal static string WebRequestToolTipURL {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect using the logged on users credentials.
+        /// </summary>
+        internal static string WindowsAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("WindowsAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to edit this resource.
+        /// </summary>
+        internal static string WorkflowDesignerSecurityToolTipNone {
+            get {
+                return ResourceManager.GetString("WorkflowDesignerSecurityToolTipNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the contents you want written to the file in here..
+        /// </summary>
+        internal static string WriteFileToolTipContents {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To write content to a file, put the full path and file name in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string WriteFileToolTipFilename {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string WriteFileToolTipPassword {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Write action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string WriteFileToolTipResult {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string WriteFileToolTipUsername {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the result of the Xpath expression.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
+        /// </summary>
+        internal static string XpathToolTipResults {
+            get {
+                return ResourceManager.GetString("XpathToolTipResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To traverse an XML document and return information from it, enter the raw XML in here..
+        /// </summary>
+        internal static string XPathToolTipXML {
+            get {
+                return ResourceManager.GetString("XPathToolTipXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xpath notation describing the route to the data in the XML input..
+        /// </summary>
+        internal static string XPathToolTipXPath {
+            get {
+                return ResourceManager.GetString("XPathToolTipXPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no password being required to open the file..
+        /// </summary>
+        internal static string ZipToolTipArchivePassword {
+            get {
+                return ResourceManager.GetString("ZipToolTipArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
+        ///None creates the new file with the content and adds no compression - fastest.
+        ///Partial attempts some compression.
+        ///Normal will apply standard compression.
+        ///Max will compress the zipped file as much as possible - slowest..
+        /// </summary>
+        internal static string ZipToolTipCompressiontype {
+            get {
+                return ResourceManager.GetString("ZipToolTipCompressiontype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are zipping to here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string ZipToolTipDestination {
+            get {
+                return ResourceManager.GetString("ZipToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To zip a file or folder, put the full path of what you want zipped in here.
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        /// </summary>
+        internal static string ZipToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("ZipToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a file already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        internal static string ZipToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("ZipToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source.
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ZipToolTipPassword {
+            get {
+                return ResourceManager.GetString("ZipToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Zip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        internal static string ZipToolTipResult {
+            get {
+                return ResourceManager.GetString("ZipToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        internal static string ZipToolTipUsername {
+            get {
+                return ResourceManager.GetString("ZipToolTipUsername", resourceCulture);
+            }
+        }
     }
 }
