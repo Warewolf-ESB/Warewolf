@@ -120,6 +120,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ConnectControlViewModelTests.cs" />
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
