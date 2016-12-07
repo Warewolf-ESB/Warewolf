@@ -1,0 +1,22 @@
+
+<Source ID="b1c12282-1712-419c-9929-5dfe42c90210" Name="NewOracleSource" ResourceType="Oracle" IsValid="false" ServerType="Oracle" Type="DbSource" ConnectionString="User Id=Testuser;Password=test123;Data Source=RSAKLFSVRGENDEV;Database=HR;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewOracleSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-20T21:14:42.6038888+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="2" ResourceId="b1c12282-1712-419c-9929-5dfe42c90210" VersionId="7cded1d2-a89d-4190-83f4-565abc5c934c" />
+</Source>
