@@ -506,16 +506,19 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [Then(@"the service debug assert message is ""(.*)"" with ""(.*)""")]
-        public void ThenTheServiceDebugAssertMessageIsWith(string assertString, string expectedError)
+        [Then(@"the service debug assert message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertMessageContains(string assertString)
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
-            Assert.AreEqual(serviceTestViewModel.SelectedServiceTest.ErrorContainsText, expectedError);
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            var actualAssetMessage = debugForTest.Last().AssertResultList.First().ResultsList.First().Value;
+            var debugItemResults = debugForTest[4].AssertResultList.First().ResultsList;
+            var actualAssetMessage = debugItemResults.First(result => result.Value.ToUpper()
+                                                     .Contains(assertString.ToUpper()))
+                                                     .Value;
             var errorExpected = actualAssetMessage.Split('\n').Last();
-            Assert.AreEqual(assertString + expectedError, errorExpected);
+            Assert.AreEqual(assertString, errorExpected);
         }
+
 
         [Then(@"All test pieces are pending")]
         public void ThenAllTestPiecesArePending()
@@ -1790,7 +1793,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenIRemoveAllTestSteps()
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
-            serviceTestViewModel.SelectedServiceTest.TestSteps.Clear();
+            serviceTestViewModel.SelectedServiceTest.TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 
         [Then(@"I remove outputs from TestStep ""(.*)""")]

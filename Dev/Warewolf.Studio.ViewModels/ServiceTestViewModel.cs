@@ -264,8 +264,11 @@ namespace Warewolf.Studio.ViewModels
                         if (type != null)
                         {
                             var act = Activator.CreateInstance(type) as IDev2Activity;
-                            serviceTestStep.StepOutputs =
-                                AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            if(serviceTestStep != null)
+                            {
+                                serviceTestStep.StepOutputs =
+                                    AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            }
                         }
                     }
                     if (serviceTestStep != null)
