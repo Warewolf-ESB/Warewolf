@@ -209,8 +209,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         readonly object _syncRoot = new object();
-        const string Json = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
-
+        const string Json = "{\"$id\": \"1\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestModel, Warewolf.Studio.ViewModels\",\"NeverRunString\": \"Never run\",\"LastRunDateVisibility\": true,\"NeverRunStringVisibility\": false,\"DebugForTest\": null,\"DuplicateTestTooltip\": null,\"ParentId\": \"acb75027-ddeb-47d7-814e-a54c37247ec1\",\"OldTestName\": \"Test 1\",\"TestName\": \"Test 1\",\"NameForDisplay\": \"Test 1\",\"UserName\": null,\"Password\": null,\"LastRunDate\": \"2016-12-07T12:55:01.8993752+02:00\",\"Inputs\": [{\"$id\": \"2\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestInput, Warewolf.Studio.ViewModels\",\"Variable\": \"Name\",\"Value\": \"\",\"EmptyIsNull\": false}],\"Outputs\": [{\"$id\": \"3\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestOutput, Warewolf.Studio.ViewModels\",\"Variable\": \"Message\",\"Value\": \"\",\"From\": \"\",\"To\": \"\",\"AssertOp\": \"=\",\"HasOptionsForValue\": false,\"IsSinglematchCriteriaVisible\": true,\"IsBetweenCriteriaVisible\": false,\"IsSearchCriteriaEnabled\": true,\"IsSearchCriteriaVisible\": true,\"OptionsForValue\": null,\"Result\": {\"$id\": \"4\",\"$type\": \"Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces\",\"TestName\": null,\"RunTestResult\": 1,\"Message\": \"Failed: Assert Equal. Expected 'Hello World.' for '[[Message]]' but got ''\r\n\",\"DebugForTest\": null},\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"AssertOps\": [\"=\",\">\",\"<\",\"<> (Not Equal)\",\">=\",\"<=\",\"Starts With\",\"Ends With\",\"Contains\",\"Doesn't Start With\",\"Doesn't End With\",\"Doesn't Contain\",\"Is NULL\",\"Is Not NULL\",\"Is Alphanumeric\",\"Is Base64\",\"Is Between\",\"Is Binary\",\"Is Date\",\"Is Email\",\"Is Hex\",\"Is Numeric\",\"Is Regex\",\"Is Text\",\"Is XML\",\"Not Alphanumeric\",\"Not Base64\",\"Not Between\",\"Not Binary\",\"Not Date\",\"Not Email\",\"Not Hex\",\"Not Numeric\",\"Not Regex\",\"Not Text\",\"Not XML\",\"There is No Error\",\"There is An Error\"],\"CanEditVariable\": true}],\"NoErrorExpected\": true,\"ErrorExpected\": false,\"ErrorContainsText\": \"\",\"IsNewTest\": false,\"IsTestSelected\": false,\"IsTestLoading\": false,\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"Enabled\": true,\"RunSelectedTestUrl\": null,\"AuthenticationType\": 0,\"IsDirty\": false,\"UserAuthenticationSelected\": false,\"NewTest\": false,\"IsTestRunning\": false,\"TestSteps\": [],\"SelectedTestStep\": null}\";";
+        const string SimpleJson = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
         [Given(@"I have a resouce ""(.*)""")]
         public void GivenIHaveAResouce(string resourceName)
         {
@@ -252,13 +252,13 @@ namespace Dev2.Activities.Specs.TestFramework
                 foreach (var resourceName in testNamesNames)
                 {
                     var serializer = new Dev2JsonSerializer();
-                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                     serviceTestModelTO.TestName = resourceName;
                     serviceTestModelTO.ResourceId = resourceID;
                     serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                     serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                     serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
-
+                    serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                     serviceTestModelTos.Add(serviceTestModelTO);
                 }
             }
@@ -337,7 +337,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
 
                 var serializer = new Dev2JsonSerializer();
-                var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                 serviceTestModelTO.TestName = tableRow["TestName"];
                 serviceTestModelTO.ResourceId = resourceID;
                 serviceTestModelTO.TestFailing = bool.Parse(tableRow["TestFailing"]);
@@ -347,6 +347,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                 serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                 serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+                serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
 
                 serviceTestModelTos.Add(serviceTestModelTO);
 
@@ -1534,13 +1535,13 @@ namespace Dev2.Activities.Specs.TestFramework
                     foreach (var resourceName in testNamesNames)
                     {
                         var serializer = new Dev2JsonSerializer();
-                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                         serviceTestModelTO.TestName = resourceName;
                         serviceTestModelTO.ResourceId = resourceID;
                         serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                         serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                         serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
-
+                        serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                         serviceTestModelTos.Add(serviceTestModelTO);
                     }
                 }
@@ -1564,9 +1565,9 @@ namespace Dev2.Activities.Specs.TestFramework
                     foreach (var resourceName in testNamesNames)
                     {
                         var serializer = new Dev2JsonSerializer();
-                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                         serviceTestModelTO.TestName = resourceName;
-
+                        serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                         serviceTestModelTO.ResourceId = resourceId;
                         serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                         serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
@@ -1650,7 +1651,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates[debugStates.Count - 1];
+            var serviceEndDebug = debugStates.First(state => state.StateType == StateType.End);
             foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];

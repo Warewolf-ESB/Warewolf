@@ -964,10 +964,7 @@ Scenario: Run All Tests in Web
 	And I click New Test
 	Then a new test is added
 	And Tab Header is "Hello World - Tests *"
-	And test name starts with "Test 1"
-	And I update inputs as
-	| Variable Name | Value |
-	| Name          |       |
+	And test name starts with "Test 1"	
 	And I update outputs as
 	| Variable Name | Value       |
 	| Message       | Hello World. |
