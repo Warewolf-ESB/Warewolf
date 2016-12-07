@@ -1483,7 +1483,8 @@ namespace Dev2.Activities.Specs.Composition
                 new SharepointFieldTo {InternalName = "Loc"}
             };
             SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
-            asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList => {
+            asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
+            {
                 if (columnList != null)
                 {
                     List<SharepointReadListTo> fieldMappings = columnList
@@ -3175,7 +3176,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings for testing as")]
         public void GivenContainsAPostgreToolUsingWithMappingsForTestingAs(string parentName, string serviceName, Table table)
         {
-
+            var inputs = GetServiceInputs(table);
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -3193,21 +3194,16 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs = new List<IServiceInput>
-                {
-                    new ServiceInput("Prefix","K"),
-                },
+                Inputs =inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("Prefix","K"),
-                    }
+                    Inputs = inputs
                 },
-                Name = "get_countries",
-                Id = dbSource.Id,
+                Name = "tab_val_func"
+                ,
+                Id = dbSource.Id
 
             };
             var testResults = dbServiceModel.TestService(databaseService);
@@ -3241,8 +3237,7 @@ namespace Dev2.Activities.Specs.Composition
                 new ServiceInput("Prefix","K"),
             };
             postGreActivity.Outputs = mappings;
-            _commonSteps.AddVariableToVariableList("[[get_countries(1).id]]");
-            _commonSteps.AddVariableToVariableList("[[get_countries(1).name]]");
+            _commonSteps.AddVariableToVariableList("[[V1]]");
             _commonSteps.AddActivityToActivityList(parentName, serviceName, postGreActivity);
         }
 
@@ -3401,6 +3396,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a oracle database service ""(.*)"" with mappings as")]
         public void GivenContainsAOracleDatabaseServiceWithMappingsAs(string parentName, string serviceName, Table table)
         {
+            var inputs = GetServiceInputs(table);
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -3418,20 +3414,14 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs = new List<IServiceInput>
-                {
-                    new ServiceInput("P_DEPTNO","2"),
-                },
+                Inputs = inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("P_DEPTNO","2"),
-                    }
+                    Inputs = inputs
                 },
-                Name = "GET_EMP_RS",
+                Name = serviceName,
                 Id = dbSource.Id,
 
             };
@@ -3483,7 +3473,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
-
+            var inputs = GetServiceInputs(table);
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -3501,20 +3491,14 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs = new List<IServiceInput>
-                {
-                    new ServiceInput("GameNumber","1"),
-                },
+                Inputs = inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("GameNumber", "1")
-                    }
+                    Inputs = inputs
                 },
-                Name = "FetchPlayers",
+                Name = serviceName,
                 Id = dbSource.Id
             };
             var testResults = dbServiceModel.TestService(databaseService);
@@ -3550,6 +3534,13 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Surname]]");
             _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Username]]");
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
+        }
+
+        private static List<IServiceInput> GetServiceInputs(Table table)
+        {
+            return table.Rows.Select(a => new ServiceInput(a["ParameterName"], a["ParameterValue"]))
+                .Cast<IServiceInput>()
+                .ToList();
         }
 
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]

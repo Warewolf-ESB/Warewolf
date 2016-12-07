@@ -73,6 +73,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ExtensiosnTests.cs" />
+    <Compile Include="OracleServerTests.cs" />
+    <Compile Include="PostgreServerTests.cs" />
     <Compile Include="SqlServerTests.cs" />
   </ItemGroup>
   <ItemGroup>
