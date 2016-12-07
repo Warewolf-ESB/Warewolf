@@ -262,7 +262,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	And  Skip Blanks rows is "enabled"
 	When the data split tool is executed
 	Then the split recordset "[[rec(*).name]]" will be
-	| rs            | value  |
+	| rs         | value  |
 	| rec().name | NAME   |
 	| rec().name | Barney |
 	| rec().name | Tshepo |
@@ -274,7 +274,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	| rec().phone | 5678  |
 	| rec().phone |       |
 	Then the split recordset "[[rec(*).id]]" will be
-	| rs          | value |
+	| rs       | value |
 	| rec().id | ID    |
 	| rec().id | 1     |
 	| rec().id | 2     |
