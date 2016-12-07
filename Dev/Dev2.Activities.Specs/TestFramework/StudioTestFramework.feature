@@ -586,38 +586,30 @@ Scenario: Run a passing test and change step type
 	And Tab Header is "Hello World - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
-	And password is blank
-	And inputs are
-	| Variable Name | Value |
-	| Name          |       |
+	And password is blank	
 	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Blank Input"
+	And I Add "Assign a value to Name if blank (1)" as TestStep
+	And I add "Assign a value to Name if blank (1)" StepOutputs as 
+	| Variable Name | Condition | Value |
+	| [[Name]]      | =         | World |
 	And I Add "Set the output variable (1)" as TestStep
-	And outputs as
-	| Variable Name | Value |
-	| Message       |       |
+	And I add "Set the output variable (1)" StepOutputs as 
+	| Variable Name | Condition | Value        |
+	| [[Message]]   | =         | Hello World. |
 	And save is enabled
-	And test status is pending
-	And All test pieces are pending
-	And test is enabled
-	And I update inputs as
-	| Variable Name | Value |
-	| Name          | Bob   |
+	And test status is pending	
+	And test is enabled	
 	And I update outputs as
-	| Variable Name | Value      |
-	| Message       | Hello Bob. |
-	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	| Variable Name | Value        |
+	| Message       | Hello World. |
 	And I save
 	When I run the test
 	Then test result is Passed
 	When I change step "If [[Name]] <> (Not Equal)" to Mock
-	Then step "Set the output variable (1)" is Pending
-	And step "If [[Name]] <> (Not Equal)" is Pending
-	And service debug inputs as
-		| Variable | Value |
-		| [[Name]] | Bob   |
-	And the service debug outputs as
-	  | Variable    | Value      |
-	  | [[Message]] | Hello Bob. |
+	Then I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	When I run the test
+	Then step "Assign a value to Name if blank (1)" is Pending	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
