@@ -1,0 +1,22 @@
+
+<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="Host=RSAKLFSVRGENDEV;Username=postgres;Password=test123;Database=TestDB" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewPostgresSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-20T23:49:33.1116191+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="3" ResourceId="f8b1a579-2394-489e-835e-21b42e304e09" VersionId="084651e8-fe33-49da-b6b6-5771a9d34fc4" />
+</Source>
