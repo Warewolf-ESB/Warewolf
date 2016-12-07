@@ -208,6 +208,12 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem UpdateItem(IResource resource)
         {
+            var parentItem = Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\') == resource.GetSavePath().ToLowerInvariant().TrimEnd('\\'));
+            if (parentItem != null)
+            {
+                var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID); 
+                parentItem.Children.Add(newExplorerItem);
+            }
             return null;
         }
 
@@ -381,7 +387,17 @@ namespace Dev2.Runtime.Hosting
                         return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.RequestedFolderAlreadyExists);
                     }
                     Directory.CreateIfNotExists(dir);
-
+                    if (itemToAdd.ResourcePath.Contains("\\"))
+                    {
+                        var idx = itemToAdd.ResourcePath.LastIndexOf("\\",StringComparison.InvariantCultureIgnoreCase);
+                        var pathToSearch = itemToAdd.ResourcePath.Substring(0, idx);
+                        var parent = Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\') == pathToSearch.ToLowerInvariant().TrimEnd('\\'));
+                        parent?.Children.Add(itemToAdd);
+                    }
+                    else
+                    {
+                        _root.Children.Add(itemToAdd);
+                    }
                     _sync.AddItemMessage(itemToAdd);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
