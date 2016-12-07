@@ -148,6 +148,7 @@
 
                     <DataGridTemplateColumn Width="Auto"
                                             Header="MatchType"
+                                            CanUserResize="False"
                                             HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
                         <DataGridTemplateColumn.CellTemplate>
