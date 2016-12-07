@@ -609,13 +609,13 @@ Scenario: Split text format into recordset - With Escape value
 	And the execution has "NO" error
 	And the debug inputs as  
 	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
-	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | ,     | No      | "\'"   |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | ,    | No      | "\'"   |
 	And the debug output as
-	| # |                         |
-	| 1 | [[rec(1).id]] = a       |
-	|   | [[rec(2).id]] = b       |
+	| # |                          |
+	| 1 | [[rec(1).id]] = a        |
+	|   | [[rec(2).id]] = b        |
 	|   | [[rec(3).id]] = bob\',c |
-	|   | [[rec(4).id]] = d       |
+	|   | [[rec(4).id]] = d        |
 
 Scenario: Split text format into recordset - With NewLine value
 	Given A string to split with new line value
@@ -628,7 +628,7 @@ Scenario: Split text format into recordset - With NewLine value
 	And the execution has "NO" error
 	And the debug inputs as  
 	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
-	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | ,     | No      | ""     |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | \r\n  | No      | ""     |
 	And the debug output as
 	| # |                     |
 	| 1 | [[rec(1).id]] = a   |
