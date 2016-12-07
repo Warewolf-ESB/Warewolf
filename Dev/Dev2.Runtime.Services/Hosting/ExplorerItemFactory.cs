@@ -123,7 +123,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public ServerExplorerItem CreateResourceItem(IResource resource, Guid workSpaceId)
+        public IExplorerItem CreateResourceItem(IResource resource, Guid workSpaceId)
         {
             Guid resourceId = resource.ResourceID;
             var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.GetResourcePath(workSpaceId))

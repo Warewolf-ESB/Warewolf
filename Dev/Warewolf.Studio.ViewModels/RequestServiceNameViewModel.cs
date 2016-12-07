@@ -18,7 +18,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 
-#pragma warning disable 1998
 namespace Warewolf.Studio.ViewModels
 {
     public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
@@ -42,16 +41,11 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-
-#pragma warning disable 1998
-#pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
-#pragma warning restore 1998
-#pragma warning restore 1998
         {
-            _environmentViewModel = environmentViewModel;
+            _environmentViewModel = new EnvironmentViewModel(environmentViewModel.Server,environmentViewModel.ShellViewModel,true, environmentViewModel.SelectAction);
             _environmentViewModel.Connect();
+            await _environmentViewModel.LoadDialog(selectedPath);
             _selectedPath = selectedPath;
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
@@ -251,7 +245,7 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            
+
             try
             {
                 if (!string.IsNullOrEmpty(_selectedPath))
@@ -277,11 +271,11 @@ namespace Warewolf.Studio.ViewModels
             _view.DataContext = this;
             _view.ShowView();
 
-            _environmentViewModel.IsSaveDialog = false;
+            _environmentViewModel.IsSaveDialog = true;
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
-            _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
 
             return ViewResult;
         }
@@ -406,5 +400,4 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel?.Dispose();
         }
     }
-
 }
