@@ -41,7 +41,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             : base(modelItem, "File Or Folder", String.Empty)
         {
             _sourceManager = sourceManager;
-            ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
