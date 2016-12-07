@@ -63,9 +63,9 @@
                                         Text="{Binding SwitchVariable,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                        ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                                        ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="DisplayText"
                                              SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
