@@ -14,6 +14,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -141,7 +142,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                var sourceString = SourceString ?? "";
+                string sourceString;
+                var match = Regex.Match(SourceString, @"[\n\r]+");
+
+                if(match.Success)
+                    sourceString = Regex.Escape(SourceString);
+                else
+                    sourceString = SourceString ?? "";
+
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env, update));
