@@ -197,9 +197,14 @@ namespace Warewolf.Studio.ViewModels
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
-                ResourceName = name,
+                IsSelected = true,
+                IsRenaming = true,
+                CanDelete = true,
+                IsFolder = true,
+                IsNewFolder = true,
                 ResourceId = id,
                 ResourceType = @"Folder",
                 AllowResourceCheck = explorerItem.AllowResourceCheck,
@@ -214,12 +219,10 @@ namespace Warewolf.Studio.ViewModels
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,
                 CanCreateWorkflowService = explorerItem.CanCreateWorkflowService,
                 ShowContextMenu = explorerItem.ShowContextMenu,
-                IsSelected = true,
-                IsRenaming = true,
-                CanDelete =  true,
-                IsFolder = true,
-                IsNewFolder = true
+                IsSaveDialog = explorerItem.IsSaveDialog
             };
+            child.ResourceName = name;
+            child.IsRenaming = true;
             return child;
         }
 
