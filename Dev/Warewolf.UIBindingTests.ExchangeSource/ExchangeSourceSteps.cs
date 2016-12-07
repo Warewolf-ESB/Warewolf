@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,6 +12,7 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
+using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.UIBindingTests.ExchangeSource
 {
@@ -116,10 +120,37 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         }
 
         [When(@"the error message is ""(.*)""")]
+        [Then(@"the error message is ""(.*)""")]
         public void WhenTheErrorMessageIs(string errorMessage)
         {
             var viewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
+        [When(@"Send is ""(.*)""")]
+        [Then(@"Send is ""(.*)""")]
+        public void WhenSendIs(string successString)
+        {
+            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageExchangeSourceModel>>("updateManager");
+            var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
+            if (isSuccess)
+            {
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IExchangeSource>()));
+            }
+            else
+            {
+                mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IExchangeSource>()))
+                    .Throws(new WarewolfTestException("The request failed. The remote server returned an error: (401) Unauthorized.", null));
+            }
+            var manageExchangeSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
+            manageExchangeSourceControl.TestSend();
+            Thread.Sleep(3000);
+        }
+
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string controlName, string enabledString)
+        {
+            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
     }
 }

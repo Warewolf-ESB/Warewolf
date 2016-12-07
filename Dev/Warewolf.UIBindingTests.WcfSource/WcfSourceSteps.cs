@@ -108,7 +108,7 @@ namespace Warewolf.UIBindingTests.WcfSource
             else
             {
                 mockUpdateManager.Setup(model => model.TestConnection(It.IsAny<IWcfServerSource>()))
-                    .Throws(new WarewolfTestException("Failed to Send: One or more errors occurred", null));
+                    .Throws(new WarewolfTestException("Invalid URI: The format of the URI could not be determined.", null));
             }
             var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             manageWcfSourceControl.TestSend();

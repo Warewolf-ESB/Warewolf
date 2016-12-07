@@ -173,7 +173,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 45
  testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
- testRunner.Then("Send is \"Failed to Send: One or more errors occurred\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Send is \"Failed: None of the specified endpoints were reachable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 47
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48

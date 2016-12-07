@@ -21,6 +21,5 @@ Scenario: Fail Send Shows correct error message
 	And "Test Connection" is "Enabled"
 	And "Save" is "Disabled"
 	And Send is "Unsuccessful"
-	Then Send is "Failed to Send: One or more errors occurred"
+	Then Send is "Invalid URI: The format of the URI could not be determined."
 	And "Save" is "Disabled"
-	And the error message is "Invalid URI: The format of the URI could not be determined."

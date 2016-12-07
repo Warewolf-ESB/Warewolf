@@ -35,7 +35,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -164,10 +163,6 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center">
-            <TextBlock TextWrapping="WrapWithOverflow" 
-                       x:Name="ErrorTextBlock" 
-                       Text="{Binding TestMessage}" 
-                       Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
             <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Foreground="{StaticResource WareWolfOrangeBrush}" 
@@ -223,5 +218,17 @@
                 </i:Interaction.Behaviors>
             </TextBlock>
         </StackPanel>
+        <TextBox TextWrapping="WrapWithOverflow" 
+                 Grid.Row="6"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Left"
+                 x:Name="ErrorTextBlock" 
+                 Text="{Binding TestMessage}" 
+                 Style="{StaticResource ErrorMessageTextboxStyle}"
+                 Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
+            <i:Interaction.Behaviors>
+                <customControls:DoubleClickBehavior/>
+            </i:Interaction.Behaviors>
+        </TextBox>
     </Grid>
 </UserControl>

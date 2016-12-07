@@ -98,7 +98,6 @@ namespace Warewolf.Studio.ViewModels
             UserName = emailServiceSource.UserName;
             Password = emailServiceSource.Password;
             Timeout = emailServiceSource.Timeout;
-
         }
 
         void SetupHeaderTextFromExisting()
@@ -129,11 +128,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public override void Save()
@@ -296,7 +291,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         EnableSend = false;
                     }
-                    
+
                     OnPropertyChanged(() => EmailTo);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => EnableSend);
@@ -333,10 +328,7 @@ namespace Warewolf.Studio.ViewModels
         public void TestConnection()
         {
             _token = new CancellationTokenSource();
-
-
-            var t = new Task(
-                SetupProgressSpinner, _token.Token);
+            var t = new Task(SetupProgressSpinner, _token.Token);
 
             t.ContinueWith(a => Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -348,7 +340,7 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
-                                TestMessage = t.Exception != null ? t.Exception.Message : "Failed";
+                                TestMessage = t.Exception?.InnerException?.Message ?? t.Exception.Message;
                                 break;
                             }
                         case TaskStatus.RanToCompletion:
@@ -372,9 +364,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = false;
                 TestPassed = false;
             });
-
             _updateManager.TestConnection(ToNewSource());
-
         }
 
         IExchangeSource ToNewSource()
@@ -419,7 +409,6 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.ResourceType = "ExchangeSource";
                 _emailServiceSource.Name = Name;
                 return _emailServiceSource;
-
             }
         }
 
@@ -502,7 +491,6 @@ namespace Warewolf.Studio.ViewModels
 
         public string PasswordLabel => Resources.Languages.Core.PasswordLabel;
 
-
         public string TimeoutLabel => Resources.Languages.Core.EmailSourceTimeoutLabel;
 
         public string TestLabel => Resources.Languages.Core.TestConnectionLabel;
@@ -515,7 +503,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (RequestServiceNameViewModel != null)
             {
-                if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
+                RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
             Dispose(true);
@@ -539,7 +527,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_token != null) _token.Dispose();
+                    _token?.Dispose();
                 }
 
                 // Dispose unmanaged resources.

@@ -132,10 +132,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => _updateManager.GetComputerNames().Select(name => new ComputerName { Name = name }).ToList(), names =>
             {
                 ComputerNames = names;
-                if (additionalUiAction != null)
-                {
-                    additionalUiAction();
-                }
+                additionalUiAction?.Invoke();
             }, exception =>
              {
                  TestFailed = true;
@@ -411,7 +408,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailed = true;
                     TestPassed = false;
                     Testing = false;
-                    TestMessage = exception != null ? exception.Message : "Failed";
+                    TestMessage = exception.InnerException?.Message ?? exception.Message;
                     DatabaseNames.Clear();
                 });
             }
@@ -420,7 +417,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception.Message;
+                TestMessage = exception.InnerException?.Message;
                 DatabaseNames.Clear();
             }
             OnPropertyChanged(() => DatabaseNames);
@@ -448,7 +445,7 @@ namespace Warewolf.Studio.ViewModels
                 Type = (enSourceType)Enum.Parse(typeof(enSourceType), ServerType.Value),
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _dbSource == null ? Guid.NewGuid() : _dbSource.Id
+                Id = _dbSource?.Id ?? Guid.NewGuid()
             };
         }
 
@@ -475,7 +472,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = Path,
                     Name = ResourceName,
                     DbName = DatabaseName,
-                    Id = _dbSource == null ? SelectedGuid : _dbSource.Id
+                    Id = _dbSource?.Id ?? SelectedGuid
                 };
             // ReSharper disable once RedundantIfElseBlock
             else
@@ -595,10 +592,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
-                    if (DatabaseNames != null)
-                    {
-                        DatabaseNames.Clear();
-                    }
+                    DatabaseNames?.Clear();
                     Reset();
                 }
             }
@@ -762,10 +756,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public bool IsEmpty => ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
@@ -786,7 +777,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (RequestServiceNameViewModel != null)
             {
-                if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
+                RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
             Dispose(true);
@@ -809,7 +800,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_token != null) _token.Dispose();
+                    _token?.Dispose();
                 }
 
                 // Dispose unmanaged resources.

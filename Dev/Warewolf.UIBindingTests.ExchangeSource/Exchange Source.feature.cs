@@ -159,6 +159,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
+ testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+ testRunner.Then("Send is \"The request failed. The remote server returned an error: (401) Unauthori" +
+                    "zed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 41
+ testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
  testRunner.And("the error message is \"The request failed. The remote server returned an error: (4" +
                     "01) Unauthorized.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
