@@ -38,7 +38,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         public DropBoxDownloadViewModel(ModelItem modelItem, IDropboxSourceManager sourceManager)
             : base(modelItem,"File Or Folder", String.Empty)
         {
-            ThumbVisibility = Visibility.Visible;
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);

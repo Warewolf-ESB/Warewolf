@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
@@ -86,6 +87,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             dropBoxFileListViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxFileListViewModel);
+            Assert.IsFalse(dropBoxFileListViewModel.ShowLarge);
+            Assert.AreEqual(dropBoxFileListViewModel.ThumbVisibility, Visibility.Collapsed);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxFileListViewModel, typeof(ActivityDesignerViewModel));
         }
