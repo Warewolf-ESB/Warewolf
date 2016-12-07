@@ -601,21 +601,21 @@ Scenario: Split text format into recordset - With Escape value
 	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape "\'" 
 	When the data split tool is executed
 	Then the split recordset "[[rec(*).id]]" will be
-	| rs       | value  |
-	| rec().id | a      |
-	| rec().id | b      |
-	| rec().id | bob\'c |
-	| rec().id | d      |
+	| rs       | value   |
+	| rec().id | a       |
+	| rec().id | b       |
+	| rec().id | bob\',c |
+	| rec().id | d       |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
 	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | ,     | No      | "\'"   |
 	And the debug output as
-	| # |                        |
-	| 1 | [[rec(1).id]] = a      |
-	|   | [[rec(2).id]] = b      |
-	|   | [[rec(3).id]] = bob\'c |
-	|   | [[rec(4).id]] = d      |
+	| # |                         |
+	| 1 | [[rec(1).id]] = a       |
+	|   | [[rec(2).id]] = b       |
+	|   | [[rec(3).id]] = bob\',c |
+	|   | [[rec(4).id]] = d       |
 
 Scenario: Split text format into recordset - With NewLine value
 	Given A string to split with new line value

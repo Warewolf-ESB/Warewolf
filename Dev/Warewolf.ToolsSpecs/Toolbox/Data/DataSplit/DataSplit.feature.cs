@@ -3260,7 +3260,7 @@ this.ScenarioSetup(scenarioInfo);
                         "b"});
             table63.AddRow(new string[] {
                         "rec().id",
-                        "bob\\\'c"});
+                        "bob\\\',c"});
             table63.AddRow(new string[] {
                         "rec().id",
                         "d"});
@@ -3303,7 +3303,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(2).id]] = b"});
             table65.AddRow(new string[] {
                         "",
-                        "[[rec(3).id]] = bob\\\'c"});
+                        "[[rec(3).id]] = bob\\\',c"});
             table65.AddRow(new string[] {
                         "",
                         "[[rec(4).id]] = d"});

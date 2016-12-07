@@ -125,7 +125,7 @@ namespace Dev2.Common
                     // fetch next value while
                     char previous = '\0';
                     while (canidate.MoveNext() &&
-                           ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(previous)))
+                           ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(result.ToString(),  previous)))
                     {
                         result.Append(tmp);
                         previous = tmp;
@@ -211,11 +211,11 @@ namespace Dev2.Common
             return false;
         }
 
-        private bool SkipDueToEscapeChar(char previousChar)
+        private bool SkipDueToEscapeChar(string word, char previousChar)
         {
             if (!String.IsNullOrEmpty(_escapeChar))
-            {
-                return previousChar == _escapeChar[0];
+            {                
+                return word.Contains(_escapeChar) && word.EndsWith(_escapeChar);
             }
             return false;
         }
