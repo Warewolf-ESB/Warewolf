@@ -187,6 +187,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIActivityDefaultWindoWindow UIActivityDefaultWindoWindow
+        {
+            get
+            {
+                if ((this.mUIActivityDefaultWindoWindow == null))
+                {
+                    this.mUIActivityDefaultWindoWindow = new UIActivityDefaultWindoWindow();
+                }
+                return this.mUIActivityDefaultWindoWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +225,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIActivityDefaultWindoWindow mUIActivityDefaultWindoWindow;
         #endregion
     }
     
@@ -104446,5 +104460,19 @@ namespace Warewolf.UITests
         #region Fields
         private WinButton mOKButton;
         #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIActivityDefaultWindoWindow : WpfWindow
+    {
+        
+        public UIActivityDefaultWindoWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
     }
 }

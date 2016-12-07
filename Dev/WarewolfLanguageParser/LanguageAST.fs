@@ -54,16 +54,6 @@ and [<ExcludeFromCodeCoverage>] LanguageExpression =
     | RecordSetNameExpression of RecordSetName
     | JsonIdentifierExpression of JsonIdentifierExpression
 
-let atomtoString (x : WarewolfAtom) = 
-    match x with
-    | Float a -> 
-        let places = GetDecimalPlaces a
-        a.ToString(sprintf "F%i" places)
-    | Int a -> a.ToString()
-    | DataString a -> a
-    | Nothing -> null
-    | PositionedValue(_, b) -> b.ToString()
-
 let tryParseIndex (x : Index) = 
     match x with
     | IntIndex a -> 
