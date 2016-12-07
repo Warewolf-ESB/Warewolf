@@ -147,7 +147,10 @@ namespace Dev2.Studio.Controller
             var large = new ConfigureSwitch();
             var dataContext = new SwitchDesignerViewModel(modelItem,display);
             large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow {Height = 280};
+            var window = new ActivityDefaultWindow
+            {
+                Style = Application.Current.TryFindResource("SwitchMainWindowStyle") as Style
+            };
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -197,7 +200,10 @@ namespace Dev2.Studio.Controller
             var large = new ConfigureSwitchArm();
             var dataContext = new SwitchDesignerViewModel(modelData,"") { SwitchVariable = variable };
             large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow();
+            var window = new ActivityDefaultWindow
+            {
+                Style = Application.Current.TryFindResource("SwitchCaseWindowStyle") as Style
+            };
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -277,7 +283,10 @@ namespace Dev2.Studio.Controller
             var large = new Large();
             var dataContext = new DecisionDesignerViewModel(mi);
             large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow {Height = 390};
+            var window = new ActivityDefaultWindow
+            {
+                Style = Application.Current.TryFindResource("DecisionWindowStyle") as Style
+            };
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {

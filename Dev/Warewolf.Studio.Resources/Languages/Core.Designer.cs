@@ -2633,6 +2633,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sends a test email from this account so you can confirm its working..
+        /// </summary>
+        public static string EmailSourceTestHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The time allowed for the operation to connect before throwing an error..
         /// </summary>
         public static string EmailSourceTimeoutHelp {

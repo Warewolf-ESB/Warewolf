@@ -113,7 +113,7 @@ and checkForInvalidVariables (lang : LanguageExpression list) =
                 (ComplexExpression lang, "invalid variable name")
             | (ComplexExpression _, _) -> parsed
             | (WarewolfAtomExpression _, _) -> parsed
-            | (JsonIdentifierExpression _, _) -> failwith "Obsolete"
+            | (JsonIdentifierExpression _, _) -> parsed
         res
 
 and verifyComplexExpression (lang : LanguageExpression list) = 

@@ -32,8 +32,8 @@ namespace Warewolf.UITests
         public void ClickNewTestWithUnsavedExistingTest()
         {
             UIMap.Try_Click_Create_New_Tests();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
             UIMap.Click_MessageBox_OK();
         }
         
@@ -41,7 +41,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass,4);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.Exists);
         }
 
@@ -51,9 +51,9 @@ namespace Warewolf.UITests
         {
             UIMap.Click_MockRadioButton_On_Decision_TestStep();
             Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.AssertHeader.Pending.TryGetClickablePoint(out point));
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass,4);
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.TryGetClickablePoint(out point));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.AssertHeader.Pending.TryGetClickablePoint(out point), "Pending status icon is still visible on decision test step after checking the mock radio button.");
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Warewolf.UITests
         {
             UIMap.Click_Delete_On_AssignValue_TestStep();
             Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point), "Test step still visible after clicking the delete button on that test step.");
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Warewolf.UITests
         {
             UIMap.Click_MockRadioButton_On_AssignValue_TestStep();
             Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.Pending.TryGetClickablePoint(out point));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.Pending.TryGetClickablePoint(out point), "Pending status icon is still visible on assign test step after checking the mock radio button.");
         }
         
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Warewolf.UITests
         {
             UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.Failed.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.Failed.Exists, "Failed status icon does not exist after running a text with the wrong output message.");
         }
 
         #region Additional test attributes

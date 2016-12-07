@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -1102,6 +1103,84 @@ namespace Dev2.Core.Tests.Settings
             var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
             //------------Assert Results-------------------------
             Assert.IsFalse(hasDuplicateResourcePermissions);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var resourceId = Guid.NewGuid();
+
+            var groupPermission = new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false,
+                IsDeleted = false,
+                ResourceName = "a"
+
+            };
+            securityViewModel.ResourcePermissions.Clear();
+            securityViewModel.ResourcePermissions.Add(groupPermission);
+            var methodInfo = typeof(SecurityViewModel).GetMethod("ResourcePermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
+            //------------Execute Test---------------------------
+            var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
+            {
+                        new WindowsGroupPermission
+                            {
+                                WindowsGroup = "Some Group",
+                                ResourceID = resourceId,
+                                IsServer = false,
+                                IsDeleted = true,
+                            ResourceName = "a"
+
+                            }
+            };
+            var invoke = methodInfo.Invoke(securityViewModel, new object[] { groupPermissions , true});
+            //------------Assert Results-------------------------
+            Assert.IsFalse(bool.Parse(invoke.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var resourceId = Guid.NewGuid();
+
+            var groupPermission = new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false,
+                IsDeleted = false,
+                ResourceName = "a"
+
+            };
+            securityViewModel.ResourcePermissions.Clear();
+            securityViewModel.ResourcePermissions.Add(groupPermission);
+            var methodInfo = typeof(SecurityViewModel).GetMethod("ServerPermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
+            //------------Execute Test---------------------------
+            var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
+            {
+                        new WindowsGroupPermission
+                            {
+                                WindowsGroup = "Some Group",
+                                ResourceID = resourceId,
+                                IsServer = false,
+                                IsDeleted = true,
+                            ResourceName = "a"
+
+                            }
+            };
+            var invoke = methodInfo.Invoke(securityViewModel, new object[] { groupPermissions, true });
+            //------------Assert Results-------------------------
+            Assert.IsFalse(bool.Parse(invoke.ToString()));
         }
 
         [TestMethod]

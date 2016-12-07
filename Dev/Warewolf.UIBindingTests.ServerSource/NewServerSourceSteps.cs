@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Controller;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.UIBindingTests.Core;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -23,7 +27,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [BeforeFeature("ServerSource")]
         public static void SetupForSystem()
         {
-            Utils.SetupResourceDictionary();
+            Core.Utils.SetupResourceDictionary();
             var manageServerControl = new ManageServerControl();
             var mockStudioUpdateManager = new Mock<IManageServerSourceModel>();
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
@@ -35,8 +39,8 @@ namespace Warewolf.UIBindingTests.ServerSource
             task.Start();
             var manageServerSourceViewModel = new ManageNewServerViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageServerControl.DataContext = manageServerSourceViewModel;
-            Utils.ShowTheViewForTesting(manageServerControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageServerControl);
+            Core.Utils.ShowTheViewForTesting(manageServerControl);
+            FeatureContext.Current.Add(Core.Utils.ViewNameKey, manageServerControl);
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
@@ -45,7 +49,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [BeforeScenario("ServerSource")]
         public void SetupForServerSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageServerControl>(Utils.ViewNameKey));
+            ScenarioContext.Current.Add(Core.Utils.ViewNameKey, FeatureContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageServerSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
             ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
@@ -54,7 +58,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I open New Server Source")]
         public void GivenIOpenNewServerSource()
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             Assert.IsNotNull(manageServerControl);
             Assert.IsNotNull(manageServerControl.DataContext);
         }
@@ -62,7 +66,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(headerText, viewModel.HeaderText);
         }
@@ -70,7 +74,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"selected protocol is ""(.*)""")]
         public void ThenSelectedProtocolIs(string protocol)
         {
-            var view = Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>();
             view.SetProtocol(protocol);
             var viewModel = GetViewModel(view);
             Assert.AreEqual(protocol, viewModel.Protocol);
@@ -79,7 +83,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"server port is ""(.*)""")]
         public void ThenServerPortIs(int port)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(port.ToString(), viewModel.SelectedPort);
             Assert.AreEqual(port.ToString(), manageServerControl.GetPort());
@@ -93,7 +97,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                 ? AuthenticationType.User
                 : AuthenticationType.Windows;
 
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.SetAuthenticationType(authenticationType);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
@@ -104,7 +108,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Core.Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Core.Utils.ViewNameKey));
         }
 
         [Given(@"I type Server as ""(.*)""")]
@@ -116,7 +120,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             }
             else
             {
-                var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+                var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
                 manageServerControl.EnterServerName(serverName);
                 var viewModel = GetViewModel(manageServerControl);
                 if (viewModel != null)
@@ -135,7 +139,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I select protocol as ""(.*)""")]
         public void GivenISelectProtocolAs(string protocol)
         {
-            var view = Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>();
             view.SetProtocol(protocol);
             var viewModel = GetViewModel(view);
             Assert.AreEqual(protocol, viewModel.Protocol);
@@ -144,7 +148,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I enter server port as ""(.*)""")]
         public void GivenIEnterServerPortAs(int port)
         {
-            var view = Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>();
             view.SetPort(port.ToString());
             var viewModel = GetViewModel(view);
             Assert.AreEqual(port.ToString(), viewModel.SelectedPort);
@@ -174,7 +178,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                     break;
             }
 
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.SetAuthenticationType(authenticationType);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
@@ -183,7 +187,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I open ""(.*)"" server source")]
         public void GivenIOpenServerSource(string editingServerSource)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<IManageServerSourceModel>();
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "rsaklfhuggspc", "barney", "SANDBOX-1" });
@@ -248,7 +252,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"Server as ""(.*)""")]
         public void ThenServerAs(string serverName)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
@@ -256,14 +260,14 @@ namespace Warewolf.UIBindingTests.ServerSource
         [When(@"I Test Connection to remote server")]
         public void WhenITestConnectionToRemoteServer()
         {
-            var view = Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>();
             view.TestAction();
         }
 
         [When(@"I enter Username as ""(.*)""")]
         public void WhenIEnterUsernameAs(string username)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.EnterUserName(username);
             Assert.AreEqual(username, manageServerControl.GetUsername());
         }
@@ -271,7 +275,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [When(@"I enter Password as ""(.*)""")]
         public void WhenIEnterPasswordAs(string password)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.EnterPassword(password);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(password, viewModel.Password);
@@ -288,7 +292,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string errorMsg)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             var errorMessageFromControl = manageServerControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
@@ -318,7 +322,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var userNameVisibility = manageServerControl.GetUsernameVisibility();
             Assert.AreEqual(expectedVisibility, userNameVisibility);
         }
@@ -328,7 +332,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var passwordVisibility = manageServerControl.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, passwordVisibility);
         }
@@ -339,7 +343,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.PerformSave();
         }
 
@@ -349,7 +353,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageServerSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Passed", StringComparison.InvariantCultureIgnoreCase);
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
@@ -373,7 +377,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"server Username is ""(.*)""")]
         public void ThenServerUsernameIs(string username)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(username, viewModel.UserName);
             Assert.AreEqual(username, manageServerControl.GetUsername());
@@ -382,7 +386,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"server Password is is ""(.*)""")]
         public void ThenServerPasswordIsIs(string password)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageServerControl.GetPassword());
@@ -396,7 +400,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                 ? AuthenticationType.Public
                 : AuthenticationType.Windows;
 
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             manageServerControl.SetAuthenticationType(authenticationType);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
@@ -405,10 +409,112 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"tab name is ""(.*)""")]
         public void ThenTabNameIs(string headerText)
         {
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             Assert.AreEqual(headerText, viewModel.Header);
         }
+
+        [Given(@"Warewolf server is running")]
+        public void GivenWarewolfServerIsRunning()
+        {
+
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            if (!environmentModel.IsConnected)
+                environmentModel.Connect();
+            var controllerFactory = new CommunicationControllerFactory();
+            var environmentConnection = environmentModel.Connection;
+            var manager = new StudioResourceUpdateManager
+                (controllerFactory, environmentConnection);
+            var proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            ScenarioContext.Current.Add("environmentModel", environmentModel);
+            ScenarioContext.Current.Add("studioResourceUpdateManager", manager);
+            ScenarioContext.Current.Add("proxyLayer", proxyLayer);
+        }
+
+        [Given(@"I create new server source to Gendev as ""(.*)""")]
+        public void GivenICreateNewServerSourceToGendevAs(string sourceName)
+        {
+            var serverSource = new Dev2.Common.Interfaces.Core.ServerSource
+            {
+                Name = sourceName
+            };
+            ScenarioContext.Current.Add("serverSource", serverSource);
+        }
+
+        [When(@"I change the values as")]
+        public void WhenIChangeTheValuesAs(Table table)
+        {
+            var protocol = table.Rows[0]["Protocol"];
+            var serverName = table.Rows[0]["ServerName"];
+            var suthentication = table.Rows[0]["Authentication"];
+            string port = table.Rows[0]["port"];
+            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var resourceId = Guid.NewGuid();
+
+            if (!ScenarioContext.Current.ContainsKey("resourceId"))
+            {
+                ScenarioContext.Current.Add("resourceId", resourceId);
+                serverSource.ID = resourceId;
+            }
+           
+            serverSource.Address = $"{protocol}://{serverName}:{port}";
+            if (suthentication == "Public")
+            {
+                serverSource.AuthenticationType = AuthenticationType.Public;
+            }
+            else if (suthentication == "Windows")
+            {
+                serverSource.AuthenticationType = AuthenticationType.Windows;
+            }
+            else if (suthentication == "User")
+            {
+                serverSource.AuthenticationType = AuthenticationType.User;
+            }
+        }
+
+        [When(@"I save ""(.*)""")]
+        public void WhenISave(string sourceName)
+        {
+            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var studioResourceUpdateManager = ScenarioContext.Current.Get<StudioResourceUpdateManager>("studioResourceUpdateManager");
+            studioResourceUpdateManager.ServerSourceSaved += source =>
+            {
+                Dev2Logger.Info(source.Name + "Saved");
+            };
+
+            studioResourceUpdateManager.Save(serverSource);
+        }
+
+        [When(@"I open ""(.*)""")]
+        public void WhenIOpen(string p0)
+        {
+            var guid = ScenarioContext.Current.Get<Guid>("resourceId");
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environmentModel");
+            IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
+            if(ScenarioContext.Current.ContainsKey("resourceModel"))
+                ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;
+            else
+                ScenarioContext.Current.Add("resourceModel", loadContextualResourceModel);
+        }
+
+        [Then(@"the server source has correct values as")]
+        public void ThenTheServerSourceHasCorrectValuesAs(Table table)
+        {
+            var protocol = table.Rows[0]["Protocol"];
+            var serverName = table.Rows[0]["ServerName"];
+            var authentication = table.Rows[0]["Authentication"];
+            var port = table.Rows[0]["port"];
+            var resourceModel = ScenarioContext.Current.Get<IContextualResourceModel>("resourceModel");
+            var hasCorrectProtocol = resourceModel.WorkflowXaml.ToString().Contains(protocol);
+            var hasCorrectserverName = resourceModel.WorkflowXaml.ToString().Contains(serverName);
+            var hasCorrectport = resourceModel.WorkflowXaml.ToString().Contains(port);
+
+            Assert.IsTrue(hasCorrectProtocol);
+            Assert.IsTrue(hasCorrectserverName);
+            Assert.IsTrue(hasCorrectport);
+            
+        }
+
 
         [AfterScenario("ServerSource")]
         public void Cleanup()
@@ -422,7 +528,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new ManageNewServerViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Utils.ViewNameKey);
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var originalViewModel = GetViewModel(manageServerControl);
             manageServerControl.EnterPassword(viewModel.Password);
             manageServerControl.EnterUserName(viewModel.UserName);
