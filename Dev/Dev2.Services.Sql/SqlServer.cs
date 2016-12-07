@@ -140,6 +140,11 @@ namespace Dev2.Services.Sql
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
+                var type = row[procedureTypeColumn];
+                if (type.ToString().ToUpperInvariant() == "SQL_TABLE_VALUED_FUNCTION")
+                {
+                    continue;
+                }
                 string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
 
                 using (
