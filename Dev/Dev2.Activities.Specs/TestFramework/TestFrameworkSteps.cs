@@ -1666,24 +1666,23 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.AreEqual(variableValue, debugItemResult.Value);
             }
         }
-
-        [Then(@"Test debug results contain pending results")]
-        public void ThenTestDebugResultsContainPendingResults()
+        
+        [Then(@"Test debug results contain pending results ""(.*)""")]
+        public void ThenTestDebugResultsContainPendingResults(string pendingResult)
         {
             var serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates[debugStates.Count - 1];
-            var hasPendingResults = serviceEndDebug.AssertResultList.Any(item =>
-            {
-                dynamic dynaItem = item;
-                var pendingResuls = dynaItem.PendingResults;
-                return pendingResuls != null;
-            });
+            var serviceEndDebug = debugStates.First(state => state.StateType == StateType.TestAggregate);
+            var assertResult = serviceEndDebug.AssertResultList[0];
+            var errorValues = assertResult.ResultsList[0].Value;
+            var strings = errorValues.Split('\n');
+            var hasPendingResults = strings.Any(s => s.TrimEnd('\r').Equals(pendingResult, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsTrue(hasPendingResults);
         }
+
 
 
         [Then(@"I add mock steps as")]

@@ -648,8 +648,8 @@ Scenario: Run a test expecting error
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
-Scenario: Run a test with invalid and pending results
-Given the test builder is open with existing service "Hello World"	
+Scenario: Run a test with invalid inputs and pending results
+    Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
 	When I click New Test
 	Then a new test is added
@@ -658,14 +658,39 @@ Given the test builder is open with existing service "Hello World"
 	And username is blank
 	And password is blank
 	And I update inputs as
-	| Variable Name | Value    | EmptyIsNull |
-	| Name          | [[Home]] |             |
+	| Variable Name | Value    | 
+	| Name          | [[Home]] | 
 	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
 	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Blank Input"
 	And I update outputs as
          | Variable Name | Value    |
          | Message       | [[Home]] |
-    Then Test debug results contain pending results
+    And Test debug results contain pending results "If [[Name]] <> (Not Equal)"
+	And test folder is cleaned
+	
+Scenario: Run a test with invalid and pending results
+    Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value | 
+	| Name          | Bob   | 
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	And I Add "Assign a value to Name if blank (1)" as TestStep
+	And I Add "Set the output variable (1)" as TestStep
+	And I update outputs as
+         | Variable Name | Value      |
+         | Message       | Hello Bob. |
+	When I run the test
+    Then test result is Failed
+    And Test debug results contain pending results "Pending Step: Assign a value to Name if blank (1)"
+	And test folder is cleaned
 
 
 @TestFramework
