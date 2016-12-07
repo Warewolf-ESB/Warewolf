@@ -3361,7 +3361,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rec().id]]    =",
                         "Chars",
-                        ",",
+                        "\\r",
                         "No",
                         "\"\""});
 #line 629
