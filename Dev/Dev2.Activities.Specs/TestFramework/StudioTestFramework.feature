@@ -1152,7 +1152,8 @@ Scenario: Test WF with MySql
 Scenario: Test WF with Sql Server
 		Given I have a workflow "SqlTestWF"
 		 And "SqlTestWF" contains a sqlserver database service "dbo.FetchPlayers" with mappings for testing as
-		  | Input to Service | From Variable | Output from Service | To Variable      |		 
+		   | ParameterName | ParameterValue |
+		   | GameNumber    | 1              |
 		And I save workflow "SqlTestWF"
 		Then the test builder is open with "SqlTestWF"
 		And I click New Test
@@ -1175,7 +1176,8 @@ Scenario: Test WF with Sql Server
 Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
 		 And "oracleTestWF" contains a oracle database service "HR.GET_EMP_RS" with mappings as
-		  | Input to Service | From Variable | Output from Service | To Variable      |		 
+		    | ParameterName | ParameterValue |
+		    | P_DEPTNO      | 2              |	 
 		And I save workflow "oracleTestWF"
 		Then the test builder is open with "oracleTestWF"
 		And I click New Test
@@ -1196,11 +1198,12 @@ Scenario: Test WF with Oracle
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "oracleTestWF" is deleted as cleanup
-
+		
 Scenario: Test WF with PostGre Sql
 		Given I have a workflow "PostGreTestWF"
 		 And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
-		  | Input to Service | From Variable | Output from Service | To Variable           |		
+		  | ParameterName | ParameterValue |
+		  | Prefix        | K              |  
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test
@@ -1216,6 +1219,7 @@ Scenario: Test WF with PostGre Sql
 		When I delete "Test 1"
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "PostGreTestWF" is deleted as cleanup
+
 Scenario: Test WF with Decision
 		Given I have a workflow "DecisionTestWF"
 		And "DecisionTestWF" contains an Assign "TestAssign" as
