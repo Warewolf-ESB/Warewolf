@@ -635,24 +635,15 @@ Scenario: Run a test expecting error
 	And I update inputs as
 	| Variable Name | Value | EmptyIsNull |
 	| Name          |       | true        |
-	And I expect Error "variable not found"
+	And I expect Error "p"
 	And save is enabled
 	And test status is pending
 	And test is enabled	
 	And I remove all Test Steps
-	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
-	And I remove outputs from TestStep "If [[Name]] <> (Not Equal)"
 	And I save
 	When I run the test
-	Then the service debug assert message is "Passed:Expected Error Contains " with "variable not found"
-	Then service debug inputs as
-		| Variable | Value |
-		| [[Name]] |       |
-	And the service debug outputs as
-	  | Variable    | Value |
-	  | [[Message]] |       |
-	
-	Then test result is Passed	
+	Then the service debug assert message contains "Failed: Expected Error containing 'p' but got 'variable not found'"	
+	Then test result is Failed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned

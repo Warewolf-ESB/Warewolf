@@ -386,7 +386,10 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        serviceTestOutput.Result = new TestRunResult {RunTestResult = RunResult.TestPending};
+                        if(serviceTestOutput != null)
+                        {
+                            serviceTestOutput.Result = new TestRunResult {RunTestResult = RunResult.TestPending};
+                        }
                     }
                 }
             }
