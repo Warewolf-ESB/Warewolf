@@ -94,7 +94,6 @@ Scenario: Selected for deploy items type is showing on deploy tab
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I select "DB Service\FetchPlayers" from Source Server
 	 And I select "sqlServers\DemoDB" from Source Server
-
 	 Then Services is "1"
 	 And Sources is "1"
 
