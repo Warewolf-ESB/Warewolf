@@ -134,6 +134,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2EmailSender.cs" />
     <Compile Include="DeletedFileMetadata.cs" />
