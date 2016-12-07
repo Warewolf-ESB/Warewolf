@@ -385,11 +385,18 @@ or type_desc LIKE '%Procedure%'";
 
         public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
 
-        public const string SchemaQueryPostgreSql = @"SELECT  p.proname as Name, current_database() as Db
-FROM    pg_catalog.pg_namespace n
-JOIN    pg_catalog.pg_proc p
-ON      p.pronamespace = n.oid
-WHERE   n.nspname = 'public'
+        public const string SchemaQueryPostgreSql = @"
+select 
+    pp.proname as Name,
+    current_database() as Db,    
+    pg_get_functiondef(pp.oid),
+    pp.proretset,
+    t.typname
+from pg_proc pp
+inner join pg_namespace pn on (pp.pronamespace = pn.oid)
+inner join pg_language pl on (pp.prolang = pl.oid)
+inner join pg_type t on (pp.prorettype = t.oid)
+where pn.nspname = 'public';
 ";
 
         public const string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
