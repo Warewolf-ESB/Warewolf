@@ -21,6 +21,18 @@ namespace Warewolf.UITests.Tools.Control_Flow
 
         [TestMethod]
         [TestCategory("Tools")]
+        public void DecisionTool_LargeViewResize_UITest()
+        {
+            var sizeBefore = UIMap.DecisionOrSwitchDialog.LargeView.Height;
+            UIMap.Resize_Decision_LargeTool();
+            Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
+            UIMap.Click_Decision_Dialog_Cancel_Button();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
         public void DecisionTool_MatchType_Combobox_ListItems_UITest()
         {
             UIMap.Click_Decision_Large_View_Match_Type_Combobox();

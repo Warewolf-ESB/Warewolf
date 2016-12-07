@@ -3,14 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
@@ -74,8 +73,8 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
-            SendCommand = new DelegateCommand(TestConnection, CanTest);
-            OkCommand = new DelegateCommand(SaveConnection, CanSave);
+            SendCommand = new DelegateCommand(o=>TestConnection(), o=>CanTest());
+            OkCommand = new DelegateCommand(o=>SaveConnection(), o=>CanSave());
             Testing = false;
             _testPassed = false;
             _testFailed = false;
@@ -478,7 +477,7 @@ namespace Warewolf.Studio.ViewModels
             var t = new Task(
                 SetupProgressSpinner, _token.Token);
 
-            t.ContinueWith(a => Dispatcher.CurrentDispatcher.Invoke(() =>
+            t.ContinueWith(a => Application.Current?.Dispatcher?.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
                     switch (t.Status)
@@ -495,8 +494,8 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 TestMessage = "Passed";
                                 TestFailed = false;
-                                TestPassed = true;
                                 Testing = false;
+                                TestPassed = true;
                                 break;
                             }
                     }
@@ -506,7 +505,8 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupProgressSpinner()
         {
-            Dispatcher.CurrentDispatcher.Invoke(() =>
+
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
                 Testing = true;
                 TestFailed = false;
