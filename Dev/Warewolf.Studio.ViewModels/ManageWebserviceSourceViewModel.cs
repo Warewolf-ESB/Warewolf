@@ -275,10 +275,8 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception?.Message ?? "Failed";
+                TestMessage = exception.InnerException?.Message ?? exception.Message;
             });
-
-
         }
 
         void SetupProgressSpinner()

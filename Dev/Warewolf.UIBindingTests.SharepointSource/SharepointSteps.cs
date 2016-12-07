@@ -159,7 +159,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()))
-                    .Throws(new WarewolfTestException("Server not found", null));
+                    .Throws(new WarewolfTestException("Unable to contact Server : Test Failed: Value does not fall within the expected range.", null));
 
             }
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);

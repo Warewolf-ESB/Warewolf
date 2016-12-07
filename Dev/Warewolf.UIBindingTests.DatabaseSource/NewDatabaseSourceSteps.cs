@@ -412,7 +412,7 @@ namespace Warewolf.UIBindingTests.DatabaseSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
-                    .Throws(new WarewolfTestException("Server not found", null));
+                    .Throws(new WarewolfTestException("Login failed for user 'test'", null));
 
             }
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);

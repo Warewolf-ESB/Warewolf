@@ -132,7 +132,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             else
             {
                 mockUpdateManager.Setup(model => model.TestSource(It.IsAny<IRabbitMQServiceSourceDefinition>()))
-                    .Throws(new WarewolfTestException("Failed to Send: One or more errors occurred", null));
+                    .Throws(new WarewolfTestException("Failed: None of the specified endpoints were reachable", null));
             }
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.TestPublish();

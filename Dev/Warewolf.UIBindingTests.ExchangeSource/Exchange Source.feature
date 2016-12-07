@@ -36,4 +36,7 @@ Scenario: Fail Send Shows correct error message
 	When I Type Password as "TestUser"
 	When I Type TimeOut as "1000"
 	When I Type To Email as "test@gmsil.com"
+	And Send is "Unsuccessful"
+	Then Send is "The request failed. The remote server returned an error: (401) Unauthorized."
+	And "Save" is "Disabled"
 	And the error message is "The request failed. The remote server returned an error: (401) Unauthorized."

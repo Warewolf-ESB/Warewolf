@@ -82,7 +82,7 @@ Scenario: Creating server source Authentication error Shows correct error messag
 	Then Test Connecton is "Failed"
 	And validation message is "Connection Error: Unauthorized"
 	And "Save" is "Disabled"
-	And the error message is "Connection Error : An error occurred while sending the request."
+	And the error message is "Connection Error: Unauthorized"
 
 @ServerSource
 Scenario: Creating New Source as Public

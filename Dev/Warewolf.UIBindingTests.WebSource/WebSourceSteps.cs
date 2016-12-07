@@ -218,7 +218,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
-            Assert.IsFalse(string.IsNullOrEmpty(errorMessageFromControl));
+            Assert.AreNotEqual(string.IsNullOrEmpty(errorMessageFromControl), errorMessageOnViewModel);
             var isErrorMessage = !errorMessageOnViewModel.Contains("Passed");
             Assert.IsTrue(isErrorMessage);
         }
@@ -348,7 +348,7 @@ namespace Warewolf.UIBindingTests.WebSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
-                    .Throws(new WarewolfTestException("Server not found", null));
+                    .Throws(new WarewolfTestException("Illegal characters in path.", null));
             }
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformTestConnection();
