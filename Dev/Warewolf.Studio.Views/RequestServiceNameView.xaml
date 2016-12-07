@@ -13,7 +13,7 @@
         d:DataContext="{d:DesignInstance Type=saveDialog:IRequestServiceNameViewModel, IsDesignTimeCreatable=False}"
         FocusManager.IsFocusScope="True"
         WindowStartupLocation="CenterScreen"
-        ShowInTaskbar="False" Topmost="True"
+        ShowInTaskbar="False" 
         MouseDown="RequestServiceNameView_OnMouseDown"
         Title="SaveDialogView"
         mc:Ignorable="d">
