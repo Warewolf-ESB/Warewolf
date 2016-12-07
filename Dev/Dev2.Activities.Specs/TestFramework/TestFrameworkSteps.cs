@@ -643,7 +643,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(decisionName));
             var serviceTestOutput = serviceTestStep.StepOutputs.Single();
-            var value = serviceTestOutput.OptionsForValue.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase));
+            var value = serviceTestOutput.OptionsForValue?.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase)) ?? ArmInput;
             serviceTestOutput.Value = value;
         }
 
@@ -1666,7 +1666,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.AreEqual(variableValue, debugItemResult.Value);
             }
         }
-        
+
         [Then(@"Test debug results contain pending results ""(.*)""")]
         public void ThenTestDebugResultsContainPendingResults(string pendingResult)
         {
@@ -1805,6 +1805,8 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
         [Then(@"I Add Decision ""(.*)"" as TestStep")]
+        [Given(@"I Add Decision ""(.*)"" as TestStep")]
+        [When(@"I Add Decision ""(.*)"" as TestStep")]
         public void ThenIAddDecisionAsTestStep(string actNameToFind)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1957,6 +1959,28 @@ namespace Dev2.Activities.Specs.TestFramework
 
             }
         }
+
+        [Then(@"I add ""(.*)"" StepOutputs as")]
+        public void ThenIAddStepOutputsAs(string stepDesc, Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First(step => step.StepDescription.Equals(stepDesc, StringComparison.CurrentCultureIgnoreCase));
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+
+
+            }
+        }
+
 
         [Then(@"I add new StepOutputs as")]
         public void ThenIAddNewStepOutputsAs(Table table)
