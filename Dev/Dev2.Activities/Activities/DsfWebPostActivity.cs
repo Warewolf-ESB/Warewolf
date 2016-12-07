@@ -102,6 +102,7 @@ namespace Dev2.Activities
 
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public IResponseManager ResponseManager { get; set; }
 
         

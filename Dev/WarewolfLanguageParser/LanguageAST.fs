@@ -60,6 +60,19 @@ let tryParseIndex (x : Index) =
         if a <= 0 then 
             raise (new System.IndexOutOfRangeException((sprintf "Recordset index [ %i ] is not greater than zero" a)))
         else x
+    | IndexExpression a -> 
+                           match a with
+                            | WarewolfAtomExpression b ->
+                                let indexPart = b.ToString()
+                                if (indexPart.Contains "[[") then
+                                    x
+                                else
+                                    let isNumber,idx = System.Int32.TryParse(indexPart)
+                                    match isNumber with
+                                        | true -> IntIndex idx
+                                        | false -> raise (new System.Exception((sprintf "Index [ %s ] is not a number. Index must be numeric." indexPart)))
+                            | _->x
+                                            
     | _ -> x
 
 let tryParseName (x: string) (itemBeingParsed: string) = 

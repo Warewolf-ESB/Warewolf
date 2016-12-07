@@ -19,7 +19,7 @@ namespace Dev2.Services.Sql
     {
         private readonly IDbFactory _factory;
         private IDbCommand _command;
-        private OracleConnection _connection;
+        private IDbConnection _connection;
         private IDbTransaction _transaction;
         private string _owner;
         private readonly bool _isTesting;
@@ -66,6 +66,12 @@ namespace Dev2.Services.Sql
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
+                var type = row["ROUTINE_TYPE"];
+                if (type.ToString().ToUpperInvariant() == "FUNCTION")
+                {
+                    continue;
+                }
+
                 string fullProcedureName = row["NAME"].ToString();
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
@@ -128,7 +134,7 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             OracleDataReader reader = null;
             List<string> result = new List<string>();
-            OracleCommand cmd = new OracleCommand("SELECT DISTINCT(OWNER) AS DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", _connection);
+            OracleCommand cmd = new OracleCommand("SELECT DISTINCT(OWNER) AS DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", (OracleConnection)_connection);
             try
             {
                 if (!_isTesting)
@@ -284,7 +290,7 @@ namespace Dev2.Services.Sql
         {
             if (!_isTesting)
             {
-                _connection = (OracleConnection)_factory.CreateConnection(connectionString);
+                _connection = _factory.CreateConnection(connectionString);
 
                 VerifyArgument.IsNotNull("commandText", commandText);
                 if (commandText.ToLower().StartsWith("select "))

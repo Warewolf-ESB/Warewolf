@@ -4086,4 +4086,7 @@ Please contact your Warewolf System Administrator.</value>
   <data name="ServiceViewInBrowserTooltip" xml:space="preserve">
     <value>Execute this flow as a REST api</value>
   </data>
+  <data name="EmailSourceTestHelp" xml:space="preserve">
+    <value>Sends a test email from this account so you can confirm its working.</value>
+  </data>
 </root>

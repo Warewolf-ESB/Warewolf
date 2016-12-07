@@ -15,9 +15,9 @@
                                Width="340"
                                MinWidth="340"
                                MaxWidth="600"
-                               Height="205"
-                               MinHeight="205"
-                               MaxHeight="205"
+                               Height="210"
+                               MinHeight="210"
+                               MaxHeight="210"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
                                d:DataContext="{d:DesignInstance delete:DropBoxDeleteViewModel}">
