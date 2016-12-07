@@ -100,6 +100,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Communication\EsbExecuteRequest.cs" />
     <Compile Include="Communication\ExecuteMessage.cs" />
