@@ -333,8 +333,14 @@ namespace Warewolf.Studio.ServerProxyLayer
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfSaveException("No response from server. Please ensure server is connected.", null);
+            }
             if (output.HasError)
+            {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
         }
 
         public void SaveExchangeSource(IExchangeSource model, Guid serverWorkspaceID)

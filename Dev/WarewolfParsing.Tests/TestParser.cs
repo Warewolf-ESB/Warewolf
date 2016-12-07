@@ -1984,6 +1984,22 @@ namespace WarewolfParsingTest
             Assert.AreEqual("[[@Person.Child]]", str);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_LanguageJson_InvalidIndex()
+        {
+            try
+            {
+                EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@this.new(1).val(x).s]]");
+                Assert.Fail("Expected exception");
+            }
+            catch(Exception e)
+            {
+                Assert.AreEqual("parse error", e.Message);
+            }
+        }
+
 
 
 

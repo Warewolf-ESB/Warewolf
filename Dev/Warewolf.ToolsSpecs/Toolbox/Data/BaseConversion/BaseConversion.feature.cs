@@ -89,27 +89,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table420 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table420.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "1",
                         "[[var]] = AA",
                         "Text",
                         "Text"});
 #line 13
- testRunner.And("the debug inputs as", ((string)(null)), table420, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table421 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table421.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
 #line 16
- testRunner.And("the debug output as", ((string)(null)), table421, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -134,27 +134,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table422 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table422.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "1",
                         "[[var]] = AA",
                         "Text",
                         "Binary"});
 #line 26
- testRunner.And("the debug inputs as", ((string)(null)), table422, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table423 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table423.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
 #line 29
- testRunner.And("the debug output as", ((string)(null)), table423, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -179,27 +179,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table424 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table424.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "1",
                         "[[var]] = AA",
                         "Text",
                         "Hex"});
 #line 39
- testRunner.And("the debug inputs as", ((string)(null)), table424, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table425 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table425.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
 #line 42
- testRunner.And("the debug output as", ((string)(null)), table425, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -224,27 +224,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 51
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table426 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table426.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "1",
                         "[[var]] = AA",
                         "Text",
                         "Base 64"});
 #line 52
- testRunner.And("the debug inputs as", ((string)(null)), table426, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table427 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table427.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
 #line 55
- testRunner.And("the debug output as", ((string)(null)), table427, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -269,27 +269,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 64
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table428 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table428.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Binary"});
 #line 65
- testRunner.And("the debug inputs as", ((string)(null)), table428, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table429 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table429.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
 #line 68
- testRunner.And("the debug output as", ((string)(null)), table429, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -314,27 +314,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table430 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table430.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Text"});
 #line 78
- testRunner.And("the debug inputs as", ((string)(null)), table430, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table431 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table431.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
 #line 81
- testRunner.And("the debug output as", ((string)(null)), table431, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -359,27 +359,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 90
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table432 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table432.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Hex"});
 #line 91
- testRunner.And("the debug inputs as", ((string)(null)), table432, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table433 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table433.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
 #line 94
- testRunner.And("the debug output as", ((string)(null)), table433, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -404,27 +404,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table434 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table434.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001",
                         "Binary",
                         "Base 64"});
 #line 104
- testRunner.And("the debug inputs as", ((string)(null)), table434, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table435 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table435.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
 #line 107
- testRunner.And("the debug output as", ((string)(null)), table435, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -449,27 +449,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 116
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table436 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table436.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141",
                         "Hex",
                         "Hex"});
 #line 117
- testRunner.And("the debug inputs as", ((string)(null)), table436, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table437 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table437.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
 #line 120
- testRunner.And("the debug output as", ((string)(null)), table437, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -494,27 +494,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table438 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table438.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141",
                         "Hex",
                         "Text"});
 #line 130
- testRunner.And("the debug inputs as", ((string)(null)), table438, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table439 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table439.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
 #line 133
- testRunner.And("the debug output as", ((string)(null)), table439, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -539,27 +539,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 142
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table440 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table440.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141",
                         "Hex",
                         "Binary"});
 #line 143
- testRunner.And("the debug inputs as", ((string)(null)), table440, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table441 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table441.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
 #line 146
- testRunner.And("the debug output as", ((string)(null)), table441, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -584,27 +584,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 155
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table442 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table442.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141",
                         "Hex",
                         "Base 64"});
 #line 156
- testRunner.And("the debug inputs as", ((string)(null)), table442, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table443 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table443.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
 #line 159
- testRunner.And("the debug output as", ((string)(null)), table443, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -629,27 +629,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table444 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table444.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE=",
                         "Base 64",
                         "Hex"});
 #line 169
- testRunner.And("the debug inputs as", ((string)(null)), table444, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table445 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table445.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "1",
                         "[[var]] = 0x4141"});
 #line 172
- testRunner.And("the debug output as", ((string)(null)), table445, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -674,27 +674,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 181
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table446 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table446.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE=",
                         "Base 64",
                         "Text"});
 #line 182
- testRunner.And("the debug inputs as", ((string)(null)), table446, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table447 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table447.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "1",
                         "[[var]] = AA"});
 #line 185
- testRunner.And("the debug output as", ((string)(null)), table447, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -719,27 +719,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 194
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table448 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table448.AddRow(new string[] {
+            table29.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE=",
                         "Base 64",
                         "Binary"});
 #line 195
- testRunner.And("the debug inputs as", ((string)(null)), table448, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table449 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table449.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "1",
                         "[[var]] = 0100000101000001"});
 #line 198
- testRunner.And("the debug output as", ((string)(null)), table449, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -764,27 +764,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 207
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table450 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table450.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE=",
                         "Base 64",
                         "Base 64"});
 #line 208
- testRunner.And("the debug inputs as", ((string)(null)), table450, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table451 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table451.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "1",
                         "[[var]] = QUE="});
 #line 211
- testRunner.And("the debug output as", ((string)(null)), table451, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -809,27 +809,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 220
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table452 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table452.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Text",
                         "Binary"});
 #line 221
- testRunner.And("the debug inputs as", ((string)(null)), table452, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table453 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table453.AddRow(new string[] {
+            table34.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 224
- testRunner.And("the debug output as", ((string)(null)), table453, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -854,27 +854,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 233
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table454 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table454.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Text",
                         "Hex"});
 #line 234
- testRunner.And("the debug inputs as", ((string)(null)), table454, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table455 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table455.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 237
- testRunner.And("the debug output as", ((string)(null)), table455, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -899,27 +899,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 246
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table456 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table456.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Text",
                         "Base 64"});
 #line 247
- testRunner.And("the debug inputs as", ((string)(null)), table456, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table457 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table457.AddRow(new string[] {
+            table38.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 250
- testRunner.And("the debug output as", ((string)(null)), table457, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -944,27 +944,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 259
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table458 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table458.AddRow(new string[] {
+            table39.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Binary",
                         "Text"});
 #line 260
- testRunner.And("the debug inputs as", ((string)(null)), table458, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table459 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table459.AddRow(new string[] {
+            table40.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 263
- testRunner.And("the debug output as", ((string)(null)), table459, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -989,27 +989,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 272
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table460 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table460.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Binary",
                         "Hex"});
 #line 273
- testRunner.And("the debug inputs as", ((string)(null)), table460, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table461 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table461.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 276
- testRunner.And("the debug output as", ((string)(null)), table461, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1034,27 +1034,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 285
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table462 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table462.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Binary",
                         "Base 64"});
 #line 286
- testRunner.And("the debug inputs as", ((string)(null)), table462, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table463 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table463.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 289
- testRunner.And("the debug output as", ((string)(null)), table463, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1079,27 +1079,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 298
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table464 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table464.AddRow(new string[] {
+            table45.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Hex",
                         "Text"});
 #line 299
- testRunner.And("the debug inputs as", ((string)(null)), table464, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table465 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table465.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 302
- testRunner.And("the debug output as", ((string)(null)), table465, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1124,27 +1124,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 311
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table466 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table466.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Hex",
                         "Binary"});
 #line 312
- testRunner.And("the debug inputs as", ((string)(null)), table466, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table467 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table467.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 315
- testRunner.And("the debug output as", ((string)(null)), table467, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table48, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1169,27 +1169,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 324
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table468 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table468.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Hex",
                         "Base 64"});
 #line 325
- testRunner.And("the debug inputs as", ((string)(null)), table468, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table469 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table469.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 328
- testRunner.And("the debug output as", ((string)(null)), table469, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1214,27 +1214,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 337
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table470 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table470.AddRow(new string[] {
+            table51.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Base 64",
                         "Hex"});
 #line 338
- testRunner.And("the debug inputs as", ((string)(null)), table470, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table471 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table471.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 341
- testRunner.And("the debug output as", ((string)(null)), table471, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1259,27 +1259,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 350
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table472 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table472.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Base 64",
                         "Text"});
 #line 351
- testRunner.And("the debug inputs as", ((string)(null)), table472, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table473 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table473.AddRow(new string[] {
+            table54.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 354
- testRunner.And("the debug output as", ((string)(null)), table473, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1304,27 +1304,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 363
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table474 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table474.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "1",
                         "[[var]] =",
                         "Base 64",
                         "Binary"});
 #line 364
- testRunner.And("the debug inputs as", ((string)(null)), table474, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table475 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table475.AddRow(new string[] {
+            table56.AddRow(new string[] {
                         "1",
                         "[[var]] ="});
 #line 367
-  testRunner.And("the debug output as", ((string)(null)), table475, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1349,24 +1349,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 376
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table476.AddRow(new string[] {
+            table57.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Text",
                         "Binary"});
 #line 377
- testRunner.And("the debug inputs as", ((string)(null)), table476, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table477 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 380
- testRunner.And("the debug output as", ((string)(null)), table477, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1391,24 +1391,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 388
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table478.AddRow(new string[] {
+            table59.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Text",
                         "Hex"});
 #line 389
- testRunner.And("the debug inputs as", ((string)(null)), table478, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table479 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 392
- testRunner.And("the debug output as", ((string)(null)), table479, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1433,24 +1433,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 400
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table480.AddRow(new string[] {
+            table61.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Text",
                         "Base 64"});
 #line 401
- testRunner.And("the debug inputs as", ((string)(null)), table480, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table481 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 404
- testRunner.And("the debug output as", ((string)(null)), table481, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table62, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1475,24 +1475,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 412
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table482 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table482.AddRow(new string[] {
+            table63.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Binary",
                         "Text"});
 #line 413
- testRunner.And("the debug inputs as", ((string)(null)), table482, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table63, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table483 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 416
- testRunner.And("the debug output as", ((string)(null)), table483, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table64, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1517,24 +1517,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 424
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table484 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table484.AddRow(new string[] {
+            table65.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Binary",
                         "Hex"});
 #line 425
- testRunner.And("the debug inputs as", ((string)(null)), table484, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table65, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table485 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 428
- testRunner.And("the debug output as", ((string)(null)), table485, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table66, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1559,24 +1559,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 436
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table486 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table486.AddRow(new string[] {
+            table67.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Binary",
                         "Base 64"});
 #line 437
- testRunner.And("the debug inputs as", ((string)(null)), table486, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table67, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table487 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 440
- testRunner.And("the debug output as", ((string)(null)), table487, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table68, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1601,24 +1601,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 448
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table488.AddRow(new string[] {
+            table69.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Hex",
                         "Text"});
 #line 449
- testRunner.And("the debug inputs as", ((string)(null)), table488, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table69, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table489 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 452
- testRunner.And("the debug output as", ((string)(null)), table489, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table70, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1643,24 +1643,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 460
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table490 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table490.AddRow(new string[] {
+            table71.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Hex",
                         "Binary"});
 #line 461
- testRunner.And("the debug inputs as", ((string)(null)), table490, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table71, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table491 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 464
- testRunner.And("the debug output as", ((string)(null)), table491, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table72, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1685,24 +1685,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 472
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table492 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table492.AddRow(new string[] {
+            table73.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Hex",
                         "Base 64"});
 #line 473
- testRunner.And("the debug inputs as", ((string)(null)), table492, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table73, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table493 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 476
- testRunner.And("the debug output as", ((string)(null)), table493, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table74, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1727,24 +1727,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 484
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table494 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table494.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Hex"});
 #line 485
- testRunner.And("the debug inputs as", ((string)(null)), table494, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table75, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table495 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
 #line 488
- testRunner.And("the debug output as", ((string)(null)), table495, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table76, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1769,24 +1769,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 496
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table496 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table496.AddRow(new string[] {
+            table77.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Text"});
 #line 497
- testRunner.And("the debug inputs as", ((string)(null)), table496, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table77, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table497 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
 #line 500
- testRunner.And("the debug output as", ((string)(null)), table497, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table78, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1811,24 +1811,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 508
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table498 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table498.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "1",
                         "[[my(-1).var]] =",
                         "Base 64",
                         "Binary"});
 #line 509
- testRunner.And("the debug inputs as", ((string)(null)), table498, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table79, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table499 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
 #line 512
- testRunner.And("the debug output as", ((string)(null)), table499, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table80, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1849,18 +1849,18 @@ this.ScenarioSetup(scenarioInfo);
 #line 521
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table500 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table500.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "1",
                         "[[a]][[b]] = QUE=QUE=",
                         string.Format("{0}", from),
                         string.Format("{0}", to)});
 #line 522
- testRunner.And("the debug inputs as", ((string)(null)), table500, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table81, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2274,7 +2274,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
         }
         
-        public virtual void ValidationMessagesWhenConvertInvalidVariables(string no, string variable, string value, string from, string to, string error, string[] exampleTags)
+        public virtual void ValidationMessagesWhenConvertInvalidVariables(string no, string variable, string value, string from, string to, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Convert Invalid Variables", exampleTags);
 #line 567
@@ -2301,10 +2301,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index -1 is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant0()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("1", "[[my(-1).var]]", "QUE=", "Base 64", "Binary", "Recordset index -1 is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("1", "[[my(-1).var]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2318,10 +2317,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index -1 is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant1()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("2", "[[my(-1).var]]", "QUE=", "Base 64", "Text", "Recordset index -1 is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("2", "[[my(-1).var]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2335,10 +2333,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index -1 is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant2()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("3", "[[my([-1]).var]]", "QUE=", "Base 64", "Hex", "Recordset index -1 is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("3", "[[my([-1]).var]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2352,10 +2349,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant3()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("4", "[rec().a]]=]]", "QUE=", "Base 64", "Binary", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("4", "[rec().a]]=]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2369,10 +2365,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant4()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\"()\".a]]", "QUE=", "Base 64", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\"()\".a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2386,10 +2381,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant5()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("6", "[[rec\"()\".a]]", "QUE=", "Base 64", "Hex", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("6", "[[rec\"()\".a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2403,10 +2397,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec\".a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant6()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("7", "[[rec\".a]]", "QUE=", "Base 64", "Binary", "Variable name [[rec\".a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("7", "[[rec\".a]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2420,10 +2413,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec.a]]  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant7()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("8", "[[rec.a]]", "QUE=", "Base 64", "Text", "Variable name [[rec.a]]  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("8", "[[rec.a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2437,10 +2429,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec()*.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant8()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("9", "[[rec()*.a]]", "QUE=", "Base 64", "Hex", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("9", "[[rec()*.a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2454,10 +2445,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant9()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("10", "[[rec().a]]*", "QUE=", "Base 64", "Binary", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("10", "[[rec().a]]*", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2471,10 +2461,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[1]] begins with a number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant10()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("11", "[[1]]", "QUE=", "Base 64", "Text", "Variable name [[1]] begins with a number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("11", "[[1]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2488,10 +2477,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[@]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant11()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("12", "[[@]]", "QUE=", "Base 64", "Hex", "Variable name [[@]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("12", "[[@]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2505,10 +2493,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var#]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant12()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("13", "[[var#]]", "QUE=", "Base 64", "Binary", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("13", "[[var#]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2522,10 +2509,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant13()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("14", "[[var]]00]]", "QUE=", "Base 64", "Text", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("14", "[[var]]00]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2539,10 +2525,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant14()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("15", "[[var]]@]]", "QUE=", "Base 64", "Hex", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("15", "[[var]]@]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2556,10 +2541,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var.()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant15()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("16", "[[var.()]]", "QUE=", "Base 64", "Binary", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("16", "[[var.()]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2573,10 +2557,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable [[]] is missing a name")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant16()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("17", "[[]]", "QUE=", "Base 64", "Text", "Variable [[]] is missing a name", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("17", "[[]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2590,10 +2573,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant17()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("18", "[[()]]", "QUE=", "Base 64", "Hex", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("18", "[[()]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2607,10 +2589,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant18()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("19", "[[var[[a]*]]]", "QUE=", "Base 64", "Binary", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("19", "[[var[[a]*]]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2624,10 +2605,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: An open [[ without a related close ]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant19()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("20", "[[var[[]]", "QUE=", "Base 64", "Text", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("20", "[[var[[]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2641,10 +2621,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var1.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant20()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("21", "[[var1.a]]", "QUE=", "Base 64", "Hex", "Variable name [[var1.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("21", "[[var1.a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2658,10 +2637,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()!a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant21()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("22", "[[rec()!a]]", "QUE=", "Base 64", "Binary", "Recordset name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("22", "[[rec()!a]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2675,10 +2653,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()         a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant22()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("23", "[[rec()         a]]", "QUE=", "Base 64", "Text", "Recordset name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("23", "[[rec()         a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2692,10 +2669,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[{{rec]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant23()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("24", "[[{{rec(_).a}}]]]", "QUE=", "Base 64", "Hex", "Recordset name [[{{rec]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("24", "[[{{rec(_).a}}]]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2709,10 +2685,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var*]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant24()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("25", "[[rec(23).[[var*]]]]", "QUE=", "Base 64", "Binary", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("25", "[[rec(23).[[var*]]]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2726,16 +2701,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-            "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-            "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-            "number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant25()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "QUE=", "Base 64", "Text", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-                    "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-                    "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-                    "number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2749,10 +2717,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant26()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("27", "[[rec().a]]&[[a]]", "QUE=", "Base 64", "Hex", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("27", "[[rec().a]]&[[a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2766,10 +2733,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant27()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("28", "a[[rec([[[[b]]]]).a]]@", "QUE=", "Base 64", "Binary", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("28", "a[[rec([[[[b]]]]).a]]@", "QUE=", "Base 64", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2783,10 +2749,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var  ]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant28()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("29", "[[var  ]]", "QUE=", "Base 64", "Text", "Variable name [[var  ]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("29", "[[var  ]]", "QUE=", "Base 64", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2800,10 +2765,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant29()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("30", "[[my(-1).var]]", "AA", "Text", "Binary", "Recordset index [-1] is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("30", "[[my(-1).var]]", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -2817,10 +2781,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant30()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("31", "[[my(-1).var]]", "AA", "Text", "Hex", "Recordset index [-1] is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("31", "[[my(-1).var]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2834,10 +2797,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant31()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("32", "[[my(-1).var]]", "AA", "Text", "Base 64", "Recordset index [-1] is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("32", "[[my(-1).var]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -2851,10 +2813,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant32()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\"()\".a]]", "AA", "Text", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\"()\".a]]", "AA", "Text", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2868,10 +2829,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant33()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("34", "[[rec\"()\".a]]", "AA", "Text", "Hex", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("34", "[[rec\"()\".a]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2885,10 +2845,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec\".a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant34()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("35", "[[rec\".a]]", "AA", "Text", "Base 64", "Variable name [[rec\".a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("35", "[[rec\".a]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -2902,10 +2861,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec.a]]  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant35()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("36", "[[rec.a]]", "AA", "Text", "Text", "Variable name [[rec.a]]  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("36", "[[rec.a]]", "AA", "Text", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -2919,10 +2877,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec()*.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant36()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("37", "[[rec()*.a]]", "AA", "Text", "Hex", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("37", "[[rec()*.a]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2936,10 +2893,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant37()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("38", "[[rec().a]]*", "AA", "Text", "Base 64", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("38", "[[rec().a]]*", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -2953,10 +2909,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[1]] begins with a number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant38()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("39", "[[1]]", "AA", "Text", "Base 64", "Variable name [[1]] begins with a number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("39", "[[1]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -2970,10 +2925,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[@]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant39()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("40", "[[@]]", "AA", "Text", "Hex", "Variable name [[@]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("40", "[[@]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -2987,10 +2941,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var#]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant40()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("41", "[[var#]]", "AA", "Text", "Base 64", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("41", "[[var#]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3004,10 +2957,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant41()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("42", "[[var]]00]]", "AA", "Text", "Text", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("42", "[[var]]00]]", "AA", "Text", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3021,10 +2973,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant42()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("43", "[[var]]@]]", "AA", "Text", "Hex", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("43", "[[var]]@]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3038,10 +2989,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var.()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant43()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("44", "[[var.()]]", "AA", "Text", "Binary", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("44", "[[var.()]]", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3055,10 +3005,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable [[]] is missing a name")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant44()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("45", "[[]]", "AA", "Text", "Base 64", "Variable [[]] is missing a name", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("45", "[[]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3072,10 +3021,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant45()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("46", "[[()]]", "AA", "Text", "Hex", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("46", "[[()]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3089,10 +3037,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "[[var[[a]]]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant46()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("47", "19", "AA", "Text", "Base 64", "[[var[[a]]]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("47", "19", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3106,10 +3053,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: An open [[ without a related close ]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant47()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("48", "[[var[[]]", "AA", "Text", "Text", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("48", "[[var[[]]", "AA", "Text", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3123,10 +3069,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var1.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant48()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("49", "[[var1.a]]", "AA", "Text", "Hex", "Variable name [[var1.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("49", "[[var1.a]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3140,10 +3085,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()!a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant49()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("50", "[[rec()!a]]", "AA", "Text", "Binary", "Recordset name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("50", "[[rec()!a]]", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3157,10 +3101,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()         a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant50()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("51", "[[rec()         a]]", "AA", "Text", "Base 64", "Recordset name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("51", "[[rec()         a]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3174,10 +3117,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[{{rec]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant51()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("52", "[[{{rec(_).a}}]]]", "AA", "Text", "Hex", "Recordset name [[{{rec]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("52", "[[{{rec(_).a}}]]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3191,10 +3133,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var*]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant52()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("53", "[[rec(23).[[var*]]]]", "AA", "Text", "Binary", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("53", "[[rec(23).[[var*]]]]", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3208,16 +3149,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-            "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-            "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-            "number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant53()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("54", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AA", "Text", "Binary", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-                    "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-                    "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-                    "number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("54", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3231,10 +3165,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant54()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("55", "[[rec().a]]&[[a]]", "AA", "Text", "Hex", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("55", "[[rec().a]]&[[a]]", "AA", "Text", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3248,10 +3181,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant55()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("56", "a[[rec([[[[b]]]]).a]]@", "AA", "Text", "Binary", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("56", "a[[rec([[[[b]]]]).a]]@", "AA", "Text", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3265,10 +3197,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var  ]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant56()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("57", "[[var  ]]", "AA", "Text", "Base 64", "Variable name [[var  ]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("57", "[[var  ]]", "AA", "Text", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3282,10 +3213,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zer")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant57()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("58", "[[my(-1).var]]", "0100000101000001", "Binary", "Text", "Recordset index [-1] is not greater than zer", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("58", "[[my(-1).var]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3299,10 +3229,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zer")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant58()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("59", "[[my(-1).var]]", "0100000101000001", "Binary", "Hex", "Recordset index [-1] is not greater than zer", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("59", "[[my(-1).var]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3316,10 +3245,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zer")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant59()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("60", "[[my(-1).var]]", "0100000101000001", "Binary", "Base 64", "Recordset index [-1] is not greater than zer", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("60", "[[my(-1).var]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3333,10 +3261,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant60()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3350,10 +3277,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant61()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("62", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Hex", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("62", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3367,10 +3293,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec\".a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant62()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("63", "[[rec\".a]]", "0100000101000001", "Binary", "Base 64", "Variable name [[rec\".a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("63", "[[rec\".a]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3384,10 +3309,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec.a]]  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant63()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("64", "[[rec.a]]", "0100000101000001", "Binary", "Text", "Variable name [[rec.a]]  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("64", "[[rec.a]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3401,10 +3325,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec()*.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant64()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("65", "[[rec()*.a]]", "0100000101000001", "Binary", "Hex", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("65", "[[rec()*.a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3418,10 +3341,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant65()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("66", "[[rec().a]]*", "0100000101000001", "Binary", "Base 64", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("66", "[[rec().a]]*", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3435,10 +3357,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[1]] begins with a number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant66()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("67", "[[1]]", "0100000101000001", "Binary", "Base 64", "Variable name [[1]] begins with a number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("67", "[[1]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3452,10 +3373,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[@]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant67()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("68", "[[@]]", "0100000101000001", "Binary", "Hex", "Variable name [[@]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("68", "[[@]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3469,10 +3389,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var#]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant68()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("69", "[[var#]]", "0100000101000001", "Binary", "Base 64", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("69", "[[var#]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3486,10 +3405,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant69()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("70", "[[var]]00]]", "0100000101000001", "Binary", "Text", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("70", "[[var]]00]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3503,10 +3421,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant70()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("71", "[[var]]@]]", "0100000101000001", "Binary", "Hex", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("71", "[[var]]@]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3520,10 +3437,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var.()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant71()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("72", "[[var.()]]", "0100000101000001", "Binary", "Hex", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("72", "[[var.()]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3537,10 +3453,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable [[]] is missing a name")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant72()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("73", "[[]]", "0100000101000001", "Binary", "Base 64", "Variable [[]] is missing a name", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("73", "[[]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3554,10 +3469,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant73()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("74", "[[()]]", "0100000101000001", "Binary", "Hex", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("74", "[[()]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3571,10 +3485,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "[[var[[a]]]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant74()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("75", "19", "0100000101000001", "Binary", "Base 64", "[[var[[a]]]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("75", "19", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3588,10 +3501,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: An open [[ without a related close ]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant75()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("75", "[[var[[]]", "0100000101000001", "Binary", "Text", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("75", "[[var[[]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3605,10 +3517,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var1.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant76()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("77", "[[var1.a]]", "0100000101000001", "Binary", "Hex", "Variable name [[var1.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("77", "[[var1.a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3622,10 +3533,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()!a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant77()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("78", "[[rec()!a]]", "0100000101000001", "Binary", "Hex", "Recordset name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("78", "[[rec()!a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3639,10 +3549,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()         a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant78()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("79", "[[rec()         a]]", "0100000101000001", "Binary", "Base 64", "Recordset name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("79", "[[rec()         a]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3656,10 +3565,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[{{rec]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant79()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("80", "[[{{rec(_).a}}]]]", "0100000101000001", "Binary", "Hex", "Recordset name [[{{rec]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("80", "[[{{rec(_).a}}]]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3673,10 +3581,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var*]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant80()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("81", "[[rec(23).[[var*]]]]", "0100000101000001", "Binary", "Hex", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("81", "[[rec(23).[[var*]]]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3690,16 +3597,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-            "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-            "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-            "number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant81()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("82", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "0100000101000001", "Binary", "Hex", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-                    "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-                    "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-                    "number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("82", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3713,10 +3613,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant82()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("83", "[[rec().a]]&[[a]]", "0100000101000001", "Binary", "Hex", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("83", "[[rec().a]]&[[a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3730,10 +3629,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant83()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("84", "a[[rec([[[[b]]]]).a]]@", "0100000101000001", "Binary", "Hex", "Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("84", "a[[rec([[[[b]]]]).a]]@", "0100000101000001", "Binary", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3747,10 +3645,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var  ]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant84()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("85", "[[var  ]]", "0100000101000001", "Binary", "Base 64", "Variable name [[var  ]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("85", "[[var  ]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3764,10 +3661,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index -1 is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant85()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("86", "[[my(-1).var]]", "0x4141", "Hex", "Binary", "Recordset index -1 is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("86", "[[my(-1).var]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -3781,10 +3677,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index -1 is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant86()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("87", "[[my(-1).var]]", "0x4141", "Hex", "Base 64", "Recordset index -1 is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("87", "[[my(-1).var]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3798,10 +3693,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index [-1] is not greater than zero")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant87()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("88", "[[my(-1).var]]", "0x4141", "Hex", "Text", "Recordset index [-1] is not greater than zero", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("88", "[[my(-1).var]]", "0x4141", "Hex", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3815,10 +3709,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant88()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\"()\".a]]", "0x4141", "Hex", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\"()\".a]]", "0x4141", "Hex", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3832,10 +3725,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant89()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("90", "[[rec\"()\".a]]", "0x4141", "Hex", "Base 64", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("90", "[[rec\"()\".a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3849,10 +3741,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec\".a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant90()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("91", "[[rec\".a]]", "0x4141", "Hex", "Base 64", "Variable name [[rec\".a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("91", "[[rec\".a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3866,10 +3757,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec.a]]  contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant91()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("92", "[[rec.a]]", "0x4141", "Hex", "Text", "Variable name [[rec.a]]  contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("92", "[[rec.a]]", "0x4141", "Hex", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3883,10 +3773,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[rec()*.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant92()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("93", "[[rec()*.a]]", "0x4141", "Hex", "Base 64", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("93", "[[rec()*.a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3900,10 +3789,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "One variable only allowed in the output field")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant93()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("94", "[[rec().a]]*", "0x4141", "Hex", "Base 64", "One variable only allowed in the output field", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("94", "[[rec().a]]*", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3917,10 +3805,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[1]] begins with a number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant94()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("95", "[[1]]", "0x4141", "Hex", "Base 64", "Variable name [[1]] begins with a number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("95", "[[1]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3934,10 +3821,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[@]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant95()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("96", "[[@]]", "0x4141", "Hex", "Hex", "Variable name [[@]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("96", "[[@]]", "0x4141", "Hex", "Hex", ((string[])(null)));
 #line hidden
         }
         
@@ -3951,10 +3837,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var#]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant96()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("97", "[[var#]]", "0x4141", "Hex", "Base 64", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("97", "[[var#]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -3968,10 +3853,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant97()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("98", "[[var]]00]]", "0x4141", "Hex", "Text", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("98", "[[var]]00]]", "0x4141", "Hex", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -3985,10 +3869,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: A close ]] without a related open [[")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant98()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("99", "[[var]]@]]", "0x4141", "Hex", "Binary", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("99", "[[var]]@]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4002,10 +3885,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var.()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant99()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("100", "[[var.()]]", "0x4141", "Hex", "Binary", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("100", "[[var.()]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4019,10 +3901,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable [[]] is missing a name")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant100()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("101", "[[]]", "0x4141", "Hex", "Base 64", "Variable [[]] is missing a name", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("101", "[[]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -4036,10 +3917,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[()]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant101()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("102", "[[()]]", "0x4141", "Hex", "Binary", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("102", "[[()]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4053,10 +3933,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "[[var[[a]]]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant102()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("103", "19", "0x4141", "Hex", "Base 64", "[[var[[a]]]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("103", "19", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -4070,10 +3949,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid region detected: An open [[ without a related close ]]")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant103()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("104", "[[var[[]]", "0x4141", "Hex", "Text", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("104", "[[var[[]]", "0x4141", "Hex", "Text", ((string[])(null)));
 #line hidden
         }
         
@@ -4087,10 +3965,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var1.a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant104()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("105", "[[var1.a]]", "0x4141", "Hex", "Binary", "Variable name [[var1.a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("105", "[[var1.a]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4104,10 +3981,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()!a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant105()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("106", "[[rec()!a]]", "0x4141", "Hex", "Binary", "Recordset name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("106", "[[rec()!a]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4121,10 +3997,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec()         a]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant106()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("107", "[[rec()         a]]", "0x4141", "Hex", "Base 64", "Recordset name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("107", "[[rec()         a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
 #line hidden
         }
         
@@ -4138,10 +4013,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[{{rec]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant107()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("108", "[[{{rec(_).a}}]]]", "0x4141", "Hex", "Binary", "Recordset name [[{{rec]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("108", "[[{{rec(_).a}}]]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4155,10 +4029,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable name [[var*]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant108()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("109", "[[rec(23).[[var*]]]]", "0x4141", "Hex", "Binary", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("109", "[[rec(23).[[var*]]]]", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         
@@ -4172,16 +4045,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-            "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-            "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-            "number")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant109()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("110", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1", "0x4141", "Hex", "Binary", "Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] c" +
-                    "ontains invalid character(s)  /n  Variable name [[r\"]] contains invalid characte" +
-                    "r(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a " +
-                    "number", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("110", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1", "0x4141", "Hex", "Binary", ((string[])(null)));
 #line hidden
         }
         

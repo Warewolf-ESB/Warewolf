@@ -10,6 +10,7 @@
              xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              AllowDrop="True"
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
              mc:Ignorable="d"
@@ -182,16 +183,17 @@
                             OverridesDefaultStyle="False" 
                             MaxWidth="{Binding ElementName=ScrollViewer, Path=ActualWidth}" 
                             VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <TextBlock Margin="0,5,0,0"
+                    <TextBlock Margin="0,5,0,0" 
                                TextWrapping="Wrap"
                                VerticalAlignment="Top"
+                               ToolTip="{x:Static languages:Core.ServiceViewInBrowserTooltip}"
                                MaxWidth="{Binding ElementName=ScrollViewer, Path=ActualWidth}"
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                ScrollViewer.VerticalScrollBarVisibility="Auto"
                                ScrollViewer.CanContentScroll="True"
                                Visibility="{Binding WorkflowLinkVisible}"
                                HorizontalAlignment="Center">
-                    <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
+                      <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
                                Style="{StaticResource HyperLinkStyle}"
                                CommandParameter="{Binding}">
                         <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />

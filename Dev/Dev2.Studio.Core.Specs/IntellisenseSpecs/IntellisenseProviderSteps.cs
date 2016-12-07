@@ -171,6 +171,15 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             Assert.AreEqual(!actualist.Any(),bool.Parse(p0));
         }
 
+        [Then(@"the result has the error '(.*)'")]
+        public void ThenTheResultHasTheError(string errorMessage)
+        {
+            var inputText = ScenarioContext.Current.Get<string>("inputText");
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(inputText);
+            Assert.AreEqual(errorMessage.TrimEnd(' '), error.Item2.TrimEnd(' '));
+        }
+
+
         [Given(@"the options as '(.*)'")]
         public void GivenTheOptionsAs(string option)
         {
@@ -178,6 +187,9 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             //provider.VariableList = new ObservableCollection<string>( ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             //provider.GetSuggestions(option);
         }
+
+
+       
 
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)

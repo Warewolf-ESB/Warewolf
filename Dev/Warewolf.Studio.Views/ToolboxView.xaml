@@ -122,7 +122,7 @@
 
 			<customControls:SearchTextBox Grid.Column="0" 
 										  Grid.Row="0"  
-										  LabelText="Filter"
+										  LabelText="Search tags e.g. add"
 										  x:Name="SearchTextBox"
 										  ClearSearchCommand="{Binding ClearFilterCommand}"
 										  ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
