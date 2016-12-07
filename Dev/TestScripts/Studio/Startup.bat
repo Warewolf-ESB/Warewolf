@@ -42,6 +42,10 @@ IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofi
 IF EXIST "%DeploymentDirectory%\DebugStudio.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugStudio.zip' '%DeploymentDirectory%\Studio' -Force }"
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0Server
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0Warewolf Server.exe" SET DeploymentDirectory=%~dp0
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\Server
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\DebugServer
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
@@ -77,7 +81,11 @@ IF EXIST "%DeploymentDirectory%\DefaultWorkspaceLayout.xml" COPY /Y "%Deployment
 IF EXIST "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" COPY /Y "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 IF EXIST "%~dp0..\..\Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml" COPY /Y "%~dp0..\..\Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 REM Init paths to Warewolf studio under test
-IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 IF EXIST "%DeploymentDirectory%\..\DebugStudio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\DebugStudio
 
