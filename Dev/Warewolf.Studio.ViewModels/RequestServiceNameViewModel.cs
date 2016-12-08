@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
                     });
                 }
                 _environmentViewModel.IsSaveDialog = true;
-                _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
+                _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
             }
             catch (Exception)
             {
@@ -294,7 +294,7 @@ namespace Warewolf.Studio.ViewModels
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
-            _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             return ViewResult;
         }
