@@ -296,6 +296,7 @@ namespace Warewolf.UITests
                 default:
                     Console.WriteLine(messageText);
                     break;
+
             }
 #if DEBUG
             throw e.Error;
