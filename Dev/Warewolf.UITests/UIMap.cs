@@ -3820,6 +3820,12 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Then(@"There is an error")]
+        public void TheArdonerhasAnError()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.Exists);
+        }
+
         [Given(@"I Click DELETE Web Large View Test Inputs Done Button")]
         [When(@"I Click DELETE Web Large View Test Inputs Done Button")]
         [Then(@"I Click DELETE Web Large View Test Inputs Done Button")]
@@ -6995,6 +7001,14 @@ namespace Warewolf.UITests
         public void RightClick_Sequence_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
+        }
+
+        [Given(@"I RightClick Ardoner Hyperlink")]
+        [When(@"I RightClick Ardoner Hyperlink")]
+        [Then(@"I RightClick Ardoner Hyperlink")]
+        public void RightClick_Adorner_Control()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.NumbernHyperlink, MouseButtons.Right, ModifierKeys.None, new Point(88, 12));
         }
 
         [When(@"I RightClick SharepointCreateListItem OnDesignSurface")]
