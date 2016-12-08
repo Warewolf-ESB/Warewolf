@@ -16929,7 +16929,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignObjectDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign Object (1)(MultiAssignObjectDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign Object (0)(MultiAssignObjectDesigner)";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
