@@ -651,13 +651,12 @@ Scenario: Run a test with invalid inputs and pending results
 	And password is blank
 	And I update inputs as
 	| Variable Name | Value    | 
-	| Name          | [[Home]] | 
-	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
-	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Blank Input"
-	And I update outputs as
-         | Variable Name | Value    |
-         | Message       | [[Home]] |
-    And Test debug results contain pending results "If [[Name]] <> (Not Equal)"
+	| Name          | [[Home]] |
+	And I save
+	When I run the test
+	Then test result is Failed	
+	When I delete "Test 1" 
+	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 	
 Scenario: Run a test with invalid and pending results
