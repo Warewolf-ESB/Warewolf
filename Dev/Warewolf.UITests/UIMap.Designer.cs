@@ -44,19 +44,6 @@ namespace Warewolf.UITests
         }
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText uIUnsaved1Text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1Text;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Unsaved 1' label equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIUnsaved1TextExists, uIUnsaved1Text.Exists);
-        }
-        
-        /// <summary>
         /// RecordedMethod1
         /// </summary>
         public void RecordedMethod1()
@@ -67,6 +54,19 @@ namespace Warewolf.UITests
 
             // Right-Click 'Specified value does not have a ':' separator. Par...' link
             Mouse.Click(uISpecifiedvaluedoesnoHyperlink, MouseButtons.Right, ModifierKeys.None, new Point(88, 12));
+        }
+        
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText uIUnsaved1Text = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1Text;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Unsaved 1' label equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIUnsaved1TextExists, uIUnsaved1Text.Exists);
         }
         
         #region Properties
@@ -238,7 +238,7 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIActivityDefaultWindoWindow UIActivityDefaultWindoWindow
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
         {
             get
             {
@@ -280,7 +280,6 @@ namespace Warewolf.UITests
         
         private UIWarewolfDEV2NKOSINATWindow mUIWarewolfDEV2NKOSINATWindow;
         
-        private UIActivityDefaultWindoWindow mUIActivityDefaultWindoWindow;
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
@@ -105565,7 +105564,7 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIActivityDefaultWindoWindow : WpfWindow
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
     {
         
         public UIWarewolfDEV2SANELEMTWindow()
