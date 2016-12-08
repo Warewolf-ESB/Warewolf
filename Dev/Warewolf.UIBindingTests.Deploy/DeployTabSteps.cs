@@ -283,6 +283,8 @@ namespace Warewolf.UIBindingTests.Deploy
         public void ThenISelectDestinationServerAs(string p0)
         {
             var mockServer = FeatureContext.Current.Get<Mock<IServer>>(p0);
+            mockServer.SetupGet(server => server.DisplayName).Returns(p0);
+            mockServer.SetupGet(server => server.ResourceName).Returns(p0);
             var envMock = new Mock<IEnvironmentViewModel>();
             envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
             envMock.Setup(model => model.AsList()).Returns(new List<IExplorerItemViewModel>());

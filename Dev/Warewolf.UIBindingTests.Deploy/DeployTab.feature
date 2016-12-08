@@ -48,9 +48,10 @@ Scenario: Conflicting resources on Source and Destination server
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
-	 And I select "Examples\bob" from Source Server
+	 When I select Destination Server as "DestinationServer"
+	 And destination "DestinationServer" is connected
+	 And selected Destination Server is "DestinationServer"
+	 And I select "bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
 	 Then Resource exists in the destination server popup is shown
