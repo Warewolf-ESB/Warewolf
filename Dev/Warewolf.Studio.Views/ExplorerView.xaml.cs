@@ -290,6 +290,11 @@ namespace Warewolf.Studio.Views
 
                 if (e.ClickCount == 2)
                 {
+                    if (explorerItemViewModel != null && explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder && explorerItemViewModel.IsSaveDialog)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
                     if (explorerItemViewModel != null && !explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder)
                     {
                         e.Handled = true;
@@ -317,7 +322,17 @@ namespace Warewolf.Studio.Views
             if (singleEnvironmentExplorerViewModel != null)
             {
                 var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
-                singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
+                if (explorerItemViewModel != null)
+                {
+                    singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
+                    singleEnvironmentExplorerViewModel.SelectedEnvironment = null;
+                }
+                else
+                {
+                    var environmentViewModel = e.NewValue as IEnvironmentViewModel;
+                    singleEnvironmentExplorerViewModel.SelectedEnvironment = environmentViewModel;
+                    singleEnvironmentExplorerViewModel.SelectedItem = null;
+                }
             }
         }
 

@@ -146,6 +146,11 @@ namespace Dev2.Runtime.Hosting
             var resourcesToRename =
                 ResourceCatalogue.GetResourceList(GlobalConstants.ServerWorkspaceID)
                     .Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(oldPath)).ToList();
+            if (resourcesToRename.Count == 0)
+            {
+                var resourceCatalogResult = new ResourceCatalogResult {Status = ExecStatus.Success};
+                return resourceCatalogResult;
+            }
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(GlobalConstants.ServerWorkspaceID, oldPath, newName, resourcesToRename);
             return result;
         }
