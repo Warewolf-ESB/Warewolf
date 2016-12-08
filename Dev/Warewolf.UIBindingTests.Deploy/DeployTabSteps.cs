@@ -263,11 +263,12 @@ namespace Warewolf.UIBindingTests.Deploy
         [When(@"destination Server Version is ""(.*)""")]
         public void WhenDestinationServerVersionIs(string p0)
         {
-            GetPopup().Setup(controller => controller.ShowDeployServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+            GetPopup().Setup(controller => controller.ShowDeployServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.OK);
             GetViewModel().PopupController = GetPopup().Object;
             var dest = GetDestinationServer();
             dest.Setup(server => server.GetMinSupportedVersion()).Returns(p0);
             dest.Setup(server => server.GetServerVersion()).Returns(p0);
+            
         }
 
         [When(@"""(.*)"" is Disconnected")]
@@ -663,5 +664,12 @@ namespace Warewolf.UIBindingTests.Deploy
                 Assert.AreEqual(p0, message);
             }
         }
+
+        [Then(@"I click ok on the wanning message")]
+        public void ThenIClickOkOnTheWanningMessage()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }
