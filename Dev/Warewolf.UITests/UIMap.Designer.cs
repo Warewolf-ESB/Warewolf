@@ -104657,8 +104657,6 @@ namespace Warewolf.UITests
         private WpfHyperlink mUISpecifiedvaluedoesnoHyperlink;
         #endregion
     }
-}
-    }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIActivityDefaultWindoWindow : WpfWindow
