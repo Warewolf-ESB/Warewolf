@@ -301,9 +301,9 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             var id = Guid.NewGuid();
             var name = GetChildNameFromChildren();
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var child = new ExplorerItemViewModel(Server, this, a => { SelectAction(a); }, _shellViewModel, _controller)
             {
-                ResourceName = name,
                 ResourceId = id,
                 ResourceType = "Folder",
                 IsFolder = true,
@@ -311,8 +311,15 @@ namespace Warewolf.Studio.ViewModels
                 IsSelected = true,
                 IsRenaming = true,
                 IsVisible = true,
-                IsNewFolder = true
+                IsNewFolder = true,
+                CanCreateWorkflowService = true,
+                CanView = true,
+                CanDeploy = true,
+                CanViewApisJson = true
             };
+            child.ResourceName = name;
+            child.IsRenaming = true;
+
             if (_isDialog)
             {
                 child.AllowResourceCheck = false;
@@ -325,15 +332,10 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                child.AllowResourceCheck = AllowResourceCheck;
-                child.IsResourceChecked = IsResourceChecked;
-                child.CanCreateFolder = CanCreateFolder;
-                child.CanCreateSource = CanCreateSource;
-                child.CanShowVersions = CanShowVersions;
+                child.SetPermission(Server.Permissions[0].Permissions);
+
                 child.CanRename = true;
                 child.CanDelete = true;
-                child.CanDeploy = CanDeploy;
-                child.CanCreateWorkflowService = CanCreateWorkflowService;
 
                 child.ShowContextMenu = ShowContextMenu;
             }
