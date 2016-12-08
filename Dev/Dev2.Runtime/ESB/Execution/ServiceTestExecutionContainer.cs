@@ -227,9 +227,17 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else if (!DataListUtil.IsValueRecordset(input.Variable))
                     {
-                        if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                        string errorMessage;
+                        if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out errorMessage, 0))
                         {
-                            DataObject.Environment.Assign(variable, value, 0);
+                            DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
+                        }
+                        else
+                        {
+                            if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                            {
+                                DataObject.Environment.Assign(variable, value, 0);
+                            }
                         }
                     }
                 }
@@ -538,7 +546,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
 
-            failureMessage.AppendLine(string.Join("", serviceTestSteps.Select(step => step.Result?.Message)));
+            failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
             return failureMessage;
         }
 

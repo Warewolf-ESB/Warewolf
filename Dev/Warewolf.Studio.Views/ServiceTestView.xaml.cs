@@ -38,7 +38,14 @@ namespace Warewolf.Studio.Views
                         }
                         break;
                     }
-                    node = VisualTreeHelper.GetParent(node);
+                    if (node is Visual)
+                    {
+                        node = VisualTreeHelper.GetParent(node);
+                    }
+                    else
+                    {
+                        node = null;
+                    }
                 }
             }
         }
