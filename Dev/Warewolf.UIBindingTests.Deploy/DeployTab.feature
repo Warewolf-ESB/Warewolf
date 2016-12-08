@@ -49,14 +49,8 @@ Scenario: Deploy is successfull
 Scenario: Conflicting resources on Source and Destination server
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
-	 And source is connected
-	 When I select Destination Server as "DestinationServer"
-	 And destination "DestinationServer" is connected
-	 And selected Destination Server is "DestinationServer"
-	 And I select "bob" from Source Server
-	 When I click OK on Resource exists in the destination server popup
-	 Then I select Destination Server as "DestinationServer" with confilcts
-	 And destination "DestinationServer" is connected
+	 And source is connected	
+	 Then I select Destination Server as "DestinationServer" with SameName confilcts
 	 And I select "Control Flow - Sequence" from Source Server
 	 When I click Cancel on Resource exists in the destination server popup
 	 And I deploy 
@@ -102,11 +96,13 @@ Scenario: Selected for deploy items type is showing on deploy tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 And I select "DB Service\FetchPlayers" from Source Server
-	 And I select "sqlServers\DemoDB" from Source Server
+	 When I select "Utility - Date and Time" from Source Server
+	 And I select "FetchPlayers" from Source Server
+	 And I select "DemoDB" from Source Server
+	 And Calculation is invoked
 	 Then Services is "1"
 	 And Sources is "1"
 
@@ -115,15 +111,17 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 And I select "Examples\bob" from Source Server
+	 And I select "bob" from Source Server
+	 And Calculation is invoked
 	 Then New Resource is "1"
 	 And Override is "0"
-	 When I select "DB Service\FetchPlayers" from Source Server
+	 When I select "FetchPlayers" from Source Server
 	 Then New Resource is "2"
 	 And Override is "0"
-	 When I Unselect "Examples\bob" from Source Server
+	 When I Unselect "bob" from Source Server
 	 Then Override is "0"
 	
 #Wolf-1106
@@ -132,9 +130,10 @@ Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer" with SameName confilcts
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 And I select "Examples\bob" from Source Server
+	 And I select "bob" from Source Server
 	 When I deploy
 	 Then the User is prompted to "Rename or Delete" one of the resources
 
@@ -144,9 +143,10 @@ Scenario: Warning message no longer appears
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 And I select "Examples\bob" from Source Server
+	 And I select "bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
 	 Then deploy is successfull
