@@ -40,12 +40,16 @@ namespace Warewolf.Studio.ViewModels
         public RequestServiceNameViewModel()
         {
         }
-
+#pragma warning disable 1998
+#pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
+#pragma warning restore 1998
+#pragma warning restore 1998
         {
-            _environmentViewModel = new EnvironmentViewModel(environmentViewModel.Server,environmentViewModel.ShellViewModel,true, environmentViewModel.SelectAction);
+            //_environmentViewModel = new EnvironmentViewModel(environmentViewModel.Server,environmentViewModel.ShellViewModel,true, environmentViewModel.SelectAction);
+            _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
-            await _environmentViewModel.LoadDialog(selectedPath);
+            //await _environmentViewModel.LoadDialog(selectedPath);
             _selectedPath = selectedPath;
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
@@ -246,8 +250,8 @@ namespace Warewolf.Studio.ViewModels
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
 
-            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
-            SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
+            //SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
+            //SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
 
             try
             {
@@ -260,10 +264,10 @@ namespace Warewolf.Studio.ViewModels
                     });
                 }
                 _environmentViewModel.IsSaveDialog = true;
-                _environmentViewModel.ShowContextMenu = true;
+                //_environmentViewModel.ShowContextMenu = true;
                 _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
-                _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.ShowContextMenu = true);
-                _environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanRename = true);
+                //_environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.ShowContextMenu = true);
+                //_environmentViewModel.Children.Flatten(model => model.Children).Apply(model => model.CanRename = true);
             }
             catch (Exception)
             {
@@ -272,7 +276,8 @@ namespace Warewolf.Studio.ViewModels
 
             HasLoaded = true;
             ValidateName();
-            
+            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
+            SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
             _view.ShowView();
 
