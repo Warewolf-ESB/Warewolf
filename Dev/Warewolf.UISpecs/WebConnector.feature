@@ -54,7 +54,7 @@ Scenario: Web DELETE Connector
 Scenario: Right click adorner control with error
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "BrokenDeleteWeb" 
-	And I Open Explorer First Item With Context Menu
+	And I DoubleClick Explorer Localhost First Item
 	And I Open DeleteWeb Tool Large View
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
