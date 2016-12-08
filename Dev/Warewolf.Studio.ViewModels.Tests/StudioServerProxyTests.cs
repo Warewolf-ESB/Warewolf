@@ -13,6 +13,8 @@ using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.ServerProxyLayer;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable ObjectCreationAsStatement
 
@@ -148,6 +150,25 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()),Times.Never);
             Assert.IsTrue(item.IsDeleted);
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("StudioServerProxy_VersionManager")]
+        public void StudioServerProxy_VersionManager_GetVersions_ServerDown_ShowPopup()
+        {
+            //------------Setup for test--------------------------
+            var environmentConnection = new Mock<IEnvironmentConnection>();
+            environmentConnection.Setup(a => a.DisplayName).Returns("localhost");
+            var versionManagerProxy = new VersionManagerProxy(new CommunicationControllerFactory(), environmentConnection.Object);
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false)).Returns(MessageBoxResult.OK);
+            CustomContainer.Register(mockPopupController.Object);
+
+            var versions = versionManagerProxy.GetVersions(It.IsAny<Guid>());
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(versions);
+        }
     }
 }

@@ -38,12 +38,14 @@ namespace Dev2.Common.ExtMethods
                 return deserialize;
             }
                 // ReSharper disable once UnusedVariable
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
+                
                 return default(T);
             }
 
         }
     }
+
+    
 }

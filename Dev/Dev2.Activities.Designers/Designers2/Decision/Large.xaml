@@ -6,7 +6,6 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
@@ -18,8 +17,6 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               Width="Auto"
-                               Height="390"
                                mc:Ignorable="d"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance decision:DecisionDesignerViewModel}">
@@ -41,356 +38,352 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid Margin="{StaticResource ElementBorder}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*" />
-            <ColumnDefinition Width="50*" />
-        </Grid.ColumnDefinitions>
-
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <TextBlock Margin="5" Text="Decision" Style="{StaticResource SourceHeader}" />
         </StackPanel>
-        
-        <controls:Dev2DataGrid Grid.Row="1"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               VerticalScrollBarVisibility="Hidden"
-                               x:Name="LargeDataGrid"
-                               Margin="{StaticResource ControlBorderTop}"
-                               ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               Height="90">
-            <i:Interaction.Behaviors>
-                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <sys:String>[[Recordset().F1]]</sys:String>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                        <sys:Int32>0</sys:Int32>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors2:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
 
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        Header="#"
-                                        HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
-                                        IsReadOnly="False"
-                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Style="{StaticResource ButtonOrangeTransparentStyle}" Command="{Binding DeleteCommand}" Width="25">
-                                <Button.Content>
-                                    <fa:FontAwesome Icon="Close" FontSize="14"></fa:FontAwesome> 
-                                </Button.Content>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Width="Auto"
-                                        Header="Match"
-                                        HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <ui:IntellisenseTextBox DefaultText="Match Value"
-                                                        Grid.Column="0"
-                                                        Grid.ColumnSpan="2"
-                                                        Margin="1"
-                                                        AllowUserCalculateMode="False"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                                        VerticalScrollBarVisibility="Hidden"
-                                                        TextWrapping="Wrap"
-                                                        AllowMultilinePaste="True"
-                                                        AcceptsReturn="True"
-                                                        AllowUserInsertLine="True"
-                                                        MaxHeight="52"
-                                                        Padding="3"
-                                                        Text="{Binding MatchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        IsEnabled="True"
-                                                        Visibility="Visible"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static languages:Core.FindToolTipMatch}">
-                                    <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
-                                                             SourcePropertyName="MatchValue"
-                                                             SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
-                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_SearchCriteria_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Width="*"
-                                        Header="MatchType"
-                                        HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                      Margin="1"
-                                      ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SourceUpdated">
-                                        <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="SearchType"
-                                                         SourcePropertyValue="{Binding SearchType, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                </i:Interaction.Behaviors>
-                                <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_SearchType_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                        <Binding Path="IndexNumber" />
-                                    </MultiBinding>
-                                </AutomationProperties.AutomationId>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Width="Auto"
-                                        Header="Match"
-                                        HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}"
-                                        Visibility="{Binding IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <ui:IntellisenseTextBox DefaultText="Match"
-                                                        FilterType="All"
-                                                        Grid.Column="0"
-                                                        Grid.ColumnSpan="2"
-                                                        AllowUserCalculateMode="False"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                                        VerticalScrollBarVisibility="Hidden"
-                                                        TextWrapping="Wrap"
-                                                        AllowMultilinePaste="True"
-                                                        AcceptsReturn="True"
-                                                        AllowUserInsertLine="True"
-                                                        MaxHeight="52"
-                                                        Padding="3"
-                                                        Margin="1"
-                                                        Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                                        Visibility="{Binding IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static languages:Core.FindToolTipMatch}">
-                                    <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
-                                                             SourcePropertyName="SearchCriteria"
-                                                             SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
-                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_SearchCriteria_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-
-                                <ui:IntellisenseTextBox DefaultText="From"
-                                                        FilterType="All"
-                                                        Grid.Column="0"
-                                                        AllowUserCalculateMode="False"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                                        VerticalScrollBarVisibility="Hidden"
-                                                        TextWrapping="NoWrap"
-                                                        AcceptsReturn="False"
-                                                        MaxHeight="52"
-                                                        AllowUserInsertLine="False"
-                                                        Padding="3"
-                                                        Margin="1"
-                                                        attachedProperties:FocusSetter.IsFocused="{Binding IsFromFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Visibility="{Binding IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsFromHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
-                                                             SourcePropertyName="From"
-                                                             SourcePropertyValue="{Binding From, UpdateSourceTrigger=PropertyChanged}"
-                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_From_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-
-                                <ui:IntellisenseTextBox DefaultText="To"
-                                                        FilterType="All"
-                                                        Grid.Column="1"
-                                                        AllowUserCalculateMode="False"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                                        VerticalScrollBarVisibility="Hidden"
-                                                        TextWrapping="NoWrap"
-                                                        AcceptsReturn="False"
-                                                        AllowUserInsertLine="False"
-                                                        MaxHeight="52"
-                                                        Margin="0,1,1,1"
-                                                        Padding="3"
-                                                        attachedProperties:FocusSetter.IsFocused="{Binding IsToFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Visibility="{Binding IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsToHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
-                                                             SourcePropertyName="To"
-                                                             SourcePropertyValue="{Binding To, UpdateSourceTrigger=PropertyChanged}"
-                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_To_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </controls:Dev2DataGrid>
-
-        <CheckBox Grid.Row="2"
-                  Margin="-6,0,0,0"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="2"
-                  Style="{StaticResource CheckBoxStyle}"
-                  x:Name="And"
-                  Content="Require All decisions To Be True"
-                  IsChecked="{Binding RequireAllDecisionsToBeTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.FindToolTipRequireAllMatchesToBeTrue}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
-
-        <Grid Grid.Row="3"
-              Grid.Column="0"
-              Grid.ColumnSpan="2">
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Display text" />
 
-            <TextBox Grid.Column="1"
-                                    Margin="1,1,0,1"
-                                    x:Name="DisplayText"
-                                    Style="{StaticResource TextBoxStyle}"
-                                    Text="{Binding DisplayText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static languages:Core.FindToolTipResult}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="DisplayText"
-                                         SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </TextBox>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" x:Name="TrueArmLabel" Text="True arm text" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <TextBox Grid.Column="1"
-                                    Margin="0,1,0,1"
-                                    x:Name="TrueArmText"
-                                    Style="{StaticResource TextBoxStyle}"
-                                    Text="{Binding TrueArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    attachedProperties:FocusSetter.IsFocused="{Binding IsTrueArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static languages:Core.FindToolTipResult}">
+            <controls:Dev2DataGrid Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   VerticalScrollBarVisibility="Hidden"
+                                   x:Name="LargeDataGrid"
+                                   ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMapppingDataGridStyle}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="TrueArmText"
-                                         SourcePropertyValue="{Binding TrueArmText, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
+                    <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                        <behaviors2:DataGridWatermarkModifier.WatermarkText>
+                            <sys:String>[[Recordset().F1]]</sys:String>
+                        </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                        <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                            <sys:Int32>0</sys:Int32>
+                        </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                    </behaviors2:DataGridWatermarkModifier>
                 </i:Interaction.Behaviors>
-            </TextBox>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="False arm text" />
 
-            <TextBox Grid.Column="1"
-                                    Margin="1,1,0,1"
-                                    x:Name="FalseArmText"
-                                    Style="{StaticResource TextBoxStyle}"
-                                    Text="{Binding FalseArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    attachedProperties:FocusSetter.IsFocused="{Binding IsFalseArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="25"
+                                            Header="#"
+                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            IsReadOnly="False"
+                                            d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource ButtonOrangeTransparentStyle}" Command="{Binding DeleteCommand}">
+                                    <Button.Content>
+                                        <fa:FontAwesome Icon="Close" FontSize="14"></fa:FontAwesome>
+                                    </Button.Content>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="100"
+                                            Header="Match"
+                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:IntellisenseTextBox DefaultText="Match Value"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="1"
+                                                            AllowUserCalculateMode="False"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                                            TextWrapping="Wrap"
+                                                            AllowMultilinePaste="True"
+                                                            AcceptsReturn="True"
+                                                            AllowUserInsertLine="True"
+                                                            MaxHeight="52"
+                                                            Padding="3"
+                                                            Text="{Binding MatchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="True"
+                                                            Visibility="Visible"
+                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                            ToolTip="{x:Static languages:Core.FindToolTipMatch}">
+                                        <i:Interaction.Behaviors>
+                                            <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                 SourcePropertyName="MatchValue"
+                                                                 SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_SearchCriteria_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID"
+                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="Auto"
+                                            Header="MatchType"
+                                            CanUserResize="False"
+                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                          Margin="1"
+                                          ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                          SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                          ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SourceUpdated">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                                                   CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <i:Interaction.Behaviors>
+                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <errors:ErrorsSetter Source="{Binding}"
+                                                             SourcePropertyName="SearchType"
+                                                             SourcePropertyValue="{Binding SearchType, UpdateSourceTrigger=PropertyChanged}"
+                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    </i:Interaction.Behaviors>
+                                    <AutomationProperties.AutomationId>
+                                        <MultiBinding StringFormat="UI_{0}_Row{1}_SearchType_AutoID">
+                                            <Binding Path="DataContext.ModelItem.AutomationID"
+                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                            <Binding Path="IndexNumber" />
+                                        </MultiBinding>
+                                    </AutomationProperties.AutomationId>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="100"
+                                            Header="Match"
+                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DecisionTO}"
+                                            Visibility="{Binding IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:IntellisenseTextBox DefaultText="Match"
+                                                            FilterType="All"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="2"
+                                                            AllowUserCalculateMode="False"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                                            TextWrapping="Wrap"
+                                                            AllowMultilinePaste="True"
+                                                            AcceptsReturn="True"
+                                                            AllowUserInsertLine="True"
+                                                            MaxHeight="52"
+                                                            Padding="3"
+                                                            Margin="1"
+                                                            Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                                            Visibility="{Binding IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                            ToolTip="{x:Static languages:Core.FindToolTipMatch}">
+                                        <i:Interaction.Behaviors>
+                                            <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                 SourcePropertyName="SearchCriteria"
+                                                                 SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_SearchCriteria_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID"
+                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+
+                                    <ui:IntellisenseTextBox DefaultText="From"
+                                                            FilterType="All"
+                                                            Grid.Column="0"
+                                                            AllowUserCalculateMode="False"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                                            TextWrapping="NoWrap"
+                                                            MaxHeight="52"
+                                                            AllowUserInsertLine="False"
+                                                            Padding="3"
+                                                            Margin="1"
+                                                            attachedProperties:FocusSetter.IsFocused="{Binding IsFromFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Visibility="{Binding IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsFromHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                 SourcePropertyName="From"
+                                                                 SourcePropertyValue="{Binding From, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_From_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID"
+                                                         RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+
+                                    <ui:IntellisenseTextBox DefaultText="To"
+                                                            FilterType="All"
+                                                            Grid.Column="1"
+                                                            AllowUserCalculateMode="False"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                                            TextWrapping="NoWrap"
+                                                            AllowUserInsertLine="False"
+                                                            MaxHeight="52"
+                                                            Margin="0,1,1,1"
+                                                            Padding="3"
+                                                            attachedProperties:FocusSetter.IsFocused="{Binding IsToFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Visibility="{Binding IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsToHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                 SourcePropertyName="To"
+                                                                 SourcePropertyValue="{Binding To, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_To_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID"
+                                                         RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </controls:Dev2DataGrid>
+
+            <CheckBox Grid.Row="1"
+                      Margin="-6,0,0,0"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Style="{StaticResource CheckBoxStyle}"
+                      x:Name="And"
+                      Content="Require All decisions To Be True"
+                      IsChecked="{Binding RequireAllDecisionsToBeTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Core.FindToolTipRequireAllMatchesToBeTrue}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="FalseArmText"
-                                         SourcePropertyValue="{Binding FalseArmText, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </TextBox>
+            </CheckBox>
+
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Display text" />
+
+                <TextBox Grid.Column="1"
+                        Margin="1,1,0,1"
+                        x:Name="DisplayText"
+                        Style="{StaticResource TextBoxStyle}"
+                        Text="{Binding DisplayText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
+                        ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="DisplayText"
+                                             SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Name="TrueArmLabel" Text="True arm text" />
+
+                <TextBox Grid.Column="1"
+                        Margin="0,1,0,1"
+                        x:Name="TrueArmText"
+                        Style="{StaticResource TextBoxStyle}"
+                        Text="{Binding TrueArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        attachedProperties:FocusSetter.IsFocused="{Binding IsTrueArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
+                        ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="TrueArmText"
+                                             SourcePropertyValue="{Binding TrueArmText, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="False arm text" />
+
+                <TextBox Grid.Column="1"
+                        Margin="1,1,0,1"
+                        x:Name="FalseArmText"
+                        Style="{StaticResource TextBoxStyle}"
+                        Text="{Binding FalseArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        attachedProperties:FocusSetter.IsFocused="{Binding IsFalseArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
+                        ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                    <i:Interaction.Behaviors>
+                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="FalseArmText"
+                                             SourcePropertyValue="{Binding FalseArmText, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <errors:OnError Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" />
         </Grid>
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="6"
-                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
