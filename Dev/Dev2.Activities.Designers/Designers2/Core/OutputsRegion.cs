@@ -2,6 +2,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -14,6 +15,7 @@ using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
@@ -29,22 +31,26 @@ namespace Dev2.Activities.Designers2.Core
         {
             ToolRegionName = "OutputsRegion";
             _modelItem = modelItem;
+            var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
             {
-                var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
+                var current = serviceOutputMappings;
                 if(current == null)
                 {
                     IsEnabled = false;
                 }
-                var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
+                var outputMappings = current ?? new List<IServiceOutputMapping>();
+                var outputs = new ObservableCollection<IServiceOutputMapping>(outputMappings);
                 outputs.CollectionChanged += OutputsCollectionChanged;
+                outputs.AddRange(outputMappings);
                 Outputs = outputs;
             }
             else
             {
                 IsEnabled = true;
-                var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
+                var outputs = new ObservableCollection<IServiceOutputMapping>();
                 outputs.CollectionChanged += OutputsCollectionChanged;
+                outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
             IsObject = _modelItem.GetProperty<bool>("IsObject");
@@ -63,13 +69,46 @@ namespace Dev2.Activities.Designers2.Core
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 
-        void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _modelItem.SetProperty("Outputs", _outputs.ToList());
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsOutputsEmptyRows");
+            AddItemPropertyChangeEvent(e);
+            RemoveItemPropertyChangeEvent(e);
             // ReSharper restore ExplicitCallerInfoArgument
         }
+
+
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems == null) return;
+            foreach (INotifyPropertyChanged item in args.NewItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged += ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _modelItem.SetProperty("Outputs", _outputs.ToList());
+        }
+
+        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.OldItems == null) return;
+            foreach (INotifyPropertyChanged item in args.OldItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged -= ItemPropertyChanged;
+                }
+            }
+        }
+
+
         private bool _outputMappingEnabled;
         private string _recordsetName;
         private IOutputDescription _description;
