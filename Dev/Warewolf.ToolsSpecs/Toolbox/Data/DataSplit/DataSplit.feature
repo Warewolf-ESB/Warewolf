@@ -25,7 +25,7 @@ Scenario: Split text to a recordset using Index using Star notation
 	|   | [[vowels(2).letters]] = b |
 	|   | [[vowels(3).letters]] = c |
 	|   | [[vowels(4).letters]] = d |
-	|   | [[vowels(5).letters]] = e |
+	|   | [[vowels(5).letters]] = e |	
 
 Scenario: Split text to a scalar
 	Given A string to split with value "abcde"
