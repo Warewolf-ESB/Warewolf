@@ -282,16 +282,25 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
                         }
-                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg,test.TestFailing).GetDebugItemResult());
+                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
                     }
                     testAggregateDebugState.AssertResultList.Add(itemToAdd);
                     wfappUtils.WriteDebug(DataObject, testAggregateDebugState);
+
+                    if (testRunResult != null)
+                    {
+                        if (test != null)
+                            test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+                        _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                    }
                 }
-                if (testRunResult != null)
+                else
                 {
+                    AggregateTestResult(resourceId, test);
                     if (test != null)
-                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
-                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                    {
+                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                    }
                 }
                 result = DataObject.DataListID;
             }

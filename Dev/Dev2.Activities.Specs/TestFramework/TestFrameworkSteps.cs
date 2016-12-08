@@ -512,12 +512,10 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            var debugItemResults = debugForTest[4].AssertResultList.First().ResultsList;
-            var actualAssetMessage = debugItemResults.First(result => result.Value.ToUpper()
-                                                     .Contains(assertString.ToUpper()))
-                                                     .Value;
+            var debugItemResults = debugForTest[3].AssertResultList.First().ResultsList;
+            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             var errorExpected = actualAssetMessage.Split('\n').Last();
-            Assert.AreEqual(assertString, errorExpected);
+            Assert.AreEqual(assertString.ToUpper(), errorExpected.ToUpper());
         }
 
 
