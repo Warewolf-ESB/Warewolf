@@ -158,13 +158,14 @@ Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
 	 And destination Server Version is "0.0.0.1"
 	 And I select "Utility - Date and Time" from Source Server
 	 When I deploy 	
-	 Then a warning message appears "Deploying to an older server version could result in resources not working on destination server"
-	 Then deploy is successfull
+	 Then a warning message appears "Deploying to an older server version could result in resources not working on destination server"	 
+	 And deploy is successfull
 
 @DeployTab
 Scenario: Deploy Based on permission Deploy To
