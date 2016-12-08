@@ -71,6 +71,7 @@
 					ToolTip="{x:Static languages:Core.ServiceTestRunAllTestTooltip}" 
 					HorizontalAlignment="Left" 
 					Command="{Binding RunAllTestsCommand}" 
+                    AutomationProperties.AutomationId="UI_RunAll_AutoID"
 					Margin="{StaticResource ElementBorderRight}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunAllTestHelpText}" DataContext="{Binding}" />
@@ -481,7 +482,8 @@
                                     <ig:XamDataTree.GlobalNodeLayouts>
                                         <ig:NodeLayout Key="ServiceTestStep"
 													DisplayMemberPath="StepDescription"
-													TargetTypeName="IServiceTestStep">
+													TargetTypeName="IServiceTestStep"
+                                                    AutomationProperties.AutomationId="{Binding StringFormat=UI_Node{0}_AutoID, Path=Node.Data.StepDescription}">
                                             <ig:NodeLayout.ItemTemplate>
                                                 <DataTemplate>
                                                     <Grid>
@@ -520,7 +522,8 @@
 																Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
 																CommandParameter="{Binding Path=Node.Data}"
 																ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
-																AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
+                                                                AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=Node.Data.StepDescription}"
+																>
                                                                 <fa:FontAwesome Icon="Trash"/>
                                                                 <i:Interaction.Behaviors>
                                                                     <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -532,7 +535,8 @@
 															    Header="{Binding Path=Node.Data}" 
 															    IsExpanded="{Binding Path=Node.Data.IsTestStepExpanded}" 
 															    Style="{StaticResource ServiceTestTestStepExpander}" 
-															    AutomationProperties.AutomationId="UI_ServiceTestTestStepExpander_AutoID">
+                                                                AutomationProperties.AutomationId="{Binding StringFormat=UI_ServiceTestTestStepExpander_{0}_AutoID, Path=Node.Data.StepDescription}"
+															    >
                                                             <Expander.HeaderTemplate>
                                                                 <DataTemplate>
                                                                     <DockPanel LastChildFill="False" >
@@ -575,6 +579,7 @@
                                                                                BorderBrush="{StaticResource XamGridBorderBrush}"
                                                                                Height="Auto"
                                                                                MaxHeight="107"
+                                                                               AutomationProperties.AutomationId="{Binding StringFormat=UI_StepOutputs_{0}_AutoID, Path=Data.StepDescription}"
                                                                                HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
                                                                 <DataGrid.Columns>
                                                                     <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
@@ -595,11 +600,13 @@
                                                                                 <TextBox Margin="1,0,1,1"
 																					Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																					ToolTip="{x:Static languages:Core.ServiceTestStepAssertVariableTooltip}"
-                                                                                     IsEnabled="{Binding Path=CanEditVariable}"
-																					AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                     IsEnabled="{Binding Path=CanEditVariable}">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
+                                                                                    <AutomationProperties.AutomationId >
+                                                                                        <Binding StringFormat="UI_AssertValue_{0}_AutoID" Path="Variable"/>
+                                                                                    </AutomationProperties.AutomationId>
                                                                                 </TextBox>
                                                                             </DataTemplate>
                                                                         </DataGridTemplateColumn.CellTemplate>
@@ -618,7 +625,7 @@
 																							Content="Assert" 
 																							Margin="8,-3,0,0"
 																							IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
-																							AutomationProperties.AutomationId="UI_AssertRadioButton_AutoID">
+																							AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_AssertRadioButton_{0}_AutoID}">
                                                                                         <i:Interaction.Behaviors>
                                                                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
@@ -628,7 +635,8 @@
 																							Content="Mock" 
 																							Margin="0,-3,0,0"
 																							IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.MockSelected}"
-																							AutomationProperties.AutomationId="UI_MockRadioButton_AutoID">
+                                                                                            AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_MockRadioButton_{0}_AutoID}"
+																							>
                                                                                         <i:Interaction.Behaviors>
                                                                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
@@ -644,7 +652,8 @@
 																					    ItemsSource="{Binding Path=AssertOps}"
 																					    SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
 																					    ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
-																					    AutomationProperties.AutomationId="UI_AssertOps_AutoID">
+                                                                                        AutomationProperties.AutomationId="{Binding Path=Variable, StringFormat=UI_AssertOp_{0}_AutoID}"
+																					    >
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
@@ -673,7 +682,8 @@
 																							ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
 																							IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
 																							Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																							AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                                            AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}"
+																							>
                                                                                             <i:Interaction.Behaviors>
                                                                                                 <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
@@ -687,7 +697,8 @@
 																					    ToolTip="{x:Static languages:Core.ServiceTestStepAssertFromTooltip}"
 																					    Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																					    customControls:WatermarkTextBox.Watermark="From"
-																					    AutomationProperties.AutomationId="UI_AssertFrom_AutoID">
+                                                                                        AutomationProperties.AutomationId="{Binding Path=From, StringFormat=UI_AssertFrom_{0}_AutoID}"
+																					    >
                                                                                         <i:Interaction.Behaviors>
                                                                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
@@ -699,7 +710,8 @@
 																						ToolTip="{x:Static languages:Core.ServiceTestStepAssertToTooltip}"
 																						Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																						customControls:WatermarkTextBox.Watermark="To"
-																						AutomationProperties.AutomationId="UI_AssertTo_AutoID">
+                                                                                        AutomationProperties.AutomationId="{Binding Path=To, StringFormat=UI_AssertTo_{0}_AutoID}"
+																						>
                                                                                         <i:Interaction.Behaviors>
                                                                                             <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
@@ -714,7 +726,7 @@
 																							SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
 																							Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																							ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
-																							AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
+																							AutomationProperties.AutomationId="{Binding StringFormat=UI_OptionsForValue_{0}_AutoID, Path=Variable}">
                                                                                             <i:Interaction.Behaviors>
                                                                                                 <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
