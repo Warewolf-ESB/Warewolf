@@ -188,8 +188,21 @@ namespace Dev2.Settings.Scheduler
             return true;
         }
 
+        private void ShowServerDisconnectedPopup()
+        {
+            _schedulerViewModel.PopupController?.Show(string.Format(Core.ServerDisconnected, _schedulerViewModel.CurrentEnvironment.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+                             Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
+        }
+
         public void CreateNewTask()
         {
+            if (_schedulerViewModel.CurrentEnvironment?.Connection != null && !_schedulerViewModel.CurrentEnvironment.Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return;
+            }
+
             if (_schedulerViewModel.IsDirty)
             {
                 _schedulerViewModel.PopupController.Show(Core.SchedulerUnsavedTaskMessage, Core.SchedulerUnsavedTaskHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);

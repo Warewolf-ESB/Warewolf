@@ -47,7 +47,11 @@ IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\Warewolf Server.exe" SET Deploy
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\Server
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Server
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..\Server
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\DebugServer
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\DebugServer\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\DebugServer
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\DebugServer\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..\DebugServer
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
