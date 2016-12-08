@@ -142,14 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                string sourceString;
-                var match = Regex.Match(SourceString, @"[\n\r]+");
-
-                if(match.Success)
-                    sourceString = Regex.Escape(SourceString);
-                else
-                    sourceString = SourceString ?? "";
-
+                var sourceString = SourceString ?? "";
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env, update));
@@ -179,7 +172,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var item = res.GetNextValue(); // item is the thing we split on
                     if(!string.IsNullOrEmpty(item))
                     {
-                        string val = item;
+                        string val;
+                        var match = Regex.Match(item, @"[\n\r]+");
+                        if (match.Success && !SkipBlankRows)
+                            val = Regex.Escape(item);
+                        else
+                            val = item;
+
                         var blankRows = new List<int>();
                         if(SkipBlankRows)
                         {
