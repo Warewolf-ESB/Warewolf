@@ -17,6 +17,7 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UITest.Common;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
@@ -544,7 +545,9 @@ namespace Warewolf.UITests
             }
         }
 
+        [Given(@"I Try Remove ""(.*)"" From Explorer")]
         [When(@"I Try Remove ""(.*)"" From Explorer")]
+        [Then(@"I Try Remove ""(.*)"" From Explorer")]
         public void WhenITryRemoveFromExplorer(string ResourceName)
         {
             Filter_Explorer(ResourceName);
@@ -652,6 +655,9 @@ namespace Warewolf.UITests
             Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
         }
 
+        [Given(@"I Try Close Workflow")]
+        [When(@"I Try Close Workflow")]
+        [Then(@"I Try Close Workflow")]
         public void TryCloseWorkflowTab()
         {
             try
@@ -782,17 +788,9 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
         }
 
-        //[When(@"I Click Duplicate From Duplicate Dialog")]
-        //public void WhenIClickDuplicateFromDuplicateDialog()
-        //{
-        //    Click_Duplicate_From_Duplicate_Dialog();
-        //    Point point;
-        //    // Verify that the 'Exists' property of 'SaveDialogView' window equals 'True'
-        //    Assert.IsFalse(SaveDialogWindow.TryGetClickablePoint(out point), "Save Dialog does not exist after clicking Duplicate button");
-        //}
-
-
+        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
+        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Save);
@@ -845,6 +843,24 @@ namespace Warewolf.UITests
             Mouse.Click(firstItem);
 
         }
+
+        [Given(@"I Double Click Resource On The Service Picker")]
+        [When(@"I Double Click Resource On The Service Picker")]
+        [Then(@"I Double Click Resource On The Service Picker")]
+        public void DoubleClick_FirstItem_From_ServicePicker_Tree()
+        {
+            var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
+            Mouse.DoubleClick(firstItem);
+        }
+
+        [Given(@"I Double Click Resource On The Save Dialog")]
+        [When(@"I Double Click Resource On The Save Dialog")]
+        [Then(@"I Double Click Resource On The Save Dialog")]
+        public void ThenIDoubleClickResourceOnTheSaveDialog()
+        {
+            Mouse.DoubleClick(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem);
+        }
+
         public void Filter_ServicePicker_Explorer(string FilterText)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
@@ -852,10 +868,42 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [When(@"I Click Localhost")]
+        [Then(@"I Click Localhost")]
+        [Given(@"I Click Localhost")]
+        public void Click_LocalHost_Once()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
+        [Given(@"I Filter the Explorer with ""(.*)""")]
         [When(@"I Filter the Explorer with ""(.*)""")]
+        [Then(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+        }
+
+        [Given(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        [When(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        [Then(@"I Filter Save Dialog Explorer with ""(.*)""")]
+        public void Filter_Save_Dialog_Explorer(string FilterText)
+        {
+            SaveDialogWindow.ExplorerView.SearchTextBox.Text = FilterText;
+        }
+
+        [When(@"I Move FirstSubItem Into FirstItem Folder")]
+        public void Move_FirstSubItem_Into_FirstItem_Folder()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Then(@"I have one item in the explorer")]
+        public void ExplorerItemCountEquals()
+        {
+            var secondItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
+            Assert.IsFalse(ControlExistsNow(secondItem), "Second Item exists in the Explorer Exists");
         }
 
         [When(@"I Filter the ToolBox with ""(.*)""")]
@@ -954,7 +1002,9 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
         }
 
+        [Given(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
+        [Then(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         public void Save_With_Ribbon_Button_And_Dialog(string Name)
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
@@ -965,7 +1015,9 @@ namespace Warewolf.UITests
         }
 
 
+        [Given(@"I Click SaveDialog Save Button")]
         [When(@"I Click SaveDialog Save Button")]
+        [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
@@ -1003,7 +1055,9 @@ namespace Warewolf.UITests
             Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Text, "Multiassign small view row 1 variable textbox text does not equal \"[[SomeVariable]]\".");
         }
 
+        [Given("I Click New Workflow Ribbon Button")]
         [When("I Click New Workflow Ribbon Button")]
+        [Then("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
@@ -1038,7 +1092,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem11, new Point(163, 17));
         }
 
+        [Given(@"I Click New Web Source Ribbon Button")]
         [When(@"I Click New Web Source Ribbon Button")]
+        [Then(@"I Click New Web Source Ribbon Button")]
         public void Click_New_Web_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
@@ -1046,6 +1102,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
         }
 
+        [Given(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
+        [When(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
+        [Then(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
         public void First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Comment";
@@ -1063,12 +1122,9 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(500, 562));
         }
 
-        public void Resize_RabbitMQPublish_LargeTool()
-        {
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.DoneButton.ItemResizer, new Point(13, 17));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(500, 562));
-        }
-
+        [Given(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
+        [When(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
+        [Then(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
         public void Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface()
         {
             #region Variable Declarations
@@ -1105,14 +1161,18 @@ namespace Warewolf.UITests
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row2 textbox text is not equal to \'" + text + "\' after typing that in.");
         }
 
+        [Given(@"I Click Debug Ribbon Button")]
         [When(@"I Click Debug Ribbon Button")]
+        [Then(@"I Click Debug Ribbon Button")]
         public void Click_Debug_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
 
+        [Given(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
         [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        [Then(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
         public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
         {
             if (!File.Exists(text))
@@ -1133,7 +1193,9 @@ namespace Warewolf.UITests
             Assert.AreEqual(FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text, GroupName, "Settings security tab resource permissions row 1 windows group textbox text does not equal Public.");
         }
 
+        [Given(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         [When(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
+        [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
             Click_Settings_Ribbon_Button();
@@ -1155,7 +1217,9 @@ namespace Warewolf.UITests
             Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
 
+        [Given(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
         [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
+        [Then(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
         public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
         {
             CreateRemoteServerSource(ServerSourceName, ServerAddress, false);
@@ -1322,24 +1386,30 @@ namespace Warewolf.UITests
             Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
         }
 
+        [Given("I Drag Dice Roll Example Onto DesignSurface")]
         [When("I Drag Dice Roll Example Onto DesignSurface")]
+        [Then("I Drag Dice Roll Example Onto DesignSurface")]
         public void Drag_Dice_Roll_Example_Onto_DesignSurface()
         {
             Filter_Explorer("Dice Roll");
             Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
         }
 
+        [Given(@"I Select Show Dependencies In Explorer Context Menu for service ""(.*)""")]
         [When(@"I Select Show Dependencies In Explorer Context Menu for service ""(.*)""")]
+        [Then(@"I Select Show Dependencies In Explorer Context Menu for service ""(.*)""")]
         public void Select_Show_Dependencies_In_Explorer_Context_Menu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowDependencies);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
         }
 
+        [Given(@"I Click DB Source Wizard Test Connection Button")]
         [When(@"I Click DB Source Wizard Test Connection Button")]
+        [Then(@"I Click DB Source Wizard Test Connection Button")]
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
             var point = new Point();
@@ -1350,6 +1420,7 @@ namespace Warewolf.UITests
         }
 
         [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [When(@"The DB Source Wizard Test Succeeded Image Is Visible")]
         [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
         public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
         {
@@ -1357,7 +1428,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
         }
 
+        [Given(@"I Deploy ""(.*)"" From Deploy View")]
         [When(@"I Deploy ""(.*)"" From Deploy View")]
+        [Then(@"I Deploy ""(.*)"" From Deploy View")]
         public void Deploy_Service_From_Deploy_View(string ServiceName)
         {
             TryClickMessageBoxOK();
@@ -1445,7 +1518,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
         }
 
+        [Given(@"I Check Resource Contribute")]
         [When(@"I Check Resource Contribute")]
+        [Then(@"I Check Resource Contribute")]
         public void Check_Resource_Contribute()
         {
             FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
@@ -1459,7 +1534,9 @@ namespace Warewolf.UITests
             Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable, -1);
         }
 
+        [Given(@"I UnCheck Public View")]
         [When(@"I UnCheck Public View")]
+        [Then(@"I UnCheck Public View")]
         public void UnCheck_Public_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
@@ -1469,7 +1546,9 @@ namespace Warewolf.UITests
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
 
+        [Given(@"I Update Test Name To ""(.*)""")]
         [When(@"I Update Test Name To ""(.*)""")]
+        [Then(@"I Update Test Name To ""(.*)""")]
         public void Update_Test_Name(string overrideName = null)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestNameTextbox, new Point(59, 16));
@@ -1778,6 +1857,7 @@ namespace Warewolf.UITests
             return value;
         }
 
+        [Given("I Click Save Ribbon Button Without Expecting a Dialog")]
         [When("I Click Save Ribbon Button Without Expecting a Dialog")]
         [Given("I Click Save Ribbon Button Without Expecting a Dialog")]
         [Then("I Click Save Ribbon Button Without Expecting a Dialog")]
@@ -1787,6 +1867,7 @@ namespace Warewolf.UITests
         }
 
         [Given(@"I Click Save Ribbon Button With No Save Dialog")]
+        [When(@"I Click Save Ribbon Button With No Save Dialog")]
         [Then(@"I Click Save Ribbon Button With No Save Dialog")]
         public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
         {
@@ -1861,7 +1942,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
         }
 
+        [Given(@"I Click DotNet DLL Large View Generate Outputs")]
         [When(@"I Click DotNet DLL Large View Generate Outputs")]
+        [Then(@"I Click DotNet DLL Large View Generate Outputs")]
         public void Click_DotNet_DLL_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -1869,7 +1952,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton.Exists);
         }
 
+        [Given(@"I Click New Web Source Test Connection Button")]
         [When(@"I Click New Web Source Test Connection Button")]
+        [Then(@"I Click New Web Source Test Connection Button")]
         public void Click_New_Web_Source_Test_Connection_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
@@ -1907,7 +1992,9 @@ namespace Warewolf.UITests
             WaitForSpinner(ServicePickerDialog.Explorer.ExplorerTree.Localhost.Checkbox.Spinner);
         }
 
+        [Given("I Click Subworkflow Done Button")]
         [When("I Click Subworkflow Done Button")]
+        [Then("I Click Subworkflow Done Button")]
         public void Click_Subworkflow_Done_Button()
         {
             Assert.IsTrue(
@@ -1957,7 +2044,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(9, 8));
         }
 
+        [Given(@"I Refresh Explorer")]
         [When(@"I Refresh Explorer")]
+        [Then(@"I Refresh Explorer")]
         public void Click_Explorer_Refresh_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
@@ -2015,7 +2104,9 @@ namespace Warewolf.UITests
             Click_Close_Tests_Tab();
         }
 
+        [Given(@"I Select SharepointTestServer")]
         [When(@"I Select SharepointTestServer")]
+        [Then(@"I Select SharepointTestServer")]
         public void Select_SharepointTestServer_FromSharepointDelete_tool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.Server, new Point(98, 12));
@@ -2023,28 +2114,36 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.EditSourceButton.Enabled, "edit sharepoint source is disabled after selecting a source");
         }
 
+        [Given(@"I Select AcceptanceTestin delete")]
         [When(@"I Select AcceptanceTestin delete")]
+        [Then(@"I Select AcceptanceTestin delete")]
         public void Select_AcceptanceTestin_From_DeleteTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.MethodList, new Point(119, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.MethodList.UIAcceptanceTesting_CrListItem, new Point(114, 13));
         }
 
+        [Given(@"I Select AppData From MethodList")]
         [When(@"I Select AppData From MethodList")]
+        [Then(@"I Select AppData From MethodList")]
         public void Select_AppData_From_MethodList_From_DeleteTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.MethodList, new Point(174, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.MethodList.UIAppdataListItem, new Point(43, 15));
         }
 
+        [Given(@"I Select AppData From MethodList")]
         [When(@"I Select AppData From MethodList")]
+        [Then(@"I Select AppData From MethodList")]
         public void Select_AppData_From_MethodList_From_UpdateTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.MethodList, new Point(174, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.MethodList.UIAppdataListItem, new Point(43, 15));
         }
 
+        [Given(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
         [When(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
+        [Then(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
         public void Click_View_Tests_In_Explorer_Context_Menu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
@@ -2052,18 +2151,23 @@ namespace Warewolf.UITests
         }
 
         [Given(@"That The First Test ""(.*)"" Unsaved Star")]
+        [When(@"The First Test ""(.*)"" Unsaved Star")]
         [Then(@"The First Test ""(.*)"" Unsaved Star")]
         public void Assert_Workflow_Testing_Tab_First_Test_Has_Unsaved_Star(string HasHasNot)
         {
             Assert_Workflow_Testing_Tab_First_Test_Has_Unsaved_Star(HasHasNot == "Has");
         }
 
+        [Given(@"The Added Test ""(.*)"" Unsaved Star")]
+        [When(@"The Added Test ""(.*)"" Unsaved Star")]
         [Then(@"The Added Test ""(.*)"" Unsaved Star")]
         public void ThenTheAddedTestUnsavedStar(string p0)
         {
             Assert_Workflow_Testing_Tab_Added_Test_Has_Unsaved_Star(p0 == "Has");
         }
 
+        [Given(@"I delete Second Added Test")]
+        [When(@"I delete Second Added Test")]
         [Then(@"I delete Second Added Test")]
         public void ThenIDeleteSecondAddedTest()
         {
@@ -2072,6 +2176,8 @@ namespace Warewolf.UITests
             Click_MessageBox_Yes();
         }
 
+        [Given(@"I delete Added Test")]
+        [When(@"I delete Added Test")]
         [Then(@"I delete Added Test")]
         public void ThenIDeleteAddedTest()
         {
@@ -2080,6 +2186,7 @@ namespace Warewolf.UITests
         }
 
         [Given(@"That The Added Test ""(.*)"" Unsaved Star")]
+        [When(@"That The Added Test ""(.*)"" Unsaved Star")]
         [Then(@"The Added ""(.*)"" Unsaved Star")]
         public void Assert_Workflow_Testing_Tab_Added_Test_Has_Unsaved_Star(string HasHasNot)
         {
@@ -2098,6 +2205,7 @@ namespace Warewolf.UITests
         }
 
         [Given(@"That The Second Test ""(.*)"" Unsaved Star")]
+        [When(@"The Second Test ""(.*)"" Unsaved Star")]
         [Then(@"The Second Test ""(.*)"" Unsaved Star")]
         public void Assert_Workflow_Testing_Tab_Second_Test_Has_Unsaved_Star(string HasHasNot)
         {
@@ -2105,6 +2213,7 @@ namespace Warewolf.UITests
             Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestNameDisplay.DisplayText.Contains("*"), "Second test title does not contain unsaved star.");
         }
         [Given(@"That The Second Added Test ""(.*)"" Unsaved Star")]
+        [When(@"The Second Added Test ""(.*)"" Unsaved Star")]
         [Then(@"The Second Added Test ""(.*)"" Unsaved Star")]
         public void Assert_Workflow_Testing_Tab_Second_Added_Test_Has_Unsaved_Star(string HasHasNot)
         {
@@ -2112,7 +2221,9 @@ namespace Warewolf.UITests
             Assert.AreEqual((HasHasNot == "Has"), MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestNameDisplay.DisplayText.Contains("*"), "Second Added test title does not contain unsaved star.");
         }
 
+        [Given(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
         [When(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
+        [Then(@"I Click Duplicate From Explorer Context Menu for Service ""(.*)""")]
         public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
@@ -2120,13 +2231,16 @@ namespace Warewolf.UITests
             Duplicate_Explorer_Localhost_First_Item_With_Context_Menu();
         }
 
+        [Given(@"I Click The Create a New Test Button")]
         [When(@"I Click The Create a New Test Button")]
+        [Then(@"I Click The Create a New Test Button")]
         public void Click_Workflow_Testing_Tab_Create_New_Test_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
         }
 
         [Given("The First Test Exists")]
+        [When("The First Test Exists")]
         [Then("The First Test Exists")]
         public void Assert_Workflow_Testing_Tab_First_Test_Exists()
         {
@@ -2134,6 +2248,7 @@ namespace Warewolf.UITests
         }
 
         [Given("The Added Test Exists")]
+        [When("The Added Test Exists")]
         [Then("The Added Test Exists")]
         public void Assert_Workflow_Testing_Tab_Added_Test_Exists()
         {
@@ -2141,6 +2256,7 @@ namespace Warewolf.UITests
         }
 
         [Given("The Second Test Exists")]
+        [When("The Second Test Exists")]
         [Then("The Second Test Exists")]
         public void Assert_Workflow_Testing_Tab_Second_Test_Exists()
         {
@@ -2148,25 +2264,32 @@ namespace Warewolf.UITests
         }
 
         [Given("The Second Added Test Exists")]
+        [When("The Second Added Test Exists")]
         [Then("The Second Added Test Exists")]
         public void Assert_Workflow_Testing_Tab_Second_Added_Test_Exists()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.Exists, "No second Added test on workflow testing tab.");
         }
 
+        [Given("I Toggle First Test Enabled")]
         [When("I Toggle First Test Enabled")]
+        [Then("I Toggle First Test Enabled")]
         public void Toggle_Workflow_Testing_Tab_First_Test_Enabled()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
         }
 
+        [Given("I Toggle First Added Test Enabled")]
+        [Then("I Toggle First Added Test Enabled")]
         [When("I Toggle First Added Test Enabled")]
         public void Toggle_Workflow_Testing_Tab_First_Added_Test_Enabled()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
         }
 
+        [Given("I Click Test (.*) Run Button")]
         [When("I Click Test (.*) Run Button")]
+        [Then("I Click Test (.*) Run Button")]
         public void Click_Test_Run_Button(int index)
         {
             switch (index)
@@ -2186,13 +2309,17 @@ namespace Warewolf.UITests
             }
         }
 
+        [Given("I Click First Test Delete Button")]
         [When("I Click First Test Delete Button")]
+        [Then("I Click First Test Delete Button")]
         public void Click_First_Test_Delete_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.DeleteButton, new Point(10, 10));
         }
 
+        [Given(@"I Click First Test Run Button")]
         [When(@"I Click First Test Run Button")]
+        [Then(@"I Click First Test Run Button")]
         public void Click_First_Test_Run_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.RunButton, new Point(10, 10));
@@ -2226,20 +2353,24 @@ namespace Warewolf.UITests
             Mouse.Click(refreshButton);
         }
 
+        [Given(@"I wait for output spinner")]
         [When(@"I wait for output spinner")]
+        [Then(@"I wait for output spinner")]
         public void WhenIWaitForOutputSpinner()
         {
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
+        [Given("I Click Run All Button")]
         [When("I Click Run All Button")]
+        [Then("I Click Run All Button")]
         public void Click_Workflow_Testing_Tab_Run_All_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton, new Point(35, 10));
         }
 
-        [When(@"I Open Explorer First Item Context Menu")]
         [Given(@"I Open Explorer First Item Context Menu")]
+        [When(@"I Open Explorer First Item Context Menu")]
         [Then(@"I Open Explorer First Item Context Menu")]
         public void WhenIOpenExplorerFirstItemContextMenu()
         {
@@ -2248,6 +2379,7 @@ namespace Warewolf.UITests
 
 
         [Given(@"That The First Test ""(.*)"" Passing")]
+        [When(@"The First Test ""(.*)"" Passing")]
         [Then(@"The First Test ""(.*)"" Passing")]
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(string IsIsNot)
         {
@@ -2260,6 +2392,7 @@ namespace Warewolf.UITests
         }
 
         [Given(@"That The First Test ""(.*)"" Invalid")]
+        [When(@"The First Test ""(.*)"" Invalid")]
         [Then(@"The First Test ""(.*)"" Invalid")]
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Invalid(string IsIsNot)
         {
@@ -2321,7 +2454,9 @@ namespace Warewolf.UITests
             Assert.IsFalse(ControlExistsNow(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3), "Assign tool row 3 still exists after deleting row 1 on unpinned tab.");
         }
 
+        [Given(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        [Then(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
         public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText)
         {
             Enter_Variable_And_Value_Into_Assign(VariableText, ValueText, 1);
@@ -2343,7 +2478,9 @@ namespace Warewolf.UITests
         }
 
 
+        [Given(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
+        [Then(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1 on unpinned tab")]
         public void Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab(string VariableText, string ValueText, int RowNumber)
         {
             switch (RowNumber)
@@ -2684,7 +2821,9 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom);
         }
 
+        [Given(@"I Select New Sharepoint Server Source")]
         [When(@"I Select New Sharepoint Server Source")]
+        [Then(@"I Select New Sharepoint Server Source")]
         public void WhenISelectNewSharepointServerSource()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server);
@@ -2692,13 +2831,17 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
         }
 
+        [Given(@"I Click Close Sharepoint Server Source Tab")]
         [When(@"I Click Close Sharepoint Server Source Tab")]
+        [Then(@"I Click Close Sharepoint Server Source Tab")]
         public void WhenIClickCloseSharepointServerSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton);
         }
 
+        [Given(@"I Click UserButton OnSharepointSource")]
         [When(@"I Click UserButton OnSharepointSource")]
+        [Then(@"I Click UserButton OnSharepointSource")]
         public void WhenIClickUserButtonOnSharepointSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
@@ -2706,44 +2849,58 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
         }
 
+        [Given(@"I Click UserButton On Database Source")]
         [When(@"I Click UserButton On Database Source")]
+        [Then(@"I Click UserButton On Database Source")]
         public void WhenIClickUserButtonOnDatabaseSource()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton);
         }
 
+        [Given(@"I Enter RunAsUser Username And Password on Database source")]
         [When(@"I Enter RunAsUser Username And Password on Database source")]
+        [Then(@"I Enter RunAsUser Username And Password on Database source")]
         public void WhenIEnterRunAsUserUsernameAndPasswordOnDatabaseSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
         }
 
+        [Given(@"I Change Selected Database ToMySql DataBase")]
         [When(@"I Change Selected Database ToMySql DataBase")]
+        [Then(@"I Change Selected Database ToMySql DataBase")]
         public void WhenIChangeSelectedDatabaseToMySqlDataBase()
         {
             Change_Selected_Database_ToMySql_DataBase();
         }
 
+        [Given(@"I Change Selected Database ToPostgreSql DataBase")]
         [When(@"I Change Selected Database ToPostgreSql DataBase")]
+        [Then(@"I Change Selected Database ToPostgreSql DataBase")]
         public void WhenIChangeSelectedDatabaseToPostgreSqlDataBase()
         {
             Change_Selected_Database_ToPostgreSql_DataBase();
         }
 
+        [Given(@"I Change Selected Database ToOracle DataBase")]
         [When(@"I Change Selected Database ToOracle DataBase")]
+        [Then(@"I Change Selected Database ToOracle DataBase")]
         public void WhenIChangeSelectedDatabaseToOracleDataBase()
         {
             Change_Selected_Database_ToOracle_DataBase();
         }
 
+        [Given(@"I Change Selected Database ToODBC DataBase")]
         [When(@"I Change Selected Database ToODBC DataBase")]
+        [Then(@"I Change Selected Database ToODBC DataBase")]
         public void WhenIChangeSelectedDatabaseToODBCDataBase()
         {
             Change_Selected_Database_ToODBC_DataBase();
         }
 
+        [Given(@"I Click DotNet DLL Large View Test Cancel Done Button")]
         [When(@"I Click DotNet DLL Large View Test Cancel Done Button")]
+        [Then(@"I Click DotNet DLL Large View Test Cancel Done Button")]
         public void WhenIClickDotNetDLLLargeViewTestCancelDoneButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CancelButton);
@@ -2805,8 +2962,9 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
         }
 
-        [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
+        [Given("Dice Is Selected InSettings Tab Permissions Row 1")]
         [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row1")]
+        [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
         public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
         {
             Assert.AreEqual("Dice1", FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
@@ -2863,78 +3021,102 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
         }
 
+        [Given(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
+        [Then(@"I Assign Value To Variable With Assign Tool Small View Row 1")]
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Text = "[[SomeVariable]]";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "50";
         }
 
+        [Given(@"I Assign Value To Variable With Assign Tool Small View Row 1 On Unpinned tab")]
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 1 On Unpinned tab")]
+        [Then(@"I Assign Value To Variable With Assign Tool Small View Row 1 On Unpinned tab")]
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1_On_Unpinned_tab()
         {
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox.Text = "[[SomeVariable]]";
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "50";
         }
 
+        [Given(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
+        [Then(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Text = "[[SomeOtherVariable]]";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Text = "100";
         }
 
+        [Given(@"I Assign Value To Variable With Assign Tool Small View Row 2 On Unpinned tab")]
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 2 On Unpinned tab")]
+        [Then(@"I Assign Value To Variable With Assign Tool Small View Row 2 On Unpinned tab")]
         public void Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2_On_Unpinned_tab()
         {
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Text = "[[SomeOtherVariable]]";
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Text = "100";
         }
 
+        [Given(@"I Check Public Administrator")]
         [When(@"I Check Public Administrator")]
+        [Then(@"I Check Public Administrator")]
         public void Check_Public_Administrator()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = true;
         }
 
+        [Given(@"I Check Public Deploy To")]
         [When(@"I Check Public Deploy To")]
+        [Then(@"I Check Public Deploy To")]
         public void Check_Public_Deploy_To()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = true;
         }
 
+        [Given(@"I Check Public Deploy From")]
         [When(@"I Check Public Deploy From")]
+        [Then(@"I Check Public Deploy From")]
         public void Check_Public_Deploy_From()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = true;
         }
 
+        [Given(@"I Check Public View")]
         [When(@"I Check Public View")]
+        [Then(@"I Check Public View")]
         public void Check_Public_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
         }
 
+        [Given(@"I Check Public Execute")]
         [When(@"I Check Public Execute")]
+        [Then(@"I Check Public Execute")]
         public void Check_Public_Execute()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = true;
         }
 
+        [Given(@"I Check Public Contribute")]
         [When(@"I Check Public Contribute")]
+        [Then(@"I Check Public Contribute")]
         public void Check_Public_Contribute()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
         }
 
+        [Given(@"I Click AddNew Web Source From PostWeb tool")]
         [When(@"I Click AddNew Web Source From PostWeb tool")]
+        [Then(@"I Click AddNew Web Source From PostWeb tool")]
         public void Click_AddNew_Web_Source_From_PostWeb_tool()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton.Exists, "NewButton does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton, new Point(30, 4));
         }
 
+        [Given(@"I Click AddNew Web Source From tool")]
         [When(@"I Click AddNew Web Source From tool")]
+        [Then(@"I Click AddNew Web Source From tool")]
         public void Click_AddNew_Web_Source_From_tool()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.NewSourceButton.Exists, "NewButton does not exist");
@@ -2942,14 +3124,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New DB source wizard tab does not exist after clicking the new db source button on Web GET tool.");
         }
 
+        [Given(@"I Click Assign Tool CollapseAll")]
         [When(@"I Click Assign Tool CollapseAll")]
+        [Then(@"I Click Assign Tool CollapseAll")]
         public void Click_Assign_Tool_CollapseAll()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Exists, "Expand all button does not exist");
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.CollapseAllToggleButton.Pressed = true;
         }
 
+        [Given(@"I Click Assign Tool ExpandAll")]
         [When(@"I Click Assign Tool ExpandAll")]
+        [Then(@"I Click Assign Tool ExpandAll")]
         public void Click_Assign_Tool_ExpandAll()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ExpandAllToggleButton.Exists, "Expand all button does not exist");
@@ -2957,14 +3143,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
         }
 
+        [Given(@"I Click Assign Tool Large View Done Button")]
         [When(@"I Click Assign Tool Large View Done Button")]
+        [Then(@"I Click Assign Tool Large View Done Button")]
         public void Click_Assign_Tool_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton, new Point(35, 6));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done button on large view.");
         }
 
+        [Given(@"I Click Assign Tool Large View Done Button On Unpinned Tab")]
         [When(@"I Click Assign Tool Large View Done Button On Unpinned Tab")]
+        [Then(@"I Click Assign Tool Large View Done Button On Unpinned Tab")]
         public void Click_Assign_Tool_Large_View_Done_Button_On_Unpinned_Tab()
         {
             Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton, new Point(35, 6));
@@ -2972,7 +3162,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist in assign tool small view after clicking done button on large view on an unpinned tab.");
         }
 
+        [Given(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName")]
         [When(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName")]
+        [Then(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName")]
         public void Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton, new Point(35, 6));
@@ -2980,7 +3172,9 @@ namespace Warewolf.UITests
             Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Variable list scalar row 1 textbox text is not blank with invalid variable.");
         }
 
+        [Given(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName On Unpinned Tab")]
         [When(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName On Unpinned Tab")]
+        [Then(@"I Click Assign Tool Large View Done Button With Row1 Variable Textbox As SomeInvalidVariableName On Unpinned Tab")]
         public void Click_Assign_Tool_Large_View_Done_Button_With_Row1_Variable_Textbox_As_SomeInvalidVariableName_On_Unpinned_Tab()
         {
             Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton, new Point(35, 6));
@@ -2988,131 +3182,172 @@ namespace Warewolf.UITests
             Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Variable list scalar row 1 textbox text is not blank with invalid variable.");
         }
 
+        [Given(@"I Click Assign Tool QviLarge Preview")]
         [When(@"I Click Assign Tool QviLarge Preview")]
+        [Then(@"I Click Assign Tool QviLarge Preview")]
         public void Click_Assign_Tool_QviLarge_Preview()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PreviewCustom.PreviewGroup.PreviewButton, new Point(30, 4));
         }
 
+        [Given(@"I click AssignObject Done")]
         [When(@"I click AssignObject Done")]
+        [Then(@"I click AssignObject Done")]
         public void click_AssignObject_Done()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.DoneButton, new Point(18, 10));
         }
 
+        [Given(@"I Click Base Convert Large View Done Button")]
         [When(@"I Click Base Convert Large View Done Button")]
+        [Then(@"I Click Base Convert Large View Done Button")]
         public void Click_Base_Convert_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton, new Point(36, 11));
             Assert.AreEqual("SomeData", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
         }
 
+        [Given(@"I Click Calculate Large View Done Button")]
         [When(@"I Click Calculate Large View Done Button")]
+        [Then(@"I Click Calculate Large View Done Button")]
         public void Click_Calculate_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton, new Point(45, 8));
             Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.Listbox.FunctionTextbox.Text, "Calculate small view function textbox text does not equal SomeVariable.");
         }
 
+        [Given(@"I Click Cancel DebugInput Window")]
         [When(@"I Click Cancel DebugInput Window")]
+        [Then(@"I Click Cancel DebugInput Window")]
         public void Click_Cancel_DebugInput_Window()
         {
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Enabled, "CancelButton is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.CancelButton, new Point(26, 13));
         }
 
+        [Given(@"I Click Clear Toolbox Filter Clear Button")]
         [When(@"I Click Clear Toolbox Filter Clear Button")]
+        [Then(@"I Click Clear Toolbox Filter Clear Button")]
         public void Click_Clear_Toolbox_Filter_Clear_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton, new Point(8, 7));
         }
 
+        [Given(@"I Click Close Critical Error Dialog")]
         [When(@"I Click Close Critical Error Dialog")]
+        [Then(@"I Click Close Critical Error Dialog")]
         public void Click_Close_Critical_Error_Dialog()
         {
             Mouse.Click(CriticalErrorWindow.CloseButton, new Point(9, 11));
         }
 
+        [Given(@"I Click Close DB Source Wizard Tab Button")]
         [When(@"I Click Close DB Source Wizard Tab Button")]
+        [Then(@"I Click Close DB Source Wizard Tab Button")]
         public void Click_Close_DB_Source_Wizard_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.CloseButton, new Point(13, 4));
         }
 
+        [Given(@"I Click Close Dependecy Tab")]
         [When(@"I Click Close Dependecy Tab")]
+        [Then(@"I Click Close Dependecy Tab")]
         public void Click_Close_Dependecy_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton, new Point(13, 10));
         }
 
+        [Given(@"I Click Close Deploy Tab Button")]
         [When(@"I Click Close Deploy Tab Button")]
+        [Then(@"I Click Close Deploy Tab Button")]
         public void Click_Close_Deploy_Tab_Button()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "Settings close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton, new Point(16, 6));
         }
 
+        [Given(@"I Click Close DotNetDll Tab")]
         [When(@"I Click Close DotNetDll Tab")]
+        [Then(@"I Click Close DotNetDll Tab")]
         public void Click_Close_DotNetDll_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
         }
 
+        [Given(@"I Click Close EmailSource Tab")]
         [When(@"I Click Close EmailSource Tab")]
+        [Then(@"I Click Close EmailSource Tab")]
         public void Click_Close_EmailSource_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.EmailSourceTabCloseButton, new Point(13, 10));
         }
 
+        [Given(@"I Click Close Error Dialog")]
         [When(@"I Click Close Error Dialog")]
+        [Then(@"I Click Close Error Dialog")]
         public void Click_Close_Error_Dialog()
         {
             Mouse.Click(ErrorWindow.CloseButton, new Point(8, 9));
         }
 
+        [Given(@"I Click Close FullScreen")]
         [When(@"I Click Close FullScreen")]
+        [Then(@"I Click Close FullScreen")]
         public void Click_Close_FullScreen()
         {
             Mouse.Click(MainStudioWindow.ExitFullScreenF11Text.ExitFullScreenF11Hyperlink, new Point(64, 5));
         }
 
+        [Given(@"I Click Close Plugin Source Wizard Tab Button")]
         [When(@"I Click Close Plugin Source Wizard Tab Button")]
+        [Then(@"I Click Close Plugin Source Wizard Tab Button")]
         public void Click_Close_Plugin_Source_Wizard_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
         }
 
+        [Given(@"I Click Close Server Source Wizard Tab Button")]
         [When(@"I Click Close Server Source Wizard Tab Button")]
+        [Then(@"I Click Close Server Source Wizard Tab Button")]
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.TabCloseButton, new Point(5, 5));
         }
 
+        [Given(@"I Click Close Settings Tab Button")]
         [When(@"I Click Close Settings Tab Button")]
+        [Then(@"I Click Close Settings Tab Button")]
         public void Click_Close_Settings_Tab_Button()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton.Exists, "Settings close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton, new Point(16, 6));
         }
 
+        [Given(@"I Click Close SharepointSource Tab Button")]
         [When(@"I Click Close SharepointSource Tab Button")]
+        [Then(@"I Click Close SharepointSource Tab Button")]
         public void Click_Close_SharepointSource_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointSourceTabCloseButton, new Point(13, 7));
         }
 
+        [Given(@"I Click Close Studio TopRibbon Button")]
         [When(@"I Click Close Studio TopRibbon Button")]
+        [Then(@"I Click Close Studio TopRibbon Button")]
         public void Click_Close_Studio_TopRibbon_Button()
         {
             Mouse.Click(MainStudioWindow.CloseStudioButton, new Point(23, 1));
         }
 
+        [Given(@"I Click Close Tab Context Menu Button")]
         [When(@"I Click Close Tab Context Menu Button")]
+        [Then(@"I Click Close Tab Context Menu Button")]
         public void Click_Close_Tab_Context_Menu_Button()
         {
             Mouse.Click(MainStudioWindow.TabContextMenu.Close, new Point(27, 13));
         }
 
+        [Given(@"I Click Close Tests Tab")]
         [When(@"I Click Close Tests Tab")]
         [Then(@"I Click Close Tests Tab")]
         [Given(@"I Click Close Tests Tab")]
@@ -3121,33 +3356,43 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton, new Point(11, 5));
         }
 
+        [Given(@"I Click Close Web Source Wizard Tab Button")]
         [When(@"I Click Close Web Source Wizard Tab Button")]
+        [Then(@"I Click Close Web Source Wizard Tab Button")]
         public void Click_Close_Web_Source_Wizard_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.CloseButton, new Point(9, 6));
         }
 
+        [Given(@"I Click Close Workflow Tab Button")]
         [When(@"I Click Close Workflow Tab Button")]
+        [Then(@"I Click Close Workflow Tab Button")]
         public void Click_Close_Workflow_Tab_Button()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton.Exists, "Close tab button does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton, new Point(5, 5));
         }
 
+        [Given(@"I Click ConfigureSetting From Menu")]
         [When(@"I Click ConfigureSetting From Menu")]
+        [Then(@"I Click ConfigureSetting From Menu")]
         public void Click_ConfigureSetting_From_Menu()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after the Configure/Setting Menu button is clicked");
         }
 
+        [Given(@"I Click Connect Control InExplorer")]
         [When(@"I Click Connect Control InExplorer")]
+        [Then(@"I Click Connect Control InExplorer")]
         public void Click_Connect_Control_InExplorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
         }
 
+        [Given(@"I Click Debug Output Assign Cell")]
         [When(@"I Click Debug Output Assign Cell")]
+        [Then(@"I Click Debug Output Assign Cell")]
         public void Click_Debug_Output_Assign_Cell()
         {
             Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Wrong variable name in debug output");
@@ -3156,7 +3401,18 @@ namespace Warewolf.UITests
                             "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus, "Multiassign small view is not selected.");
         }
 
+        [Given(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
+        [When(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
+        [Then(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
+        public void Click_Debug_Output_Assign_Cell_For_Unpinned_Workflow_Tab()
+        {
+            Assert.AreEqual("[[SomeVariable]]", MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Wrong variable name in debug output");
+            Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.Assign1Button, new Point(21, 9));
+        }
+
+        [Given(@"I Click Debug Output BaseConvert Cell")]
         [When(@"I Click Debug Output BaseConvert Cell")]
+        [Then(@"I Click Debug Output BaseConvert Cell")]
         public void Click_Debug_Output_BaseConvert_Cell()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.BaseConversion1Button, new Point(33, 7));
@@ -3164,7 +3420,9 @@ namespace Warewolf.UITests
                             "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.ItemStatus, "Base conversion small view is not selected.");
         }
 
+        [Given(@"I Click Debug Output Calculate Cell")]
         [When(@"I Click Debug Output Calculate Cell")]
+        [Then(@"I Click Debug Output Calculate Cell")]
         public void Click_Debug_Output_Calculate_Cell()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.CalculateButton, new Point(24, 10));
@@ -3172,39 +3430,51 @@ namespace Warewolf.UITests
                             "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.ItemStatus, "Calculate tool small view is not selected.");
         }
 
+        [Given(@"I Click Debug Output Workflow1 Name")]
         [When(@"I Click Debug Output Workflow1 Name")]
+        [Then(@"I Click Debug Output Workflow1 Name")]
         public void Click_Debug_Output_Workflow1_Name()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.Workflow1Button, new Point(24, 8));
             Assert.AreEqual("workflow1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Workflow1ciremoteText.DisplayText, "Workflow1 remote workflow tab is not open.");
         }
 
+        [Given(@"I Click DebugInput Cancel Button")]
         [When(@"I Click DebugInput Cancel Button")]
+        [Then(@"I Click DebugInput Cancel Button")]
         public void Click_DebugInput_Cancel_Button()
         {
             Mouse.Click(MainStudioWindow.DebugInputDialog.CancelButton, new Point(34, 10));
         }
 
+        [Given(@"I Click DebugInput Debug Button")]
         [When(@"I Click DebugInput Debug Button")]
+        [Then(@"I Click DebugInput Debug Button")]
         public void Click_DebugInput_Debug_Button()
         {
             Mouse.Click(MainStudioWindow.DebugInputDialog.DebugF6Button, new Point(34, 10));
         }
 
+        [Given(@"I Click DebugInput ViewInBrowser Button")]
         [When(@"I Click DebugInput ViewInBrowser Button")]
+        [Then(@"I Click DebugInput ViewInBrowser Button")]
         public void Click_DebugInput_ViewInBrowser_Button()
         {
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button.Enabled, "ViewInBrowserF7Button is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button, new Point(82, 14));
         }
 
+        [Given(@"I Click Decision Dialog Cancel Button")]
         [When(@"I Click Decision Dialog Cancel Button")]
+        [Then(@"I Click Decision Dialog Cancel Button")]
         public void Click_Decision_Dialog_Cancel_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.CancelButton, new Point(10, 14));
         }
 
+        [Given(@"I Click Decision Dialog Done Button")]
         [When(@"I Click Decision Dialog Done Button")]
+        [Then(@"I Click Decision Dialog Done Button")]
         public void Click_Decision_Dialog_Done_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(10, 14));
@@ -3212,117 +3482,161 @@ namespace Warewolf.UITests
             Assert.IsFalse(ControlExistsNow(DecisionOrSwitchDialog), "Decision large view dialog still exists after the done button is clicked.");
         }
 
+        [Given(@"I Click Delete Done Button")]
         [When(@"I Click Delete Done Button")]
+        [Then(@"I Click Delete Done Button")]
         public void Click_Delete_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click Deploy Tab Destination Server Combobox")]
         [When(@"I Click Deploy Tab Destination Server Combobox")]
+        [Then(@"I Click Deploy Tab Destination Server Combobox")]
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
 
+        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
         [When(@"I Click Deploy Tab Destination Server Connect Button")]
+        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
         }
 
+        [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         [When(@"I Click Deploy Tab Destination Server New Remote Server Item")]
+        [Then(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         public void Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
+        [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
+        {
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
+        }
 
+        [Given(@"I Click Deploy Tab Source Server Combobox")]
         [When(@"I Click Deploy Tab Source Server Combobox")]
+        [Then(@"I Click Deploy Tab Source Server Combobox")]
         public void Click_Deploy_Tab_Source_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Source server combobox.");
         }
 
+        [Given(@"I Click Deploy Tab Source Server Connect Button")]
         [When(@"I Click Deploy Tab Source Server Connect Button")]
+        [Then(@"I Click Deploy Tab Source Server Connect Button")]
         public void Click_Deploy_Tab_Source_Server_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.ConnectSourceButton, new Point(13, 8));
         }
 
+        [Given(@"I Click Deploy Tab WarewolfStore Item")]
         [When(@"I Click Deploy Tab WarewolfStore Item")]
+        [Then(@"I Click Deploy Tab WarewolfStore Item")]
         public void Click_Deploy_Tab_WarewolfStore_Item()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsWarewolfStore, new Point(214, 9));
         }
 
+        [Given(@"I Click DotNet DLL Large View Done Button")]
         [When(@"I Click DotNet DLL Large View Done Button")]
+        [Then(@"I Click DotNet DLL Large View Done Button")]
         public void Click_DotNet_DLL_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView.Exists, "DotNet DLL small view does not exist after clicking done on large view.");
         }
 
+        [Given(@"I Click DotNet DLL Large View Test Inputs Button")]
         [When(@"I Click DotNet DLL Large View Test Inputs Button")]
+        [Then(@"I Click DotNet DLL Large View Test Inputs Button")]
         public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Given(@"I Click Duplicate From Duplicate Dialog")]
         [When(@"I Click Duplicate From Duplicate Dialog")]
+        [Then(@"I Click Duplicate From Duplicate Dialog")]
         public void Click_Duplicate_From_Duplicate_Dialog()
         {
             Assert.IsTrue(SaveDialogWindow.DuplicateButton.Exists, "Duplicate button does not exist");
             Mouse.Click(SaveDialogWindow.DuplicateButton, new Point(26, 10));
             Assert.IsTrue(SaveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [Given(@"I Click EditSharepointSource Button")]
         [When(@"I Click EditSharepointSource Button")]
+        [Then(@"I Click EditSharepointSource Button")]
         public void Click_EditSharepointSource_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.EditSourceButton, new Point(98, 12));
         }
 
+        [Given(@"I Click EditSharepointSource Button From SharePointUpdate")]
         [When(@"I Click EditSharepointSource Button From SharePointUpdate")]
+        [Then(@"I Click EditSharepointSource Button From SharePointUpdate")]
         public void Click_EditSharepointSource_Button_From_SharePointUpdate()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate.SmallView.EditSourceButton, new Point(98, 12));
         }
 
+        [Given(@"I Click EditSharepointSource Button FromSharePointDelete")]
         [When(@"I Click EditSharepointSource Button FromSharePointDelete")]
+        [Then(@"I Click EditSharepointSource Button FromSharePointDelete")]
         public void Click_EditSharepointSource_Button_FromSharePointDelete()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.EditSourceButton, new Point(98, 12));
         }
 
+        [Given(@"I Click EditSharepointSource Button FromSharePointRead")]
         [When(@"I Click EditSharepointSource Button FromSharePointRead")]
+        [Then(@"I Click EditSharepointSource Button FromSharePointRead")]
         public void Click_EditSharepointSource_Button_FromSharePointRead()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem.SmallView.EditSourceButton, new Point(98, 12));
         }
 
+        [Given(@"I Click EmailSource TestConnection Button")]
         [When(@"I Click EmailSource TestConnection Button")]
+        [Then(@"I Click EmailSource TestConnection Button")]
         public void Click_EmailSource_TestConnection_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.SendTestModelsCustom.Spinner);
         }
 
+        [Given(@"I Click EndThisWF On XPath LargeView")]
         [When(@"I Click EndThisWF On XPath LargeView")]
+        [Then(@"I Click EndThisWF On XPath LargeView")]
         public void Click_EndThisWF_On_XPath_LargeView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox.Checked = true;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.EndthisworkflowCheckBox, "{Tab}", ModifierKeys.None);
         }
 
+        [Given(@"I Click ExpandAndStepIn NestedWorkflow")]
         [When(@"I Click ExpandAndStepIn NestedWorkflow")]
+        [Then(@"I Click ExpandAndStepIn NestedWorkflow")]
         public void Click_ExpandAndStepIn_NestedWorkflow()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.Expanded = true;
         }
 
+        [Given(@"I Click Explorer Filter Clear Button")]
         [When(@"I Click Explorer Filter Clear Button")]
+        [Then(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
@@ -3330,78 +3644,102 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Click Explorer Localhost First Item")]
+        [Given(@"I Click Explorer Localhost First Item")]
+        [Then(@"I Click Explorer Localhost First Item")]
         public void Click_Explorer_Localhost_First_Item()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+        [Given(@"I Click Explorer Remote Server Dropdown List")]
         [When(@"I Click Explorer Remote Server Dropdown List")]
+        [Then(@"I Click Explorer Remote Server Dropdown List")]
         public void Click_Explorer_Remote_Server_Dropdown_List()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
 
+        [Given(@"I Click Explorer Connect Remote Server Button")]
         [When(@"I Click Explorer Connect Remote Server Button")]
+        [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
+        [Given(@"I Click First Recordset Input Checkbox")]
         [When(@"I Click First Recordset Input Checkbox")]
+        [Then(@"I Click First Recordset Input Checkbox")]
         public void Click_First_Recordset_Input_Checkbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
         }
 
+        [Given(@"I Click FormatNumber Done Button")]
         [When(@"I Click FormatNumber Done Button")]
+        [Then(@"I Click FormatNumber Done Button")]
         public void Click_FormatNumber_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.DoneButton, new Point(36, 11));
         }
 
+        [Given(@"I Click FullScreen TopRibbon Button")]
         [When(@"I Click FullScreen TopRibbon Button")]
+        [Then(@"I Click FullScreen TopRibbon Button")]
         public void Click_FullScreen_TopRibbon_Button()
         {
             Mouse.Click(MainStudioWindow.MaximizeRestoreStudioButton, new Point(12, 9));
         }
 
+        [Given(@"I Click GET Web Large View Done Button")]
         [When(@"I Click GET Web Large View Done Button")]
+        [Then(@"I Click GET Web Large View Done Button")]
         public void Click_GET_Web_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView.Exists, "Web GET small view does not exist after clicking large view done button.");
         }
 
+        [Given(@"I Click POST Web Large View Done Button")]
         [When(@"I Click POST Web Large View Done Button")]
+        [Then(@"I Click POST Web Large View Done Button")]
         public void Click_POST_Web_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.SmallView.Exists, "Web POST small view does not exist after clicking large view done button.");
         }
 
+        [Given(@"I Click DELETE Web Large View Done Button")]
         [When(@"I Click DELETE Web Large View Done Button")]
+        [Then(@"I Click DELETE Web Large View Done Button")]
         public void Click_DELETE_Web_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.SmallView.Exists, "Web DELETE small view does not exist after clicking large view done button.");
         }
 
+        [Given(@"I Click PUT Web Large View Done Button")]
         [When(@"I Click PUT Web Large View Done Button")]
+        [Then(@"I Click PUT Web Large View Done Button")]
         public void Click_PUT_Web_Large_View_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.SmallView.Exists, "Web PUT small view does not exist after clicking large view done button.");
         }
 
+        [Given(@"I Click GET Web Large View Done Button With Invalid Large View")]
         [When(@"I Click GET Web Large View Done Button With Invalid Large View")]
+        [Then(@"I Click GET Web Large View Done Button With Invalid Large View")]
         public void Click_GET_Web_Large_View_Done_Button_With_Invalid_Large_View()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.DoneButton, new Point(33, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Error1.Exists, "Error not exist after clicking large view done button on invalid large view.");
         }
 
+        [Given(@"I Click GET Web Large View Generate Outputs")]
         [When(@"I Click GET Web Large View Generate Outputs")]
+        [Then(@"I Click GET Web Large View Generate Outputs")]
         public void Click_GET_Web_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -3410,7 +3748,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton.Exists, "Web GET tool large view generate inputs done button does not exist.");
         }
 
+        [Given(@"I Click POST Web Large View Generate Outputs")]
         [When(@"I Click POST Web Large View Generate Outputs")]
+        [Then(@"I Click POST Web Large View Generate Outputs")]
         public void Click_POST_Web_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -3419,7 +3759,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton.Exists, "Web POST tool large view generate inputs done button does not exist.");
         }
 
+        [Given(@"I Click PUT Web Large View Generate Outputs")]
         [When(@"I Click PUT Web Large View Generate Outputs")]
+        [Then(@"I Click PUT Web Large View Generate Outputs")]
         public void Click_PUT_Web_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -3428,7 +3770,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.DoneButton.Exists, "Web PUT tool large view generate inputs done button does not exist.");
         }
 
+        [Given(@"I Click DELETE Web Large View Generate Outputs")]
         [When(@"I Click DELETE Web Large View Generate Outputs")]
+        [Then(@"I Click DELETE Web Large View Generate Outputs")]
         public void Click_DELETE_Web_Large_View_Generate_Outputs()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton, new Point(7, 7));
@@ -3436,62 +3780,88 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton.Exists, "Web DELETE large view test inputs button does not exist after clicking generate outputs.");
         }
 
+        [Given(@"I Click GET Web Large View Test Inputs Button")]
         [When(@"I Click GET Web Large View Test Inputs Button")]
+        [Then(@"I Click GET Web Large View Test Inputs Button")]
         public void Click_GET_Web_Large_View_Test_Inputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Given(@"I Click GET Web Large View Test Inputs Done Button")]
         [When(@"I Click GET Web Large View Test Inputs Done Button")]
+        [Then(@"I Click GET Web Large View Test Inputs Done Button")]
         public void Click_GET_Web_Large_View_Test_Inputs_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click POST Web Large View Test Inputs Button")]
         [When(@"I Click POST Web Large View Test Inputs Button")]
+        [Then(@"I Click POST Web Large View Test Inputs Button")]
         public void Click_POST_Web_Large_View_Test_Inputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Given(@"I Click POST Web Large View Test Inputs Done Button")]
         [When(@"I Click POST Web Large View Test Inputs Done Button")]
+        [Then(@"I Click POST Web Large View Test Inputs Done Button")]
         public void Click_POST_Web_Large_View_Test_Inputs_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click DELETE Web Large View Test Inputs Button")]
         [When(@"I Click DELETE Web Large View Test Inputs Button")]
+        [Then(@"I Click DELETE Web Large View Test Inputs Button")]
         public void Click_DELETE_Web_Large_View_Test_Inputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Then(@"There is an error")]
+        public void TheArdonerhasAnError()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.Exists);
+        }
+
+        [Given(@"I Click DELETE Web Large View Test Inputs Done Button")]
         [When(@"I Click DELETE Web Large View Test Inputs Done Button")]
+        [Then(@"I Click DELETE Web Large View Test Inputs Done Button")]
         public void Click_DELETE_Web_Large_View_Test_Inputs_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click PUT Web Large View Test Inputs Button")]
         [When(@"I Click PUT Web Large View Test Inputs Button")]
+        [Then(@"I Click PUT Web Large View Test Inputs Button")]
         public void Click_PUT_Web_Large_View_Test_Inputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Given(@"I Click PUT Web Large View Test Inputs Done Button")]
         [When(@"I Click PUT Web Large View Test Inputs Done Button")]
+        [Then(@"I Click PUT Web Large View Test Inputs Done Button")]
         public void Click_PUT_Web_Large_View_Test_Inputs_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click HTTP Delete Web Tool New Button")]
         [When(@"I Click HTTP Delete Web Tool New Button")]
+        [Then(@"I Click HTTP Delete Web Tool New Button")]
         public void Click_HTTP_Delete_Web_Tool_New_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.NewSourceButton, new Point(13, 9));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from delete tool.");
         }
 
+        [Given(@"I Click HTTP Post Web Tool New Button")]
         [When(@"I Click HTTP Post Web Tool New Button")]
+        [Then(@"I Click HTTP Post Web Tool New Button")]
         public void Click_HTTP_Post_Web_Tool_New_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton, new Point(17, 11));
@@ -3499,36 +3869,47 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New DB source wizard tab does not exist after clicking the new db source button on Web POST tool.");
         }
 
+        [Given(@"I Click Knowledge Ribbon Button")]
         [When(@"I Click Knowledge Ribbon Button")]
+        [Then(@"I Click Knowledge Ribbon Button")]
         public void Click_Knowledge_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.KnowledgeBaseButton, new Point(4, 8));
         }
 
+        [Given(@"I Click Lock Ribbon Button")]
         [When(@"I Click Lock Ribbon Button")]
+        [Then(@"I Click Lock Ribbon Button")]
         public void Click_Lock_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.LockStudioButton, new Point(14, 5));
         }
 
+        [Given(@"I Click Maximize Restore TopRibbon Button")]
         [When(@"I Click Maximize Restore TopRibbon Button")]
+        [Then(@"I Click Maximize Restore TopRibbon Button")]
         public void Click_Maximize_Restore_TopRibbon_Button()
         {
             Mouse.Click(MainStudioWindow.MaximizeStudioButton, new Point(9, 11));
         }
 
+        [Given(@"I Click Maximize TopRibbon Button")]
         [When(@"I Click Maximize TopRibbon Button")]
+        [Then(@"I Click Maximize TopRibbon Button")]
         public void Click_Maximize_TopRibbon_Button()
         {
             Mouse.Click(MainStudioWindow.MaximizeStudioButton, new Point(14, 14));
         }
 
+        [Given(@"I Click MessageBox No")]
         [When(@"I Click MessageBox No")]
+        [Then(@"I Click MessageBox No")]
         public void Click_MessageBox_No()
         {
             Mouse.Click(MessageBoxWindow.NoButton, new Point(32, 5));
         }
 
+        [Given(@"I Click MessageBox OK")]
         [When(@"I Click MessageBox OK")]
         [Then(@"I Click MessageBox OK")]
         [Given(@"I Click MessageBox OK")]
@@ -3537,38 +3918,50 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
+        [Given(@"I Click MessageBox Yes")]
         [When(@"I Click MessageBox Yes")]
+        [Then(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
             Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));
             Assert.IsFalse(ControlExistsNow(MessageBoxWindow), "Message box does exist");
         }
 
+        [Given(@"I Click Minimize TopRibbon Button")]
         [When(@"I Click Minimize TopRibbon Button")]
+        [Then(@"I Click Minimize TopRibbon Button")]
         public void Click_Minimize_TopRibbon_Button()
         {
             Mouse.Click(MainStudioWindow.MinimizeStudioButton, new Point(6, 14));
         }
 
+        [Given(@"I Click Nested Workflow Name")]
         [When(@"I Click Nested Workflow Name")]
+        [Then(@"I Click Nested Workflow Name")]
         public void Click_Nested_Workflow_Name()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton, new Point(37, 10));
         }
 
+        [Given(@"I Click New Database Source Ribbon Button")]
         [When(@"I Click New Database Source Ribbon Button")]
+        [Then(@"I Click New Database Source Ribbon Button")]
         public void Click_New_Database_Source_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DatabaseSourceButton, new Point(16, 15));
         }
 
+        [Given(@"I Click New Workflow Tab")]
         [When(@"I Click New Workflow Tab")]
+        [Then(@"I Click New Workflow Tab")]
         public void Click_New_Workflow_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab, new Point(63, 18));
         }
 
+        [Given(@"I Click NewPluginSource Ribbon Button")]
         [When(@"I Click NewPluginSource Ribbon Button")]
+        [Then(@"I Click NewPluginSource Ribbon Button")]
         public void Click_NewPluginSource_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.PluginSourceButton, new Point(22, 13));
@@ -3578,124 +3971,164 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.RefreshButton.Spinner);
         }
 
+        [Given(@"I Click NewSource Button FromODBC Tool")]
         [When(@"I Click NewSource Button FromODBC Tool")]
+        [Then(@"I Click NewSource Button FromODBC Tool")]
         public void Click_NewSource_Button_FromODBC_Tool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.NewSourceButton, new Point(30, 4));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "DBSourceWizardTab did not open");
         }
 
+        [Given(@"I Click NewSource Button FromOracle Tool")]
         [When(@"I Click NewSource Button FromOracle Tool")]
+        [Then(@"I Click NewSource Button FromOracle Tool")]
         public void Click_NewSource_Button_FromOracle_Tool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeView.NewSourceButton, new Point(30, 4));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "DBSourceWizardTab did not open");
         }
 
+        [Given(@"I Click NewVersion button")]
         [When(@"I Click NewVersion button")]
+        [Then(@"I Click NewVersion button")]
         public void Click_NewVersion_button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.NewVersionButton.Enabled, "New version available button is disabled");
             Mouse.Click(MainStudioWindow.SideMenuBar.NewVersionButton, new Point(17, 9));
         }
 
+        [Given(@"I Click Output OnRecordset InVariableList")]
         [When(@"I Click Output OnRecordset InVariableList")]
+        [Then(@"I Click Output OnRecordset InVariableList")]
         public void Click_Output_OnRecordset_InVariableList()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.OutputCheckbox.Checked = true;
         }
 
+        [Given(@"I Click Output OnVariable InVariableList")]
         [When(@"I Click Output OnVariable InVariableList")]
+        [Then(@"I Click Output OnVariable InVariableList")]
         public void Click_Output_OnVariable_InVariableList()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.OutputCheckbox.Checked = true;
         }
 
+        [Given(@"I Click Pin Toggle DebugOutput")]
         [When(@"I Click Pin Toggle DebugOutput")]
+        [Then(@"I Click Pin Toggle DebugOutput")]
         public void Click_Pin_Toggle_DebugOutput()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn, new Point(11, 10));
         }
 
+        [Given(@"I Click Pin Toggle Documentor")]
         [When(@"I Click Pin Toggle Documentor")]
+        [Then(@"I Click Pin Toggle Documentor")]
         public void Click_Pin_Toggle_Documentor()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn, new Point(2, 11));
         }
 
+        [Given(@"I Click Pin Toggle Explorer")]
         [When(@"I Click Pin Toggle Explorer")]
+        [Then(@"I Click Pin Toggle Explorer")]
         public void Click_Pin_Toggle_Explorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(12, 9));
         }
 
+        [Given(@"I Click Pin Toggle Toolbox")]
         [When(@"I Click Pin Toggle Toolbox")]
+        [Then(@"I Click Pin Toggle Toolbox")]
         public void Click_Pin_Toggle_Toolbox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn, new Point(10, 8));
         }
 
+        [Given(@"I Click Pin Toggle VariableList")]
         [When(@"I Click Pin Toggle VariableList")]
+        [Then(@"I Click Pin Toggle VariableList")]
         public void Click_Pin_Toggle_VariableList()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.VariableUnpinBtn, new Point(10, 14));
         }
 
+        [Given(@"I Click Position Button")]
         [When(@"I Click Position Button")]
+        [Then(@"I Click Position Button")]
         public void Click_Position_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.FilesMenu.PositionButton, new Point(8, 7));
         }
 
+        [Given(@"I Click Postgre Done Button")]
         [When(@"I Click Postgre Done Button")]
+        [Then(@"I Click Postgre Done Button")]
         public void Click_Postgre_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.DoneButton, new Point(36, 11));
         }
 
+        [Given(@"I Click PrefixContainsInvalidText Hyperlink")]
         [When(@"I Click PrefixContainsInvalidText Hyperlink")]
+        [Then(@"I Click PrefixContainsInvalidText Hyperlink")]
         public void Click_PrefixContainsInvalidText_Hyperlink()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PrefixcontainsinvaliText.PrefixcontainsinvaliHyperlink, new Point(30, 4));
         }
 
+        [Given(@"I Click PutWeb GenerateOutputs Button")]
         [When(@"I Click PutWeb GenerateOutputs Button")]
+        [Then(@"I Click PutWeb GenerateOutputs Button")]
         public void Click_PutWeb_GenerateOutputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.GenerateOutputsButton, new Point(34, 13));
         }
 
+        [Given(@"I Click Web Post Tool GenerateOutputs Button")]
         [When(@"I Click Web Post Tool GenerateOutputs Button")]
+        [Then(@"I Click Web Post Tool GenerateOutputs Button")]
         public void Click_Web_Post_Tool_GenerateOutputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton, new Point(34, 13));
         }
 
+        [Given(@"I Click GetWeb GenerateOutputs Button")]
         [When(@"I Click GetWeb GenerateOutputs Button")]
+        [Then(@"I Click GetWeb GenerateOutputs Button")]
         public void Click_GetWeb_GenerateOutputs_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton, new Point(34, 13));
         }
 
+        [Given(@"I Click Read Done Button")]
         [When(@"I Click Read Done Button")]
+        [Then(@"I Click Read Done Button")]
         public void Click_Read_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click ReadFolder Done Button")]
         [When(@"I Click ReadFolder Done Button")]
+        [Then(@"I Click ReadFolder Done Button")]
         public void Click_ReadFolder_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead.DoneButton, new Point(35, 6));
         }
 
+        [Given(@"I Click Remove Unused Variables")]
         [When(@"I Click Remove Unused Variables")]
+        [Then(@"I Click Remove Unused Variables")]
         public void Click_Remove_Unused_Variables()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused, new Point(30, 4));
         }
 
+        [Given(@"I Click Rename Done Button")]
         [When(@"I Click Rename Done Button")]
+        [Then(@"I Click Rename Done Button")]
         public void Click_Rename_Done_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename.DoneButton, new Point(35, 6));
@@ -3716,14 +4149,18 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(50, 12));
         }
 
+        [Given(@"I Click Save Ribbon Button to Open Save Dialog")]
         [When(@"I Click Save Ribbon Button to Open Save Dialog")]
+        [Then(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
+        [Given(@"I Click SaveDialog CancelButton")]
         [When(@"I Click SaveDialog CancelButton")]
+        [Then(@"I Click SaveDialog CancelButton")]
         public void Click_SaveDialog_CancelButton()
         {
             Mouse.Click(SaveDialogWindow.CancelButton, new Point(6, 7));
@@ -4160,7 +4597,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         [When(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
+        [Then(@"I Drag Explorer Remote workflow1 Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
@@ -4171,6 +4610,28 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
+
+        [Given(@"I Drag Explorer workflow Onto Workflow Design Surface")]
+        [When(@"I Drag Explorer workflow Onto Workflow Design Surface")]
+        [Then(@"I Drag Explorer workflow Onto Workflow Design Surface")]
+        public void Drag_Explorer_workflow_Onto_Workflow_Design_Surface()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+        }
+
+        [When(@"I open ""(.*)"" in Remote Connection Integration")]
+        public void WhenIOpenInRemoteConnectionIntegration(string resourceName)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists, "Explorer first remote server does not contain any items.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
+        }
+
 
         [When(@"I Drag GET Web Connector Onto DesignSurface")]
         public void Drag_GET_Web_Connector_Onto_DesignSurface()
@@ -4346,7 +4807,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Drag Toolbox Date And Time Onto DesignSurface")]
         [When(@"I Drag Toolbox Date And Time Onto DesignSurface")]
+        [Then(@"I Drag Toolbox Date And Time Onto DesignSurface")]
         public void Drag_Toolbox_Date_And_Time_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Date Time";
@@ -4539,7 +5002,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         [When(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
+        [Then(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         public void Drag_Toolbox_MultiAssign_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
@@ -4956,7 +5421,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
-        [When(@"I Enter DeployViewOnly Into Deploy Source Filter")]
+        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
+        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = SearchTextboxText;
@@ -5076,7 +5543,9 @@ namespace Warewolf.UITests
                     "%Variable]]\".");
         }
 
+        [Given(@"I Enter Text Into Assign Large View Row1 Variable Textbox As SomeVariable")]
         [When(@"I Enter Text Into Assign Large View Row1 Variable Textbox As SomeVariable")]
+        [Then(@"I Enter Text Into Assign Large View Row1 Variable Textbox As SomeVariable")]
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.IntellisenseCombobox.Textbox, "{Home}", ModifierKeys.Shift);
@@ -5417,7 +5886,8 @@ namespace Warewolf.UITests
         [When(@"I Open Decision Large View")]
         public void Open_Decision_Large_View()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision, new Point(55, 39));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.DrawHighlight();
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision);
             Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Decision Dialog does not exist after opening large Decision view");
         }
 
@@ -5537,9 +6007,30 @@ namespace Warewolf.UITests
         [When(@"I Open Explorer First Item With Context Menu")]
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer context menu does not exist after right clicking the first explorer item.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
+        }
+
+        [Given(@"I Right Click On The Folder Count")]
+        [When(@"I Right Click On The Folder Count")]
+        [Then(@"I Right Click On The Folder Count")]
+        public void Right_Click_On_The_Folder_Count()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(211, 8));
+        }
+
+        [When(@"I Open Explorer First SubItem With Context Menu")]
+        public void Open_Explorer_FirstSubItem_Item_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
         [When(@"I Open Find Index Tool Large View")]
@@ -5857,70 +6348,92 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile, new Point(218, 11));
         }
 
+        [Given(@"I Open Sharepoint Download File Tool Large View With Double Click")]
         [When(@"I Open Sharepoint Download File Tool Large View With Double Click")]
+        [Then(@"I Open Sharepoint Download File Tool Large View With Double Click")]
         public void Open_Sharepoint_Download_File_Tool_Large_View_With_Double_Click()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile, new Point(185, 9));
         }
 
+        [Given(@"I Open Sharepoint MoveFile Tool Large View")]
         [When(@"I Open Sharepoint MoveFile Tool Large View")]
+        [Then(@"I Open Sharepoint MoveFile Tool Large View")]
         public void Open_Sharepoint_MoveFile_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointMoveFile, new Point(230, 11));
         }
 
+        [Given(@"I Open Sharepoint Read Folder Tool Large View")]
         [When(@"I Open Sharepoint Read Folder Tool Large View")]
+        [Then(@"I Open Sharepoint Read Folder Tool Large View")]
         public void Open_Sharepoint_Read_Folder_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadFolder, new Point(195, 7));
         }
 
+        [Given(@"I Open Sharepoint Read List Item Tool Large View")]
         [When(@"I Open Sharepoint Read List Item Tool Large View")]
+        [Then(@"I Open Sharepoint Read List Item Tool Large View")]
         public void Open_Sharepoint_Read_List_Item_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointReadListItem, new Point(195, 7));
         }
 
+        [Given(@"I Open Sharepoint Update Tool Large View")]
         [When(@"I Open Sharepoint Update Tool Large View")]
+        [Then(@"I Open Sharepoint Update Tool Large View")]
         public void Open_Sharepoint_Update_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate, new Point(230, 11));
         }
 
+        [Given(@"I Open Sharepoint Upload Tool Large View")]
         [When(@"I Open Sharepoint Upload Tool Large View")]
+        [Then(@"I Open Sharepoint Upload Tool Large View")]
         public void Open_Sharepoint_Upload_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile, new Point(230, 11));
         }
 
+        [Given(@"I Open SMTP Email Tool Large View")]
         [When(@"I Open SMTP Email Tool Large View")]
+        [Then(@"I Open SMTP Email Tool Large View")]
         public void Open_SMTP_Email_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail, new Point(168, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView.Exists, "Email Tool large view does not exist on the design surface");
         }
 
+        [Given(@"I Open SortRecords Large View")]
         [When(@"I Open SortRecords Large View")]
+        [Then(@"I Open SortRecords Large View")]
         public void Open_SortRecords_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords, new Point(114, 13));
         }
 
+        [Given(@"I Open SQL Bulk Insert Tool Large View")]
         [When(@"I Open SQL Bulk Insert Tool Large View")]
+        [Then(@"I Open SQL Bulk Insert Tool Large View")]
         public void Open_SQL_Bulk_Insert_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert, new Point(157, 6));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
         }
 
+        [Given(@"I Open SQL Bulk Insert Tool Qvi Large View")]
         [When(@"I Open SQL Bulk Insert Tool Qvi Large View")]
+        [Then(@"I Open SQL Bulk Insert Tool Qvi Large View")]
         public void Open_SQL_Bulk_Insert_Tool_Qvi_Large_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton.Pressed = true;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
         }
 
+        [Given(@"I Open SQL Large View FromContextMenu")]
         [When(@"I Open SQL Large View FromContextMenu")]
+        [Then(@"I Open SQL Large View FromContextMenu")]
         public void Open_SQL_Large_View_FromContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
@@ -5928,34 +6441,44 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.NewDbSourceButton.Exists, "\"New button does not exist\"");
         }
 
+        [Given(@"I Open Sql Server Tool Large View")]
         [When(@"I Open Sql Server Tool Large View")]
+        [Then(@"I Open Sql Server Tool Large View")]
         public void Open_Sql_Server_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.Exists, "SQL Server tool large view does not exist on the design surface.");
         }
 
+        [Given(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
         [When(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
+        [Then(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
         public void Collapse_Sql_Server_Tool_Large_View_to_Small_View_With_Double_Click()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
         }
 
+        [Given(@"I Open Sql Server Tool small View")]
         [When(@"I Open Sql Server Tool small View")]
+        [Then(@"I Open Sql Server Tool small View")]
         public void Open_Sql_Server_Tool_small_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(253, 18));
         }
 
+        [Given(@"I Open Switch Tool Large View")]
         [When(@"I Open Switch Tool Large View")]
+        [Then(@"I Open Switch Tool Large View")]
         public void Open_Switch_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(39, 35));
             Assert.IsTrue(DecisionOrSwitchDialog.Enabled, "Switch dialog does not exist after opening switch large view");
         }
 
+        [Given(@"I Open System Information Tool Large View")]
         [When(@"I Open System Information Tool Large View")]
+        [Then(@"I Open System Information Tool Large View")]
         public void Open_System_Information_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo, new Point(145, 5));
@@ -5964,20 +6487,26 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "OnError group  does not exist after opening Gather System information tool large view");
         }
 
+        [Given(@"I Open System Information Tool Qvi Large View")]
         [When(@"I Open System Information Tool Qvi Large View")]
+        [Then(@"I Open System Information Tool Qvi Large View")]
         public void Open_System_Information_Tool_Qvi_Large_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.OpenQuickVariableInpToggleButton.Pressed = true;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.Exists, "System Info QVI window does not exist on the design surface");
         }
 
+        [Given(@"I Open UniqueRecords Large View")]
         [When(@"I Open UniqueRecords Large View")]
+        [Then(@"I Open UniqueRecords Large View")]
         public void Open_UniqueRecords_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique, new Point(134, 10));
         }
 
+        [Given(@"I Open Unzip Tool Large View")]
         [When(@"I Open Unzip Tool Large View")]
+        [Then(@"I Open Unzip Tool Large View")]
         public void Open_Unzip_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip, new Point(102, 14));
@@ -5987,14 +6516,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
 
+        [Given(@"I Open WebRequest LargeView")]
         [When(@"I Open WebRequest LargeView")]
+        [Then(@"I Open WebRequest LargeView")]
         public void Open_WebRequest_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest, new Point(126, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.LargeView.Exists, "Web request large view does not exist on design surface.");
         }
 
+        [Given(@"I Open Write File Tool Large View")]
         [When(@"I Open Write File Tool Large View")]
+        [Then(@"I Open Write File Tool Large View")]
         public void Open_Write_File_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite, new Point(149, 13));
@@ -6005,14 +6538,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite.DoneButton.Exists, "DoneButton does not exist on the design surface");
         }
 
+        [Given(@"I Open Xpath Tool Large View")]
         [When(@"I Open Xpath Tool Large View")]
+        [Then(@"I Open Xpath Tool Large View")]
         public void Open_Xpath_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath, new Point(113, 12));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.Exists, "Xpath large view does not exist on the design surface");
         }
 
+        [Given(@"I Open Xpath Tool Qvi Large View")]
         [When(@"I Open Xpath Tool Qvi Large View")]
+        [Then(@"I Open Xpath Tool Qvi Large View")]
         public void Open_Xpath_Tool_Qvi_Large_View()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton.Pressed = true;
@@ -6020,7 +6557,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.QuickVariableInputContent.Exists, "QVI on XPath is not open");
         }
 
+        [Given(@"I Open Zip Tool Large View")]
         [When(@"I Open Zip Tool Large View")]
+        [Then(@"I Open Zip Tool Large View")]
         public void Open_Zip_Tool_Large_View()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip, new Point(124, 12));
@@ -6031,6 +6570,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.LargeViewContentCustom.FileOrFolderComboBox.Exists, "FileOrFolderComboBox does not exist on the design surface");
         }
 
+        [Given(@"I Press F6")]
         [When(@"I Press F6")]
         [Given(@"I Press F6")]
         [Then(@"I Press F6")]
@@ -6039,13 +6579,17 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{F6}", ModifierKeys.None);
         }
 
+        [Given(@"I PressF11 EnterFullScreen")]
         [When(@"I PressF11 EnterFullScreen")]
+        [Then(@"I PressF11 EnterFullScreen")]
         public void PressF11_EnterFullScreen()
         {
             Keyboard.SendKeys(MainStudioWindow, "{F11}", ModifierKeys.None);
         }
 
+        [Given(@"I RabbitMqAsserts")]
         [When(@"I RabbitMqAsserts")]
+        [Then(@"I RabbitMqAsserts")]
         public void RabbitMqAsserts()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.VirtualHostTextBoxEdit.Exists, "VirtualHoast textbox does not exist after opening RabbitMq Source tab");
@@ -6055,7 +6599,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening RabbitMq Source");
         }
 
+        [Given(@"I Remove WorkflowName From Save Dialog")]
         [When(@"I Remove WorkflowName From Save Dialog")]
+        [Then(@"I Remove WorkflowName From Save Dialog")]
         public void Remove_WorkflowName_From_Save_Dialog()
         {
             SaveDialogWindow.ServiceNameTextBox.Text = "";
@@ -6063,25 +6609,97 @@ namespace Warewolf.UITests
             Assert.AreEqual(false, SaveDialogWindow.SaveButton.Enabled, "Save button on the Save dialog is enabled");
         }
 
+        [Given(@"I Rename FolderItem ToNewFolderItem")]
         [When(@"I Rename FolderItem ToNewFolderItem")]
+        [Then(@"I Rename FolderItem ToNewFolderItem")]
         public void Rename_FolderItem_ToNewFolderItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = "Control Flow - Decision2";
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Remote_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [Given(@"I Rename LocalFolder To SecondFolder")]
         [When(@"I Rename LocalFolder To SecondFolder")]
+        [Then(@"I Rename LocalFolder To SecondFolder")]
         public void Rename_LocalFolder_To_SecondFolder()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(27, 18));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "Example";
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [Given(@"I Delete FirstResource FromContextMenu")]
+        [When(@"I Delete FirstResource FromContextMenu")]
+        [Then(@"I Delete FirstResource FromContextMenu")]
+        public void Delete_FirstResource_FromContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
+        }
+
+        [Given(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        [When(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        [Then(@"I Rename First Remote Resource FromContextMenu to ""(.*)""")]
+        public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            MainStudioWindow.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.DrawHighlight();
+            MainStudioWindow.ExplorerContextMenu.Rename.DrawHighlight();
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+
+        [Given(@"I Delete FirstResource FromContextMenu")]
+        [When(@"I Delete FirstResource FromContextMenu")]
+        [Then(@"I Delete FirstResource FromContextMenu")]
+        public void Select_ShowVersionHistory_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.ShowVersionHistory);
+        }
+
+        [Given(@"I Duplicate FirstResource FromContextMenu")]
+        [When(@"I Duplicate FirstResource FromContextMenu")]
+        [Then(@"I Duplicate FirstResource FromContextMenu")]
+        public void Duplicate_FirstResource_FromContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Duplicate);
+        }
+
+        [Given(@"I Rename LocalWorkflow To SecodWorkFlow")]
         [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
+        [Then(@"I Rename LocalWorkflow To SecodWorkFlow")]
         public void Rename_LocalWorkflow_To_SecodWorkFlow()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
@@ -6090,104 +6708,138 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
+        [Given(@"I Restore Unpinned Tab Using Context Menu")]
         [When(@"I Restore Unpinned Tab Using Context Menu")]
+        [Then(@"I Restore Unpinned Tab Using Context Menu")]
         public void Restore_Unpinned_Tab_Using_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.UnpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
             MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument.Checked = true;
         }
 
+        [Given(@"I Right Click Help Tab")]
         [When(@"I Right Click Help Tab")]
+        [Then(@"I Right Click Help Tab")]
         public void Right_Click_Help_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.HelpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
         }
 
+        [Given(@"I RightClick BaseConvert OnDesignSurface")]
         [When(@"I RightClick BaseConvert OnDesignSurface")]
+        [Then(@"I RightClick BaseConvert OnDesignSurface")]
         public void RightClick_BaseConvert_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
         }
 
+        [Given(@"I RightClick Calculate OnDesignSurface")]
         [When(@"I RightClick Calculate OnDesignSurface")]
+        [Then(@"I RightClick Calculate OnDesignSurface")]
         public void RightClick_Calculate_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
         }
 
+        [Given(@"I RightClick CaseConvert OnDesignSurface")]
         [When(@"I RightClick CaseConvert OnDesignSurface")]
+        [Then(@"I RightClick CaseConvert OnDesignSurface")]
         public void RightClick_CaseConvert_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
         }
 
+        [Given(@"I RightClick Comment OnDesignSurface")]
         [When(@"I RightClick Comment OnDesignSurface")]
+        [Then(@"I RightClick Comment OnDesignSurface")]
         public void RightClick_Comment_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
         }
 
+        [Given(@"I RightClick Copy OnDesignSurface")]
         [When(@"I RightClick Copy OnDesignSurface")]
+        [Then(@"I RightClick Copy OnDesignSurface")]
         public void RightClick_Copy_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
         }
 
+        [Given(@"I RightClick CountRecords OnDesignSurface")]
         [When(@"I RightClick CountRecords OnDesignSurface")]
+        [Then(@"I RightClick CountRecords OnDesignSurface")]
         public void RightClick_CountRecords_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
         }
 
+        [Given(@"I RightClick CreateJSON OnDesignSurface")]
         [When(@"I RightClick CreateJSON OnDesignSurface")]
+        [Then(@"I RightClick CreateJSON OnDesignSurface")]
         public void RightClick_CreateJSON_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
         }
 
+        [Given(@"I RightClick CreateTool OnDesignSurface")]
         [When(@"I RightClick CreateTool OnDesignSurface")]
+        [Then(@"I RightClick CreateTool OnDesignSurface")]
         public void RightClick_CreateTool_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
         }
 
+        [Given(@"I RightClick DataMerge OnDesignSurface")]
         [When(@"I RightClick DataMerge OnDesignSurface")]
+        [Then(@"I RightClick DataMerge OnDesignSurface")]
         public void RightClick_DataMerge_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
         }
 
+        [Given(@"I RightClick DataSplit OnDesignSurface")]
         [When(@"I RightClick DataSplit OnDesignSurface")]
+        [Then(@"I RightClick DataSplit OnDesignSurface")]
         public void RightClick_DataSplit_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
         }
 
+        [Given(@"I RightClick DateTime OnDesignSurface")]
         [When(@"I RightClick DateTime OnDesignSurface")]
+        [Then(@"I RightClick DateTime OnDesignSurface")]
         public void RightClick_DateTime_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
         }
 
+        [Given(@"I RightClick DateTimeDifference OnDesignSurface")]
         [When(@"I RightClick DateTimeDifference OnDesignSurface")]
+        [Then(@"I RightClick DateTimeDifference OnDesignSurface")]
         public void RightClick_DateTimeDifference_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
         }
 
+        [Given(@"I RightClick Decision OnDesignSurface")]
         [When(@"I RightClick Decision OnDesignSurface")]
+        [Then(@"I RightClick Decision OnDesignSurface")]
         public void RightClick_Decision_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
         }
 
+        [Given(@"I RightClick Delete OnDesignSurface")]
         [When(@"I RightClick Delete OnDesignSurface")]
+        [Then(@"I RightClick Delete OnDesignSurface")]
         public void RightClick_Delete_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
         }
 
+        [Given(@"I RightClick DeleteRecord OnDesignSurface")]
         [When(@"I RightClick DeleteRecord OnDesignSurface")]
+        [Then(@"I RightClick DeleteRecord OnDesignSurface")]
         public void RightClick_DeleteRecord_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
@@ -6199,37 +6851,72 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
         }
 
+        [Given(@"I RightClick DropboxFileOperation OnDesignSurface")]
         [When(@"I RightClick DropboxFileOperation OnDesignSurface")]
+        [Then(@"I RightClick DropboxFileOperation OnDesignSurface")]
         public void RightClick_DropboxFileOperation_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
         }
 
+        [Given(@"I RightClick Email OnDesignSurface")]
         [When(@"I RightClick Email OnDesignSurface")]
+        [Then(@"I RightClick Email OnDesignSurface")]
         public void RightClick_Email_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
         }
 
+        [Given(@"I RightClick ExecuteCommandLine OnDesignSurface")]
         [When(@"I RightClick ExecuteCommandLine OnDesignSurface")]
+        [Then(@"I RightClick ExecuteCommandLine OnDesignSurface")]
         public void RightClick_ExecuteCommandLine_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
         }
 
+        [Given(@"I RightClick Explorer First Remote Server First Item")]
         [When(@"I RightClick Explorer First Remote Server First Item")]
+        [Then(@"I RightClick Explorer First Remote Server First Item")]
         public void RightClick_Explorer_First_Remote_Server_First_Item()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
 
+        [Given(@"I RightClick Explorer Localhost First Item")]
         [When(@"I RightClick Explorer Localhost First Item")]
+        [Then(@"I RightClick Explorer Localhost First Item")]
         public void RightClick_Explorer_Localhost_First_Item()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "ShowDependencies does not exist in explorer context menu.");
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Exists, "Delete does not exist in ExplorerContextMenu");
+        }
+
+        [Given(@"I RightClick Localhost")]
+        [When(@"I RightClick Localhost")]
+        [Then(@"I RightClick Localhost")]
+        public void RightClick_Localhost()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I RightClick Save Dialog Localhost")]
+        [When(@"I RightClick Save Dialog Localhost")]
+        [Then(@"I RightClick Save Dialog Localhost")]
+        public void RightClick_Save_Dialog_Localhost()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
+        }
+
+        [Given(@"I RightClick Save Dialog Localhost First Item")]
+        [When(@"I RightClick Save Dialog Localhost First Item")]
+        [Then(@"I RightClick Save Dialog Localhost First Item")]
+        public void RightClick_Save_Dialog_Localhost_First_Item()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
         [When(@"I RightClick FindIndex OnDesignSurface")]
@@ -6314,6 +7001,14 @@ namespace Warewolf.UITests
         public void RightClick_Sequence_OnDesignSurface()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
+        }
+
+        [Given(@"I RightClick Ardoner Hyperlink")]
+        [When(@"I RightClick Ardoner Hyperlink")]
+        [Then(@"I RightClick Ardoner Hyperlink")]
+        public void RightClick_Adorner_Control()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.NumbernHyperlink, MouseButtons.Right, ModifierKeys.None, new Point(88, 12));
         }
 
         [When(@"I RightClick SharepointCreateListItem OnDesignSurface")]
@@ -6427,7 +7122,7 @@ namespace Warewolf.UITests
         [When(@"I Select Action From PostgreTool")]
         public void Select_Action_From_PostgreTool()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(119, 7));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(119, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox, new Point(114, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.LargeDataGridTable.Enabled, "Inputs grid is not enabled after selecting an Action.");
         }
@@ -6472,7 +7167,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
         }
 
+        [Given(@"I Select Delete FromExplorerContextMenu")]
         [When(@"I Select Delete FromExplorerContextMenu")]
+        [Then(@"I Select Delete FromExplorerContextMenu")]
         public void Select_Delete_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
@@ -6485,7 +7182,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
 
+        [Given(@"I Select Deploy FromExplorerContextMenu")]
         [When(@"I Select Deploy FromExplorerContextMenu")]
+        [Then(@"I Select Deploy FromExplorerContextMenu")]
         public void Select_Deploy_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Deploy, new Point(57, 11));
@@ -6594,10 +7293,44 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.ComboboxlistItemAsSystemObject, new Point(137, 7));
         }
 
+        [Given(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select New Folder From SaveDialog ExplorerContextMenu")]
+        public void Select_NewFolder_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem);
+        }
+
+        [Given(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select New_Folder From SaveDialog ExplorerContextMenu")]
+        public void Select_New_Folder_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
+        }
+
+        [Given(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select Rename From SaveDialog ExplorerContextMenu")]
+        public void Select_Rename_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
+        }
+
+        [Given(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        [When(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        [Then(@"I Select Delete From SaveDialog ExplorerContextMenu")]
+        public void Select_Delete_From_SaveDialog_ExplorerContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem);
+            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.DeleteConfirmation.Exists);
+        }
+
         [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
         public void Select_NewDatabaseSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDatabaseSource, new Point(72, 14));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(72, 14));
         }
 
         [When(@"I Select NewDatabaseSource FromSqlServerTool")]
@@ -6612,7 +7345,7 @@ namespace Warewolf.UITests
         [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
         public void Select_NewDropboxSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewDropboxSource, new Point(119, 15));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDropboxSource, new Point(119, 15));
         }
 
         [When(@"I Select NewEmailSource FromExplorerContextMenu")]
@@ -6634,13 +7367,13 @@ namespace Warewolf.UITests
         [When(@"I Select NewServerSource FromExplorerContextMenu")]
         public void Select_NewServerSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewServerSource, new Point(44, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewServerSource, new Point(44, 13));
         }
 
         [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
         public void Select_NewSharepointSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewSharepointSource, new Point(126, 17));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource, new Point(126, 17));
         }
 
         [When(@"I Select NewSharepointSource FromServer Lookup")]
@@ -6674,13 +7407,15 @@ namespace Warewolf.UITests
         [When(@"I Select NewWebSource FromExplorerContextMenu")]
         public void Select_NewWebSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWebServiceSource, new Point(82, 20));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource, new Point(82, 20));
         }
 
+        [Given(@"I Select NewWorkflow FromExplorerContextMenu")]
         [When(@"I Select NewWorkflow FromExplorerContextMenu")]
+        [Then(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow);
         }
 
         [When(@"I Select NewWorkFlowService From ContextMenu")]
@@ -6724,7 +7459,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
         }
 
+        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
+        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
@@ -7029,6 +7766,14 @@ namespace Warewolf.UITests
             Drag_Toolbox_Comment_Onto_DesignSurface();
         }
 
+        public void Move_Assign_Message_Tool_On_The_Design_Surface()
+        {
+            var multiAssign1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            multiAssign1.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(multiAssign1, new Point(94, 11));
+            Mouse.StopDragging(multiAssign1, 70, 3);
+        }
+
         [When(@"I Drag Explorer First Sub Item Onto Second Sub Item")]
         public void Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item()
         {
@@ -7043,8 +7788,10 @@ namespace Warewolf.UITests
         public void Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem, new Point(94, 11));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem, new Point(90, 7));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.DrawHighlight();
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
             Playback.Wait(2000);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
@@ -7052,7 +7799,15 @@ namespace Warewolf.UITests
         [When(@"I Click Explorer Localhost First Item Expander")]
         public void Click_Explorer_Localhost_First_Item_Expander()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton, new Point(16, 7));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton);
+        }
+
+        [When(@"I Expand Explorer Localhost First Item By Double Click")]
+        [Given(@"I Expand Explorer Localhost First Item By Double Click")]
+        [Then(@"I Expand Explorer Localhost First Item By Double Click")]
+        public void Expand_Explorer_Localhost_First_Item_With_Double_Click()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
         [When(@"I Click Web Browser Error Messagebox OK Button")]
@@ -7248,6 +8003,375 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = message;
         }
 
+
+        /// <summary>
+        /// Create_New_Folder_Using_Shortcut - Use 'Create_New_Folder_Using_ShortcutParams' to pass parameters into this method.
+        /// </summary>
+        public void Create_New_Folder_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            Mouse.Click(localhost, new Point(74, 8));
+
+            Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
+        }
+
+        public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            Mouse.Click(firstItem, new Point(74, 8));
+
+            Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
+        }
+
+        public void Create_New_Workflow_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            Mouse.Click(localhost, new Point(74, 8));
+
+            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
+        }
+
+        public void Open_Deploy_Using_Shortcut()
+        {
+            Keyboard.SendKeys("D", (ModifierKeys.Control));
+        }
+
+        public void Save_Workflow_Using_Shortcut()
+        {
+            #region Variable Declarations
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            Mouse.Click(flowchart, new Point(74, 8));
+
+            Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
+        }
+
+        [Given(@"I am connected on a remote server")]
+        [When(@"I am connected on a remote server")]
+        [Then(@"I am connected on a remote server")]
+        public void GivenIAmConnectedOnARemoteServer()
+        {
+            Select_RemoteConnectionIntegration_From_Explorer();
+            Click_Explorer_RemoteServer_Connect_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
+        }
+
+        [Then(@"Remote Server Refreshes")]
+        public void ThenRemoteServerRefreshes()
+        {
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
+        }
+
+        [Then(@"Filtered Resourse Is Checked For Deploy")]
+        public void ThenFilteredResourseIsCheckedForDeploy()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+        }
+
+        [Then(@"Deploy Button Is Enabled")]
+        public void ThenDeployButtonIsEnabled()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+        }
+
+        [Then(@"Deploy Version Conflict Window Shows")]
+        public void ThenDeployVersionConflictWindowShows()
+        {
+            Assert.IsTrue(MessageBoxWindow.Exists);
+            Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists);
+        }
+
+        [Given(@"I Click MessageBox Cancel")]
+        [When(@"I Click MessageBox Cancel")]
+        [Then(@"I Click MessageBox Cancel")]
+        public void ThenIClickMessageBoxCancel()
+        {
+            Mouse.Click(MessageBoxWindow.CancelButton);
+        }
+
+        [Given(@"Deploy Window Is Still Open")]
+        [When(@"Deploy Window Is Still Open")]
+        [Then(@"Deploy Window Is Still Open")]
+        public void ThenDeployWindowIsStillOpen()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.Exists);
+        }
+
+        [Then(@"Destination Deploy Information Clears")]
+        public void ThenDestinationDeployInformationClears()
+        {
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton.Enabled);
+        }
+
+        [Given(@"Filter Textbox is cleared")]
+        [When(@"Filter Textbox is cleared")]
+        [Then(@"Filter Textbox is cleared")]
+        public void ThenFilterTextboxIsCleared()
+        {
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text));
+        }
+
+        [Given(@"Filter Textbox has ""(.*)""")]
+        [When(@"Filter Textbox has ""(.*)""")]
+        [Then(@"Filter Textbox has ""(.*)""")]
+        public void ThenFilterTextboxHas(string filterText)
+        {
+            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
+        }
+
+        [Given(@"Unit Tests Url Exists")]
+        [When(@"Unit Tests Url Exists")]
+        [Then(@"Unit Tests Url Exists")]
+        public void UnitTestUrlExists()
+        {
+            #region Variable Declarations
+            WpfHyperlink unitTestsUrlWorkflowUrlHyperlink = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnitTestsUrlWorkflowUrlText.UnitTestsUrlWorkflowUrlHyperlink;
+            #endregion
+
+            // Verify that the 'Exists' property of 'http://rsaklfsanele:3142/secure/Unit Tests/Unsaved...' link equals 'True'
+            Assert.IsTrue(unitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
+        }
+
+        [Given(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        [When(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        [Then(@"I Rename Save Dialog Explorer First Item To ""(.*)""")]
+        public void Rename_Folder_From_Save_Dialog(string filterText)
+        {
+            #region Variable Declarations            
+            WpfEdit uIItemEdit = SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            #endregion
+            uIItemEdit.Text = filterText;
+        }
+
+        [Given(@"I Name New Folder as ""(.*)""")]
+        [When(@"I Name New Folder as ""(.*)""")]
+        [Then(@"I Name New Folder as ""(.*)""")]
+        public void Name_New_Folder_From_Save_Dialog(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
+
+        [Given(@"I Dont Name The Created Folder")]
+        [When(@"I Dont Name The Created Folder")]
+        [Then(@"I Dont Name The Created Folder")]
+        public void ThenIDontNameTheCreatedFolder()
+        {
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+
+            Keyboard.SendKeys(newFolderEdit, "{Enter}", ModifierKeys.None);
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
+
+        [Given(@"I Enter New Folder Name as ""(.*)""")]
+        [When(@"I Enter New Folder Name as ""(.*)""")]
+        [Then(@"I Enter New Folder Name as ""(.*)""")]
+        public void ThenIEnterNewFolderNameAs(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+        }
+
+        [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
+        [When(@"I Enter New Sub Folder Name as ""(.*)""")]
+        [Then(@"I Enter New Sub Folder Name as ""(.*)""")]
+        public void ThenIEnterNewSubFolderNameAs(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+        }
+
+
+        [Given(@"I Name New Sub Folder as ""(.*)""")]
+        [When(@"I Name New Sub Folder as ""(.*)""")]
+        [Then(@"I Name New Sub Folder as ""(.*)""")]
+        public void I_Name_New_Sub_Folder_As(string name)
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit;
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Type 'NewFolder' in text box
+            newFolderEdit.Text = name;
+
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(22, 16));
+        }
+
+        [Given(@"Explorer Contain Item ""(.*)""")]
+        [When(@"Explorer Contain Item ""(.*)""")]
+        [Then(@"Explorer Contain Item ""(.*)""")]
+        public void ExplorerContainItem(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text);
+        }
+
+        [Given(@"Explorer Does Not Contain Item ""(.*)""")]
+        [When(@"Explorer Does Not Contain Item ""(.*)""")]
+        [Then(@"Explorer Does Not Contain Item ""(.*)""")]
+        public void ExplorerDoesNotContainItem(string p0)
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
+        }
+
+        [Given(@"Explorer Contain Sub Item ""(.*)""")]
+        [When(@"Explorer Contain Sub Item ""(.*)""")]
+        [Then(@"Explorer Contain Sub Item ""(.*)""")]
+        public void ExplorerContainSubFolder(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text);
+        }
+
+        [Given(@"Explorer Items appear on the Explorer Tree")]
+        [When(@"Explorer Items appear on the Explorer Tree")]
+        [Then(@"Explorer Items appear on the Explorer Tree")]
+        public void ExplorerItemsAppearOnTheExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
+        }
+
+        [Given(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [When(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [Then(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        public void ExplorerItemsAppearOnTheSaveDialogExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+        }
+
+        [Given(@"Resource Did not Open")]
+        [When(@"Resource Did not Open")]
+        [Then(@"Resource Did not Open")]
+        public void ResourceDidNotOpen()
+        {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
+        }
+
+        [Given(@"""(.*)"" is child of ""(.*)""")]
+        [When(@"""(.*)"" is child of ""(.*)""")]
+        [Then(@"""(.*)"" is child of ""(.*)""")]
+        public void ThenIsChildOf(string child, string parent)
+        {
+            Assert.AreEqual(parent, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
+        }
+
+        [Given(@"""(.*)"" is child of localhost")]
+        [When(@"""(.*)"" is child of localhost")]
+        [Then(@"""(.*)"" is child of localhost")]
+        public void ThenIsChildOfLocalhost(string child)
+        {
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Exists);
+            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+        }
+
+        [Given(@"I Move resource to localhost")]
+        [When(@"I Move resource to localhost")]
+        [Then(@"I Move resource to localhost")]
+        public void MoveResourceToLocalhost()
+        {
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
+        }
+
+        [Given(@"I Move FolderToMove into FolderToRename")]
+        [When(@"I Move FolderToMove into FolderToRename")]
+        [Then(@"I Move FolderToMove into FolderToRename")]
+        public void MoveFolderToMoveIntoFolderToRename()
+        {
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.ThirdItem.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.ThirdItem, new Point(90, 11));
+        }
+
+        [Given(@"I Move FolderToRename into localhost")]
+        [When(@"I Move FolderToRename into localhost")]
+        [Then(@"I Move FolderToRename into localhost")]
+        public void MoveFolderToRenameIntoLocalhost()
+        {
+            SaveDialogWindow.ExplorerView.ExplorerTree.localhost.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
+        }
+
+        [Then(@"""(.*)"" Resource Exists In Windows Directory ""(.*)""")]
+        public void ResourceExistsInWindowsDirectory(string serviceName, string path)
+        {
+            var folder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Unit Tests";
+            var allFiles = Directory.GetFiles(folder, "*.xml", SearchOption.AllDirectories);
+            Assert.IsTrue(allFiles.Any(p => p.Contains(serviceName)));
+        }
+
+        [Given(@"Context Menu Has Two Items")]
+        [When(@"Context Menu Has Two Items")]
+        [Then(@"Context Menu Has Two Items")]
+        public void ThenContextMenuHasTwoItems()
+        {
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.SourcesMenuItem));
+            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem));
+        }
+
+        [Then(@"Folder Is Removed From Explorer")]
+        public void ThenFolderIsRemovedFromExplorer()
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+        }
         [Given(@"I Filter Variable List ""(.*)""")]
         [When(@"I Filter Variable List ""(.*)""")]
         [Then(@"I Filter Variable List ""(.*)""")]
@@ -7273,15 +8397,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.OutputCheckbox.Checked = true;
         }
-        
-        public void Resize_Decision_LargeTool()
-        {
-            #region Variable Declarations
-            WpfWindow uIActivityDefaultWindoWindow = this.UIActivityDefaultWindoWindow;
-            #endregion
 
-            Mouse.StartDragging(uIActivityDefaultWindoWindow, new Point(396, 387));
-            Mouse.StopDragging(uIActivityDefaultWindoWindow, new Point(0, 450));
-        }
     }
 }
