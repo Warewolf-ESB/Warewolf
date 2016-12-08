@@ -2570,7 +2570,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion
-
        
         /// <summary>
         /// Gets the work surface context.
@@ -2630,9 +2629,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
+            RemoveUnsavedWorkflowName(unsavedName);
+        }
+        internal void RemoveUnsavedWorkflowName(string unsavedName)
+        {
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
-
         private void DisposeDesigner()
         {
             if (_wd != null)
