@@ -191,8 +191,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.ShowErrorMessage(ex.Message, @"Delete not allowed");
             }
-
-
         }
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
@@ -210,22 +208,15 @@ namespace Warewolf.Studio.ViewModels
                 ResourceType = @"Folder",
                 AllowResourceCheck = explorerItem.AllowResourceCheck,
                 IsResourceChecked = explorerItem.IsResourceChecked,
-                CanView = explorerItem.CanView,
-                CanCreateWorkflowService = explorerItem.CanCreateWorkflowService,
-                CanCreateFolder = explorerItem.CanCreateFolder,
-                CanCreateSource = explorerItem.CanCreateSource,
-                CanShowVersions = explorerItem.CanShowVersions,
-                CanRename = explorerItem.CanRename,
-                CanDeploy = explorerItem.CanDeploy,
-                CanDuplicate = explorerItem.CanDuplicate,
-                CanViewSwagger = explorerItem.CanViewSwagger,
-                CanViewApisJson = explorerItem.CanViewApisJson,
-                CanShowDependencies = explorerItem.CanShowDependencies,
                 ShowContextMenu = explorerItem.ShowContextMenu,
                 IsSaveDialog = explorerItem.IsSaveDialog
             };
+            
             child.ResourceName = name;
             child.IsRenaming = true;
+
+            child.SetPermission(server.Permissions[0].Permissions);
+
             return child;
         }
 
