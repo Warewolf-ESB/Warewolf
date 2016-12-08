@@ -214,6 +214,7 @@ namespace Dev2.Common
             if (!String.IsNullOrEmpty(_escapeChar))
             {
                 return word.Contains(_escapeChar) && word.EndsWith(_escapeChar);
+
             }
             return false;
         }
