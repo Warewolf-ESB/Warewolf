@@ -759,7 +759,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
             Assert.AreEqual(_target.CanCreateWorkflowService, createdFolder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
-            Assert.IsTrue(createdFolder.IsSelected);
             Assert.IsTrue(createdFolder.IsRenaming);
         }
 
@@ -1671,7 +1670,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
             Assert.AreEqual(_target.CanCreateWorkflowService, createdFolder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
-            Assert.IsTrue(createdFolder.IsSelected);
             Assert.IsTrue(createdFolder.IsRenaming);
         }
 
