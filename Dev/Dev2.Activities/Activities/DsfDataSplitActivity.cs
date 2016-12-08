@@ -172,13 +172,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var item = res.GetNextValue(); // item is the thing we split on
                     if(!string.IsNullOrEmpty(item))
                     {
-                        string val;
-                        var match = Regex.Match(item, @"[\n\r]+");
-                        if (match.Success && !SkipBlankRows)
-                            val = Regex.Escape(item);
-                        else
-                            val = item;
-
+                        string val = item;
+                        
                         var blankRows = new List<int>();
                         if(SkipBlankRows)
                         {
@@ -486,15 +481,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(!string.IsNullOrEmpty(t.At))
                         {
                             entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-
-                           
+                            if (entry == @"\r\n")
+                            {
+                                var match = Regex.Match(stringToSplit, @"[\r\n]+");
+                                if (match.Success && !SkipBlankRows)
+                                {
+                                    stringToSplit = Regex.Escape(stringToSplit);
+                                    dtb.ToTokenize = stringToSplit;
+                                }
+                            }
                             string escape = t.EscapeChar;
                             if(!String.IsNullOrEmpty(escape))
                             {
-                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();
-                              
+                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();                              
                             }
-
                             dtb.AddTokenOp(entry, t.Include, escape);
                         }
                         break;
