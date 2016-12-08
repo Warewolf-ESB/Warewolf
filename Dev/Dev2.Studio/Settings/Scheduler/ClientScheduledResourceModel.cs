@@ -58,10 +58,10 @@ namespace Dev2.Settings.Scheduler
             var resources =controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
             if(resources != null)
             {
-                foreach(var scheduledResource in resources)
-                {
-                    scheduledResource.IsDirty = false;
-                }
+//                foreach(var scheduledResource in resources)
+//                {
+//                    scheduledResource.IsDirty = false;
+//                }
                 return resources;
             }
             return new ObservableCollection<IScheduledResource>();
@@ -89,7 +89,6 @@ namespace Dev2.Settings.Scheduler
             errorMessage = "";
             if(executeCommand != null)
             {
-                resource.IsDirty = executeCommand.HasError;
                 errorMessage = executeCommand.Message.ToString();
                 return !executeCommand.HasError;
             }
@@ -105,7 +104,6 @@ namespace Dev2.Settings.Scheduler
             controller.AddPayloadArgument("UserName", userName);
             controller.AddPayloadArgument("Password", password);
             controller.ExecuteCommand<string>(_model.Connection, _model.Connection.WorkspaceID);
-            resource.IsDirty = false;
         }
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
