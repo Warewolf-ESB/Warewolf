@@ -408,7 +408,14 @@ namespace Warewolf.Studio.ViewModels
                     TestFailed = true;
                     TestPassed = false;
                     Testing = false;
-                    TestMessage = exception.InnerException?.Message ?? exception.Message;
+                    if (exception == null)
+                    {
+                        TestMessage = "Failed";
+                    }
+                    else
+                    {
+                        TestMessage = exception.InnerException?.Message ?? exception?.Message;
+                    }
                     DatabaseNames.Clear();
                 });
             }
@@ -417,7 +424,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception.InnerException?.Message;
+                TestMessage = exception.InnerException?.Message ?? exception.Message;
                 DatabaseNames.Clear();
             }
             OnPropertyChanged(() => DatabaseNames);
