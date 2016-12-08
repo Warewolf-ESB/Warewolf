@@ -164,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public ICollection<IExplorerTreeItem> SelectedItems
+        public virtual ICollection<IExplorerTreeItem> SelectedItems
         {
             get
             {

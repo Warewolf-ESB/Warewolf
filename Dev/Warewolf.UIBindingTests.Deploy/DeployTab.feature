@@ -23,6 +23,7 @@ Feature: DeployTab
 #Deploy a resource without dependency is showing popup
 #Wolf-1106 Deploying items from one server to the next with the same name
 
+@DeployTab
 Scenario: Deploy Tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -32,7 +33,7 @@ Scenario: Deploy Tab
 	 Then "Deploy" is "Disabled"
 	 And the validation message is "Source and Destination cannot be the same."	  
 
-
+@DeployTab
 Scenario: Deploy is successfull
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -44,66 +45,78 @@ Scenario: Deploy is successfull
 	 Then deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
+@DeployTab
 Scenario: Conflicting resources on Source and Destination server
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
-	 And I select "Examples\bob" from Source Server
+	 When I select Destination Server as "DestinationServer"
+	 And destination "DestinationServer" is connected
+	 And selected Destination Server is "DestinationServer"
+	 And I select "bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
+	 Then I select Destination Server as "DestinationServer" with confilcts
+	 And destination "DestinationServer" is connected
+	 And I select "Control Flow - Sequence" from Source Server
+	 When I click Cancel on Resource exists in the destination server popup
 	 And I deploy 
 	 Then Resource exists in the destination server popup is shown
-	 | # | Source Resource | Destination Resource |
-	 | 1 | bob             | DifferentNameSameID  |
+	 | # | Source Resource         | Destination Resource |
+	 | 1 | Control Flow - Sequence | DifferentNameSameID  |
 	 Then deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
+@DeployTab
 Scenario: Conflicting resources on Source and Destination server deploy is not successful
-	  Given I have deploy tab opened
+	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
-	 And I select "Examples\bob" from Source Server
+	 When I select Destination Server as "DestinationServer"
+	 Then selected Destination Server is "DestinationServer"
+	 And destination "DestinationServer" is connected
+	 And I select "bob" from Source Server
 	 When I click Cancel on Resource exists in the destination server popup	 
 	 Then deploy is not successfull
-	 
+
+@DeployTab	 
 Scenario: Deploying a connector with a source
 	 Given I have deploy tab opened
-	  And selected Source Server is "localhost"
+	 And selected Source Server is "localhost"
 	 And source is connected
-	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 When I select Destination Server as "DestinationServer"
+	 Then selected Destination Server is "DestinationServer"
+	 And destination "DestinationServer" is connected
+	 And Calculation is invoked
 	 Then New Resource is "0"	 
-	 When I select "DB Service\FetchPlayers" from Source Server
+	 When I select "FetchPlayers" from Source Server
 	 Then "Deploy" is "Enabled" 
-	 And "Select All Dependencies" is "Enabled"
+	 And Select All Dependencies is "true"
 	 When I Select All Dependecies
-	 Then  I select "sqlServers\DemoDB" from Source Server
+	 Then  I select "DemoDB" from Source Server
 	 And I deploy 
 	 Then deploy is successfull
 	 And the Deploy validation message is "2 Resources Deployed Successfully."
 
+@DeployTab
 Scenario: Selected for deploy items type is showing on deploy tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I select "DB Service\FetchPlayers" from Source Server
 	 And I select "sqlServers\DemoDB" from Source Server
 	 Then Services is "1"
 	 And Sources is "1"
 
-
+@DeployTab
 Scenario: Deploy Summary is showing new and overiding resources 
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 And I select "Examples\bob" from Source Server
 	 Then New Resource is "1"
 	 And Override is "0"
@@ -114,23 +127,25 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 Then Override is "0"
 	
 #Wolf-1106
+@DeployTab
 Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 And I select "Examples\bob" from Source Server
 	 When I deploy
 	 Then the User is prompted to "Rename or Delete" one of the resources
 
 #Wolf-312
+@DeployTab
 Scenario: Warning message no longer appears
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 And I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
@@ -138,39 +153,45 @@ Scenario: Warning message no longer appears
 	 And the Deploy validation message is "1 Resource Deployed Successfully."	 
 
 #wolf-117
+@DeployTab
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 And destination Server Version is "0.0.0.1"
 	 And I select "Utility - Date and Time" from Source Server
 	 When I deploy 	
-	 Then a warning message appears "Deploying to an older server version could result in resources not working on destination server"
-	 Then deploy is successfull
+	 Then a warning message appears "Deploying to an older server version could result in resources not working on destination server"	 
+	 And deploy is successfull
 
-
+@DeployTab
 Scenario: Deploy Based on permission Deploy To
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 And I select "Examples\bob" from Source Server
+	 And I select "bob" from Source Server
 	 And I cannot deploy to destination
+	 Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 	 Then "Deploy" is "Disabled" 
 	 And the validation message is "Destination server permission Deploy To not allowed."
 
+@DeployTab
 Scenario: Deploy Based on permission Deploy From
 	 Given I have deploy tab opened
 	 And I cannot deploy from source
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 And I select "Examples\bob" from Source Server
+	 And I select "bob" from Source Server
+	  Then I select Destination Server as "DestinationServer"
 	 When selected Destination Server is "DestinationServer"
-	 And destination is connected
+	 And destination "DestinationServer" is connected
 
+@DeployTab
 Scenario: Deploy resource Tests message
 	 Given I have deploy tab opened
 	 When I select Destination Server as "DestinationServer"
