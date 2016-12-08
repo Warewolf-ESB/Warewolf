@@ -501,6 +501,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IResourceModel HydrateResourceModel(SerializableResource data, Guid serverId, bool forced = false, bool fetchXaml = false, bool prepairForDeployment = false)
         {
+            if (!_environmentModel.Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return null;
+            }
+
             Guid id = data.ResourceID;
 
             if (!IsInCache(id) || forced)
