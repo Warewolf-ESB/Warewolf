@@ -347,8 +347,9 @@ namespace Warewolf.UIBindingTests.WebSource
             }
             else
             {
+                var illegalCharactersInPath = "Illegal characters in path.";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
-                    .Throws(new WarewolfTestException("Illegal characters in path.", null));
+                    .Throws(new WarewolfTestException(illegalCharactersInPath, new Exception(illegalCharactersInPath)));
             }
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformTestConnection();
