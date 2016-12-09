@@ -46,6 +46,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var inputs = new ObservableCollection<IServiceInput>();
             inputs.CollectionChanged += InputsCollectionChanged;
             inputs.AddRange(serviceInputs);
+            Inputs = inputs;
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
             IsEnabled = _action?.SelectedAction != null;
@@ -239,7 +240,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 else
                 {
                     _inputs.Clear();
-                    _modelItem.SetProperty("Outputs", _inputs.ToList());
+                    _modelItem.SetProperty("Inputs", _inputs.ToList());
                     OnPropertyChanged();
                 }
                
