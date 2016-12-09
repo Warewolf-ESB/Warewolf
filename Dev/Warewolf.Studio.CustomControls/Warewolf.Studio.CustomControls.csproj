@@ -117,6 +117,7 @@
     <Compile Include="CheckBoxColumnContentProvider.cs" />
     <Compile Include="CustomViewModel.cs" />
     <Compile Include="DataPresenterHelpers.cs" />
+    <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="TextBoxColumn.cs" />
@@ -127,6 +128,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>

@@ -50,7 +50,7 @@ namespace Dev2.Common
             var result = new StringBuilder();
 
             if (!isReversed)
-            {
+            {                
                 if (_tokenParts.Length == 1)
                 {
                     int pos = startIdx;
@@ -63,9 +63,9 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    int pos = startIdx;
+                    int pos = startIdx;                   
                     while (pos < candidate.Length && !IsMultiTokenMatch(candidate, pos, false))
-                    {
+                    {                        
                         result.Append(candidate[pos]);
                         pos++;
                     }
@@ -123,12 +123,10 @@ namespace Dev2.Common
                     char tmp;
 
                     // fetch next value while
-                    char previous = '\0';
                     while (canidate.MoveNext() &&
-                           ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(previous)))
+                           ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(result.ToString())))
                     {
                         result.Append(tmp);
-                        previous = tmp;
                     }
                 }
 
@@ -162,11 +160,11 @@ namespace Dev2.Common
 
         private bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
         {
-            bool result = true;
+           bool result = true;
 
             int cnt = 0;
             int canidateIdx = fromIndex;
-
+            
             if (isReversed)
             {
                 cnt = _tokenParts.Length - 1;
@@ -179,7 +177,7 @@ namespace Dev2.Common
                     if (canidate[canidateIdx] != _tokenParts[cnt])
                     {
                         result = false;
-                    }
+                    }                  
                     if (!isReversed)
                     {
                         canidateIdx++;
@@ -211,11 +209,12 @@ namespace Dev2.Common
             return false;
         }
 
-        private bool SkipDueToEscapeChar(char previousChar)
+        private bool SkipDueToEscapeChar(string word)
         {
             if (!String.IsNullOrEmpty(_escapeChar))
             {
-                return previousChar == _escapeChar[0];
+                return word.Contains(_escapeChar) && word.EndsWith(_escapeChar);
+
             }
             return false;
         }

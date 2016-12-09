@@ -25,7 +25,7 @@ Scenario: Split text to a recordset using Index using Star notation
 	|   | [[vowels(2).letters]] = b |
 	|   | [[vowels(3).letters]] = c |
 	|   | [[vowels(4).letters]] = d |
-	|   | [[vowels(5).letters]] = e |
+	|   | [[vowels(5).letters]] = e |	
 
 Scenario: Split text to a scalar
 	Given A string to split with value "abcde"
@@ -262,7 +262,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	And  Skip Blanks rows is "enabled"
 	When the data split tool is executed
 	Then the split recordset "[[rec(*).name]]" will be
-	| rs            | value  |
+	| rs         | value  |
 	| rec().name | NAME   |
 	| rec().name | Barney |
 	| rec().name | Tshepo |
@@ -274,7 +274,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	| rec().phone | 5678  |
 	| rec().phone |       |
 	Then the split recordset "[[rec(*).id]]" will be
-	| rs          | value |
+	| rs       | value |
 	| rec().id | ID    |
 	| rec().id | 1     |
 	| rec().id | 2     |
@@ -595,3 +595,41 @@ Scenario Outline: Debug output Validation errors x
 Examples: 
 	 | No | Variable       |
 	 | 1  | [[rec().a]] |
+
+Scenario: Split text format into recordset - With Escape value
+	Given A string to split with value "a,b,bob\',c,d"
+	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape "\'" 
+	When the data split tool is executed
+	Then the split recordset "[[rec(*).id]]" will be
+	| rs       | value   |
+	| rec().id | a       |
+	| rec().id | b       |
+	| rec().id | bob\',c |
+	| rec().id | d       |
+	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | ,    | No      | "\'"   |
+	And the debug output as
+	| # |                          |
+	| 1 | [[rec(1).id]] = a        |
+	|   | [[rec(2).id]] = b        |
+	|   | [[rec(3).id]] = bob\',c |
+	|   | [[rec(4).id]] = d        |
+
+Scenario: Split text format into recordset - With NewLine value
+	Given A string to split with new line value
+	And  assign to variable "[[rec().id]]" split type "Chars" at "\r\n2" and Include "unselected" and Escape "" 
+	When the data split tool is executed
+	Then the split recordset "[[rec(*).id]]" will be
+	| rs       | value |
+	| rec().id | a     |
+	| rec().id | ff    |
+	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | \r\n2 | No      | ""     |
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec(1).id]] = a   |
+	|   | [[rec(2).id]] = ff |

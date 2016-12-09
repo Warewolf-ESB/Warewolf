@@ -164,7 +164,14 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
-                                TestMessage = t.Exception != null ? t.Exception.Message : "Failed";
+                                if (t.Exception == null)
+                                {
+                                    TestMessage = "Failed";
+                                }
+                                else
+                                {
+                                    TestMessage = t.Exception.InnerException?.Message ?? t.Exception?.Message;
+                                }
                                 break;
                             }
                         case TaskStatus.RanToCompletion:
@@ -258,7 +265,7 @@ namespace Warewolf.Studio.ViewModels
                 EndpointUrl = EndpointUrl,
                 ResourceType = "WcfSource",
                 Type = enSourceType.WcfSource,
-                Id = _wcfServerSource == null ? Guid.NewGuid() : _wcfServerSource.Id
+                Id = _wcfServerSource?.Id ?? Guid.NewGuid()
             };
         }
 
@@ -342,8 +349,8 @@ namespace Warewolf.Studio.ViewModels
                     ResourceName = Name,
                     Name = Name,
                     ResourceType = "WcfSource",
-                    ResourceID = _wcfServerSource == null ? Guid.NewGuid() : _wcfServerSource.Id,
-                    Id = _wcfServerSource == null ? Guid.NewGuid() : _wcfServerSource.Id
+                    ResourceID = _wcfServerSource?.Id ?? Guid.NewGuid(),
+                    Id = _wcfServerSource?.Id ?? Guid.NewGuid()
                 };
             // ReSharper disable once RedundantIfElseBlock
             else
@@ -369,10 +376,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public void Save(IWcfServerSource source)
