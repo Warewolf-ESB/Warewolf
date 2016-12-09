@@ -215,7 +215,7 @@ namespace Warewolf.Studio.ViewModels
             child.ResourceName = name;
             child.IsRenaming = true;
 
-            child.SetPermission(server.Permissions[0].Permissions);
+            child.SetPermission(server.UserPermissions);
 
             return child;
         }

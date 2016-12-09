@@ -332,7 +332,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                child.SetPermission(Server.Permissions[0].Permissions);
+                child.SetPermission(Server.UserPermissions);
 
                 child.CanRename = true;
                 child.CanDelete = true;
