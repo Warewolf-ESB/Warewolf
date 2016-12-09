@@ -712,6 +712,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestCreateFolderCommandResourceTypeFolder()
         {
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
             //arrange
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
@@ -1630,6 +1632,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCreateNewFolderResourceTypeFolder()
         {
             //arrange
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;

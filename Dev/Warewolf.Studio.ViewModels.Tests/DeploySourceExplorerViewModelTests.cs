@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _shellViewModelMock = new Mock<IShellViewModel>();
             _serverMock = new Mock<IServer>();
-            _serverMock.Setup(server => server.GetServerVersion()).Returns("1.0.0.0");
+            _serverMock.Setup(server => server.GetServerVersion()).Returns("1.1.2");
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerItemMock=new Mock<IExplorerItem>();
             _explorerItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItem>());
@@ -316,7 +316,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelResourceCheckedMock.SetupGet(it => it.ResourceName).Returns("Resource2");
             env.AddChild(explorerItemViewModelMock.Object);
             env.AddChild(explorerItemViewModelResourceCheckedMock.Object);
-            //env.SelectAll = () => _deployStatsViewerViewModel.Object.Calculate(env.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
             //act
             env.SelectAll();
 
