@@ -37,7 +37,7 @@ IF EXIST "%~dp0..\..\..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\.
 IF EXIST "%~dp0..\..\..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\Server
 IF EXIST "%~dp0..\..\..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\DebugServer
 IF EXIST "%~dp0..\..\..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\Dev2.Server\bin\Debug
-IF NOT EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
+IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 	echo Success: Warewolf server found at %ServerBinDirectory%\Warewolf Server.exe.
 ) else (
 	echo Failure: Cannot find Warewolf Server.exe.
