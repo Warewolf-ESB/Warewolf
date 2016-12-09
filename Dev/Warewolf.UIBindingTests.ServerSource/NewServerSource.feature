@@ -69,6 +69,22 @@ Scenario: Creating server source Authentication error
 	And "Save" is "Disabled"
 
 @ServerSource
+Scenario: Creating server source Authentication error Shows correct error message
+	Given I open New Server Source
+	And I type Server as "SANDBOX-1"
+	And I select protocol as "http"
+    And I enter server port as "3142" 
+    And "Save" is "Disabled"
+	And Authentication Type as "User"
+	When I enter Username as "#$##$"
+	And I enter Password as "I73573r0"
+	When I Test Connection to remote server
+	Then Test Connecton is "Failed"
+	And validation message is "Connection Error: Unauthorized"
+	And "Save" is "Disabled"
+	And the error message is "Connection Error: Unauthorized"
+
+@ServerSource
 Scenario: Creating New Source as Public
 	Given I open New Server Source
 	And I type Server as "SANDBOX-1"
