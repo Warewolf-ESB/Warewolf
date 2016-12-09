@@ -281,6 +281,14 @@ namespace Warewolf.UIBindingTests.ServerSource
             Assert.AreEqual(password, viewModel.Password);
         }
 
+        [Then(@"the error message is ""(.*)""")]
+        public void ThenTheErrorMessageIs(string errorMessage)
+        {
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
+            var viewModel = GetViewModel(manageServerControl);
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string errorMsg)
         {
@@ -359,8 +367,9 @@ namespace Warewolf.UIBindingTests.ServerSource
             }
             else
             {
+                var connectionErrorUnauthorized = "Connection Error: Unauthorized";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IServerSource>()))
-                    .Throws(new WarewolfTestException("Connection Error: Unauthorized", null));
+                    .Throws(new WarewolfTestException(connectionErrorUnauthorized, new Exception(connectionErrorUnauthorized)));
             }
             manageServerControl.TestAction();
         }

@@ -35,6 +35,10 @@ namespace Dev2.Studio.Views.Workflow
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.OriginalSource.GetType() == typeof (System.Windows.Documents.Run))
+            {
+                return;
+            }
             if (e.ChangedButton == MouseButton.Right)
             {
                 DependencyObject node = e.OriginalSource as DependencyObject;
