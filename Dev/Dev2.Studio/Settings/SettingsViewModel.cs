@@ -18,7 +18,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-
+using Dev2.Communication;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -59,6 +59,7 @@ namespace Dev2.Settings
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
         private string _displayName;
+        private Data.Settings.Settings _backedUpSettings;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -439,7 +440,6 @@ namespace Dev2.Settings
         protected virtual PerfcounterViewModel CreatePerfmonViewModel()
         {
             var perfcounterViewModel = new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
-            perfcounterViewModel.SetItem(perfcounterViewModel);
             return perfcounterViewModel;
         }
 
@@ -651,7 +651,8 @@ namespace Dev2.Settings
             {
                 ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
             }
-
+            var serializer = new Dev2JsonSerializer();
+            _backedUpSettings = serializer.Deserialize<Data.Settings.Settings>(payload.ToString());
             return payload;
         }
 
