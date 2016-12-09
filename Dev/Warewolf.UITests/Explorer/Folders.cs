@@ -1,5 +1,9 @@
-﻿using System.Linq;
+﻿
+using System;
+using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -51,7 +55,6 @@ namespace Warewolf.UITests
             UIMap.Click_LocalHost_Once();
             UIMap.Create_New_Folder_Using_Shortcut();
             UIMap.Filter_Explorer("New Folder");
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
         

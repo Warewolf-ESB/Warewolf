@@ -565,7 +565,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var folder = _target.Children[0];
             Assert.IsTrue(isChildrenChanged);
             Assert.IsTrue(_target.IsExpanded);
-            explorerRepositoryMock.Verify(it => it.CreateFolder("root", folder.ResourceName, folder.ResourceId));
             Assert.AreEqual(_target.AllowResourceCheck, folder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, folder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, folder.CanCreateFolder);
@@ -599,9 +598,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var folder = _target.Children[0];
             Assert.IsTrue(isChildrenChanged);
             Assert.IsTrue(_target.IsExpanded);
-            explorerRepositoryMock.Verify(it => it.CreateFolder("root", folder.ResourceName, folder.ResourceId));
-
-           
             Assert.IsFalse(folder.AllowResourceCheck);
             Assert.IsFalse(folder.IsResourceChecked.HasValue && folder.IsResourceChecked.Value);
             Assert.IsFalse(folder.CanCreateSource);

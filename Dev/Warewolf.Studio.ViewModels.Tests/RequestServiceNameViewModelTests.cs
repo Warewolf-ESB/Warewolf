@@ -122,7 +122,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(requestServiceNameViewModel.ResourceName);
             Assert.AreEqual("MyParentFolder\\MyFolder\\", requestServiceNameViewModel.ResourceName.Path);
             Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
-            Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
+            Assert.AreEqual("Can only save to folders or root", requestServiceNameViewModel.ErrorMessage);
         }
 
 
@@ -255,7 +255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
-        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameValidNotLoaded_CannotClickOk()
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameValidNotLoaded_CanClickOk()
         {
             //------------Setup for test--------------------------
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
@@ -269,7 +269,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             requestServiceNameViewModel.OkCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
-            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+            var canExecute = requestServiceNameViewModel.OkCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
         }
 
         [TestMethod]

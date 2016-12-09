@@ -191,35 +191,32 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.ShowErrorMessage(ex.Message, @"Delete not allowed");
             }
-
-
         }
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
-                ResourceName = name,
+                ResourcePath = explorerItem.ResourcePath + "\\" + name,
+                IsSelected = true,
+                IsRenaming = true,
+                CanDelete = true,
+                IsFolder = true,
+                IsNewFolder = true,
                 ResourceId = id,
                 ResourceType = @"Folder",
                 AllowResourceCheck = explorerItem.AllowResourceCheck,
                 IsResourceChecked = explorerItem.IsResourceChecked,
-                CanCreateFolder = explorerItem.CanCreateFolder,
-                CanCreateSource = explorerItem.CanCreateSource,
-                CanShowVersions = explorerItem.CanShowVersions,
-                CanRename = explorerItem.CanRename,
-                CanDeploy = explorerItem.CanDeploy,
-                CanDuplicate = explorerItem.CanDuplicate,
-                CanShowDependencies = explorerItem.CanShowDependencies,
-                ResourcePath = explorerItem.ResourcePath + "\\" + name,
-                CanCreateWorkflowService = explorerItem.CanCreateWorkflowService,
                 ShowContextMenu = explorerItem.ShowContextMenu,
-                IsSelected = true,
-                IsRenaming = true,
-                CanDelete =  true,
-                IsFolder = true,
-                IsNewFolder = true
+                IsSaveDialog = explorerItem.IsSaveDialog
             };
+            
+            child.ResourceName = name;
+            child.IsRenaming = true;
+
+            child.SetPermission(server.UserPermissions);
+
             return child;
         }
 
