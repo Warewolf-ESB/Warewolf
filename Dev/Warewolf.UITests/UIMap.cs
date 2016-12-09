@@ -4549,13 +4549,7 @@ namespace Warewolf.UITests
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(63, 11));
         }
-
-        [When(@"I DoubleClick Explorer Localhost First Item")]
-        public void DoubleClick_Explorer_Localhost_First_Item()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(63, 11));
-        }
-
+        
         [When(@"I Drag DeleteWeb Toolbox Onto Workflow Surface")]
         public void Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface()
         {
@@ -8438,7 +8432,7 @@ namespace Warewolf.UITests
         public void Resize_Decision_LargeTool()
         {
             #region Variable Declarations
-            WpfWindow uIActivityDefaultWindoWindow = this.UIActivityDefaultWindoWindow;
+            WpfWindow uIActivityDefaultWindoWindow = this.DecisionOrSwitchDialog;
             #endregion
 
             Mouse.StartDragging(uIActivityDefaultWindoWindow, new Point(396, 387));
@@ -8451,6 +8445,53 @@ namespace Warewolf.UITests
         public void ThenDestinationRemoteServerIsConnected()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote Server is Disconnected");
+        }
+
+        public void Enter_Text_Into_Exchange_Tab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.AutoDiscoverUrlTxtBox.Text = "https://outlook.office365.com/EWS/Exchange.asmx";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.UserNameTextBox.Text = "Nkosinathi.Sangweni@TheUnlimited.co.za";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.PasswordTextBox.Text = "Password123";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.ToTextBox.Text = "dev2warewolf@gmail.com";
+        }
+
+        [When(@"I Click ExchangeSource TestConnection Button")]
+        public void Click_ExchangeSource_TestConnection_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.SendTestModelsCustom.Spinner);
+        }
+
+
+        [Then(@"There is an error")]
+        public void TheArdonerhasAnError()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.Exists);
+        }
+
+        [Given(@"I DoubleClick Explorer Localhost First Item")]
+        [When(@"I DoubleClick Explorer Localhost First Item")]
+        [Then(@"I DoubleClick Explorer Localhost First Item")]
+        public void DoubleClick_Explorer_Localhost_First_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I RightClick Ardoner Hyperlink")]
+        [When(@"I RightClick Ardoner Hyperlink")]
+        [Then(@"I RightClick Ardoner Hyperlink")]
+        public void RightClick_Adorner_Control()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Adornert_numbernText.NumbernHyperlink, MouseButtons.Right, ModifierKeys.None, new Point(88, 12));
+        }
+
+        [When(@"I Select NewExchangeSource FromExplorerContextMenu")]
+        public void Select_NewExchangeSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewExchangeSource, new Point(101, 13));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
     }
 }
