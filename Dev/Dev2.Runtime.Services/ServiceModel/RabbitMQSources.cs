@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ServiceModel
                 return new ValidationResult
                 {
                     IsValid = false,
-                    ErrorMessage = e.Message
+                    ErrorMessage = e.InnerException!=null? string.Join(Environment.NewLine,e.Message,e.InnerException.Message) : e.Message
                 };
             }
         }
