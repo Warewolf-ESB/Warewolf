@@ -295,6 +295,7 @@ namespace Warewolf.Studio.ViewModels
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
             _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Filter(string.Empty);
 
             return ViewResult;
         }
