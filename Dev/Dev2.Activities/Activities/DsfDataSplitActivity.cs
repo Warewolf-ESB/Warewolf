@@ -481,7 +481,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(!string.IsNullOrEmpty(t.At))
                         {
                             entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-                            if (entry == @"\r\n")
+                            if (entry != null && (entry.Contains(@"\r\n") || entry.Contains(@"\n")))
                             {
                                 var match = Regex.Match(stringToSplit, @"[\r\n]+");
                                 if (match.Success && !SkipBlankRows)

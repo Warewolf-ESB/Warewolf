@@ -619,17 +619,17 @@ Scenario: Split text format into recordset - With Escape value
 
 Scenario: Split text format into recordset - With NewLine value
 	Given A string to split with new line value
-	And  assign to variable "[[rec().id]]" split type "Chars" at "\r\n" and Include "unselected" and Escape "" 
+	And  assign to variable "[[rec().id]]" split type "Chars" at "\r\n2" and Include "unselected" and Escape "" 
 	When the data split tool is executed
 	Then the split recordset "[[rec(*).id]]" will be
 	| rs       | value |
 	| rec().id | a     |
-	| rec().id | 2ff   |
+	| rec().id | ff    |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| String to Split | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
-	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | \r\n  | No      | ""     |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars | \r\n2 | No      | ""     |
 	And the debug output as
 	| # |                     |
 	| 1 | [[rec(1).id]] = a   |
-	|   | [[rec(2).id]] = 2ff |
+	|   | [[rec(2).id]] = ff |

@@ -3325,8 +3325,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 621
  testRunner.Given("A string to split with new line value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 622
- testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \"\\r\\n\" and Include \"unsel" +
-                    "ected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \"\\r\\n2\" and Include \"unse" +
+                    "lected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 623
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -3338,7 +3338,7 @@ this.ScenarioSetup(scenarioInfo);
                         "a"});
             table66.AddRow(new string[] {
                         "rec().id",
-                        "2ff"});
+                        "ff"});
 #line 624
  testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table66, "Then ");
 #line 628
@@ -3361,7 +3361,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rec().id]]    =",
                         "Chars",
-                        "\\r",
+                        "\\r\n2",
                         "No",
                         "\"\""});
 #line 629
@@ -3375,7 +3375,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(1).id]] = a"});
             table68.AddRow(new string[] {
                         "",
-                        "[[rec(2).id]] = 2ff"});
+                        "[[rec(2).id]] = ff"});
 #line 632
  testRunner.And("the debug output as", ((string)(null)), table68, "And ");
 #line hidden

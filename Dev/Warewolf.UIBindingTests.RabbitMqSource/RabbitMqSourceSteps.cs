@@ -131,8 +131,9 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             }
             else
             {
+                var failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
                 mockUpdateManager.Setup(model => model.TestSource(It.IsAny<IRabbitMQServiceSourceDefinition>()))
-                    .Throws(new WarewolfTestException("Failed: None of the specified endpoints were reachable", null));
+                    .Throws(new WarewolfTestException(failedNoneOfTheSpecifiedEndpointsWereReachable, new Exception(failedNoneOfTheSpecifiedEndpointsWereReachable)));
             }
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.TestPublish();
