@@ -140,7 +140,6 @@ namespace Dev2.Settings.Scheduler
                         _schedulerViewModel.SelectedTask.Errors.ClearErrors();
                         _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Error);
                         _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Errors);
-                        _schedulerViewModel.SelectedTask.IsDirty = false;
                         _schedulerViewModel.SelectedTask.OldName = _schedulerViewModel.SelectedTask.Name;
                         _schedulerViewModel.SelectedTask.IsNew = false;
                     }
@@ -211,7 +210,7 @@ namespace Dev2.Settings.Scheduler
 
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = SchedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
-            ScheduledResource scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString()) { IsDirty = true };
+            ScheduledResource scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString());
             scheduledResource.OldName = scheduledResource.Name;
             var newres = _schedulerViewModel.ScheduledResourceModel.ScheduledResources[_schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : _schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count - 1];
             _schedulerViewModel.ScheduledResourceModel.ScheduledResources[_schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : _schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count - 1] = scheduledResource;
@@ -328,7 +327,6 @@ namespace Dev2.Settings.Scheduler
                 _schedulerViewModel.Name = resourceName;
                 _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Name);
             }
-            _schedulerViewModel.SelectedTask.IsDirty = true;
             _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.WorkflowName);
             _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
         }

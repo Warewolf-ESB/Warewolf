@@ -224,7 +224,38 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(1,perfcounterViewModel.ResourceCounters.Count);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PerfcounterViewModel_Constructor")]
+        public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameNull_IsDirtyFalse()
+        {
+            //------------Setup for test--------------------------
+            var performanceCounterTo = new PerformanceCounterTo();
+            performanceCounterTo.NativeCounters.Add(new TestCounter(WarewolfPerfCounterType.AverageExecutionTime));
+            performanceCounterTo.NativeCounters.Add(new TestCounter(WarewolfPerfCounterType.ConcurrentRequests));
+            var resourceId = Guid.NewGuid();
+            performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
+            performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            //------------Assert Preconditions-------------------
+            Assert.IsNotNull(perfcounterViewModel.ServerCounters);
+            Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
+            Assert.AreEqual(1, perfcounterViewModel.ServerCounters.Count);
+            Assert.AreEqual(2, perfcounterViewModel.ResourceCounters.Count);
+            var serverCounter = perfcounterViewModel.ServerCounters[0];
+            var resourceCounter = perfcounterViewModel.ResourceCounters[0];
+            var newResourceCounter = perfcounterViewModel.ResourceCounters[1];
+            Assert.IsTrue(newResourceCounter.IsNew);
+            Assert.IsNotNull(serverCounter);
+            Assert.IsNotNull(resourceCounter);
+            //------------Execute Test---------------------------
+            resourceCounter.TotalErrors = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(perfcounterViewModel.IsDirty);
 
+            resourceCounter.TotalErrors = false;
+            Assert.IsFalse(perfcounterViewModel.IsDirty);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
