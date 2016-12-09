@@ -158,9 +158,9 @@ namespace Warewolf.UIBindingTests.SharepointSource
             }
             else
             {
+                var unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange = "Unable to contact Server : Test Failed: Value does not fall within the expected range.";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()))
-                    .Throws(new WarewolfTestException("Unable to contact Server : Test Failed: Value does not fall within the expected range.", null));
-
+                    .Throws(new WarewolfTestException(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange, new Exception(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange)));
             }
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.PerformTestConnection();

@@ -165,9 +165,6 @@ this.ScenarioSetup(scenarioInfo);
                     "zed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 41
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
- testRunner.And("the error message is \"The request failed. The remote server returned an error: (4" +
-                    "01) Unauthorized.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

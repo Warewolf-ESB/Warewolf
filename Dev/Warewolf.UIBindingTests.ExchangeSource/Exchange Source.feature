@@ -39,4 +39,3 @@ Scenario: Fail Send Shows correct error message
 	And Send is "Unsuccessful"
 	Then Send is "The request failed. The remote server returned an error: (401) Unauthorized."
 	And "Save" is "Disabled"
-	And the error message is "The request failed. The remote server returned an error: (401) Unauthorized."

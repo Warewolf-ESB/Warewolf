@@ -367,8 +367,9 @@ namespace Warewolf.UIBindingTests.ServerSource
             }
             else
             {
+                var connectionErrorUnauthorized = "Connection Error: Unauthorized";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IServerSource>()))
-                    .Throws(new WarewolfTestException("Connection Error: Unauthorized", null));
+                    .Throws(new WarewolfTestException(connectionErrorUnauthorized, new Exception(connectionErrorUnauthorized)));
             }
             manageServerControl.TestAction();
         }
