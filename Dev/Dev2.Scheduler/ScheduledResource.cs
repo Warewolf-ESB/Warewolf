@@ -35,6 +35,7 @@ namespace Dev2.Scheduler
         string _oldName;
         private IErrorResultTO _errors;
         DateTime _nextRunDate;
+        private bool _isNew;
 
         public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName, string resourceId)
         {
@@ -258,7 +259,18 @@ namespace Dev2.Scheduler
                 OnPropertyChanged("Errors");
             }
         }
-        public bool IsNew { get; set; }
+        public bool IsNew
+        {
+            get
+            {
+                return _isNew;
+            }
+            set
+            {
+                IsDirty = value;
+                _isNew = value;
+            }
+        }
         public bool IsNewItem { get; set; }
 
         #region INotifyPropertyChanged
@@ -304,41 +316,55 @@ namespace Dev2.Scheduler
             {
                 return false;
             }
-            if (otherTrigger.Trigger == null)
+            if (otherTrigger.Trigger == null && trigger.Trigger!=null)
             {
                 return false;
             }
-            if(otherTrigger.Trigger.Enabled != trigger.Trigger.Enabled)
+            if (otherTrigger.Trigger != null && trigger.Trigger == null)
             {
                 return false;
             }
-            if (otherTrigger.Trigger.EndBoundary != trigger.Trigger.EndBoundary)
+            if (otherTrigger.Trigger != null && trigger.Trigger != null)
             {
-                return false;
-            }
-            if (otherTrigger.Trigger.StartBoundary != trigger.Trigger.StartBoundary)
-            {
-                return false;
-            }
-            if (otherTrigger.Trigger.TriggerType != trigger.Trigger.TriggerType)
-            {
-                return false;
-            }
-            if (otherTrigger.Trigger.Repetition==null)
-            {
-                return false;
-            }
-            if (otherTrigger.Trigger.Repetition.Duration != trigger.Trigger.Repetition.Duration)
-            {
-                return false;
-            }
-            if (otherTrigger.Trigger.Repetition.Interval != trigger.Trigger.Repetition.Interval)
-            {
-                return false;
-            }
-            if (otherTrigger.Trigger.Repetition.StopAtDurationEnd != trigger.Trigger.Repetition.StopAtDurationEnd)
-            {
-                return false;
+                if (otherTrigger.Trigger.Enabled != trigger.Trigger.Enabled)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.EndBoundary != trigger.Trigger.EndBoundary)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.StartBoundary != trigger.Trigger.StartBoundary)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.TriggerType != trigger.Trigger.TriggerType)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.Repetition == null && otherTrigger.Trigger.Repetition != null)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.Repetition != null && otherTrigger.Trigger.Repetition == null)
+                {
+                    return false;
+                }
+                if (otherTrigger.Trigger.Repetition != null && trigger.Trigger.Repetition != null)
+                {
+                    if (otherTrigger.Trigger.Repetition.Duration != trigger.Trigger.Repetition.Duration)
+                    {
+                        return false;
+                    }
+                    if (otherTrigger.Trigger.Repetition.Interval != trigger.Trigger.Repetition.Interval)
+                    {
+                        return false;
+                    }
+                    if (otherTrigger.Trigger.Repetition.StopAtDurationEnd != trigger.Trigger.Repetition.StopAtDurationEnd)
+                    {
+                        return false;
+                    }
+                }
             }
             return true;
         }

@@ -440,7 +440,6 @@ namespace Dev2.Settings
         protected virtual PerfcounterViewModel CreatePerfmonViewModel()
         {
             var perfcounterViewModel = new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
-            perfcounterViewModel.SetItem(_backedUpSettings.PerfCounters);
             return perfcounterViewModel;
         }
 

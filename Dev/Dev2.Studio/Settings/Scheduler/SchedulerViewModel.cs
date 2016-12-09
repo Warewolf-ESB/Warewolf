@@ -120,6 +120,7 @@ namespace Dev2.Settings.Scheduler
 
             Server = server;
             SetupServer(server);
+            SetDisplayName(false);
         }
 
         public override bool HasVariables => false;
@@ -765,14 +766,13 @@ namespace Dev2.Settings.Scheduler
             {
                 try
                 {
-                    if (TaskList == null || TaskList.Count == 0)
+                    
+                    if (SelectedTask == null)
                     {
+                        SetDisplayName(false);
                         return false;
                     }
-                    var isDirty = TaskList.Any(resource => resource.IsDirty);
-                    var cnct = Server.IsConnected;
-                    //var dirty = isDirty && cnct;
-                    var dirty = !Item.Equals(SelectedTask);
+                    var dirty = !SelectedTask.Equals(Item);
                     SelectedTask.IsDirty = dirty;
                     SetDisplayName(dirty);
                     return dirty;
@@ -806,7 +806,7 @@ namespace Dev2.Settings.Scheduler
             }
             else
             {
-                DisplayName = BaseName.Replace("*", "").TrimEnd(' ');
+                DisplayName = DisplayName.Replace("*", "").TrimEnd(' ');
             }
         }
 
