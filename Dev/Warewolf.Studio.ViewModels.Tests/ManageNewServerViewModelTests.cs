@@ -344,7 +344,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestTestCommandExecutePassWorkerFailedException()
         {
             //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
+            var expectedExceptionMessage = "Exception: someExceptionMessage";
             _asyncWorkerMock.Setup(
                 it =>
                 it.Start(
@@ -366,7 +366,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.TestCommand.Execute(null);
 
             //assert
-            Assert.AreEqual(expectedExceptionMessage, _target.TestMessage);
+            Assert.AreEqual("Exception: " + expectedExceptionMessage, _target.TestMessage);
             Assert.IsFalse(_target.TestPassed);
             Assert.IsFalse(_target.Testing);
         }

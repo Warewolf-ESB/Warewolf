@@ -23,6 +23,7 @@ namespace Warewolf.UIBindingTests.WebSource
     public class WebSourceSteps
     {
         private readonly ScenarioContext scenarioContext;
+        string illegalCharactersInPath = "Illegal characters in path.";
 
         public WebSourceSteps(ScenarioContext scenarioContext)
         {
@@ -316,6 +317,9 @@ namespace Warewolf.UIBindingTests.WebSource
         [When(@"the error message is ""(.*)""")]
         public void WhenTheErrorMessageIs(string errorMessage)
         {
+            errorMessage = "Exception: " + illegalCharactersInPath + Environment.NewLine + Environment.NewLine +
+                           "Inner Exception: " + illegalCharactersInPath;
+
             var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
@@ -347,7 +351,6 @@ namespace Warewolf.UIBindingTests.WebSource
             }
             else
             {
-                var illegalCharactersInPath = "Illegal characters in path.";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
                     .Throws(new WarewolfTestException(illegalCharactersInPath, new Exception(illegalCharactersInPath)));
             }

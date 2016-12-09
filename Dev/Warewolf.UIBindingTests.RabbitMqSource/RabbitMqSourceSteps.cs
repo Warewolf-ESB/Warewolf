@@ -18,6 +18,8 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
     [Binding]
     public class RabbitMqSourceSteps
     {
+        string failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
+
         [BeforeFeature("RabbitMqSource")]
         public static void SetupForSystem()
         {
@@ -131,7 +133,6 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             }
             else
             {
-                var failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
                 mockUpdateManager.Setup(model => model.TestSource(It.IsAny<IRabbitMQServiceSourceDefinition>()))
                     .Throws(new WarewolfTestException(failedNoneOfTheSpecifiedEndpointsWereReachable, new Exception(failedNoneOfTheSpecifiedEndpointsWereReachable)));
             }
@@ -159,6 +160,9 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         [Then(@"the error message is ""(.*)""")]
         public void ThenTheErrorMessageIs(string errorMessage)
         {
+            errorMessage = "Exception: " + failedNoneOfTheSpecifiedEndpointsWereReachable + Environment.NewLine +
+                           Environment.NewLine + "Inner Exception: " + failedNoneOfTheSpecifiedEndpointsWereReachable;
+
             var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestErrorMessage);
         }

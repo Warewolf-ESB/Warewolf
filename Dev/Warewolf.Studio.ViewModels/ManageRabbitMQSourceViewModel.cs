@@ -204,7 +204,7 @@ namespace Warewolf.Studio.ViewModels
                 TestPassed = false;
                 TestFailed = true;
                 Testing = false;
-                TestErrorMessage = exception.InnerException?.Message ?? exception.Message;
+                TestErrorMessage = GetExceptionMessage(exception);
             }
         }
 
