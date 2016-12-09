@@ -13,6 +13,8 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
         }
 
         #region Additional test attributes
