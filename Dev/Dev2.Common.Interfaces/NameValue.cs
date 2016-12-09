@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 
@@ -146,6 +148,13 @@ namespace Dev2.Common.Interfaces
         #endregion
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
     public class ObservableAwareNameValue : NameValue
     {
