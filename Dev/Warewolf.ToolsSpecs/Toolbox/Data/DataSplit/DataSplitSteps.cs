@@ -103,6 +103,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             scenarioContext.Add("stringToSplit", stringToSplit);
         }
 
+        [Given(@"A string to split with new line value")]
+        public void GivenAStringToSplitWithNewLineValue()
+        {
+            var stringToSplit = "a" + Environment.NewLine + "2ff";
+
+            scenarioContext.Add("stringToSplit", stringToSplit);
+        }
+
+
         [Given(@"the direction is ""(.*)""")]
         public void GivenTheDirectionIs(string direction)
         {

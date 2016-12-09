@@ -1486,12 +1486,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var primarySelection = item.PrimarySelection;
             NotifyItemSelected(primarySelection);
             primarySelection.SetProperty("IsSelected", true);
-            var selectedItem = primarySelection;
-            if (IsTestView && selectedItem!=null)
-            {
-                ItemSelectedAction?.Invoke(selectedItem);
-                ClearSelection();
-            }
+            SelectedItem = primarySelection;            
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
@@ -1723,12 +1718,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
 
-                var debugState = args.DebugState;
-                if (IsTestView)
-                {
-                    ClearSelection();
-                    return;
-                }
+                var debugState = args.DebugState;                
                 if (debugState != null)
                 {
                     var workSurfaceMappingId = debugState.WorkSurfaceMappingId;
@@ -2397,6 +2387,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _deployTooltip;
         private string _showDependenciesTooltip;
         private ICommand _newServiceCommand;
+        private ModelItem _selectedItem;
 
         /// <summary>
         /// Models the service model changed.
@@ -2591,7 +2582,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion
-
        
         /// <summary>
         /// Gets the work surface context.
@@ -2615,6 +2605,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
+        public ModelItem SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                _selectedItem = value;
+            }
+        }
 
         #region Implementation of IHandle<EditActivityMessage>
 
@@ -2651,9 +2652,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
+            RemoveUnsavedWorkflowName(unsavedName);
+        }
+        internal void RemoveUnsavedWorkflowName(string unsavedName)
+        {
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
-
         private void DisposeDesigner()
         {
             if (_wd != null)

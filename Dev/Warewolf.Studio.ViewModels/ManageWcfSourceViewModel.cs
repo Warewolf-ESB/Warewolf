@@ -164,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
-                                TestMessage = t.Exception?.Message ?? "Failed";
+                                TestMessage = GetExceptionMessage(t.Exception);
                                 break;
                             }
                         case TaskStatus.RanToCompletion:

@@ -118,6 +118,7 @@ namespace Dev2.Settings.Perfcounters
 
             }
             ResourceCounters.Add(CreateNewCounter());
+            SetItem(nativeCounters);
         }
 
         public void Save(IPerformanceCounterTo perfCounterTo)
@@ -125,6 +126,7 @@ namespace Dev2.Settings.Perfcounters
             UpdateServerCounter(perfCounterTo);
             UpdateResourceCounter(perfCounterTo);
             InitializeTos(perfCounterTo);
+            
         }
 
         private void UpdateResourceCounter(IPerformanceCounterTo perfCounterTo)
@@ -305,33 +307,28 @@ namespace Dev2.Settings.Perfcounters
 
         #region CloneItems
 
-        public void SetItem(PerfcounterViewModel model)
+        public void SetItem(IPerformanceCounterTo model)
         {
-            //ItemServerCounters = CloneServerCounters(model.ServerCounters);
-            //ItemResourceCounters = CloneResourceCounters(model.ResourceCounters);
+            ItemServerCounters = new List<IPerformanceCountersByMachine>();
+            ItemResourceCounters = new List<IPerformanceCountersByResource>();
+            var performanceCountersByMachines = model.GetServerCountersTo();
+            foreach (var performanceCountersByMachine in performanceCountersByMachines)
+            {
+                ItemServerCounters.Add(performanceCountersByMachine);
+            }
+            var performanceCountersByResources = model.GetResourceCountersTo();
+            foreach (var performanceCountersByResource in performanceCountersByResources)
+            {
+                ItemResourceCounters.Add(performanceCountersByResource);
+            }
+            ItemResourceCounters.Add(CreateNewCounter());
         }
+        
+        public List<IPerformanceCountersByResource> ItemResourceCounters { get; set; }
 
-        private ObservableCollection<IPerformanceCountersByResource> CloneResourceCounters(ObservableCollection<IPerformanceCountersByResource> resourceCounters)
-        {
-            var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(resourceCounters, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<IPerformanceCountersByResource> clone = JsonConvert.DeserializeObject<ObservableCollection<IPerformanceCountersByResource>>(ser);
-            return clone;
-        }
+        public List<IPerformanceCountersByMachine> ItemServerCounters { get; set; }
 
-        private ObservableCollection<IPerformanceCountersByMachine> CloneServerCounters(ObservableCollection<IPerformanceCountersByMachine> serverCounters)
-        {
-            var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(serverCounters, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<IPerformanceCountersByMachine> clone = JsonConvert.DeserializeObject<ObservableCollection<IPerformanceCountersByMachine>>(ser);
-            return clone;
-        }
-
-        public ObservableCollection<IPerformanceCountersByResource> ItemResourceCounters { get; set; }
-
-        public ObservableCollection<IPerformanceCountersByMachine> ItemServerCounters { get; set; }
-
-        private bool Equals(ObservableCollection<IPerformanceCountersByMachine> serverCounters, ObservableCollection<IPerformanceCountersByResource> resourceCounters)
+        private bool Equals(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
         {
             if (ReferenceEquals(null, serverCounters))
             {
@@ -345,16 +342,16 @@ namespace Dev2.Settings.Perfcounters
             return EqualsSeq(serverCounters, resourceCounters);
         }
 
-        private bool EqualsSeq(ObservableCollection<IPerformanceCountersByMachine> serverCounters, ObservableCollection<IPerformanceCountersByResource> resourceCounters)
+        private bool EqualsSeq(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
         {
             var serverCountersCompare = ServerCountersCompare(serverCounters, true);
             var resourceCountersCompare = ResourceCountersCompare(resourceCounters, true);
-            var @equals = serverCountersCompare && resourceCountersCompare;
+            var equals = serverCountersCompare && resourceCountersCompare;
 
-            return @equals;
+            return equals;
         }
 
-        private bool ServerCountersCompare(ObservableCollection<IPerformanceCountersByMachine> serverCounters, bool serverPermissionCompare)
+        private bool ServerCountersCompare(List<IPerformanceCountersByMachine> serverCounters, bool serverPermissionCompare)
         {
             if (_serverCounters == null)
             {
@@ -394,12 +391,12 @@ namespace Dev2.Settings.Perfcounters
                 if (ServerCounters[i].NotAuthorisedErrors != serverCounters[i].NotAuthorisedErrors)
                 {
                     serverPermissionCompare = false;
-                }
+                }                
             }
             return serverPermissionCompare;
         }
 
-        private bool ResourceCountersCompare(ObservableCollection<IPerformanceCountersByResource> resourceCounters, bool resourcePermissionCompare)
+        private bool ResourceCountersCompare(List<IPerformanceCountersByResource> resourceCounters, bool resourcePermissionCompare)
         {
             if (_resourceCounters == null)
             {
@@ -411,6 +408,10 @@ namespace Dev2.Settings.Perfcounters
             }
             for (int i = 0; i < _resourceCounters.Count; i++)
             {
+                if (resourceCounters[i].ResourceId == Guid.Empty)
+                {
+                    continue;
+                }
                 if (ResourceCounters[i].ResourceId != resourceCounters[i].ResourceId)
                 {
                     resourcePermissionCompare = false;
@@ -432,6 +433,11 @@ namespace Dev2.Settings.Perfcounters
                 }
                 if (!resourcePermissionCompare) continue;
                 if (ResourceCounters[i].TotalErrors != resourceCounters[i].TotalErrors)
+                {
+                    resourcePermissionCompare = false;
+                }
+                if (!resourcePermissionCompare) continue;
+                if (ResourceCounters[i].IsDeleted != resourceCounters[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;
                 }

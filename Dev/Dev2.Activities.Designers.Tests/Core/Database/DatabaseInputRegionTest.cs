@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
@@ -212,8 +213,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsNotNull(methodInfo);
             methodInfo.Invoke(inputRegion, new object[] { });
             //---------------Test Result -----------------------
-            Assert.AreEqual("[[name]]", inputRegion.Inputs[0].Value);
-            Assert.AreEqual("[[surname]]", inputRegion.Inputs[1].Value);
+            Assert.AreEqual("[[name]]", inputRegion.Inputs.ToList()[0].Value);
+            Assert.AreEqual("[[surname]]", inputRegion.Inputs.ToList()[1].Value);
 
         }
 

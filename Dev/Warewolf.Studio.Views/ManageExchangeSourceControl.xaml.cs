@@ -14,6 +14,10 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
+        public void TestSend()
+        {
+            TestSendCommand.Command.Execute(null);
+        }
 
         #region Implementation of ICheckControlEnabledView
 

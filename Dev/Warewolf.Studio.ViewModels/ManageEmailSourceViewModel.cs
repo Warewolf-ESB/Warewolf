@@ -472,10 +472,7 @@ namespace Warewolf.Studio.ViewModels
         private void TestConnection()
         {
             _token = new CancellationTokenSource();
-
-
-            var t = new Task(
-                SetupProgressSpinner, _token.Token);
+            var t = new Task(SetupProgressSpinner, _token.Token);
 
             t.ContinueWith(a => Application.Current?.Dispatcher?.Invoke(() =>
             {
@@ -487,7 +484,7 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
-                                TestMessage = t.Exception?.Message ?? "Failed";
+                                TestMessage = GetExceptionMessage(t.Exception);
                                 break;
                             }
                         case TaskStatus.RanToCompletion:
@@ -505,17 +502,15 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupProgressSpinner()
         {
-
             Application.Current?.Dispatcher?.Invoke(() =>
             {
                 Testing = true;
                 TestFailed = false;
                 TestPassed = false;
             });
-
             _updateManager.TestConnection(ToNewSource());
-
         }
+
         IEmailServiceSource ToNewSource()
         {
             return new EmailServiceSourceDefinition

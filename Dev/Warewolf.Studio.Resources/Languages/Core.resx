@@ -472,6 +472,12 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="Tool_Utility_Rabbit_MQ_Consume_Tags" xml:space="preserve">
     <value>source connector</value>
   </data>
+  <data name="ExceptionErrorLabel" xml:space="preserve">
+    <value>Exception: </value>
+  </data>
+  <data name="InnerExceptionErrorLabel" xml:space="preserve">
+    <value>Inner Exception: </value>
+  </data>
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
@@ -4091,5 +4097,8 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="EmailSourceTestHelp" xml:space="preserve">
     <value>Sends a test email from this account so you can confirm its working.</value>
+  </data>
+  <data name="ErrorsAdornerCopyToClipboardTooltip" xml:space="preserve">
+    <value>Copy to clipboard</value>
   </data>
 </root>
