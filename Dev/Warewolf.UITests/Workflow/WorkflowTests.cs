@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Workflow
 {
     [CodedUITest]
-    public class WorkflowUITests
+    public class WorkflowTests
     {
         private const string Folder = "Acceptance Tests";
         private const string HelloWorld = "Hello World";

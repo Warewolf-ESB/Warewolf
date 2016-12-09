@@ -164,6 +164,7 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
+
                                 TestMessage = GetExceptionMessage(t.Exception);
                                 break;
                             }
