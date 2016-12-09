@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core
                     IsEnabled = false;
                 }
                 var outputMappings = current ?? new List<IServiceOutputMapping>();
-                var outputs = new ObservableCollection<IServiceOutputMapping>(outputMappings);
+                var outputs = new ObservableCollection<IServiceOutputMapping>();
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 outputs.AddRange(outputMappings);
                 Outputs = outputs;

@@ -10,6 +10,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism;
+
 // ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core.Web.Put
@@ -67,8 +69,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         private void SetupHeaders(ModelItem modelItem)
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
-            var headerCollection = new ObservableCollection<INameValue>(existing ?? new List<INameValue>());
+            var nameValues = existing ?? new List<INameValue>();
+            var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
+            headerCollection.AddRange(nameValues);
             Headers = headerCollection;
 
             if (Headers.Count == 0)
@@ -95,7 +99,39 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            AddItemPropertyChangeEvent(e);
+            RemoveItemPropertyChangeEvent(e);
+
+            
+        }
+
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems == null) return;
+            foreach (INotifyPropertyChanged item in args.NewItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged += ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
             _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+        }
+
+        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.OldItems == null) return;
+            foreach (INotifyPropertyChanged item in args.OldItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged -= ItemPropertyChanged;
+                }
+            }
         }
 
         #region Implementation of INotifyPropertyChanged

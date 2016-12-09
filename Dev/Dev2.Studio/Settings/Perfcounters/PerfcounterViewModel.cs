@@ -118,6 +118,7 @@ namespace Dev2.Settings.Perfcounters
 
             }
             ResourceCounters.Add(CreateNewCounter());
+            SetItem(nativeCounters);
         }
 
         public void Save(IPerformanceCounterTo perfCounterTo)
@@ -125,7 +126,7 @@ namespace Dev2.Settings.Perfcounters
             UpdateServerCounter(perfCounterTo);
             UpdateResourceCounter(perfCounterTo);
             InitializeTos(perfCounterTo);
-            SetItem(perfCounterTo);
+            
         }
 
         private void UpdateResourceCounter(IPerformanceCounterTo perfCounterTo)
