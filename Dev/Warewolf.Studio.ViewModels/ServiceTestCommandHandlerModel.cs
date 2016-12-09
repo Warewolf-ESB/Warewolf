@@ -8,6 +8,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local

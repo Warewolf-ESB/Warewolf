@@ -31,6 +31,7 @@ namespace Dev2.Studio.Views.Workflow
             PreviewDragOver += DropPointOnDragEnter;
             PreviewMouseDown += WorkflowDesignerViewPreviewMouseDown;
             _dragDropHelpers = new DragDropHelpers(this);
+            
         }
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
