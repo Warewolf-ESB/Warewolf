@@ -10,13 +10,6 @@ namespace Warewolf.UITests.Tools.Utility
 
         [TestMethod]
         [TestCategory("Utility Tools")]
-        public void CommentTool_OpenLargeViewUITest()
-        {
-            UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
-        }
-
-        [TestMethod]
-        [TestCategory("Utility Tools")]
         public void ToolDesigners_CommentSmallView_Debug_DebugOutputWorksFine_UITest()
         {
             UIMap.Drag_Toolbox_Comment_Onto_DesignSurface();
@@ -26,16 +19,13 @@ namespace Warewolf.UITests.Tools.Utility
 
         [TestMethod]
         [TestCategory("Utility Tools")]
-        public void ToolDesigners_ResizeComment_MakesTheWorkflowDirty_UITest()
+        public void ToolDesigners_CommentSmallView_CanResize_UITest()
         {            
             UIMap.Enter_Text_Into_CommentTool("Some comment, some comment, some comment,");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
             UIMap.Save_With_Ribbon_Button_And_Dialog(CommentToolWf);
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
-            var newHeight = UIMap.Expand_Comment_Tool_Size();            
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Filter_Explorer(CommentToolWf);
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            var newHeight = UIMap.Expand_Comment_Tool_Size();
             Assert.AreEqual(newHeight, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Height);
         }
 

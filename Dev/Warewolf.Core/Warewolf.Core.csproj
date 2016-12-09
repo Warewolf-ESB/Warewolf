@@ -37,6 +37,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="WebServiceDefinition.cs" />
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>

@@ -103,6 +103,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -119,13 +123,25 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+      <Project>{CC1B89CD-3222-4019-A0D1-58664F92CC47}</Project>
+      <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{cb0f5535-5e1d-41f9-a23c-f59fdc816b75}</Project>

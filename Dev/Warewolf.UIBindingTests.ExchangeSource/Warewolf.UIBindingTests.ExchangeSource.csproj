@@ -100,6 +100,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Exchange Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,6 +127,10 @@
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
+      <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>

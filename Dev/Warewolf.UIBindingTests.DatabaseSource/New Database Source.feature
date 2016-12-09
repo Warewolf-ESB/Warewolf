@@ -114,6 +114,21 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       Then Database dropdown is "Collapsed"
       And "Save" is "Disabled"
 	  
+ @DbSource
+Scenario: Incorrect Server Address Shows correct error message
+      Given I open New Database Source
+      And I type Server as "RSAKLFSVRGENDEV"
+      And I Select Authentication Type as "User"
+      Then Username field is "Visible"
+      And Password field is "Visible"
+	  When I type Username as "test"
+	  And I type Password as "test"
+      Then Database dropdown is "Collapsed"
+      And "Test Connection" is "Enabled"
+      When Test Connecton is "Unsuccessful"
+      Then Database dropdown is "Collapsed"
+      And "Save" is "Disabled"
+	  And the error message is "Login failed for user 'test'"
 
 @DbSource
 Scenario: Testing as Windows and swapping it resets the test connection 
