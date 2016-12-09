@@ -87,5 +87,20 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
+        public string GetExceptionMessage(Exception exception)
+        {
+            if (exception == null)
+            {
+                return "Failed";
+            }
+            string exceptionMsg = Resources.Languages.Core.ExceptionErrorLabel + exception.Message;
+
+            if (exception.InnerException != null)
+            {
+                string innerExpceptionMsg = Resources.Languages.Core.InnerExceptionErrorLabel + exception.InnerException.Message;
+                return exceptionMsg + Environment.NewLine + Environment.NewLine + innerExpceptionMsg;
+            }
+            return exceptionMsg;
+        }
     }
 }

@@ -2793,6 +2793,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exception: .
+        /// </summary>
+        public static string ExceptionErrorLabel {
+            get {
+                return ResourceManager.GetString("ExceptionErrorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email to respond to.
         /// </summary>
         public static string ExceptionViewEmailAddressWatermark {
@@ -3390,6 +3399,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string HostNameLabel {
             get {
                 return ResourceManager.GetString("HostNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inner Exception: .
+        /// </summary>
+        public static string InnerExceptionErrorLabel {
+            get {
+                return ResourceManager.GetString("InnerExceptionErrorLabel", resourceCulture);
             }
         }
         
