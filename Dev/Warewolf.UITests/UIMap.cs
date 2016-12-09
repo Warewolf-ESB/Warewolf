@@ -6709,9 +6709,6 @@ namespace Warewolf.UITests
         public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            MainStudioWindow.DrawHighlight();
-            MainStudioWindow.ExplorerContextMenu.DrawHighlight();
-            MainStudioWindow.ExplorerContextMenu.Rename.DrawHighlight();
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
