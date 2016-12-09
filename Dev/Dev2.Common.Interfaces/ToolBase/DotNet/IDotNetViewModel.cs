@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
 
     public interface IDotNetInputRegion : IToolRegion
     {
-        IList<IServiceInput> Inputs { get; set; }
+        ICollection<IServiceInput> Inputs { get; set; }
     }
 
 
