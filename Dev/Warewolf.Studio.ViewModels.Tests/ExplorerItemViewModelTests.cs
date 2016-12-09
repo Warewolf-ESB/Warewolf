@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -712,6 +713,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestCreateFolderCommandResourceTypeFolder()
         {
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
             //arrange
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
@@ -1630,6 +1633,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCreateNewFolderResourceTypeFolder()
         {
             //arrange
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
