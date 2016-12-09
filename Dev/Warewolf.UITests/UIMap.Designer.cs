@@ -31,6 +31,97 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstitem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIWarewolfStudioViewMoTreeItem.firstitem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.firstitemExists, firstitem.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod2()
+        {
+            #region Variable Declarations
+            WpfTreeItem seconditem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIWarewolfStudioViewMoTreeItem.seconditem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.seconditemExists, seconditem.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod3()
+        {
+            #region Variable Declarations
+            WpfTreeItem remoteitem1 = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIWarewolfStudioViewMoTreeItem2.remoteitem1;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+            Assert.AreEqual(this.AssertMethod3ExpectedValues.remoteitem1Exists, remoteitem1.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod4 - Use 'AssertMethod4ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod4()
+        {
+            #region Variable Declarations
+            WpfMenuItem uINewWorkflowServiceMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIItemMenu.UINewWorkflowServiceMenuItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'New Workflow Service' menu item equals 'True'
+            Assert.AreEqual(this.AssertMethod4ExpectedValues.UINewWorkflowServiceMenuItemExists, uINewWorkflowServiceMenuItem.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod5 - Use 'AssertMethod5ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod5()
+        {
+            #region Variable Declarations
+            WpfMenuItem uINewFolderMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIItemMenu.UINewFolderMenuItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'New Folder' menu item equals 'True'
+            Assert.AreEqual(this.AssertMethod5ExpectedValues.UINewFolderMenuItemExists, uINewFolderMenuItem.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod6 - Use 'AssertMethod6ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod6()
+        {
+            #region Variable Declarations
+            WpfMenuItem uIViewApisJsonMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIItemMenu.UIViewApisJsonMenuItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'View Apis.Json' menu item equals 'True'
+            Assert.AreEqual(this.AssertMethod6ExpectedValues.UIViewApisJsonMenuItemExists, uIViewApisJsonMenuItem.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod7 - Use 'AssertMethod7ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod7()
+        {
+            #region Variable Declarations
+            WpfMenuItem uIServerVersionMenuItem = this.UIWarewolfDEV2SANELEMTWindow.UIItemMenu.UIServerVersionMenuItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Server Version' menu item equals 'True'
+            Assert.AreEqual(this.AssertMethod7ExpectedValues.UIServerVersionMenuItemExists, uIServerVersionMenuItem.Exists);
+        }
+        
+        /// <summary>
         /// Open_UI_Map_Designer_To_Flowchart - Use 'Open_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
         /// </summary>
         public void Open_UI_Map_Designer_To_Flowchart()
@@ -44,6 +135,90 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod2ExpectedValues == null))
+                {
+                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
+                }
+                return this.mAssertMethod2ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod3ExpectedValues == null))
+                {
+                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
+                }
+                return this.mAssertMethod3ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod4ExpectedValues AssertMethod4ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod4ExpectedValues == null))
+                {
+                    this.mAssertMethod4ExpectedValues = new AssertMethod4ExpectedValues();
+                }
+                return this.mAssertMethod4ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod5ExpectedValues AssertMethod5ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod5ExpectedValues == null))
+                {
+                    this.mAssertMethod5ExpectedValues = new AssertMethod5ExpectedValues();
+                }
+                return this.mAssertMethod5ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod6ExpectedValues AssertMethod6ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod6ExpectedValues == null))
+                {
+                    this.mAssertMethod6ExpectedValues = new AssertMethod6ExpectedValues();
+                }
+                return this.mAssertMethod6ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod7ExpectedValues AssertMethod7ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod7ExpectedValues == null))
+                {
+                    this.mAssertMethod7ExpectedValues = new AssertMethod7ExpectedValues();
+                }
+                return this.mAssertMethod7ExpectedValues;
+            }
+        }
+        
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
             get
@@ -202,6 +377,20 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
+        
+        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
+        
+        private AssertMethod4ExpectedValues mAssertMethod4ExpectedValues;
+        
+        private AssertMethod5ExpectedValues mAssertMethod5ExpectedValues;
+        
+        private AssertMethod6ExpectedValues mAssertMethod6ExpectedValues;
+        
+        private AssertMethod7ExpectedValues mAssertMethod7ExpectedValues;
+        
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
@@ -227,6 +416,111 @@ namespace Warewolf.UITests
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+        /// </summary>
+        public bool firstitemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+        /// </summary>
+        public bool seconditemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod3'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod3ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item equals 'True'
+        /// </summary>
+        public bool remoteitem1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod4'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod4ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Workflow Service' menu item equals 'True'
+        /// </summary>
+        public bool UINewWorkflowServiceMenuItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod5'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod5ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Folder' menu item equals 'True'
+        /// </summary>
+        public bool UINewFolderMenuItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod6'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod6ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'View Apis.Json' menu item equals 'True'
+        /// </summary>
+        public bool UIViewApisJsonMenuItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod7'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod7ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Server Version' menu item equals 'True'
+        /// </summary>
+        public bool UIServerVersionMenuItemExists = true;
         #endregion
     }
     
@@ -1402,6 +1696,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfMenuItem ViewApisJson
+        {
+            get
+            {
+                if ((this.mViewApisJson == null))
+                {
+                    this.mViewApisJson = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewApisJson.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mViewApisJson.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mViewApisJson;
+            }
+        }
+        
         public WpfMenuItem ViewApisJsonMenuItem
         {
             get
@@ -1474,6 +1784,8 @@ namespace Warewolf.UITests
         
         private WpfMenuItem mTests;
         
+        private WpfMenuItem mViewApisJson;
+        
         private WpfMenuItem mViewApisJsonMenuItem;
         
         private WpfMenuItem mNewExchangeSource;
@@ -1518,7 +1830,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewWorkflow = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServiceItem";
+                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
                     this.mNewWorkflow.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1534,7 +1846,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewFolder = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
+                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolder";
                     this.mNewFolder.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1582,11 +1894,27 @@ namespace Warewolf.UITests
                 {
                     this.mDeploy = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DeployItem";
+                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Deploy";
                     this.mDeploy.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeploy;
+            }
+        }
+        
+        public WpfMenuItem DeployItem
+        {
+            get
+            {
+                if ((this.mDeployItem == null))
+                {
+                    this.mDeployItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeployItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "DeployItem";
+                    this.mDeployItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeployItem;
             }
         }
         
@@ -1598,7 +1926,7 @@ namespace Warewolf.UITests
                 {
                     this.mShowServerVersion = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersionItem";
+                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
                     this.mShowServerVersion.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1846,6 +2174,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfMenuItem ViewApis
+        {
+            get
+            {
+                if ((this.mViewApis == null))
+                {
+                    this.mViewApis = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mViewApis.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mViewApis.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mViewApis;
+            }
+        }
+        
         public SourcesMenuItem SourcesMenuItem
         {
             get
@@ -1871,6 +2215,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mDelete;
         
         private WpfMenuItem mDeploy;
+        
+        private WpfMenuItem mDeployItem;
         
         private WpfMenuItem mShowServerVersion;
         
@@ -1903,6 +2249,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mScheduleMenuItem;
         
         private WpfMenuItem mViewApisJsonMenuItem;
+        
+        private WpfMenuItem mViewApis;
         
         private SourcesMenuItem mSourcesMenuItem;
         #endregion
@@ -3497,7 +3845,7 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
@@ -105673,12 +106021,26 @@ namespace Warewolf.UITests
                 return this.mUIUI_ExplorerControl_ACustom;
             }
         }
+        
+        public UIItemMenu UIItemMenu
+        {
+            get
+            {
+                if ((this.mUIItemMenu == null))
+                {
+                    this.mUIItemMenu = new UIItemMenu(this);
+                }
+                return this.mUIItemMenu;
+            }
+        }
         #endregion
         
         #region Fields
         private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
         
         private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        
+        private UIItemMenu mUIItemMenu;
         #endregion
     }
     
@@ -105809,10 +106171,38 @@ namespace Warewolf.UITests
                 return this.mlocalhost;
             }
         }
+        
+        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
+        
+        public UIWarewolfStudioViewMoTreeItem2 UIWarewolfStudioViewMoTreeItem2
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem2 == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem2 = new UIWarewolfStudioViewMoTreeItem2(this);
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem2;
+            }
+        }
         #endregion
         
         #region Fields
         private localhost4 mlocalhost;
+        
+        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
+        
+        private UIWarewolfStudioViewMoTreeItem2 mUIWarewolfStudioViewMoTreeItem2;
         #endregion
     }
     
@@ -105851,6 +106241,225 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfTreeItem mitem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public firstitem4 firstitem
+        {
+            get
+            {
+                if ((this.mfirstitem == null))
+                {
+                    this.mfirstitem = new firstitem4(this);
+                }
+                return this.mfirstitem;
+            }
+        }
+        
+        public WpfTreeItem seconditem
+        {
+            get
+            {
+                if ((this.mseconditem == null))
+                {
+                    this.mseconditem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mseconditem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mseconditem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mseconditem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mseconditem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mseconditem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private firstitem4 mfirstitem;
+        
+        private WpfTreeItem mseconditem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class firstitem4 : WpfTreeItem
+    {
+        
+        public firstitem4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mUIWarewolfStudioViewMoTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIWarewolfStudioViewMoTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoTreeItem2 : WpfTreeItem
+    {
+        
+        public UIWarewolfStudioViewMoTreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem remoteitem1
+        {
+            get
+            {
+                if ((this.mremoteitem1 == null))
+                {
+                    this.mremoteitem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mremoteitem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+                    this.mremoteitem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mremoteitem1.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mremoteitem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mremoteitem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemMenu : WpfMenu
+    {
+        
+        public UIItemMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UINewWorkflowServiceMenuItem
+        {
+            get
+            {
+                if ((this.mUINewWorkflowServiceMenuItem == null))
+                {
+                    this.mUINewWorkflowServiceMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUINewWorkflowServiceMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mUINewWorkflowServiceMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUINewWorkflowServiceMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UINewFolderMenuItem
+        {
+            get
+            {
+                if ((this.mUINewFolderMenuItem == null))
+                {
+                    this.mUINewFolderMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUINewFolderMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolder";
+                    this.mUINewFolderMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUINewFolderMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UIViewApisJsonMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewApisJsonMenuItem == null))
+                {
+                    this.mUIViewApisJsonMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIViewApisJsonMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewApisJson";
+                    this.mUIViewApisJsonMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIViewApisJsonMenuItem;
+            }
+        }
+        
+        public WpfMenuItem UIServerVersionMenuItem
+        {
+            get
+            {
+                if ((this.mUIServerVersionMenuItem == null))
+                {
+                    this.mUIServerVersionMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUIServerVersionMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
+                    this.mUIServerVersionMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIServerVersionMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUINewWorkflowServiceMenuItem;
+        
+        private WpfMenuItem mUINewFolderMenuItem;
+        
+        private WpfMenuItem mUIViewApisJsonMenuItem;
+        
+        private WpfMenuItem mUIServerVersionMenuItem;
         #endregion
     }
 }

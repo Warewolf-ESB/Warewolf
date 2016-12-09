@@ -20,7 +20,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate.Exists, "Duplicate Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Tests.Exists, "Tests Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.RunAllTestsMenuItem.Exists, "Run All Tests Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Deploy.Exists, "Deploy Context menu item does not exist on explorer context menu for workflows.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DeployItem.Exists, "Deploy Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "Show Dependencies Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewSwagger.Exists, "View Swagger Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ScheduleMenuItem.Exists, "ScheduleMenuItem Context menu item does not exist on explorer context menu for workflows.");
@@ -38,8 +38,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewFolder.Exists, "New Folder Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Deploy.Exists, "Deploy Context menu item does not exist on explorer context menu for workflows.");            
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "SourcesMenuItem does not exist on explorer context menu for workflows.");            
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory.Exists, "Show Version History Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem.Exists, "ViewApisJsonMenuItem Context menu item does not exist on explorer context menu for workflows.");            
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowServerVersion.Exists, "Show Server Version Context menu item does not exist on explorer context menu for workflows.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewApis.Exists, "ViewApisJsonMenuItem Context menu item does not exist on explorer context menu for workflows.");            
         }
 
         #region Additional test attributes
