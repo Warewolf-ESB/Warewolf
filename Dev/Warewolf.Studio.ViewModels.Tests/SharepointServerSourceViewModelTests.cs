@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.TestCommand.Execute(null);
 
             //assert
-            Assert.AreEqual(expectedExceptionMessage, _target.TestMessage);
+            Assert.AreEqual("Exception: " + expectedExceptionMessage, _target.TestMessage);
             Assert.IsFalse(_target.TestPassed);
             Assert.IsFalse(_target.Testing);
         }

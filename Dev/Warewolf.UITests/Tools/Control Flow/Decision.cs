@@ -19,6 +19,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.Click_Decision_Dialog_Cancel_Button();
         }
 
+
         [TestMethod]
         [TestCategory("Tools")]
         public void DecisionTool_LargeViewResize_UITest()

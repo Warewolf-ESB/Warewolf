@@ -191,6 +191,7 @@ namespace Dev2.Core.Tests.Settings
     internal class ScheduledResourceForTest : IScheduledResource
     {
         bool _isNewItem;
+        private bool _isDirty;
 
         #region Implementation of IScheduledResource
 
@@ -202,7 +203,17 @@ namespace Dev2.Core.Tests.Settings
         /// <summary>
         /// Property to check if the scheduled resouce is saved
         /// </summary>
-        public bool IsDirty { get; set; }
+        public bool IsDirty
+        {
+            get
+            {
+                return _isDirty;
+            }
+            set
+            {
+                _isDirty = value;
+            }
+        }
         /// <summary>
         ///     Schedule Name
         /// </summary>
@@ -258,6 +269,19 @@ namespace Dev2.Core.Tests.Settings
             }
         }
         public string NameForDisplay { get; private set; }
+
+        public void SetItem(IScheduledResource item)
+        {
+        }
+
+        #endregion
+
+        #region Implementation of IEquatable<IScheduledResource>
+
+        public bool Equals(IScheduledResource other)
+        {
+            return !IsDirty;
+        }
 
         #endregion
     }

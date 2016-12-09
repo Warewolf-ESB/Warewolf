@@ -64,3 +64,4 @@ bin
 # Coded UI
 ####################################################################################
 /Dev/Warewolf.UITests/UIMapEditorBackups/**
+/*.stackdump
