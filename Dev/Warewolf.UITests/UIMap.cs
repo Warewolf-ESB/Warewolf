@@ -6657,11 +6657,11 @@ namespace Warewolf.UITests
         [Given(@"I Rename FolderItem ToNewFolderItem")]
         [When(@"I Rename FolderItem ToNewFolderItem")]
         [Then(@"I Rename FolderItem ToNewFolderItem")]
-        public void Rename_FolderItem_ToNewFolderItem()
+        public void Rename_FolderItem_ToNewFolderItem(string newName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = "Control Flow - Decision2";
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
@@ -6692,11 +6692,11 @@ namespace Warewolf.UITests
         [Given(@"I Rename LocalFolder To SecondFolder")]
         [When(@"I Rename LocalFolder To SecondFolder")]
         [Then(@"I Rename LocalFolder To SecondFolder")]
-        public void Rename_LocalFolder_To_SecondFolder()
+        public void Rename_LocalFolder_To_SecondFolder(string newName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "Example";
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
