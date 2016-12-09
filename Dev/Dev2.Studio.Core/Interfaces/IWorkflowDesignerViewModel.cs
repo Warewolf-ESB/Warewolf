@@ -27,6 +27,7 @@ namespace Dev2.Studio.Core.ViewModels
         StringBuilder DesignerText { get; }
         Action<ModelItem> ItemSelectedAction { get; set; }
         bool IsTestView { get; set; }
+        ModelItem SelectedItem { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         void Dispose();

@@ -408,14 +408,7 @@ namespace Warewolf.Studio.ViewModels
             _token, exception =>
             {
                 FailedTesting();
-                if (exception == null)
-                {
-                    TestMessage = "Failed";
-                }
-                else
-                {
-                    TestMessage = exception.InnerException?.Message ?? exception?.Message;
-                }
+                TestMessage = GetExceptionMessage(exception);
             });
         }
 

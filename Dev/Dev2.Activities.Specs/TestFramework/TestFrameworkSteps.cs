@@ -209,8 +209,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         readonly object _syncRoot = new object();
-        const string Json = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
-
+        const string Json = "{\"$id\": \"1\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestModel, Warewolf.Studio.ViewModels\",\"NeverRunString\": \"Never run\",\"LastRunDateVisibility\": true,\"NeverRunStringVisibility\": false,\"DebugForTest\": null,\"DuplicateTestTooltip\": null,\"ParentId\": \"acb75027-ddeb-47d7-814e-a54c37247ec1\",\"OldTestName\": \"Test 1\",\"TestName\": \"Test 1\",\"NameForDisplay\": \"Test 1\",\"UserName\": null,\"Password\": null,\"LastRunDate\": \"2016-12-07T12:55:01.8993752+02:00\",\"Inputs\": [{\"$id\": \"2\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestInput, Warewolf.Studio.ViewModels\",\"Variable\": \"Name\",\"Value\": \"\",\"EmptyIsNull\": false}],\"Outputs\": [{\"$id\": \"3\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestOutput, Warewolf.Studio.ViewModels\",\"Variable\": \"Message\",\"Value\": \"\",\"From\": \"\",\"To\": \"\",\"AssertOp\": \"=\",\"HasOptionsForValue\": false,\"IsSinglematchCriteriaVisible\": true,\"IsBetweenCriteriaVisible\": false,\"IsSearchCriteriaEnabled\": true,\"IsSearchCriteriaVisible\": true,\"OptionsForValue\": null,\"Result\": {\"$id\": \"4\",\"$type\": \"Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces\",\"TestName\": null,\"RunTestResult\": 1,\"Message\": \"Failed: Assert Equal. Expected 'Hello World.' for '[[Message]]' but got ''\r\n\",\"DebugForTest\": null},\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"AssertOps\": [\"=\",\">\",\"<\",\"<> (Not Equal)\",\">=\",\"<=\",\"Starts With\",\"Ends With\",\"Contains\",\"Doesn't Start With\",\"Doesn't End With\",\"Doesn't Contain\",\"Is NULL\",\"Is Not NULL\",\"Is Alphanumeric\",\"Is Base64\",\"Is Between\",\"Is Binary\",\"Is Date\",\"Is Email\",\"Is Hex\",\"Is Numeric\",\"Is Regex\",\"Is Text\",\"Is XML\",\"Not Alphanumeric\",\"Not Base64\",\"Not Between\",\"Not Binary\",\"Not Date\",\"Not Email\",\"Not Hex\",\"Not Numeric\",\"Not Regex\",\"Not Text\",\"Not XML\",\"There is No Error\",\"There is An Error\"],\"CanEditVariable\": true}],\"NoErrorExpected\": true,\"ErrorExpected\": false,\"ErrorContainsText\": \"\",\"IsNewTest\": false,\"IsTestSelected\": false,\"IsTestLoading\": false,\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"Enabled\": true,\"RunSelectedTestUrl\": null,\"AuthenticationType\": 0,\"IsDirty\": false,\"UserAuthenticationSelected\": false,\"NewTest\": false,\"IsTestRunning\": false,\"TestSteps\": [],\"SelectedTestStep\": null}\";";
+        const string SimpleJson = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
         [Given(@"I have a resouce ""(.*)""")]
         public void GivenIHaveAResouce(string resourceName)
         {
@@ -252,13 +252,13 @@ namespace Dev2.Activities.Specs.TestFramework
                 foreach (var resourceName in testNamesNames)
                 {
                     var serializer = new Dev2JsonSerializer();
-                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                    var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                     serviceTestModelTO.TestName = resourceName;
                     serviceTestModelTO.ResourceId = resourceID;
                     serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                     serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                     serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
-
+                    serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                     serviceTestModelTos.Add(serviceTestModelTO);
                 }
             }
@@ -337,7 +337,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
 
                 var serializer = new Dev2JsonSerializer();
-                var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                 serviceTestModelTO.TestName = tableRow["TestName"];
                 serviceTestModelTO.ResourceId = resourceID;
                 serviceTestModelTO.TestFailing = bool.Parse(tableRow["TestFailing"]);
@@ -347,6 +347,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                 serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                 serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
+                serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
 
                 serviceTestModelTos.Add(serviceTestModelTO);
 
@@ -485,16 +486,75 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 var valueToSet = tableRow["Value"];
-                if (!string.IsNullOrEmpty(valueToSet))
+                var varName = tableRow["Variable Name"];
+                var containsKey = tableRow.ContainsKey("EmptyIsNull");
+                bool isNull = false;
+                if (containsKey)
                 {
-                    var varName = tableRow["Variable Name"];
+                    var emptyIsNull = tableRow["EmptyIsNull"];
+                    isNull = bool.Parse(emptyIsNull);
+                }
+
+                if (!string.IsNullOrEmpty(varName))
+                {
                     var foundInput = inputs.FirstOrDefault(input => input.Variable == varName);
                     if (foundInput != null)
                     {
                         foundInput.Value = valueToSet;
+                        foundInput.EmptyIsNull = isNull;
                     }
                 }
             }
+        }
+
+        [Then(@"the service debug assert message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertMessageContains(string assertString)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            var debugItemResults = debugForTest[3].AssertResultList.First().ResultsList;
+            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
+            var errorExpected = actualAssetMessage.Split('\n').Last();
+            Assert.AreEqual(assertString.ToUpper(), errorExpected.ToUpper());
+        }
+
+
+        [Then(@"All test pieces are pending")]
+        public void ThenAllTestPiecesArePending()
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var testPending = serviceTestViewModel.SelectedServiceTest.TestPending;
+            Assert.IsTrue(testPending);
+            var stepsPending = serviceTestViewModel.SelectedServiceTest.TestSteps.All(step => ((ServiceTestStep)step).TestPending);
+            var serviceTestSteps = serviceTestViewModel.SelectedServiceTest.TestSteps.Flatten(step => step.Children).ToList();
+            var allPending = serviceTestSteps.All(step => ((ServiceTestStep)step).TestPending && ((ServiceTestStep)step).Result.RunTestResult == RunResult.TestPending);
+            var allOutputsPending = serviceTestViewModel.SelectedServiceTest.Outputs.All(output => ((ServiceTestOutput)output).TestPending && output.Result?.RunTestResult == RunResult.TestPending);
+            Assert.IsTrue(stepsPending);
+            Assert.IsTrue(allPending);
+            Assert.IsTrue(allOutputsPending);
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            foreach (var serviceTestStep in serviceTestSteps)
+            {
+                var allStepOutPutspending = serviceTestStep.StepOutputs.All(output => output.Result?.RunTestResult == RunResult.TestPending);
+                Assert.IsTrue(allStepOutPutspending);
+            }
+        }
+
+        [When(@"I change step ""(.*)"" to Mock")]
+        public void WhenIChangeStepToMock(string stepname)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(stepname));
+            serviceTestStep.Type = StepType.Mock;
+        }
+
+        [Then(@"step ""(.*)"" is Pending")]
+        public void ThenStepIsPending(string stepname)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(stepname));
+            var testPending = ((ServiceTestStep)serviceTestStep).TestPending;
+            Assert.IsTrue(testPending);
         }
 
 
@@ -506,9 +566,9 @@ namespace Dev2.Activities.Specs.TestFramework
             foreach (var tableRow in table.Rows)
             {
                 var valueToSet = tableRow["Value"];
-                if (!string.IsNullOrEmpty(valueToSet))
+                var varName = tableRow["Variable Name"];
+                if (!string.IsNullOrEmpty(varName))
                 {
-                    var varName = tableRow["Variable Name"];
                     var foundInput = outputs.FirstOrDefault(output => output.Variable == varName);
                     if (foundInput != null)
                     {
@@ -575,6 +635,17 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(test.TestPassed);
             Assert.IsFalse(test.TestFailing);
         }
+
+        [Then(@"I change Decision ""(.*)"" arm to ""(.*)""")]
+        public void ThenIChangeDecisionArmTo(string decisionName, string ArmInput)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(decisionName));
+            var serviceTestOutput = serviceTestStep.StepOutputs.Single();
+            var value = serviceTestOutput.OptionsForValue?.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase)) ?? ArmInput;
+            serviceTestOutput.Value = value;
+        }
+
 
         [Then(@"test result is invalid")]
         public void ThenTestResultIsInvalid()
@@ -1462,13 +1533,13 @@ namespace Dev2.Activities.Specs.TestFramework
                     foreach (var resourceName in testNamesNames)
                     {
                         var serializer = new Dev2JsonSerializer();
-                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                         serviceTestModelTO.TestName = resourceName;
                         serviceTestModelTO.ResourceId = resourceID;
                         serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                         serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
                         serviceTestModelTO.AuthenticationType = AuthenticationType.Windows;
-
+                        serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                         serviceTestModelTos.Add(serviceTestModelTO);
                     }
                 }
@@ -1492,9 +1563,9 @@ namespace Dev2.Activities.Specs.TestFramework
                     foreach (var resourceName in testNamesNames)
                     {
                         var serializer = new Dev2JsonSerializer();
-                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(Json);
+                        var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                         serviceTestModelTO.TestName = resourceName;
-
+                        serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
                         serviceTestModelTO.ResourceId = resourceId;
                         serviceTestModelTO.Inputs = new List<IServiceTestInput>();
                         serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
@@ -1578,7 +1649,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates[debugStates.Count - 1];
+            var serviceEndDebug = debugStates.First(state => state.StateType == StateType.End);
             foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];
@@ -1594,6 +1665,24 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.AreEqual(variableValue, debugItemResult.Value);
             }
         }
+
+        [Then(@"Test debug results contain pending results ""(.*)""")]
+        public void ThenTestDebugResultsContainPendingResults(string pendingResult)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var test = serviceTest.SelectedServiceTest;
+            Assert.IsNotNull(test);
+            Assert.IsNotNull(test.DebugForTest);
+            var debugStates = test.DebugForTest;
+            var serviceEndDebug = debugStates.First(state => state.StateType == StateType.TestAggregate);
+            var assertResult = serviceEndDebug.AssertResultList[0];
+            var errorValues = assertResult.ResultsList[0].Value;
+            var strings = errorValues.Split('\n');
+            var hasPendingResults = strings.Any(s => s.TrimEnd('\r').Equals(pendingResult, StringComparison.InvariantCultureIgnoreCase));
+            Assert.IsTrue(hasPendingResults);
+        }
+
+
 
         [Then(@"I add mock steps as")]
         public void ThenIAddMockStepsAs(Table table)
@@ -1697,6 +1786,92 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I remove all Test Steps")]
+        [When(@"I remove all Test Steps")]
+        public void ThenIRemoveAllTestSteps()
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            serviceTestViewModel.SelectedServiceTest.TestSteps = new ObservableCollection<IServiceTestStep>();
+        }
+
+        [Then(@"I remove outputs from TestStep ""(.*)""")]
+        public void ThenIRemoveOutputsFromTestStep(string stepName)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().TrimStart().Equals(stepName));
+            serviceTestStep.StepOutputs.Clear();
+        }
+
+
+        [Then(@"I Add Decision ""(.*)"" as TestStep")]
+        [Given(@"I Add Decision ""(.*)"" as TestStep")]
+        [When(@"I Add Decision ""(.*)"" as TestStep")]
+        public void ThenIAddDecisionAsTestStep(string actNameToFind)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+
+                while (searchNode != null)
+                {
+
+                    bool isCorr;
+                    var node = searchNode as FlowDecision;
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+                    bool isCorr;
+                    var node = searchNode as FlowDecision;
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
+                }
+            }
+        }
+
         [Then(@"I Add ""(.*)"" as TestStep")]
         public void ThenIAddAsTestStep(string actNameToFind)
         {
@@ -1783,6 +1958,28 @@ namespace Dev2.Activities.Specs.TestFramework
 
             }
         }
+
+        [Then(@"I add ""(.*)"" StepOutputs as")]
+        public void ThenIAddStepOutputsAs(string stepDesc, Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First(step => step.StepDescription.Equals(stepDesc, StringComparison.CurrentCultureIgnoreCase));
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+
+
+            }
+        }
+
 
         [Then(@"I add new StepOutputs as")]
         public void ThenIAddNewStepOutputsAs(Table table)
