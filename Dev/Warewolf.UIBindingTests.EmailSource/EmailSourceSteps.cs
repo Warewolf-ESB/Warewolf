@@ -139,6 +139,13 @@ namespace Warewolf.UIBindingTests.EmailSource
             Assert.AreEqual(password, viewModel.Password);
         }
 
+        [Then(@"the error message is ""(.*)""")]
+        public void ThenTheErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<ManageEmailSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [Then(@"I type From as ""(.*)""")]
         [When(@"I type From as ""(.*)""")]
         public void ThenITypeFromAs(string emailFrom)

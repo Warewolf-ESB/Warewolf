@@ -188,18 +188,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWarewolfDEV2NKOSINATWindow UIWarewolfDEV2NKOSINATWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2NKOSINATWindow == null))
-                {
-                    this.mUIWarewolfDEV2NKOSINATWindow = new UIWarewolfDEV2NKOSINATWindow();
-                }
-                return this.mUIWarewolfDEV2NKOSINATWindow;
-            }
-        }
-        
         public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
         {
             get
@@ -237,8 +225,6 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
-        
-        private UIWarewolfDEV2NKOSINATWindow mUIWarewolfDEV2NKOSINATWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
@@ -1431,6 +1417,22 @@ namespace Warewolf.UITests
                 return this.mViewApisJsonMenuItem;
             }
         }
+        
+        public WpfMenuItem NewExchangeSource
+        {
+            get
+            {
+                if ((this.mNewExchangeSource == null))
+                {
+                    this.mNewExchangeSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewExchangeSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewExchangeSource";
+                    this.mNewExchangeSource.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mNewExchangeSource;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1473,6 +1475,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mTests;
         
         private WpfMenuItem mViewApisJsonMenuItem;
+        
+        private WpfMenuItem mNewExchangeSource;
         #endregion
     }
     
@@ -9899,6 +9903,18 @@ namespace Warewolf.UITests
                 return this.mEmailSourceTabPage;
             }
         }
+        
+        public ExchangeSourceTabPage ExchangeSourceTabPage
+        {
+            get
+            {
+                if ((this.mExchangeSourceTabPage == null))
+                {
+                    this.mExchangeSourceTabPage = new ExchangeSourceTabPage(this);
+                }
+                return this.mExchangeSourceTabPage;
+            }
+        }
         #endregion
         
         #region Fields
@@ -9935,6 +9951,8 @@ namespace Warewolf.UITests
         private RabbitMqSourceTabPage mRabbitMqSourceTabPage;
         
         private EmailSourceTabPage mEmailSourceTabPage;
+        
+        private ExchangeSourceTabPage mExchangeSourceTabPage;
         #endregion
     }
     
@@ -84307,6 +84325,235 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExchangeSourceTabPage : WpfTabPage
+    {
+        
+        public ExchangeSourceTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ToolBase.ExchangeEmail.I" +
+                "ExchangeSource]";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ExchangeSourceTabCloseButton
+        {
+            get
+            {
+                if ((this.mExchangeSourceTabCloseButton == null))
+                {
+                    this.mExchangeSourceTabCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExchangeSourceTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mExchangeSourceTabCloseButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mExchangeSourceTabCloseButton;
+            }
+        }
+        
+        public SendTestModelsCustom1 SendTestModelsCustom
+        {
+            get
+            {
+                if ((this.mSendTestModelsCustom == null))
+                {
+                    this.mSendTestModelsCustom = new SendTestModelsCustom1(this);
+                }
+                return this.mSendTestModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mExchangeSourceTabCloseButton;
+        
+        private SendTestModelsCustom1 mSendTestModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SendTestModelsCustom1 : WpfCustom
+    {
+        
+        public SendTestModelsCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AutoDiscoverUrlTxtBox
+        {
+            get
+            {
+                if ((this.mAutoDiscoverUrlTxtBox == null))
+                {
+                    this.mAutoDiscoverUrlTxtBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAutoDiscoverUrlTxtBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "AutoDiscoverUrlTxtBox";
+                    this.mAutoDiscoverUrlTxtBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAutoDiscoverUrlTxtBox;
+            }
+        }
+        
+        public WpfEdit UserNameTextBox
+        {
+            get
+            {
+                if ((this.mUserNameTextBox == null))
+                {
+                    this.mUserNameTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUserNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UserNameTextBox";
+                    this.mUserNameTextBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUserNameTextBox;
+            }
+        }
+        
+        public WpfEdit ToTextBox
+        {
+            get
+            {
+                if ((this.mToTextBox == null))
+                {
+                    this.mToTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mToTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ToTextBox";
+                    this.mToTextBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mToTextBox;
+            }
+        }
+        
+        public WpfEdit PasswordTextBox
+        {
+            get
+            {
+                if ((this.mPasswordTextBox == null))
+                {
+                    this.mPasswordTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mPasswordTextBox;
+            }
+        }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestSendCommand";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
+        
+        public PassedText PassedText
+        {
+            get
+            {
+                if ((this.mPassedText == null))
+                {
+                    this.mPassedText = new PassedText(this);
+                }
+                return this.mPassedText;
+            }
+        }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAutoDiscoverUrlTxtBox;
+        
+        private WpfEdit mUserNameTextBox;
+        
+        private WpfEdit mToTextBox;
+        
+        private WpfEdit mPasswordTextBox;
+        
+        private WpfButton mTestConnectionButton;
+        
+        private PassedText mPassedText;
+        
+        private WpfCustom mSpinner;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PassedText : WpfText
+    {
+        
+        public PassedText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "Passed";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIItemImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mUIItemImage.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIItemImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIItemImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Help1 : WpfCustom
     {
         
@@ -105386,126 +105633,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WinButton mOKButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2NKOSINATWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2NKOSINATWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\NKOSINATHI.SANGWENI)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        
-        public UIFlowchartCustom1 UIFlowchartCustom1
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom1 == null))
-                {
-                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
-                }
-                return this.mUIFlowchartCustom1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIFlowchartCustom;
-        
-        private UIFlowchartCustom1 mUIFlowchartCustom1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom1 : WpfCustom
-    {
-        
-        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "BrokenDeleteWeb(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISpecifiedvaluedoesnoText UISpecifiedvaluedoesnoText
-        {
-            get
-            {
-                if ((this.mUISpecifiedvaluedoesnoText == null))
-                {
-                    this.mUISpecifiedvaluedoesnoText = new UISpecifiedvaluedoesnoText(this);
-                }
-                return this.mUISpecifiedvaluedoesnoText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISpecifiedvaluedoesnoText mUISpecifiedvaluedoesnoText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISpecifiedvaluedoesnoText : WpfText
-    {
-        
-        public UISpecifiedvaluedoesnoText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfHyperlink UISpecifiedvaluedoesnoHyperlink
-        {
-            get
-            {
-                if ((this.mUISpecifiedvaluedoesnoHyperlink == null))
-                {
-                    this.mUISpecifiedvaluedoesnoHyperlink = new WpfHyperlink(this);
-                    #region Search Criteria
-                    this.mUISpecifiedvaluedoesnoHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Specified value does not have a \':\' separator.\r\nParameter name: header";
-                    this.mUISpecifiedvaluedoesnoHyperlink.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-                    #endregion
-                }
-                return this.mUISpecifiedvaluedoesnoHyperlink;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfHyperlink mUISpecifiedvaluedoesnoHyperlink;
         #endregion
     }
     
