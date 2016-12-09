@@ -824,7 +824,7 @@
                                                     ToolTip="{Binding Path=DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTipService.ShowOnDisabled="True"
                                                     Style="{StaticResource DeployCheckBoxStyle}"
-                                                  Margin="{StaticResource ControlBorderLeft}"
+                                                    Margin="{StaticResource ControlBorderLeft}"
                                                     Visibility="{Binding Path=AllowResourceCheck, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <TextBlock x:Name="ResourceNameTextBlock"
                                                     MinWidth="5"
@@ -863,6 +863,7 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding IsFolder}" Value="False"/>
+                                                            <Condition Binding="{Binding AreVersionsVisible}" Value="False"/>
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Margin" Value="-14,0,0,0" />
                                                     </MultiDataTrigger>
