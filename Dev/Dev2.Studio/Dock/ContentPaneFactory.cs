@@ -641,6 +641,8 @@ namespace Dev2.Studio.Dock
                     var item = pane.Content as WorkflowDesignerViewModel;
                     if (item?.ResourceModel != null)
                         WorkspaceItemRepository.Instance.Remove(item.ResourceModel);
+                    item?.RemoveUnsavedWorkflowName(item.DisplayName);
+
                 }
             }
         }

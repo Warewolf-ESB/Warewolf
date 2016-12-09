@@ -16,13 +16,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Core.Tests;
@@ -148,6 +151,37 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ResourceRepository_HydrateResourceModel")]
+        public void WorkFlowService_HydrateResourceModel_ServerDisconnected_ShowPopup()
+        {
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(false);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            mockEnvironmentModel.Setup(e => e.Connection.DisplayName).Returns("localhost");
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false)).Returns(MessageBoxResult.OK);
+            CustomContainer.Register(mockPopupController.Object);
+
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            var resourceData = BuildSerializableResourceFromName("Unsaved 1", "WorkflowService", true);
+
+            var model = ResourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
+            Assert.IsNull(model);
+
+            mockPopupController.Verify(manager => manager.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false), Times.Once);
         }
 
         #endregion

@@ -298,7 +298,7 @@
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
-            
+
             <Style x:Key="MockBorderStyle" TargetType="Border">
                 <Style.Setters>
                     <Setter Property="Visibility" Value="Collapsed" />
@@ -471,298 +471,312 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TreeView Grid.Row="0" 
-                          ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
-                          VirtualizingStackPanel.IsVirtualizing="True"
-                          VirtualizingStackPanel.VirtualizationMode="Recycling"
-                          BorderBrush="Transparent"
-                          x:Name="DebugOutputTree">
-                    <TreeView.InputBindings>
-                        <KeyBinding Gesture="CTRL+A" Command="{Binding SelectAllCommand}" />
-                    </TreeView.InputBindings>
-                    <i:Interaction.Behaviors>
-                        <b:TreeviewScrollToEndOnNewContent />
-                    </i:Interaction.Behaviors>
-                    <TreeView.Resources>
-                        <DataTemplate x:Key="DebugGroupLineItemTemplate">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Variable}" Foreground="{StaticResource DebugItemVariableBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
-                                        <TextBlock Grid.Column="1" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID"/>
-                                        <TextBlock Grid.Column="2" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
-                                    </Grid>
-                                </StackPanel>
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
+                    <TreeView ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
+                              BorderBrush="Transparent"
+                              x:Name="DebugOutputTree">
+                        <TreeView.InputBindings>
+                            <KeyBinding Gesture="CTRL+A" Command="{Binding SelectAllCommand}" />
+                        </TreeView.InputBindings>
+                        <i:Interaction.Behaviors>
+                            <b:TreeviewScrollToEndOnNewContent />
+                        </i:Interaction.Behaviors>
+                        <TreeView.Resources>
+                            <Style TargetType="{x:Type TreeView}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TreeView">
+                                            <Border Name="Border"
+                                                    BorderBrush="Transparent"
+                                                    Background="Transparent"
+                                                    CornerRadius="1"
+                                                    BorderThickness="1">
+                                                <ItemsPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <DataTemplate x:Key="DebugGroupLineItemTemplate">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Variable}" Foreground="{StaticResource DebugItemVariableBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID"/>
+                                            <TextBlock Grid.Column="2" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
+                                        </Grid>
+                                    </StackPanel>
 
-                                <Button x:Name="MoreLink"
-                                        Focusable="False"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Left"
-                                       
-                                        Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
-                                        cal:Message.Attach="OpenMoreLink($DataContext)"
-                                        cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-
-                        <DataTemplate x:Key="DebugLineItemTemplate">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="{Binding ElementName=VariableTextBlock, Path=ActualWidth}" />
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Label}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputLabelTextBlock_AutoID" />
-                                        <TextBlock Grid.Column="1" x:Name="VariableTextBlock" Text="{Binding Variable}" Foreground="{StaticResource DebugItemVariableBrush}" 
-                                                   Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
-                                        <TextBlock Grid.Column="2" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID" />
-                                        <TextBlock Grid.Column="3" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" 
-                                                   Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
-                                    </Grid>
-                                </StackPanel>
-                                <Button x:Name="MoreLink"
-                                        Focusable="False"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Left"                                        
-                                        Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
-                                        cal:Message.Attach="OpenMoreLink($DataContext)"
-                                        cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-
-                        <DataTemplate x:Key="ServiceTestDebugLineItemTemplate">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Value}" Margin="0,2,0,0" 
-                                                   AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDebugOutputServiceTestStyle}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="False">
-                                                            <Setter Property="Foreground" Value="Green"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding TestStepHasError}" Value="True">
-                                                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </Grid>
-                                </StackPanel>
-                                <Button x:Name="MoreLink"
-                                        Focusable="False"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Left"                                        
-                                        Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
-                                        cal:Message.Attach="OpenMoreLink($DataContext)"
-                                        cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-
-                        <DataTemplate x:Key="DebugLineGroupRowTemplate">
-                            <ItemsControl ItemsSource="{Binding Value.LineItems}" ItemTemplate="{StaticResource DebugGroupLineItemTemplate}" Margin="9,0,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </DataTemplate>
-
-                        <DataTemplate x:Key="DebugLineGroupTemplate">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding GroupLabel}" VerticalAlignment="Top" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" />
-                                <Expander Header="{Binding GroupName}" Style="{StaticResource PlusMinusExpander}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" >
-                                    <Grid>
-                                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                            <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}" />
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Expander>
-                            </StackPanel>
-                        </DataTemplate>
-
-                        <diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" 
-                                                           ItemTemplate="{StaticResource DebugLineItemTemplate}" 
-                                                           GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
-
-                        <diagnostics:DebugLineTemplateSelector x:Key="ServiceTestDebugLineTemplateSelector" 
-                                                           ItemTemplate="{StaticResource ServiceTestDebugLineItemTemplate}" 
-                                                           GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
-
-                        <DataTemplate x:Key="DebugLinesTemplate">
-                            <Grid>
-                                <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource DebugLineTemplateSelector}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Grid>
-                        </DataTemplate>
-
-                        <DataTemplate x:Key="ServiceTestDebugLinesTemplate">
-                            <Grid>
-                                <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource ServiceTestDebugLineTemplateSelector}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Grid>
-                        </DataTemplate>
-
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStringTreeViewItemViewModel}">
-                            <TextBlock Text="{Binding Content}" HorizontalAlignment="Stretch" />
-                        </HierarchicalDataTemplate>
-
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStateTreeViewItemViewModel}">
-                            <Grid HorizontalAlignment="Stretch"
-                                  KeyboardNavigation.DirectionalNavigation="Continue">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-
-                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
-                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource NoErrorBorderStyle}" />
-                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource MockBorderStyle}" />
-                                
-
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Margin="-4,0,0,0"/>
-                                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                                    <Button Content="{Binding Content.DisplayName}" 
-                                            Command="{Binding DataContext.OpenItemCommand, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"
-                                            CommandParameter="{Binding Content}" 
-                                            Style="{StaticResource BlueHeadingStyle}" 
-                                            HorizontalAlignment="Left"
-                                            Margin="-4,0,0,0"
+                                    <Button x:Name="MoreLink"
                                             Focusable="False"
-                                            IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
-                                </StackPanel>
-
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="Version :" Style="{StaticResource VersionVisibility}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Content.Version}" Style="{StaticResource VersionVisibility}" 
-                                           AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoID" />
-
-                                <TextBlock Grid.Row="2" Grid.Column="1" Text="Server :" Style="{StaticResource ServerVisibility}"/>
-                                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Content.Server}" Style="{StaticResource ServerVisibility}" />
-
-                                <TextBlock Grid.Row="3" Grid.Column="1" Text="Type :" Style="{StaticResource TypeVisibility}"/>
-                                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Content.Name}" Style="{StaticResource TypeVisibility}" 
-                                           AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoID" />
-
-                                <TextBlock Grid.Row="4" Grid.Column="1" Text="Start Time :" Style="{StaticResource StartTimeVisibility}" />
-                                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
-                                           Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoID" />
-
-                                <TextBlock Grid.Row="4" Grid.Column="1" Text="End Time :" Style="{StaticResource EndTimeVisibility}" />
-                                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
-                                           Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
-
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="Duration :" Style="{StaticResource DurationVisibility}" />
-                                <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" 
-                                           Style="{StaticResource DurationVisibility}" AutomationProperties.AutomationId="UI_DebugOutputDurationTextBlock_AutoID" />
-
-                                <TextBlock Grid.Row="6" Grid.Column="1" Text="Inputs :" Style="{StaticResource InputsVisibility}" />
-                                <StackPanel Grid.Row="6" Grid.Column="2" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource InputsVisibility}">
-                                    <ItemsControl ItemsSource="{Binding Inputs}"
-                                                  Focusable="False"
-                                                  ItemTemplate="{StaticResource DebugLinesTemplate}"
-                                                  AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
-                                </StackPanel>
-
-                                <TextBlock Grid.Row="7" Grid.Column="1" Text="Outputs :" Style="{StaticResource OutputsVisibility}" />
-                                <StackPanel Grid.Row="7"
-                                            Grid.Column="2"
-                                            Orientation="Horizontal"
+                                            VerticalAlignment="Bottom"
                                             HorizontalAlignment="Left"
-                                            Grid.IsSharedSizeScope="True" 
-                                            Style="{StaticResource OutputsVisibility}">
-                                    <ItemsControl ItemsSource="{Binding Outputs}"
-                                                  Focusable="False"
-                                                  ItemTemplate="{StaticResource DebugLinesTemplate}"
-                                                  AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
+                                            Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                            cal:Message.Attach="OpenMoreLink($DataContext)"
+                                            cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                        <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                                    </Button>
                                 </StackPanel>
+                            </DataTemplate>
 
-                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding TestDescription}" Style="{StaticResource AssertResultVisibility}" />
-                                <StackPanel Grid.Row="8"
-                                            Grid.Column="2"
-                                            Orientation="Horizontal"
-                                            HorizontalAlignment="Left"
-                                            Grid.IsSharedSizeScope="True" 
-                                            Style="{StaticResource AssertResultVisibility}">
-                                    <ItemsControl ItemsSource="{Binding AssertResultList}"
-                                                  Focusable="False"
-                                                  ItemTemplate="{StaticResource ServiceTestDebugLinesTemplate}"
-                                                  AutomationProperties.AutomationId="UI_DebugOutputAssertResultPanel_AutoId" />
+                            <DataTemplate x:Key="DebugLineItemTemplate">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="{Binding ElementName=VariableTextBlock, Path=ActualWidth}" />
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Label}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputLabelTextBlock_AutoID" />
+                                            <TextBlock Grid.Column="1" x:Name="VariableTextBlock" Text="{Binding Variable}" Foreground="{StaticResource DebugItemVariableBrush}" 
+                                                       Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
+                                            <TextBlock Grid.Column="2" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID" />
+                                            <TextBlock Grid.Column="3" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" 
+                                                       Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
+                                        </Grid>
+                                    </StackPanel>
+                                    <Button x:Name="MoreLink"
+                                            Focusable="False"
+                                            VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Left"                                        
+                                            Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                            cal:Message.Attach="OpenMoreLink($DataContext)"
+                                            cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                        <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                                    </Button>
                                 </StackPanel>
+                            </DataTemplate>
 
-                                <TextBlock Grid.Row="9" Grid.Column="1" Text="Origin :" Style="{StaticResource OriginVisibility}"/>
-                                <TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Content.Origin}" Style="{StaticResource OriginVisibility}" />
+                            <DataTemplate x:Key="ServiceTestDebugLineItemTemplate">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Value}" Margin="0,2,0,0" 
+                                                       AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" >
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDebugOutputServiceTestStyle}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding TestStepHasError}" Value="False">
+                                                                <Setter Property="Foreground" Value="Green"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding TestStepHasError}" Value="True">
+                                                                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </StackPanel>
+                                    <Button x:Name="MoreLink"
+                                            Focusable="False"
+                                            VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Left"                                        
+                                            Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                            cal:Message.Attach="OpenMoreLink($DataContext)"
+                                            cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                        <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
 
-                                <TextBlock Grid.Row="10" Grid.Column="1" Text="User :" Style="{StaticResource UserVisibility}"/>
-                                <TextBlock Grid.Row="10" Grid.Column="2" Text="{Binding Content.ExecutingUser}" Style="{StaticResource UserVisibility}" />
+                            <DataTemplate x:Key="DebugLineGroupRowTemplate">
+                                <ItemsControl ItemsSource="{Binding Value.LineItems}" ItemTemplate="{StaticResource DebugGroupLineItemTemplate}" Margin="9,0,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </DataTemplate>
 
-                                <TextBlock Grid.Row="11" Grid.Column="1" Text="Number of steps" Style="{StaticResource StepsVisibility}"/>
-                                <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Content.NumberOfSteps}" Style="{StaticResource StepsVisibility}" />
+                            <DataTemplate x:Key="DebugLineGroupTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding GroupLabel}" VerticalAlignment="Top" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" />
+                                    <Expander Header="{Binding GroupName}" Style="{StaticResource PlusMinusExpander}" AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" >
+                                        <Grid>
+                                            <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                                <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource DebugLineGroupRowTemplate}" />
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </Expander>
+                                </StackPanel>
+                            </DataTemplate>
 
-                                <TextBlock Grid.Row="12" Grid.Column="1" Text="Error :" Style="{StaticResource ErrorsVisibility}"/>
-                                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}" />
+                            <diagnostics:DebugLineTemplateSelector x:Key="DebugLineTemplateSelector" 
+                                                                   ItemTemplate="{StaticResource DebugLineItemTemplate}" 
+                                                                   GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
 
-                            </Grid>
-                        </HierarchicalDataTemplate>
-                    </TreeView.Resources>
-                    <TreeView.ItemContainerStyleSelector>
-                        <diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}" />
-                    </TreeView.ItemContainerStyleSelector>
-                </TreeView>
+                            <diagnostics:DebugLineTemplateSelector x:Key="ServiceTestDebugLineTemplateSelector" 
+                                                                   ItemTemplate="{StaticResource ServiceTestDebugLineItemTemplate}" 
+                                                                   GroupTemplate="{StaticResource DebugLineGroupTemplate}" />
+
+                            <DataTemplate x:Key="DebugLinesTemplate">
+                                <Grid>
+                                    <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource DebugLineTemplateSelector}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="ServiceTestDebugLinesTemplate">
+                                <Grid>
+                                    <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False" ItemTemplateSelector="{StaticResource ServiceTestDebugLineTemplateSelector}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
+                            </DataTemplate>
+
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStringTreeViewItemViewModel}">
+                                <TextBlock Text="{Binding Content}" HorizontalAlignment="Stretch" />
+                            </HierarchicalDataTemplate>
+
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStateTreeViewItemViewModel}">
+                                <Grid HorizontalAlignment="Stretch" KeyboardNavigation.DirectionalNavigation="Continue">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}" />
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource NoErrorBorderStyle}" />
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Style="{StaticResource MockBorderStyle}" />
+
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Margin="-4,0,0,0"/>
+                                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+                                        <Button Content="{Binding Content.DisplayName}" 
+                                                Command="{Binding DataContext.OpenItemCommand, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"
+                                                CommandParameter="{Binding Content}" 
+                                                Style="{StaticResource BlueHeadingStyle}" 
+                                                HorizontalAlignment="Left"
+                                                Margin="-4,0,0,0"
+                                                Focusable="False"
+                                                IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Version :" Style="{StaticResource VersionVisibility}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Content.Version}" Style="{StaticResource VersionVisibility}" 
+                                               AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoID" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Server :" Style="{StaticResource ServerVisibility}"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Content.Server}" Style="{StaticResource ServerVisibility}" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Type :" Style="{StaticResource TypeVisibility}"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Content.Name}" Style="{StaticResource TypeVisibility}" 
+                                               AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoID" />
+
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="Start Time :" Style="{StaticResource StartTimeVisibility}" />
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
+                                               Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoID" />
+
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="End Time :" Style="{StaticResource EndTimeVisibility}" />
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
+                                               Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
+
+                                    <TextBlock Grid.Row="5" Grid.Column="1" Text="Duration :" Style="{StaticResource DurationVisibility}" />
+                                    <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}" 
+                                               Style="{StaticResource DurationVisibility}" AutomationProperties.AutomationId="UI_DebugOutputDurationTextBlock_AutoID" />
+
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="Inputs :" Style="{StaticResource InputsVisibility}" />
+                                    <StackPanel Grid.Row="6" Grid.Column="2" Orientation="Horizontal" Grid.IsSharedSizeScope="True" Style="{StaticResource InputsVisibility}">
+                                        <ItemsControl ItemsSource="{Binding Inputs}"
+                                                      Focusable="False"
+                                                      ItemTemplate="{StaticResource DebugLinesTemplate}"
+                                                      AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="7" Grid.Column="1" Text="Outputs :" Style="{StaticResource OutputsVisibility}" />
+                                    <StackPanel Grid.Row="7"
+                                                Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Left"
+                                                Grid.IsSharedSizeScope="True" 
+                                                Style="{StaticResource OutputsVisibility}">
+                                        <ItemsControl ItemsSource="{Binding Outputs}"
+                                                      Focusable="False"
+                                                      ItemTemplate="{StaticResource DebugLinesTemplate}"
+                                                      AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding TestDescription}" Style="{StaticResource AssertResultVisibility}" />
+                                    <StackPanel Grid.Row="8"
+                                                Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Left"
+                                                Grid.IsSharedSizeScope="True" 
+                                                Style="{StaticResource AssertResultVisibility}">
+                                        <ItemsControl ItemsSource="{Binding AssertResultList}"
+                                                      Focusable="False"
+                                                      ItemTemplate="{StaticResource ServiceTestDebugLinesTemplate}"
+                                                      AutomationProperties.AutomationId="UI_DebugOutputAssertResultPanel_AutoId" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="9" Grid.Column="1" Text="Origin :" Style="{StaticResource OriginVisibility}"/>
+                                    <TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Content.Origin}" Style="{StaticResource OriginVisibility}" />
+
+                                    <TextBlock Grid.Row="10" Grid.Column="1" Text="User :" Style="{StaticResource UserVisibility}"/>
+                                    <TextBlock Grid.Row="10" Grid.Column="2" Text="{Binding Content.ExecutingUser}" Style="{StaticResource UserVisibility}" />
+
+                                    <TextBlock Grid.Row="11" Grid.Column="1" Text="Number of steps" Style="{StaticResource StepsVisibility}"/>
+                                    <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Content.NumberOfSteps}" Style="{StaticResource StepsVisibility}" />
+
+                                    <TextBlock Grid.Row="12" Grid.Column="1" Text="Error :" Style="{StaticResource ErrorsVisibility}"/>
+                                    <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}" />
+
+                                </Grid>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                        <TreeView.ItemContainerStyleSelector>
+                            <diagnostics:DebugStyleSelector DebugStateStyle="{StaticResource DebugStateStyle}" DebugStringStyle="{StaticResource DebugStringStyle}" />
+                        </TreeView.ItemContainerStyleSelector>
+                    </TreeView>
+                </ScrollViewer>
                 <customControls:Dev2StatusBar AutomationProperties.AutomationId="Dev2StatusBarAutomationID"  
                                               Grid.Row="1"
                                               Height="Auto"

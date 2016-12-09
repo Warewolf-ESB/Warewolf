@@ -195,16 +195,19 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
+                Testing = true;
                 TestErrorMessage = "";
                 _rabbitMQSourceModel.TestSource(ToNewSource());
                 TestPassed = true;
                 TestFailed = false;
+                Testing = false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
                 TestPassed = false;
                 TestFailed = true;
-                TestErrorMessage = "Failed: " + e.Message;
+                Testing = false;
+                TestErrorMessage = exception.InnerException?.Message ?? exception.Message;
             }
         }
 
@@ -236,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                 UserName = UserName,
                 Password = Password,
                 VirtualHost = VirtualHost,
-                ResourceID = _rabbitMQServiceSource == null ? Guid.NewGuid() : _rabbitMQServiceSource.ResourceID
+                ResourceID = _rabbitMQServiceSource?.ResourceID ?? Guid.NewGuid()
             };
         }
 
@@ -365,7 +368,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return _testErrorMessage; }
 
-            private set
+            set
             {
                 _testErrorMessage = value;
                 OnPropertyChanged(() => TestErrorMessage);
