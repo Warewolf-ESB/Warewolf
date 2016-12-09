@@ -25,13 +25,6 @@ namespace Warewolf.UITests
             UIMap.Click_Explorer_Refresh_Button();
             var itemEdit = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ResourceNameTextBlock;
             Assert.AreEqual(newResourceName, itemEdit.DisplayText);
-
-            // Cleanup
-            var resourcesDestFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Examples";            
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Example";            
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
-            if (!Directory.Exists(resourcesDestFolder))
-                Directory.Move(resourcesFolder, resourcesDestFolder);
         }
 
         [TestMethod]
