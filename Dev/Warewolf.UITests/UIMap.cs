@@ -6727,7 +6727,7 @@ namespace Warewolf.UITests
         [Then(@"I Delete FirstResource FromContextMenu")]
         public void Delete_FirstResource_FromContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete);
         }
 
