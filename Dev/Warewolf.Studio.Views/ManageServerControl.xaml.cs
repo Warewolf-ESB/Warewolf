@@ -95,10 +95,7 @@ namespace Warewolf.Studio.Views
                 if (ProtocolItems.Items.Count == 0)
                 {
                     BindingExpression be = ProtocolItems.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-                    if (be != null)
-                    {
-                        be.UpdateTarget();
-                    }
+                    be?.UpdateTarget();
                     ProtocolItems.DataContext = DataContext;                    
                 }
                 ProtocolItems.SelectedItem = protocol;
@@ -126,29 +123,20 @@ namespace Warewolf.Studio.Views
         public void PerformSave()
         {
             var viewModel = DataContext as ManageNewServerViewModel;
-            if (viewModel != null)
-            {
-                viewModel.OkCommand.Execute(null);
-            }
+            viewModel?.OkCommand.Execute(null);
         }
 
         public Visibility GetUsernameVisibility()
         {
             BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
             BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
         public void TestAction()
@@ -158,11 +146,8 @@ namespace Warewolf.Studio.Views
 
         public string GetErrorMessage()
         {
-            BindingExpression be = ErrorTextBlock.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            BindingExpression be = ErrorTextBlock.GetBindingExpression(TextBox.TextProperty);
+            be?.UpdateTarget();
             return ErrorTextBlock.Text;
         }
 

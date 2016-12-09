@@ -57,6 +57,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>
@@ -224,6 +228,7 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\ServerConnection2.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\TestDecisionUnsigned.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">

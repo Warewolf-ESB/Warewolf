@@ -41,6 +41,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" 
@@ -141,41 +142,49 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Center">
-                        <TextBlock TextWrapping="WrapWithOverflow" 
-                            x:Name="ErrorTextBlock" 
-                            Text="{Binding TestErrorMessage, UpdateSourceTrigger=PropertyChanged}" 
-                            Visibility="{Binding TestFailed, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
                         <fa:ImageAwesome Width="14" 
-                             Height="14" 
-                             Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Margin="{StaticResource ControlBorderRight}" 
-                             Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" 
-                             Icon="Check" 
-                             HorizontalAlignment="Right" />
+                                         Height="14" 
+                                         Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                         Margin="{StaticResource ControlBorderRight}" 
+                                         Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                         Icon="Check" 
+                                         HorizontalAlignment="Right" />
                         <fa:ImageAwesome Width="14" 
-                             Height="14" 
-                             Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Margin="{StaticResource ControlBorderRight}" 
-                             Visibility="{Binding Path=TestFailed, Converter={StaticResource BoolToVisibilityConverter}}" 
-                             Icon="Ban" 
-                             HorizontalAlignment="Right" />
+                                         Height="14" 
+                                         Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                         Margin="{StaticResource ControlBorderRight}" 
+                                         Visibility="{Binding Path=TestFailed, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                         Icon="Ban" 
+                                         HorizontalAlignment="Right" />
                         <views:CircularProgressBar Width="14"
-                            Height="14"
-                            Margin="{StaticResource ControlBorderRight}" 
-                            Visibility="{Binding Path=Testing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    Height="14"
+                                                    Margin="{StaticResource ControlBorderRight}" 
+                                                    Visibility="{Binding Path=Testing, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Button x:Name="TestPublishCommand"
-                            Margin="{StaticResource ControlBorderRight}"
-                            Width="120" 
-                            Height="30" 
-                            Content="{x:Static languages:Core.TestConnectionLabel}" 
-                            ToolTip="{x:Static languages:Core.ManagePublishTooltip}"
-                            Command="{Binding Path=PublishCommand}">
+                                Margin="{StaticResource ControlBorderRight}"
+                                Width="120" 
+                                Height="30" 
+                                Content="{x:Static languages:Core.TestConnectionLabel}" 
+                                ToolTip="{x:Static languages:Core.ManagePublishTooltip}"
+                                Command="{Binding Path=PublishCommand}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.ServerTestConnectionHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                     </StackPanel>
                 </Grid>
+                <TextBox TextWrapping="WrapWithOverflow" 
+                         Grid.Row="3"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         x:Name="ErrorTextBlock" 
+                         Text="{Binding TestErrorMessage, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource ErrorMessageTextboxStyle}"
+                         Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <i:Interaction.Behaviors>
+                        <customControls:DoubleClickBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </Grid>
         </Grid>
     </ScrollViewer>

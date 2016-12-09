@@ -293,6 +293,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Tests\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.RabbitMqSource", "Warewolf.UIBindingTests.RabbitMqSource\Warewolf.UIBindingTests.RabbitMqSource.csproj", "{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WcfSource", "Warewolf.UIBindingTests.WcfSource\Warewolf.UIBindingTests.WcfSource.csproj", "{2F4FD767-6A03-433F-912F-27BFA11B8CBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1014,6 +1018,20 @@ Global
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.Build.0 = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|x86.Build.0 = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|x86.ActiveCfg = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|x86.Build.0 = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

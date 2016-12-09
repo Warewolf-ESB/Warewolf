@@ -868,7 +868,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("DatabaseNames"));
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.DatabaseNames.Any());
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
+            Assert.AreEqual("Exception: " + expectedExceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
             Assert.IsTrue(_targetUpdateManagerAggregatorDbSource.TestFailed);
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.TestPassed);
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.Testing);
@@ -896,7 +896,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("DatabaseNames"));
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.DatabaseNames.Any());
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
+            Assert.AreEqual("Exception: " + expectedExceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
             Assert.IsTrue(_targetUpdateManagerAggregatorDbSource.TestFailed);
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.TestPassed);
             Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.Testing);

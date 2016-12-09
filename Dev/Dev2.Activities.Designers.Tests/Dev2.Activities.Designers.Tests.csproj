@@ -108,12 +108,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <None Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
+    </None>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
-    </Compile>
+    </None>
     <Compile Include="AggregateCalculate\AggregateCalculateDesignerViewModelTests.cs" />
     <Compile Include="Calculate\CalculateDesignerViewModelTest.cs" />
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />

@@ -56,6 +56,19 @@ Scenario: Incorrect address anonymous auth type not allowing save
    When Test Connecton is "UnSuccessful"
    And Validation message is thrown
    And "Save" is "Enabled"
+   	
+@WebSource
+Scenario: Incorrect address Shows correct error message
+   Given I open New Web Source
+   And I type Address as "sdfsdfd"
+   And I type Default Query as "/GetCountries.ashx?extension=json&prefix=a"
+   And "Save" is "Enabled"
+   And "Test Connection" is "Enabled"
+   And I Select Authentication Type as "Anonymous"
+   When Test Connecton is "UnSuccessful"
+   And Validation message is thrown
+   And "Save" is "Enabled"
+   And the error message is "Illegal characters in path."
 
 @WebSource     
 Scenario: Incorrect address user auth type is not allowing to save

@@ -23,6 +23,8 @@ namespace Warewolf.UIBindingTests.ServerSource
     [Binding]
     public class NewServerSourceSteps
     {
+        string connectionErrorUnauthorized = "Connection Error: Unauthorized";
+
         [BeforeFeature("ServerSource")]
         public static void SetupForSystem()
         {
@@ -280,14 +282,33 @@ namespace Warewolf.UIBindingTests.ServerSource
             Assert.AreEqual(password, viewModel.Password);
         }
 
+        [Then(@"the error message is ""(.*)""")]
+        public void ThenTheErrorMessageIs(string errorMessage)
+        {
+            errorMessage = "Exception: " + connectionErrorUnauthorized + Environment.NewLine + Environment.NewLine +
+                           "Inner Exception: " + connectionErrorUnauthorized;
+
+            var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
+            var viewModel = GetViewModel(manageServerControl);
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string errorMsg)
         {
+            string newErrorMsg = errorMsg;
+
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
             var errorMessageFromControl = manageServerControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
-            var isErrorMessageOnControl = errorMessageFromControl.Equals(errorMsg, StringComparison.OrdinalIgnoreCase);
+
+            if (!string.IsNullOrWhiteSpace(newErrorMsg) && newErrorMsg != "Passed")
+            {
+                newErrorMsg = "Exception: " + errorMsg + Environment.NewLine + Environment.NewLine + "Inner Exception: " + errorMsg;
+            }
+
+            var isErrorMessageOnControl = errorMessageFromControl.Equals(newErrorMsg, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isErrorMessageOnControl);
             if (string.IsNullOrWhiteSpace(errorMsg))
             {
@@ -295,7 +316,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             }
             else
             {
-                var isErrorMessage = errorMessageOnViewModel.Equals(errorMsg, StringComparison.OrdinalIgnoreCase);
+                var isErrorMessage = errorMessageOnViewModel.Equals(newErrorMsg, StringComparison.OrdinalIgnoreCase);
                 Assert.IsTrue(isErrorMessage);
             }
         }
@@ -359,7 +380,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IServerSource>()))
-                    .Throws(new WarewolfTestException("Connection Error: Unauthorized", null));
+                    .Throws(new WarewolfTestException(connectionErrorUnauthorized, new Exception(connectionErrorUnauthorized)));
             }
             manageServerControl.TestAction();
         }
