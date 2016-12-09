@@ -139,8 +139,9 @@ namespace Warewolf.UIBindingTests.ExchangeSource
             }
             else
             {
+                var theRequestFailedTheRemoteServerReturnedAnErrorUnauthorized = "The request failed. The remote server returned an error: (401) Unauthorized.";
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IExchangeSource>()))
-                    .Throws(new WarewolfTestException("The request failed. The remote server returned an error: (401) Unauthorized.", null));
+                    .Throws(new WarewolfTestException(theRequestFailedTheRemoteServerReturnedAnErrorUnauthorized, new Exception(theRequestFailedTheRemoteServerReturnedAnErrorUnauthorized)));
             }
             var manageExchangeSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
             manageExchangeSourceControl.TestSend();
