@@ -91,6 +91,11 @@ namespace Dev2.Studio.Views.Workflow
                     {
                         return true;
                     }
+
+                    if (workflowDesignerViewModel.ResourceModel.ID == explorerItemViewModel.ResourceId)
+                    {
+                        return true;
+                    }
                     
                     if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {

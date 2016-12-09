@@ -11,11 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Scheduler;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Settings.Scheduler
 {
@@ -110,11 +113,25 @@ namespace Dev2.Settings.Scheduler
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
+            if (!_model.Connection.IsConnected)
+            {
+                ShowServerDisconnectedPopup();
+                return new List<IResourceHistory>();
+            }
+
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             var builder = jsonSerializer.SerializeToBuilder(resource);
             var controller = new CommunicationController { ServiceName = "GetScheduledResourceHistoryService" };
             controller.AddPayloadArgument("Resource", builder);
             return controller.ExecuteCommand<IList<IResourceHistory>>(_model.Connection, _model.Connection.WorkspaceID);
+        }
+
+        private void ShowServerDisconnectedPopup()
+        {
+            var controller = CustomContainer.Get<IPopupController>();
+            controller?.Show(string.Format(Core.ServerDisconnected, _model.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+                             Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
+                MessageBoxImage.Error, "", false, true, false, false);
         }
 
         public void Dispose()

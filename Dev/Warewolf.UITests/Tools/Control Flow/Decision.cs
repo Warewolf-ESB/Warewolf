@@ -18,17 +18,17 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Done button does not exist on decision large view after dragging tool in from the toolbox.");
             UIMap.Click_Decision_Dialog_Cancel_Button();
         }
-        [TestMethod]
-        [TestCategory("Tools")]
-        public void DecisionTool_LargeViewResize_UITest()
-        {
-            var sizeBefore = UIMap.DecisionOrSwitchDialog.LargeView.Height;
-            UIMap.Resize_Decision_LargeTool();
-            Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
-            UIMap.Click_Decision_Dialog_Cancel_Button();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+        //[TestMethod]
+        //[TestCategory("Tools")]
+        //public void DecisionTool_LargeViewResize_UITest()
+        //{
+        //    var sizeBefore = UIMap.DecisionOrSwitchDialog.LargeView.Height;
+        //    UIMap.Resize_Decision_LargeTool();
+        //    Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
+        //    UIMap.Click_Decision_Dialog_Cancel_Button();
+        //    UIMap.Click_Close_Workflow_Tab_Button();
+        //    UIMap.Click_MessageBox_No();
+        //}
 
         [TestMethod]
         [TestCategory("Tools")]

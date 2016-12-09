@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -96,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     else
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                        {
+                                        {                                            
                                             dataObject.Environment.Assign(region, value, update);
                                         }
                                     }
