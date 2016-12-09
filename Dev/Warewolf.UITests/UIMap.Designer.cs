@@ -43,19 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIWarewolfStudioViewMoTreeItem = this.UIWarewolfDEV2SANELEMTWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIWarewolfStudioViewMoTreeItem.UIWarewolfStudioViewMoTreeItem1.UIWarewolfStudioViewMoTreeItem;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' -> 'Warewolf.Studio.ViewModels.VersionViewModel' tree item equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIWarewolfStudioViewMoTreeItemExists, uIWarewolfStudioViewMoTreeItem.Exists);
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -66,18 +53,6 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -229,8 +204,6 @@ namespace Warewolf.UITests
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -269,21 +242,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' -> 'Warewolf.Studio.ViewModels.VersionViewModel' tree item equals 'True'
-        /// </summary>
-        public bool UIWarewolfStudioViewMoTreeItemExists = true;
         #endregion
     }
     
@@ -1965,6 +1923,22 @@ namespace Warewolf.UITests
                 return this.mSourcesMenuItem;
             }
         }
+        
+        public WpfMenuItem HideVersionHistoryMenuItem
+        {
+            get
+            {
+                if ((this.mHideVersionHistoryMenuItem == null))
+                {
+                    this.mHideVersionHistoryMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mHideVersionHistoryMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ShowHideVersions";
+                    this.mHideVersionHistoryMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHideVersionHistoryMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2019,6 +1993,8 @@ namespace Warewolf.UITests
         private WpfMenuItem mViewApis;
         
         private SourcesMenuItem mSourcesMenuItem;
+        
+        private WpfMenuItem mHideVersionHistoryMenuItem;
         #endregion
     }
     
@@ -105764,175 +105740,57 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfCustom UIRemoteConnectionInteCustom
+        public UIItemMenu UIItemMenu
         {
             get
             {
-                if ((this.mUIRemoteConnectionInteCustom == null))
+                if ((this.mUIItemMenu == null))
                 {
-                    this.mUIRemoteConnectionInteCustom = new WpfCustom(this);
+                    this.mUIItemMenu = new UIItemMenu(this);
+                }
+                return this.mUIItemMenu;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemMenu mUIItemMenu;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemMenu : WpfMenu
+    {
+        
+        public UIItemMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UIViewSwaggerMenuItem
+        {
+            get
+            {
+                if ((this.mUIViewSwaggerMenuItem == null))
+                {
+                    this.mUIViewSwaggerMenuItem = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mUIRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mUIRemoteConnectionInteCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIViewSwaggerMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ViewSwagger";
+                    this.mUIViewSwaggerMenuItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIRemoteConnectionInteCustom;
-            }
-        }
-        
-        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
-        {
-            get
-            {
-                if ((this.mUIUI_ExplorerControl_ACustom == null))
-                {
-                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
-                }
-                return this.mUIUI_ExplorerControl_ACustom;
+                return this.mUIViewSwaggerMenuItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUIRemoteConnectionInteCustom;
-        
-        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_ExplorerControl_ACustom : WpfCustom
-    {
-        
-        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIExplorerTreeTree UIExplorerTreeTree
-        {
-            get
-            {
-                if ((this.mUIExplorerTreeTree == null))
-                {
-                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
-                }
-                return this.mUIExplorerTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIExplorerTreeTree mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIExplorerTreeTree : WpfTree
-    {
-        
-        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
-                }
-                return this.mUIWarewolfStudioViewMoTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
-    {
-        
-        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfStudioViewMoTreeItem1 UIWarewolfStudioViewMoTreeItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoTreeItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoTreeItem1 = new UIWarewolfStudioViewMoTreeItem1(this);
-                }
-                return this.mUIWarewolfStudioViewMoTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfStudioViewMoTreeItem1 mUIWarewolfStudioViewMoTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfStudioViewMoTreeItem1 : WpfTreeItem
-    {
-        
-        public UIWarewolfStudioViewMoTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTreeItem UIWarewolfStudioViewMoTreeItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoTreeItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.VersionViewModel";
-                    this.mUIWarewolfStudioViewMoTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIWarewolfStudioViewMoTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem;
+        private WpfMenuItem mUIViewSwaggerMenuItem;
         #endregion
     }
 }

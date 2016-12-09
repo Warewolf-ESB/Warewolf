@@ -12,10 +12,9 @@ namespace Warewolf.UITests
         public void ShowVersionHistory_ForResource()
         {
             UIMap.Filter_Explorer("Hello World");
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
         }
 
         #region Additional test attributes
