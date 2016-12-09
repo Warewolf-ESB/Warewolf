@@ -485,7 +485,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IsDebugStateLastStep(content);
 
             _continueDebugDispatch = false;
-            if (content.IsFinalStep())
+            if (content.IsFinalStep() && !IsTestView)
+            {
+                _allDebugReceived = true;
+                _continueDebugDispatch = true;
+                ViewModelUtils.RaiseCanExecuteChanged(AddNewTestCommand);
+            }
+
+            if(content.StateType == StateType.TestAggregate && IsTestView)
             {
                 _allDebugReceived = true;
                 _continueDebugDispatch = true;
@@ -500,10 +507,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private void IsDebugStateLastStep(IDebugState content)
         {
-            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) ||
-                content.StateType == StateType.Message) return;
-            if (content.StateType != StateType.End)
+            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) || content.StateType == StateType.Message) return;
+            if (content.StateType != StateType.End && !IsTestView)
+            {
                 _lastStep = content;
+            }
+            if (content.StateType != StateType.TestAggregate && IsTestView)
+            {
+                _lastStep = content;
+            }
         }
 
         //This is used in the debug view to open the more link file. This is called Dynamically so shows as unused.
@@ -831,7 +843,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
                 {
-                    IsTestView = IsTestView,
                     ActivityTypeName = content.ActualType
                 };
                 _contentItemMap.Add(content.ParentID, parent);
@@ -848,7 +859,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 child = new DebugStringTreeViewItemViewModel
                 {
-                    IsTestView = IsTestView,
                     Content = content.Message,
                     ActivityTypeName = content.ActualType
                 };
@@ -857,7 +867,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 child = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
                 {
-                    IsTestView = IsTestView,
                     Content = content,
                     ActivityTypeName = content.ActualType
                 };

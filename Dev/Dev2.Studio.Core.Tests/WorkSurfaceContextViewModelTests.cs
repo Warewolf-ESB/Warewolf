@@ -1130,6 +1130,7 @@ namespace Dev2.Core.Tests
         }
         public Action<ModelItem> ItemSelectedAction { get; set; }
         public bool IsTestView { get; set; }
+        public ModelItem SelectedItem { get; set; }
 
         public void UpdateWorkflowLink(string newLink)
         {

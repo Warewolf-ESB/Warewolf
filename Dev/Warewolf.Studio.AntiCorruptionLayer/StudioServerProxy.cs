@@ -16,6 +16,7 @@ using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.ServerProxyLayer;
 using Dev2.Studio.Core;
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {

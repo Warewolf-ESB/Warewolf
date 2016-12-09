@@ -264,8 +264,11 @@ namespace Warewolf.Studio.ViewModels
                         if (type != null)
                         {
                             var act = Activator.CreateInstance(type) as IDev2Activity;
-                            serviceTestStep.StepOutputs =
-                                AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            if(serviceTestStep != null)
+                            {
+                                serviceTestStep.StepOutputs =
+                                    AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            }
                         }
                     }
                     if (serviceTestStep != null)
@@ -585,13 +588,7 @@ namespace Warewolf.Studio.ViewModels
             if (modelItem != null)
             {
                 var itemType = modelItem.ItemType;
-                if (itemType == typeof(FlowStep))
-                {
-                    if (modelItem.Content?.Value != null)
-                    {
-                        itemType = modelItem.Content.Value.ItemType;
-                    }
-                }
+                itemType = GetInnerItemType(modelItem, itemType);
                 if (itemType == typeof(Flowchart) || itemType == typeof(ActivityBuilder))
                 {
                     return;
@@ -629,6 +626,18 @@ namespace Warewolf.Studio.ViewModels
                     ProcessActivity(modelItem);
                 }
             }
+        }
+
+        private static Type GetInnerItemType(ModelItem modelItem, Type itemType)
+        {
+            if(itemType == typeof(FlowStep))
+            {
+                if(modelItem.Content?.Value != null)
+                {
+                    itemType = modelItem.Content.Value.ItemType;
+                }
+            }
+            return itemType;
         }
 
         private void ProcessSequence(ModelItem modelItem)
@@ -1005,7 +1014,15 @@ namespace Warewolf.Studio.ViewModels
 
         private IServiceTestStep BuildParentsFromModelItem(ModelItem modelItem)
         {
+            
             var computedValue = modelItem.GetCurrentValue();
+            if (computedValue is FlowStep)
+            {
+                if (modelItem.Content?.Value != null)
+                {
+                    computedValue = modelItem.Content.Value.GetCurrentValue();
+                }
+            }
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
 
             var activityUniqueID = dsfActivityAbstract?.UniqueID;
