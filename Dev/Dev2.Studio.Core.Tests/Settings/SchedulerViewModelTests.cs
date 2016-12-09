@@ -744,72 +744,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
 
         }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("SchedulerViewModel_SaveCommand")]
-        public void SchedulerViewModel_ShowErrorMessage_IfExceptionFound()
-        {
-            //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
-            scheduledResourceForTest.IsDirty = true;
-            resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
-            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.OK).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
-            var auth = new Mock<IAuthorizationService>();
-            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
-            env.Setup(a => a.IsConnected).Returns(true);
-            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
-            schedulerViewModel.CurrentEnvironment = env.Object;
-            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
-            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Throws(new Exception("bob"));
-            string test;
-            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
-            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
-            //------------Execute Test---------------------------
-            var taskList = schedulerViewModel.IsDirty;
-            //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
-        }
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("SchedulerViewModel_SaveCommand")]
-        public void SchedulerViewModel_ShowErrorMessage_IfExceptionFoundAgain()
-        {
-            //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
-            scheduledResourceForTest.IsDirty = true;
-            resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
-            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
-            var auth = new Mock<IAuthorizationService>();
-            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
-            env.Setup(a => a.IsConnected).Returns(true);
-            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
-            schedulerViewModel.CurrentEnvironment = env.Object;
-            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
-            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Throws(new Exception("bob"));
-            string test;
-            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
-            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
-            //------------Execute Test---------------------------
-            // ReSharper disable once NotAccessedVariable
-            var taskList = schedulerViewModel.IsDirty;
-            // ReSharper disable once RedundantAssignment
-            taskList = schedulerViewModel.IsDirty;
-            //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
-
-        }
-
+        
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_SaveCommand")]
