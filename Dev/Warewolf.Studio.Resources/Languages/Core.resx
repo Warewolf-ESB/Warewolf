@@ -4089,4 +4089,7 @@ Please contact your Warewolf System Administrator.</value>
   <data name="EmailSourceTestHelp" xml:space="preserve">
     <value>Sends a test email from this account so you can confirm its working.</value>
   </data>
+  <data name="ErrorsAdornerCopyToClipboardTooltip" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
 </root>
