@@ -42,7 +42,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource ElementBorderTop}">
+            <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource ElementBorderTop}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -94,7 +94,7 @@
                     </RadioButton>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="2" 
+            <Grid Grid.Row="1" 
                   Grid.Column="0" 
                   x:Name="UserNamePasswordContainer"
                   Margin="0,0,0,0"
@@ -142,13 +142,10 @@
             </Grid>
             <StackPanel Orientation="Horizontal" 
                         Margin="{StaticResource ControlBorderTop}"
-                        Grid.Row="3" 
+                        Grid.Row="2" 
                         Grid.Column="0" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Right">
-                <TextBlock Margin="{StaticResource ControlBorderRight}" 
-                           x:Name="ErrorTextBlock" 
-                           Text="{Binding TestMessage}"></TextBlock>
                 <fa:ImageAwesome Width="14" 
                                  Height="14" 
                                  Foreground="{StaticResource WareWolfOrangeBrush}" 
@@ -188,6 +185,18 @@
                         Command="{Binding CancelTestCommand}" 
                         Content="{x:Static languages:Core.CancelTest}"></Button>
             </StackPanel>
+            <TextBox TextWrapping="WrapWithOverflow" 
+                         Grid.Row="3"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         x:Name="ErrorTextBlock" 
+                         Text="{Binding TestMessage}" 
+                         Style="{StaticResource ErrorMessageTextboxStyle}"
+                         Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
+                <i:Interaction.Behaviors>
+                    <customControls:DoubleClickBehavior/>
+                </i:Interaction.Behaviors>
+            </TextBox>
         </Grid>
     </Grid>
 </UserControl>

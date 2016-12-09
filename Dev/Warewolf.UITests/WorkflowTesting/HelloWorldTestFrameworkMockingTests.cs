@@ -101,7 +101,7 @@ namespace Warewolf.UITests
             UIMap.CloseHangingDialogs();
 #endif            
             UIMap.Filter_Explorer(HelloWorld);
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
         }

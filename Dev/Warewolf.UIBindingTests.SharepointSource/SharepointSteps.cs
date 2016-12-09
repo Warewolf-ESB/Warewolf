@@ -133,6 +133,13 @@ namespace Warewolf.UIBindingTests.SharepointSource
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
 
+        [When(@"the error message is ""(.*)""")]
+        public void WhenTheErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
         [When(@"Test Connecton is ""(.*)""")]
         public void WhenTestConnectonIs(string successString)
         {
@@ -152,7 +159,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()))
-                    .Throws(new WarewolfTestException("Server not found", null));
+                    .Throws(new WarewolfTestException("Unable to contact Server : Test Failed: Value does not fall within the expected range.", null));
 
             }
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);

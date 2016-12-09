@@ -14,6 +14,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -172,6 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(!string.IsNullOrEmpty(item))
                     {
                         string val = item;
+                        
                         var blankRows = new List<int>();
                         if(SkipBlankRows)
                         {
@@ -479,15 +481,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(!string.IsNullOrEmpty(t.At))
                         {
                             entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
-
-                           
+                            if (entry == @"\r\n")
+                            {
+                                var match = Regex.Match(stringToSplit, @"[\r\n]+");
+                                if (match.Success && !SkipBlankRows)
+                                {
+                                    stringToSplit = Regex.Escape(stringToSplit);
+                                    dtb.ToTokenize = stringToSplit;
+                                }
+                            }
                             string escape = t.EscapeChar;
                             if(!String.IsNullOrEmpty(escape))
                             {
-                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();
-                              
+                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();                              
                             }
-
                             dtb.AddTokenOp(entry, t.Include, escape);
                         }
                         break;
