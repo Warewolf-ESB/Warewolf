@@ -11,8 +11,8 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DeleteExplorerResource
     {
-        const string flowSwitch = "Control Flow - Switch";
-        const string flowSequence = "Control Flow - Sequence";
+        const string flowSwitch = "DeleteExplorerResource_FileToDelete";
+        const string flowSequence = "DeleteExplorerResource_FileToDelete2";
 
         [TestMethod]
         [TestCategory("Explorer")]
