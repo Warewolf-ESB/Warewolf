@@ -10,18 +10,21 @@ namespace Warewolf.UITests
     public class RenameExplorerResource
     {
         private const string Folder = "Acceptance Tests";
+        private const string newFolderName = "FolderItem2";
+        private const string newResourceName = "FolderItem2";
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void RenameFolder_ThenFolderItem()
         {
-            UIMap.Filter_Explorer("Control Flow - Decision");
-            UIMap.Rename_LocalFolder_To_SecondFolder();
+            UIMap.Filter_Explorer("FolderItem");
+            UIMap.Rename_LocalFolder_To_SecondFolder(newFolderName);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Rename_FolderItem_ToNewFolderItem();
+            UIMap.Rename_FolderItem_ToNewFolderItem(newResourceName);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Explorer_Refresh_Button();
             var itemEdit = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ResourceNameTextBlock;
-            Assert.AreEqual("Control Flow - Decision2", itemEdit.DisplayText);
+            Assert.AreEqual(newResourceName, itemEdit.DisplayText);
 
             // Cleanup
             var resourcesDestFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Examples";            
