@@ -53,7 +53,6 @@ namespace Warewolf.UITests
             UIMap.Click_LocalHost_Once();
             UIMap.Create_New_Folder_Using_Shortcut();
             UIMap.Filter_Explorer("New Folder");
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
         
