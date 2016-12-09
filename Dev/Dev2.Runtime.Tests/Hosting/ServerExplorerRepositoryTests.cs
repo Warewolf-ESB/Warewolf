@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -767,12 +768,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
+            factory.Setup(itemFactory => itemFactory.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ServerExplorerItem("root",Guid.Empty, "Server",new List<IExplorerItem>(),Permissions.Administrator,""));
             var sync = new Mock<IExplorerRepositorySync>();
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>()));
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
+            serverExplorerRepository.Load(GlobalConstants.ServerWorkspaceID);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
                                               "/bob/dave");
 
