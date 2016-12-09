@@ -251,6 +251,10 @@ namespace Dev2.Scheduler
         }
         public string NameForDisplay { get; private set; }
 
+        public void SetItem(IScheduledResource item)
+        {
+        }
+
         #endregion
 
         #region Implementation of INewScheduledResource
@@ -265,6 +269,15 @@ namespace Dev2.Scheduler
             {
                 _newCommand = value;
             }
+        }
+
+        #endregion
+
+        #region Implementation of IEquatable<IScheduledResource>
+
+        public bool Equals(IScheduledResource other)
+        {
+            return false;
         }
 
         #endregion

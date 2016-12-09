@@ -48,6 +48,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         Start = 32,
         End = 64,
         All = 128,
-        Duration = 256
+        TestAggregate = 256,
+        Duration = 512
     }
 }

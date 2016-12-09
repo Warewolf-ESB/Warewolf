@@ -1,8 +1,11 @@
-﻿using System.Windows;
+﻿using System.Activities.Presentation;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -14,8 +17,38 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
+            PreviewMouseLeftButtonUp += WorkflowDesignerViewPreviewMouseUp;
         }
 
+        void WorkflowDesignerViewPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DependencyObject node = e.OriginalSource as DependencyObject;
+                while (node != null)
+                {
+                    if (node is ActivityDesigner)
+                    {
+                        var dt = DataContext as ServiceTestViewModel;
+                        var wd = dt?.WorkflowDesignerViewModel;
+                        var modelItem = wd?.SelectedItem;
+                        if (wd!=null && wd.IsTestView && modelItem != null)
+                        {
+                            wd.ItemSelectedAction?.Invoke(modelItem);
+                        }
+                        break;
+                    }
+                    if (node is Visual)
+                    {
+                        node = VisualTreeHelper.GetParent(node);
+                    }
+                    else
+                    {
+                        node = null;
+                    }
+                }
+            }
+        }
         private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
             var textBox = sender as CheckBox;

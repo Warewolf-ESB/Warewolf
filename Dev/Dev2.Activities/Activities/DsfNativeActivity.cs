@@ -652,7 +652,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.IsServiceTestExecution)
             {
-                var stepToBeAsserted = dataObject.ServiceTest?.TestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
+                var serviceTestSteps = dataObject.ServiceTest?.TestSteps;
+                var testSteps = serviceTestSteps as IList<IServiceTestStep> ?? serviceTestSteps?.ToList();
+                var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
                     if (stepToBeAsserted.Result != null)
@@ -784,9 +786,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.IsServiceTestExecution)
             {
-                bool assertPassed;
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children?? new List<IServiceTestStep>().ToObservableCollection());
-                var assertSteps = serviceTestSteps?.Where(step => step.Type == StepType.Assert
+                var testSteps = serviceTestSteps as IList<IServiceTestStep> ?? serviceTestSteps?.ToList();
+                var assertSteps = testSteps?.Where(step => step.Type == StepType.Assert
                                                                              && step.UniqueId == Guid.Parse(UniqueID)
                                                                              && step.ActivityType != typeof(DsfForEachActivity).Name
                                                                              && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name
@@ -795,107 +797,122 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                     {
-
                         if (stepToBeAsserted.Result != null)
                         {
                             stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
                         }
                         if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
                         {
-                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-
-                            if (serviceTestOutput.Result != null)
-                            {
-                                serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
-                            }
-                            var dsfDecision = this as DsfDecision;
-                            if (dsfDecision != null)
-                            {
-                                assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                                if (dataObject.ServiceTest != null)
-                                {
-                                    dataObject.ServiceTest.TestPassed = assertPassed;
-                                    dataObject.ServiceTest.TestFailing = !assertPassed;
-                                    
-                                    SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
-                                }
-                            }
+                            UpdateForDecision(dataObject, stepToBeAsserted);
                         }
                         else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
                         {
-                            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
-                            if (serviceTestOutput.Result != null)
-                            {
-                                serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
-                            }
-                            var dsfDecision = this as DsfSwitch;
-                            if (dsfDecision != null)
-                            {
-                                assertPassed = dsfDecision.Result == serviceTestOutput.Value;
-                                if (dataObject.ServiceTest != null)
-                                {
-                                    dataObject.ServiceTest.TestPassed = assertPassed;
-                                    dataObject.ServiceTest.TestFailing = !assertPassed;
-                                    SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
-                                }
-                            }
+                            UpdateForSwitch(dataObject, stepToBeAsserted);
                         }
                         else
                         {
-                            var factory = Dev2DecisionFactory.Instance();
-                            var testRunResults = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory)).ToList();
-                            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
-                            var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
-                            var finalResult = new TestRunResult();
-                            if (testPassed)
-                            {
-                                finalResult.RunTestResult = RunResult.TestPassed;
-                                if(stepToBeAsserted.Result != null)
-                                {
-                                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPassed;
-                                }
-                            }
-                            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
-                            {
-                                finalResult.RunTestResult = RunResult.TestFailed;
-                                finalResult.Message = serviceTestFailureMessage;
-                                if (stepToBeAsserted.Result != null)
-                                {
-                                    stepToBeAsserted.Result.RunTestResult = RunResult.TestFailed;
-                                }
-                            }
-                            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
-                            {
-                                finalResult.RunTestResult = RunResult.TestInvalid;
-                                finalResult.Message = serviceTestFailureMessage;
-                                if (stepToBeAsserted.Result != null)
-                                {
-                                    stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
-                                }
-                            }
-                            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestPending))
-                            {
-                                finalResult.RunTestResult = RunResult.TestPending;
-                                finalResult.Message = serviceTestFailureMessage;
-                                if (stepToBeAsserted.Result != null)
-                                {
-                                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
-                                }
-                            }
-                            if (dataObject.ServiceTest != null)
-                            {
-                                dataObject.ServiceTest.Result = finalResult;
-                                dataObject.ServiceTest.TestFailing = !testPassed;
-                                dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
-                                dataObject.ServiceTest.TestPassed = testPassed;
-                            }
-                            dataObject.StopExecution = !testPassed;
+                            UpdateForRegularActivity(dataObject, stepToBeAsserted);
                         }
                     }
                 }
             }
         }
 
+        private void UpdateForRegularActivity(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var factory = Dev2DecisionFactory.Instance();
+            var testRunResults = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory)).ToList();
+            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+            var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+            var finalResult = new TestRunResult();
+            if(testPassed)
+            {
+                finalResult.RunTestResult = RunResult.TestPassed;
+                if(stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPassed;
+                }
+            }
+            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+            {
+                finalResult.RunTestResult = RunResult.TestFailed;
+                finalResult.Message = serviceTestFailureMessage;
+                if(stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestFailed;
+                }
+            }
+            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+            {
+                finalResult.RunTestResult = RunResult.TestInvalid;
+                finalResult.Message = serviceTestFailureMessage;
+                if(stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
+                }
+            }
+            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestPending))
+            {
+                finalResult.RunTestResult = RunResult.TestPending;
+                finalResult.Message = serviceTestFailureMessage;
+                if(stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
+                }
+            }
+            if(dataObject.ServiceTest != null)
+            {
+                dataObject.ServiceTest.Result = finalResult;
+                dataObject.ServiceTest.TestFailing = !testPassed;
+                dataObject.ServiceTest.FailureMessage = serviceTestFailureMessage;
+                dataObject.ServiceTest.TestPassed = testPassed;
+            }
+            dataObject.StopExecution = !testPassed;
+        }
+
+        private void UpdateForSwitch(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+            if(serviceTestOutput.Result != null)
+            {
+                serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
+            }
+            var dsfDecision = this as DsfSwitch;
+            if(dsfDecision != null)
+            {
+                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                if(dataObject.ServiceTest != null)
+                {
+                    dataObject.ServiceTest.TestPassed = assertPassed;
+                    dataObject.ServiceTest.TestFailing = !assertPassed;
+                    SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
+                }
+            }
+        }
+
+        private void UpdateForDecision(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            var serviceTestOutput = stepToBeAsserted.StepOutputs[0];
+
+            if(serviceTestOutput.Result != null)
+            {
+                serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
+            }
+            var dsfDecision = this as DsfDecision;
+            if(dsfDecision != null)
+            {
+                var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
+                if(dataObject.ServiceTest != null)
+                {
+                    dataObject.ServiceTest.TestPassed = assertPassed;
+                    dataObject.ServiceTest.TestFailing = !assertPassed;
+
+                    SetPassResult(dataObject, assertPassed, serviceTestOutput, stepToBeAsserted);
+                }
+            }
+        }
+
+       
         private static void SetPassResult(IDSFDataObject dataObject, bool assertPassed, IServiceTestOutput serviceTestOutput, IServiceTestStep stepToBeAsserted)
         {
             if (assertPassed)
