@@ -935,26 +935,13 @@ Scenario: Run Selected Test in Web
 	| Variable Name | Value |
 	| Message   |       |
 	And save is enabled
-	When I save
-	Then Tab Header is "Hello World - Tests"
-	And I close the test builder
-	When the test builder is open with "Hello World"
-	Then there are 1 tests
-	And "Dummy Test" is selected
-	And I select "Test 1"
-	And "Test 1" is selected
-	And test name starts with "Test 1"
-	And inputs are
-	| Variable Name | Value |
-	| Name             |       |
-	And outputs as
-	| Variable Name | Value |
-	| Message   |       |
-	And save is disabled
+	When I save	
 	When I run selected test in Web
 	Then The WebResponse as
-	| Test Name | Result | Message                                                                |
-	| Test 1    | Failed | Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
+	| Test Name | Result | Message                             |
+	| Test 1    | Failed | Failed Output For Variable: Message |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
 
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
