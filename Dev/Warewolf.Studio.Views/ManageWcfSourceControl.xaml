@@ -10,6 +10,7 @@
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=interfaces:IManageWcfSourceViewModel, IsDesignTimeCreatable=False}">
@@ -101,10 +102,6 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Center">
-                        <TextBlock Style="{StaticResource ErrorTextBlockStyle}" 
-                                   TextAlignment="Right" 
-                                   Margin="{StaticResource ControlBorderRight}"
-                                   Text="{Binding TestMessage}"></TextBlock>
                         <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Margin="{StaticResource ControlBorderRight}" 
@@ -135,6 +132,18 @@
                         </Button>
                     </StackPanel>
                 </Grid>
+                <TextBox TextWrapping="WrapWithOverflow" 
+                         Grid.Row="3"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         x:Name="ErrorTextBlock" 
+                         Text="{Binding TestMessage}" 
+                         Style="{StaticResource ErrorMessageTextboxStyle}"
+                         Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <i:Interaction.Behaviors>
+                        <customControls:DoubleClickBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </Grid>
         </Grid>
     </ScrollViewer>

@@ -51,6 +51,18 @@ Scenario: Incorrect address anonymous auth type not allowing save
    And "Save" is "Disabled"
 
 @SharepointSource
+Scenario: Incorrect address Shows correct error message
+   Given I open New Sharepoint Source
+   And I type Address as "sdfsdfd"
+   And "Save" is "Disabled"
+   And "Test Connection" is "Enabled"
+   And I Select Authentication Type as "Windows"
+   When Test Connecton is "UnSuccessful"
+   And Validation message is thrown
+   And "Save" is "Disabled"
+   And the error message is "Unable to contact Server : Test Failed: Value does not fall within the expected range."
+
+@SharepointSource
 Scenario: Incorrect address user auth type is not allowing to save
    Given I open New Sharepoint Source
    And I type Address as "sdfsdfd"
