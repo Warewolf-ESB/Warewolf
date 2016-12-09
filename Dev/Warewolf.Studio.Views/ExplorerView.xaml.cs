@@ -357,11 +357,12 @@ namespace Warewolf.Studio.Views
         {
             if (e.Key == Key.F2)
             {
-                explorerItemViewModel.IsRenaming = true;
+                explorerItemViewModel.IsRenaming = explorerItemViewModel.CanRename;
             }
             if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                explorerItemViewModel.DeployCommand.Execute(null);
+                if (explorerItemViewModel.CanDeploy)
+                    explorerItemViewModel.DeployCommand.Execute(null);
             }
             if (explorerItemViewModel.IsFolder)
             {
