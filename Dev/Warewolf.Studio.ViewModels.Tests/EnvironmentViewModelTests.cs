@@ -530,7 +530,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.Setup(a => a.ExplorerRepository).Returns(explorerRepositoryMock.Object);
             _target.CanCreateSource = true;
             _target.ShowContextMenu = true;
-
+            var server = new Mock<IServer>();
+            server.Setup(server1 => server1.UserPermissions).Returns(Permissions.Administrator);
+            _target.Server = server.Object;
             //act
             _target.CreateFolder();
 
@@ -539,9 +541,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Children[0].CanCreateSource);
             Assert.IsTrue(_target.Children[0].ShowContextMenu);
             Assert.IsTrue(_target.Children[0].CanDelete);
-            Assert.IsFalse(_target.Children[0].CanCreateFolder);
+            Assert.IsTrue(_target.Children[0].CanCreateFolder);
             Assert.IsFalse(_target.Children[0].CanShowVersions);
-            Assert.IsFalse(_target.Children[0].CanCreateWorkflowService);
+            Assert.IsTrue(_target.Children[0].CanCreateWorkflowService);
         }
 
         [TestMethod]
