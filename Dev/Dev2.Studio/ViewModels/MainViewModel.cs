@@ -789,27 +789,11 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = EnvironmentRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
-            var deployTasks = new List<Task>();
-            foreach (var resource in resources)
-            {
-                var dto = new DeployDto
-                {
-                    ResourceModels =
-                        new List<IResourceModel>
-                        {
-                            sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(resource)
-                        },
-                    DeployTests = deployTests
-                };
-               //environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
-
-                var deployTask = Dispatcher.CurrentDispatcher.InvokeAsync(
-                    () =>environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel,dto)).Task;
-                deployTasks.Add(deployTask);
-            }
-            Task.WaitAll(deployTasks.ToArray());
-            //ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
+            var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests };
+            environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
+            ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
+
         }
 
         public void ShowPopup(IPopupMessage popupMessage)
