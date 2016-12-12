@@ -14,7 +14,7 @@ Scenario: Schedule with history
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
 	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  When the "ScheduleWithHistory" is executed "1" times
-	  Then the Schedule task has "No" error
+	  Then the Schedule task has "NO" error
 	  Then the schedule status is "Success"
 	  And "ScheduleWithHistory" has "2" row of history	   
 	  And the history debug output for "ScheduleWithHistory" for row "1" is 
