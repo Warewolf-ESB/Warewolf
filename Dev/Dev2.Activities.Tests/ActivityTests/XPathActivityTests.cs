@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
 
-            Assert.AreEqual(null, actual);
+            Assert.AreEqual("", actual);
 
         }
 
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
 
-            Assert.AreEqual(null, actual);
+            Assert.AreEqual("", actual);
         }
 
         [TestMethod]

@@ -506,8 +506,6 @@ Scenario: Duplicate a test
 	When I click duplicate 
 	Then there are 2 tests
 	And the duplicated tests is "Test 1 1"
-	And save is enabled
-	When I save
 
 @TestFramework
 Scenario: Duplicate a test with same name fails
