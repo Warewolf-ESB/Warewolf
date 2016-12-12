@@ -72,10 +72,10 @@ Scenario: Rename Folder From Save Dialog
 	And I Filter Save Dialog Explorer with "FolderToRename"
 	And I RightClick Save Dialog Localhost First Item
 	And I Select Rename From SaveDialog ExplorerContextMenu
-	And I Rename Save Dialog Explorer First Item To "FolderRenamed"
+	And I Rename Save Dialog Explorer First Item To "FolderToRename_Renamed"
 	And I Click SaveDialog CancelButton
-	And I Filter the Explorer with "FolderRenamed"
-	Then Explorer Contain Item "FolderRenamed"
+	And I Filter the Explorer with "FolderToRename_Renamed"
+	Then Explorer Contain Item "FolderToRename_Renamed"
 	Then I Click Close Workflow Tab Button
 	And I Click MessageBox No
 
@@ -116,7 +116,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Name New Folder as "New Created Folder"
 	And I Filter the Explorer with "New Created Folder"
-	Then Explorer Contain Item "New Created Folder"	
+	Then Explorer Contain Sub Item "New Created Folder"	
 	Then I Click Close Workflow Tab Button
 
 Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
@@ -129,6 +129,9 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I Name New Sub Folder as "New Created Sub Folder"
 	Then Explorer Contain Sub Item "New Created Sub Folder"
 	Then I Click Close Workflow Tab Button
+	And I Filter the Explorer with "New Created Sub Folder"
+	And I RightClick Explorer First Remote Server First Item
+	Then Folder ContextMenu appears
 
 Scenario: Rename Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -166,6 +169,7 @@ Scenario: Move Resource To Localhost From Save Dialog
 	And I Move resource to localhost
 	And I Filter Save Dialog Explorer with "FolderToMove"
 	Then Explorer Does Not Contain Item "ResourceToMove"
+	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
 	And I Click MessageBox No
 
@@ -173,7 +177,7 @@ Scenario: Move Folder To FolderToRename From Save Dialog
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
-	And I Filter Save Dialog Explorer with "ResourceTo"
+	And I Filter Save Dialog Explorer with "FolderTo"
 	And I Move FolderToMove into FolderToRename
 	And I Filter Save Dialog Explorer with "FolderToMove"
 	Then "FolderToMove" is child of "FolderToRename"
