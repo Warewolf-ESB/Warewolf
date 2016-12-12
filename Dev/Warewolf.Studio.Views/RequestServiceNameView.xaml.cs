@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -79,6 +82,54 @@ namespace Warewolf.Studio.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var environmentViewModel = ExplorerViewItem.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
+                .FirstOrDefault(model => model.IsRenaming);
+
+            if (e.Key == Key.Escape)
+            {
+                if (explorerItemViewModelRename != null)
+                {
+                    var textBox = e.OriginalSource as TextBox;
+                    explorerItemViewModelRename.ResourceName = textBox?.Text;
+
+                    e.Handled = true;
+                    return;
+                }
+                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
+                requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
+            else if (e.Key == Key.Delete)
+            {
+                var explorerItemViewModelSelected = environmentViewModel?.Children.Flatten(model => model.Children)
+                .FirstOrDefault(model => model.IsSelected);
+                if (explorerItemViewModelSelected != null && !explorerItemViewModelSelected.IsRenaming && explorerItemViewModelRename == null)
+                {
+                    explorerItemViewModelSelected.DeleteCommand.Execute(null);
+                }
+            }
+        }
+
+        private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var environmentViewModel = ExplorerViewItem.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
+                .FirstOrDefault(model => model.IsRenaming);
+
+            if (e.Key == Key.Escape)
+            {
+                if (explorerItemViewModelRename != null)
+                {
+                    e.Handled = true;
+                    return;
+                }
+                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
+                requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
         }
     }
 }
