@@ -4,7 +4,7 @@ Feature: WebConnector
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-Scenario: Web GET Connector
+Scenario: Create and Execute New Web GET Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Click New Web Source Ribbon Button
@@ -21,7 +21,7 @@ Scenario: Web GET Connector
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
 	
-Scenario: Web POST Connector
+Scenario: Create and Execute New Web POST Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	When I Drag PostWeb RequestTool Onto DesignSurface
@@ -31,7 +31,7 @@ Scenario: Web POST Connector
 	And I Click POST Web Large View Test Inputs Done Button
 	And I Click POST Web Large View Done Button
 	
-Scenario: Web PUT Connector
+Scenario: Create and Execute New Web PUT Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	When I Drag PutWeb Tool Onto DesignSurface
@@ -41,7 +41,7 @@ Scenario: Web PUT Connector
 	And I Click PUT Web Large View Test Inputs Done Button
 	And I Click PUT Web Large View Done Button
 	
-Scenario: Web DELETE Connector
+Scenario: Create and Execute New Web DELETE Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	When I Drag DeleteWeb Toolbox Onto Workflow Surface
