@@ -30,7 +30,6 @@
                           InputGestureText="[F5]" 
                           IsEnabled="{Binding CanDebugInputs}"
                           Style="{StaticResource MenuItemStyle}"
-                          ToolTipService.ShowOnDisabled="True"
                           ToolTip="{Binding DebugInputsTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -43,7 +42,6 @@
                           InputGestureText="[F6]"
                           IsEnabled="{Binding CanDebugStudio}"
                           Style="{StaticResource MenuItemStyle}"
-                          ToolTipService.ShowOnDisabled="True"
                           ToolTip="{Binding DebugStudioTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -56,7 +54,6 @@
                           InputGestureText="[F7]"
                           IsEnabled="{Binding CanDebugBrowser}"
                           Style="{StaticResource MenuItemStyle}"
-                          ToolTipService.ShowOnDisabled="True"
                           ToolTip="{Binding DebugBrowserTooltip}">
                     <MenuItem.Icon>
                         <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -66,7 +63,6 @@
                 <MenuItem Name="Schedule"
                           Command="{Binding ScheduleCommand}"
                           Header="Schedule"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanCreateSchedule}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding ScheduleTooltip}">
@@ -80,7 +76,6 @@
                 <MenuItem Name="TestEditor"
                           Command="{Binding TestEditorCommand}"
                           Header="Test Editor"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanCreateTest}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding CreateTestTooltip}">
@@ -92,7 +87,6 @@
                 <MenuItem Name="RunAllTests"
                           Command="{Binding RunAllTestsCommand}"
                           Header="Run All Tests"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanRunAllTests}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding RunAllTestsTooltip}">
@@ -103,7 +97,6 @@
                 <MenuItem Name="Duplicate"
                           Command="{Binding DuplicateCommand}"
                           Header="Duplicate"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanDuplicate}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DuplicateTooltip}">
@@ -115,7 +108,6 @@
                 <MenuItem Name="Deploy"
                           Command="{Binding DeployCommand}"
                           Header="Deploy"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanDeploy}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding DeployTooltip}">
@@ -129,7 +121,6 @@
                 <MenuItem Name="Dependencies"
                           Command="{Binding ShowDependenciesCommand}"
                           Header="Show Dependencies"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanShowDependencies}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding ShowDependenciesTooltip}">
@@ -141,7 +132,6 @@
                 <MenuItem Name="ViewSwagger"
                           Command="{Binding ViewSwaggerCommand}"
                           Header="View Swagger" 
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanViewSwagger}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding ViewSwaggerTooltip}">
@@ -155,7 +145,6 @@
                 <MenuItem Name="CopyUrl"
                           Command="{Binding CopyUrlCommand}"
                           Header="Copy URL to Clipboard"
-                          ToolTipService.ShowOnDisabled="True"
                           IsEnabled="{Binding CanCopyUrl}"
                           Style="{StaticResource MenuItemStyle}"
                           ToolTip="{Binding CopyUrlTooltip}">
