@@ -3515,6 +3515,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
+            TryClickMessageBoxOK();//Dismiss resource conflict dialog
         }
 
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
@@ -3524,6 +3525,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
+
         [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
