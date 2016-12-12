@@ -514,10 +514,11 @@ namespace Warewolf.Studio.ViewModels
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var output in outputs)
                 {
-                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable).Where(s => !string.IsNullOrEmpty(s.Variable));
+                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
                     foreach (var debugItemResult in actualOutputs)
                     {
-                        var serviceTestOutput = new ServiceTestOutput(debugItemResult.Variable, debugItemResult.Value, "", "")
+                        var variable = debugItemResult.Variable;
+                        var serviceTestOutput = new ServiceTestOutput(variable ?? "", debugItemResult.Value, "", "")
                         {
                             AssertOp = "=",
                             AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
@@ -1083,9 +1084,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueID, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
 
-                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
+                    var serviceTestOutputs = outputs.Select(output =>
                     {
-                        return new ServiceTestOutput(output, "", "", "")
+                        return new ServiceTestOutput(output ?? "", "", "", "")
                         {
                             HasOptionsForValue = false,
                             AddStepOutputRow = s => { serviceTestStep?.AddNewOutput(s); }
@@ -1124,7 +1125,7 @@ namespace Warewolf.Studio.ViewModels
         private static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, ServiceTestStep step)
         {
             var serviceTestOutputs =
-                outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
                     HasOptionsForValue = false,
                     AddStepOutputRow = s => step.AddNewOutput(s)
@@ -1134,8 +1135,19 @@ namespace Warewolf.Studio.ViewModels
 
         private static List<IServiceTestOutput> AddOutputs(List<string> outputs, ServiceTestStep step)
         {
+            if (outputs == null || outputs.Count == 0)
+            {
+                return new List<IServiceTestOutput>
+                {
+                    new ServiceTestOutput("", "", "", "")
+                    {
+                        HasOptionsForValue = false,
+                        AddStepOutputRow = s => step.AddNewOutput(s)
+                    }
+                };
+            }
             var serviceTestOutputs =
-                outputs.Select(output => new ServiceTestOutput(output, "", "", "")
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
                     HasOptionsForValue = false,
                     AddStepOutputRow = s => step.AddNewOutput(s)
