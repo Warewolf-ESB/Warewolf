@@ -129,6 +129,9 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I Name New Sub Folder as "New Created Sub Folder"
 	Then Explorer Contain Sub Item "New Created Sub Folder"
 	Then I Click Close Workflow Tab Button
+	And I Filter the Explorer with "New Created Sub Folder"
+	And I RightClick Explorer First Remote Server First Item
+	Then Folder ContextMenu appears
 
 Scenario: Rename Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button
