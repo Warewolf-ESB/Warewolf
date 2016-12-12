@@ -528,7 +528,7 @@ namespace Dev2.Studio.Core.Models
 
             if(ResourceType == ResourceType.WorkflowService)
             {
-                var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
+                var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 StringBuilder xaml = WorkflowXaml;
 
                 if ((xaml==null || xaml.Length==0) && msg?.Message != null)
