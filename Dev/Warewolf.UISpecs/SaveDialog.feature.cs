@@ -284,13 +284,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.Then("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 86
- testRunner.And("I Filter Save Dialog Explorer with \"New Created Folder2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Filter Save Dialog Explorer with \"Another New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
  testRunner.And("I RightClick Save Dialog Localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
  testRunner.And("I Select New_Folder From SaveDialog ExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.And("I Enter New Folder Name as \"New Created Folder2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter New Folder Name as \"Another New Created Folder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
  testRunner.And("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91

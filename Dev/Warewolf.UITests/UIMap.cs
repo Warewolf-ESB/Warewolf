@@ -7443,7 +7443,7 @@ namespace Warewolf.UITests
         [Then(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflowItem);
         }
 
         [When(@"I Select NewWorkFlowService From ContextMenu")]
