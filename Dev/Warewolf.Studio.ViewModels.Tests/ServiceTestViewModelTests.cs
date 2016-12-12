@@ -817,10 +817,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
 
-            serviceTestViewModel.CreateTestCommand.Execute(null);
-            Assert.IsTrue(serviceTestViewModel.CanSave);
-            serviceTestViewModel.Save();
-
+            serviceTestViewModel.CreateTestCommand.Execute(null);            
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestViewModel.PopupController);
             popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
@@ -1503,11 +1500,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "NameOne", NameForDisplay = "NameOne" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "NameOne" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] {  });
             //---------------Test Result -----------------------
             Assert.AreEqual(true, bool.Parse(invoke.ToString()));
         }
@@ -1525,11 +1525,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "NameOne%", NameForDisplay = "NameOne%" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "NameOne%" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] {  });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -1547,11 +1550,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "", NameForDisplay = "" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "" });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] {});
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -1569,11 +1575,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid());
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { null });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }
@@ -1591,11 +1600,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "name ", NameForDisplay = "name " };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { "name " });
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { });
             //---------------Test Result -----------------------
             Assert.AreEqual(false, bool.Parse(invoke.ToString()));
         }

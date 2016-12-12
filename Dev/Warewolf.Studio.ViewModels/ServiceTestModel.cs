@@ -51,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
         private string _errorContainsText;
         private bool _isTestLoading;
         private bool _isValidatingIsDirty;
+        private bool _isDirty;
 
         public string NeverRunString
         {
@@ -140,6 +141,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 _item = value;
                 OnPropertyChanged(() => Item);
+                var dirty = IsDirty;
+                SetDisplayName(dirty);
+                OnPropertyChanged(() => IsDirty);
             }
         }
 
@@ -447,27 +451,32 @@ namespace Warewolf.Studio.ViewModels
                     return false;
                 }
                 _isValidatingIsDirty = true;
-                var isDirty = false;
+                _isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
                 {
-                    isDirty = true;
+                    _isDirty = true;
                 }
                 else if (notEquals)
                 {
-                    isDirty = true;
+                    _isDirty = true;
                 }
 
-                if (isDirty)
-                {
-                    NameForDisplay = TestName + " *";
-                }
-                else
-                {
-                    NameForDisplay = TestName;
-                }
+                SetDisplayName(_isDirty);
                 _isValidatingIsDirty = false;
-                return isDirty;
+                return _isDirty;
+            }
+        }
+
+        private void SetDisplayName(bool isDirty)
+        {
+            if(isDirty)
+            {
+                NameForDisplay = TestName + " *";
+            }
+            else
+            {
+                NameForDisplay = TestName;
             }
         }
 
