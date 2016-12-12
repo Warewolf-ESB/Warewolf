@@ -17,7 +17,7 @@ namespace Warewolf.Studio.Views
         public ServiceTestView()
         {
             InitializeComponent();
-            PreviewMouseLeftButtonUp += WorkflowDesignerViewPreviewMouseUp;
+            WorkflowControl.PreviewMouseLeftButtonUp += WorkflowDesignerViewPreviewMouseUp;
         }
 
         void WorkflowDesignerViewPreviewMouseUp(object sender, MouseButtonEventArgs e)

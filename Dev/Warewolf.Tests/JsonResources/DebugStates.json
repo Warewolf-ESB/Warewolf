@@ -1,0 +1,300 @@
+﻿[
+  {
+    "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
+    "DisconnectedID": "bd6a9b6d-1e09-46ac-94f6-02085f1584b2",
+    "ID": "00000000-0000-0000-0000-000000000000",
+    "ParentID": "00000000-0000-0000-0000-000000000000",
+    "ServerID": "51a58300-7e9d-4927-a57b-e5d700b11b55",
+    "EnvironmentID": "00000000-0000-0000-0000-000000000000",
+    "ClientID": "8100bf3a-81b2-4812-a03f-ab914b01070a",
+    "StateType": 32,
+    "DisplayName": "Hello World",
+    "HasError": false,
+    "ErrorMessage": "",
+    "Version": "",
+    "Name": "Start",
+    "ActivityType": 0,
+    "Duration": "00:00:00.0034992",
+    "DurationString": "PT0.0034992S",
+    "StartTime": "2016-09-27T10:37:44.0691132+02:00",
+    "EndTime": "2016-09-27T10:37:44.0726124+02:00",
+    "Inputs": [
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": null,
+            "Variable": "[[Name]]",
+            "Operator": "=",
+            "Value": "Nathi",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      }
+    ],
+    "Outputs": [],
+    "Server": "localhost",
+    "WorkspaceID": "4c2b57d3-1ee2-4d6d-852c-65d28f0168f7",
+    "OriginalInstanceID": "00000000-0000-0000-0000-000000000000",
+    "OriginatingResourceID": "acb75027-ddeb-47d7-814e-a54c37247ec1",
+    "IsSimulation": false,
+    "Message": null,
+    "NumberOfSteps": 0,
+    "Origin": "Debug",
+    "ExecutionOrigin": 2,
+    "ExecutionOriginDescription": null,
+    "ExecutingUser": null,
+    "SessionID": "083eed00-9583-465a-8963-a8383a944298",
+    "WorkSurfaceMappingId": "00000000-0000-0000-0000-000000000000",
+    "IsDurationVisible": false,
+    "ActualType": null
+  },
+  {
+    "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
+    "DisconnectedID": "58f69874-a47b-445f-b719-c607f03d1009",
+    "ID": "a03172cf-7f8f-417e-be86-8821d696ca40",
+    "ParentID": "00000000-0000-0000-0000-000000000000",
+    "ServerID": "51a58300-7e9d-4927-a57b-e5d700b11b55",
+    "EnvironmentID": "00000000-0000-0000-0000-000000000000",
+    "ClientID": "8100bf3a-81b2-4812-a03f-ab914b01070a",
+    "StateType": 1,
+    "DisplayName": "Decision",
+    "HasError": false,
+    "ErrorMessage": "",
+    "Version": "",
+    "Name": "Step",
+    "ActivityType": 1,
+    "Duration": "00:00:00.0390306",
+    "DurationString": "PT0.0390306S",
+    "StartTime": "2016-09-27T10:37:44.1021436+02:00",
+    "EndTime": "2016-09-27T10:37:44.1411742+02:00",
+    "Inputs": [
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": null,
+            "Variable": "[[Name]]",
+            "Operator": "=",
+            "Value": "Nathi",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      },
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 2,
+            "Label": "Statement",
+            "Variable": null,
+            "Operator": "",
+            "Value": "If Nathi <> (Not Equal) \r\nTHEN Name Input\r\nELSE Blank Input",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      },
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 2,
+            "Label": "Require all decisions to be true",
+            "Variable": null,
+            "Operator": "",
+            "Value": "YES",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      }
+    ],
+    "Outputs": [],
+    "Server": "localhost",
+    "WorkspaceID": "4c2b57d3-1ee2-4d6d-852c-65d28f0168f7",
+    "OriginalInstanceID": "00000000-0000-0000-0000-000000000000",
+    "OriginatingResourceID": "acb75027-ddeb-47d7-814e-a54c37247ec1",
+    "IsSimulation": false,
+    "Message": null,
+    "NumberOfSteps": 0,
+    "Origin": "",
+    "ExecutionOrigin": 0,
+    "ExecutionOriginDescription": null,
+    "ExecutingUser": null,
+    "SessionID": "083eed00-9583-465a-8963-a8383a944298",
+    "WorkSurfaceMappingId": "a03172cf-7f8f-417e-be86-8821d696ca40",
+    "IsDurationVisible": true,
+    "ActualType": "DsfDecision"
+  },
+  {
+    "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
+    "DisconnectedID": "753b8126-651d-45db-b504-8011a8a0d0ce",
+    "ID": "670132e7-80d4-4e41-94af-ba4a71b28118",
+    "ParentID": "00000000-0000-0000-0000-000000000000",
+    "ServerID": "51a58300-7e9d-4927-a57b-e5d700b11b55",
+    "EnvironmentID": "00000000-0000-0000-0000-000000000000",
+    "ClientID": "8100bf3a-81b2-4812-a03f-ab914b01070a",
+    "StateType": 128,
+    "DisplayName": "Set the output variable (1)",
+    "HasError": false,
+    "ErrorMessage": "",
+    "Version": "",
+    "Name": "Step",
+    "ActivityType": 1,
+    "Duration": "00:00:00.0665811",
+    "DurationString": "PT0.0665811S",
+    "StartTime": "2016-09-27T10:37:44.1451744+02:00",
+    "EndTime": "2016-09-27T10:37:44.2117555+02:00",
+    "Inputs": [
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 2,
+            "Label": "1",
+            "Variable": null,
+            "Operator": "",
+            "Value": "",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          },
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": "Variable",
+            "Variable": "[[Message]]",
+            "Operator": "=",
+            "Value": "",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          },
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": "New Value",
+            "Variable": "Hello [[Name]].",
+            "Operator": "=",
+            "Value": "Hello Nathi.",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      }
+    ],
+    "Outputs": [
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 2,
+            "Label": "1",
+            "Variable": null,
+            "Operator": "",
+            "Value": "",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          },
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": null,
+            "Variable": "[[Message]]",
+            "Operator": "=",
+            "Value": "Hello Nathi.",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      }
+    ],
+    "Server": "localhost",
+    "WorkspaceID": "4c2b57d3-1ee2-4d6d-852c-65d28f0168f7",
+    "OriginalInstanceID": "00000000-0000-0000-0000-000000000000",
+    "OriginatingResourceID": "acb75027-ddeb-47d7-814e-a54c37247ec1",
+    "IsSimulation": false,
+    "Message": null,
+    "NumberOfSteps": 0,
+    "Origin": "",
+    "ExecutionOrigin": 0,
+    "ExecutionOriginDescription": null,
+    "ExecutingUser": null,
+    "SessionID": "083eed00-9583-465a-8963-a8383a944298",
+    "WorkSurfaceMappingId": "670132e7-80d4-4e41-94af-ba4a71b28118",
+    "IsDurationVisible": true,
+    "ActualType": "DsfMultiAssignActivity"
+  },
+  {
+    "$type": "Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics",
+    "DisconnectedID": "c3f5b7df-9076-49a1-98cd-c8c484803fc1",
+    "ID": "00000000-0000-0000-0000-000000000000",
+    "ParentID": "00000000-0000-0000-0000-000000000000",
+    "ServerID": "51a58300-7e9d-4927-a57b-e5d700b11b55",
+    "EnvironmentID": "00000000-0000-0000-0000-000000000000",
+    "ClientID": "8100bf3a-81b2-4812-a03f-ab914b01070a",
+    "StateType": 64,
+    "DisplayName": "Hello World",
+    "HasError": false,
+    "ErrorMessage": "",
+    "Version": "",
+    "Name": "End",
+    "ActivityType": 0,
+    "Duration": "00:00:00.2617509",
+    "DurationString": "PT0.2617509S",
+    "StartTime": "2016-09-27T10:37:43.9505044+02:00",
+    "EndTime": "2016-09-27T10:37:44.2122553+02:00",
+    "Inputs": [],
+    "Outputs": [
+      {
+        "$type": "Dev2.Diagnostics.DebugItem, Dev2.Diagnostics",
+        "ResultsList": [
+          {
+            "$type": "Dev2.Diagnostics.DebugItemResult, Dev2.Diagnostics",
+            "Type": 1,
+            "Label": null,
+            "Variable": "[[Message]]",
+            "Operator": "=",
+            "Value": "Hello Nathi.",
+            "GroupName": null,
+            "GroupIndex": 0,
+            "MoreLink": null
+          }
+        ]
+      }
+    ],
+    "Server": "localhost",
+    "WorkspaceID": "4c2b57d3-1ee2-4d6d-852c-65d28f0168f7",
+    "OriginalInstanceID": "00000000-0000-0000-0000-000000000000",
+    "OriginatingResourceID": "acb75027-ddeb-47d7-814e-a54c37247ec1",
+    "IsSimulation": false,
+    "Message": null,
+    "NumberOfSteps": 0,
+    "Origin": "",
+    "ExecutionOrigin": 0,
+    "ExecutionOriginDescription": null,
+    "ExecutingUser": null,
+    "SessionID": "083eed00-9583-465a-8963-a8383a944298",
+    "WorkSurfaceMappingId": "00000000-0000-0000-0000-000000000000",
+    "IsDurationVisible": true,
+    "ActualType": null
+  }
+]
