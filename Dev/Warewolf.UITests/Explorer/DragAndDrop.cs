@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -8,21 +6,6 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DragAndDrop
     {
-        [TestMethod]
-        [TestCategory("Explorer")]
-        public void DragAndDropServiceFromExplorerUITest()
-        {
-            UIMap.TryClearExplorerFilter();
-            var resourcesDestFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
-            UIMap.Drag_Explorer_First_Item_Onto_The_Second_Item();
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests\Acceptance Testing Resources";
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
-            if (!Directory.Exists(resourcesDestFolder))
-                Directory.Move(resourcesFolder, resourcesDestFolder);
-            UIMap.Click_Explorer_Refresh_Button();
-        }
-    
         [TestMethod]
         [TestCategory("Explorer")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
