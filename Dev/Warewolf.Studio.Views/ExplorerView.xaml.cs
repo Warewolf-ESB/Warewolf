@@ -245,7 +245,7 @@ namespace Warewolf.Studio.Views
             {
                 var textBox = sender as TextBox;
                 var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                if (explorerItemViewModel != null && !explorerItemViewModel.IsSaveDialog)
                 {
                     explorerItemViewModel.ResourceName = textBox.Text;
                 }
@@ -256,7 +256,7 @@ namespace Warewolf.Studio.Views
         {
             var textBox = sender as TextBox;
             var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming)
+            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming && !explorerItemViewModel.IsSaveDialog)
             {
                 explorerItemViewModel.ResourceName = textBox.Text;
             }
@@ -425,7 +425,7 @@ namespace Warewolf.Studio.Views
             }
             if (e.Key == Key.Delete)
             {
-                if (!explorerItemViewModel.IsRenaming)
+                if (!explorerItemViewModel.IsRenaming && !explorerItemViewModel.IsSaveDialog)
                 {
                     explorerItemViewModel.DeleteCommand.Execute(null);
                 }
