@@ -1,0 +1,1279 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TimeSpan2</name>
+    </assembly>
+    <members>
+        <member name="T:System.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanDayStrings">
+            <summary>
+              Looks up a localized string similar to days,day,d.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanHourStrings">
+            <summary>
+              Looks up a localized string similar to hours,hour,hrs,hr,h.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanJiraFormat">
+            <summary>
+              Looks up a localized string similar to [%w&apos;w&apos;]_[%r&apos;d&apos;]_[%h&apos;h&apos;]_[%m&apos;m&apos;]_[%s&apos;s&apos;].
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanJiraPattern">
+            <summary>
+              Looks up a localized string similar to [%w\w][_][%d\d][_][%h\h][_][%m\m][_][%s\s].
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManyDayFormat">
+            <summary>
+              Looks up a localized string similar to days.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManyHourFormat">
+            <summary>
+              Looks up a localized string similar to hours.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManyMillisecondFormat">
+            <summary>
+              Looks up a localized string similar to milliseconds.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManyMinuteFormat">
+            <summary>
+              Looks up a localized string similar to minutes.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManySecondFormat">
+            <summary>
+              Looks up a localized string similar to seconds.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanManyTickFormat">
+            <summary>
+              Looks up a localized string similar to ticks.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanMillisecondStrings">
+            <summary>
+              Looks up a localized string similar to milliseconds,millisecond,ms.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanMinuteStrings">
+            <summary>
+              Looks up a localized string similar to minutes,minute,mins,min,m.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneDayFormat">
+            <summary>
+              Looks up a localized string similar to day.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneHourFormat">
+            <summary>
+              Looks up a localized string similar to hour.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneMillisecondFormat">
+            <summary>
+              Looks up a localized string similar to millisecond.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneMinuteFormat">
+            <summary>
+              Looks up a localized string similar to minute.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneSecondFormat">
+            <summary>
+              Looks up a localized string similar to second.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanOneTickFormat">
+            <summary>
+              Looks up a localized string similar to tick.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanSecondStrings">
+            <summary>
+              Looks up a localized string similar to seconds,second,secs,sec,s.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanSeparator">
+            <summary>
+              Looks up a localized string similar to , .
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanTickStrings">
+            <summary>
+              Looks up a localized string similar to ticks,tick,t.
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanWordFormat">
+            <summary>
+              Looks up a localized string similar to [%d_@d],[%h_@h],[%m_@m],[%s_@s],[%k_@k].
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanWordPattern">
+            <summary>
+              Looks up a localized string similar to [%d_@d][_][\,][_][%h_@h][_][\,][_][%m_@m][_][\,][_][%s_@s][_][\,][_][%k_@k][_][\,][_][%t_@t].
+            </summary>
+        </member>
+        <member name="P:System.Properties.Resources.TimeSpanWordPatternIgnoreCase">
+            <summary>
+              Looks up a localized string similar to true.
+            </summary>
+        </member>
+        <member name="T:System.Windows.Forms.TimeSpanPicker">
+            <summary>
+            Drop down control that will display a formatted TimeSpan.
+            </summary>
+        </member>
+        <member name="M:System.Windows.Forms.TimeSpanPicker.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Windows.Forms.TimeSpanPicker"/> class.
+            </summary>
+        </member>
+        <member name="E:System.Windows.Forms.TimeSpanPicker.ValueChanged">
+            <summary>
+            Occurs when the value changes.
+            </summary>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.FormatInfo">
+            <summary>
+            Gets or sets the <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> that provides custom formatting behavior.
+            </summary>
+            <value></value>
+            <returns>
+            The <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> implementation that provides custom formatting behavior.
+            </returns>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.FormatString">
+            <summary>
+            Gets or sets the format string for displaying values. See <seealso cref="M:System.Globalization.TimeSpan2FormatInfo.Format(System.String,System.Object,System.IFormatProvider)"/> for more information on valid format strings.
+            </summary>
+            <value>The format string.</value>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.FormattedZero">
+            <summary>
+            Gets or sets the string used to represent <c>TimeSpan.Zero</c>.
+            </summary>
+            <value>The formatted zero.</value>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.FormattingEnabled">
+            <summary>
+            Gets or sets a value indicating whether formatting is applied to the <see cref="P:System.Windows.Forms.ListControl.DisplayMember"/> property of the <see cref="T:System.Windows.Forms.ListControl"/>.
+            </summary>
+            <value></value>
+            <returns>true if formatting of the <see cref="P:System.Windows.Forms.ListControl.DisplayMember"/> property is enabled; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.IsTextValid">
+            <summary>
+            Gets a value indicating whether the current text can be parsed into a valid <see cref="T:System.TimeSpan2"/> value.
+            </summary>
+            <value>
+            	<c>true</c> if this text is valid; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.Items">
+            <summary>
+            Gets the items displayed in the drop-down list.
+            </summary>
+            <value>The items.</value>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+            <value></value>
+            <returns>
+            The text associated with this control.
+            </returns>
+            <PermissionSet>
+            	<IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/>
+            	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/>
+            	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/>
+            	<IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/>
+            </PermissionSet>
+        </member>
+        <member name="P:System.Windows.Forms.TimeSpanPicker.Value">
+            <summary>
+            Gets or sets the value of the control.
+            </summary>
+            <value>The TimeSpan value.</value>
+        </member>
+        <member name="M:System.Windows.Forms.TimeSpanPicker.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.ComboBox"/> and optionally releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        </member>
+        <member name="M:System.Windows.Forms.TimeSpanPicker.OnTextChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.TextChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:System.Windows.Forms.TimeSpanPicker.OnValueChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:ValueChanged"/> event.
+            </summary>
+            <param name="args">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:System.Windows.Forms.TimeSpanPicker.WndProc(System.Windows.Forms.Message@)">
+            <summary>
+            Processes Windows messages.
+            </summary>
+            <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
+        </member>
+        <member name="T:System.Windows.Forms.TimeSpanPicker.TimeSpanCollection">
+            <summary>
+            List of TimeSpan structures.
+            </summary>
+        </member>
+        <member name="T:System.Collections.Generic.StrongListWrapper`1">
+            <summary>
+            Takes a collection that supports an <see cref="T:System.Collections.IList"/> and makes it strongly typed like <see cref="T:System.Collections.Generic.List`1"/>.
+            </summary>
+            <typeparam name="T">Type to cast object to from the provided <see cref="T:System.Collections.IList"/>.</typeparam>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.#ctor(System.Collections.IList)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.StrongListWrapper`1"/> class.
+            </summary>
+            <param name="baseList">The base list.</param>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.Core">
+            <summary>
+            Gets the core list.
+            </summary>
+            <value>The core list.</value>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <value></value>
+            <returns>
+            The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
+            </returns>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.Item(System.Int32)">
+            <summary>
+            Gets or sets the strongly typed object at the specified index.
+            </summary>
+            <value>The index of the list item to get.</value>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.Add(`0)">
+            <summary>
+            Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.AddRange(`0[])">
+            <summary>
+            Adds the range.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.Contains(`0)">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="array"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="arrayIndex"/> is less than 0.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="array"/> is multidimensional.
+            -or-
+            <paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.
+            -or-
+            The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
+            -or-
+            Type T cannot be cast automatically to the type of the destination <paramref name="array"/>.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.IndexOf(`0)">
+            <summary>
+            Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <returns>
+            The index of <paramref name="item"/> if found in the list; otherwise, -1.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.Insert(System.Int32,`0)">
+            <summary>
+            Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+            <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.Remove(`0)">
+            <summary>
+            Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the item to remove.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="T:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1">
+            <summary>
+            Enumerator class for the <see cref="T:System.Collections.Generic.StrongListWrapper`1"/>.
+            </summary>
+            <typeparam name="ET">Type to cast object to from the provided <see cref="T:System.Collections.IEnumerator"/>.</typeparam>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1.Current">
+            <summary>
+            Gets the element in the collection at the current position of the enumerator.
+            </summary>
+            <value></value>
+            <returns>
+            The element in the collection at the current position of the enumerator.
+            </returns>
+        </member>
+        <member name="P:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1.System#Collections#IEnumerator#Current">
+            <summary>
+            Gets the element in the collection at the current position of the enumerator.
+            </summary>
+            <value></value>
+            <returns>
+            The element in the collection at the current position of the enumerator.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1.MoveNext">
+            <summary>
+            Advances the enumerator to the next element of the collection.
+            </summary>
+            <returns>
+            true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">
+            The collection was modified after the enumerator was created.
+            </exception>
+        </member>
+        <member name="M:System.Collections.Generic.StrongListWrapper`1.StrongListWrapperEnumerator`1.Reset">
+            <summary>
+            Sets the enumerator to its initial position, which is before the first element in the collection.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The collection was modified after the enumerator was created.
+            </exception>
+        </member>
+        <member name="T:System.TimeSpan2">
+            <summary>
+            Represents a time interval.
+            </summary>
+            <remarks>
+            A TimeSpan2 object represents a time interval (duration of time or elapsed time) that is measured as a positive or negative number of days, hours, minutes, seconds, and fractions of a second. The TimeSpan2 structure can also be used to represent the time of day, but only if the time is unrelated to a particular date.
+            </remarks>
+        </member>
+        <member name="F:System.TimeSpan2.MaxValue">
+            <summary>Represents the maximum <see cref="T:System.TimeSpan2"/> value. This field is read-only.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.MinValue">
+            <summary>Represents the minimum <see cref="T:System.TimeSpan2"/> value. This field is read-only.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.Zero">
+            <summary>Represents the zero <see cref="T:System.TimeSpan2"/> value. This field is read-only.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.TicksPerDay">
+            <summary>Represents the number of ticks in 1 day. This field is constant.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.TicksPerHour">
+            <summary>Represents the number of ticks in 1 hour. This field is constant.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.TicksPerMillisecond">
+            <summary>Represents the number of ticks in 1 millisecond. This field is constant.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.TicksPerMinute">
+            <summary>Represents the number of ticks in 1 minute. This field is constant.</summary>
+        </member>
+        <member name="F:System.TimeSpan2.TicksPerSecond">
+            <summary>Represents the number of ticks in 1 second. This field is constant.</summary>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.TimeSpan)">
+            <summary>
+            Initializes a new <see cref="T:System.TimeSpan2"/> with the specified <see cref="T:System.TimeSpan"/>.
+            </summary>
+            <param name="span">The initializing <see cref="T:System.TimeSpan"/>.</param>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.Int64)">
+            <summary>
+            Initializes a new <see cref="T:System.TimeSpan2"/> with the specified number of ticks.
+            </summary>
+            <param name="ticks">A time period expressed in 100-nanosecond units.</param>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new <see cref="T:System.TimeSpan2"/> with the specified number of hours, minutes, and seconds.
+            </summary>
+            <param name="hours">Number of hours.</param>
+            <param name="minutes">Number of minutes.</param>
+            <param name="seconds">Number of seconds.</param>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new <see cref="T:System.TimeSpan2"/> with the specified number of days, hours, minutes, and seconds.
+            </summary>
+            <param name="days">Number of days.</param>
+            <param name="hours">Number of hours.</param>
+            <param name="minutes">Number of minutes.</param>
+            <param name="seconds">Number of seconds.</param>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new <see cref="T:System.TimeSpan2"/> with the specified number of days, hours, minutes, seconds, and milliseconds.
+            </summary>
+            <param name="days">Number of days.</param>
+            <param name="hours">Number of hours.</param>
+            <param name="minutes">Number of minutes.</param>
+            <param name="seconds">Number of seconds.</param>
+            <param name="milliseconds">Number of milliseconds</param>
+        </member>
+        <member name="M:System.TimeSpan2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.TimeSpan2"/> struct.
+            </summary>
+            <param name="info">The serialization info.</param>
+            <param name="context">The serialization context.</param>
+        </member>
+        <member name="P:System.TimeSpan2.Days">
+            <summary>
+            Gets the days component of the time interval represented by the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The day component of this instance. The return value can be positive or negative.</value>
+        </member>
+        <member name="P:System.TimeSpan2.Hours">
+            <summary>
+            Gets the hours component of the time interval represented by the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The hours component of this instance. The return value ranges from -23 through 23.</value>
+        </member>
+        <member name="P:System.TimeSpan2.IsZero">
+            <summary>
+            Gets a value indicating whether this instance is zero.
+            </summary>
+            <value><c>true</c> if this instance is zero; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:System.TimeSpan2.Milliseconds">
+            <summary>
+            Gets the milliseconds component of the time interval represented by the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The milliseconds component of this instance. The return value ranges from -999 through 999.</value>
+        </member>
+        <member name="P:System.TimeSpan2.Minutes">
+            <summary>
+            Gets the minutes component of the time interval represented by the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The minutes component of this instance. The return value ranges from -59 through 59.</value>
+        </member>
+        <member name="P:System.TimeSpan2.Seconds">
+            <summary>
+            Gets the seconds component of the time interval represented by the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The seconds component of this instance. The return value ranges from -59 through 59.</value>
+        </member>
+        <member name="P:System.TimeSpan2.Ticks">
+            <summary>
+            Gets the number of ticks that represent the value of the current <see cref="T:System.TimeSpan2"/> structure.
+            </summary>
+            <value>The number of ticks contained in this instance.</value>
+        </member>
+        <member name="P:System.TimeSpan2.TotalDays">
+            <summary>
+            Gets the value of the current <see cref="T:System.TimeSpan2"/> structure expressed in whole and fractional days.
+            </summary>
+            <value>The total number of days represented by this instance.</value>
+        </member>
+        <member name="P:System.TimeSpan2.TotalHours">
+            <summary>
+            Gets the value of the current <see cref="T:System.TimeSpan2"/> structure expressed in whole and fractional hours.
+            </summary>
+            <value>The total number of hours represented by this instance.</value>
+        </member>
+        <member name="P:System.TimeSpan2.TotalMilliseconds">
+            <summary>
+            Gets the value of the current <see cref="T:System.TimeSpan2"/> structure expressed in whole and fractional milliseconds.
+            </summary>
+            <value>The total number of milliseconds represented by this instance.</value>
+        </member>
+        <member name="P:System.TimeSpan2.TotalMinutes">
+            <summary>
+            Gets the value of the current <see cref="T:System.TimeSpan2"/> structure expressed in whole and fractional minutes.
+            </summary>
+            <value>The total number of minutes represented by this instance.</value>
+        </member>
+        <member name="P:System.TimeSpan2.TotalSeconds">
+            <summary>
+            Gets the value of the current <see cref="T:System.TimeSpan2"/> structure expressed in whole and fractional seconds.
+            </summary>
+            <value>The total number of seconds represented by this instance.</value>
+        </member>
+        <member name="M:System.TimeSpan2.op_Implicit(System.TimeSpan2)~System.TimeSpan">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.TimeSpan2"/> to <see cref="T:System.TimeSpan"/>.
+            </summary>
+            <param name="ts2">The <see cref="T:System.TimeSpan2"/> structure to convert.</param>
+            <returns>The <see cref="T:System.TimeSpan"/> equivalent of the converted <see cref="T:System.TimeSpan2"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_Implicit(System.TimeSpan)~System.TimeSpan2">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.TimeSpan"/> to <see cref="T:System.TimeSpan2"/>.
+            </summary>
+            <param name="ts">The <see cref="T:System.TimeSpan"/> structure to convert.</param>
+            <returns>The <see cref="T:System.TimeSpan2"/> equivalent of the converted <see cref="T:System.TimeSpan"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_Inequality(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether two <see cref="T:System.TimeSpan2"/> instances are not equal.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the values of <paramref name="t1"/> and <paramref name="t2"/> are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_UnaryPlus(System.TimeSpan2)">
+            <summary>
+            Returns the specified instance of <see cref="T:System.TimeSpan2"/>.
+            </summary>
+            <param name="t">A <see cref="T:System.TimeSpan2"/>.</param>
+            <returns>Returns <paramref name="t"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_Addition(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Adds two specified <see cref="T:System.TimeSpan2"/> instances.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> whose value is the sum of the values of <paramref name="t1"/> and <paramref name="t2"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_UnaryNegation(System.TimeSpan2)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> whose value is the negated value of the specified instance.
+            </summary>
+            <param name="t">A <see cref="T:System.TimeSpan2"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> with the same numeric value as this instance, but the opposite sign.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_Subtraction(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Subtracts a specified <see cref="T:System.TimeSpan2"/> from another specified <c>TimeSpan2</c>.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> whose value is the result of the value of <paramref name="t1"/> minus the value of <paramref name="t2"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_LessThan(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether a specified <see cref="T:System.TimeSpan2"/> is less than another specified <see cref="T:System.TimeSpan2"/>. 
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the value of <paramref name="t1"/> is less than the value of <paramref name="t2"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_LessThanOrEqual(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether a specified <see cref="T:System.TimeSpan2"/> is less than or equal to another specified <see cref="T:System.TimeSpan2"/>. 
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the value of <paramref name="t1"/> is less than or equal to the value of <paramref name="t2"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_Equality(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether two <see cref="T:System.TimeSpan2"/> instances are equal.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the values of <paramref name="t1"/> and <paramref name="t2"/> are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_GreaterThan(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether a specified <see cref="T:System.TimeSpan2"/> is greater than another specified <see cref="T:System.TimeSpan2"/>. 
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the value of <paramref name="t1"/> is greater than the value of <paramref name="t2"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.op_GreaterThanOrEqual(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether a specified <see cref="T:System.TimeSpan2"/> is greater than or equal to another specified <see cref="T:System.TimeSpan2"/>. 
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the value of <paramref name="t1"/> is greater than or equal to the value of <paramref name="t2"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Compare(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Compares two <see cref="T:System.TimeSpan2"/> values and returns an integer that indicates whether the first value is shorter than, equal to, or longer than the second value.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns>
+            <list>
+            <listheader><term>Value</term><description>Condition</description></listheader>
+            <item><term>-1</term><description><paramref name="t1"/> is shorter than <paramref name="t2"/></description></item>
+            <item><term>0</term><description><paramref name="t1"/> is equal to <paramref name="t2"/></description></item>
+            <item><term>1</term><description><paramref name="t1"/> is longer than <paramref name="t2"/></description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2.Equals(System.TimeSpan2,System.TimeSpan2)">
+            <summary>
+            Indicates whether two <see cref="T:System.TimeSpan2"/> instances are equal.
+            </summary>
+            <param name="t1">A <see cref="T:System.TimeSpan2"/>.</param>
+            <param name="t2">A <c>TimeSpan2</c>.</param>
+            <returns><c>true</c> if the values of <paramref name="t1"/> and <paramref name="t2"/> are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromDays(System.Double)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified number of days, where the specification is accurate to the nearest millisecond.
+            </summary>
+            <param name="value">A number of days, accurate to the nearest millisecond.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromHours(System.Double)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified number of hours, where the specification is accurate to the nearest millisecond.
+            </summary>
+            <param name="value">A number of hours, accurate to the nearest millisecond.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromMilliseconds(System.Double)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified number of milliseconds.
+            </summary>
+            <param name="value">A number of milliseconds.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromMinutes(System.Double)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified number of minutes, where the specification is accurate to the nearest millisecond.
+            </summary>
+            <param name="value">A number of minutes, accurate to the nearest millisecond.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromSeconds(System.Double)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified number of seconds, where the specification is accurate to the nearest millisecond.
+            </summary>
+            <param name="value">A number of seconds, accurate to the nearest millisecond.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.FromTicks(System.Int64)">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> that represents a specified time, where the specification is in units of ticks.
+            </summary>
+            <param name="value">A number of ticks that represent a time.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> with a value of <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Parse(System.String)">
+            <summary>
+            Converts the specified string representation of a time span to its <see cref="T:System.TimeSpan2"/> equivalent. 
+            </summary>
+            <param name="value">A string containing a time span to parse.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> equivalent to the time span contained in <paramref name="value"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="value"/> is <c>null</c>.</exception>
+            <exception cref="T:System.FormatException"><paramref name="value"/> does not contain a valid string representation of a time span.</exception>
+        </member>
+        <member name="M:System.TimeSpan2.Parse(System.String,System.IFormatProvider)">
+            <summary>
+            Converts the specified string representation of a time span to its <see cref="T:System.TimeSpan2"/> equivalent using the specified culture-specific format information. 
+            </summary>
+            <param name="value">A string containing a time span to parse.</param>
+            <param name="formatProvider">An object that supplies culture-specific format information about <paramref name="value"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> equivalent to the time span contained in <paramref name="value"/> as specified by <paramref name="formatProvider"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="value"/> is <c>null</c>.</exception>
+            <exception cref="T:System.FormatException"><paramref name="value"/> does not contain a valid string representation of a time span.</exception>
+        </member>
+        <member name="M:System.TimeSpan2.ParseExact(System.String,System.String,System.IFormatProvider)">
+            <summary>
+            Converts the string representation of a time interval to its <see cref="T:System.TimeSpan2"/> equivalent by using the specified array of format strings and culture-specific format information. The format of the string representation must match the specified format exactly.
+            </summary>
+            <param name="input">A string that specifies the time interval to convert.</param>
+            <param name="format">A standard or custom format string that defines the required format of <paramref name="input"/>.</param>
+            <param name="formatProvider">An object that provides culture-specific formatting information.</param>
+            <returns>A time interval that corresponds to <paramref name="input"/>, as specified by <paramref name="format"/> and <paramref name="formatProvider"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.ParseExact(System.String,System.String[],System.IFormatProvider)">
+            <summary>
+            Converts the string representation of a time interval to its <see cref="T:System.TimeSpan2"/> equivalent by using the specified format and culture-specific format information. The format of the string representation must match the specified format exactly.
+            </summary>
+            <param name="input">A string that specifies the time interval to convert.</param>
+            <param name="formats">A array of standard or custom format strings that defines the required format of <paramref name="input"/>.</param>
+            <param name="formatProvider">An object that provides culture-specific formatting information.</param>
+            <returns>A time interval that corresponds to <paramref name="input"/>, as specified by <paramref name="formats"/> and <paramref name="formatProvider"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.TryParse(System.String,System.TimeSpan2@)">
+            <summary>
+            Converts the specified string representation of a date and time to its <see cref="T:System.TimeSpan2"/> equivalent and returns a value that indicates whether the conversion succeeded. 
+            </summary>
+            <param name="s">A string containing a time span to convert.</param>
+            <param name="result">When this method returns, contains the <see cref="T:System.TimeSpan2"/> value equivalent to the time span contained in <paramref name="s"/>, if the conversion succeeded, or <c>TimeSpan.Zero</c> if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is <c>null</c>, is an empty string (""), or does not contain a valid string representation of a time span. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.TryParse(System.String,System.IFormatProvider,System.TimeSpan2@)">
+            <summary>
+            Converts the specified string representation of a date and time to its <see cref="T:System.TimeSpan2"/> equivalent and returns a value that indicates whether the conversion succeeded. 
+            </summary>
+            <param name="s">A string containing a time span to convert.</param>
+            <param name="formatProvider">An object that supplies culture-specific format information about <paramref name="s"/>.</param>
+            <param name="result">When this method returns, contains the <see cref="T:System.TimeSpan2"/> value equivalent to the time span contained in <paramref name="s"/>, if the conversion succeeded, or <c>TimeSpan.Zero</c> if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is <c>null</c>, is an empty string (""), or does not contain a valid string representation of a time span. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.TryParseExact(System.String,System.String,System.IFormatProvider,System.TimeSpan2@)">
+            <summary>
+            Converts the string representation of a time interval to its <see cref="T:System.TimeSpan2"/> equivalent by using the specified format and culture-specific format information, and returns a value that indicates whether the conversion succeeded. The format of the string representation must match the specified format exactly.
+            </summary>
+            <param name="input">A string that specifies the time interval to convert.</param>
+            <param name="format">A standard or custom format string that defines the required format of <paramref name="input"/>.</param>
+            <param name="formatProvider">An object that supplies culture-specific format information about <paramref name="input"/>.</param>
+            <param name="result">When this method returns, contains an object that represents the time interval specified by <paramref name="input"/>, or <see cref="F:System.TimeSpan.Zero"/> if the conversion failed. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if <paramref name="input"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.TryParseExact(System.String,System.String[],System.IFormatProvider,System.TimeSpan2@)">
+            <summary>
+            Converts the string representation of a time interval to its <see cref="T:System.TimeSpan2"/> equivalent by using the specified formats and culture-specific format information, and returns a value that indicates whether the conversion succeeded. The format of the string representation must match one of the specified formats exactly.
+            </summary>
+            <param name="input">A string that specifies the time interval to convert.</param>
+            <param name="formats">A array of standard or custom format strings that define the acceptable formats of <paramref name="input"/>.</param>
+            <param name="formatProvider">An object that supplies culture-specific format information about <paramref name="input"/>.</param>
+            <param name="result">When this method returns, contains an object that represents the time interval specified by <paramref name="input"/>, or <see cref="F:System.TimeSpan.Zero"/> if the conversion failed. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if <paramref name="input"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Add(System.TimeSpan2)">
+            <summary>
+            Adds the specified <see cref="T:System.TimeSpan2"/> to this instance.
+            </summary>
+            <param name="ts">A <see cref="T:System.TimeSpan2"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> that represents the value of this instance plus the value of <paramref name="ts"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.CompareTo(System.Object)">
+            <summary>
+            Compares this instance to a specified object and returns an integer that indicates whether this [instance] is shorter than, equal to, or longer than the specified object. 
+            </summary>
+            <param name="obj">An object to compare, or <c>null</c>.</param>
+            <returns>A signed number indicating the relative values of this instance and <paramref name="obj"/>.
+            <list>
+            <listheader><term>Value</term><description>Condition</description></listheader>
+            <item><term>-1</term><description>This instance is shorter than <paramref name="obj"/></description></item>
+            <item><term>0</term><description>This instance is equal to <paramref name="obj"/></description></item>
+            <item><term>1</term><description>This instance is longer than <paramref name="obj"/></description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2.CompareTo(System.TimeSpan2)">
+            <summary>
+            Compares this instance to a specified <see cref="T:System.TimeSpan2"/> object and returns an integer that indicates whether this [instance] is shorter than, equal to, or longer than the <see cref="T:System.TimeSpan2"/> object.
+            </summary>
+            <param name="other">A <see cref="T:System.TimeSpan2"/> object to compare to this instance.</param>
+            <returns>A signed number indicating the relative values of this instance and <paramref name="other"/>.
+            <list>
+            <listheader><term>Value</term><description>Condition</description></listheader>
+            <item><term>-1</term><description>This instance is shorter than <paramref name="other"/></description></item>
+            <item><term>0</term><description>This instance is equal to <paramref name="other"/></description></item>
+            <item><term>1</term><description>This instance is longer than <paramref name="other"/></description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2.CompareTo(System.TimeSpan)">
+            <summary>
+            Compares this instance to a specified <see cref="T:System.TimeSpan"/> object and returns an integer that indicates whether this [instance] is shorter than, equal to, or longer than the <see cref="T:System.TimeSpan2"/> object.
+            </summary>
+            <param name="other">A <see cref="T:System.TimeSpan"/> object to compare to this instance.</param>
+            <returns>A signed number indicating the relative values of this instance and <paramref name="other"/>.
+            <list>
+            <listheader><term>Value</term><description>Condition</description></listheader>
+            <item><term>-1</term><description>This instance is shorter than <paramref name="other"/></description></item>
+            <item><term>0</term><description>This instance is equal to <paramref name="other"/></description></item>
+            <item><term>1</term><description>This instance is longer than <paramref name="other"/></description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2.Duration">
+            <summary>
+            Returns a new <see cref="T:System.TimeSpan2"/> object whose value is the absolute value of the current <see cref="T:System.TimeSpan2"/> object.
+            </summary>
+            <returns>A new <see cref="T:System.TimeSpan2"/> object whose value is the absolute value of the current <see cref="T:System.TimeSpan2"/> object.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Equals(System.Object)">
+            <summary>
+            Indicates whether the current object is equal to another object.
+            </summary>
+            <param name="obj">An object to compare with this object.</param>
+            <returns><c>true</c> if the current object is equal to the <paramref name="obj"/> parameter; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Equals(System.String)">
+            <summary>
+            Indicates whether the current object is equal to a specified <see cref="T:System.String"/>.
+            </summary>
+            <param name="str">A <see cref="T:System.String"/> to compare with this object.</param>
+            <returns><c>true</c> if the current object is equal to the <paramref name="str"/> parameter once converted to a <see cref="T:System.TimeSpan2"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Equals(System.TimeSpan2)">
+            <summary>
+            Indicates whether the current object is equal to a specified <see cref="T:System.TimeSpan2"/> object.
+            </summary>
+            <param name="other">A <see cref="T:System.TimeSpan2"/> object to compare with this object.</param>
+            <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Equals(System.TimeSpan)">
+            <summary>
+            Indicates whether the current object is equal to a specified <see cref="T:System.TimeSpan"/> object.
+            </summary>
+            <param name="other">A <see cref="T:System.TimeSpan"/> object to compare with this object.</param>
+            <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.GetHashCode">
+            <summary>
+            Returns the hash code for this instance.
+            </summary>
+            <returns>
+            A 32-bit signed integer that is the hash code for this instance.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2.Negate">
+            <summary>
+            Returns a <see cref="T:System.TimeSpan2"/> whose value is the negated value of this instance.
+            </summary>
+            <returns>The same numeric value as this instance, but with the opposite sign.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.Subtract(System.TimeSpan2)">
+            <summary>
+            Subtracts the specified <see cref="T:System.TimeSpan2"/> from this instance.
+            </summary>
+            <param name="ts">A <see cref="T:System.TimeSpan2"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan2"/> whose value is the result of the value of this instance minus the value of <paramref name="ts"/>.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.ToString(System.String,System.IFormatProvider)">
+            <summary>
+            Returns string representation of the value of this instance using the specified format.
+            </summary>
+            <param name="format">A TimeSpan format string.</param>
+            <param name="formatProvider">An <see cref="T:System.IFormatProvider"/> object that supplies format information about the current instance.</param>
+            <returns>A string representation of value of the current <see cref="T:System.TimeSpan2"/> object as specified by format.</returns>
+        </member>
+        <member name="M:System.TimeSpan2.ToString(System.String)">
+            <summary>
+            Returns string representation of the value of this instance using the specified format.
+            </summary>
+            <param name="format">A TimeSpan format string.</param>
+            <returns>A string representation of value of the current <see cref="T:System.TimeSpan2"/> object as specified by format.</returns>
+            <remarks>
+            <para>The following table lists the standard TimeSpan format patterns.</para>
+            <list type="table">
+            <listheader><term>Format specifier</term><description>Name</description><description>Description</description><description>Examples</description></listheader>
+            <item><term>"c"</term>
+            	<description>Constant (invariant) format</description>
+            	<description>This specifier is not culture-sensitive. It takes the form <code>[-][d’.’]hh’:’mm’:’ss[‘.’fffffff]</code>.</description>
+            	<description></description>
+            </item>
+            <item><term>"f"</term>
+            	<description>General word format</description>
+            	<description></description>
+            	<description></description>
+            </item>
+            <item><term>"g"</term>
+            	<description>General short format</description>
+            	<description>This specifier outputs only what is needed. It is culture-sensitive and takes the form <code>[-][d’:’]h’:’mm’:’ss[.FFFFFFF]</code>.</description>
+            	<description></description>
+            </item>
+            <item><term>"G"</term>
+            	<description>General long format</description>
+            	<description>This specifier always outputs days and seven fractional digits. It is culture-sensitive and takes the form <code>[-]d’:’hh’:’mm’:’ss.fffffff</code>.</description>
+            	<description></description>
+            </item>
+            <item><term>"j"</term>
+            	<description>JIRA duration format</description>
+            	<description>This specifier outputs days, hours, minutes and seconds in the style defined by JIRA. It takes the form <code>[w'w'] [d'd'] [h'h'] [m'm'] [s's']</code>.</description>
+            	<description></description>
+            </item>
+            <item><term>"x"</term>
+            	<description>ISO 8601 format for time intervals</description>
+            	<description>This specifier outputs days, hours, minutes, seconds and milliseconds in the style defined by ISO 8601. It takes the form <code>'P'[d'D']['T'[h'H'][m'M'][p3'S']]</code>.</description>
+            	<description></description>
+            </item>
+            </list>
+            <para>The following table lists the standard TimeSpan format patterns.</para>
+            <list type="table">
+            <listheader><term>Format specifier</term><description>Description</description><description>Examples</description></listheader>
+            <item><term>"d", "%d"</term>
+            	<description>The number of whole days in the time interval.</description>
+            	<description></description>
+            </item>
+            <item><term>"dd"-"dddddddd"</term>
+            	<description>The number of whole days in the time interval, padded with leading zeros as needed.</description>
+            	<description></description>
+            </item>
+            <item><term>"h", "%h"</term>
+            	<description>The number of whole hours in the time interval that are not counted as part of days. Single-digit hours do not have a leading zero.</description>
+            	<description></description>
+            </item>
+            <item><term>"hh"</term>
+            	<description>The number of whole hours in the time interval that are not counted as part of days. Single-digit hours have a leading zero.</description>
+            	<description></description>
+            </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:System.TimeSpan2.ToString">
+            <summary>
+            Returns the string representation of the value of this instance.
+            </summary>
+            <returns>
+            A string that represents the value of this instance. The return value is of the form: 
+            <para>[-][d.]hh:mm:ss[.fffffff]</para>
+            </returns>
+        </member>
+        <member name="T:System.TimeSpan2Converter">
+            <summary>
+            Type converter for <see cref="T:System.TimeSpan2"/> objects.
+            </summary>
+        </member>
+        <member name="M:System.TimeSpan2Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from.</param>
+            <returns>
+            true if this converter can perform the conversion; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns whether this converter can convert the object to the specified type, using the specified context.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to.</param>
+            <returns>
+            true if this converter can perform the conversion; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the type of this converter, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            The conversion cannot be performed.
+            </exception>
+        </member>
+        <member name="M:System.TimeSpan2Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts the given value object to the specified type, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            The <paramref name="destinationType"/> parameter is null.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The conversion cannot be performed.
+            </exception>
+        </member>
+        <member name="M:System.TimeSpan2Converter.CreateInstance(System.ComponentModel.ITypeDescriptorContext,System.Collections.IDictionary)">
+            <summary>
+            Creates an instance of the type that this <see cref="T:System.ComponentModel.TypeConverter"/> is associated with, using the specified context, given a set of property values for the object.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="propertyValues">An <see cref="T:System.Collections.IDictionary"/> of new property values.</param>
+            <returns>
+            An <see cref="T:System.Object"/> representing the given <see cref="T:System.Collections.IDictionary"/>, or null if the object cannot be created. This method always returns null.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2Converter.GetCreateInstanceSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>
+            Returns whether changing a value on this object requires a call to <see cref="M:System.ComponentModel.TypeConverter.CreateInstance(System.Collections.IDictionary)"/> to create a new value, using the specified context.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns>
+            true if changing a property on this object requires a call to <see cref="M:System.ComponentModel.TypeConverter.CreateInstance(System.Collections.IDictionary)"/> to create a new value; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2Converter.GetProperties(System.ComponentModel.ITypeDescriptorContext,System.Object,System.Attribute[])">
+            <summary>
+            Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
+            <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
+            <returns>
+            A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or null if there are no properties.
+            </returns>
+        </member>
+        <member name="M:System.TimeSpan2Converter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>
+            Returns whether this object supports properties, using the specified context.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns>
+            true if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, false.
+            </returns>
+        </member>
+        <member name="T:System.Globalization.TimeSpanPatternType">
+            <summary>
+            Type of pattern to extract.
+            </summary>
+        </member>
+        <member name="F:System.Globalization.TimeSpanPatternType.Formatting">
+            <summary>Pattern used for formatting output.</summary>
+        </member>
+        <member name="F:System.Globalization.TimeSpanPatternType.Parsing">
+            <summary>Pattern used for parsing input string.</summary>
+        </member>
+        <member name="T:System.Globalization.TimeSpan2FormatInfo">
+            <summary>
+            Defines how <see cref="T:System.TimeSpan"/> values are formatted and displayed, depending on the culture.
+            </summary>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.#ctor">
+            <summary>
+            Initializes a new writable instance of the <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> class that is culture-independent (invariant).
+            </summary>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.#ctor(System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> class that is associated with the supplied culture.
+            </summary>
+            <param name="culture">The culture.</param>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.CurrentInfo">
+            <summary>
+            Gets a read-only <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> object that formats values based on the current culture.
+            </summary>
+            <value>A read-only <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> object based on the <see cref="T:System.Globalization.CultureInfo"/> object for the current thread.</value>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.DefaultPattern">
+            <summary>
+            Gets the default pattern.
+            </summary>
+            <value>The default pattern.</value>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.LongPattern">
+            <summary>
+            Gets or sets the long pattern.
+            </summary>
+            <value>The long pattern.</value>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.ShortPattern">
+            <summary>
+            Gets or sets the short pattern.
+            </summary>
+            <value>The short pattern.</value>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.TimeSpanZeroDisplay">
+            <summary>
+            Gets or sets the string to display the representing <c>TimeSpan.Zero</c>.
+            </summary>
+        </member>
+        <member name="P:System.Globalization.TimeSpan2FormatInfo.WordPatternIgnoreCase">
+            <summary>
+            Gets a value indicating whether to ignore case when parsing word formatted time spans. Pulls value, if available, from localized resources.
+            </summary>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.GetInstance(System.IFormatProvider)">
+            <summary>
+            Returns the <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> associated with the specified <see cref="T:System.IFormatProvider"/>.
+            </summary>
+            <param name="provider">The <see cref="T:System.IFormatProvider"/> that gets the <see cref="T:System.Globalization.TimeSpan2FormatInfo"/>. -or- <c>null</c> reference (Nothing in Visual Basic) to get <see cref="P:System.Globalization.TimeSpan2FormatInfo.CurrentInfo"/>.</param>
+            <returns>A <see cref="T:System.Globalization.TimeSpan2FormatInfo"/> associated with the specified <see cref="T:System.IFormatProvider"/>.</returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.Format(System.String,System.Object,System.IFormatProvider)">
+            <summary>
+            Converts the value of the <see cref="T:System.TimeSpan"/> object to its equivalent string representation using the specified format.
+            </summary>
+            <param name="format">A TimeSpan format string.</param>
+            <param name="arg">An object to format.</param>
+            <param name="formatProvider">An <see cref="T:System.IFormatProvider"/> object that supplies format information about the current instance.</param>
+            <returns>A string representation of value of the current <see cref="T:System.TimeSpan"/> object as specified by format.</returns>
+            <remarks>The following table lists the standard TimeSpan format patterns associated with TimeSpan2FormatInfo properties.
+            <list type="table">
+            <listheader><term>Format pattern</term><description>Associated Property/Description</description></listheader>
+            <item><term>d</term><description>Localized string for TotalDays</description></item>
+            <item><term>f</term><description>Full localized string displaying each time element with separator between</description></item>
+            <item><term>h</term><description>Localized string for TotalHours</description></item>
+            <item><term>j</term><description>JIRA style output</description></item>
+            <item><term>m</term><description>Localized string for TotalMinutes</description></item>
+            <item><term>n</term><description>Standard TimeSpan format (00:00:00:00)</description></item>
+            <item><term>s</term><description>Localized string for TotalSeconds</description></item>
+            <item><term>t</term><description>Localized string for TotalMilliseconds</description></item>
+            <item><term>x</term><description>ISO 8601 XML standard for durations</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.GetAllTimeSpanPatterns(System.Globalization.TimeSpanPatternType)">
+            <summary>
+            Returns all the standard patterns in which <see cref="T:System.TimeSpan"/> values can be formatted.
+            </summary>
+            <param name="patternType">Type of the pattern.</param>
+            <returns>
+            An array containing the standard patterns in which <see cref="T:System.TimeSpan"/> values can be formatted.
+            </returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.GetAllTimeSpanPatterns(System.Globalization.TimeSpanPatternType,System.Char)">
+            <summary>
+            Returns all the standard patterns in which <see cref="T:System.TimeSpan"/> values can be formatted using the specified format pattern.
+            </summary>
+            <param name="patternType">Type of the pattern.</param>
+            <param name="format">A standard format pattern.</param>
+            <returns>
+            An array containing the standard patterns in which <see cref="T:System.TimeSpan"/> values can be formatted using the specified format pattern.
+            </returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.GetFormat(System.Type)">
+            <summary>
+            Returns an object of the specified type that provides a <see cref="T:System.TimeSpan"/> formatting service.
+            </summary>
+            <param name="formatType">The <see cref="T:System.Type"/> of the required formatting service.</param>
+            <returns>
+            The current <see cref="T:System.Globalization.TimeSpan2FormatInfo"/>, if <paramref name="formatType"/> is the same as the type of the current <see cref="T:System.Globalization.TimeSpan2FormatInfo"/>; otherwise, <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.Parse(System.String,System.IFormatProvider)">
+            <summary>
+            Converts the specified string representation of a time span to its <see cref="T:System.TimeSpan"/> equivalent.
+            </summary>
+            <param name="s">A string containing a time span to parse.</param>
+            <param name="provider">An object that supplies culture-specific formatting information about <paramref name="s"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan"/> equivalent to the time span contained in <paramref name="s"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="s"/> is <c>null</c>.</exception>
+            <exception cref="T:System.FormatException"><paramref name="s"/> does not contain a valid string representation of a time span.</exception>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.ParseExact(System.String,System.String[],System.IFormatProvider)">
+            <summary>
+            Converts the specified string representation of a time span to its <see cref="T:System.TimeSpan"/> equivalent using the specified format and culture-specific format information. The format of the string representation must match the specified format exactly.
+            </summary>
+            <param name="s">A string containing a time span to parse.</param>
+            <param name="formats">An array of standard or custom format strings that define the required format of <paramref name="s"/>.</param>
+            <param name="provider">An object that supplies culture-specific formatting information about <paramref name="s"/>.</param>
+            <returns>A <see cref="T:System.TimeSpan"/> equivalent to the time span contained in <paramref name="s"/> as specified by <paramref name="formats"/> and <paramref name="provider"/>.</returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.TryParse(System.String,System.IFormatProvider,System.TimeSpan@)">
+            <summary>
+            Converts the specified string representation of a date and time to its <see cref="T:System.TimeSpan"/> equivalent and returns a value that indicates whether the conversion succeeded.
+            </summary>
+            <param name="s">A string containing a time span to convert.</param>
+            <param name="provider">An object that supplies culture-specific formatting information about <paramref name="s"/>.</param>
+            <param name="result">When this method returns, contains the <see cref="T:System.TimeSpan"/> value equivalent to the time span contained in <paramref name="s"/>, if the conversion succeeded, or <c>TimeSpan.Zero</c> if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is <c>null</c>, is an empty string (""), or does not contain a valid string representation of a time span. This parameter is passed uninitialized.</param>
+            <returns>
+            	<c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:System.Globalization.TimeSpan2FormatInfo.TryParseExact(System.String,System.String[],System.IFormatProvider,System.TimeSpan@)">
+            <summary>
+            Converts the specified string representation of a date and time to its <see cref="T:System.TimeSpan"/> equivalent and returns a value that indicates whether the conversion succeeded.
+            </summary>
+            <param name="s">A string containing a time span to convert.</param>
+            <param name="formats">An array of allowable formats of <paramref name="s"/>.</param>
+            <param name="provider">An object that supplies culture-specific formatting information about <paramref name="s"/>.</param>
+            <param name="result">When this method returns, contains the <see cref="T:System.TimeSpan"/> value equivalent to the time span contained in <paramref name="s"/>, if the conversion succeeded, or <c>TimeSpan.Zero</c> if the conversion failed. The conversion fails if <paramref name="s"/> or <paramref name="formats"/> is <c>null</c>, <paramref name="s"/> or an element of <paramref name="formats"/> is an empty string, or the format of <paramref name="s"/> is not exactly as specified by at least one of the format patterns in <paramref name="formats"/>. This parameter is passed uninitialized.</param>
+            <returns>
+            	<c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+            </returns>
+        </member>
+    </members>
+</doc>

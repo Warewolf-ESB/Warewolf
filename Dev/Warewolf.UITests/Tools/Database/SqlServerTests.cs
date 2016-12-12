@@ -19,6 +19,7 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.OnErrorCustom.Exists, "OnError panel does not exist on SQL Server database connector tool large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.DoneButton.Exists, "Done button does not exist on SQL Server database connector tool large view.");
         }
+
         [TestMethod]
         [TestCategory("Database Tools")]
         public void SqlServerToolSmallViewUITest()
@@ -28,8 +29,8 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void HttpWebDeleteToolClickAddNewSourceButtonOpensNewSourceWizardTab()
+        [TestCategory("Database Tools")]
+        public void Click_Sql_Server_Tool_Large_View_New_Source_Button()
         {
             UIMap.Click_Sql_Server_Tool_Large_View_New_Source_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.Exists, "Manage DatabaseSource Control does not exist on new DB source wizard tab after openning it from the Web DELETE tool.");
