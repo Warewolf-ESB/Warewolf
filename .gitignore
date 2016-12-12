@@ -38,6 +38,9 @@ Dev/.vs/**
 ####################################################################################
 obj
 bin
+/Dev/Warewolf.Tests/**
+/Dev/Warewolf.Specs/**
+/Dev/Warewolf.UIBindingTests/**
 
 ####################################################################################
 # Build working directories
