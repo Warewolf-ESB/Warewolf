@@ -1,0 +1,18 @@
+﻿function getDescription()
+{
+	var val = "";
+	switch ([[val]])
+	{
+		case  1 :
+			val = "one"; 
+			break;
+		case 2 :
+			 val = "two";
+			 break; 
+		default :
+			 val = "not one or two";
+			  break;
+	 } 
+	 return val;
+};
+return getDescription();
