@@ -360,6 +360,28 @@ namespace Warewolf.Studio.Views
                     singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
             }
+            else
+            {
+                var explorerViewModel = DataContext as ExplorerViewModel;
+
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.IsSelected = true;
+                    if (explorerViewModel?.ConnectControlViewModel != null)
+                        explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
+                }
+                else
+                {
+                    var environmentViewModel = e.NewValue as IEnvironmentViewModel;
+                    if (environmentViewModel != null)
+                    {
+                        environmentViewModel.IsSelected = true;
+                        if (explorerViewModel?.ConnectControlViewModel != null)
+                            explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                    }
+                }
+            }
         }
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
