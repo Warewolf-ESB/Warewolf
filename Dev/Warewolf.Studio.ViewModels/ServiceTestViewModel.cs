@@ -1043,6 +1043,21 @@ namespace Warewolf.Studio.ViewModels
 
             if (item != null && (item.ItemType != typeof(Flowchart) || item.ItemType == typeof(ActivityBuilder)))
             {
+                var parentComputedValue = item.GetCurrentValue();
+                if (parentComputedValue is FlowStep)
+                {
+                    if (item.Content?.Value != null)
+                    {
+                        parentComputedValue = item.Content.Value.GetCurrentValue();
+                    }
+                    var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
+                    var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
+                    if (parentActivityUniqueID == activityUniqueID)
+                    {
+                        return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
+                    }
+                }
+                
                 if (outputs != null && outputs.Count > 0)
                 {
                     IServiceTestStep serviceTestStep;
