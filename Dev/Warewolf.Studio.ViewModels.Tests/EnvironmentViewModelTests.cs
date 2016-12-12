@@ -532,6 +532,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ShowContextMenu = true;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UserPermissions).Returns(Permissions.Administrator);
+            server.Setup(server1 => server1.GetPermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             _target.Server = server.Object;
             //act
             _target.CreateFolder();
