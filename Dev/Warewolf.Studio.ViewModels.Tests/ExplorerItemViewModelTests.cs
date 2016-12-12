@@ -1016,7 +1016,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             var actual = _target.CanDrag;
             //assert
-            Assert.IsFalse(actual);
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
