@@ -8490,5 +8490,26 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewExchangeSource, new Point(101, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
+
+        [Given(@"Folder ContextMenu appears")]
+        [When(@"Folder ContextMenu appears")]
+        [Then(@"Folder ContextMenu appears")]
+        public void ThenFolderContextMenuAppears()
+        {
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolder.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolder.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Rename.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Rename.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Deploy.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Deploy.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApis.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApis.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Enabled);
+        }
     }
 }
