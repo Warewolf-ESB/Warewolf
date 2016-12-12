@@ -117,6 +117,20 @@ namespace Warewolf.UITests.Tabs
             UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            UIMap.Debug_Unpinned_Workflow_With_F6();
+            Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
+            Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
+            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
