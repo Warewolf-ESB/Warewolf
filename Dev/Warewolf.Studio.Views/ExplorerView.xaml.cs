@@ -300,6 +300,12 @@ namespace Warewolf.Studio.Views
                         e.Handled = true;
                         return;
                     }
+
+                    if (explorerItemViewModel != null && explorerItemViewModel.CanView)
+                    {
+                        explorerItemViewModel.OpenCommand.Execute(this);
+                        return;
+                    }
                 }
 
                 if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)

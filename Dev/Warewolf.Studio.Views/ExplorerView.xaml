@@ -835,9 +835,6 @@
                                                     Text="{Binding ResourceName}"
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTip="{Binding ResourceName}">
-                                            <TextBlock.InputBindings>
-                                                <MouseBinding Command="{Binding OpenCommand}" Gesture="LeftDoubleClick" MouseAction="LeftDoubleClick" />
-                                            </TextBlock.InputBindings>
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="MouseLeftButtonDown">
                                                         <i:InvokeCommandAction Command="{Binding Path=Expand}" />
