@@ -10,6 +10,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core;
@@ -291,11 +292,21 @@ namespace Warewolf.Studio.ViewModels
             _view.ShowView();
 
             _environmentViewModel.IsSaveDialog = false;
+            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Filter(string.Empty);
+
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
-            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
-            _environmentViewModel.Filter(string.Empty);
+
+            var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
+            if (permissions != null)
+            {
+                foreach (var explorerItemViewModel in _environmentViewModel.Children)
+                {
+                    explorerItemViewModel.SetPermissions((Permissions) permissions);
+                }
+            }
 
             return ViewResult;
         }

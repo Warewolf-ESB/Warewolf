@@ -332,11 +332,12 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                child.SetPermissions(Server.UserPermissions);
+                var permissions = Server.GetPermissions(ResourceId);
+                child.SetPermissions(permissions);
 
                 child.CanRename = true;
                 child.CanDelete = true;
-
+                child.IsSaveDialog = IsSaveDialog;
                 child.ShowContextMenu = ShowContextMenu;
             }
             AddChild(child);
