@@ -68,6 +68,7 @@ namespace Warewolf.UITests.Tools
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
             UIMap.Delete_HelloWorld_With_Context_Menu();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
+            UIMap.Click_Service_Picker_Dialog_Cancel();
         }
 
         #region Additional test attributes
