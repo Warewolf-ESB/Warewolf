@@ -49,21 +49,25 @@ Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "Hello World"
+	And Filtered Item Exists
 	And I Click SaveDialog CancelButton
 	Then Explorer Items appear on the Explorer Tree
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then Explorer Items appear on the Save Dialog Explorer Tree
+	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Close Save Dialog Removes Explorer Filter
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "Hello World"
+	And Filtered Item Exists
 	And I Click SaveDialog CancelButton
-	Then Explorer Items appear on the Explorer Tree
-	And I Click SaveDialog CancelButton
+	Then Explorer Items appear on the Explorer Tree	
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Rename Folder From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -83,29 +87,44 @@ Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
-	And I Filter Save Dialog Explorer with "Another New Created Folder"
+	And I Filter Save Dialog Explorer with "Created Another New Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
-	And I Enter New Folder Name as "Another New Created Folder"
-	And I Click Save Ribbon Button to Open Save Dialog
+	And I Enter New Folder Name as "Created Another New Folder"
 	And I RightClick Save Dialog Localhost First Item
 	And Context Menu Has Two Items
+	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Explorer
+	Given I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	Then I Click Save Ribbon Button to Open Save Dialog
+	And I Filter Save Dialog Explorer with "I_Will_Delete_This_Folder"
+	And I RightClick Save Dialog Localhost
+	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Name New Folder as "I_Will_Delete_This_Folder"
+	And I Filter the Explorer with "I_Will_Delete_This_Folder"
+	And I RightClick Explorer Localhost First Item
+	And I Select Delete FromExplorerContextMenu
+	And I Click MessageBox Yes
+	And Folder Is Removed From Explorer
+	Then I Click Close Workflow Tab Button
+
+Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Folder
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "New Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
-	And I Dont Name The Created Folder
-	And I Filter the Explorer with "New Folder"
-	And I RightClick Explorer Localhost First Item
-	And I Select Delete FromExplorerContextMenu
-	And I Click MessageBox Yes
-	And Folder Is Removed From Explorer
+	And I Hit Escape Key On The Keyboard
+	And I Filter Save Dialog Explorer with "New Folder"
+	And Save Dialog Explorer Contain Item "New Folder"	
+	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create New Folder In Localhost Server From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -116,7 +135,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Name New Folder as "New Created Folder"
 	And I Filter the Explorer with "New Created Folder"
-	Then Explorer Contain Sub Item "New Created Folder"	
+	Then Explorer Contain Item "New Created Folder"	
 	Then I Click Close Workflow Tab Button
 
 Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
@@ -127,11 +146,10 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I RightClick Save Dialog Localhost First Item
 	And I Select New Folder From SaveDialog ExplorerContextMenu
 	And I Name New Sub Folder as "New Created Sub Folder"
+	And I Filter the Explorer with "New Created Sub Folder"
 	Then Explorer Contain Sub Item "New Created Sub Folder"
 	Then I Click Close Workflow Tab Button
 	And I Filter the Explorer with "New Created Sub Folder"
-	And I RightClick Explorer First Remote Server First Item
-	Then Folder ContextMenu appears
 
 Scenario: Rename Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button
@@ -183,6 +201,7 @@ Scenario: Move Folder To FolderToRename From Save Dialog
 	Then "FolderToMove" is child of "FolderToRename"
 	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Move Folder To Same Location From Save Dialog
 	Given I Click New Workflow Ribbon Button
