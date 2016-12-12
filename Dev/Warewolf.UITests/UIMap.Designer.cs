@@ -79945,7 +79945,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:New Task1 ResourceId:00000000-0000-0000-0000-000000000000";
+            this.SearchProperties[WpfListItem.PropertyNames.HelpText] = "Create a new scheduled task";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -102921,7 +102921,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
             this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);

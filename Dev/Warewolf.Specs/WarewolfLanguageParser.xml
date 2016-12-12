@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WarewolfLanguageParser</name></assembly>
+<members>
+<member name="T:DataStorage.WarewolfEnvironment">
+<summary>
+An Environment is a dictionary of recordsets, a dictionary of scalars and a dictionary of json objects
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfRecordset">
+<summary>
+ A Recordset is a dictionary od strings to lists of attoms
+ Last index is maintained as well as the count
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfColumnHeader">
+<summary>
+Name of a Column
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfColumnData">
+<summary>
+ Recordset Column
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfAtomRecord">
+<summary>
+ Atom Alias. Actually has no real purpose other than supporting a possible future divergance between scalars and recordset types 
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfAtom">
+<summary>
+ basic atomic types supported by warewolf
+</summary>
+</member>
+<member name="T:DataStorage.WarewolfAttribute">
+<summary>
+ Performance enhancements
+</summary>
+</member>
+<member name="M:DataStorage.CompareAtoms(DataStorage.WarewolfAtom,DataStorage.WarewolfAtom)">
+<summary>
+ Comparison between atoms
+</summary>
+</member>
+<member name="M:DataStorage.tryFloatParseAtom(System.String)">
+<summary>
+Parse a float. 
+</summary>
+</member>
+<member name="M:DataStorage.tryParseAtom(System.String)">
+<summary>
+Parse atom from string. Order of precedence is int then float then string
+</summary>
+</member>
+<member name="M:Delete.evalDelete(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+delete overall function
+</summary>
+</member>
+<member name="M:Delete.deleteExpressionIndex(LanguageAST.RecordSetName,LanguageAST.LanguageExpression,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+ delete a row with an expression index. eg delete [[Rec([[a]]).x]]
+</summary>
+</member>
+<member name="M:Delete.deleteIndex(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+ delete a  rows from a recordset
+</summary>
+</member>
+<member name="M:Delete.deleteValues(System.String,DataStorage.WarewolfEnvironment)">
+<summary>
+ delete a one or more rows from a recordset
+</summary>
+</member>
+<member name="M:Distinct.assignFromList(DataStorage.WarewolfEnvironment,System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32,Microsoft.FSharp.Collections.FSharpMap{System.String,System.Int32})">
+<summary>
+ asign a listof values to a column
+</summary>
+</member>
+<member name="M:Distinct.distinctIndexes(DataStorage.WarewolfRecordset,System.String)">
+<summary>
+Get the indexes of distinct columns
+</summary>
+</member>
+<member name="M:EvaluationFunctions.getIndexes(System.String,DataStorage.WarewolfEnvironment)">
+<summary>
+ get the indexes froma column
+</summary>
+</member>
+<member name="M:EvaluationFunctions.createFilled(System.Int32,DataStorage.WarewolfAtom)">
+<summary>
+ create a column filled with a single value
+</summary>
+</member>
+<member name="M:EvaluationFunctions.getPositionFromRecset(DataStorage.WarewolfRecordset,System.String)">
+<summary>
+ all recordsets have a hidden column for positions. this function gets that column. 
+</summary>
+</member>
+<member name="M:EvaluationFunctions.addNothingToList(WarewolfParserInterop.WarewolfAtomList{DataStorage.WarewolfAtom})">
+<summary>
+ add nothing to a column
+</summary>
+</member>
+<member name="M:EvaluationFunctions.addToList(WarewolfParserInterop.WarewolfAtomList{DataStorage.WarewolfAtom},DataStorage.WarewolfAtom)">
+<summary>
+ Add to a list
+</summary>
+</member>
+<member name="M:EvaluationFunctions.createEmpty(System.Int32,System.Int32)">
+<summary>
+Create the list data for a column
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalIndexes(DataStorage.WarewolfEnvironment,System.Int32,System.String)">
+<summary>
+helper function for eval with positions
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordSetIndexes(DataStorage.WarewolfEnvironment,LanguageAST.RecordSetName)">
+<summary>
+helper function for eval with positions
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalToExpression(DataStorage.WarewolfEnvironment,System.Int32,System.String)">
+<summary>
+ get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalToExpressionAndParse(DataStorage.WarewolfEnvironment,System.Int32,System.String)">
+<summary>
+ get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
+</summary>
+</member>
+<member name="M:EvaluationFunctions.reduceForCalculate(DataStorage.WarewolfEnvironment,System.Int32,System.String)">
+<summary>
+ simplify a calculate expression
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalJson(DataStorage.WarewolfEnvironment,System.Int32,System.Boolean,LanguageAST.LanguageExpression)">
+<summary>
+evaluate Json. Convert warewolf expression to jsonpath and evaluate it
+</summary>
+</member>
+<member name="M:EvaluationFunctions.jsonIdentifierToName(LanguageAST.JsonIdentifierExpression)">
+<summary>
+ get the name of the object from an expression
+</summary>
+</member>
+<member name="M:EvaluationFunctions.jsonIdentifierToJsonPath(LanguageAST.JsonIdentifierExpression,System.String)">
+<summary>
+Convert a jsonIdentifierExpression to jsonPath
+</summary>
+</member>
+<member name="M:EvaluationFunctions.languageExpressionToJPath(LanguageAST.LanguageExpression)">
+<summary>
+convert a warewolf language expressiom to JsonPath
+</summary>
+</member>
+<member name="M:EvaluationFunctions.eval(DataStorage.WarewolfEnvironment,System.Int32,System.Boolean,System.String)">
+<summary>
+overiding eval functions
+ take a string then pasre it and call one of the child functions
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalARow(System.Int32,DataStorage.WarewolfRecordset)">
+<summary>
+ Evaluate a row from a record set
+</summary>
+</member>
+<member name="M:EvaluationFunctions.updateComplex(System.Int32,LanguageAST.LanguageExpression)">
+<summary>
+ replace the * in a complex expression with an update value
+</summary>
+</member>
+<member name="M:EvaluationFunctions.parseLanguageExpression(System.String,System.Int32)">
+<summary>
+Simple parse. convert a string to a language expression and replace * with the update value
+</summary>
+</member>
+<member name="M:EvaluationFunctions.parseLanguageExpressionWithoutUpdate(System.String)">
+<summary>
+Simple parse. convert a string to a language expression
+</summary>
+</member>
+<member name="M:EvaluationFunctions.Clean(LanguageAST.LanguageExpression)">
+<summary>
+ Filter out empty expressions when parsing. this will not be needed if the language is simplified
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordSetAsString(DataStorage.WarewolfEnvironment,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+Eval a recordset and convert the result to a string
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordsSetWithPositions(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment)">
+<summary>
+eval a recordset and also return the positions
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordsSet(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment)">
+<summary>
+ Eval a recordset
+</summary>
+</member>
+<member name="M:EvaluationFunctions.jsonExpressionToString(LanguageAST.JsonIdentifierExpression,System.String)">
+<summary>
+ convert a json expression to a string. uses an accumulater to append to while traversing an expression
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalIndex(DataStorage.WarewolfEnvironment,System.Int32,System.String)">
+<summary>
+ convert an indes expression to an actual index. this would evaluate the [[a]] in [[Rec([[a]]).a]]
+</summary>
+</member>
+<member name="M:EvaluationFunctions.getIntFromAtom(DataStorage.WarewolfAtom)">
+<summary>
+ If an atom is an int that is greater than 0 then return it otherwise fail
+</summary>
+</member>
+<member name="M:EvaluationFunctions.IndexToString(LanguageAST.Index)">
+<summary>
+ convert hte index type to a string
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalScalar(System.String,DataStorage.WarewolfEnvironment)">
+<summary>
+ return a scalar from an environment
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordSetLastIndex(DataStorage.WarewolfRecordset,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+ given a recordset identifier, return a list of data that contains only the last atom from the recset
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordSetStarIndexWithPositions(DataStorage.WarewolfRecordset,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+ given a recordset identifier, return a list of data that matches the identifier and the positions of the corresponding atoms
+</summary>
+</member>
+<member name="M:EvaluationFunctions.evalRecordSetStarIndex(DataStorage.WarewolfRecordset,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+ given a recordset identifier, return a list of data that matches the identifier
+</summary>
+</member>
+<member name="T:LanguageAST.LanguageExpression">
+<summary>
+AlgebraicType that identifies all legal language expressions
+</summary>
+</member>
+<member name="T:LanguageAST.ScalarIdentifier">
+<summary>
+Alias for string. identifies a scalar name
+</summary>
+</member>
+<member name="T:LanguageAST.RecordSetName">
+<summary>
+ Recordset Identifier [[Rec()]]
+</summary>
+</member>
+<member name="T:LanguageAST.JsonIdentifierExpression">
+<summary>
+Algebraic types that combine all the possible forms of json expression
+</summary>
+</member>
+<member name="T:LanguageAST.BasicJsonIndexedPropertyIdentifier">
+<summary>
+IndexedObjectNotation [[Object(*).SomethingElse 
+IndexedObjectNotation [[@Object(*).SomethingElse 
+</summary>
+</member>
+<member name="T:LanguageAST.JsonPropertyIdentifier">
+<summary>
+ Object Notation [[Object.SomethingElse]]
+ Object Notation [[@Object.SomethingElse]]
+</summary>
+</member>
+<member name="T:LanguageAST.JsonIdentifier">
+<summary>
+ Json terminal Property Identifier [[%%.JsonIdentifier]]
+</summary>
+</member>
+<member name="T:LanguageAST.RecordSetColumnIdentifier">
+<summary>
+RecordSet column identifier [[Rec().a]]
+</summary>
+</member>
+<member name="T:LanguageAST.Index">
+<summary>
+Indexes are ints, floats star or another expression
+</summary>
+</member>
+<member name="T:LanguageAST.ScalarId">
+<summary>
+Sclar identifier
+</summary>
+</member>
+<member name="M:Parser.prodIdxToNonTerminal(System.Int32)">
+<summary>
+ This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
+</summary>
+</member>
+<member name="M:PublicFunctions.RecordsetToSearchTo(DataStorage.WarewolfRecordset)">
+<summary>
+helper function. best move this to C#
+</summary>
+</member>
+<member name="M:PublicFunctions.AtomListToSearchTo(System.Collections.Generic.IEnumerable{DataStorage.WarewolfAtom})">
+<summary>
+helper function. best move this to C#
+</summary>
+</member>
+<member name="M:PublicFunctions.EvalWithPositions(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+eval and return positions
+</summary>
+</member>
+<member name="M:PublicFunctions.EvalEnvExpression(System.String,System.Int32,System.Boolean,DataStorage.WarewolfEnvironment)">
+<summary>
+Evalutae an expression
+</summary>
+</member>
+<member name="M:PublicFunctions.AddRecsetToEnv(System.String,DataStorage.WarewolfEnvironment)">
+<summary>
+Add a Recordset to an environment
+</summary>
+</member>
+<member name="M:PublicFunctions.CreateEnv(System.String)">
+<summary>
+Create an Environment
+</summary>
+</member>
+<member name="M:PublicFunctions.CreateDataSet(System.String)">
+<summary>
+Create a RecordSet
+</summary>
+</member>
+<member name="M:Sort.sortRecset(System.String,System.Boolean,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+overall sort function
+</summary>
+</member>
+<member name="M:Sort.applyIndexes(WarewolfParserInterop.WarewolfAtomList{DataStorage.WarewolfAtom},System.Int32[],System.String)">
+<summary>
+ after you get a set of sorted indexes then apply the indexes to a recset. ensures the sort is stable
+</summary>
+</member>
+<member name="M:Sort.sortRecst(DataStorage.WarewolfRecordset,System.String,System.Boolean)">
+<summary>
+ sort a recordset. its a bit of a weird function but corresponds to the tool
+</summary>
+</member>
+<member name="M:UpdateInPlace.evalRecordsSetExpressionUpdate(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
+<summary>
+ apply a function to a recordset with an update
+</summary>
+</member>
+<member name="M:UpdateInPlace.applyStarToColumn(Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom},DataStorage.WarewolfEnvironment,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+ apply a function to a recordset column using star
+</summary>
+</member>
+<member name="M:UpdateInPlace.evalUpdate(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalRecordsetWhere(LanguageAST.RecordSetName,DataStorage.WarewolfEnvironment,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalRecordsSetExpressionWhere(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalWhere(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to filter a recordset
+</summary>
+</member>
+</members>
+</doc>

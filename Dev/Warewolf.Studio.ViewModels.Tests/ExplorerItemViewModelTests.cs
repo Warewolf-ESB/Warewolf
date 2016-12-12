@@ -714,6 +714,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _serverMock.Setup(server => server.UserPermissions)
                        .Returns(Permissions.Administrator);
+
+            _serverMock.Setup(server => server.GetPermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+
             //arrange
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
@@ -1016,7 +1019,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             var actual = _target.CanDrag;
             //assert
-            Assert.IsFalse(actual);
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
@@ -1634,6 +1637,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _serverMock.Setup(server => server.UserPermissions)
                        .Returns(Permissions.Administrator);
+            _serverMock.Setup(server => server.GetPermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
