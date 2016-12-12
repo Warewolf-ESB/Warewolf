@@ -60,7 +60,7 @@ namespace Dev2.Settings.Scheduler
         private ICommand _deleteCommand;
         private ICommand _editTriggerCommand;
         private ICommand _addWorkflowCommand;
-        Dev2JsonSerializer _ser = new Dev2JsonSerializer();
+        readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         private IScheduledResource _selectedTask;
         private readonly IPopupController _popupController;
         private readonly IAsyncWorker _asyncWorker;
@@ -792,21 +792,21 @@ namespace Dev2.Settings.Scheduler
 
         private void SetDisplayName(bool dirty)
         {
-            const string BaseName = "Scheduler";
+            string baseName = "Scheduler";
             if (Server != null)
             {
-                DisplayName = BaseName + " - " + Server.ResourceName;
+                baseName = baseName + " - " + Server.ResourceName;
             }
             if (dirty)
             {
-                if (!BaseName.EndsWith(" *"))
+                if (!baseName.EndsWith(" *"))
                 {
-                    DisplayName = BaseName + " *";
+                    DisplayName = baseName + " *";
                 }
             }
             else
             {
-                DisplayName = DisplayName.Replace("*", "").TrimEnd(' ');
+                DisplayName = baseName;
             }
         }
 
