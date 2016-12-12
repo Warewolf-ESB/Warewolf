@@ -938,7 +938,7 @@ namespace Warewolf.UITests
         [Then(@"I Filter Save Dialog Explorer with ""(.*)""")]
         public void Filter_Save_Dialog_Explorer(string FilterText)
         {
-            SaveDialogWindow.ExplorerView.SearchTextBox.Text = FilterText;
+            SaveDialogWindow.ExplorerView.SearchTextBox.Text = FilterText;            
         }
 
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
@@ -6712,9 +6712,6 @@ namespace Warewolf.UITests
         public void WhenIRenameFirstRemoteResourceFromContextMenuTo(string newName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            MainStudioWindow.DrawHighlight();
-            MainStudioWindow.ExplorerContextMenu.DrawHighlight();
-            MainStudioWindow.ExplorerContextMenu.Rename.DrawHighlight();
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
@@ -7448,7 +7445,7 @@ namespace Warewolf.UITests
         [Then(@"I Select NewWorkflow FromExplorerContextMenu")]
         public void Select_NewWorkflow_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflow);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflowItem);
         }
 
         [When(@"I Select NewWorkFlowService From ContextMenu")]
@@ -8210,7 +8207,20 @@ namespace Warewolf.UITests
             // Click 'Save' button
             Mouse.Click(saveButton, new Point(22, 16));
         }
-        
+
+        [Given(@"I Hit Escape Key On The Keyboard")]
+        [When(@"I Hit Escape Key On The Keyboard")]
+        [Then(@"I Hit Escape Key On The Keyboard")]
+        public void ThenIHitEscapeKeyOnTheKeyboard()
+        {
+            #region Variable Declarations
+            WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
+            #endregion
+            
+            // Type '{Enter}' in text box
+            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+        }
+
         [Given(@"I Dont Name The Created Folder")]
         [When(@"I Dont Name The Created Folder")]
         [Then(@"I Dont Name The Created Folder")]
@@ -8273,6 +8283,8 @@ namespace Warewolf.UITests
             #endregion
 
             // Type 'NewFolder' in text box
+            Keyboard.SendKeys(newFolderEdit, "{Back}", ModifierKeys.None);
+
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
@@ -8288,6 +8300,14 @@ namespace Warewolf.UITests
         public void ExplorerContainItem(string itemName)
         {
             Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text);
+        }
+
+        [Given(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        [When(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        [Then(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        public void ThenSaveDialogExplorerContainItem(string itemName)
+        {
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(itemName));
         }
 
         [Given(@"Explorer Does Not Contain Item ""(.*)""")]
@@ -8338,7 +8358,7 @@ namespace Warewolf.UITests
         [Then(@"""(.*)"" is child of ""(.*)""")]
         public void ThenIsChildOf(string child, string parent)
         {
-            Assert.AreEqual(parent, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(parent));
             Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
         }
 
@@ -8348,7 +8368,7 @@ namespace Warewolf.UITests
         public void ThenIsChildOfLocalhost(string child)
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Exists);
-            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text);
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(child));
         }
 
         [Given(@"I Move resource to localhost")]
@@ -8396,8 +8416,9 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
             Assert.IsTrue(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.SourcesMenuItem));
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem));
+            Point point;
+            Assert.IsFalse(SaveDialogWindow.SaveDialogContextMenu.SourcesMenuItem.TryGetClickablePoint(out point));
+            Assert.IsFalse(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.TryGetClickablePoint(out point));
         }
 
         [Then(@"Folder Is Removed From Explorer")]
@@ -8494,6 +8515,35 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
             Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewExchangeSource, new Point(101, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
+        }
+
+        [Given(@"Folder ContextMenu appears")]
+        [When(@"Folder ContextMenu appears")]
+        [Then(@"Folder ContextMenu appears")]
+        public void ThenFolderContextMenuAppears()
+        {
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolder.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolder.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Rename.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Rename.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Deploy.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Deploy.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApis.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApis.Enabled);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Enabled);
+        }
+
+        [Given(@"Filtered Item Exists")]
+        [When(@"Filtered Item Exists")]
+        [Then(@"Filtered Item Exists")]
+        public void ThenFilteredItemExists()
+        {
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
         }
     }
 }

@@ -188,7 +188,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsNotNull(schdulerViewModel);
             Assert.IsNotNull(schdulerViewModel.Errors);
-            Assert.AreEqual("Scheduler -", schdulerViewModel.DisplayName);
+            Assert.AreEqual("Scheduler - ", schdulerViewModel.DisplayName);
         }
         
         [TestMethod]
@@ -311,6 +311,52 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(schedulerViewModel.IsDirty);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
+
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_Trigger")]
+        public void SchedulerViewModel_SaveCommand_AfterSave_IsDirtyFalse()
+        {
+            //------------Setup for test--------------------------
+            ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());
+            var resources = new ObservableCollection<IScheduledResource>();
+            resources.Add(scheduleResource);
+            scheduleResource.UserName = "some user";
+            scheduleResource.Password = "some password";
+
+            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModelForTest(env.Object);
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            schedulerViewModel.ToEnvironmentModel = a => env.Object;
+            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
+            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
+            string errorMessage;
+            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out errorMessage)).Returns(true);
+            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+            schedulerViewModel.Trigger = scheduleTrigger;
+            schedulerViewModel.SelectedTask = scheduleResource;
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+            ScheduleTrigger newScheduleTrigger = new ScheduleTrigger(TaskState.Queued, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            schedulerViewModel.Trigger = newScheduleTrigger;
+            Assert.IsNotNull(schedulerViewModel.Trigger);
+            Assert.IsTrue(schedulerViewModel.IsDirty);
+            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+            //------------Execute Test---------------------------
+            schedulerViewModel.SaveCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(schedulerViewModel.IsDirty);
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+
+        }
+
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -970,8 +1016,8 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_SaveCommand_UserNamePasswordSet_CallsScheduledResourceModelSave()
         {
             //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
+            var resources = new ObservableCollection<IScheduledResource>();
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";

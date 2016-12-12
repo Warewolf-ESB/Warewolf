@@ -156,14 +156,29 @@ namespace Warewolf.Studio.Views
         private static void ValidateDragEnter(object sender, DragEventArgs e)
         {
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            var dropOntoItem = treeViewItem?.DataContext as ExplorerItemViewModel;
             var treeView = sender as TreeView;
-            var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            var itemToMove = treeView?.SelectedItem as ExplorerItemViewModel;
+            if (itemToMove == null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            else if (dropOntoItem == null || !dropOntoItem.IsFolder)
             {
                 var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                
-                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+
+                if (environmentViewModel == null)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (itemToMove.Server.ResourceID != environmentViewModel.ResourceId)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (Equals(itemToMove.Parent, environmentViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -175,7 +190,12 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                if (itemViewModel != null && explorerItemViewModel.ResourcePath.Contains(itemViewModel.ResourceName))
+                if (itemToMove.Server != dropOntoItem.Server)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (dropOntoItem.ResourcePath.Contains(itemToMove.ResourceName))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -225,7 +245,7 @@ namespace Warewolf.Studio.Views
             {
                 var textBox = sender as TextBox;
                 var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                if (explorerItemViewModel != null && !explorerItemViewModel.IsSaveDialog)
                 {
                     explorerItemViewModel.ResourceName = textBox.Text;
                 }
@@ -236,7 +256,7 @@ namespace Warewolf.Studio.Views
         {
             var textBox = sender as TextBox;
             var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel != null)
+            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming && !explorerItemViewModel.IsSaveDialog)
             {
                 explorerItemViewModel.ResourceName = textBox.Text;
             }
@@ -300,6 +320,12 @@ namespace Warewolf.Studio.Views
                         e.Handled = true;
                         return;
                     }
+
+                    if (explorerItemViewModel != null && explorerItemViewModel.CanView)
+                    {
+                        explorerItemViewModel.OpenCommand.Execute(this);
+                        return;
+                    }
                 }
 
                 if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)
@@ -334,10 +360,38 @@ namespace Warewolf.Studio.Views
                     singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
             }
+            else
+            {
+                var explorerViewModel = DataContext as ExplorerViewModel;
+
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.IsSelected = true;
+                    if (explorerViewModel?.ConnectControlViewModel != null)
+                        explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
+                }
+                else
+                {
+                    var environmentViewModel = e.NewValue as IEnvironmentViewModel;
+                    if (environmentViewModel != null)
+                    {
+                        environmentViewModel.IsSelected = true;
+                        if (explorerViewModel?.ConnectControlViewModel != null)
+                            explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                    }
+                }
+            }
         }
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
+            var treeView = sender as TreeView;
+            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
+            if (singleEnvironmentExplorerViewModel != null)
+            {
+                return;
+            }
             var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
             if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
@@ -357,11 +411,12 @@ namespace Warewolf.Studio.Views
         {
             if (e.Key == Key.F2)
             {
-                explorerItemViewModel.IsRenaming = true;
+                explorerItemViewModel.IsRenaming = explorerItemViewModel.CanRename;
             }
             if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                explorerItemViewModel.DeployCommand.Execute(null);
+                if (explorerItemViewModel.CanDeploy)
+                    explorerItemViewModel.DeployCommand.Execute(null);
             }
             if (explorerItemViewModel.IsFolder)
             {
@@ -376,7 +431,7 @@ namespace Warewolf.Studio.Views
             }
             if (e.Key == Key.Delete)
             {
-                if (!explorerItemViewModel.IsRenaming)
+                if (!explorerItemViewModel.IsRenaming && !explorerItemViewModel.IsSaveDialog)
                 {
                     explorerItemViewModel.DeleteCommand.Execute(null);
                 }

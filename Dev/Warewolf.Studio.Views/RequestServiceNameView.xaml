@@ -14,7 +14,7 @@
         FocusManager.IsFocusScope="True"
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="True" 
-        MouseDown="RequestServiceNameView_OnMouseDown"
+        MouseDown="RequestServiceNameView_OnMouseDown" KeyUp="RequestServiceNameView_OnKeyUp"
         Title="SaveDialogView"
         mc:Ignorable="d">
     
@@ -25,9 +25,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding Path=CancelCommand}" Key="Escape" />
-    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -58,7 +55,8 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
-                                x:Name="ExplorerView"
+                                x:Name="ExplorerViewItem"
+                                KeyUp="ExplorerView_OnKeyUp"
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
         </DockPanel>
         <Grid Grid.Row="2"

@@ -208,14 +208,15 @@ namespace Warewolf.Studio.ViewModels
                 ResourceType = @"Folder",
                 AllowResourceCheck = explorerItem.AllowResourceCheck,
                 IsResourceChecked = explorerItem.IsResourceChecked,
-                ShowContextMenu = explorerItem.ShowContextMenu,
-                IsSaveDialog = explorerItem.IsSaveDialog
+                ShowContextMenu = explorerItem.ShowContextMenu
             };
             
+           var permissions = server.GetPermissions(explorerItem.ResourceId);
+            child.SetPermissions(permissions);
+
             child.ResourceName = name;
             child.IsRenaming = true;
-
-            child.SetPermissions(server.UserPermissions);
+            child.IsSaveDialog = explorerItem.IsSaveDialog;
 
             return child;
         }

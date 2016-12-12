@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Communication;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
 using Dev2.Services.Security;
@@ -22,7 +23,7 @@ namespace Dev2.Settings.Scheduler
         private int _newTaskCounter = 1;
         private IResourcePickerDialog _currentResourcePicker;
         private TriggerEditDialog _triggerEditDialog;
-
+        readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         private readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
         private EnvironmentViewModel _source;
 
@@ -142,6 +143,9 @@ namespace Dev2.Settings.Scheduler
                         _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.Errors);
                         _schedulerViewModel.SelectedTask.OldName = _schedulerViewModel.SelectedTask.Name;
                         _schedulerViewModel.SelectedTask.IsNew = false;
+                        _schedulerViewModel.Item = _ser.Deserialize<IScheduledResource>(_ser.SerializeToBuilder(_schedulerViewModel.SelectedTask));
+                        _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.IsDirty);
+
                     }
                     _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
                 }

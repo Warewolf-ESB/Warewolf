@@ -54,6 +54,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
    When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
    And I Click Explorer Connect Remote Server Button
    Then Filter Textbox is cleared
+   And I Click Explorer Connect Remote Server Button
   
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running  

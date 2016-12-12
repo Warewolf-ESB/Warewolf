@@ -5,7 +5,8 @@ net session >nul 2>&1
 if %errorLevel% == 0 (
 	echo Success: Administrative permissions confirmed.
 ) else (
-	echo Failure: Current permissions inadequate. &pause &exit 1
+	echo Failure: Current permissions inadequate. 
+	echo Try right-clicking the batch file and selecting 'Run as Administrator'.&pause &exit 1
 )
 @echo on
 
