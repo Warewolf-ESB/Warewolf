@@ -55,7 +55,7 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
-                                x:Name="ExplorerViewItem"
+                                x:Name="ExplorerView"
                                 KeyUp="ExplorerView_OnKeyUp"
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
         </DockPanel>

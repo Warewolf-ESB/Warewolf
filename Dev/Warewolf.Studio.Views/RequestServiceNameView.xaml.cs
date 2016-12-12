@@ -86,7 +86,7 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var environmentViewModel = ExplorerViewItem.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
             var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
                 .FirstOrDefault(model => model.IsRenaming);
 
@@ -116,7 +116,7 @@ namespace Warewolf.Studio.Views
 
         private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var environmentViewModel = ExplorerViewItem.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
             var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
                 .FirstOrDefault(model => model.IsRenaming);
 
