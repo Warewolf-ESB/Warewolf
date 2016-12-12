@@ -1667,7 +1667,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDrag && (IsSource || IsFolder || IsService) && !IsResourceVersion;
+                return _canDrag && !IsResourceVersion;
             }
             set
             {

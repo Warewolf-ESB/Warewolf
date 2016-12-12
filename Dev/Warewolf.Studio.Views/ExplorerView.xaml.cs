@@ -156,14 +156,29 @@ namespace Warewolf.Studio.Views
         private static void ValidateDragEnter(object sender, DragEventArgs e)
         {
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            var dropOntoItem = treeViewItem?.DataContext as ExplorerItemViewModel;
             var treeView = sender as TreeView;
-            var itemViewModel = treeView?.SelectedItem as ExplorerItemViewModel;
-            if (explorerItemViewModel == null || !explorerItemViewModel.IsFolder)
+            var itemToMove = treeView?.SelectedItem as ExplorerItemViewModel;
+            if (itemToMove == null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            else if (dropOntoItem == null || !dropOntoItem.IsFolder)
             {
                 var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-                
-                if (itemViewModel != null && (environmentViewModel == null || Equals(itemViewModel.Parent, environmentViewModel)))
+
+                if (environmentViewModel == null)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (itemToMove.Server.ResourceID != environmentViewModel.ResourceId)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (Equals(itemToMove.Parent, environmentViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -175,7 +190,12 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                if (itemViewModel != null && explorerItemViewModel.ResourcePath.Contains(itemViewModel.ResourceName))
+                if (itemToMove.Server != dropOntoItem.Server)
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+                else if (dropOntoItem.ResourcePath.Contains(itemToMove.ResourceName))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
