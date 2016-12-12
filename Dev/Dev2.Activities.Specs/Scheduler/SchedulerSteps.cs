@@ -253,9 +253,9 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
         {
-            if (error == "AN" && _scenarioContext["Error"] == null)
+            if (error == "AN" && (!_scenarioContext.ContainsKey("Error") || _scenarioContext["Error"] == null))
                 Assert.Fail("Error Expected");
-            if (error == "NO" && _scenarioContext["Error"] != null)
+            if (error == "NO" && _scenarioContext.ContainsKey("Error") && _scenarioContext["Error"] != null)
                 Assert.Fail(_scenarioContext["Error"].ToString());
         }
 
