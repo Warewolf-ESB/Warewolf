@@ -8,17 +8,21 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Close Deploy Tab Button
 	
-Scenario: Deploy and Reverse Deploy View Only Workflow
+Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	Given The Warewolf Studio is running
 	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
-	And I Deploy "DeployViewOnly" From Deploy View
-	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
-	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Deploy "DeployViewOnly" From Deploy View	
+
+Scenario: Deploy From RemoteConnection
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+    And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
 	And I Click Deploy Tab Source Server Connect Button
-	And I Deploy "DeployViewOnly" From Deploy View
+	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
+	And I Deploy "Hello world" From Deploy View
 
 
 Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder Already Checked
