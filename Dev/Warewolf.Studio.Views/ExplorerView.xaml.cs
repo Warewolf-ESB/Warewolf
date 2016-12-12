@@ -386,6 +386,12 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
         {
+            var treeView = sender as TreeView;
+            var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
+            if (singleEnvironmentExplorerViewModel != null)
+            {
+                return;
+            }
             var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
             if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
             {
