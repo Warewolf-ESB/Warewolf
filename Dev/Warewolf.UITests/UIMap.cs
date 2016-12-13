@@ -3088,7 +3088,16 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
+        }
+
+        public void Show_Explorer_Second_Item_Tests_With_Context_Menu(string filter)
+        {
+            Filter_Explorer(filter);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
         }
 
@@ -7698,7 +7707,7 @@ namespace Warewolf.UITests
         [When(@"I Select Tests From Context Menu")]
         public void Select_Tests_From_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(46, 16));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context menu.");
         }
 
@@ -7886,6 +7895,7 @@ namespace Warewolf.UITests
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
@@ -7932,7 +7942,15 @@ namespace Warewolf.UITests
         public void Click_MockRadioButton_On_Decision_TestStep()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
+
+        public void Click_MockRadioButton_On_Assign_TestStep()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
+        }
+        public void Click_MockRadioButton_On_DataSplitAssign_TestStep()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.DataSplitItem.UIUI_StepOutputs_AssigTable.UIPART_ColumnHeadersPrHeader.UIItemColumnHeader.UIMockRadioButton, new Point(5, 5));
         }
 
         [When(@"I Expand Debug Output Recordset")]
@@ -8526,6 +8544,14 @@ namespace Warewolf.UITests
         public void DoubleClick_Explorer_Localhost_First_Item()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I DoubleClick Explorer Localhost Second Item")]
+        [When(@"I DoubleClick Explorer Localhost Second Item")]
+        [Then(@"I DoubleClick Explorer Localhost Second Item")]
+        public void DoubleClick_Explorer_Localhost_Second_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
         }
 
         [Given(@"I RightClick Ardoner Hyperlink")]
