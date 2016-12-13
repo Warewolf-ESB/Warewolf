@@ -42,7 +42,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action.SomethingChanged += SourceOnSomethingChanged;
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
             var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
-            Inputs = new ObservableCollection<IServiceInput>();
             var inputs = new ObservableCollection<IServiceInput>();
             inputs.CollectionChanged += InputsCollectionChanged;
             inputs.AddRange(serviceInputs);
