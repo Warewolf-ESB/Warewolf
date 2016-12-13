@@ -1298,6 +1298,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy to Clipboard.
+        /// </summary>
+        public static string ErrorsAdornerCopyToClipboardTooltip {
+            get {
+                return ResourceManager.GetString("ErrorsAdornerCopyToClipboardTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand or collapse all execution nodes..
         /// </summary>
         public static string ExpandCollapseAllToolTip {

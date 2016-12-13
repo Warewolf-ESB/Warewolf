@@ -394,16 +394,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy to clipboard.
-        /// </summary>
-        public static string ErrorsAdornerCopyToClipboardTooltip {
-            get {
-                return ResourceManager.GetString("ErrorsAdornerCopyToClipboardTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exception: .
+        ///   Looks up a localized string similar to Exception : .
         /// </summary>
         public static string ExceptionErrorLabel {
             get {
@@ -485,6 +476,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to Rename Resource.
+        /// </summary>
+        public static string FailedToRenameResource {
+            get {
+                return ResourceManager.GetString("FailedToRenameResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Resource Error.
+        /// </summary>
+        public static string FailedToRenameResourceHeader {
+            get {
+                return ResourceManager.GetString("FailedToRenameResourceHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string GenericConfirmation {
@@ -499,6 +508,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string HostNameLabel {
             get {
                 return ResourceManager.GetString("HostNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inner Exception : .
+        /// </summary>
+        public static string InnerExceptionErrorLabel {
+            get {
+                return ResourceManager.GetString("InnerExceptionErrorLabel", resourceCulture);
             }
         }
         
@@ -778,6 +796,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("RabbitMQSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error reseting counters: .
+        /// </summary>
+        public static string ResetPerfMonCountersHasError {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHasError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance Counters have been reset..
+        /// </summary>
+        public static string ResetPerfMonCountersHasNoError {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHasNoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Performance Counters.
+        /// </summary>
+        public static string ResetPerfMonCountersHeader {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHeader", resourceCulture);
             }
         }
         
