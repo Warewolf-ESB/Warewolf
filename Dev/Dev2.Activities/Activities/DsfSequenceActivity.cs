@@ -299,10 +299,10 @@ namespace Dev2.Activities
                     var factory = Dev2DecisionFactory.Instance();
                     var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
                     var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                    var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                    var testPassed = testRunResults.Count > 0 && testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
                     var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
-                    var finalResult = new TestRunResult();
+                    var finalResult = new TestRunResult {RunTestResult = RunResult.TestPending};
                     if (testPassed)
                     {
                         finalResult.RunTestResult = RunResult.TestPassed;
