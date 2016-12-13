@@ -7409,8 +7409,9 @@ namespace Warewolf.UITests
         public void Select_NewEmailSource_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
-            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewEmailSource, new Point(101, 13));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewEmailSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.Exists, "New email source tab does not exist after opening Email source tab");
         }
 
@@ -8538,9 +8539,10 @@ namespace Warewolf.UITests
         [When(@"I Select NewExchangeSource FromExplorerContextMenu")]
         public void Select_NewExchangeSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
-            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewExchangeSource, new Point(101, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));            
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSourceMenuItem);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
 
