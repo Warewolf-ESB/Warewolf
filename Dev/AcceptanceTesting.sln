@@ -235,11 +235,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
+		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
 		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
 		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
-		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1
-		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
-		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
+		TestScripts\Tests\Write Failing Tests Playlist.ps1 = TestScripts\Tests\Write Failing Tests Playlist.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
