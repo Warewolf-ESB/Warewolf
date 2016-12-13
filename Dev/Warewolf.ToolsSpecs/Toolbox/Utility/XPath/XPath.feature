@@ -149,13 +149,7 @@ Scenario: Use the XPath to process blank XML
 	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
-	And the execution has "AN" error
-	And the debug inputs as  
-	| XML | # |                              |
-	| ""  | 1 | [[ids]] =  //root/number/@id |
-	And the debug output as 
-	| # |           |
-	| 1 | [[ids]] = |  
+	And the execution has "NO" error	
 
 Scenario: Use the XPath without any xpath query
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
