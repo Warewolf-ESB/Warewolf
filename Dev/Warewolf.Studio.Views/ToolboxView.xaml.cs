@@ -16,6 +16,7 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
+            PreviewDragOver += DropPointOnDragEnter;
         }
 
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
@@ -70,6 +71,12 @@ namespace Warewolf.Studio.Views
                 var toolboxPane = Application.Current.MainWindow.FindName("Toolbox") as ContentPane;
                 toolboxPane?.Activate();
             }
+        }
+
+        void DropPointOnDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
         }
     }
 }
