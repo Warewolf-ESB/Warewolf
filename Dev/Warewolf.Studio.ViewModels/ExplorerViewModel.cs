@@ -422,6 +422,11 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             OnPropertyChanged(() => Environments);
+            if (SelectedServer != null && this is DeployDestinationViewModel)
+            {
+                OnPropertyChanged(() => SelectedServer.IsConnected);
+            }
+            
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
