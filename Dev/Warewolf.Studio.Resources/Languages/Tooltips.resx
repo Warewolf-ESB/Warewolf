@@ -1709,6 +1709,9 @@ Using recordset() will add a new record and (*) will assign every record.</value
   <data name="CopyUrlToolTip" xml:space="preserve">
     <value>Copy the current resource Url</value>
   </data>
+  <data name="ErrorsAdornerCopyToClipboardTooltip" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
   <data name="CopyToolTipUsername" xml:space="preserve">
     <value>For protected resources, specify the Username of an account with permission to access the source.
 By default the account running Warewolf Server.exe service will be used.</value>

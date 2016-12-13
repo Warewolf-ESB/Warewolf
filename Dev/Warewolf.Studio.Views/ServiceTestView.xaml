@@ -523,9 +523,6 @@
 																CommandParameter="{Binding Path=Node.Data}"
 																ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
 																AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
-																ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
-                                                                AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=Node.Data.StepDescription}"
-																>
                                                                 <fa:FontAwesome Icon="Trash"/>
                                                                 <i:Interaction.Behaviors>
                                                                     <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -604,14 +601,9 @@
 																					ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertVariableTooltip}"
                                                                                      IsEnabled="{Binding Path=CanEditVariable}"
 																					AutomationProperties.AutomationId="UI_AssertValue_AutoID">
-																					ToolTip="{x:Static languages:Core.ServiceTestStepAssertVariableTooltip}"
-                                                                                     IsEnabled="{Binding Path=CanEditVariable}">
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
-                                                                                    <AutomationProperties.AutomationId >
-                                                                                        <Binding StringFormat="UI_AssertValue_{0}_AutoID" Path="Variable"/>
-                                                                                    </AutomationProperties.AutomationId>
                                                                                 </TextBox>
                                                                             </DataTemplate>
                                                                         </DataGridTemplateColumn.CellTemplate>

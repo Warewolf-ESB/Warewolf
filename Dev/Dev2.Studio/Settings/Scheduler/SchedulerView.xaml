@@ -104,9 +104,8 @@
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
                                             Command="{Binding NewCommand}" 
-                                            ToolTip="{x:Static languages:Core.SchedulerNewScheduleTooltipTrigger}"
+                                            ToolTip="{x:Static languages:Tooltips.SchedulerNewScheduleTooltipTrigger}"
                                             AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
-                                            ToolTip="{x:Static languages:Tooltips.SchedulerNewScheduleTooltipTrigger}">
                                         <Button.Content>
                                             <Grid>
                                                 <Grid.ColumnDefinitions >
