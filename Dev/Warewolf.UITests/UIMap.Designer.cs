@@ -81210,10 +81210,29 @@ namespace Warewolf.UITests
                 return this.mItem1;
             }
         }
+        
+        public WpfCheckBox EnvironmentNameCheckCheckBox
+        {
+            get
+            {
+                if ((this.mEnvironmentNameCheckCheckBox == null))
+                {
+                    this.mEnvironmentNameCheckCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEnvironmentNameCheckCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "EnvironmentNameCheckBox";
+                    this.mEnvironmentNameCheckCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mEnvironmentNameCheckCheckBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mEnvironmentNameCheckCheckBox;
+            }
+        }
         #endregion
         
         #region Fields
         private Item1 mItem1;
+        
+        private WpfCheckBox mEnvironmentNameCheckCheckBox;
         #endregion
     }
     
@@ -106072,13 +106091,17 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public UIWarewolfStudioViewMoTreeItem UIWarewolfStudioViewMoTreeItem
+        public WpfTreeItem UIWarewolfStudioViewMoTreeItem
         {
             get
             {
                 if ((this.mUIWarewolfStudioViewMoTreeItem == null))
                 {
-                    this.mUIWarewolfStudioViewMoTreeItem = new UIWarewolfStudioViewMoTreeItem(this);
+                    this.mUIWarewolfStudioViewMoTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+                    this.mUIWarewolfStudioViewMoTreeItem.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
                 }
                 return this.mUIWarewolfStudioViewMoTreeItem;
             }
@@ -106086,44 +106109,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private UIWarewolfStudioViewMoTreeItem mUIWarewolfStudioViewMoTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfStudioViewMoTreeItem : WpfTreeItem
-    {
-        
-        public UIWarewolfStudioViewMoTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCheckBox EnvironmentNameCheckCheckBox
-        {
-            get
-            {
-                if ((this.mEnvironmentNameCheckCheckBox == null))
-                {
-                    this.mEnvironmentNameCheckCheckBox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mEnvironmentNameCheckCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "EnvironmentNameCheckBox";
-                    this.mEnvironmentNameCheckCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mEnvironmentNameCheckCheckBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-                    #endregion
-                }
-                return this.mEnvironmentNameCheckCheckBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCheckBox mEnvironmentNameCheckCheckBox;
+        private WpfTreeItem mUIWarewolfStudioViewMoTreeItem;
         #endregion
     }
 }
