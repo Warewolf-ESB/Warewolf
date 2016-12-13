@@ -44,18 +44,7 @@ namespace Warewolf.UITests
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.Exists);
         }
-
-        [TestMethod]
-        [TestCategory("Workflow Testing")]
-        public void SettingTestStepToMockDoesNotAffectTestOutput()
-        {
-            UIMap.Click_MockRadioButton_On_Decision_TestStep();
-            Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.AssertHeader.Pending.TryGetClickablePoint(out point), "Pending status icon is still visible on decision test step after checking the mock radio button.");
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
-        }
-
+        
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
