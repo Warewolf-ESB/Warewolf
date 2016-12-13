@@ -67,7 +67,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Deploy")]
         public void DisconnectRemoteDestinationServerUITest()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
@@ -79,7 +79,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Deploy")]
         public void DisconnectRemoteSourceServerUITest()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
