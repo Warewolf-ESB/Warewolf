@@ -217,26 +217,29 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
                 {
                     var exploreritem = _server.ExplorerRepository.FindItemByID(Guid.Parse(node.ID));
-                    ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)
+                    if (exploreritem != null)
                     {
-                        ResourceName = exploreritem.DisplayName,
-                        TextVisibility = true,
-                        ResourceType = exploreritem.ResourceType,
-                        IsMainNode = exploreritem.DisplayName.Equals(ResourceModel.ResourceName),
-                        ResourceId = Guid.Parse(node.ID)
-                    };
-                    if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)
-                    {
-                        seenResource.Add(Guid.Parse(node.ID));
-                        item.Children = new ObservableCollection<IExplorerItemViewModel>(GetItems(node.NodeDependencies, item, acc, seenResource).Select(a => a as IExplorerItemViewModel));
+                        ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)
+                        {
+                            ResourceName = exploreritem.DisplayName,
+                            TextVisibility = true,
+                            ResourceType = exploreritem.ResourceType,
+                            IsMainNode = exploreritem.DisplayName.Equals(ResourceModel.ResourceName),
+                            ResourceId = Guid.Parse(node.ID)
+                        };
+                        if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)
+                        {
+                            seenResource.Add(Guid.Parse(node.ID));
+                            item.Children = new ObservableCollection<IExplorerItemViewModel>(GetItems(node.NodeDependencies, item, acc, seenResource).Select(a => a as IExplorerItemViewModel));
+                        }
+                        else
+                        {
+                            seenResource.Add(Guid.Parse(node.ID));
+                            item.Children = new ObservableCollection<IExplorerItemViewModel>();
+                        }
+                        items.Add(item);
+                        acc.Add(item);
                     }
-                    else
-                    {
-                        seenResource.Add(Guid.Parse(node.ID));
-                        item.Children = new ObservableCollection<IExplorerItemViewModel>();
-                    }
-                    items.Add(item);
-                    acc.Add(item);
                 }
             }
             return items;

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -138,12 +139,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 new List<IExplorerItem>
                     {
                         new ServerExplorerItem("Services", Guid.NewGuid(), "Folder",
-                                               new List<IExplorerItem>(), Permissions.Administrator, "bob","",""),
+                                               new List<IExplorerItem>(), Permissions.Administrator, "bob"),
                         new ServerExplorerItem("Bobs", Guid.NewGuid(), "Folder", new List<IExplorerItem>(),
-                                               Permissions.Administrator, "bob","","")
+                                               Permissions.Administrator, "bob")
 
                     }
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
@@ -174,12 +175,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 new List<IExplorerItem>
                     {
                         new ServerExplorerItem("Services", Guid.NewGuid(), "Folder",
-                                               new List<IExplorerItem>(), Permissions.Contribute, "bob","",""),
+                                               new List<IExplorerItem>(), Permissions.Contribute, "bob"),
                         new ServerExplorerItem("Bobs", Guid.NewGuid(), "Folder", new List<IExplorerItem>(),
-                                               Permissions.Contribute, "bob","","")
+                                               Permissions.Contribute, "bob")
 
                     }
-                , Permissions.Contribute, "bob", "", ""
+                , Permissions.Contribute, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
@@ -208,12 +209,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 new List<IExplorerItem>
                     {
                         new ServerExplorerItem("Services", Guid.NewGuid(), "Folder",
-                                               new List<IExplorerItem>(), Permissions.Administrator, "bob","",""),
+                                               new List<IExplorerItem>(), Permissions.Administrator, "bob"),
                         new ServerExplorerItem("Bobs", Guid.NewGuid(), "Folder", new List<IExplorerItem>(),
-                                               Permissions.Administrator, "bob","","")
+                                               Permissions.Administrator, "bob")
 
                     }
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
@@ -239,7 +240,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "d", Guid.NewGuid(),
                 "Folder",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
@@ -249,7 +250,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = serverExplorerRepository.RenameItem(explorerItem, "bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: bob");
-            Assert.AreEqual(result.Status, ExecStatus.NoMatch);
+            Assert.AreEqual(ExecStatus.NoMatch, result.Status);
         }
 
 
@@ -271,7 +272,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
@@ -308,7 +309,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
@@ -344,7 +345,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "dave", "", ""
+                , Permissions.Administrator, "dave"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
@@ -377,11 +378,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var dir = new Mock<IDirectory>();
             var guid = Guid.NewGuid();
             var res = new Mock<IResource>();
+            res.Setup(resource => resource.GetResourcePath(It.IsAny<Guid>())).Returns("");
             var explorerItem = new ServerExplorerItem(
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.GetResource(It.IsAny<Guid>(), guid)).Returns(res.Object);
@@ -419,7 +421,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
@@ -450,7 +452,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
@@ -482,7 +484,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "Folder",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
             var sync = new Mock<IExplorerRepositorySync>();
@@ -513,7 +515,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "monkey\\dave", "", ""
+                , Permissions.Administrator, "monkey\\dave"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
@@ -551,7 +553,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
@@ -588,7 +590,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
@@ -627,7 +629,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
@@ -664,7 +666,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "dave", guid,
                 "DbSource",
                 new List<IExplorerItem>()
-                , Permissions.Administrator, "bob", "", ""
+                , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
 
@@ -721,7 +723,7 @@ namespace Dev2.Tests.Runtime.Hosting
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
-                                              "/bob/dave", "", "");
+                                              "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
@@ -746,7 +748,7 @@ namespace Dev2.Tests.Runtime.Hosting
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "ReservedService", null, Permissions.DeployFrom,
-                                              "/bob/dave", "", "");
+                                              "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
@@ -766,14 +768,16 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
+            factory.Setup(itemFactory => itemFactory.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ServerExplorerItem("root",Guid.Empty, "Server",new List<IExplorerItem>(),Permissions.Administrator,""));
             var sync = new Mock<IExplorerRepositorySync>();
             sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>()));
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
+            serverExplorerRepository.Load(GlobalConstants.ServerWorkspaceID);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
-                                              "/bob/dave", "", "");
+                                              "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());
@@ -800,7 +804,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
-                                              "/bob/dave", "", "");
+                                              "/bob/dave");
 
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.AddItem(item, Guid.NewGuid());

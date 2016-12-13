@@ -79,7 +79,6 @@ namespace Warewolf.Studio.ViewModels
 
         void PerformLoadAll(System.Action actionToPerform = null)
         {
-
             AsyncWorker.Start(() =>
             {
                 IsLoading = true;
@@ -369,13 +368,15 @@ namespace Warewolf.Studio.ViewModels
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;                   
                     var src = ToModel();
                     src.Id = SelectedGuid;
                     src.ResourcePath = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     src.ClsId = SelectedDll.ClsId;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     Save(src);
+                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     Path = src.ResourcePath;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;

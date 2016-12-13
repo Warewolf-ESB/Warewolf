@@ -301,13 +301,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             AddResourceIfNotExist(instanceObj);
             var saveResource = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID, instanceObj.GetSavePath());
-            if (saveResource != null && !saveResource.HasError)
-            {
-                _environmentModel.FireWorkflowSaved();
-                var connection = _environmentModel.Connection;
-                var comsController = new CommunicationController();
-                comsController.FetchResourceAffectedMessages(connection, instanceObj.ID);
-            }
             return saveResource;
         }
 

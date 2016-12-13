@@ -59,11 +59,12 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedTask}" Name="Schedules">
+                         ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedTask}" x:Name="Schedules">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                      x:Name="ListBoxItemGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15*"/>
                                         <ColumnDefinition Width="70*"/>
@@ -98,12 +99,13 @@
                                         </i:Interaction.Behaviors>
                                     </Button>
                                 </Grid>
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" >
-                                    <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" AutomationProperties.AutomationId="UI_NewSchedule_Grid_AutoID" >
+                                    <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" x:Name="New_Schedule"
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
                                             Command="{Binding NewCommand}" 
-                                            ToolTip="{x:Static languages:Core.SchedulerNewScheduleTooltipTrigger}">
+                                            ToolTip="{x:Static languages:Core.SchedulerNewScheduleTooltipTrigger}"
+                                            AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
                                         <Button.Content>
                                             <Grid>
                                                 <Grid.ColumnDefinitions >

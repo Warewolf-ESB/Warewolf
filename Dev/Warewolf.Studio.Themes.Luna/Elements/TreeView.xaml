@@ -135,7 +135,7 @@
         <Setter Property="Background" Value="{StaticResource TreeViewBackgroundTransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="MinHeight" Value="12" />
@@ -231,11 +231,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Expander"
                                       ClickMode="Press"
+                                      Margin="0,2,-10,0"
                                       IsChecked="{Binding IsExpanded,
                                                           RelativeSource={RelativeSource TemplatedParent}}"
                                       Style="{StaticResource ExpandCollapseToggleStyle}" />
@@ -252,7 +253,7 @@
                                 Grid.ColumnSpan="2"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderBrush="Transparent"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}"
                                 SnapsToDevicePixels="true">
@@ -288,17 +289,48 @@
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushMouseOver}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushMouseOver}" />
                         </Trigger>
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                --><!-- Doing this instead of the commented out bit seems to make the tree view behave more consistently ??? --><!--
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Margin" Value="1,0,0,0" />
+                        </MultiTrigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
+            <EventTrigger RoutedEvent="TreeViewItem.DragEnter">
+                <BeginStoryboard x:Name="DragHoverStoryboard">
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="{StaticResource WarewolfDragOver}" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="TreeViewItem.DragLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="Transparent" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="TreeViewItem.MouseUp">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="Transparent" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
                 <Setter Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
@@ -490,16 +522,17 @@
     <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
         <Setter Property="AllowDrop" Value="True" />
         <Setter Property="Background" Value="{StaticResource TreeViewBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource TreeViewBorderBrush}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource TreeViewItemStyle}" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="Template">
@@ -610,6 +643,13 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <EventTrigger RoutedEvent="TreeView.MouseUp">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="0:0:0" To="Transparent" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
             <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
                 <Setter Property="ItemsPanel">
                     <Setter.Value>

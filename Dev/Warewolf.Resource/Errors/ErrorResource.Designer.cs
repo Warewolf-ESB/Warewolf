@@ -2959,6 +2959,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can only save to folders or root.
+        /// </summary>
+        public static string SaveToFolderOrRootOnly {
+            get {
+                return ResourceManager.GetString("SaveToFolderOrRootOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scalars are not allowed. Please check the following: {0}.
         /// </summary>
         public static string ScalarsNotAllowed {

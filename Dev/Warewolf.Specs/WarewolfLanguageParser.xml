@@ -53,61 +53,34 @@ Parse a float.
 Parse atom from string. Order of precedence is int then float then string
 </summary>
 </member>
-<member name="T:LanguageAST.LanguageExpression">
+<member name="M:Delete.evalDelete(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
 <summary>
-AlgebraicType that identifies all legal language expressions
+delete overall function
 </summary>
 </member>
-<member name="T:LanguageAST.ScalarIdentifier">
+<member name="M:Delete.deleteExpressionIndex(LanguageAST.RecordSetName,LanguageAST.LanguageExpression,System.Int32,DataStorage.WarewolfEnvironment)">
 <summary>
-Alias for string. identifies a scalar name
+ delete a row with an expression index. eg delete [[Rec([[a]]).x]]
 </summary>
 </member>
-<member name="T:LanguageAST.RecordSetName">
+<member name="M:Delete.deleteIndex(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
 <summary>
- Recordset Identifier [[Rec()]]
+ delete a  rows from a recordset
 </summary>
 </member>
-<member name="T:LanguageAST.JsonIdentifierExpression">
+<member name="M:Delete.deleteValues(System.String,DataStorage.WarewolfEnvironment)">
 <summary>
-Algebraic types that combine all the possible forms of json expression
+ delete a one or more rows from a recordset
 </summary>
 </member>
-<member name="T:LanguageAST.BasicJsonIndexedPropertyIdentifier">
+<member name="M:Distinct.assignFromList(DataStorage.WarewolfEnvironment,System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32,Microsoft.FSharp.Collections.FSharpMap{System.String,System.Int32})">
 <summary>
-IndexedObjectNotation [[Object(*).SomethingElse 
-IndexedObjectNotation [[@Object(*).SomethingElse 
+ asign a listof values to a column
 </summary>
 </member>
-<member name="T:LanguageAST.JsonPropertyIdentifier">
+<member name="M:Distinct.distinctIndexes(DataStorage.WarewolfRecordset,System.String)">
 <summary>
- Object Notation [[Object.SomethingElse]]
- Object Notation [[@Object.SomethingElse]]
-</summary>
-</member>
-<member name="T:LanguageAST.JsonIdentifier">
-<summary>
- Json terminal Property Identifier [[%%.JsonIdentifier]]
-</summary>
-</member>
-<member name="T:LanguageAST.RecordSetColumnIdentifier">
-<summary>
-RecordSet column identifier [[Rec().a]]
-</summary>
-</member>
-<member name="T:LanguageAST.Index">
-<summary>
-Indexes are ints, floats star or another expression
-</summary>
-</member>
-<member name="T:LanguageAST.ScalarId">
-<summary>
-Sclar identifier
-</summary>
-</member>
-<member name="M:Parser.prodIdxToNonTerminal(System.Int32)">
-<summary>
- This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
+Get the indexes of distinct columns
 </summary>
 </member>
 <member name="M:EvaluationFunctions.getIndexes(System.String,DataStorage.WarewolfEnvironment)">
@@ -271,79 +244,61 @@ eval a recordset and also return the positions
  given a recordset identifier, return a list of data that matches the identifier
 </summary>
 </member>
-<member name="M:Sort.sortRecset(System.String,System.Boolean,System.Int32,DataStorage.WarewolfEnvironment)">
+<member name="T:LanguageAST.LanguageExpression">
 <summary>
-overall sort function
+AlgebraicType that identifies all legal language expressions
 </summary>
 </member>
-<member name="M:Sort.applyIndexes(WarewolfParserInterop.WarewolfAtomList{DataStorage.WarewolfAtom},System.Int32[],System.String)">
+<member name="T:LanguageAST.ScalarIdentifier">
 <summary>
- after you get a set of sorted indexes then apply the indexes to a recset. ensures the sort is stable
+Alias for string. identifies a scalar name
 </summary>
 </member>
-<member name="M:Sort.sortRecst(DataStorage.WarewolfRecordset,System.String,System.Boolean)">
+<member name="T:LanguageAST.RecordSetName">
 <summary>
- sort a recordset. its a bit of a weird function but corresponds to the tool
+ Recordset Identifier [[Rec()]]
 </summary>
 </member>
-<member name="M:Delete.evalDelete(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
+<member name="T:LanguageAST.JsonIdentifierExpression">
 <summary>
-delete overall function
+Algebraic types that combine all the possible forms of json expression
 </summary>
 </member>
-<member name="M:Delete.deleteExpressionIndex(LanguageAST.RecordSetName,LanguageAST.LanguageExpression,System.Int32,DataStorage.WarewolfEnvironment)">
+<member name="T:LanguageAST.BasicJsonIndexedPropertyIdentifier">
 <summary>
- delete a row with an expression index. eg delete [[Rec([[a]]).x]]
+IndexedObjectNotation [[Object(*).SomethingElse 
+IndexedObjectNotation [[@Object(*).SomethingElse 
 </summary>
 </member>
-<member name="M:Delete.deleteIndex(System.String,System.Int32,DataStorage.WarewolfEnvironment)">
+<member name="T:LanguageAST.JsonPropertyIdentifier">
 <summary>
- delete a  rows from a recordset
+ Object Notation [[Object.SomethingElse]]
+ Object Notation [[@Object.SomethingElse]]
 </summary>
 </member>
-<member name="M:Delete.deleteValues(System.String,DataStorage.WarewolfEnvironment)">
+<member name="T:LanguageAST.JsonIdentifier">
 <summary>
- delete a one or more rows from a recordset
+ Json terminal Property Identifier [[%%.JsonIdentifier]]
 </summary>
 </member>
-<member name="M:Where.evalRecordsetWhere(LanguageAST.RecordSetName,DataStorage.WarewolfEnvironment,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<member name="T:LanguageAST.RecordSetColumnIdentifier">
 <summary>
- apply a function to a recordset
+RecordSet column identifier [[Rec().a]]
 </summary>
 </member>
-<member name="M:Where.evalRecordsSetExpressionWhere(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<member name="T:LanguageAST.Index">
 <summary>
- apply a function to a recordset
+Indexes are ints, floats star or another expression
 </summary>
 </member>
-<member name="M:Where.evalWhere(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<member name="T:LanguageAST.ScalarId">
 <summary>
- apply a function to filter a recordset
+Sclar identifier
 </summary>
 </member>
-<member name="M:UpdateInPlace.evalRecordsSetExpressionUpdate(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
+<member name="M:Parser.prodIdxToNonTerminal(System.Int32)">
 <summary>
- apply a function to a recordset with an update
-</summary>
-</member>
-<member name="M:UpdateInPlace.applyStarToColumn(Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom},DataStorage.WarewolfEnvironment,LanguageAST.RecordSetColumnIdentifier)">
-<summary>
- apply a function to a recordset column using star
-</summary>
-</member>
-<member name="M:UpdateInPlace.evalUpdate(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
-<summary>
- apply a function to a recordset
-</summary>
-</member>
-<member name="M:Distinct.assignFromList(DataStorage.WarewolfEnvironment,System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32,Microsoft.FSharp.Collections.FSharpMap{System.String,System.Int32})">
-<summary>
- asign a listof values to a column
-</summary>
-</member>
-<member name="M:Distinct.distinctIndexes(DataStorage.WarewolfRecordset,System.String)">
-<summary>
-Get the indexes of distinct columns
+ This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
 </summary>
 </member>
 <member name="M:PublicFunctions.RecordsetToSearchTo(DataStorage.WarewolfRecordset)">
@@ -379,6 +334,51 @@ Create an Environment
 <member name="M:PublicFunctions.CreateDataSet(System.String)">
 <summary>
 Create a RecordSet
+</summary>
+</member>
+<member name="M:Sort.sortRecset(System.String,System.Boolean,System.Int32,DataStorage.WarewolfEnvironment)">
+<summary>
+overall sort function
+</summary>
+</member>
+<member name="M:Sort.applyIndexes(WarewolfParserInterop.WarewolfAtomList{DataStorage.WarewolfAtom},System.Int32[],System.String)">
+<summary>
+ after you get a set of sorted indexes then apply the indexes to a recset. ensures the sort is stable
+</summary>
+</member>
+<member name="M:Sort.sortRecst(DataStorage.WarewolfRecordset,System.String,System.Boolean)">
+<summary>
+ sort a recordset. its a bit of a weird function but corresponds to the tool
+</summary>
+</member>
+<member name="M:UpdateInPlace.evalRecordsSetExpressionUpdate(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
+<summary>
+ apply a function to a recordset with an update
+</summary>
+</member>
+<member name="M:UpdateInPlace.applyStarToColumn(Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom},DataStorage.WarewolfEnvironment,LanguageAST.RecordSetColumnIdentifier)">
+<summary>
+ apply a function to a recordset column using star
+</summary>
+</member>
+<member name="M:UpdateInPlace.evalUpdate(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,DataStorage.WarewolfAtom})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalRecordsetWhere(LanguageAST.RecordSetName,DataStorage.WarewolfEnvironment,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalRecordsSetExpressionWhere(LanguageAST.RecordSetColumnIdentifier,DataStorage.WarewolfEnvironment,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to a recordset
+</summary>
+</member>
+<member name="M:Where.evalWhere(DataStorage.WarewolfEnvironment,System.String,System.Int32,Microsoft.FSharp.Core.FSharpFunc{DataStorage.WarewolfAtom,System.Boolean})">
+<summary>
+ apply a function to filter a recordset
 </summary>
 </member>
 </members>
