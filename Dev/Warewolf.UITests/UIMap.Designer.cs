@@ -1506,7 +1506,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
