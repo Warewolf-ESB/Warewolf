@@ -61,10 +61,6 @@ namespace Dev2.Settings.Scheduler
             var resources =controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
             if(resources != null)
             {
-//                foreach(var scheduledResource in resources)
-//                {
-//                    scheduledResource.IsDirty = false;
-//                }
                 return resources;
             }
             return new ObservableCollection<IScheduledResource>();
