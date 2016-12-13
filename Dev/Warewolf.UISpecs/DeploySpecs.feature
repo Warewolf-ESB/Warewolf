@@ -73,11 +73,9 @@ Scenario: Select All resources to deploy
   And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
   And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
   And I Click Deploy Tab Destination Server Connect Button
+  And I filter for "DateTime" on the source filter
   And I Select localhost from the source tab 
   And Deploy Button is enabled  "true"
-
-
-
 
 Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder Already Checked
 	Given I Filter the Explorer with "Unit Tests"
