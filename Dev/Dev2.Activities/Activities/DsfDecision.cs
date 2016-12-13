@@ -112,7 +112,14 @@ namespace Dev2.Activities
                 return ret;
 
             });
-            var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
+
+            var results = res as IList<bool> ?? res.ToList();
+            var resultval = true;
+            if (results.Any())
+            {
+                resultval = And ? results.Aggregate(true, (a, b) => a && b) : results.Any(a => a);
+            }
+
             Result = GetResultString(resultval.ToString(),Conditions);
             if (dataObject.IsDebugMode())
             {
