@@ -636,6 +636,9 @@
   <data name="InvalidScriptingContext" xml:space="preserve">
     <value>Invalid scripting context</value>
   </data>
+  <data name="SaveToFolderOrRootOnly" xml:space="preserve">
+    <value>Can only save to folders or root</value>
+  </data>
   <data name="CannotBeNull" xml:space="preserve">
     <value>Cannot be null</value>
   </data>

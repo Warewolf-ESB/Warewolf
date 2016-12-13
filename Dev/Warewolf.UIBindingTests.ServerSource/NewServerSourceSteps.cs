@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Controller;
@@ -490,11 +489,6 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             var studioResourceUpdateManager = ScenarioContext.Current.Get<StudioResourceUpdateManager>("studioResourceUpdateManager");
-            studioResourceUpdateManager.ServerSourceSaved += source =>
-            {
-                Dev2Logger.Info(source.Name + "Saved");
-            };
-
             studioResourceUpdateManager.Save(serverSource);
         }
 

@@ -23,7 +23,7 @@ namespace Dev2.Explorer
             Children = new List<IExplorerItem>();
         }
         public ServerExplorerItem(string displayName, Guid resourceId, string resourceType,
-                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath, string inputs, string outputs)
+                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath)
         {
             DisplayName = displayName;
             ResourceId = resourceId;
@@ -31,8 +31,6 @@ namespace Dev2.Explorer
             Children = children;
             Permissions = permissions;
             ResourcePath = resourcePath;
-            Inputs = inputs;
-            Outputs = outputs;
         }
         public string DisplayName { get; set; }
         public Guid ResourceId { get; set; }
@@ -53,11 +51,7 @@ namespace Dev2.Explorer
             get;
             set;
         }
-        public bool IsReservedService
-        {
-            get;
-            set;
-        }
+       
         public bool IsServer
         {
             get;
@@ -69,17 +63,7 @@ namespace Dev2.Explorer
             set;
         }
 
-        public string Inputs
-        {
-            get;
-            set;
-        }
-
-        public string Outputs
-        {
-            get;
-            set;
-        }
+       
 
         public string ResourceType { get; set; }
 

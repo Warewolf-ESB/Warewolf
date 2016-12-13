@@ -4021,7 +4021,7 @@ Please contact your Warewolf System Administrator.</value>
     <value>Create a new server source</value>
   </data>
   <data name="NewDataBaseSourceTooltip" xml:space="preserve">
-    <value>Create a new Aatabase source</value>
+    <value>Create a new database source</value>
   </data>
   <data name="NewWebSourceTooltip" xml:space="preserve">
     <value>Create a new web source</value>
@@ -4031,6 +4031,9 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="NewComPluginSourceTooltip" xml:space="preserve">
     <value>Create a new com plugin source</value>
+  </data>
+  <data name="NewWcfSourceTooltip" xml:space="preserve">
+    <value>Create a new wcf source</value>
   </data>
   <data name="NewEmailSourceTooltip" xml:space="preserve">
     <value>Create a new email source</value>
@@ -4052,6 +4055,12 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="NewServiceTooltip" xml:space="preserve">
     <value>Create a new service [CTRL+W]</value>
+  </data>
+  <data name="FailedToRenameResourceHeader" xml:space="preserve">
+    <value>Rename Resource Error</value>
+  </data>
+  <data name="FailedToRenameResource" xml:space="preserve">
+    <value>Failed to Rename Resource</value>
   </data>
   <data name="RenameItemTooltip" xml:space="preserve">
     <value>Rename resource</value>

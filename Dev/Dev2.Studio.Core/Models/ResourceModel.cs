@@ -528,12 +528,14 @@ namespace Dev2.Studio.Core.Models
 
             if(ResourceType == ResourceType.WorkflowService)
             {
-                var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 StringBuilder xaml = WorkflowXaml;
-
-                if ((xaml==null || xaml.Length==0) && msg?.Message != null)
+                if (xaml==null || xaml.Length==0)
                 {
-                    xaml = msg.Message;
+                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
+                    if (msg?.Message != null)
+                    {
+                        xaml = msg.Message;
+                    }                    
                 }
                 if (xaml != null && xaml.Length != 0)
                 {
@@ -545,7 +547,7 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
             }
-            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service || ResourceType == ResourceType.Server)
+            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Server)
             {
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 result = msg.Message;
@@ -553,12 +555,6 @@ namespace Dev2.Studio.Core.Models
                 if(result == null || result.Length == 0)
                 {
                     result = WorkflowXaml;
-                }
-
-                if(ResourceType == ResourceType.Service)
-                {
-                    var completeDefintion = CreateServiceXElement(result);
-                    result = completeDefintion.ToStringBuilder();
                 }
 
                 if(result != null)

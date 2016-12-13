@@ -550,15 +550,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 var vm = model;
                 vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-
-                if (Application.Current != null && Application.Current.Dispatcher != null)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
-                    {
-                        ViewModelUtils.RaiseCanExecuteChanged(model.DebugOutputViewModel?.AddNewTestCommand);
-                    }), DispatcherPriority.Background);
-                }
-            
             }
         }
 

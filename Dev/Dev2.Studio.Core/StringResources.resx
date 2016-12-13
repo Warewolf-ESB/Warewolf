@@ -172,7 +172,7 @@
     <value>Please resolve the variable(s) errors below, before saving.</value>
   </data>
   <data name="Delete_Error_Title" xml:space="preserve">
-    <value>Delete Error</value>
+    <value>Error Deleting - {0}</value>
   </data>
   <data name="Delete_Error" xml:space="preserve">
     <value>The resource {0} cannot be deleted because something depends on it.</value>

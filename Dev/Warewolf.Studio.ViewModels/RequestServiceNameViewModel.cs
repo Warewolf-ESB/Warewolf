@@ -5,10 +5,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core;
@@ -17,7 +19,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 
-#pragma warning disable 1998
 namespace Warewolf.Studio.ViewModels
 {
     public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
@@ -40,9 +41,6 @@ namespace Warewolf.Studio.ViewModels
         public RequestServiceNameViewModel()
         {
         }
-
-        /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-
 #pragma warning disable 1998
 #pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
@@ -59,7 +57,6 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
-            environmentViewModel.CanShowServerVersion = false;
             return this;
         }
 
@@ -141,6 +138,22 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "SelectedItem")
             {
                 ValidateName();
+
+                HasLoaded = false;
+
+                if (SingleEnvironmentExplorerViewModel?.SelectedEnvironment != null)
+                {
+                    HasLoaded = true;
+                }
+                else if (SingleEnvironmentExplorerViewModel?.SelectedItem != null && SingleEnvironmentExplorerViewModel.SelectedItem.IsFolder)
+                {
+                    HasLoaded = true;
+                }
+                if (SingleEnvironmentExplorerViewModel?.SelectedItem != null && !SingleEnvironmentExplorerViewModel.SelectedItem.IsFolder)
+                {
+                    HasLoaded = false;
+                    ErrorMessage = ErrorResource.SaveToFolderOrRootOnly;
+                }
             }
 
         }
@@ -251,37 +264,49 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
-            {
 
-                try
-                {
-                    if (!string.IsNullOrEmpty(_selectedPath))
-                    {
-                        _environmentViewModel.SelectItem(_selectedPath, b =>
-                        {
-                            _environmentViewModel.SelectAction(b);
-                            b.IsSelected = true;
-                        });
-                    }
-                }
-                catch (Exception)
-                {
-                    //
-                }
-                finally
-                {
-                    HasLoaded = a.Result;
-                }
-
-
-
-                ValidateName();
-            }, TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(_selectedPath))
+                {
+                    _environmentViewModel.SelectItem(_selectedPath, b =>
+                    {
+                        _environmentViewModel.SelectAction(b);
+                        b.IsSelected = true;
+                    });
+                }
+                _environmentViewModel.IsSaveDialog = true;
+                _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
+            }
+            catch (Exception)
+            {
+                //
+            }
+
+            HasLoaded = true;
+            ValidateName();
             _view.DataContext = this;
             _view.ShowView();
+
+            _environmentViewModel.IsSaveDialog = false;
+            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Filter(string.Empty);
+
+            var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
+            if (windowsGroupPermission != null)
+                _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+
+            var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
+            if (permissions != null)
+            {
+                foreach (var explorerItemViewModel in _environmentViewModel.Children)
+                {
+                    explorerItemViewModel.SetPermissions((Permissions) permissions);
+                }
+            }
 
             return ViewResult;
         }
@@ -406,5 +431,4 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel?.Dispose();
         }
     }
-
 }

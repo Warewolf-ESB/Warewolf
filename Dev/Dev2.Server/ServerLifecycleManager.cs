@@ -808,7 +808,7 @@ namespace Dev2
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
-            ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
+            //ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
             return catalog;
         }
