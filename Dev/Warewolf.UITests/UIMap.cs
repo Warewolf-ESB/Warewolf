@@ -95,6 +95,29 @@ namespace Warewolf.UITests
             }
         }
 
+
+        [Given(@"I Try Click MessageBox No")]
+        [When(@"I Try Click MessageBox No")]
+        [Then(@"I Try Click MessageBox No")]
+        public void TryClickMessageBoxNo()
+        {var TimeBefore = System.DateTime.Now;
+            try
+            {
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging message box before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+            }
+            
+        }
         public void TryCloseHangingDebugInputDialog()
         {
             var TimeBefore = System.DateTime.Now;
@@ -5231,7 +5254,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(ServicePickerDialog.Cancel.Exists, "Service picker dialog cancel button does not exist");
         }
 
+        [Given(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
         [When(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
+        [Then(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Copy File";
@@ -6037,7 +6062,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests does not exist in explorer context menu.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run all button does not exist on tests tab");
         }
 
@@ -8546,6 +8571,14 @@ namespace Warewolf.UITests
         public void ThenFilteredItemExists()
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
+        }
+
+        [Given(@"I drag a ""(.*)"" tool")]
+        [When(@"I drag a ""(.*)"" tool")]
+        [Then(@"I drag a ""(.*)"" tool")]
+        public void WhenIDragATool(string tool)
+        {
+            Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
         }
     }
 }
