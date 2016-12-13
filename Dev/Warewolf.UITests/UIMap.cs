@@ -1531,6 +1531,7 @@ namespace Warewolf.UITests
         public void ThenDeployButtonIsEnabled(string enabled)
         {
             var isEnabled = bool.Parse(enabled);
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.WaitForControlEnabled();
             Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, isEnabled);
         }
 
