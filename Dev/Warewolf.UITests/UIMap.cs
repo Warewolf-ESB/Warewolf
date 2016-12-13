@@ -56,21 +56,28 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
 #if !DEBUG
-            TryClickMessageBoxOK();
-            TryCloseHangingDebugInputDialog();
-            TryCloseHangingSaveDialog();
-            TryCloseHangingServicePickerDialog();
-            TryCloseHangingWindowsGroupDialog();
-            TryPin_Unpinned_Pane_To_Default_Position();
-            TryCloseHangingCriticalErrorDialog();
-            TryCloseHangingErrorDialog();
-            TryCloseHangingWebBrowserErrorDialog();
-            TryCloseHangingDecisionDialog();
-            TryCloseSettingsTab();
-            TryCloseWorkflowTestingTab();
-            var TimeBefore = System.DateTime.Now;
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            try
+            {
+                TryClickMessageBoxOK();
+                TryCloseHangingDebugInputDialog();
+                TryCloseHangingSaveDialog();
+                TryCloseHangingServicePickerDialog();
+                TryCloseHangingWindowsGroupDialog();
+                TryPin_Unpinned_Pane_To_Default_Position();
+                TryCloseHangingCriticalErrorDialog();
+                TryCloseHangingErrorDialog();
+                TryCloseHangingWebBrowserErrorDialog();
+                TryCloseHangingDecisionDialog();
+                TryCloseSettingsTab();
+                TryCloseWorkflowTestingTab();
+                var TimeBefore = System.DateTime.Now;
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            }
+            catch(AccessViolationException e)
+            {
+                Console.WriteLine("Caught an AccessViolationException " + e.Message + " trying to close a hanging dialogs before the test starts.");
+            }
 #endif
         }
 
