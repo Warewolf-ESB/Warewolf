@@ -26,8 +26,6 @@ namespace Dev2.Common.Interfaces
 
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
-        string Inputs { get; set; }
-        string Outputs { get; set; }
         string ExecuteToolTip { get; }
         string EditToolTip { get; }
         string ActivityName { get; }
@@ -42,6 +40,11 @@ namespace Dev2.Common.Interfaces
         bool CanMove { get; }
         ICommand DuplicateCommand { get; set; }
         ICommand CreateTestCommand { get; set; }
+        bool CanDebugInputs { get; set; }
+        bool CanDebugStudio { get; set; }
+        bool CanDebugBrowser { get; set; }
+        bool CanCreateSchedule { get; set; }
+        bool CanViewRunAllTests { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 

@@ -894,7 +894,8 @@ namespace Dev2.Studio.ViewModels
 
         public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel = null)
         {
-            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, _mainViewModel), resourcePath, header, explorerItemViewModel);
+            var environmentViewModel = _mainViewModel.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == ActiveServer.EnvironmentID);
+            return await RequestServiceNameViewModel.CreateAsync(environmentViewModel, resourcePath, header, explorerItemViewModel);
         }
 
         public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)

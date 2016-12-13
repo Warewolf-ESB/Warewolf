@@ -1833,28 +1833,6 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        [TestMethod]
-        [Description("Updates the Category of the resource")]
-        [Owner("Huggs")]
-        public void ResourceCatalog_RenameCategory_SameNameResource_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
-            var testPath = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Testing";
-            const string resourceName = "Bug6619Dup";
-            SaveResources(path, null, false, false, new[] { "Bug6619" }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-            SaveResources(testPath, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            rc.GetResources(workspaceID);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "Testing");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
-        }
 
         [TestMethod]
         [Description("Updates the Category of the resource")]
@@ -1885,42 +1863,6 @@ namespace Dev2.Tests.Runtime.Hosting
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
             Assert.AreEqual("Bugs\\Bug6619Dep", element.Value);
-        }
-
-        [TestMethod]
-        [Description("Updates the Category of the resource")]
-        [Owner("Huggs")]
-        public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArguments_Fails_ExpectFailureResult()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Additional Setup----------------------
-            var fileName = oldResource.FilePath.Replace("Bugs", "TestCategory");
-            var directoryName = Path.GetDirectoryName(fileName);
-            if (directoryName != null)
-            {
-                Directory.CreateDirectory(directoryName);
-            }
-            File.Copy(oldResource.FilePath, fileName, true);
-            var fileStream = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read);
-            //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
-            //------------Assert Results-------------------------
-            fileStream.Close();
-            File.Delete(fileName);
-            Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
         }
 
         [TestMethod]
@@ -2092,7 +2034,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2124,7 +2066,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), "Server", null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);

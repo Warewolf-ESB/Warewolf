@@ -57,5 +57,6 @@ namespace Dev2.Common.Interfaces
         Task<bool> LoadDialog(string selectedId, bool b = false, bool reloadCatalogue = false);
 
         Task<bool> LoadDialog(Guid selectedPath);
+        IExplorerTreeItem FindByPath(string path);
     }
 }

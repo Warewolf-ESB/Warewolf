@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled);
             UIMap.Click_Service_Picker_Dialog_OK();
         }
-
+        
         [TestMethod]
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickCancel_UITest()
@@ -31,6 +31,7 @@ namespace Warewolf.UITests.Tools
             Point newPoint;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint));
         }
+
         [TestMethod]
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickOK_UITest()
@@ -42,6 +43,19 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
         }
+
+        [TestMethod]
+		[TestCategory("Resource Tools")]
+        public void SelectResource_FromResourcePickerTestsByDoubleClick_UITest()
+        {
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.DoubleClick_FirstItem_From_ServicePicker_Tree();
+            Assert.IsTrue(UIMap.ServicePickerDialog.Exists);
+            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled);
+            UIMap.Click_Service_Picker_Dialog_Cancel();
+        }
+
         [TestMethod]
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerAndClickOK_ThenDeleteWorkFlowAndDragServiceAgain_UITest()
@@ -54,6 +68,7 @@ namespace Warewolf.UITests.Tools
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
             UIMap.Delete_HelloWorld_With_Context_Menu();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
+            UIMap.Click_Service_Picker_Dialog_Cancel();
         }
 
         #region Additional test attributes

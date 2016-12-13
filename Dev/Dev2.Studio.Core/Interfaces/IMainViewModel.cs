@@ -50,6 +50,7 @@ namespace Dev2.Interfaces
         AuthorizeCommand<string> NewSharepointSourceCommand { get; }
         AuthorizeCommand<string> NewDropboxSourceCommand { get; }
         AuthorizeCommand<string> NewWcfSourceCommand { get; }
+        IExplorerViewModel ExplorerViewModel { get; set; }
 
         void EditServer(IServerSource serverSource);
 

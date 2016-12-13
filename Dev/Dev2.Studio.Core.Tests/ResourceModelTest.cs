@@ -538,13 +538,6 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(TestCategory, category);
                 Assert.AreEqual(TestXaml, source);
             });
-            // ReSharper disable ImplicitlyCapturedClosure
-            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Service, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, serviceElement =>
-            // ReSharper restore ImplicitlyCapturedClosure
-            {
-                var category = serviceElement.ElementSafe("Category");
-                Assert.AreEqual(TestCategory, category);
-            });
         }
 
         void Verify_ToServiceDefinition_GivenXamlPresent(ResourceType resourceType, string category, string workflowXaml, bool hasWorkflowXaml, Action<XElement> verify)
@@ -618,25 +611,6 @@ namespace Dev2.Core.Tests
                 ID = instanceID
             };
             return model;
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
-        public void ResourceModel_ToServiceDefinition_WhenServiceType_ShouldHaveFullServiceDefinition()
-        {
-            //------------Setup for test--------------------------
-            XElement element = new XElement("Action");
-            var resourceModel = CreateResourceModel(element.ToStringBuilder().ToString());
-            resourceModel.ResourceType = ResourceType.Service;
-            resourceModel.ServerResourceType = "WebService";
-            resourceModel.WorkflowXaml = null;
-
-            //------------Execute Test---------------------------
-            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
-            //------------Assert Results-------------------------
-            StringAssert.Contains(serviceDefinition, "ResourceType=\"WebService\"");
-            StringAssert.Contains(serviceDefinition, "Service ID=");
         }
 
         [TestMethod]
