@@ -66,7 +66,6 @@
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
     <Compile Include="SaveDialog\SaveDialogTests.cs" />
     <Compile Include="WorkflowTesting\OtherTestFrameworkMockingTests.cs" />
-    <Compile Include="Workflow\WorkflowUITests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
