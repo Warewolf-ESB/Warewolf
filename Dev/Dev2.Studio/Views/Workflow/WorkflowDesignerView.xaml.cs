@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -83,7 +84,26 @@ namespace Dev2.Studio.Views.Workflow
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
-            if (_dragDropHelpers.PreventDrop(dataObject))
+            if (e.OriginalSource.GetType() == typeof(ScrollViewer))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            else if (e.OriginalSource.GetType() == typeof(Border))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            else if (e.OriginalSource.GetType() == typeof(Grid))
+            {
+                var grid = e.OriginalSource as Grid;
+                if (grid != null && grid.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+            }
+            else if (_dragDropHelpers.PreventDrop(dataObject))
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;

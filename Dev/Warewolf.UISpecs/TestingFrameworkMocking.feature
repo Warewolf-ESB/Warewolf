@@ -12,7 +12,7 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And Test tab is open
 	And I Click Close Clean Workflow Tab
 	And I Click Close Tests Tab
-	When I Click MessageBox No
+	And I Try Click MessageBox No
 
 Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
 	Given I have Hello World workflow on the Explorer

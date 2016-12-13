@@ -56,21 +56,28 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
 #if !DEBUG
-            TryClickMessageBoxOK();
-            TryCloseHangingDebugInputDialog();
-            TryCloseHangingSaveDialog();
-            TryCloseHangingServicePickerDialog();
-            TryCloseHangingWindowsGroupDialog();
-            TryPin_Unpinned_Pane_To_Default_Position();
-            TryCloseHangingCriticalErrorDialog();
-            TryCloseHangingErrorDialog();
-            TryCloseHangingWebBrowserErrorDialog();
-            TryCloseHangingDecisionDialog();
-            TryCloseSettingsTab();
-            TryCloseWorkflowTestingTab();
-            var TimeBefore = System.DateTime.Now;
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            try
+            {
+                TryClickMessageBoxOK();
+                TryCloseHangingDebugInputDialog();
+                TryCloseHangingSaveDialog();
+                TryCloseHangingServicePickerDialog();
+                TryCloseHangingWindowsGroupDialog();
+                TryPin_Unpinned_Pane_To_Default_Position();
+                TryCloseHangingCriticalErrorDialog();
+                TryCloseHangingErrorDialog();
+                TryCloseHangingWebBrowserErrorDialog();
+                TryCloseHangingDecisionDialog();
+                TryCloseSettingsTab();
+                TryCloseWorkflowTestingTab();
+                var TimeBefore = System.DateTime.Now;
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            }
+            catch(AccessViolationException e)
+            {
+                Console.WriteLine("Caught an AccessViolationException " + e.Message + " trying to close a hanging dialogs before the test starts.");
+            }
 #endif
         }
 
@@ -95,6 +102,29 @@ namespace Warewolf.UITests
             }
         }
 
+
+        [Given(@"I Try Click MessageBox No")]
+        [When(@"I Try Click MessageBox No")]
+        [Then(@"I Try Click MessageBox No")]
+        public void TryClickMessageBoxNo()
+        {var TimeBefore = System.DateTime.Now;
+            try
+            {
+                if (ControlExistsNow(MessageBoxWindow.NoButton))
+                {
+                    Click_MessageBox_No();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging message box before the test starts.");
+            }
+            finally
+            {
+                Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+            }
+            
+        }
         public void TryCloseHangingDebugInputDialog()
         {
             var TimeBefore = System.DateTime.Now;
@@ -1997,8 +2027,17 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
-            MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => !uicontrol.Enabled, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
+            bool controlAvailable = true;
+            try
+            {
+                MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => uicontrol.State == ControlStates.Unavailable, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+                controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
+            }
+            catch (UITestControlNotAvailableException)
+            {
+                controlAvailable = false;
+            }
+            Assert.IsFalse(controlAvailable, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
         }
 
         public void DeleteAssign_FromContextMenu()
@@ -2037,7 +2076,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.NewSourceButton.Exists, "New Source Button does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.NewSourceButton, new Point(30, 4));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New DB source wizard tab does not exist after clicking the new db source button on Web PUT tool.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.Exists, "New WebSourceWizardTab does not exist after clicking the new db source button on Web PUT tool.");
         }
 
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox_With_Special_Test_For_Textbox_Height(string text)
@@ -3135,7 +3174,16 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
+        }
+
+        public void Show_Explorer_Second_Item_Tests_With_Context_Menu(string filter)
+        {
+            Filter_Explorer(filter);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
         }
 
@@ -3986,7 +4034,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.NewSourceButton, new Point(17, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from post tool on the design surface.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New DB source wizard tab does not exist after clicking the new db source button on Web POST tool.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.Exists, "New web source wizard tab is not open after clicking create new web source from post tool.");
         }
 
         [Given(@"I Click Knowledge Ribbon Button")]
@@ -5301,7 +5349,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(ServicePickerDialog.Cancel.Exists, "Service picker dialog cancel button does not exist");
         }
 
+        [Given(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
         [When(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
+        [Then(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
         public void Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Copy File";
@@ -6108,7 +6158,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests does not exist in explorer context menu.");
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(30, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run all button does not exist on tests tab");
         }
 
@@ -7455,8 +7505,9 @@ namespace Warewolf.UITests
         public void Select_NewEmailSource_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
-            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewEmailSource, new Point(101, 13));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewEmailSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTabPage.Exists, "New email source tab does not exist after opening Email source tab");
         }
 
@@ -7754,7 +7805,7 @@ namespace Warewolf.UITests
         [When(@"I Select Tests From Context Menu")]
         public void Select_Tests_From_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests, new Point(46, 16));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "TestsTabPage does not exist after clicking view tests in the explorer context menu.");
         }
 
@@ -7941,8 +7992,9 @@ namespace Warewolf.UITests
         [Given(@"I Click Create Test From Debug")]
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
-        {
+        {            
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
 
@@ -7988,7 +8040,15 @@ namespace Warewolf.UITests
         public void Click_MockRadioButton_On_Decision_TestStep()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.AssertOperatorCell.AssertOperatorComboBox.Enabled, "Operator combobox is still enabled");
+        }
+
+        public void Click_MockRadioButton_On_Assign_TestStep()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.SmallDataGridTable.ColumnHeadersPrHeader.MockOrAssert.MockRadioButton, new Point(5, 5));
+        }
+        public void Click_MockRadioButton_On_DataSplitAssign_TestStep()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.DataSplitItem.UIUI_StepOutputs_AssigTable.UIPART_ColumnHeadersPrHeader.UIItemColumnHeader.UIMockRadioButton, new Point(5, 5));
         }
 
         [When(@"I Expand Debug Output Recordset")]
@@ -8602,6 +8662,14 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+        [Given(@"I DoubleClick Explorer Localhost Second Item")]
+        [When(@"I DoubleClick Explorer Localhost Second Item")]
+        [Then(@"I DoubleClick Explorer Localhost Second Item")]
+        public void DoubleClick_Explorer_Localhost_Second_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
+        }
+
         [Given(@"I RightClick Ardoner Hyperlink")]
         [When(@"I RightClick Ardoner Hyperlink")]
         [Then(@"I RightClick Ardoner Hyperlink")]
@@ -8613,9 +8681,10 @@ namespace Warewolf.UITests
         [When(@"I Select NewExchangeSource FromExplorerContextMenu")]
         public void Select_NewExchangeSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
-            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewExchangeSource, new Point(101, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));            
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSourceMenuItem);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
 
@@ -8646,6 +8715,14 @@ namespace Warewolf.UITests
         public void ThenFilteredItemExists()
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
+        }
+
+        [Given(@"I drag a ""(.*)"" tool")]
+        [When(@"I drag a ""(.*)"" tool")]
+        [Then(@"I drag a ""(.*)"" tool")]
+        public void WhenIDragATool(string tool)
+        {
+            Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
         }
     }
 }

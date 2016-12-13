@@ -6496,6 +6496,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error reseting counters: .
+        /// </summary>
+        public static string ResetPerfMonCountersHasError {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHasError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance Counters have been reset..
+        /// </summary>
+        public static string ResetPerfMonCountersHasNoError {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHasNoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Performance Counters.
+        /// </summary>
+        public static string ResetPerfMonCountersHeader {
+            get {
+                return ResourceManager.GetString("ResetPerfMonCountersHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make current version.
         /// </summary>
         public static string RollbackHeader {
