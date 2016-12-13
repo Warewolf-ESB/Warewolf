@@ -128,7 +128,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Debug_Unpinned_Workflow_With_F6();
             Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
             Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+            UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
         #region Additional test attributes
