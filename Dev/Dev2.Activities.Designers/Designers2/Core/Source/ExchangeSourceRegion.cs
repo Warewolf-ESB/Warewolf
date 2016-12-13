@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
-            var sources = model.RetrieveSources().OrderBy(source => source.Name);
+            var sources = model.RetrieveSources().OrderBy(source => source.ResourceName);
             Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;

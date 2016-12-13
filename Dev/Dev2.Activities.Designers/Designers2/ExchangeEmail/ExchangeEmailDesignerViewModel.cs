@@ -107,7 +107,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
+            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.ResourceName);
         }
 
         public void AddProperty(string key, string value)

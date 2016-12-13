@@ -103,8 +103,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_emailServiceSource != null)
             {
-                HeaderText = (_emailServiceSource.Name ?? ResourceName).Trim();
-                Header = (_emailServiceSource.Name ?? ResourceName).Trim();
+                HeaderText = (_emailServiceSource.ResourceName ?? ResourceName).Trim();
+                Header = (_emailServiceSource.ResourceName ?? ResourceName).Trim();
             }
         }
 
@@ -162,14 +162,14 @@ namespace Warewolf.Studio.ViewModels
                 if (res == MessageBoxResult.OK)
                 {
                     var src = ToSource();
-                    src.Name = requestServiceNameViewModel.ResourceName.Name;
+                    src.ResourceName = requestServiceNameViewModel.ResourceName.Name;
                     src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
                         AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
                     Item = src;
                     _emailServiceSource = src;
-                    ResourceName = _emailServiceSource.Name;
+                    ResourceName = _emailServiceSource.ResourceName;
                     SetupHeaderTextFromExisting();
                 }
             }
@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var src = ToSource();
                 src.Path = Item.Path ?? "";
-                src.Name = Item.Name;
+                src.ResourceName = Item.ResourceName;
                 Save(src);
                 Item = src;
                 _emailServiceSource = src;
@@ -374,6 +374,7 @@ namespace Warewolf.Studio.ViewModels
 
         IExchangeSource ToNewSource()
         {
+            var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
             return new ExchangeSourceDefinition()
             {
                 AutoDiscoverUrl = AutoDiscoverUrl,
@@ -383,27 +384,30 @@ namespace Warewolf.Studio.ViewModels
                 EmailTo = EmailTo,
                 ResourceName = Name,
                 ResourceType = "ExchangeSource",
-                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
-                ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
+                Id = resourceID,
+                ResourceID = resourceID,
             };
         }
 
         public IExchangeSource ToSource()
         {
             if (_emailServiceSource == null)
+            {
+                var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
                 return new ExchangeSourceDefinition()
-                {
-                    AutoDiscoverUrl = AutoDiscoverUrl,
-                    Password = Password,
-                    UserName = UserName,
-                    Timeout = Timeout,
-                    EmailTo = EmailTo,
-                    ResourceName = Name,
-                    ResourceType = "ExchangeSource",
-                    Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
-                    ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
-                }
-            ;
+                    {
+                        AutoDiscoverUrl = AutoDiscoverUrl,
+                        Password = Password,
+                        UserName = UserName,
+                        Timeout = Timeout,
+                        EmailTo = EmailTo,
+                        ResourceName = ResourceName,
+                        ResourceType = "ExchangeSource",
+                        Id = resourceID,
+                        ResourceID = resourceID,
+                    }
+                    ;
+            }
             // ReSharper disable once RedundantIfElseBlock
             else
             {
@@ -412,7 +416,7 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.Password = Password;
                 _emailServiceSource.Timeout = Timeout;
                 _emailServiceSource.ResourceType = "ExchangeSource";
-                _emailServiceSource.Name = Name;
+                _emailServiceSource.ResourceName = ResourceName;
                 return _emailServiceSource;
             }
         }
@@ -424,6 +428,7 @@ namespace Warewolf.Studio.ViewModels
                 Item = ToSource();
                 return Item;
             }
+            var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
             return new ExchangeSourceDefinition()
             {
                 AutoDiscoverUrl = AutoDiscoverUrl,
@@ -433,8 +438,8 @@ namespace Warewolf.Studio.ViewModels
                 EmailTo = EmailTo,
                 ResourceType = "ExchangeSource",
                 ResourceName = ResourceName,
-                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
-                ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
+                Id = resourceID,
+                ResourceID = resourceID,
             };
         }
 
