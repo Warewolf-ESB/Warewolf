@@ -83,7 +83,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.And("I drag a \"Sharepoint\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Drag Toolbox Sharepoint CopyFile Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("I Select New Sharepoint Server Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
