@@ -206,7 +206,24 @@ namespace Dev2.Scheduler
 
                     };
 
-                    res.WorkflowName = resourceId == Guid.Empty ? split[1] : _pathResolve(res);
+                    string resWorkflowName;
+                    if (resourceId == Guid.Empty)
+                    {
+                        resWorkflowName = split[1];
+                    }
+                    else
+                    {
+                        try
+                        {
+                            resWorkflowName = _pathResolve(res);
+                        }
+                        catch(NullReferenceException)
+                        {
+                            resWorkflowName = split[1];
+                            res.Errors.AddError($"Workflow: {resWorkflowName} not found. Task is invalid.");
+                        }
+                    }
+                    res.WorkflowName = resWorkflowName;
 
                     return res;
                 }

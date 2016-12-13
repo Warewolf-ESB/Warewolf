@@ -39,7 +39,6 @@ namespace Dev2.Common.Interfaces
         bool IsSource { get; set; }
         bool IsService { get; set; }
         bool IsFolder { get; set; }
-        bool IsReservedService { get; set; }
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
         bool CanViewApisJson { get; set; }
@@ -59,6 +58,7 @@ namespace Dev2.Common.Interfaces
 
         ObservableCollection<IExplorerItemViewModel> Children { get; set; }
         Action<IExplorerItemViewModel> SelectAction { get; set; }
+        bool IsSaveDialog { get; set; }
 
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);

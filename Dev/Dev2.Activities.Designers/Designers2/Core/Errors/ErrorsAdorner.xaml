@@ -7,6 +7,7 @@
                          xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                          xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
                          xmlns:errors2="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
+                         xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                          mc:Ignorable="d"
                          d:DesignHeight="300"
                          d:DesignWidth="300"
@@ -31,7 +32,7 @@
                                    VerticalAlignment="Top"
                                    Loaded="ErrorTextBlock_Loaded">
                                 <Hyperlink Command="{Binding Path=DataContext.OpenErrorsLinkCommand, ElementName=ErrorsGrid}"
-                                           CommandParameter="{Binding}">
+                                           CommandParameter="{Binding}" Click="Hyperlink_OnClick" ToolTip="{x:Static languages:Core.ErrorsAdornerCopyToClipboardTooltip}">
                                     <Run Text="{Binding Message}"/>
                                 </Hyperlink>
                         </TextBlock>

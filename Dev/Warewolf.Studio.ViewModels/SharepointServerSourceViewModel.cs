@@ -149,10 +149,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public override void FromModel(ISharepointServerSource sharepointServerSource)
@@ -165,7 +162,6 @@ namespace Warewolf.Studio.ViewModels
             IsSharepointOnline = sharepointServerSource.IsSharepointOnline;
         }
 
-
         public override string Name
         {
             get
@@ -177,7 +173,6 @@ namespace Warewolf.Studio.ViewModels
                 ResourceName = value;
             }
         }
-
 
         public string ResourceName
         {
@@ -206,6 +201,8 @@ namespace Warewolf.Studio.ViewModels
                     var src = ToSource();
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
+                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     Item = src;
                     _sharePointServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -245,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception != null ? exception.Message : "Failed";
+                TestMessage = GetExceptionMessage(exception);
             });
         }
 
@@ -271,7 +268,7 @@ namespace Warewolf.Studio.ViewModels
                 Password = Password,
                 UserName = UserName,
                 Name = ResourceName,
-                Id = _sharePointServiceSource == null ? Guid.NewGuid() : _sharePointServiceSource.Id
+                Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
             };
         }
 
@@ -286,7 +283,7 @@ namespace Warewolf.Studio.ViewModels
                     UserName = UserName,
                     Name = ResourceName,
                     IsSharepointOnline = IsSharepointOnline,
-                    Id = _sharePointServiceSource == null ? Guid.NewGuid() : _sharePointServiceSource.Id
+                    Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
                 };
             // ReSharper disable once RedundantIfElseBlock
             else
@@ -335,7 +332,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     throw _requestServiceNameViewModel.Exception;
                 }
-
             }
         }
 
@@ -514,10 +510,7 @@ namespace Warewolf.Studio.ViewModels
                 _testComplete = value;
                 OnPropertyChanged("TestComplete");
                 var command = SaveCommand as RelayCommand;
-                if (command != null)
-                {
-                    command.RaiseCanExecuteChanged();
-                }
+                command?.RaiseCanExecuteChanged();
             }
         }
         public bool Testing

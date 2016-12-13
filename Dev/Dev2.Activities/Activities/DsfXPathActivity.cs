@@ -84,7 +84,7 @@ namespace Dev2.Activities
 
         public override List<string> GetOutputs()
         {
-            return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+            return ResultsCollection?.Select(dto => dto.OutputVariable).ToList() ?? new List<string>();
         }
 
         #region Overridden NativeActivity Methods
@@ -109,17 +109,20 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                if(_isDebugMode)
+                if (!string.IsNullOrEmpty(SourceString))
                 {
-                    AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
-                    AddResultDebugInputs(ResultsCollection, out errors);
-                    allErrors.MergeErrors(errors);
+                    if (_isDebugMode)
+                    {
+                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
+                        AddResultDebugInputs(ResultsCollection, out errors);
+                        allErrors.MergeErrors(errors);
+                    }
+                    if (!allErrors.HasErrors())
+                    {
+                        i = Process(dataObject, update, i, parser, allErrors, errors);
+                    }
+                    DoDebug(dataObject, update, allErrors);
                 }
-                if(!allErrors.HasErrors())
-                {
-                    i = Process(dataObject, update, i, parser, allErrors, errors);
-                }
-                DoDebug(dataObject, update, allErrors);
             }
             catch(Exception ex)
             {
@@ -156,7 +159,12 @@ namespace Dev2.Activities
                     }
                     AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
 
-                    AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
+                    var outputVariable = "";
+                    if (actualIndex >= 0)
+                    {
+                        outputVariable = ResultsCollection[actualIndex].OutputVariable;
+                    }
+                    AddDebugItem(new DebugEvalResult(outputVariable, "", dataObject.Environment, update), itemToAdd);
                     _debugOutputs.Add(itemToAdd);
 
                 }
@@ -185,36 +193,40 @@ namespace Dev2.Activities
 
         private int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO allErrors, ErrorResultTO errors)
         {
-            var itr = new WarewolfListIterator();
-            var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
-            itr.AddVariableToIterateOn(sourceIterator);
-            while(itr.HasMoreData())
+            if (!string.IsNullOrEmpty(SourceString))
             {
-                var c = itr.FetchNextValue(sourceIterator);
-                for(i = 0; i < ResultsCollection.Count; i++)
+
+                var itr = new WarewolfListIterator();
+                var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
+                itr.AddVariableToIterateOn(sourceIterator);
+                while (itr.HasMoreData())
                 {
-                    if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
+                    var c = itr.FetchNextValue(sourceIterator);
+                    for (i = 0; i < ResultsCollection.Count; i++)
                     {
-                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
-                        var xpathIterator = new WarewolfIterator(xpathEntry);
-                        while(xpathIterator.HasMoreData())
+                        if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                         {
-                            var xpathCol = xpathIterator.GetNextValue();
-                            try
+                            var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+                            var xpathIterator = new WarewolfIterator(xpathEntry);
+                            while (xpathIterator.HasMoreData())
                             {
-                                List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();
-                                var variable = ResultsCollection[i].OutputVariable;
-                                AssignResult(variable, dataObject, eval, update);
-                            }
-                            catch(Exception e)
-                            {
-                                allErrors.AddError(e.Message);
-                                dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                                var xpathCol = xpathIterator.GetNextValue();
+                                try
+                                {
+                                    List<string> eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                                    var variable = ResultsCollection[i].OutputVariable;
+                                    AssignResult(variable, dataObject, eval, update);
+                                }
+                                catch (Exception e)
+                                {
+                                    allErrors.AddError(e.Message);
+                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                                }
                             }
                         }
                     }
+                    allErrors.MergeErrors(errors);
                 }
-                allErrors.MergeErrors(errors);
             }
             return i;
         }

@@ -506,8 +506,6 @@ Scenario: Duplicate a test
 	When I click duplicate 
 	Then there are 2 tests
 	And the duplicated tests is "Test 1 1"
-	And save is enabled
-	When I save
 
 @TestFramework
 Scenario: Duplicate a test with same name fails
@@ -576,6 +574,113 @@ Scenario: Run a test with single scalar inputs and outputs
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
+
+@TestFramework	
+Scenario: Run a passing test and change step type
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank	
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Blank Input"
+	And I Add "Assign a value to Name if blank (1)" as TestStep
+	And I add "Assign a value to Name if blank (1)" StepOutputs as 
+	| Variable Name | Condition | Value |
+	| [[Name]]      | =         | World |
+	And I Add "Set the output variable (1)" as TestStep
+	And I add "Set the output variable (1)" StepOutputs as 
+	| Variable Name | Condition | Value        |
+	| [[Message]]   | =         | Hello World. |
+	And save is enabled
+	And test status is pending	
+	And test is enabled	
+	And I update outputs as
+	| Variable Name | Value        |
+	| Message       | Hello World. |
+	And I save
+	When I run the test
+	Then test result is Passed
+	When I change step "If [[Name]] <> (Not Equal)" to Mock
+	Then I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	When I run the test
+	Then step "Assign a value to Name if blank (1)" is Pending	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+@TestFramework
+Scenario: Run a test expecting error 
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          |       | true        |
+	And I expect Error "p"
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	When I run the test
+	Then the service debug assert message contains "Failed: Expected Error containing 'p' but got 'variable not found'"	
+	Then test result is Failed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+Scenario: Run a test with invalid inputs and pending results
+    Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value    | 
+	| Name          | [[Home]] |
+	And I save
+	When I run the test
+	Then test result is Failed	
+	When I delete "Test 1" 
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+	
+Scenario: Run a test with invalid and pending results
+    Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And I update inputs as
+	| Variable Name | Value | 
+	| Name          | Bob   | 
+	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
+	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
+	And I Add "Assign a value to Name if blank (1)" as TestStep
+	And I Add "Set the output variable (1)" as TestStep
+	And I update outputs as
+         | Variable Name | Value      |
+         | Message       | Hello Bob. |
+	When I run the test
+    Then test result is Failed
+    And Test debug results contain pending results "Pending Step: Assign a value to Name if blank (1)"
+	And test folder is cleaned
+
 
 @TestFramework
 Scenario: Run a test with single scalar inputs and outputs failure
@@ -828,26 +933,13 @@ Scenario: Run Selected Test in Web
 	| Variable Name | Value |
 	| Message   |       |
 	And save is enabled
-	When I save
-	Then Tab Header is "Hello World - Tests"
-	And I close the test builder
-	When the test builder is open with "Hello World"
-	Then there are 1 tests
-	And "Dummy Test" is selected
-	And I select "Test 1"
-	And "Test 1" is selected
-	And test name starts with "Test 1"
-	And inputs are
-	| Variable Name | Value |
-	| Name             |       |
-	And outputs as
-	| Variable Name | Value |
-	| Message   |       |
-	And save is disabled
+	When I save	
 	When I run selected test in Web
 	Then The WebResponse as
-	| Test Name | Result | Message                                                                |
-	| Test 1    | Failed | Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
+	| Test Name | Result | Message                             |
+	| Test 1    | Failed | Failed Output For Variable: Message |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
 
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
@@ -856,10 +948,7 @@ Scenario: Run All Tests in Web
 	And I click New Test
 	Then a new test is added
 	And Tab Header is "Hello World - Tests *"
-	And test name starts with "Test 1"
-	And I update inputs as
-	| Variable Name | Value |
-	| Name          |       |
+	And test name starts with "Test 1"	
 	And I update outputs as
 	| Variable Name | Value       |
 	| Message       | Hello World. |

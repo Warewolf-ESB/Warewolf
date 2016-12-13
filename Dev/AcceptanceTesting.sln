@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.25928.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -80,6 +80,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
 	ProjectSection(SolutionItems) = preProject
+		TestScripts\Scorched Get (excluding nuget packages).bat = TestScripts\Scorched Get (excluding nuget packages).bat
 		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
@@ -179,8 +180,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Deploy", "Warewolf.UIBindingTests.Deploy\Warewolf.UIBindingTests.Deploy.csproj", "{410A057A-BCFC-476B-AF27-46D6E442FA04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Explorer", "Warewolf.UIBindingTests.Explorer\Warewolf.UIBindingTests.Explorer.csproj", "{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServerSource", "Warewolf.UIBindingTests.ServerSource\Warewolf.UIBindingTests.ServerSource.csproj", "{486F3480-A011-4E3A-878C-E7A23F661045}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Variables", "Warewolf.UIBindingTests.Variables\Warewolf.UIBindingTests.Variables.csproj", "{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}"
@@ -236,11 +235,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
+		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
 		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
 		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
-		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1
-		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
-		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
+		TestScripts\Tests\Write Failing Tests Playlist.ps1 = TestScripts\Tests\Write Failing Tests Playlist.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
@@ -294,6 +292,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Tests\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Tests\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.RabbitMqSource", "Warewolf.UIBindingTests.RabbitMqSource\Warewolf.UIBindingTests.RabbitMqSource.csproj", "{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WcfSource", "Warewolf.UIBindingTests.WcfSource\Warewolf.UIBindingTests.WcfSource.csproj", "{2F4FD767-6A03-433F-912F-27BFA11B8CBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -756,13 +758,6 @@ Global
 		{410A057A-BCFC-476B-AF27-46D6E442FA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{410A057A-BCFC-476B-AF27-46D6E442FA04}.Release|x86.ActiveCfg = Release|Any CPU
 		{410A057A-BCFC-476B-AF27-46D6E442FA04}.Release|x86.Build.0 = Release|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Debug|x86.Build.0 = Debug|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Release|x86.ActiveCfg = Release|Any CPU
-		{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}.Release|x86.Build.0 = Release|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1023,6 +1018,20 @@ Global
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.Build.0 = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Debug|x86.Build.0 = Debug|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|x86.ActiveCfg = Release|Any CPU
+		{2ADFCF0A-4E2D-4E02-AF7A-947B989EA900}.Release|x86.Build.0 = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

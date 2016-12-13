@@ -1,0 +1,1998 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GroupControls</name>
+    </assembly>
+    <members>
+        <member name="T:GroupControls.ButtonListBase">
+            <summary>
+            Abstract base class for lists of owner-drawn buttons.
+            </summary>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.ButtonListBase"/> class.
+            </summary>
+        </member>
+        <member name="E:GroupControls.ButtonListBase.SubtextForeColorChanged">
+            <summary>
+            Occurs when SubtextForeColor changed.
+            </summary>
+        </member>
+        <member name="E:GroupControls.ButtonListBase.SubtextSeparatorHeightChanged">
+            <summary>
+            Occurs when SubtextSeparatorHeight changed.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.CheckAlign">
+            <summary>
+            Gets or sets the alignment of the check box in relation to the text.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.SubtextFont">
+            <summary>
+            Gets or sets the font used to render the subtext of each item.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.SubtextForeColor">
+            <summary>
+            Gets or sets the color of an item's subtext.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.SubtextSeparatorHeight">
+            <summary>
+            Gets or sets the number of pixels used to separate the text from the subtext within an item.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.Text">
+            <summary>
+            Text for the control. This property is not available for this control.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.TextAlign">
+            <summary>
+            Gets or sets the alignment of the text in relation to the bounds of the item.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.FocusedIndex">
+            <summary>
+            Gets the index of the focused item.
+            </summary>
+            <value>The index of the focused item.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.FocusedItem">
+            <summary>
+            Gets or sets the focused item.
+            </summary>
+            <value>The focused item.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListBase.TextFormatFlags">
+            <summary>
+            Gets the TextFormatFlags based on alignments.
+            </summary>
+            <value>The TextFormatFlags.</value>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.EnsureVisible(System.Int32)">
+            <summary>
+            Ensures that the specified item is visible within the control, scrolling the contents of the control if necessary.
+            </summary>
+            <param name="index">The zero-based index of the item to scroll into view.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.FocusNextItem(GroupControls.ButtonListItem,System.Boolean)">
+            <summary>
+            Focuses the next item.
+            </summary>
+            <param name="item">The current item.</param>
+            <param name="forward">if set to <c>true</c>, moves to the next item, otherwise moves to the previous item.</param>
+            <returns><c>true</c> on success, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.GetNextEnabledItemIndex(System.Int32,System.Boolean)">
+            <summary>
+            Gets the index of the next enabled item.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="forward">if set to <c>true</c> find subsequent item, prior item if <c>false</c>.</param>
+            <returns>Index of next enabled item, or -1 if not found.</returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.GetButtonSize(System.Drawing.Graphics)">
+            <summary>
+            Gets the size of the image used to display the button.
+            </summary>
+            <param name="g">Current <see cref="T:System.Drawing.Graphics"/> context.</param>
+            <returns>The size of the image.</returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.GetItemToolTipText(System.Int32)">
+            <summary>
+            Gets the specified item's tooltip text.
+            </summary>
+            <param name="index">The index of the item.</param>
+            <returns>
+            Tooltip text to display. <c>null</c> or <see cref="F:System.String.Empty"/> to display no tooltip.
+            </returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.IsItemEnabled(System.Int32)">
+            <summary>
+            Determines whether the specified item is enabled.
+            </summary>
+            <param name="index">The item index.</param>
+            <returns>
+            	<c>true</c> if item is enabled; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.MeasureItem(System.Drawing.Graphics,System.Int32,System.Drawing.Size)">
+            <summary>
+            Measures the specified item.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics"/> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="maxSize">Maximum size of the item. Usually only constrains the width.</param>
+            <returns>Minimum size for the item.</returns>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.OnGotFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.GotFocus"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.OnLostFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.OnRightToLeftChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.RightToLeftChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.OnSubtextForeColorChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:GroupControls.ButtonListBase.SubtextForeColorChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.OnSubtextSeparatorHeightChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:GroupControls.ButtonListBase.SubtextSeparatorHeightChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.PaintButton(System.Drawing.Graphics,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Paints the button.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics" /> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="bounds">The bounds in which to paint the item.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.PaintItem(System.Drawing.Graphics,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Paints the specified item.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics"/> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="bounds">The bounds in which to paint the item.</param>
+        </member>
+        <member name="M:GroupControls.ButtonListBase.SetFocused(System.Int32)">
+            <summary>
+            Sets the focus to the specified item.
+            </summary>
+            <param name="itemIndex">Index of the item.</param>
+        </member>
+        <member name="T:GroupControls.ButtonListItem">
+            <summary>
+            Base button item type.
+            </summary>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.ButtonListItem"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="subtext">The subtext.</param>
+            <param name="tooltipText">The tooltip text.</param>
+        </member>
+        <member name="E:GroupControls.ButtonListItem.PropertyChanged">
+            <summary>
+            Occurs when a property value has changed.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.Checked">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:GroupControls.ButtonListItem"/> is checked.
+            </summary>
+            <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.Enabled">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:GroupControls.ButtonListItem"/> is enabled.
+            </summary>
+            <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.Subtext">
+            <summary>
+            Gets or sets the subtext.
+            </summary>
+            <value>The subtext.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.Tag">
+            <summary>
+            Gets or sets the tag.
+            </summary>
+            <value>The tag.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.Text">
+            <summary>
+            Gets or sets the text.
+            </summary>
+            <value>The text.</value>
+        </member>
+        <member name="P:GroupControls.ButtonListItem.ToolTipText">
+            <summary>
+            Gets or sets the tool tip text.
+            </summary>
+            <value>The tool tip text.</value>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.Equals(GroupControls.ButtonListItem)">
+            <summary>
+            Determines whether the specified <see cref="T:GroupControls.ButtonListItem"/> is equal to the current <see cref="T:GroupControls.ButtonListItem"/>.
+            </summary>
+            <param name="other">The <see cref="T:GroupControls.ButtonListItem"/> to compare with the current <see cref="T:GroupControls.ButtonListItem"/>.</param>
+            <returns>
+            true if the specified <see cref="T:GroupControls.ButtonListItem"/> is equal to the current <see cref="T:GroupControls.ButtonListItem"/>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="M:GroupControls.ButtonListItem.OnNotifyPropertyChanged(System.String)">
+            <summary>
+            Called when a property value has changed.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+        </member>
+        <member name="T:GroupControls.CheckBoxList">
+            <summary>
+            Represents a windows control that displays a list of checkbox items with optional subtext entries.
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.#ctor">
+            <summary>
+            Creates a new instance of a <see cref="T:GroupControls.CheckBoxList"/>.
+            </summary>
+        </member>
+        <member name="E:GroupControls.CheckBoxList.ItemCheckStateChanged">
+            <summary>
+            Occurs when item check state changed.
+            </summary>
+        </member>
+        <member name="P:GroupControls.CheckBoxList.Items">
+            <summary>
+            Gets the list of <see cref="T:GroupControls.CheckBoxListItem"/> associated with the control.
+            </summary>
+        </member>
+        <member name="P:GroupControls.CheckBoxList.SelectedIndicies">
+            <summary>
+            Gets or sets the selected items in the list based on bits. Limited to lists of 64 items or less.
+            </summary>
+        </member>
+        <member name="P:GroupControls.CheckBoxList.ThreeState">
+            <summary>
+            Gets or sets whether the checkboxes will use three states rather than two.
+            </summary>
+        </member>
+        <member name="P:GroupControls.CheckBoxList.BackgroundRenderer">
+            <summary>
+            Gets the background renderer for this type of control.
+            </summary>
+            <value>
+            The background renderer.
+            </value>
+        </member>
+        <member name="P:GroupControls.CheckBoxList.BaseItems">
+            <summary>
+            Gets the base list of items.
+            </summary>
+            <value>
+            Any list supporting and <see cref="T:System.Collections.IList"/> interface.
+            </value>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.GetFlagsValue``1(``0)">
+            <summary>
+            If each items <c>Tag</c> property has been assigned a value of <c>T</c>, this method retrieved the OR value of all items.
+            </summary>
+            <typeparam name="T">An enumerated type with a FlagsAttribute assigned to all item's <c>Tag</c> properties.</typeparam>
+            <param name="defaultValue">The default value.</param>
+            <returns>The OR value of all items</returns>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.SetFlagsValue``1(``0)">
+            <summary>
+            If each items <c>Tag</c> property has been assigned a value of <c>T</c>, this method with set the item's Checked property appropriately.
+            </summary>
+            <typeparam name="T">An enumerated type with a FlagsAttribute assigned to all item's <c>Tag</c> properties.</typeparam>
+            <param name="value">The composite flag value.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.ProcessFlagsOnCheckStateChanged``1(GroupControls.CheckBoxListItem)">
+            <summary>
+            Processes the flags on check state changed. Include this method in the event handler for ItemCheckStateChanged.
+            </summary>
+            <param name="item">The item that was changed.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.GetButtonSize(System.Drawing.Graphics)">
+            <summary>
+            Gets the size of the image used to display the button.
+            </summary>
+            <param name="g">Current <see cref="T:System.Drawing.Graphics"/> context.</param>
+            <returns>The size of the image.</returns>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.ListHasMnemonic(System.Char)">
+            <summary>
+            Determines whether this list has the specified mnemonic in its members.
+            </summary>
+            <param name="charCode">The mnemonic character.</param>
+            <returns>
+            	<c>true</c> if list has the mnemonic; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.OnItemCheckStateChanged(GroupControls.CheckBoxListItemCheckStateChangedEventArgs)">
+            <summary>
+            Called when item check state changed.
+            </summary>
+            <param name="e">The <see cref="T:GroupControls.CheckBoxListItemCheckStateChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.OnMouseClick(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseClick"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.PaintButton(System.Drawing.Graphics,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Paints the button.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics" /> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="bounds">The bounds in which to paint the item.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.ProcessKey(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Processes a keyboard event.
+            </summary>
+            <param name="ke">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> associated with the key press.</param>
+            <returns><c>true</c> if the key was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.CheckBoxList.ToggleItem(System.Int32)">
+            <summary>
+            Flips the indicated items check state.
+            </summary>
+            <param name="itemIndex">Index of the item to toggle.</param>
+        </member>
+        <member name="T:GroupControls.CheckBoxListItemCheckStateChangedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:CheckBoxList.ItemCheckStateChanged"/> event of the <see cref="T:GroupControls.CheckBoxList"/> control.
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItemCheckStateChangedEventArgs.#ctor(GroupControls.CheckBoxListItem,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.CheckBoxListItemCheckStateChangedEventArgs" /> class.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+        </member>
+        <member name="P:GroupControls.CheckBoxListItemCheckStateChangedEventArgs.Item">
+            <summary>
+            Gets the <see cref="T:GroupControls.CheckBoxListItem"/> whose checked state is changing.
+            </summary>
+            <value>
+            The <see cref="T:GroupControls.CheckBoxListItem"/> whose checked state is changing.
+            </value>
+        </member>
+        <member name="P:GroupControls.CheckBoxListItemCheckStateChangedEventArgs.ItemIndex">
+            <summary>
+            Gets the index of the item.
+            </summary>
+            <value>
+            The index of the item.
+            </value>
+        </member>
+        <member name="T:GroupControls.CheckBoxListItem">
+            <summary>
+            An item associated with a <see cref="T:GroupControls.CheckBoxList"/>.
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItem.#ctor">
+            <summary>
+            Creates a new instance of a <c>CheckBoxListItem</c>.
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItem.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new instance of a <c>CheckBoxListItem</c>.
+            </summary>
+            <param name="text">Text displayed next to checkbox.</param>
+            <param name="subtext">Subtext displayed under text.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItem.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of a <c>CheckBoxListItem</c>.
+            </summary>
+            <param name="text">Text displayed next to checkbox.</param>
+            <param name="subtext">Subtext displayed under text.</param>
+            <param name="tooltipText">Tooltip displayed for the item.</param>
+        </member>
+        <member name="E:GroupControls.CheckBoxListItem.CheckStateChanged">
+            <summary>
+            Occurs when the CheckState value changes.
+            </summary>
+        </member>
+        <member name="P:GroupControls.CheckBoxListItem.Checked">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:GroupControls.CheckBoxListItem"/> is checked.
+            </summary>
+            <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.CheckBoxListItem.CheckState">
+            <summary>
+            Gets or sets the state of the checkbox.
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItem.Equals(GroupControls.CheckBoxListItem)">
+            <summary>
+            Determines whether the specified <see cref="T:GroupControls.CheckBoxListItem"/> is equal to the current <see cref="T:GroupControls.CheckBoxListItem"/>.
+            </summary>
+            <param name="other">The <see cref="T:GroupControls.CheckBoxListItem"/> to compare with the current <see cref="T:GroupControls.CheckBoxListItem"/>.</param>
+            <returns>
+            true if the specified <see cref="T:GroupControls.CheckBoxListItem"/> is equal to the current <see cref="T:GroupControls.CheckBoxListItem"/>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItem.OnCheckStateChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:CheckStateChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="T:GroupControls.CheckBoxListItemCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItemCollection.Add(System.String,System.String)">
+            <summary>
+            Adds a new item to the collection.
+            </summary>
+            <param name="text">Item text.</param>
+            <param name="subtext">Item subtext.</param>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItemCollection.Add(System.String[])">
+            <summary>
+            Adds the specified text values to the collection.
+            </summary>
+            <param name="textValues">The text value pairs representing matching text and subtext.</param>
+            <exception cref="T:System.ArgumentException">List of values must contain matching text/subtext entries for an even count of strings.;textValues</exception>
+        </member>
+        <member name="M:GroupControls.CheckBoxListItemCollection.OnItemAdded(System.Int32,GroupControls.CheckBoxListItem)">
+            <summary>
+            Called when an item is added.
+            </summary>
+            <param name="index">The item index.</param>
+            <param name="value">The item value.</param>
+        </member>
+        <member name="M:GroupControls.ColumnLayoutEngine.GetPreferredSize(GroupControls.ControlListBase,System.Drawing.Size)">
+            <summary>
+            Retrieves the size of a rectangular area into which a control can be fitted.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="proposedSize">The custom-sized area for a control.</param>
+            <returns>An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.</returns>
+        </member>
+        <member name="M:GroupControls.ColumnLayoutEngine.Layout(System.Object,System.Windows.Forms.LayoutEventArgs)">
+            <summary>
+            Layouts the specified container.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="layoutEventArgs">The <see cref="T:System.Windows.Forms.LayoutEventArgs" /> instance containing the event data.</param>
+            <returns></returns>
+        </member>
+        <member name="T:GroupControls.ControlListBase">
+            <summary>
+            Abstract class that handles the display of numerous control items.
+            </summary>
+        </member>
+        <member name="M:GroupControls.ControlListBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.ControlListBase"/> class.
+            </summary>
+        </member>
+        <member name="P:GroupControls.ControlListBase.AutoScroll">
+            <summary>
+            Gets or sets a value indicating whether the container enables the user to scroll to any controls placed outside of its visible boundaries.
+            </summary>
+            <returns>true if the container enables auto-scrolling; otherwise, false. The default value is false. </returns>
+        </member>
+        <member name="P:GroupControls.ControlListBase.AutoSize">
+            <summary>
+            Gets or sets a value that determines whether the control resizes based on its content.
+            </summary>
+            <value>true if enabled; otherwise, false.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.BorderStyle">
+            <summary>
+            Gets or sets the border style of the list control.
+            </summary>
+            <value>
+            One of the <see cref="P:GroupControls.ControlListBase.BorderStyle"/> values. The default is <c>BorderStyle:None</c>.
+            </value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.ItemSpacing">
+            <summary>
+            Gets the spacing in between items.
+            </summary>
+            <value>The <see cref="T:System.Drawing.Size"/> representing the horizontal and vertical spacing between items.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.LayoutEngine">
+            <summary>
+            Gets or sets the layout engine.
+            </summary>
+            <value>
+            The layout engine.
+            </value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.RepeatColumns">
+            <summary>
+            Gets or sets the number of columns to display in the control.
+            </summary>
+            <value>The repeat columns.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.RepeatDirection">
+            <summary>
+            Gets or sets the direction in which the items within the group are displayed.
+            </summary>
+            <value>One of the <see cref="P:GroupControls.ControlListBase.RepeatDirection"/> values. The default is <c>Vertical</c>.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.ShowItemToolTip">
+            <summary>
+            Gets or sets a value that determines whether a tooltip is displayed for each item in the list.
+            </summary>
+            <value><c>true</c> if tooltips are shown; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.SpaceEvenly">
+            <summary>
+            Gets or sets a value that determines if the items are spaced evenly based on the height of the largest item or if they are spaced according to the height of each item.
+            </summary>
+            <value><c>true</c> if items are spaced evenly; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+            <returns>The text associated with this control.</returns>
+        </member>
+        <member name="P:GroupControls.ControlListBase.VariableColumnWidths">
+            <summary>
+            Gets or sets a value that determines if the columns are allowed to be a variable width or if they are to be all the same width.
+            </summary>
+            <value><c>true</c> if the columns can be a variable width; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.BaseItems">
+            <summary>
+            Gets the base list of items.
+            </summary>
+            <value>Any list supporting and <see cref="T:System.Collections.IList"/> interface.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.CreateParams">
+            <summary>
+            Gets the required creation parameters when the control handle is created.
+            </summary>
+            <returns>A <see cref="T:System.Windows.Forms.CreateParams"/> that contains the required creation parameters when the handle to the control is created.</returns>
+        </member>
+        <member name="P:GroupControls.ControlListBase.HoverItem">
+            <summary>
+            Gets the hover item's index.
+            </summary>
+            <value>The hover item index.</value>
+        </member>
+        <member name="P:GroupControls.ControlListBase.PressingItem">
+            <summary>
+            Gets or sets the index of the item being pressing.
+            </summary>
+            <value>The pressed item index.</value>
+        </member>
+        <member name="T:GroupControls.ControlListBase.PaintBackgroundMethod">
+            <summary>
+            Method that will draw a control's background in a specified area.
+            </summary>
+            <param name="g">The Graphics object used to draw.</param>
+            <param name="bounds">The bounds.</param>
+            <param name="childControl">The child control.</param>
+        </member>
+        <member name="P:GroupControls.ControlListBase.BackgroundRenderer">
+            <summary>
+            Gets the background renderer for this type of control.
+            </summary>
+            <value>
+            The background renderer.
+            </value>
+        </member>
+        <member name="M:GroupControls.ControlListBase.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing">
+              <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.EnsureVisible(System.Int32)">
+            <summary>
+            Ensures that the specified item is visible within the control, scrolling the contents of the control if necessary.
+            </summary>
+            <param name="index">The zero-based index of the item to scroll into view.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.GetItemRect(System.Int32)">
+            <summary>
+            Retrieves the bounding rectangle for a specific item within the list control.
+            </summary>
+            <param name="index">The zero-based index of the item whose bounding rectangle you want to return.</param>
+            <returns>A <see cref="T:System.Drawing.Rectangle"/> that represents the bounding rectangle of the specified item.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.GetItemToolTipText(System.Int32)">
+            <summary>
+            Gets the specified item's tooltip text.
+            </summary>
+            <param name="index">The index of the item.</param>
+            <returns>Tooltip text to display. <c>null</c> or <see cref="F:System.String.Empty"/> to display no tooltip.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.GetPreferredSize(System.Drawing.Size)">
+            <summary>
+            Retrieves the size of a rectangular area into which a control can be fitted.
+            </summary>
+            <param name="proposedSize">The custom-sized area for a control.</param>
+            <returns>An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.InvalidateItem(System.Int32)">
+            <summary>
+            Invalidates the specified item.
+            </summary>
+            <param name="index">The item index.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.IsItemEnabled(System.Int32)">
+            <summary>
+            Determines whether the specified item is enabled.
+            </summary>
+            <param name="index">The item index.</param>
+            <returns><c>true</c> if item is enabled; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ListHasMnemonic(System.Char)">
+            <summary>
+            Determines whether this list has the specified mnemonic in its members.
+            </summary>
+            <param name="charCode">The mnemonic character.</param>
+            <returns><c>true</c> if list has the mnemonic; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.MeasureItem(System.Drawing.Graphics,System.Int32,System.Drawing.Size)">
+            <summary>
+            Measures the specified item.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics"/> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="maxSize">Maximum size of the item. Usually only constrains the width.</param>
+            <returns>Minimum size for the item.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OffsetForScroll(System.Drawing.Point)">
+            <summary>
+            Offsets the client point for scrolling.
+            </summary>
+            <returns>Offset point</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OffsetForScroll(System.Drawing.Rectangle)">
+            <summary>
+            Offsets the client rectangle for scrolling.
+            </summary>
+            <returns>Offset rectangle</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnKeyUp(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnMouseEnter(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseEnter"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnMouseLeave(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseLeave"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnPaddingChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:PaddingChanged" /> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs" /> instance containing the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
+            </summary>
+            <param name="pe">An <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnScroll(System.Windows.Forms.ScrollEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.ScrollableControl.Scroll"/> event.
+            </summary>
+            <param name="se">A <see cref="T:System.Windows.Forms.ScrollEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.OnStyleChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.StyleChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.PaintItem(System.Drawing.Graphics,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Paints the specified item.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics"/> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="bounds">The bounds in which to paint the item.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ProcessDialogKey(System.Windows.Forms.Keys)">
+            <summary>
+            Processes a dialog key.
+            </summary>
+            <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents the key to process.</param>
+            <returns><c>true</c> if the key was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ProcessKey(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Processes a keyboard event.
+            </summary>
+            <param name="ke">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> associated with the key press.</param>
+            <returns><c>true</c> if the key was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ProcessKeyPreview(System.Windows.Forms.Message@)">
+            <summary>
+            Previews a keyboard message.
+            </summary>
+            <param name="m">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the window message to process.</param>
+            <returns><c>true</c> if the key was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ProcessMnemonic(System.Char)">
+            <summary>
+            Processes a mnemonic.
+            </summary>
+            <param name="charCode">The character code.</param>
+            <returns><c>true</c> if the mnemonic was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.ControlListBase.ResetListLayout(System.String)">
+            <summary>
+            Resets the list's layout.
+            </summary>
+            <param name="propertyName">Name of the property forcing the layout.</param>
+        </member>
+        <member name="M:GroupControls.ControlListBase.GetItemAtLocation(System.Drawing.Point)">
+            <summary>
+            Gets the item at location within the control.
+            </summary>
+            <param name="pt">The location.</param>
+            <returns></returns>
+        </member>
+        <member name="T:GroupControls.RepeatDirection">
+            <summary>
+            Specifies the direction in which items of a list control are displayed.
+            </summary>
+        </member>
+        <member name="F:GroupControls.RepeatDirection.Vertical">
+            <summary>Items of a list are displayed vertically in columns from top to bottom, and then left to right, until all items are rendered.</summary>
+        </member>
+        <member name="F:GroupControls.RepeatDirection.Horizontal">
+            <summary>Items of a list are displayed horizontally in rows from left to right, then top to bottom, until all items are rendered.</summary>
+        </member>
+        <member name="T:GroupControls.Design.DesignerLayoutCodeDomSerializer">
+            <summary>
+            Specialized serializer for a <see cref="T:System.Windows.Forms.Control"/> that ensures that <c>SuspendLayout()</c> and <c>ResumeLayout()</c> are called in the designer.
+            </summary>
+        </member>
+        <member name="M:GroupControls.Design.DesignerLayoutCodeDomSerializer.Serialize(System.ComponentModel.Design.Serialization.IDesignerSerializationManager,System.Object)">
+            <summary>
+            Serializes the specified object into a CodeDOM object.
+            </summary>
+            <param name="manager">The serialization manager to use during serialization.</param>
+            <param name="value">The object to serialize.</param>
+            <returns>
+            A CodeDOM object representing the object that has been serialized.
+            </returns>
+        </member>
+        <member name="T:GroupControls.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:GroupControls.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:GroupControls.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:GroupControls.RadioButtonList">
+            <summary>
+            Represents a windows control that displays a list of radio button items with optional subtext entries.
+            </summary>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.#ctor">
+            <summary>
+            Creates a new instance of a <see cref="T:GroupControls.RadioButtonList"/>.
+            </summary>
+        </member>
+        <member name="E:GroupControls.RadioButtonList.SelectedIndexChanged">
+            <summary>
+            Occurs when the selected index has changed.
+            </summary>
+        </member>
+        <member name="P:GroupControls.RadioButtonList.Items">
+            <summary>
+            Gets the list of <see cref="T:GroupControls.RadioButtonListItem"/> associated with the control.
+            </summary>
+        </member>
+        <member name="P:GroupControls.RadioButtonList.SelectedIndex">
+            <summary>
+            Gets or sets the index specifying the currently selected item.
+            </summary>
+        </member>
+        <member name="P:GroupControls.RadioButtonList.SelectedItem">
+            <summary>
+            Gets or sets currently selected item in the list.
+            </summary>
+        </member>
+        <member name="P:GroupControls.RadioButtonList.BackgroundRenderer">
+            <summary>
+            Gets the background renderer for this type of control.
+            </summary>
+            <value>
+            The background renderer.
+            </value>
+        </member>
+        <member name="P:GroupControls.RadioButtonList.BaseItems">
+            <summary>
+            Gets the base list of items.
+            </summary>
+            <value>
+            Any list supporting and <see cref="T:System.Collections.IList"/> interface.
+            </value>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.GetButtonSize(System.Drawing.Graphics)">
+            <summary>
+            Gets the size of the image used to display the button.
+            </summary>
+            <param name="g">Current <see cref="T:System.Drawing.Graphics"/> context.</param>
+            <returns>The size of the image.</returns>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.ListHasMnemonic(System.Char)">
+            <summary>
+            Determines whether this list has the specified mnemonic in its members.
+            </summary>
+            <param name="charCode">The mnemonic character.</param>
+            <returns>
+            	<c>true</c> if list has the mnemonic; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.OnGotFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.GotFocus"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.OnLostFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.OnMouseClick(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseClick"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.OnSelectedIndexChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:SelectedIndexChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.PaintButton(System.Drawing.Graphics,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Paints the button.
+            </summary>
+            <param name="g">A <see cref="T:System.Drawing.Graphics" /> reference.</param>
+            <param name="index">The index of the item.</param>
+            <param name="bounds">The bounds in which to paint the item.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.ProcessKey(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Processes a keyboard event.
+            </summary>
+            <param name="ke">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> associated with the key press.</param>
+            <returns><c>true</c> if the key was processed by the control; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:GroupControls.RadioButtonList.ResetListLayout(System.String)">
+            <summary>
+            Resets the list's layout.
+            </summary>
+        </member>
+        <member name="T:GroupControls.RadioButtonListItem">
+            <summary>
+            An item associated with a <see cref="T:GroupControls.RadioButtonList"/>.
+            </summary>
+        </member>
+        <member name="M:GroupControls.RadioButtonListItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.RadioButtonListItem" /> class.
+            </summary>
+        </member>
+        <member name="M:GroupControls.RadioButtonListItem.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GroupControls.RadioButtonListItem"/> class.
+            </summary>
+            <param name="text">Text displayed next to radio button.</param>
+            <param name="subtext">Subtext displayed under text.</param>
+            <param name="tooltipText">Tooltip displayed for the item.</param>
+        </member>
+        <member name="T:GroupControls.RadioButtonListItemCollection">
+            <summary>
+            Collection of <see cref="T:GroupControls.RadioButtonListItem"/> items.
+            </summary>
+        </member>
+        <member name="M:GroupControls.RadioButtonListItemCollection.Add(System.String,System.String)">
+            <summary>
+            Adds a new item to the collection.
+            </summary>
+            <param name="text">Item text.</param>
+            <param name="subtext">Item subtext.</param>
+        </member>
+        <member name="M:GroupControls.RadioButtonListItemCollection.Add(System.String[])">
+            <summary>
+            Adds the specified text values to the collection.
+            </summary>
+            <param name="textValues">The text value pairs representing matching text and subtext.</param>
+            <exception cref="T:System.ArgumentException">List of values must contain matching text/subtext entries for an even count of strings.;textValues</exception>
+        </member>
+        <member name="M:GroupControls.RadioButtonListItemCollection.OnItemAdded(System.Int32,GroupControls.RadioButtonListItem)">
+            <summary>
+            Called when an item is added.
+            </summary>
+            <param name="index">The item index.</param>
+            <param name="value">The item value.</param>
+        </member>
+        <member name="M:System.Windows.Forms.VisualStyles.VisualStyleRendererExtension.SetWindowThemeAttribute(System.Windows.Forms.IWin32Window,Microsoft.Win32.NativeMethods.WindowThemeNonClientAttributes,System.Boolean)">
+            <summary>
+            Sets attributes to control how visual styles are applied to a specified window.
+            </summary>
+            <param name="window">The window.</param>
+            <param name="attr">The attributes to apply or disable.</param>
+            <param name="enable">if set to <c>true</c> enable the attribute, otherwise disable it.</param>
+        </member>
+        <member name="T:System.Collections.Generic.EventedList`1">
+            <summary>
+            A generic list that provides event for changes to the list.
+            </summary>
+            <typeparam name="T">Type for the list.</typeparam>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1"/> class.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1"/> class.
+            </summary>
+            <param name="collection">The collection.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1"/> class.
+            </summary>
+            <param name="capacity">The capacity.</param>
+        </member>
+        <member name="E:System.Collections.Generic.EventedList`1.ItemAdded">
+            <summary>
+            Occurs when an item has been added.
+            </summary>
+        </member>
+        <member name="E:System.Collections.Generic.EventedList`1.ItemChanged">
+            <summary>
+            Occurs when an item has changed.
+            </summary>
+        </member>
+        <member name="E:System.Collections.Generic.EventedList`1.ItemDeleted">
+            <summary>
+            Occurs when an item has been deleted.
+            </summary>
+        </member>
+        <member name="E:System.Collections.Generic.EventedList`1.ItemPropertyChanged">
+            <summary>
+            Occurs when an item's property value has been changed.
+            </summary>
+        </member>
+        <member name="E:System.Collections.Generic.EventedList`1.Reset">
+            <summary>
+            Occurs when the list has been reset.
+            </summary>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.Capacity">
+            <summary>
+            Gets or sets the capacity.
+            </summary>
+            <value>The capacity.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <value>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#ICollection#IsSynchronized">
+            <summary>
+            Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
+            </summary>
+            <value></value>
+            <returns>true if access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe); otherwise, false.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#ICollection#SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <value></value>
+            <returns>An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#Generic#ICollection{T}#IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#IList#IsFixedSize">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.IList"/> has a fixed size.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.IList"/> has a fixed size; otherwise, false.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#IList#IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.System#Collections#IList#Item(System.Int32)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> at the specified index.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.Item(System.Int32)">
+            <summary>
+            Gets or sets the element at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the element to get or set.</param>
+            <value>The element at the specified index.</value>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Add(`0)">
+            <summary>
+            Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds the range of items to the list.
+            </summary>
+            <param name="collection">The collection of items to add.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.AddRange(`0[])">
+            <summary>
+            Adds the range of items to the list.
+            </summary>
+            <param name="items">The items to add.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.AsReadOnly">
+            <summary>
+            Determines if the collection is read-only.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.BinarySearch(`0)">
+            <summary>
+            Binaries the search.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.BinarySearch(`0,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Binaries the search.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="comparer">The comparer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.BinarySearch(System.Int32,System.Int32,`0,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Binaries the search.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+            <param name="item">The item.</param>
+            <param name="comparer">The comparer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Contains(`0)">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ConvertAll``1(System.Converter{`0,``0})">
+            <summary>
+            Converts all.
+            </summary>
+            <typeparam name="TOutput">The type of the output.</typeparam>
+            <param name="converter">The converter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.CopyTo(`0[])">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="array">The array.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="array"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="arrayIndex"/> is less than 0.</exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="array"/> is multidimensional.-or-<paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <c>T</c> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="array">The array.</param>
+            <param name="arrayIndex">Index of the array.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Exists(System.Predicate{`0})">
+            <summary>
+            Determines if an item matches the specified predicate.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Find(System.Predicate{`0})">
+            <summary>
+            Finds the specified match.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindAll(System.Predicate{`0})">
+            <summary>
+            Finds all.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindIndex(System.Predicate{`0})">
+            <summary>
+            Finds the index.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindIndex(System.Int32,System.Predicate{`0})">
+            <summary>
+            Finds the index.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindIndex(System.Int32,System.Int32,System.Predicate{`0})">
+            <summary>
+            Finds the index.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="count">The count.</param>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindLast(System.Predicate{`0})">
+            <summary>
+            Finds the last.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindLastIndex(System.Predicate{`0})">
+            <summary>
+            Finds the last index.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindLastIndex(System.Int32,System.Predicate{`0})">
+            <summary>
+            Finds the last index.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.FindLastIndex(System.Int32,System.Int32,System.Predicate{`0})">
+            <summary>
+            Finds the last index.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="count">The count.</param>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ForEach(System.Action{`0})">
+            <summary>
+            Performs an action on each item in the collection.
+            </summary>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.GetRange(System.Int32,System.Int32)">
+            <summary>
+            Gets the range of items and returns then in another list.
+            </summary>
+            <param name="index">The starting index.</param>
+            <param name="count">The count of items to place in the list.</param>
+            <returns>An <see cref="T:System.Collections.Generic.EventedList`1"/> with the requested items.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="array">The array.</param>
+            <param name="arrayIndex">Index of the array.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#Generic#IEnumerable{T}#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IList#Add(System.Object)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IList#Contains(System.Object)">
+            <summary>
+            Determines whether [contains] [the specified item].
+            </summary>
+            <param name="item">The item.</param>
+            <returns>
+            	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IList#IndexOf(System.Object)">
+            <summary>
+            Indexes the of.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IList#Insert(System.Int32,System.Object)">
+            <summary>
+            Inserts the specified index.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.System#Collections#IList#Remove(System.Object)">
+            <summary>
+            Removes the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.IndexOf(`0)">
+            <summary>
+            Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <returns>
+            The index of <paramref name="item"/> if found in the list; otherwise, -1.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.IndexOf(`0,System.Int32)">
+            <summary>
+            Indexes the of.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.IndexOf(`0,System.Int32,System.Int32)">
+            <summary>
+            Indexes the of.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Insert(System.Int32,`0)">
+            <summary>
+            Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+            <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Inserts the range.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="collection">The collection.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.LastIndexOf(`0)">
+            <summary>
+            Lasts the index of.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.LastIndexOf(`0,System.Int32)">
+            <summary>
+            Lasts the index of.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.LastIndexOf(`0,System.Int32,System.Int32)">
+            <summary>
+            Lasts the index of.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Remove(`0)">
+            <summary>
+            Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.RemoveAll(System.Predicate{`0})">
+            <summary>
+            Removes all.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the item to remove.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.RemoveRange(System.Int32,System.Int32)">
+            <summary>
+            Removes the range.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Reverse">
+            <summary>
+            Reverses this instance.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Reverse(System.Int32,System.Int32)">
+            <summary>
+            Reverses the specified index.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Sort">
+            <summary>
+            Sorts this instance.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Sort(System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Sorts the specified comparer.
+            </summary>
+            <param name="comparer">The comparer.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Sort(System.Int32,System.Int32,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Sorts the specified index.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+            <param name="comparer">The comparer.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ToArray">
+            <summary>
+            Toes the array.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.TrimExcess">
+            <summary>
+            Trims the excess.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.TrueForAll(System.Predicate{`0})">
+            <summary>
+            Trues for all.
+            </summary>
+            <param name="match">The match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.OnItemAdded(System.Int32,`0)">
+            <summary>
+            Called when [insert].
+            </summary>
+            <param name="index">The index.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.OnItemPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Called when [item property changed].
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.OnItemChanged(System.Int32,`0,`0)">
+            <summary>
+            Called when [set].
+            </summary>
+            <param name="index">The index.</param>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.OnItemDeleted(System.Int32,`0)">
+            <summary>
+            Called when [remove].
+            </summary>
+            <param name="index">The index.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.OnReset">
+            <summary>
+            Called when [clear].
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.IsCompatibleObject(System.Object)">
+            <summary>
+            Determines whether [is compatible object] [the specified value].
+            </summary>
+            <param name="value">The value.</param>
+            <returns>
+            	<c>true</c> if [is compatible object] [the specified value]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.VerifyValueType(System.Object)">
+            <summary>
+            Verifies the type of the value.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.CheckIndex(System.Int32,System.String)">
+            <summary>
+            Checks the index to ensure it is valid and in the list.
+            </summary>
+            <param name="idx">The index to validate.</param>
+            <param name="varName">Name of the variable this is being checked.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Called with the index is out of range.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.CheckRange(System.Int32,System.Int32)">
+            <summary>
+            Checks the range.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.EnsureCapacity(System.Int32)">
+            <summary>
+            Ensures the capacity.
+            </summary>
+            <param name="min">The min.</param>
+        </member>
+        <member name="T:System.Collections.Generic.EventedList`1.Enumerator">
+            <summary>
+            Enumerates over the <see cref="T:System.Collections.Generic.EventedList`1"/>.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Enumerator.#ctor(System.Collections.Generic.EventedList{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1.Enumerator"/> struct.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.Enumerator.Current">
+            <summary>
+            Gets the current.
+            </summary>
+            <value>The current.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.Enumerator.System#Collections#IEnumerator#Current">
+            <summary>
+            Gets the current.
+            </summary>
+            <value>The current.</value>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Enumerator.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Enumerator.System#Collections#IEnumerator#Reset">
+            <summary>
+            Sets the enumerator to its initial position, which is before the first element in the collection.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.Enumerator.MoveNext">
+            <summary>
+            Advances the enumerator to the next element of the collection.
+            </summary>
+            <returns>
+            true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+        </member>
+        <member name="T:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1">
+            <summary>
+            An <see cref="T:System.EventArgs"/> structure passed to events generated by an <see cref="T:System.Collections.Generic.EventedList`1"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1"/> class.
+            </summary>
+            <param name="type">The type of change.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType,`1,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1"/> class.
+            </summary>
+            <param name="type">The type of change.</param>
+            <param name="item">The item that has changed.</param>
+            <param name="itemIndex">Index of the changed item.</param>
+        </member>
+        <member name="M:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType,`1,System.Int32,`1)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1"/> class.
+            </summary>
+            <param name="type">The type of change.</param>
+            <param name="item">The item that has changed.</param>
+            <param name="itemIndex">Index of the changed item.</param>
+            <param name="oldItem">The old item when an item has changed.</param>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.Item">
+            <summary>
+            Gets the item that has changed.
+            </summary>
+            <value>The item.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.ItemIndex">
+            <summary>
+            Gets the index of the item.
+            </summary>
+            <value>The index of the item.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.ListChangedType">
+            <summary>
+            Gets the type of change for the list.
+            </summary>
+            <value>The type of change for the list.</value>
+        </member>
+        <member name="P:System.Collections.Generic.EventedList`1.ListChangedEventArgs`1.OldItem">
+            <summary>
+            Gets the item's previous value.
+            </summary>
+            <value>The old item.</value>
+        </member>
+        <member name="T:System.Collections.Generic.SparseArray`1">
+            <summary>
+            Summary description for SparseArray.
+            </summary>
+        </member>
+        <member name="F:System.Collections.Generic.SparseArray`1.hashtable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Collections.Generic.SparseArray`1"/> class.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.Contains(`0)">
+            <summary>
+            Determines whether [contains] [the specified value].
+            </summary>
+            <param name="item">The value.</param>
+            <returns>
+            	<c>true</c> if [contains] [the specified value]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </exception>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.IndexOf(`0)">
+            <summary>
+            Indexes the of.
+            </summary>
+            <param name="item">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.Insert(System.Int32,`0)">
+            <summary>
+            Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+            <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the item to remove.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+        </member>
+        <member name="P:System.Collections.Generic.SparseArray`1.Item(System.Int32)">
+            <summary>
+            Gets or sets the element at the specified index.
+            </summary>
+            <param name="index">The index of the element.</param>
+            <value>The element at the specified index.</value>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.Add(`0)">
+            <summary>
+            Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="array"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="arrayIndex"/> is less than 0.</exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="array"/> is multidimensional.-or-<paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <c>T</c> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+        </member>
+        <member name="P:System.Collections.Generic.SparseArray`1.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <value></value>
+            <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
+        </member>
+        <member name="P:System.Collections.Generic.SparseArray`1.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.Remove(`0)">
+            <summary>
+            Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:System.Collections.Generic.SparseArray`1.ToArray">
+            <summary>
+            Collapses array into new, condensed array. Does not maintain indexes.
+            </summary>
+            <returns>An array of <typeparamref name="T"/></returns>
+        </member>
+        <member name="T:System.EnumFlagIndexer`1">
+            <summary>
+            Structure to use in place of a enumerated type with the <see cref="T:System.FlagsAttribute"/> set. Allows for indexer access to flags and simplifies boolean logic.
+            </summary>
+            <example>
+            Use this structure by replacing an enumerated type field for simpler access. Instead of:
+            <code language="C#" title="Old way">
+            var fileInfo = new FileInfo(@"C:\MyFile.txt");
+            FileAttributes fileAttr = fileInfo.Attributes;
+            if ((fileAttr &amp; FileAttributes.Hidden) != FileAttributes.Hidden)
+            {
+               Console.WriteLine("The file is hidden. Trying to unhide now.");
+               fileInfo.Attributes = (fileAttr &amp; ~FileAttributes.Hidden);
+            }
+            </code>
+            Do this instead:
+            <code language="C#" title="New way">
+            var fileInfo = new FileInfo(@"C:\MyFile.txt");
+            EnumFlagIndexer&lt;FileAttributes&gt; fileAttr = fileInfo.Attributes;
+            if (fileAttr[FileAttributes.Hidden])
+            {
+               Console.WriteLine("The file is hidden. Trying to unhide now.");
+               fileAttr[FileAttributes.Hidden] = false;
+               fileInfo.Attributes = fileAttr;
+            }
+            </code>
+            </example>
+            <typeparam name="E">Must be an enumerated type or constructor will fail.</typeparam>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.#ctor(`0,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.EnumFlagIndexer`1" /> struct.
+            </summary>
+            <param name="initialValue">The initial value. Defaults to <c>default(E)</c>.</param>
+            <param name="checkFlagAttr">if set to <c>true</c> check for the [Flags] attribute and throw an exception if it is not set for this enumerated type.</param>
+        </member>
+        <member name="P:System.EnumFlagIndexer`1.Item(`0)">
+            <summary>
+            Gets or sets the specified flag.
+            </summary>
+            <value>A boolean value representing the presence of the specified enumerated flag.</value>
+            <param name="flag">A value in the enumerated type to check.</param>
+            <returns><c>true</c> if the flag is set; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_Inequality(System.EnumFlagIndexer{`0},`0)">
+            <summary>
+            Implements the operator !=.
+            </summary>
+            <param name="a">An instance of <see cref="T:System.EnumFlagIndexer`1"/>.</param>
+            <param name="b">An instance of the <typeparamref name="E"/> enumerated type.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_BitwiseAnd(System.EnumFlagIndexer{`0},`0)">
+            <summary>
+            Implements the operator &amp;.
+            </summary>
+            <param name="a">An instance of <see cref="T:System.EnumFlagIndexer`1"/>.</param>
+            <param name="b">An instance of the <typeparamref name="E"/> enumerated type.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_BitwiseOr(System.EnumFlagIndexer{`0},`0)">
+            <summary>
+            Implements the operator |.
+            </summary>
+            <param name="a">An instance of <see cref="T:System.EnumFlagIndexer`1"/>.</param>
+            <param name="b">An instance of the <typeparamref name="E"/> enumerated type.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_Equality(System.EnumFlagIndexer{`0},`0)">
+            <summary>
+            Implements the operator ==.
+            </summary>
+            <param name="a">An instance of <see cref="T:System.EnumFlagIndexer`1"/>.</param>
+            <param name="b">An instance of the <typeparamref name="E"/> enumerated type.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_Implicit(System.EnumFlagIndexer{`0})~`0">
+            <summary>
+            Implicitly converts an instance of <see cref="T:System.EnumFlagIndexer`1"/> to the value of enumerated type E.
+            </summary>
+            <param name="f">The f.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.op_Implicit(`0)~System.EnumFlagIndexer{`0}">
+            <summary>
+            Implicitly converts a value of E to an instance of <see cref="T:System.EnumFlagIndexer`1"/>.
+            </summary>
+            <param name="e">The e.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.Clear">
+            <summary>
+            Clears and sets to <c>default(E)</c>.
+            </summary>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.Union(`0)">
+            <summary>
+            Unions the specified flags.
+            </summary>
+            <param name="flags">The flags.</param>
+        </member>
+        <member name="M:System.EnumFlagIndexer`1.Union(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Unions the specified flags.
+            </summary>
+            <param name="flags">The flags.</param>
+        </member>
+        <member name="F:Microsoft.Win32.NativeMethods.WindowThemeNonClientAttributes.NoDrawCaption">
+            <summary>Do Not Draw The Caption (Text)</summary>
+        </member>
+        <member name="F:Microsoft.Win32.NativeMethods.WindowThemeNonClientAttributes.NoDrawIcon">
+            <summary>Do Not Draw the Icon</summary>
+        </member>
+        <member name="F:Microsoft.Win32.NativeMethods.WindowThemeNonClientAttributes.NoSysMenu">
+            <summary>Do Not Show the System Menu</summary>
+        </member>
+        <member name="F:Microsoft.Win32.NativeMethods.WindowThemeNonClientAttributes.NoMirrorHelp">
+            <summary>Do Not Mirror the Question mark Symbol</summary>
+        </member>
+        <member name="T:Microsoft.Win32.NativeMethods.WTA_OPTIONS">
+            <summary>
+            The Options of What Attributes to Add/Remove
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -792,6 +792,7 @@ namespace Dev2.Studio.ViewModels
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
+
         }
 
         public void ShowPopup(IPopupMessage popupMessage)

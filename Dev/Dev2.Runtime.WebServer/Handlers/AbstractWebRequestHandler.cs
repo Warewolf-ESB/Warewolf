@@ -152,11 +152,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (headers != null)
                     {
-                        var contentType = headers.Get("Content-Type");
-                        if (string.IsNullOrEmpty(contentType))
-                        {
-                            contentType = headers.Get("Accept");
-                        }
+                        var contentType = headers.Get("Content-Type");                        
                         if (string.IsNullOrEmpty(contentType))
                         {
                             contentType = headers.Get("ContentType");
@@ -191,11 +187,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (headers != null)
                     {
-                        var contentType = headers.Get("Content-Type");
-                        if (string.IsNullOrEmpty(contentType))
-                        {
-                            contentType = headers.Get("Accept");
-                        }
+                        var contentType = headers.Get("Content-Type");                        
                         if (string.IsNullOrEmpty(contentType))
                         {
                             contentType = headers.Get("ContentType");

@@ -19,7 +19,7 @@ namespace Warewolf.UITests
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists);
-            UIMap.Click_SaveDialog_Save_Button();
+            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
         }
 
         [TestMethod]

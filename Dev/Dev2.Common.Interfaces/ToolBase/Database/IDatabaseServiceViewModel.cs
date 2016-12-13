@@ -23,6 +23,6 @@ namespace Dev2.Common.Interfaces.ToolBase.Database
 
     public interface IDatabaseInputRegion : IToolRegion
     {
-        IList<IServiceInput> Inputs { get; set; }
+        ICollection<IServiceInput> Inputs { get; set; }
     }
 }

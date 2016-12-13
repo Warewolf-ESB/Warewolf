@@ -20,6 +20,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
+        private Version _serverVersion;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
         {
@@ -70,6 +71,11 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
+
+                if (_serverVersion == null)
+                {
+                    _serverVersion = Version.Parse(SelectedServer.GetServerVersion());
+                }
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
 
             }
@@ -158,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public ICollection<IExplorerTreeItem> SelectedItems
+        public virtual ICollection<IExplorerTreeItem> SelectedItems
         {
             get
             {
@@ -202,14 +208,15 @@ namespace Warewolf.Studio.ViewModels
 
         void Select(IExplorerTreeItem explorerTreeItem)
         {
-            var item = SelectedEnvironment?.AsList().FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
+            var explorerItemViewModels = SelectedEnvironment?.AsList();
+            var item = explorerItemViewModels?.FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
             if (item != null)
             {               
                 item.IsSelected = true;
             }
         }
 
-        public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());        
+        public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedServer.GetServerVersion()));
 
         /// <summary>
         /// used to select a list of items from the explorer
@@ -217,8 +224,16 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="selectedItems"></param>
         private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
-            SelectedEnvironment.AsList()
-                .Apply(a => a.IsResourceChecked = selectedItems.Contains(a));
+            var count = SelectedEnvironment.AsList().Count + 1;
+            var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
+            var count1 = explorerTreeItems.Length;
+
+            if (count == count1)
+            {
+                SelectedEnvironment.IsResourceChecked = true;
+            }
+
+            SelectedEnvironment.AsList().Apply(a => a.IsResourceChecked = explorerTreeItems.Contains(a));
         }
 
         #endregion
@@ -244,6 +259,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _environments.Remove(environmentModel);
             }
+            _statsArea.Calculate(new List<IExplorerTreeItem>());
             OnPropertyChanged(() => Environments);
         }
 
@@ -256,10 +272,6 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            if (server?.UpdateRepository != null)
-            {
-                server.UpdateRepository.ItemSaved += async refresh => await Refresh(refresh);
-            }
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
         }
     }

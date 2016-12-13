@@ -61,10 +61,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Explorer\ResourceVersion.cs" />
+    <Compile Include="Explorer\SearchExplorerResource.cs" />
+    <Compile Include="Explorer\DeleteExplorerResource.cs" />
+    <Compile Include="SaveDialog\SaveDialogTests.cs" />
+    <Compile Include="WorkflowTesting\OtherTestFrameworkMockingTests.cs" />
+    <Compile Include="Workflow\WorkflowUITests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />
+    <Compile Include="ExchangeSource\ExchangeSourceTests.cs" />
     <Compile Include="Explorer\RemoteServers.cs" />
     <Compile Include="Explorer\Folders.cs" />
     <Compile Include="Explorer\Context Menu.cs" />
@@ -116,6 +123,7 @@
     <Compile Include="Tools\Utility\RabbitMQPublish.cs" />
     <Compile Include="Tools\Utility\RabbitMQConsume.cs" />
     <Compile Include="Tools\Utility\AggregateCalculate.cs" />
+    <Compile Include="Workflow\WorkflowTests.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="WorkflowTesting\TestFrameworkMockingTests.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />

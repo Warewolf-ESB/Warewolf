@@ -7,7 +7,7 @@ namespace Warewolf.UITests
     public class SchedulerTest
     {
         [TestMethod]
-        public void SchedulerUITest()
+        public void CreateAndSaveNewScheduleUITest()
         {
             UIMap.Click_Scheduler_Ribbon_Button();
             UIMap.Click_Scheduler_Create_New_Task_Ribbon_Button();

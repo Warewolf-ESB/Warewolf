@@ -30,6 +30,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Dialogs;
@@ -59,7 +60,7 @@ namespace Dev2.Settings.Scheduler
         private ICommand _deleteCommand;
         private ICommand _editTriggerCommand;
         private ICommand _addWorkflowCommand;
-
+        readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
         private IScheduledResource _selectedTask;
         private readonly IPopupController _popupController;
         private readonly IAsyncWorker _asyncWorker;
@@ -78,6 +79,7 @@ namespace Dev2.Settings.Scheduler
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
         private DebugOutputViewModel _debugOutputViewModel;
+        private string _displayName;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -118,6 +120,7 @@ namespace Dev2.Settings.Scheduler
 
             Server = server;
             SetupServer(server);
+            SetDisplayName(false);
         }
 
         public override bool HasVariables => false;
@@ -127,15 +130,12 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-                if (Server != null)
-                {
-                    return "Scheduler - " + Server.ResourceName;
-                }
-                return "Scheduler";
+                return _displayName;                
             }
             set
             {
-
+                _displayName = value;
+                OnPropertyChanged("DisplayName");
             }
         }
 
@@ -214,7 +214,7 @@ namespace Dev2.Settings.Scheduler
                 if (SelectedTask != null)
                 {
                     SelectedTask.Trigger = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => Trigger);
                 }
             }
@@ -235,7 +235,7 @@ namespace Dev2.Settings.Scheduler
                         return;
                     }
                     SelectedTask.Status = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => Status);
                 }
             }
@@ -266,7 +266,7 @@ namespace Dev2.Settings.Scheduler
                     }
 
                     SelectedTask.WorkflowName = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => WorkflowName);
                 }
             }
@@ -306,7 +306,7 @@ namespace Dev2.Settings.Scheduler
                     ClearError(Core.SchedulerDuplicateNameErrorMessage);
                 }
                 SelectedTask.Name = value;
-                SelectedTask.IsDirty = true;
+                NotifyOfPropertyChange(() => IsDirty);
                 NotifyOfPropertyChange(() => Name);
             }
         }
@@ -326,7 +326,7 @@ namespace Dev2.Settings.Scheduler
                         return;
                     }
                     SelectedTask.RunAsapIfScheduleMissed = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => RunAsapIfScheduleMissed);
                 }
             }
@@ -349,7 +349,7 @@ namespace Dev2.Settings.Scheduler
                     if (string.IsNullOrEmpty(value))
                     {
                         SelectedTask.NumberOfHistoryToKeep = 0;
-                        SelectedTask.IsDirty = true;
+                        NotifyOfPropertyChange(() => IsDirty);
                     }
                     else
                     {
@@ -357,7 +357,7 @@ namespace Dev2.Settings.Scheduler
                         if (value.IsWholeNumber(out val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
-                            SelectedTask.IsDirty = true;
+                            NotifyOfPropertyChange(() => IsDirty);
                         }
                     }
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
@@ -444,9 +444,8 @@ namespace Dev2.Settings.Scheduler
                     return;
                 }
                 _selectedTask = value;
-
+                Item = _ser.Deserialize<IScheduledResource>(_ser.SerializeToBuilder(_selectedTask));
                 NotifyOfPropertyChange(() => SelectedTask);
-
                 if (_selectedTask != null)
                 {
                     NotifyOfPropertyChange(() => Trigger);
@@ -463,9 +462,11 @@ namespace Dev2.Settings.Scheduler
                     NotifyOfPropertyChange(() => SelectedHistory);
                     SelectedHistory = null;
                     NotifyOfPropertyChange(() => History);
+                    
                 }
             }
         }
+        public IScheduledResource Item { get; set; }
 
         public IScheduledResourceModel ScheduledResourceModel
         {
@@ -497,7 +498,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.UserName = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(()=>IsDirty);
                     NotifyOfPropertyChange(() => AccountName);
                 }
             }
@@ -519,7 +520,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.Password = value;
-                    SelectedTask.IsDirty = true;
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => Password);
                 }
             }
@@ -765,13 +766,16 @@ namespace Dev2.Settings.Scheduler
             {
                 try
                 {
-                    if (TaskList == null || TaskList.Count == 0)
+                    
+                    if (SelectedTask == null)
                     {
+                        SetDisplayName(false);
                         return false;
                     }
-                    var isDirty = TaskList.Any(resource => resource.IsDirty);
-                    var cnct = Server.IsConnected;
-                    return isDirty && cnct;
+                    var dirty = !SelectedTask.Equals(Item);
+                    SelectedTask.IsDirty = dirty;
+                    SetDisplayName(dirty);
+                    return dirty;
                 }
                 catch (Exception ex)
                 {
@@ -783,6 +787,26 @@ namespace Dev2.Settings.Scheduler
                     }
                 }
                 return false;
+            }
+        }
+
+        private void SetDisplayName(bool dirty)
+        {
+            string baseName = "Scheduler";
+            if (Server != null)
+            {
+                baseName = baseName + " - " + Server.ResourceName;
+            }
+            if (dirty)
+            {
+                if (!baseName.EndsWith(" *"))
+                {
+                    DisplayName = baseName + " *";
+                }
+            }
+            else
+            {
+                DisplayName = baseName;
             }
         }
 

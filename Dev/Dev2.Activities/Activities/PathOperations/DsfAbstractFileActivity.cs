@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     else
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                        {
+                                        {                                            
                                             dataObject.Environment.Assign(region, value, update);
                                         }
                                     }

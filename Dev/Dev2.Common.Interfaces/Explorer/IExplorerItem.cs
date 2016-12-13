@@ -26,11 +26,9 @@ namespace Dev2.Common.Interfaces.Explorer
         IVersionInfo VersionInfo { get; set; }
         string ResourcePath { get; set; }
         IExplorerItem Parent { get; set; }
-        string WebserverUri { get; set; }
         bool IsSource { get; set; }
         bool IsService { get; set; }
         bool IsFolder { get; set; }
-        bool IsReservedService { get; set; }
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
     }

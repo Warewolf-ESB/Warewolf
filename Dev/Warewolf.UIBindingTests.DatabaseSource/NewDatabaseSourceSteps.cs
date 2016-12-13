@@ -25,6 +25,8 @@ namespace Warewolf.UIBindingTests.DatabaseSource
     [Binding]
     public class NewDatabaseSourceSteps
     {
+        string loginFailedForUserTest = "Login failed for user 'test'";
+
         [BeforeFeature("DbSource")]
         public static void SetupForSystem()
         {
@@ -383,6 +385,16 @@ namespace Warewolf.UIBindingTests.DatabaseSource
             Assert.AreEqual(password,viewModel.Password);
         }
 
+        [Then(@"the error message is ""(.*)""")]
+        public void ThenTheErrorMessageIs(string errorMessage)
+        {
+            errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
+                           "Inner Exception: " + loginFailedForUserTest;
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(errorMessage, viewModel.TestMessage);
+        }
+
+
         [Then(@"Test Connecton is ""(.*)""")]
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
@@ -404,8 +416,7 @@ namespace Warewolf.UIBindingTests.DatabaseSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
-                    .Throws(new WarewolfTestException("Server not found", null));
-
+                    .Throws(new WarewolfTestException(loginFailedForUserTest, new Exception(loginFailedForUserTest)));
             }
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformTestConnection();
