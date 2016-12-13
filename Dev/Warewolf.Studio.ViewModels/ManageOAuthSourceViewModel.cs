@@ -40,11 +40,11 @@ namespace Warewolf.Studio.ViewModels
         {
             if (updateManager == null)
             {
-                throw new ArgumentNullException("updateManager");
+                throw new ArgumentNullException(nameof(updateManager));
             }
             if (requestServiceNameViewModel == null)
             {
-                throw new ArgumentNullException("requestServiceNameViewModel");
+                throw new ArgumentNullException(nameof(requestServiceNameViewModel));
             }
             _updateManager = updateManager;
             RequestServiceNameViewModel = requestServiceNameViewModel;
@@ -64,11 +64,11 @@ namespace Warewolf.Studio.ViewModels
         {
             if (updateManager == null)
             {
-                throw new ArgumentNullException("updateManager");
+                throw new ArgumentNullException(nameof(updateManager));
             }
             if (oAuthSource == null)
             {
-                throw new ArgumentNullException("oAuthSource");
+                throw new ArgumentNullException(nameof(oAuthSource));
             }
             _oAuthSource = oAuthSource;
             _updateManager = updateManager;
@@ -355,10 +355,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public override void Save()
@@ -407,15 +404,17 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
                 {
-                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+                    var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+                    var res = requestServiceNameViewModel.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
                     {
                         var src = ToSource();
-                        src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        src.ResourceName = requestServiceNameViewModel.ResourceName.Name;
+                        src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-
+                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
                         SetupHeaderTextFromExisting();

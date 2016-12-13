@@ -57,7 +57,6 @@ namespace Warewolf.Studio.ViewModels
         private ObservableCollection<IServiceTestModel> _tests;
         private string _displayName;
         public IPopupController PopupController { get; }
-        private bool _canSave;
         private string _errorMessage;
         private readonly IShellViewModel _shellViewModel;
         private IContextualResourceModel _resourceModel;
@@ -98,7 +97,6 @@ namespace Warewolf.Studio.ViewModels
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
-            CanSave = true;
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
 
             UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
@@ -264,8 +262,11 @@ namespace Warewolf.Studio.ViewModels
                         if (type != null)
                         {
                             var act = Activator.CreateInstance(type) as IDev2Activity;
-                            serviceTestStep.StepOutputs =
-                                AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            if(serviceTestStep != null)
+                            {
+                                serviceTestStep.StepOutputs =
+                                    AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                            }
                         }
                     }
                     if (serviceTestStep != null)
@@ -513,10 +514,11 @@ namespace Warewolf.Studio.ViewModels
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var output in outputs)
                 {
-                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable).Where(s => !string.IsNullOrEmpty(s.Variable));
+                    var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
                     foreach (var debugItemResult in actualOutputs)
                     {
-                        var serviceTestOutput = new ServiceTestOutput(debugItemResult.Variable, debugItemResult.Value, "", "")
+                        var variable = debugItemResult.Variable;
+                        var serviceTestOutput = new ServiceTestOutput(variable ?? "", debugItemResult.Value, "", "")
                         {
                             AssertOp = "=",
                             AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
@@ -585,13 +587,7 @@ namespace Warewolf.Studio.ViewModels
             if (modelItem != null)
             {
                 var itemType = modelItem.ItemType;
-                if (itemType == typeof(FlowStep))
-                {
-                    if (modelItem.Content?.Value != null)
-                    {
-                        itemType = modelItem.Content.Value.ItemType;
-                    }
-                }
+                itemType = GetInnerItemType(modelItem, itemType);
                 if (itemType == typeof(Flowchart) || itemType == typeof(ActivityBuilder))
                 {
                     return;
@@ -629,6 +625,18 @@ namespace Warewolf.Studio.ViewModels
                     ProcessActivity(modelItem);
                 }
             }
+        }
+
+        private static Type GetInnerItemType(ModelItem modelItem, Type itemType)
+        {
+            if(itemType == typeof(FlowStep))
+            {
+                if(modelItem.Content?.Value != null)
+                {
+                    itemType = modelItem.Content.Value.ItemType;
+                }
+            }
+            return itemType;
         }
 
         private void ProcessSequence(ModelItem modelItem)
@@ -1005,7 +1013,15 @@ namespace Warewolf.Studio.ViewModels
 
         private IServiceTestStep BuildParentsFromModelItem(ModelItem modelItem)
         {
+            
             var computedValue = modelItem.GetCurrentValue();
+            if (computedValue is FlowStep)
+            {
+                if (modelItem.Content?.Value != null)
+                {
+                    computedValue = modelItem.Content.Value.GetCurrentValue();
+                }
+            }
             var dsfActivityAbstract = computedValue as DsfActivityAbstract<string>;
 
             var activityUniqueID = dsfActivityAbstract?.UniqueID;
@@ -1026,6 +1042,21 @@ namespace Warewolf.Studio.ViewModels
 
             if (item != null && (item.ItemType != typeof(Flowchart) || item.ItemType == typeof(ActivityBuilder)))
             {
+                var parentComputedValue = item.GetCurrentValue();
+                if (parentComputedValue is FlowStep)
+                {
+                    if (item.Content?.Value != null)
+                    {
+                        parentComputedValue = item.Content.Value.GetCurrentValue();
+                    }
+                    var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
+                    var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
+                    if (parentActivityUniqueID == activityUniqueID)
+                    {
+                        return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
+                    }
+                }
+                
                 if (outputs != null && outputs.Count > 0)
                 {
                     IServiceTestStep serviceTestStep;
@@ -1053,9 +1084,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueID, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
 
-                    var serviceTestOutputs = outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output =>
+                    var serviceTestOutputs = outputs.Select(output =>
                     {
-                        return new ServiceTestOutput(output, "", "", "")
+                        return new ServiceTestOutput(output ?? "", "", "", "")
                         {
                             HasOptionsForValue = false,
                             AddStepOutputRow = s => { serviceTestStep?.AddNewOutput(s); }
@@ -1094,7 +1125,7 @@ namespace Warewolf.Studio.ViewModels
         private static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, ServiceTestStep step)
         {
             var serviceTestOutputs =
-                outputs.Where(s => !string.IsNullOrEmpty(s)).Select(output => new ServiceTestOutput(output, "", "", "")
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
                     HasOptionsForValue = false,
                     AddStepOutputRow = s => step.AddNewOutput(s)
@@ -1104,8 +1135,19 @@ namespace Warewolf.Studio.ViewModels
 
         private static List<IServiceTestOutput> AddOutputs(List<string> outputs, ServiceTestStep step)
         {
+            if (outputs == null || outputs.Count == 0)
+            {
+                return new List<IServiceTestOutput>
+                {
+                    new ServiceTestOutput("", "", "", "")
+                    {
+                        HasOptionsForValue = false,
+                        AddStepOutputRow = s => step.AddNewOutput(s)
+                    }
+                };
+            }
             var serviceTestOutputs =
-                outputs.Select(output => new ServiceTestOutput(output, "", "", "")
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
                     HasOptionsForValue = false,
                     AddStepOutputRow = s => step.AddNewOutput(s)
@@ -1346,8 +1388,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
-
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList changeList)
         {
             if (resourceId == ResourceModel.ID)
@@ -1458,10 +1498,13 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
-            SetDisplayName();
+            var isDirty = IsDirty;
+            SetDisplayName(isDirty);
         }
         private bool _canAddFromDebug;
         private bool _isLoading;
+        private bool _isValid;
+        private bool _dirty;
 
         private int GetNewTestNumber(string testName)
         {
@@ -1520,47 +1563,35 @@ namespace Warewolf.Studio.ViewModels
         private bool CanRunSelectedTest => GetPermissions() && IsServerConnected();
         private bool CanDuplicateTest => GetPermissions() && SelectedServiceTest != null && !SelectedServiceTest.NewTest;
 
-        public bool CanSave
-        {
-            get
-            {
-                var isValid = true;
-                if (SelectedServiceTest != null)
-                {
-                    isValid = IsValidName(SelectedServiceTest.TestName);
-                }
-                _canSave = IsDirty && isValid;
-                SetDisplayName();
-                return _canSave;
-            }
-            set
-            {
-                //_canSave = value;
-            }
-        }
+        public bool CanSave { get; set; }
 
         private bool GetPermissions()
         {
             return true;
         }
 
-        private bool IsValidName(string name)
+        private bool IsValidName()
         {
-            ErrorMessage = string.Empty;
-            if (string.IsNullOrEmpty(name))
+            if (SelectedServiceTest != null)
             {
-                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
-            }
-            else if (NameHasInvalidCharacters(name))
-            {
-                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
-            }
-            else if (name.Trim() != name)
-            {
-                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
-            }
+                var name = SelectedServiceTest.TestName;
+                ErrorMessage = string.Empty;
+                if (string.IsNullOrEmpty(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
+                }
+                else if (NameHasInvalidCharacters(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
+                }
+                else if (name.Trim() != name)
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                }
 
-            return string.IsNullOrEmpty(ErrorMessage);
+                return string.IsNullOrEmpty(ErrorMessage);
+            }
+            return false;
         }
         private static bool NameHasInvalidCharacters(string name)
         {
@@ -1603,7 +1634,11 @@ namespace Warewolf.Studio.ViewModels
                     var isDirty = _tests.Any(resource => resource.IsDirty || resource.NewTest);
 
                     var isConnected = ResourceModel.Environment.Connection.IsConnected;
-                    return isDirty && isConnected;
+                    _dirty = isDirty && isConnected;
+                    _isValid = IsValidName();
+                    CanSave = _isValid && _dirty;
+                    SetDisplayName(_dirty);
+                    return _dirty;
                 }
                 catch (Exception)
                 {
@@ -1630,6 +1665,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 // MarkTestsAsDirty(true);
             }
+            finally
+            {
+                var isDirty = IsDirty;
+                SetDisplayName(isDirty);
+            }
         }
 
         private void Save(List<IServiceTestModel> serviceTestModels)
@@ -1642,8 +1682,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 case SaveResult.Success:
                     MarkTestsAsNotNew();
-                    SetSelectedTestUrl();
-                    SetDisplayName();
+                    SetSelectedTestUrl();                   
                     break;
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
@@ -1843,7 +1882,7 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
             OnPropertyChanged(() => DisplayName);
-            SetDisplayName();
+            SetDisplayName(_dirty);
         }
 
         public bool HasDuplicates() => RealTests().ToList().GroupBy(x => x.TestName).Where(group => @group.Count() > 1).Select(group => @group.Key).Any();
@@ -1930,7 +1969,8 @@ namespace Warewolf.Studio.ViewModels
             if (e.PropertyName == "IsDirty")
             {
                 ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
-                SetDisplayName();
+                _dirty = IsDirty;
+                OnPropertyChanged(()=>IsDirty);
             }
             if (e.PropertyName == "Inputs" || e.PropertyName == "Outputs")
             {
@@ -1944,12 +1984,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
             }
+            if (e.PropertyName == "TestName")
+            {
+                _dirty = IsDirty;
+                OnPropertyChanged(() => IsDirty);
+            }
             ViewModelUtils.RaiseCanExecuteChanged(DuplicateTestCommand);
         }
 
-        private void SetDisplayName()
+        private void SetDisplayName(bool isDirty)
         {
-            if (IsDirty)
+            if (isDirty)
             {
                 if (!DisplayName.EndsWith(" *"))
                 {

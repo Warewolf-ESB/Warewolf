@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,6 +11,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism;
 
 // ReSharper disable ExplicitCallerInfoArgument
 
@@ -21,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
         // ReSharper disable once NotAccessedField.Local
-        private IList<IServiceInput> _inputs;
+        private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
         public DatabaseInputRegion()
@@ -38,10 +41,49 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
-            Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
+            var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
+            var inputs = new ObservableCollection<IServiceInput>();
+            inputs.CollectionChanged += InputsCollectionChanged;
+            inputs.AddRange(serviceInputs);
+            Inputs = inputs;
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
             IsEnabled = _action?.SelectedAction != null;
+        }
+
+        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            AddItemPropertyChangeEvent(e);
+            RemoveItemPropertyChangeEvent(e);
+        }
+
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems == null) return;
+            foreach (INotifyPropertyChanged item in args.NewItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged += ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _modelItem.SetProperty("Inputs", Inputs.ToList());
+        }
+
+        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.OldItems == null) return;
+            foreach (INotifyPropertyChanged item in args.OldItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged -= ItemPropertyChanged;
+                }
+            }
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -180,18 +222,27 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         #region Implementation of IDatabaseInputRegion
 
-        public IList<IServiceInput> Inputs
+        public ICollection<IServiceInput> Inputs
         {
             get
             {
-                return _modelItem.GetProperty<List<IServiceInput>>("Inputs") ?? new List<IServiceInput>();
+                return _inputs;
             }
             set
             {
-                _inputs = value;
-                OnPropertyChanged();
-                _modelItem.SetProperty("Inputs", value);
-                OnPropertyChanged();
+                if (value != null)
+                {
+                    _inputs = value;
+                    _modelItem.SetProperty("Inputs", value.ToList());
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _inputs.Clear();
+                    _modelItem.SetProperty("Inputs", _inputs.ToList());
+                    OnPropertyChanged();
+                }
+               
             }
         }
 

@@ -173,7 +173,7 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             schedulerViewModel.DisplayName = "displayName";
             //------------Assert Results-------------------------
-            Assert.AreEqual("Scheduler - ", schedulerViewModel.DisplayName);
+            Assert.AreEqual("displayName", schedulerViewModel.DisplayName);
         }
 
         [TestMethod]
@@ -190,25 +190,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(schdulerViewModel.Errors);
             Assert.AreEqual("Scheduler - ", schdulerViewModel.DisplayName);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SchedulerViewModel_Constructor")]
-        public void SchedulerViewModel_Constructor_ServerNull_ShouldSetDisplayName()
-        {
-            //------------Setup for test--------------------------
-
-            //------------Execute Test---------------------------
-            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(schdulerViewModel);
-            Assert.IsNotNull(schdulerViewModel.Errors);
-
-            schdulerViewModel.Server = null;
-            Assert.AreEqual("Scheduler", schdulerViewModel.DisplayName);
-        }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SchedulerViewModel_Constructor")]
@@ -316,15 +298,89 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            //------------Execute Test---------------------------
-            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
             ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             schedulerViewModel.Trigger = scheduleTrigger;
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());
+            schedulerViewModel.SelectedTask = scheduleResource;
+            //------------Execute Test---------------------------
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+            ScheduleTrigger newScheduleTrigger = new ScheduleTrigger(TaskState.Queued, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            schedulerViewModel.Trigger = newScheduleTrigger;
             //------------Assert Results-------------------------
             Assert.IsNotNull(schedulerViewModel.Trigger);
+            Assert.IsTrue(schedulerViewModel.IsDirty);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+        }
+
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_Trigger")]
+        public void SchedulerViewModel_SaveCommand_AfterSave_IsDirtyFalse()
+        {
+            //------------Setup for test--------------------------
+            ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());
+            var resources = new ObservableCollection<IScheduledResource>();
+            resources.Add(scheduleResource);
+            scheduleResource.UserName = "some user";
+            scheduleResource.Password = "some password";
+
+            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModelForTest(env.Object);
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            schedulerViewModel.ToEnvironmentModel = a => env.Object;
+            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
+            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
+            string errorMessage;
+            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out errorMessage)).Returns(true);
+            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+            schedulerViewModel.Trigger = scheduleTrigger;
+            schedulerViewModel.SelectedTask = scheduleResource;
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+            ScheduleTrigger newScheduleTrigger = new ScheduleTrigger(TaskState.Queued, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            schedulerViewModel.Trigger = newScheduleTrigger;
+            Assert.IsNotNull(schedulerViewModel.Trigger);
+            Assert.IsTrue(schedulerViewModel.IsDirty);
+            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+            //------------Execute Test---------------------------
+            schedulerViewModel.SaveCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(schedulerViewModel.IsDirty);
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Trigger")]
+        public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyFalse()
+        {
+            //------------Setup for test--------------------------
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            schedulerViewModel.Trigger = scheduleTrigger;
+            var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf",Guid.NewGuid().ToString());
+
+            schedulerViewModel.SelectedTask = scheduleResource;
+            //------------Execute Test---------------------------
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
+            Assert.IsFalse(schedulerViewModel.IsDirty);
+            //------------Assert Results-------------------------
+            schedulerViewModel.Status = SchedulerStatus.Enabled;
+            Assert.IsTrue(schedulerViewModel.IsDirty);
+            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.Status = SchedulerStatus.Disabled;
+            Assert.IsFalse(schedulerViewModel.IsDirty);
+            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
         }
 
         [TestMethod]
@@ -341,8 +397,6 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.RunAsapIfScheduleMissed = true;
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.RunAsapIfScheduleMissed);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
             schedulerViewModel.RunAsapIfScheduleMissed = true;
             Assert.IsTrue(schedulerViewModel.RunAsapIfScheduleMissed);
         }
@@ -361,30 +415,11 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.Status = SchedulerStatus.Disabled;
             //------------Assert Results-------------------------
             Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
 
             schedulerViewModel.Status = SchedulerStatus.Disabled;
             Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
         }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("SchedulerViewModel_NumberOfRecordsToKeep")]
-        public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeep_IsDirtyTrue()
-        {
-            //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            //------------Execute Test---------------------------
-            Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
-            schedulerViewModel.NumberOfRecordsToKeep = "10";
-            //------------Assert Results-------------------------
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
-            schedulerViewModel.NumberOfRecordsToKeep = "10";
-        }
-
+        
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_NumberOfRecordsToKeep")]
@@ -464,7 +499,6 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("someAccountName", schedulerViewModel.AccountName);
             Assert.AreEqual("", schedulerViewModel.Error);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
             Assert.AreEqual("someAccountName", schedulerViewModel.SelectedTask.UserName);
             Assert.IsTrue(_accountNameChanged);
 
@@ -497,14 +531,12 @@ namespace Dev2.Core.Tests.Settings
             //--------------Assert Preconditions------------------
             Assert.AreEqual("", schedulerViewModel.Error);
             var scheduledResource = schedulerViewModel.SelectedTask;
-            Assert.IsTrue(scheduledResource.IsDirty);
             Assert.AreEqual("someAccountName", scheduledResource.UserName);
             //------------Execute Test---------------------------
             schedulerViewModel.SelectedTask = null;
             schedulerViewModel.AccountName = "another account name";
             //------------Assert Results-------------------------
             Assert.IsNull(schedulerViewModel.SelectedTask);
-            Assert.IsTrue(scheduledResource.IsDirty);
             Assert.AreEqual("someAccountName", scheduledResource.UserName);
             Assert.IsFalse(_accountNameChanged);
         }
@@ -527,8 +559,6 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("somePassword", schedulerViewModel.Password);
             Assert.AreEqual("", schedulerViewModel.Error);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
             schedulerViewModel.Password = "somePassword";
             Assert.AreEqual("somePassword", schedulerViewModel.Password);
         }
@@ -760,72 +790,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
 
         }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("SchedulerViewModel_SaveCommand")]
-        public void SchedulerViewModel_ShowErrorMessage_IfExceptionFound()
-        {
-            //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
-            scheduledResourceForTest.IsDirty = true;
-            resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
-            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.OK).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
-            var auth = new Mock<IAuthorizationService>();
-            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
-            env.Setup(a => a.IsConnected).Returns(true);
-            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
-            schedulerViewModel.CurrentEnvironment = env.Object;
-            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
-            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Throws(new Exception("bob"));
-            string test;
-            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
-            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
-            //------------Execute Test---------------------------
-            var taskList = schedulerViewModel.IsDirty;
-            //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
-        }
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("SchedulerViewModel_SaveCommand")]
-        public void SchedulerViewModel_ShowErrorMessage_IfExceptionFoundAgain()
-        {
-            //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
-            scheduledResourceForTest.IsDirty = true;
-            resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
-            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
-            var auth = new Mock<IAuthorizationService>();
-            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
-            env.Setup(a => a.IsConnected).Returns(true);
-            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
-            schedulerViewModel.CurrentEnvironment = env.Object;
-            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
-            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Throws(new Exception("bob"));
-            string test;
-            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
-            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
-            //------------Execute Test---------------------------
-            // ReSharper disable once NotAccessedVariable
-            var taskList = schedulerViewModel.IsDirty;
-            // ReSharper disable once RedundantAssignment
-            taskList = schedulerViewModel.IsDirty;
-            //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
-
-        }
-
+        
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_SaveCommand")]
@@ -1034,6 +999,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
             schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
             schedulerViewModel.SelectedTask.IsNew = false;
+            schedulerViewModel.SelectedTask.IsDirty = true;
             //------------Execute Test---------------------------
             schedulerViewModel.SaveCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -1050,8 +1016,8 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_SaveCommand_UserNamePasswordSet_CallsScheduledResourceModelSave()
         {
             //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
+            var resources = new ObservableCollection<IScheduledResource>();
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
@@ -1317,7 +1283,6 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors after name is made empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
             Assert.AreEqual(string.Empty, schedulerViewModel.SelectedTask.Name);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
         [TestMethod]
@@ -1345,7 +1310,6 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(schedulerViewModel.HasErrors);
             Assert.AreEqual(string.Empty, schedulerViewModel.Error);
             Assert.AreEqual("This is a test", schedulerViewModel.SelectedTask.Name);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
         [TestMethod]
@@ -1366,7 +1330,6 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(schedulerViewModel.HasErrors);
             Assert.AreEqual("Please select a workflow to schedule", schedulerViewModel.Error);
             Assert.AreEqual(string.Empty, schedulerViewModel.SelectedTask.WorkflowName);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
         [TestMethod]
@@ -1457,7 +1420,6 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.NumberOfRecordsToKeep = "-a5";
             //------------Assert Results-------------------------
             Assert.AreEqual(5, schedulerViewModel.SelectedTask.NumberOfHistoryToKeep);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
         [TestMethod]
@@ -1638,6 +1600,46 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
             popupController.Verify(a => a.Show("Please save currently edited Task(s) before creating a new one.", "Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_CreateNewTask")]
+        public void SchedulerViewModel_CreateNewTask_ServerDown_ShouldShowPopup()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false)).Returns(MessageBoxResult.OK).Verifiable();
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            var svr = new Mock<IServer>();
+            svr.Setup(a => a.IsConnected).Returns(true);
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.DisplayName).Returns("localhost");
+            env.Setup(a => a.Connection).Returns(mockConnection.Object);
+
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popupController.Object, new SynchronousAsyncWorker(), svr.Object, a => env.Object);
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            var resourceModel = new Mock<IScheduledResourceModel>();
+            resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
+            schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
+            schedulerViewModel.Server = svr.Object;
+            if (Application.Current != null)
+            {
+                Application.Current.Shutdown();
+            }
+            //------------Execute Test---------------------------
+
+            Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
+
+            env.Setup(a => a.IsConnected).Returns(false);
+            
+            schedulerViewModel.CurrentEnvironment = env.Object;
+
+            schedulerViewModel.NewCommand.Execute(null);
+            //------------Assert Results-------------------------
+            popupController.Verify(a => a.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false));
         }
 
         [TestMethod]

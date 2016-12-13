@@ -813,6 +813,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public ICommand NewServiceCommand
+        {
+            get
+            {
+                return _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
+                {
+                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                    {
+                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        if (mvm?.ActiveItem != null)
+                        {
+                            mvm.NewService("");
+                        }
+                    }
+                }));
+            }
+        }
+
         public ICommand DebugInputsCommand
         {
             get
@@ -1468,12 +1486,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var primarySelection = item.PrimarySelection;
             NotifyItemSelected(primarySelection);
             primarySelection.SetProperty("IsSelected", true);
-            var selectedItem = primarySelection;
-            if (IsTestView && selectedItem!=null)
-            {
-                ItemSelectedAction?.Invoke(selectedItem);
-                ClearSelection();
-            }
+            SelectedItem = primarySelection;            
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
@@ -1610,6 +1623,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
             }
         }
+
         
         private void SetHashTable()
         {
@@ -1704,12 +1718,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
 
-                var debugState = args.DebugState;
-                if (IsTestView)
-                {
-                    ClearSelection();
-                    return;
-                }
+                var debugState = args.DebugState;                
                 if (debugState != null)
                 {
                     var workSurfaceMappingId = debugState.WorkSurfaceMappingId;
@@ -2377,6 +2386,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _duplicateTooltip;
         private string _deployTooltip;
         private string _showDependenciesTooltip;
+        private ICommand _newServiceCommand;
+        private ModelItem _selectedItem;
 
         /// <summary>
         /// Models the service model changed.
@@ -2520,6 +2531,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
+                
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
 
                 _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
@@ -2570,7 +2582,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion
-
        
         /// <summary>
         /// Gets the work surface context.
@@ -2594,6 +2605,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
+        public ModelItem SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                _selectedItem = value;
+            }
+        }
 
         #region Implementation of IHandle<EditActivityMessage>
 
@@ -2630,9 +2652,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             UpdateWorkflowLink(GetWorkflowLink());
             NotifyOfPropertyChange(()=>DesignerView);
+            RemoveUnsavedWorkflowName(unsavedName);
+        }
+        internal void RemoveUnsavedWorkflowName(string unsavedName)
+        {
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
-
         private void DisposeDesigner()
         {
             if (_wd != null)
@@ -2690,6 +2715,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
+            if (environmentViewModel != null)
+            {
+                var item = environmentViewModel.FindByPath(resourceModel.GetSavePath());
+                var viewModel = environmentViewModel as EnvironmentViewModel;
+                var savedItem = viewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
+                item.AddChild(savedItem);
+            }
             resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.IsWorkflowSaved = true;
         }

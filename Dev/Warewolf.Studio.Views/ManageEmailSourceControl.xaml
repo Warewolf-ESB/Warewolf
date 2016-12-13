@@ -203,11 +203,6 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Center">
-                        <TextBlock Style="{StaticResource ErrorTextBlockStyle}" 
-                                   TextAlignment="Right" 
-                                   Margin="{StaticResource ControlBorderRight}"
-                                   Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"
-                                   Text="{Binding TestMessage}"></TextBlock>
                         <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Margin="{StaticResource ControlBorderRight}" 
@@ -238,6 +233,18 @@
                         </Button>
                     </StackPanel>
                 </Grid>
+                <TextBox TextWrapping="WrapWithOverflow" 
+                         Grid.Row="3"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         x:Name="ErrorTextBlock" 
+                         Text="{Binding TestMessage}" 
+                         Style="{StaticResource ErrorMessageTextboxStyle}"
+                         Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <i:Interaction.Behaviors>
+                        <customControls:DoubleClickBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </Grid>
         </Grid>
     </ScrollViewer>

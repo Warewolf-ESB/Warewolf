@@ -18,6 +18,6 @@ namespace Dev2.Common.Interfaces.ToolBase.WCF
 
     public interface IWcfInputRegion : IToolRegion
     {
-        IList<IServiceInput> Inputs { get; set; } 
+        ICollection<IServiceInput> Inputs { get; set; } 
     }
 }

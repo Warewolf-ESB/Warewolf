@@ -177,6 +177,9 @@
   <data name="Test_FailureMessage_Equals" xml:space="preserve">
     <value>Failed: Assert Equal. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
+  <data name="Test_FailureMessage_Error" xml:space="preserve">
+    <value>Failed: Expected Error containing '{0}' but got '{1}'</value>
+  </data>
   <data name="Test_FailureMessage_IsNotEqual" xml:space="preserve">
     <value>Failed: Assert Is Not Equal. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>

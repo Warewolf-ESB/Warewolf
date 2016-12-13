@@ -16,6 +16,7 @@ using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.ServerProxyLayer;
 using Dev2.Studio.Core;
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
@@ -162,7 +163,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             if (graph.Nodes.Count > 1)
             {
                 var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
-                    StringResources.Delete_Error_Title,
+                    string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
                     MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
                 if (result == MessageBoxResult.OK)
                 {

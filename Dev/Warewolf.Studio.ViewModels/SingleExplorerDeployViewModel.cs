@@ -229,7 +229,11 @@ namespace Warewolf.Studio.ViewModels
                 ErrorMessage = "";
 
                 CheckVersionConflict();
+                if (!IsDeploying)
+                    return;
                 CheckResourceNameConflict();
+                if (!IsDeploying)
+                    return;
 
                 var canDeploy = false;
                 if (ConflictItems != null && ConflictItems.Count >= 1)

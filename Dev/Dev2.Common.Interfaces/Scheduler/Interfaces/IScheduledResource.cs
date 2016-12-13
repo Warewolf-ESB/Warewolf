@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Data.TO;
 
 namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 {
-    public interface IScheduledResource
+    public interface IScheduledResource:IEquatable<IScheduledResource>
     {
         /// <summary>
         ///     Property to check if the scheduled resouce is saved
@@ -87,7 +87,8 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 
         bool IsNewItem { get; set; }
         string NameForDisplay { get; }
-    }
+
+   }
 
     public interface INewScheduledResource
     {

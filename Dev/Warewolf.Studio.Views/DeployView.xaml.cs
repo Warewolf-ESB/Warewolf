@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        public IServer SelectedServer => SourceNavigationView.SelectedServer;
+        public IServer SelectedServer => null;
 
         public IServer SelectedDestinationServer
         {

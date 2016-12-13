@@ -132,10 +132,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => _updateManager.GetComputerNames().Select(name => new ComputerName { Name = name }).ToList(), names =>
             {
                 ComputerNames = names;
-                if (additionalUiAction != null)
-                {
-                    additionalUiAction();
-                }
+                additionalUiAction?.Invoke();
             }, exception =>
              {
                  TestFailed = true;
@@ -339,18 +336,23 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
                 {
-                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+                    var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+                    var res = requestServiceNameViewModel.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
                     {
-                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        _resourceName = requestServiceNameViewModel.ResourceName.Name;
                         var src = ToDbSource();
 
-                        src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        _dbSource = src;
-                        Path = _dbSource.Path;
-                        SetupHeaderTextFromExisting();
+                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null && !TestFailed)
+                        {
+                            _dbSource = src;
+                            Path = _dbSource.Path;
+                            SetupHeaderTextFromExisting();
+                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        }
                     }
                 }
                 else
@@ -383,13 +385,13 @@ namespace Warewolf.Studio.ViewModels
                 _updateManager.Save(toDbSource);
                 Item = toDbSource;
                 SetupHeaderTextFromExisting();
-                Reset();
+                Reset();                
             }
             catch (Exception ex)
             {
+                Reset();
                 TestMessage = ex.Message;
                 TestFailed = true;
-                TestPassed = false;
             }
         }
 
@@ -411,7 +413,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailed = true;
                     TestPassed = false;
                     Testing = false;
-                    TestMessage = exception != null ? exception.Message : "Failed";
+                    TestMessage = GetExceptionMessage(exception);
                     DatabaseNames.Clear();
                 });
             }
@@ -420,7 +422,7 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = true;
                 TestPassed = false;
                 Testing = false;
-                TestMessage = exception.Message;
+                TestMessage = GetExceptionMessage(exception);
                 DatabaseNames.Clear();
             }
             OnPropertyChanged(() => DatabaseNames);
@@ -448,7 +450,7 @@ namespace Warewolf.Studio.ViewModels
                 Type = (enSourceType)Enum.Parse(typeof(enSourceType), ServerType.Value),
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _dbSource == null ? Guid.NewGuid() : _dbSource.Id
+                Id = _dbSource?.Id ?? Guid.NewGuid()
             };
         }
 
@@ -475,7 +477,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = Path,
                     Name = ResourceName,
                     DbName = DatabaseName,
-                    Id = _dbSource == null ? SelectedGuid : _dbSource.Id
+                    Id = _dbSource?.Id ?? SelectedGuid
                 };
             // ReSharper disable once RedundantIfElseBlock
             else
@@ -595,10 +597,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
-                    if (DatabaseNames != null)
-                    {
-                        DatabaseNames.Clear();
-                    }
+                    DatabaseNames?.Clear();
                     Reset();
                 }
             }
@@ -762,10 +761,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public bool IsEmpty => ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
@@ -786,7 +782,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (RequestServiceNameViewModel != null)
             {
-                if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
+                RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
             Dispose(true);
@@ -809,7 +805,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_token != null) _token.Dispose();
+                    _token?.Dispose();
                 }
 
                 // Dispose unmanaged resources.

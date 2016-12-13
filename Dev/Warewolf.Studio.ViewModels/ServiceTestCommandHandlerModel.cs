@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
                     return (IServiceTestOutput)serviceTestOutput;
                 }).ToObservableCollection();
             }
-            testModel.Item = testModel;
+            testModel.Item = (ServiceTestModel)testModel.Clone();
             return testModel;
         }
 
@@ -239,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                     AssertOp = serviceTestOutput?.AssertOp ?? "=",
                     HasOptionsForValue = serviceTestOutput?.HasOptionsForValue ?? false,
                     OptionsForValue = serviceTestOutput?.OptionsForValue ?? new List<string>(),
-                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPassed}
+                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending}
                 };
 
                 if (testStep.MockSelected)

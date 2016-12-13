@@ -79,6 +79,15 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed: Expected Error containing &apos;{0}&apos; but got &apos;{1}&apos;.
+        /// </summary>
+        public static string Test_FailureMessage_Error {
+            get {
+                return ResourceManager.GetString("Test_FailureMessage_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed: Assert Is Alphanumeric. Expected &apos;{0}&apos; for &apos;{1}&apos; but got &apos;{2}&apos;.
         /// </summary>
         public static string Test_FailureMessage_IsAlphanumeric {

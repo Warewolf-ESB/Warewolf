@@ -25,7 +25,6 @@ namespace Warewolf.Studio.ViewModels.Tests
                 UserName = "test",
                 Path = "test",
                 ResourceName = "test exchange",
-                Name = "test exchange",
                 Type = enSourceType.ExchangeSource,
             } )
             {

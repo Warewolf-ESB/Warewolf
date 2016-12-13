@@ -16,8 +16,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
@@ -66,6 +68,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _canViewApisJson;
         private string _viewApisJsonTooltip;
         private string _serverVersionTooltip;
+        private bool _canDeploy;
+        private string _newWcfSourceTooltip;
+        private bool _isSaveDialog;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -106,6 +111,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 UpdateActiveEnvironment(shellViewModel);
                 shellViewModel.NewComPluginSource(ResourcePath);
+            });
+            NewWcfSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewWcfSource(ResourcePath);
             });
 
             NewWebSourceSourceCommand = new DelegateCommand(() =>
@@ -150,6 +160,11 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 
+            DeployCommand = new DelegateCommand(() =>
+            {
+                shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new [] { this }));
+            });
+
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () =>
             {
@@ -182,6 +197,7 @@ namespace Warewolf.Studio.ViewModels
             AllowEdit = server.AllowEdit;
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
             CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
+            CanDeploy = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
             CreateFolderCommand = new DelegateCommand(CreateFolder);
             Parent = null;
             ResourceType = @"ServerSource";
@@ -268,6 +284,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsSaveDialog
+        {
+            get { return _isSaveDialog; }
+            set
+            {
+                _isSaveDialog = value;
+                OnPropertyChanged(() => IsSaveDialog);
+            }
+        }
+
         public bool AreVersionsVisible { get; set; }
 
         public void CreateFolder()
@@ -275,18 +301,25 @@ namespace Warewolf.Studio.ViewModels
             IsExpanded = true;
             var id = Guid.NewGuid();
             var name = GetChildNameFromChildren();
-            Server.ExplorerRepository.CreateFolder("root", name, id);
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var child = new ExplorerItemViewModel(Server, this, a => { SelectAction(a); }, _shellViewModel, _controller)
             {
-                ResourceName = name,
                 ResourceId = id,
                 ResourceType = "Folder",
                 IsFolder = true,
                 ResourcePath = name,
                 IsSelected = true,
                 IsRenaming = true,
-                IsVisible = true
+                IsVisible = true,
+                IsNewFolder = true,
+                CanCreateWorkflowService = true,
+                CanView = true,
+                CanDeploy = true,
+                CanViewApisJson = true
             };
+            child.ResourceName = name;
+            child.IsRenaming = true;
+
             if (_isDialog)
             {
                 child.AllowResourceCheck = false;
@@ -299,16 +332,12 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                child.AllowResourceCheck = AllowResourceCheck;
-                child.IsResourceChecked = IsResourceChecked;
-                child.CanCreateFolder = CanCreateFolder;
-                child.CanCreateSource = CanCreateSource;
-                child.CanShowVersions = CanShowVersions;
+                var permissions = Server.GetPermissions(ResourceId);
+                child.SetPermissions(permissions);
+
                 child.CanRename = true;
                 child.CanDelete = true;
-                child.CanDeploy = CanDeploy;
-                child.CanCreateWorkflowService = CanCreateWorkflowService;
-
+                child.IsSaveDialog = IsSaveDialog;
                 child.ShowContextMenu = ShowContextMenu;
             }
             AddChild(child);
@@ -421,7 +450,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Apply(a =>
                 {
-                    if (a.ResourcePath == path)
+                    if (a.ResourcePath.Replace("\\", "\\\\") == path)
                     {
                         a.IsExpanded = true;
                         foundAction(a);
@@ -438,7 +467,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = permissions.Contribute;
             CanCreateWorkflowService = permissions.Contribute;
             CanDelete = false;
-            CanDeploy = false;
+            CanDeploy = permissions.DeployFrom;
             CanRename = false;
             CanRollback = false;
             CanShowVersions = false;
@@ -497,9 +526,21 @@ namespace Warewolf.Studio.ViewModels
         public void AddChild(IExplorerItemViewModel child)
         {
             var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
-            tempChildren.Insert(0, child);
+            var exists = tempChildren.FirstOrDefault(model => model.ResourceName.Equals(child.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+            if (exists != null)
+            {
+                foreach (var explorerItemViewModel in child.Children)
+                {
+                    exists.AddChild(explorerItemViewModel);
+                }
+            }
+            else
+            {
+                tempChildren.Insert(0, child);
+            }
             _children = tempChildren;
             OnPropertyChanged(() => Children);
+            OnPropertyChanged(() => ChildrenCount);
         }
 
         public void RemoveChild(IExplorerItemViewModel child)
@@ -508,6 +549,7 @@ namespace Warewolf.Studio.ViewModels
             tempChildren.Remove(child);
             _children = tempChildren;
             OnPropertyChanged(() => Children);
+            OnPropertyChanged(() => ChildrenCount);
         }
 
         public string ResourceType { get; set; }
@@ -579,6 +621,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _newComPluginSourceTooltip = value;
                 OnPropertyChanged(() => NewComPluginSourceTooltip);
+            }
+        }
+        public string NewWcfSourceTooltip
+        {
+            get { return _newWcfSourceTooltip; }
+            set
+            {
+                _newWcfSourceTooltip = value;
+                OnPropertyChanged(() => NewWcfSourceTooltip);
             }
         }
         public string NewEmailSourceTooltip
@@ -695,7 +746,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanDeploy { get; set; }
+        public bool CanDeploy
+        {
+            get { return _canDeploy; }
+            set
+            {
+                _canDeploy = value;
+                OnPropertyChanged(() => CanDeploy);
+            }
+        }
 
         public bool CanShowVersions
         {
@@ -849,6 +908,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewDatabaseSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
         public ICommand NewComPluginSourceCommand { get; set; }
+        public ICommand NewWcfSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
@@ -987,6 +1047,25 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
+        public IExplorerTreeItem FindByPath(string path)
+        {
+            var allChildren = Children.Flatten(model => model.Children);
+            if (path.EndsWith("\\"))
+            {
+                path = path.TrimEnd('\\');
+            }
+            if (path.StartsWith("\\"))
+            {
+                path = path.TrimStart('\\');
+            }
+            var found = allChildren.FirstOrDefault(model => model.ResourcePath == path);
+            if (found != null)
+            {
+                return found;
+            }
+            return this;            
+        }
+
         public void Filter(string filter)
         {
             _filter = filter;
@@ -1092,7 +1171,6 @@ namespace Warewolf.Studio.ViewModels
                 IsService = explorerItem.IsService,
                 IsFolder = explorerItem.IsFolder,
                 IsSource = explorerItem.IsSource,
-                IsReservedService = explorerItem.IsReservedService,
                 IsServer = explorerItem.IsServer
             };
             if (isDeploy)
@@ -1102,6 +1180,42 @@ namespace Warewolf.Studio.ViewModels
                 itemCreated.CanEdit = false;
             }
             itemCreated.SetPermissions(explorerItem.Permissions, isDeploy);
+            if (isDialog)
+            {
+                SetPropertiesForDialog(itemCreated);
+            }
+            return itemCreated;
+        }
+
+
+        public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
+        {
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            {
+                ResourceName = explorerItem.ResourceName,
+                ResourceId = explorerItem.ID,
+                ResourceType = explorerItem.ServerResourceType,
+                ResourcePath = explorerItem.GetSavePath(),
+                AllowResourceCheck = isDeploy,
+                ShowContextMenu = !isDeploy,
+                IsFolder = false,
+                IsService = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService,
+                IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
+                IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
+            };
+
+            if (string.IsNullOrWhiteSpace(itemCreated.ResourcePath))
+            {
+                itemCreated.ResourcePath = itemCreated.ResourceName;
+            }
+
+            if (isDeploy)
+            {
+                itemCreated.CanExecute = false;
+                itemCreated.CanView = false;
+                itemCreated.CanEdit = false;
+            }
+            itemCreated.SetPermissions(explorerItem.UserPermissions, isDeploy);
             if (isDialog)
             {
                 SetPropertiesForDialog(itemCreated);
