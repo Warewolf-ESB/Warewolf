@@ -56,21 +56,28 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
 #if !DEBUG
-            TryClickMessageBoxOK();
-            TryCloseHangingDebugInputDialog();
-            TryCloseHangingSaveDialog();
-            TryCloseHangingServicePickerDialog();
-            TryCloseHangingWindowsGroupDialog();
-            TryPin_Unpinned_Pane_To_Default_Position();
-            TryCloseHangingCriticalErrorDialog();
-            TryCloseHangingErrorDialog();
-            TryCloseHangingWebBrowserErrorDialog();
-            TryCloseHangingDecisionDialog();
-            TryCloseSettingsTab();
-            TryCloseWorkflowTestingTab();
-            var TimeBefore = System.DateTime.Now;
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-            Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            try
+            {
+                TryClickMessageBoxOK();
+                TryCloseHangingDebugInputDialog();
+                TryCloseHangingSaveDialog();
+                TryCloseHangingServicePickerDialog();
+                TryCloseHangingWindowsGroupDialog();
+                TryPin_Unpinned_Pane_To_Default_Position();
+                TryCloseHangingCriticalErrorDialog();
+                TryCloseHangingErrorDialog();
+                TryCloseHangingWebBrowserErrorDialog();
+                TryCloseHangingDecisionDialog();
+                TryCloseSettingsTab();
+                TryCloseWorkflowTestingTab();
+                var TimeBefore = System.DateTime.Now;
+                WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
+            }
+            catch(AccessViolationException e)
+            {
+                Console.WriteLine("Caught an AccessViolationException " + e.Message + " trying to close a hanging dialogs before the test starts.");
+            }
 #endif
         }
 
@@ -1950,8 +1957,17 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
-            MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => !uicontrol.Enabled, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
+            bool controlAvailable = true;
+            try
+            {
+                MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => uicontrol.State == ControlStates.Unavailable, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+                controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
+            }
+            catch (UITestControlNotAvailableException)
+            {
+                controlAvailable = false;
+            }
+            Assert.IsFalse(controlAvailable, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
         }
 
         public void DeleteAssign_FromContextMenu()
