@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     public class WorkflowTestingTests
     {
         const string HelloWorld = "Hello World";
+        const string xPath = "Utility - XPath";
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
@@ -44,13 +45,15 @@ namespace Warewolf.UITests
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
             UIMap.Click_MessageBox_OK();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
-            UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            UIMap.Show_Explorer_Second_Item_Tests_With_Context_Menu(xPath);
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");

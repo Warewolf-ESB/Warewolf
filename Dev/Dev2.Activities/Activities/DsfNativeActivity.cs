@@ -680,7 +680,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         stepToBeAsserted.Result = new TestRunResult
                         {
-                            RunTestResult = RunResult.TestPassed
+                            RunTestResult = RunResult.TestPending
                         };
                     }
                 }
@@ -940,7 +940,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (output == null)
             {
                 var testResult = new TestRunResult();
-                testResult.RunTestResult = RunResult.TestPassed;
+                testResult.RunTestResult = RunResult.TestPending;
                 return new List<TestRunResult> {testResult};
             }
             if (output.Result != null)

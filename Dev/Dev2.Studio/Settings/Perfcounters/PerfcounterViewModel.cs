@@ -92,11 +92,11 @@ namespace Dev2.Settings.Perfcounters
             var message = controller.ExecuteCommand<IExecuteMessage>(_environment.Connection, Guid.Empty);
             if (!message.HasError)
             {
-                CustomContainer.Get<IPopupController>().Show("Performance Counters have been reset.", "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.None, "", false, false, true, false);
+                CustomContainer.Get<IPopupController>().Show(Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHasNoError, Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHeader, MessageBoxButton.OK, MessageBoxImage.None, "", false, false, true, false);
             }
             else
             {
-                CustomContainer.Get<IPopupController>().Show("Error reseting counters: "+Environment.NewLine+message.Message, "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
+                CustomContainer.Get<IPopupController>().Show(Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHasError + Environment.NewLine + message.Message, Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
             }
         }
 

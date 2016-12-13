@@ -484,12 +484,14 @@ namespace Dev2.Runtime.Hosting
 
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
-            MoveVersions(itemToMove, newPath);
             var newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
             var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
             var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
             var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".xml"}";
-            _file.Move(source, destination);
+            if (_file.Exists(source))
+            {
+                _file.Move(source, destination);
+            }
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId, itemToMove.ResourcePath, newPath, new List<IResource> { resource });
             itemToMove.ResourcePath = newResourcePath;
             return new ExplorerRepositoryResult(result.Status, result.Message);

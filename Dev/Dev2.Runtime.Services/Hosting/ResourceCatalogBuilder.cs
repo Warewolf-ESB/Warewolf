@@ -111,6 +111,7 @@ namespace Dev2.Runtime.Hosting
                 IList<Type> allTypes = new List<Type>();
                 var connectionTypeName = typeof(Connection).Name;
                 var dropBoxSourceName = typeof(DropBoxSource).Name;
+                var sharepointSourceName = typeof(SharepointSource).Name;
                 var dbType = typeof(DbSource).Name;
                 try
                 {
@@ -166,6 +167,11 @@ namespace Dev2.Runtime.Hosting
                         {
                             xml.SetAttributeValue("Type", dropBoxSourceName);
                             typeName = dropBoxSourceName;
+                        }
+                        if (typeName == "SharepointServerSource")
+                        {
+                            xml.SetAttributeValue("Type", sharepointSourceName);
+                            typeName = sharepointSourceName;
                         }
                         #endregion
 

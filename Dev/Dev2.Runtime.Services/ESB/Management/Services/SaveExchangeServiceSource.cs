@@ -55,8 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     UserName = src.UserName,
                     Password = src.Password,
                     Timeout = src.Timeout,
-                    ResourceName = src.Name,
-                    Name = src.Name,
+                    ResourceName = src.ResourceName,
                     ResourceID = src.Id,
                     Type = enSourceType.ExchangeSource,
                     ResourceType = "ExchangeSource"
