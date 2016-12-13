@@ -96,7 +96,7 @@ namespace Dev2.Settings.Perfcounters
             }
             else
             {
-                CustomContainer.Get<IPopupController>().Show(Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHasNoError + Environment.NewLine + message.Message, Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
+                CustomContainer.Get<IPopupController>().Show(Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHasError + Environment.NewLine + message.Message, Warewolf.Studio.Resources.Languages.Core.ResetPerfMonCountersHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
             }
         }
 
