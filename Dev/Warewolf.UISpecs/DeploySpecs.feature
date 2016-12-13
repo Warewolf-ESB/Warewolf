@@ -113,5 +113,13 @@ Scenario: Deploy Disconnect Clears Destination
 	Then I Click Deploy Tab Destination Server Connect Button
 	And Destination Deploy Information Clears
 
+Scenario: Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Explorer
+	Given I Try Connect To Remote Server
+	And I Click Deploy Ribbon Button
+	And I Click Deploy Tab Destination Server Combobox
+	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
+	And I Click Deploy Tab Destination Server Connect Button
+	And I Click Explorer Connect Remote Server Button
+	Then Destination Remote Server Is Connected
 
 

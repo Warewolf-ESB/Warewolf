@@ -624,6 +624,26 @@ namespace Warewolf.UITests
             }
         }
 
+        [Given(@"I Try DisConnect To Remote Server")]
+        [When(@"I Try DisConnect To Remote Server")]
+        [Then(@"I Try DisConnect To Remote Server")]
+        public void TryDisConnectToRemoteServer()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
+            {
+                Click_Explorer_RemoteServer_Connect_Button();
+            }
+            else
+            {
+                Click_Connect_Control_InExplorer();
+                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+                {
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
+                    Click_Explorer_RemoteServer_Connect_Button();
+                }
+            }
+        }
+
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
@@ -968,7 +988,8 @@ namespace Warewolf.UITests
         [Then(@"I Filter Save Dialog Explorer with ""(.*)""")]
         public void Filter_Save_Dialog_Explorer(string FilterText)
         {
-            SaveDialogWindow.ExplorerView.SearchTextBox.Text = FilterText;
+            var searchTextBox = SaveDialogWindow.ExplorerView.SearchTextBox;
+            searchTextBox.Text = FilterText;
         }
 
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
@@ -1024,13 +1045,17 @@ namespace Warewolf.UITests
         [When(@"I Select ""(.*)"" From Explorer Remote Server Dropdown List")]
         public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
         {
-            switch (serverName)
-            {
-                default:
-                case "Remote Connection Integration":
-                    Select_From_Explorer_Remote_Server_Dropdown_List(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text);
-                    break;
-            }
+            var comboboxListItem = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
+            Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(comboboxListItem.Text.Exists, "Server does not exist in explorer remote server drop down list.");
+            Mouse.Click(comboboxListItem.Text, new Point(79, 8));
+            //switch (serverName)
+            //{
+            //    default:
+            //    case "Remote Connection Integration":
+            //        Select_From_Explorer_Remote_Server_Dropdown_List(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text);
+            //        break;
+            //}
         }
 
         public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
@@ -3677,6 +3702,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Deploy Tab Destination Server Connect Button")]
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
             TryClickMessageBoxOK();//Dismiss resource conflict dialog
@@ -7343,7 +7369,7 @@ namespace Warewolf.UITests
         [Then(@"I Select Deploy FromExplorerContextMenu")]
         public void Select_Deploy_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Deploy, new Point(57, 11));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
 

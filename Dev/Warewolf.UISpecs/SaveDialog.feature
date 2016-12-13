@@ -209,7 +209,6 @@ Scenario: Move Folder To Same Location From Save Dialog
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "FolderToRename"
 	And I Move FolderToRename into localhost
-	And I Filter Save Dialog Explorer with "FolderToRename"
 	Then "FolderToRename" is child of localhost
 	And I Click SaveDialog CancelButton
 	Then I Click Close Workflow Tab Button
