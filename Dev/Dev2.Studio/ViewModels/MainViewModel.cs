@@ -16,7 +16,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
