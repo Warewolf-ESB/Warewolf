@@ -1929,7 +1929,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
 
             var source = new Mock<IExchangeSource>();
-            source.Setup(a => a.Name).Returns("TestExchange");
+            source.Setup(a => a.ResourceName).Returns("TestExchange");
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
             mockWM.Setup(manager => manager.EditResource(It.IsAny<IExchangeSource>(), null)).Verifiable();

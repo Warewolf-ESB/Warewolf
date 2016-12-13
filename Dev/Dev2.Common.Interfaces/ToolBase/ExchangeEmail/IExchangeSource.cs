@@ -7,7 +7,7 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
     {
         Guid ResourceID { get; set; }
         string AutoDiscoverUrl { get; set; }
-        string Name { get; set; }
+        string ResourceName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
         enSourceType Type { get; set; }

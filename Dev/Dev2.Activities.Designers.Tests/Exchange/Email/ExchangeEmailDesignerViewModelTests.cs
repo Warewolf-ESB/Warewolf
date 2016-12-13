@@ -199,7 +199,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             Assert.IsNotNull(viewModel.SourceRegion.Sources);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
             Assert.AreEqual(emailSourceCount, viewModel.SourceRegion.Sources.Count);
-            Assert.AreEqual("TestExchange", viewModel.SourceRegion.SelectedSource.Name);
+            Assert.AreEqual("TestExchange", viewModel.SourceRegion.SelectedSource.ResourceName);
             Assert.IsTrue(propertyChanged);
         }
 
@@ -256,7 +256,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             Assert.IsTrue(viewModel.CanTestEmailAccount);
 
             Assert.AreEqual(emailSourceCount, viewModel.SourceRegion.Sources.Count);
-            Assert.AreEqual("TestExchange", viewModel.SourceRegion.SelectedSource.Name);
+            Assert.AreEqual("TestExchange", viewModel.SourceRegion.SelectedSource.ResourceName);
 
             Assert.IsTrue(propertyChanged);
         }
@@ -922,7 +922,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         {
             new ExchangeSource()
             {
-                Name = "TestExchange",
+                ResourceName = "TestExchange",
                 Type = enSourceType.ExchangeSource,
                 AutoDiscoverUrl = "Localhost",
                 UserName = "test",
