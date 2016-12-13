@@ -39,7 +39,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -535,6 +534,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             var saveResult = Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
+            if (!isLocalSave)
+            {
+                if (DebugOutputViewModel != null)
+                {
+                    ViewModelUtils.RaiseCanExecuteChanged(DebugOutputViewModel.AddNewTestCommand);
+                }
+            }
             return saveResult;
         }
 
