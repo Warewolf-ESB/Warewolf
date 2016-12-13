@@ -99,11 +99,12 @@
                                     </Button>
                                 </Grid>
                                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterPositive}}" >
-                                    <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" 
+                                    <Button Style="{StaticResource ButtonSchedulerTransparentStyle}" Name="New_Schedule"
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
                                             Command="{Binding NewCommand}" 
-                                            ToolTip="{x:Static languages:Core.SchedulerNewScheduleTooltipTrigger}">
+                                            ToolTip="{x:Static languages:Core.SchedulerNewScheduleTooltipTrigger}"
+                                            AutomationProperties.AutomationId="UI_NewSchedule_AutoID">
                                         <Button.Content>
                                             <Grid>
                                                 <Grid.ColumnDefinitions >
