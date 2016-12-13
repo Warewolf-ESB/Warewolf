@@ -12,5 +12,6 @@ namespace Dev2.Common.Interfaces.DB
         string Name { get; set; }
         void Save();
         Guid SelectedGuid { get; set; }
+        void AfterSave(Guid environmentId, Guid resourceId);
     }
 }

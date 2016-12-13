@@ -18,6 +18,7 @@
     <Color x:Key="WarewolfBlack">#FF000000</Color>
     <Color x:Key="WarewolfTransparent">#00FFFFFF</Color>
     <Color x:Key="WarewolfWatermark">#B8B8B8</Color>
+    <Color x:Key="WarewolfDragOver">#DADADA</Color>
 
 
     <Color x:Key="WarewolfScrollbarBackground">#FFF4F2EE</Color>

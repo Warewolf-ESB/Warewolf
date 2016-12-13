@@ -164,6 +164,7 @@ namespace Warewolf.Studio.ViewModels
                                 TestFailed = true;
                                 TestPassed = false;
                                 Testing = false;
+
                                 TestMessage = GetExceptionMessage(t.Exception);
                                 break;
                             }
@@ -308,6 +309,8 @@ namespace Warewolf.Studio.ViewModels
                     src.Name = RequestServiceNameViewModel.ResourceName.Name;
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
+                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     Item = src;
                     _wcfServerSource = src;
                     ResourceName = _wcfServerSource.Name;

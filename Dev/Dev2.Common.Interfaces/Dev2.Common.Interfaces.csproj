@@ -246,7 +246,6 @@
     <Compile Include="IExplorerRepository.cs" />
     <Compile Include="IExplorerTreeItem.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
-    <Compile Include="IExplorerView.cs" />
     <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IFilenameValidator.cs" />

@@ -3001,6 +3001,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to Rename Resource.
+        /// </summary>
+        public static string FailedToRenameResource {
+            get {
+                return ResourceManager.GetString("FailedToRenameResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Resource Error.
+        /// </summary>
+        public static string FailedToRenameResourceHeader {
+            get {
+                return ResourceManager.GetString("FailedToRenameResourceHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value that the search will start at, this must be a number, date or time and must be the same type as the &quot;To&quot; type.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpFrom {
@@ -5244,7 +5262,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Aatabase source.
+        ///   Looks up a localized string similar to Create a new database source.
         /// </summary>
         public static string NewDataBaseSourceTooltip {
             get {
@@ -5357,6 +5375,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NewSharepointSourceTooltip {
             get {
                 return ResourceManager.GetString("NewSharepointSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new wcf source.
+        /// </summary>
+        public static string NewWcfSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewWcfSourceTooltip", resourceCulture);
             }
         }
         

@@ -67,10 +67,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="DeploySpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeploySpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="PluginConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteServerSpec.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RemoteServerSpec.feature</DependentUpon>
     </Compile>
     <Compile Include="SaveDialog.feature.cs">
       <AutoGen>True</AutoGen>
@@ -117,6 +127,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DBConnector.feature.cs</LastGenOutput>
     </None>
+    <None Include="DeploySpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeploySpecs.feature.cs</LastGenOutput>
+    </None>
     <None Include="Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
@@ -125,6 +139,10 @@
     <None Include="PluginConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="RemoteServerSpec.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RemoteServerSpec.feature.cs</LastGenOutput>
     </None>
     <None Include="SaveDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

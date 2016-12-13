@@ -120,18 +120,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
-            var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, resource.ResourceID);
-            var oldPath = oldCategory; // + ResourceName
-            var cat = oldCategory.Replace("\\", "\\\\");
-            var newPath = Regex.Replace(oldPath, cat, newCategory, RegexOptions.IgnoreCase);
-            var resourceElement = resourceContents.ToXElement();
-            var contents = resourceElement.ToStringBuilder();
-            var resourceCatalogResult = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, false, newPath);
-            if (resourceCatalogResult.Status != ExecStatus.Success)
+            var oldPath = resource.GetSavePath();
+            var newPath = Regex.Replace(oldPath, oldCategory, newCategory, RegexOptions.IgnoreCase);
+            if (string.IsNullOrEmpty(oldPath))
             {
-                // set error
+                newPath = newCategory;
             }
-            return resourceCatalogResult;
+            ((ResourceCatalog)_resourceCatalog).SetResourceFilePath(workspaceID, resource, ref newPath);
+            return new ResourceCatalogResult {Status = ExecStatus.Success};
         }
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName, string resourcePath)
         {

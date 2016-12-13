@@ -712,6 +712,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestCreateFolderCommandResourceTypeFolder()
         {
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
+
+            _serverMock.Setup(server => server.GetPermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+
             //arrange
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
@@ -739,7 +744,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsExpanded);
-            _explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
+            //_explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
             var createdFolder = _target.Children.Single();
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
             Assert.AreEqual("Folder", createdFolder.ResourceType);
@@ -759,7 +764,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
             Assert.AreEqual(_target.CanCreateWorkflowService, createdFolder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
-            Assert.IsTrue(createdFolder.IsSelected);
             Assert.IsTrue(createdFolder.IsRenaming);
         }
 
@@ -1015,7 +1019,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             var actual = _target.CanDrag;
             //assert
-            Assert.IsFalse(actual);
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
@@ -1346,17 +1350,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var childMockVersion = new Mock<IExplorerItemViewModel>();
             childMockVersion.SetupGet(it => it.ResourceType).Returns("Version");
+            childMockVersion.SetupGet(it => it.ResourceName).Returns("ResourceVersion");
             childMockVersion.SetupGet(it => it.IsVisible).Returns(true);
             var childMockMessage = new Mock<IExplorerItemViewModel>();
             childMockMessage.SetupGet(it => it.ResourceType).Returns("Message");
+            childMockMessage.SetupGet(it => it.ResourceName).Returns("ResourceMessage");
             childMockMessage.SetupGet(it => it.IsVisible).Returns(true);
             var childMockFolder = new Mock<IExplorerItemViewModel>();
             childMockFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childMockFolder.SetupGet(it => it.ResourceName).Returns("ResourceFolder");
             childMockFolder.SetupGet(it => it.IsVisible).Returns(true);
             childMockFolder.SetupGet(it => it.IsFolder).Returns(true);
             childMockFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childMockServer = new Mock<IExplorerItemViewModel>();
             childMockServer.SetupGet(it => it.ResourceType).Returns("Server");
+            childMockServer.SetupGet(it => it.ResourceName).Returns("ResourceServer");
             childMockServer.SetupGet(it => it.IsVisible).Returns(true);
 
             _target.AddChild(childMockVersion.Object);
@@ -1540,13 +1548,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;
             _target.Children.Add(child);
-            var propertyRaised = false;
-            _target.PropertyChanged += (sender, e) => { propertyRaised = e.PropertyName == "Children"; };
+            bool wasCalled = false;
+            _target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Children")
+                {
+                    wasCalled = true;
+                }
+            };
             //act
             _target.RemoveChild(child);
             //assert
             Assert.IsFalse(_target.Children.Contains(child));
-            Assert.IsTrue(propertyRaised);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]
@@ -1558,13 +1572,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = mockChild.Object;
             
             _target.Children.Clear();
-            var propertyRaised = false;
-            _target.PropertyChanged += (sender, e) => { propertyRaised = e.PropertyName == "Children"; };
+
+            bool wasCalled = false;
+            _target.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "Children")
+                {
+                    wasCalled = true;
+                }
+            };
+
             //act
             _target.AddChild(child);
             //assert
             Assert.IsTrue(_target.Children.Contains(child));
-            Assert.IsTrue(propertyRaised);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]
@@ -1574,6 +1596,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var id = Guid.NewGuid();
             var childSameId = new Mock<IExplorerItemViewModel>();
             childSameId.SetupGet(it => it.ResourceId).Returns(id);
+            childSameId.SetupGet(it => it.ResourceName).Returns("ResourceName");
             childSameId.SetupGet(it => it.IsVisible).Returns(true);
             var childDifferentId = new Mock<IExplorerItemViewModel>();
             childDifferentId.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid);
@@ -1612,10 +1635,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCreateNewFolderResourceTypeFolder()
         {
             //arrange
+            _serverMock.Setup(server => server.UserPermissions)
+                       .Returns(Permissions.Administrator);
+            _serverMock.Setup(server => server.GetPermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+
             _target.IsExpanded = false;
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
-            _target.IsReservedService = false;
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
@@ -1635,13 +1661,12 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsExpanded);
-            _explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
+            //_explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
             var createdFolder = _target.Children.Single();
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.IsFolder, createdFolder.IsFolder);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
-            Assert.AreEqual(_target.IsReservedService, createdFolder.IsReservedService);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
@@ -1654,7 +1679,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
             Assert.AreEqual(_target.CanCreateWorkflowService, createdFolder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
-            Assert.IsTrue(createdFolder.IsSelected);
             Assert.IsTrue(createdFolder.IsRenaming);
         }
 
@@ -1677,7 +1701,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsExpanded);
-            _explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder 1", It.IsAny<Guid>()));
+            //_explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder 1", It.IsAny<Guid>()));
         }
 
         [TestMethod]
