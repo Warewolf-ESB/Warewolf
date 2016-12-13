@@ -346,11 +346,13 @@ namespace Warewolf.Studio.ViewModels
 
                         src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId,src.Id);
-                        _dbSource = src;
-                        Path = _dbSource.Path;
-                        SetupHeaderTextFromExisting();
+                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null && !TestFailed)
+                        {
+                            _dbSource = src;
+                            Path = _dbSource.Path;
+                            SetupHeaderTextFromExisting();
+                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        }
                     }
                 }
                 else
@@ -383,13 +385,13 @@ namespace Warewolf.Studio.ViewModels
                 _updateManager.Save(toDbSource);
                 Item = toDbSource;
                 SetupHeaderTextFromExisting();
-                Reset();
+                Reset();                
             }
             catch (Exception ex)
             {
+                Reset();
                 TestMessage = ex.Message;
                 TestFailed = true;
-                TestPassed = false;
             }
         }
 
