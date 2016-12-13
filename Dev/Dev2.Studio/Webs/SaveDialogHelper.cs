@@ -71,7 +71,6 @@ namespace Dev2.Webs
                     selectedPath = selectedPath.Substring(0, lastIndexOf);
                 }
                 selectedPath = selectedPath.Replace("\\", "\\\\");
-                //var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
 
                 var mainViewModel = CustomContainer.Get<IMainViewModel>();
                 var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
