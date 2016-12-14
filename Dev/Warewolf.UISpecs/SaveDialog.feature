@@ -15,6 +15,7 @@ Scenario: SaveDialogServiceNameValidation
 	And I Click SaveDialog Save Button
 	And I Click Close Workflow Tab Button
 	And I Click Duplicate From Explorer Context Menu for Service "TestingWF"
+	And I Wait For Save Dialog Explorer Spinner
 	And I Enter Service Name Into Duplicate Dialog As "TestingWF1"
 	And I Enter Invalid Service Name Into Duplicate Dialog As "Inv@lid N&m#"
 	And I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As "Test "
