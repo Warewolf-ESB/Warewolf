@@ -65,9 +65,9 @@
                                 Text="{Binding Path=ModelItem.Url, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUrlFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
-                                ToolTip="{x:Static languages:Core.WebRequestToolTipURL}">
+                                ToolTip="{x:Static languages:Tooltips.WebRequestToolTipURL}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpURL}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WebRequestHelpURL}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Url"
                                      SourcePropertyValue="{Binding ModelItem.Url, UpdateSourceTrigger=PropertyChanged}"
@@ -88,9 +88,9 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
-                                ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}">
+                                ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpHeader}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WebRequestHelpHeader}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Headers"
                                      SourcePropertyValue="{Binding ModelItem.Headers, UpdateSourceTrigger=PropertyChanged}"
@@ -107,7 +107,7 @@
                                 Focusable="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.TimeOutText, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static languages:Core.WebRequestToolTipTimeOut}" />
+                                ToolTip="{x:Static languages:Tooltips.WebRequestToolTipTimeOut}" />
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Result" VerticalAlignment="Bottom" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
@@ -119,9 +119,9 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"
-                                ToolTip="{x:Static languages:Core.WebRequestToolTipResult}">
+                                ToolTip="{x:Static languages:Tooltips.WebRequestToolTipResult}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WebRequestHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

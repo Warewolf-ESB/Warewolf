@@ -71,7 +71,7 @@
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ZipToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Tooltips.ZipToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -81,7 +81,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpFileFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpFileFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputPath"
                                      SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -97,12 +97,12 @@
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ZipToolTipUsername}"
+                                ToolTip="{x:Static languages:Tooltips.ZipToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpUsername}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpUsername}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Username"
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
@@ -114,13 +114,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="2"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Core.ZipToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.ZipToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
@@ -137,7 +137,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -148,7 +148,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.PrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -166,7 +166,7 @@
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ZipToolTipDestination}"
+                                ToolTip="{x:Static languages:Tooltips.ZipToolTipDestination}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ZipNametxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -176,7 +176,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpDestination}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpDestination}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputPath"
                                      SourcePropertyValue="{Binding ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -192,12 +192,12 @@
                                 WrapInBrackets="False"
                                 AllowUserInsertLine="False"
                                 Text="{Binding Path=ModelItem.DestinationUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ZipToolTipUsername}"
+                                ToolTip="{x:Static languages:Tooltips.ZipToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationUsernametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpUsername}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpUsername}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationUsername"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationUsername, UpdateSourceTrigger=PropertyChanged}"
@@ -209,13 +209,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="6"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Core.ZipToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.ZipToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.DestinationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationPasswordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPassword"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationPassword, UpdateSourceTrigger=PropertyChanged}"
@@ -232,7 +232,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.DestinationPrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -243,7 +243,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationPrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -257,9 +257,9 @@
                   Margin="-6,-1,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.ZipToolTipForceoverwrite}">
+                  ToolTip="{x:Static languages:Tooltips.ZipToolTipForceoverwrite}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpForceoverwrite}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpForceoverwrite}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Overwrite"
                                      SourcePropertyValue="{Binding ModelItem.Overwrite, UpdateSourceTrigger=PropertyChanged}"
@@ -271,13 +271,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="9"
                      Margin="0,-1,0,0"
-                     ToolTip="{x:Static languages:Core.ZipToolTipArchivePassword}"
+                     ToolTip="{x:Static languages:Tooltips.ZipToolTipArchivePassword}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:FocusSetter.IsFocused="{Binding ArchivePasswordExists, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpArchivePassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpArchivePassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ArchivePassword"
                                      SourcePropertyValue="{Binding  ModelItem.ArchivePassword, UpdateSourceTrigger=PropertyChanged}"
@@ -293,9 +293,9 @@
                   ItemsSource="{Binding CompressionRatioList}"
                   SelectedValue="{Binding SelectedCompressionRatioDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}"
-                  ToolTip="{x:Static languages:Core.ZipToolTipCompressiontype}">
+                  ToolTip="{x:Static languages:Tooltips.ZipToolTipCompressiontype}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpCompressionType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpCompressionType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedCompressionRatio"
                                      SourcePropertyValue="{Binding SelectedCompressionRatioDescription, UpdateSourceTrigger=PropertyChanged}"
@@ -312,11 +312,11 @@
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ZipToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ZipToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ZipHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

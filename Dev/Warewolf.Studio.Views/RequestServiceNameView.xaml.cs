@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -129,6 +130,24 @@ namespace Warewolf.Studio.Views
                 }
                 var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
                 requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
+
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            {
+                if (Application.Current != null)
+                {
+                    var windowCollection = Application.Current.Windows;
+
+                    foreach (var window in windowCollection)
+                    {
+                        var window1 = window as Window;
+
+                        if (window1 != null && window1.Name != "MainViewWindow")
+                        {
+                            window1.Close();
+                        }
+                    }
+                }
             }
         }
     }

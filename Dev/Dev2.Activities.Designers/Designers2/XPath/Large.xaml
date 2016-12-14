@@ -72,12 +72,12 @@
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.XPathToolTipXML}"
+                                    ToolTip="{x:Static languages:Tooltips.XPathToolTipXML}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.XPathHelpXML}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.XPathHelpXML}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SourceString"
                                          SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
@@ -131,11 +131,11 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.XpathToolTipResults}"
+                                                    ToolTip="{x:Static languages:Tooltips.XpathToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.XpathHelpResults}"
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.XpathHelpResults}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"
@@ -166,11 +166,11 @@
                                                     WrapInBrackets="False"
                                                     DefaultText="Xpath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.XPathToolTipXPath}"
+                                                    ToolTip="{x:Static languages:Tooltips.XPathToolTipXPath}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsXpathVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.XPathHelpXPath}"
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.XPathHelpXPath}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="XPath"

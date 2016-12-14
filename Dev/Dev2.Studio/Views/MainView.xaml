@@ -369,7 +369,7 @@
                                                                                 Foreground="DarkRed" 
                                                                                 Margin="0,3,0,0" FontStyle="Normal"
                                                                                 Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                                                                ToolTip="{x:Static languages:Core.WorkflowDesignerSecurityToolTipNone}"></fa:FontAwesome>
+                                                                                ToolTip="{x:Static languages:Tooltips.WorkflowDesignerSecurityToolTipNone}"></fa:FontAwesome>
                                                             </StackPanel>
                                                         </DataTemplate>
                                                     </Setter.Value>

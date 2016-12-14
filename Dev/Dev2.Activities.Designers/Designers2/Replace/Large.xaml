@@ -56,12 +56,12 @@
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.ReplaceToolTipInFields}"
+                                ToolTip="{x:Static languages:Tooltips.ReplaceToolTipInFields}"
                                 DefaultText="[[Recordset().Field]]"
                                 Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFiledstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReplaceHelpInFields}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReplaceHelpInFields}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.FieldsToSearch"
                                      SourcePropertyValue="{Binding ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
@@ -80,12 +80,12 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 TextWrapping="Wrap"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.ReplaceToolTipFind}"
+                                ToolTip="{x:Static languages:Tooltips.ReplaceToolTipFind}"
                                 DefaultText="Some Text"
                                 Text="{Binding ModelItem.Find, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Findtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReplaceHelpFind}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReplaceHelpFind}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Find"
                                      SourcePropertyValue="{Binding ModelItem.Find, UpdateSourceTrigger=PropertyChanged}"
@@ -105,11 +105,11 @@
                                 TextWrapping="Wrap"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.ReplaceToolTipReplaceWith}"
+                                ToolTip="{x:Static languages:Tooltips.ReplaceToolTipReplaceWith}"
                                 Text="{Binding ModelItem.ReplaceWith,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Replacetxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReplaceHelpReplaceWith}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReplaceHelpReplaceWith}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ReplaceWith"
                                      SourcePropertyValue="{Binding ModelItem.ReplaceWith, UpdateSourceTrigger=PropertyChanged}"
@@ -124,12 +124,12 @@
                                 AllowUserInsertLine="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[ReplacementCount]]"
-                                ToolTip="{x:Static languages:Core.ReplaceToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ReplaceToolTipResult}"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReplaceHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReplaceHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

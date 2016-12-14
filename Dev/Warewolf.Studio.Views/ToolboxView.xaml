@@ -125,15 +125,15 @@
 										  LabelText="Search tags e.g. add"
 										  x:Name="SearchTextBox"
 										  ClearSearchCommand="{Binding ClearFilterCommand}"
-										  ClearSearchToolTip="{x:Static languages:Core.ToolboxClearSearchTooltip}"
+										  ClearSearchToolTip="{x:Static languages:Tooltips.ToolboxClearSearchTooltip}"
 										  Style="{StaticResource SearchTextboxStyle}"
 										  GotKeyboardFocus="SelectAllText"
 										  MouseDoubleClick="SelectAllText"
 										  PreviewMouseLeftButtonDown="SelectivelyIgnoreMouseButton"
-										  ToolTip="{x:Static languages:Core.ToolboxSearchToolTip}"
+										  ToolTip="{x:Static languages:Tooltips.ToolboxSearchToolTip}"
 										  Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}">
 				<i:Interaction.Behaviors>
-					<core:HelpSetter Text="{x:Static languages:Core.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
+					<core:HelpSetter Text="{x:Static languages:HelpText.ToolboxViewFilterSearchHelp}" DataContext="{Binding}" />
 				</i:Interaction.Behaviors>
 			</customControls:SearchTextBox>
 		</Grid>

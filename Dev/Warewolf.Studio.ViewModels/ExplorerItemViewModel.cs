@@ -1155,17 +1155,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canCreateSource = value;
 
-                NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewServerSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewDataBaseSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewDataBaseSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWebSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewComPluginSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewWcfSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewWcfSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewEmailSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewExchangeSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewRabbitMqSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewDropboxSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Core.NewSharepointSourceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewDataBaseSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDataBaseSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewEmailSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewExchangeSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
 
                 OnPropertyChanged(() => CanCreateSource);
             }
@@ -1178,7 +1177,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canViewSwagger = value;
 
-                ViewSwaggerTooltip = _canViewSwagger ? Resources.Languages.Core.ViewSwaggerToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                ViewSwaggerTooltip = _canViewSwagger ? Resources.Languages.Tooltips.ViewSwaggerToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewSwagger);
             }
         }
@@ -1189,7 +1188,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canViewApisJson = value;
-                ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Core.ViewApisJsonTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewApisJson);
             }
         }
@@ -1201,7 +1200,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateWorkflowService = value;
-                NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Core.NewServiceTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Tooltips.NewServiceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateWorkflowService);
             }
         }
@@ -1230,11 +1229,11 @@ namespace Warewolf.Studio.ViewModels
                 _canRename = value;
                 if (_isFolder)
                 {
-                    RenameTooltip = _canRename ? Resources.Languages.Core.RenameFolderTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 else
                 {
-                    RenameTooltip = _canRename ? Resources.Languages.Core.RenameItemTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                    RenameTooltip = _canRename ? Resources.Languages.Tooltips.RenameItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged(() => CanRename);
             }
@@ -1248,7 +1247,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDuplicate = value;
-                DuplicateTooltip = _canDuplicate ? Resources.Languages.Core.DuplicateToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DuplicateTooltip = _canDuplicate ? Resources.Languages.Tooltips.DuplicateToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanDuplicate);
             }
         }
@@ -1261,7 +1260,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateTest = value;
-                CreateTestTooltip = _canCreateTest ? Resources.Languages.Core.TestEditorToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                CreateTestTooltip = _canCreateTest ? Resources.Languages.Tooltips.TestEditorToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateTest);
             }
         }
@@ -1274,7 +1273,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canViewRunAllTests = value;
-                RunAllTestsTooltip = _canViewRunAllTests ? Resources.Languages.Core.RunAllTestsToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                RunAllTestsTooltip = _canViewRunAllTests ? Resources.Languages.Tooltips.RunAllTestsToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateTest);
             }
         }
@@ -1294,11 +1293,11 @@ namespace Warewolf.Studio.ViewModels
                 _canDelete = value;
                 if (_isFolder)
                 {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Core.DeleteFolderTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 else
                 {
-                    DeleteTooltip = _canDelete ? Resources.Languages.Core.DeleteItemTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                    DeleteTooltip = _canDelete ? Resources.Languages.Tooltips.DeleteItemTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 
                 OnPropertyChanged(() => CanDelete);
@@ -1313,7 +1312,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateFolder = value;
-                NewFolderTooltip = _canCreateFolder ? Resources.Languages.Core.NewFolderTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                NewFolderTooltip = _canCreateFolder ? Resources.Languages.Tooltips.NewFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateFolder);
             }
         }
@@ -1327,7 +1326,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDebugInputs = value;
-                DebugInputsTooltip = _canDebugInputs ? Resources.Languages.Core.DebugInputsToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DebugInputsTooltip = _canDebugInputs ? Resources.Languages.Tooltips.DebugInputsToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanDebugInputs);
             }
         }
@@ -1341,7 +1340,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDebugStudio = value;
-                DebugStudioTooltip = _canDebugStudio ? Resources.Languages.Core.DebugStudioToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DebugStudioTooltip = _canDebugStudio ? Resources.Languages.Tooltips.DebugStudioToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanDebugStudio);
             }
         }
@@ -1355,7 +1354,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canDebugBrowser = value;
-                DebugBrowserTooltip = _canDebugBrowser ? Resources.Languages.Core.DebugBrowserToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DebugBrowserTooltip = _canDebugBrowser ? Resources.Languages.Tooltips.DebugBrowserToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanDebugBrowser);
             }
         }
@@ -1366,7 +1365,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateSchedule = value;
-                ScheduleTooltip = _canCreateSchedule ? Resources.Languages.Core.ScheduleToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                ScheduleTooltip = _canCreateSchedule ? Resources.Languages.Tooltips.ScheduleToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateSchedule);
             }
         }
@@ -1384,7 +1383,7 @@ namespace Warewolf.Studio.ViewModels
                     IsResourceChecked = _canDeploy;
                 IsResourceCheckedEnabled = _canDeploy;
 
-                DeployTooltip = _canDeploy ? Resources.Languages.Core.DeployToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DeployTooltip = _canDeploy ? Resources.Languages.Tooltips.DeployToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
             }
         }
 
@@ -1449,7 +1448,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canShowDependencies = value;
-                DependenciesTooltip = _canShowDependencies ? Resources.Languages.Core.DependenciesToolTip : Resources.Languages.Core.NoPermissionsToolTip;
+                DependenciesTooltip = _canShowDependencies ? Resources.Languages.Tooltips.DependenciesToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanShowDependencies);
             }
         }
@@ -1460,8 +1459,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isVersion = value;
-                OpenVersionTooltip = _isVersion ? Resources.Languages.Core.OpenVersionTooltip : Resources.Languages.Core.NoPermissionsToolTip;
-                RollbackTooltip = _isVersion ? Resources.Languages.Core.RollbackTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                OpenVersionTooltip = _isVersion ? Resources.Languages.Tooltips.OpenVersionTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                RollbackTooltip = _isVersion ? Resources.Languages.Tooltips.RollbackTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => IsVersion);
             }
         }
@@ -1475,7 +1474,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canShowVersions = value;
-                ShowHideVersionsTooltip = _canShowVersions ? Resources.Languages.Core.ShowHideVersionsTooltip : Resources.Languages.Core.NoPermissionsToolTip;
+                ShowHideVersionsTooltip = _canShowVersions ? Resources.Languages.Tooltips.ShowHideVersionsTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanShowVersions);
             }
         }
@@ -1760,8 +1759,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string ExecuteToolTip => Resources.Languages.Core.ExplorerItemExecuteToolTip;
-        public string EditToolTip => Resources.Languages.Core.ExplorerItemEditToolTip;
+        public string Inputs { get; set; }
+        public string Outputs { get; set; }
+        public string ExecuteToolTip => Resources.Languages.Tooltips.ExplorerItemExecuteToolTip;
+        public string EditToolTip => Resources.Languages.Tooltips.ExplorerItemEditToolTip;
         public string ResourcePath { get; set; }
         public IEnvironmentModel EnvironmentModel
         {

@@ -420,9 +420,9 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedServerChanged SelectedEnvironmentChanged;
 
-        public string ToggleConnectionToolTip => Resources.Languages.Core.ConnectControlToggleConnectionToolTip;
-        public string EditConnectionToolTip => Resources.Languages.Core.ConnectControlEditConnectionToolTip;
-        public string ConnectionsToolTip => Resources.Languages.Core.ConnectControlConnectionsToolTip;
+        public string ToggleConnectionToolTip => Resources.Languages.Tooltips.ConnectControlToggleConnectionToolTip;
+        public string EditConnectionToolTip => Resources.Languages.Tooltips.ConnectControlEditConnectionToolTip;
+        public string ConnectionsToolTip => Resources.Languages.Tooltips.ConnectControlConnectionsToolTip;
         public EventHandler<IServer> ServerConnected { get; set; }
         public EventHandler<IServer> ServerHasDisconnected { get; set; }
         public EventHandler<IServer> ServerReConnected { get; set; }

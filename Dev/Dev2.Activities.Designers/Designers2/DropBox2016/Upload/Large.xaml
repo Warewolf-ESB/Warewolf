@@ -70,10 +70,10 @@
 					  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
 					  SelectedItem="{Binding SelectedSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Sources}"
-					  ToolTip="{x:Static languages:Core.DropboxSourceToolTip}"
+					  ToolTip="{x:Static languages:Tooltips.DropboxSourceToolTip}"
 					  DisplayMemberPath="ResourceName">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxSourceToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropboxSourceToolTip}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
 											SourcePropertyName="SelectedSource"
 											SourcePropertyValue="{Binding SelectedSource, UpdateSourceTrigger=PropertyChanged}"
@@ -85,10 +85,10 @@
                         Grid.Column="1"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
-                        ToolTip="{x:Static languages:Core.DropBoxToolTipEditSource}"
+                        ToolTip="{x:Static languages:Tooltips.DropBoxToolTipEditSource}"
                         Command="{Binding Path=EditDropboxSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropBoxToolTipEditSource}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropBoxToolTipEditSource}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="SourceNewButton" 
@@ -96,10 +96,10 @@
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Core.DropBoxToolTipNewSource}"
+                        ToolTip="{x:Static languages:Tooltips.DropBoxToolTipNewSource}"
                         Command="{Binding Path=NewSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropBoxToolTipNewSource}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropBoxToolTipNewSource}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -114,7 +114,7 @@
                                 Margin="0,1,0,0"
                                 AllowUserInsertLine="False"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFileToolTipFilename}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties1:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -125,7 +125,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Tooltips.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FromPath"
                                      SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"
@@ -146,7 +146,7 @@
                          FlowDirection="LeftToRight" 
                          Content="Overwrite">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxOperationToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropboxOperationToolTip}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton GroupName="WriteMode" 
@@ -156,7 +156,7 @@
                          FlowDirection="LeftToRight" 
                          Content="Add">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxOperationToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropboxOperationToolTip}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </Grid>
@@ -180,12 +180,12 @@
                                 DefaultText="Dropbox location"
                                 FilterType="All"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.DropBoxDownloadToolTipLocalDestination}"
+                                ToolTip="{x:Static languages:Tooltips.DropBoxDownloadToolTipLocalDestination}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropBoxDownloadToolTipLocalDestination}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Tooltips.DropBoxDownloadToolTipLocalDestination}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
@@ -202,7 +202,7 @@
                                 IsInCalculateMode="False"
                                 FilterType="All"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.DropboxResultHelpText}"
+                                ToolTip="{x:Static languages:HelpText.DropboxResultHelpText}"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
@@ -210,7 +210,7 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxResultHelpText}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.DropboxResultHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding  Result, UpdateSourceTrigger=PropertyChanged}"

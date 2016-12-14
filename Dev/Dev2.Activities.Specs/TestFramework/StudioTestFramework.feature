@@ -677,8 +677,7 @@ Scenario: Run a test with invalid and pending results
          | Variable Name | Value      |
          | Message       | Hello Bob. |
 	When I run the test
-    Then test result is Failed
-    And Test debug results contain pending results "Pending Step: Assign a value to Name if blank (1)"
+    Then test result is invalid
 	And test folder is cleaned
 
 
@@ -717,6 +716,71 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	  | Variable    | Value      |
 	  | [[Message]] | Hello Bob. |
 		When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+
+@TestFramework
+Scenario: Run a test with single scalar inputs and outputs invalid no variable
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	| Name          | Bob   |
+	And I update outputs as
+	| Variable Name | Value       |
+	|               | Hello Mary. |
+	And I save
+	When I run the test
+	Then test result is Failed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+@TestFramework
+Scenario: Run a test with single scalar inputs and outputs invalid no input variable
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	And test status is pending
+	And test is enabled
+	And I update inputs as
+	| Variable Name | Value |
+	|               |       |
+	And I update outputs as
+	| Variable Name | Value       |
+	| Message       | Hello Mary. |
+	And I save
+	When I run the test
+	Then test result is Failed
+	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
@@ -862,13 +926,10 @@ Scenario: Run a test with Assert step assign
 	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
-		| [[Name]] | Bob   |	
-	And the service debug outputs as
-	  | Variable    | Value      |
-	  | [[Message]] | Hello Bob. |
+		| [[Name]] | Bob   |		
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok	
-	#And test folder is cleaned
+
 @s5
 	Scenario: Run a test with Assert step
 	Given the test builder is open with existing service "Hello World"	
@@ -936,8 +997,8 @@ Scenario: Run Selected Test in Web
 	When I save	
 	When I run selected test in Web
 	Then The WebResponse as
-	| Test Name | Result | Message                             |
-	| Test 1    | Failed | Failed Output For Variable: Message |
+	| Test Name | Result | Message                                                                                                            |
+	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
@@ -1001,7 +1062,7 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	And save is enabled
 	When I save
 	And I run the test
-	Then test result is Failed
+	Then test result is invalid
 
 #Data Category
 Scenario: Test WF with Assign
@@ -1433,27 +1494,6 @@ Scenario: Test WF with Move
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "MoveTestWF" is deleted as cleanup
 		
-Scenario: Test WF with Read Folder
-		Given I have a workflow "ReadFolderTestWF"		
-		And "ReadFolderTestWF" contains an Read Folder "ReadFolder" as
-		  | File or Folder          | If it exits | Username | Password | Result          | Folders |
-		  | C:\ProgramData\Warewolf | True        |          |          | [[rec(*).Name]] | True    |
-		And I save workflow "ReadFolderTestWF"
-		Then the test builder is open with "ReadFolderTestWF"
-		And I click New Test
-		And a new test is added	
-		And test name starts with "Test 1"
-		And I Add "ReadFolder" as TestStep
-	And I add StepOutputs as 
-		| Variable Name   | Condition | Value                              |
-		| [[rec(7).Name]] | =         | C:\ProgramData\Warewolf\Workspaces |
-		When I save
-		And I run the test
-		Then test result is Passed
-		When I delete "Test 1"
-		Then The "DeleteConfirmation" popup is shown I click Ok
-		Then workflow "ReadFolderTestWF" is deleted as cleanup
-
 Scenario: Test WF with Read File
 		Given I have a workflow "ReadFileTestWF"
 		And I create temp file to read from as "C:\ProgramData\Warewolf\Resources\Log.txt" 
@@ -1610,7 +1650,30 @@ And I add StepOutputs as
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestWF" is deleted as cleanup
-	
+
+Scenario: Test WF with Calculate outputs with no variable
+	Given I have a workflow "CalculateTestWF"
+	And "CalculateTestWF" contains an Assign "values1" as
+      | variable | value |
+      | [[a]]    | 1     |
+      | [[b]]    | 5     |
+	And "CalculateTestWF" contains Calculate "TestCalculate" with formula "Sum([[a]],[[b]])" into "[[result]]"
+	And I save workflow "CalculateTestWF"
+	Then the test builder is open with "CalculateTestWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "TestCalculate" as TestStep
+And I add StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 |               | =         |       |		 
+	When I save
+	And I run the test
+	Then test result is invalid
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "CalculateTestWF" is deleted as cleanup	
+
 #WOLF-2280
 Scenario: Test WF with Calculate No outPuts
 	Given I have a workflow "CalculateTestNoOutputsWF"
@@ -1627,7 +1690,7 @@ Scenario: Test WF with Calculate No outPuts
 	And I Add "TestCalculate" as TestStep	 
 	When I save
 	And I run the test
-	Then test result is Passed
+	Then test result is invalid
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup

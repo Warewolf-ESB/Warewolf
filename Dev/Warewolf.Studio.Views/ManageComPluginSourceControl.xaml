@@ -83,12 +83,12 @@
                                                   Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                                   Style="{StaticResource SearchTextboxStyle}"
                                                   LabelText="Filter"
-                                                  ToolTip="{x:Static languages:Core.ComManagePluginSourceFilterTooltip}"
+                                                  ToolTip="{x:Static languages:Tooltips.ComManagePluginSourceFilterTooltip}"
                                                   ClearSearchCommand="{Binding ClearSearchTextCommand}"
-                                                  ClearSearchToolTip="{x:Static languages:Core.ComManagePluginSourceClearSearchTooltip}"
+                                                  ClearSearchToolTip="{x:Static languages:Tooltips.ComManagePluginSourceClearSearchTooltip}"
                                                   HorizontalAlignment="Stretch" >
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ComPluginSourceClearSearchHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ComPluginSourceClearSearchHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </customControls:SearchTextBox>
                     <Button x:Name="RefreshButton" Grid.Row="0"
@@ -97,7 +97,7 @@
                             VerticalAlignment="Center"
                             Margin="0,3,0,-1"
                             Command="{Binding RefreshCommand}"
-                            ToolTip="{x:Static languages:Core.ComManagePluginSourceRefreshTooltip}"
+                            ToolTip="{x:Static languages:Tooltips.ComManagePluginSourceRefreshTooltip}"
                             Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                         FontSize="16" 
@@ -105,7 +105,7 @@
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Center"/>
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ComPluginSourceRefreshCommandHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ComPluginSourceRefreshCommandHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </Button>
                     <views:CircularProgressBar Grid.Row="0"
@@ -188,10 +188,10 @@
                     <TextBox x:Name="AssemblyNameTextBox" 
                              
                              Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ComManagePluginSourceAssemblyNameTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ComManagePluginSourceAssemblyNameTooltip}"
                              Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ComPluginSourceDllFullNameHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.ComPluginSourceDllFullNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                 </Grid>

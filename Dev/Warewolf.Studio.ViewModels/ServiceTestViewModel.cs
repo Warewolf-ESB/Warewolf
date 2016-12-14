@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
 
-            UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
+            UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
 
             WorkflowDesignerViewModel = workflowDesignerViewModel;
             WorkflowDesignerViewModel.IsTestView = true;
@@ -570,6 +570,9 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutput.Value = value;
                     }
                 }
+                SelectedServiceTest.ErrorExpected = outPutState.HasError;
+                SelectedServiceTest.NoErrorExpected = !outPutState.HasError;
+                SelectedServiceTest.ErrorContainsText = outPutState.ErrorMessage;
             }
         }
 
@@ -1435,7 +1438,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunSelectedTestInBrowser()
         {
-            ServiceTestCommandHandler.RunSelectedTestInBrowser(SelectedServiceTest.RunSelectedTestUrl, _processExecutor);
+            var runSelectedTestUrl = GetWebRunURLForTest(SelectedServiceTest);
+            ServiceTestCommandHandler.RunSelectedTestInBrowser(runSelectedTestUrl, _processExecutor);
         }
 
         private void RunSelectedTest()
@@ -1532,11 +1536,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (SelectedServiceTest.NewTest)
                 {
-                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Core.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
+                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
                 }
                 else
                 {
-                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Core.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Core.ServiceTestDisabledDuplicateSelectedTestTooltip;
+                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
                 }
             }
         }
@@ -1553,8 +1557,6 @@ namespace Warewolf.Studio.ViewModels
                 _tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
-            SetSelectedTestUrl();
-            SetDuplicateTestTooltip();
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
@@ -1660,6 +1662,7 @@ namespace Warewolf.Studio.ViewModels
 
                 var serviceTestModels = RealTests().Where(a => a.IsDirty).ToList();
                 Save(serviceTestModels);
+                UpdateTestsFromResourceUpdate();
             }
             catch (Exception)
             {
@@ -1784,10 +1787,6 @@ namespace Warewolf.Studio.ViewModels
 
         private static IServiceTestOutput CreateServiceTestOutputTO(IServiceTestOutput output)
         {
-            if (string.IsNullOrEmpty(output.Variable))
-            {
-                return null;
-            }
             return new ServiceTestOutputTO
             {
                 Variable = output.Variable,
@@ -1830,11 +1829,6 @@ namespace Warewolf.Studio.ViewModels
 
         private static IServiceTestOutput CreateServiceTestStepOutputsTO(IServiceTestOutput output)
         {
-            if (string.IsNullOrEmpty(output.Variable))
-            {
-                return null;
-            }
-
             return new ServiceTestOutputTO
             {
                 Variable = output.Variable,
@@ -1851,13 +1845,20 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var serviceTestModel in Tests)
             {
-                serviceTestModel.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + serviceTestModel.TestName;
-                if (serviceTestModel.AuthenticationType == AuthenticationType.Public)
-                {
-                    serviceTestModel.RunSelectedTestUrl = serviceTestModel.RunSelectedTestUrl.Replace("/secure/", "/public/");
-                }
+                var runSelectedTestUrl = GetWebRunURLForTest(serviceTestModel);
+                serviceTestModel.RunSelectedTestUrl = runSelectedTestUrl;
             }
 
+        }
+
+        private string GetWebRunURLForTest(IServiceTestModel serviceTestModel)
+        {
+            var runSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + serviceTestModel.TestName;
+            if(serviceTestModel.AuthenticationType == AuthenticationType.Public)
+            {
+                runSelectedTestUrl = runSelectedTestUrl.Replace("/secure/", "/public/");
+            }
+            return runSelectedTestUrl;
         }
 
         private bool ShowPopupWhenDuplicates()
@@ -1889,11 +1890,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetSelectedTestUrl()
         {
-            SelectedServiceTest.RunSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + SelectedServiceTest.TestName;
-            if (SelectedServiceTest.AuthenticationType == AuthenticationType.Public)
-            {
-                SelectedServiceTest.RunSelectedTestUrl = SelectedServiceTest.RunSelectedTestUrl.Replace("/secure/", "/public/");
-            }
+            var runSelectedTestUrl = GetWebRunURLForTest(SelectedServiceTest);
+            SelectedServiceTest.RunSelectedTestUrl = runSelectedTestUrl;
         }
 
         private void MarkTestsAsNotNew()
@@ -2129,21 +2127,25 @@ namespace Warewolf.Studio.ViewModels
                 ParentId = to.ResourceId,
                 TestInvalid = to.TestInvalid,
                 TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
-                Inputs = to.Inputs?.Select(input =>
-                {
-                    var serviceTestInput = new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput;
-                    serviceTestInput.EmptyIsNull = input.EmptyIsNull;
-                    return serviceTestInput;
-                }).ToObservableCollection(),
-                Outputs = to.Outputs?.Select(output =>
-                {
-                    var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
-                    serviceTestOutput.AssertOp = output.AssertOp;
-                    serviceTestOutput.Result = output.Result;
-                    return serviceTestOutput;
-                }).ToObservableCollection()
+                Inputs = to.Inputs?.Select(CreateInput).ToObservableCollection(),
+                Outputs = to.Outputs?.Select(CreateOutput).ToObservableCollection()
             };
             return serviceTestModel;
+        }
+
+        private IServiceTestOutput CreateOutput(IServiceTestOutput output)
+        {
+            var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
+            serviceTestOutput.AssertOp = output.AssertOp;
+            serviceTestOutput.Result = output.Result;
+            return serviceTestOutput;
+        }
+
+        private IServiceTestInput CreateInput(IServiceTestInput input)
+        {
+            var serviceTestInput = new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput;
+            serviceTestInput.EmptyIsNull = input.EmptyIsNull;
+            return serviceTestInput;
         }
 
         private ServiceTestStep CreateServiceTestStep(IServiceTestStep step)

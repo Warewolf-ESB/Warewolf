@@ -90,10 +90,10 @@
                                                     Margin="0,0,1,1"
                                                     Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static languages:Core.BaseConversionToolTipBaseInput}"
+                                                    ToolTip="{x:Static languages:Tooltips.BaseConversionToolTipBaseInput}"
                                                     MaxHeight="52">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.BaseConversionHelpBaseInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.BaseConversionHelpBaseInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromExpression"
                                                          SourcePropertyValue="{Binding FromExpression, UpdateSourceTrigger=PropertyChanged}"
@@ -117,9 +117,9 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static languages:Core.BaseConversionToolTipFromtype}">
+                                      ToolTip="{x:Static languages:Tooltips.BaseConversionToolTipFromtype}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.BaseConversionHelpFromType}"
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.BaseConversionHelpFromType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromType"
@@ -144,9 +144,9 @@
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                                       SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{x:Static languages:Core.BaseConversionToolTipTotype}">
+                                      ToolTip="{x:Static languages:Tooltips.BaseConversionToolTipTotype}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.BaseConversionHelpToType}"
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.BaseConversionHelpToType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="ToType"

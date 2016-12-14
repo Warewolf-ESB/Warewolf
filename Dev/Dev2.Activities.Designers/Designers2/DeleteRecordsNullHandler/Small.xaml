@@ -42,14 +42,14 @@
                                 AllowUserInsertLine="False"
                                 DefaultText="[[Recordset(*)]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static languages:Core.DeleteToolTipRecords}"
+                                ToolTip="{x:Static languages:Tooltips.DeleteToolTipRecords}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DeleteHelpRecords}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DeleteHelpRecords}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RecordsetName"
                                      SourcePropertyValue="{Binding ModelItem.RecordsetName, UpdateSourceTrigger=PropertyChanged}"
@@ -62,14 +62,14 @@
                                 Grid.Column="1"
                                 DefaultText="[[Success]]"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.DeleteToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.DeleteToolTipResult}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DeleteHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DeleteHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

@@ -49,12 +49,12 @@
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.DropBoxFileListFileNameToolTip}"
+                                ToolTip="{x:Static languages:Tooltips.DropBoxFileListFileNameToolTip}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxFileListFileName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DropBoxFileListFileNameHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -83,10 +83,10 @@
                                     Text="{Binding Result,
                                                    Mode=TwoWay,
                                                    UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.DropboxResultHelpText}"
+                                    ToolTip="{x:Static languages:HelpText.DropboxResultHelpText}"
                                     WrapInBrackets="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxResultHelpText}" />
+                <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.DropboxResultHelpText}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="Result"
                                          SourcePropertyValue="{Binding Result,
