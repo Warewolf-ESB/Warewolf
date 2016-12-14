@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2;
@@ -64,6 +65,27 @@ namespace Warewolf.Studio.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private void ManageEmailAttachmentView_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            {
+                if (Application.Current != null)
+                {
+                    var windowCollection = Application.Current.Windows;
+
+                    foreach (var window in windowCollection)
+                    {
+                        var window1 = window as Window;
+
+                        if (window1 != null && window1.Name != "MainViewWindow")
+                        {
+                            window1.Close();
+                        }
+                    }
+                }
+            }
         }
     }
 }
