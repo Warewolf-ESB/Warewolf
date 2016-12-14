@@ -31,7 +31,8 @@ namespace Warewolf.UISpecs
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowTestingTab", "\tIn order to test workflows\r\n\tAs a Warewolf Studio user\r\n\tI want to perform a com" +
-                    "position of recorded actions", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "position of recorded actions", ProgrammingLanguage.CSharp, new string[] {
+                        "WorkflowTestingTabFeature"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -71,43 +72,47 @@ namespace Warewolf.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unsaved Tests Contain a Star in their Name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowTestingTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowTestingTabFeature")]
         public virtual void UnsavedTestsContainAStarInTheirName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unsaved Tests Contain a Star in their Name", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.When("I Click View Tests In Explorer Context Menu for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Click View Tests In Explorer Context Menu for Sub Item \"Control Flow - Decision" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("The Added Test Exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("The Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("The \"1st\" Added Test Exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
- testRunner.When("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("The \"1st\" Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.Then("The Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.When("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("The \"1st\" Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
- testRunner.Then("The Second Added Test Exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
- testRunner.And("The Second Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("The \"2nd\" Added Test Exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.When("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("The \"2nd\" Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.Then("The Second Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 19
- testRunner.When("I Toggle First Added Test Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
- testRunner.Then("The Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
  testRunner.When("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.Then("The \"2nd\" Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
+ testRunner.When("I Toggle \"1st\" Added Test Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.Then("The \"1st\" Added Test \"Has\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 22
- testRunner.Then("The Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 23
+ testRunner.Then("The \"1st\" Added Test \"Has No\" Unsaved Star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.And("I Click Close Tests Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -115,50 +120,51 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Run Passing Tests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowTestingTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowTestingTabFeature")]
         public virtual void RunPassingTests()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Run Passing Tests", ((string[])(null)));
-#line 24
-this.ScenarioSetup(scenarioInfo);
-#line 25
- testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
- testRunner.And("I Drag Toolbox Random Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 27
- testRunner.And("I Enter Dice Roll Values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
- testRunner.And("I Press F6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Drag Toolbox Random Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.And("I wait for output spinner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter Dice Roll Values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.And("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Press F6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
- testRunner.And("I Enter Service Name Into Save Dialog As \"Testing123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I wait for output spinner", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
- testRunner.And("I Click SaveDialog Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Save Ribbon Button to Open Save Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
- testRunner.And("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter Service Name Into Save Dialog As \"Testing123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And("I Click View Tests In Explorer Context Menu for \"Testing123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click SaveDialog Save Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Close Workflow Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
- testRunner.And("I Update Test Name To \"Testing123_Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click View Tests In Explorer Context Menu for \"Testing123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
- testRunner.And("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click The Create a New Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
- testRunner.And("I Click First Test Run Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Update Test Name To \"Testing123_Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.Then("The First Test \"Is\" Passing", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Click Save Ribbon Button Without Expecting a Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.When("I Toggle First Test Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
  testRunner.And("I Click First Test Run Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.Then("The First Test \"Is\" Passing", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 42
- testRunner.Then("The First Test \"Is\" Invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Toggle First Test Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 43
- testRunner.When("I Click First Test Delete Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I Click First Test Run Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
+ testRunner.Then("The First Test \"Is\" Invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 45
+ testRunner.When("I Click First Test Delete Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 46
  testRunner.And("I Click MessageBox Yes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

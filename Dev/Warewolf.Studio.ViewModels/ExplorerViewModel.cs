@@ -422,9 +422,16 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             OnPropertyChanged(() => Environments);
-            if (SelectedServer != null && this is DeployDestinationViewModel)
+            try
             {
-                OnPropertyChanged(() => SelectedServer.IsConnected);
+                if (SelectedServer != null && this is DeployDestinationViewModel)
+                {
+                    OnPropertyChanged(() => SelectedServer.IsConnected);
+                }
+            }
+            catch (Exception)
+            {
+                //
             }
             
         }
