@@ -790,11 +790,12 @@ namespace Warewolf.UITests
 
         public void TryCloseWorkflowTestingTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton))
                 {
-                    Click_Close_Workflow_Tab_Button();
+                    Click_Close_Tests_Tab();
                 }
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
                 {
@@ -803,13 +804,18 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close Workflow Testing tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging workflow testing tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
         [When(@"I Try Close Settings Tab")]
         public void TryCloseSettingsTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab))
@@ -823,7 +829,11 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Settings tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close settings tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging settings tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
