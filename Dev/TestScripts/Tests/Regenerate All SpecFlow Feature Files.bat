@@ -37,3 +37,5 @@ for /d %%d in (Warewolf.UIBindingTests.*) do (
 )
 packages\SpecFlow.2.1.0\tools\specflow.exe generateAll Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj /force /verbose
 packages\SpecFlow.2.1.0\tools\specflow.exe generateAll Warewolf.SecuritySpecs\Warewolf.SecuritySpecs.csproj /force /verbose
+packages\SpecFlow.2.1.0\tools\specflow.exe generateAll Warewolf.UISpecs\Warewolf.UISpecs.csproj /force /verbose
+packages\SpecFlow.2.1.0\tools\specflow.exe generateAll Warewolf.UITests\Warewolf.UITests.csproj /force /verbose
