@@ -27,6 +27,10 @@ namespace Dev2.Activities
             {
                 return new List<TestRunResult>();
             }
+            if(string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
+            {
+                return new List<TestRunResult>();
+            }
             if (output.Result != null)
             {
                 output.Result.RunTestResult = RunResult.TestInvalid;
