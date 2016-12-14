@@ -105,7 +105,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             }
-            _stats.Calculate(_source?.SourceLoadedItems?.ToList());
         }
 
         public bool CanSelectDependencies
