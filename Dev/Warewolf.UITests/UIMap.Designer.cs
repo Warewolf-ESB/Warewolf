@@ -58486,18 +58486,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfCustom AddModeNewActivity
+        public AddModeNewActivity AddModeNewActivity
         {
             get
             {
                 if ((this.mAddModeNewActivity == null))
                 {
-                    this.mAddModeNewActivity = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mAddModeNewActivity.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemsPresenter";
-                    this.mAddModeNewActivity.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__ActivitiesPresenter_AutoID";
-                    this.mAddModeNewActivity.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mAddModeNewActivity = new AddModeNewActivity(this);
                 }
                 return this.mAddModeNewActivity;
             }
@@ -58517,9 +58512,47 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCustom mAddModeNewActivity;
+        private AddModeNewActivity mAddModeNewActivity;
         
         private OnErrorCustom34 mOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AddModeNewActivity : WpfCustom
+    {
+        
+        public AddModeNewActivity(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemsPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI__ActivitiesPresenter_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UISacdVerticalConnectoCustom
+        {
+            get
+            {
+                if ((this.mUISacdVerticalConnectoCustom == null))
+                {
+                    this.mUISacdVerticalConnectoCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUISacdVerticalConnectoCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.VerticalConnector";
+                    this.mUISacdVerticalConnectoCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "sacd:VerticalConnector_1";
+                    this.mUISacdVerticalConnectoCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUISacdVerticalConnectoCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUISacdVerticalConnectoCustom;
         #endregion
     }
     
@@ -78315,7 +78348,8 @@ namespace Warewolf.UITests
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion

@@ -6,6 +6,7 @@
         mc:Ignorable="d" 
         WindowStartupLocation="CenterScreen"
         MouseDown="JsonObjectsView_OnMouseDown"
+        KeyUp="JsonObjectsView_OnKeyUp"
         Closed="JsonObjectsView_OnClosed"
         Title="WindowBorderLess"
         Style="{StaticResource WindowBorderlessStyle}"

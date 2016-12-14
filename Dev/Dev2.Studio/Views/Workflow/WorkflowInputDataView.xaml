@@ -14,6 +14,7 @@
         Height="400"
         Style="{StaticResource WindowBorderlessStyle}"
         MouseDown="WorkflowInputDataView_OnMouseDown"
+        KeyUp="WorkflowInputDataView_OnKeyUp"
         Closed="WorkflowInputDataView_OnClosed"
         PreviewKeyDown="WorkflowInputDataView_OnPreviewKeyDown"
         LostKeyboardFocus="WorkflowInputDataView_OnLostKeyboardFocus"
