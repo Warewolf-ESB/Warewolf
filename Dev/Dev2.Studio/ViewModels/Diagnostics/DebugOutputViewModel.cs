@@ -824,7 +824,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             return false;
         }
 
-        private static bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child, IDebugTreeViewItemViewModel parent)
+        private bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child, IDebugTreeViewItemViewModel parent)
         {
             if (!child.HasError.GetValueOrDefault(false)) return false;
             var theParent = parent as DebugStateTreeViewItemViewModel;
@@ -833,6 +833,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             theParent.AppendError(content.ErrorMessage);
             theParent.HasError = true;
+            var childState = child as DebugStateTreeViewItemViewModel;
+            if(childState?.AssertResultList != null && childState.AssertResultList.Count > 0 && IsTestView)
+            {
+                foreach (var listItem in childState.AssertResultList)
+                {
+                    var lineItem = listItem as DebugLine;
+                    if (lineItem?.LineItems != null)
+                    {
+                        foreach(var lineItemLineItem in lineItem.LineItems)
+                        {
+                            var line = lineItemLineItem as DebugLineItem;
+                            if (line != null && line.TestStepHasError)
+                            {
+                                theParent.AppendError(line.Value);                                
+                            }
+                        }
+                    }
+                }
+            }
             return false;
         }
 
