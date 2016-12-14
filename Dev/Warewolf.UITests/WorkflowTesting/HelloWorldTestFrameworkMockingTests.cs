@@ -76,8 +76,13 @@ namespace Warewolf.UITests
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
             UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.Failed.Exists, "Failed status icon does not exist after running a text with the wrong output message.");
+            UIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Failed status icon does not exist after running a text with the wrong output message.");
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            UIMap.Click_Delete_Test_Button(4);
+            UIMap.Click_MessageBox_Yes();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         #region Additional test attributes

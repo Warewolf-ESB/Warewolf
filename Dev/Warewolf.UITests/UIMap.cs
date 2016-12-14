@@ -8048,7 +8048,7 @@ namespace Warewolf.UITests
 
         public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue.Text = message;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.UIUI_StepOutputs_SetthTable.UIItemRow.UIItemWarewolfStudioViCell.AssertValue_HelloEdit.Text = message;
         }
 
         public void Click_Delete_On_AssignValue_TestStep()
