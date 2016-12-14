@@ -394,7 +394,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exception : .
+        ///   Looks up a localized string similar to Exception: .
         /// </summary>
         public static string ExceptionErrorLabel {
             get {
@@ -512,7 +512,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inner Exception : .
+        ///   Looks up a localized string similar to Inner Exception: .
         /// </summary>
         public static string InnerExceptionErrorLabel {
             get {
