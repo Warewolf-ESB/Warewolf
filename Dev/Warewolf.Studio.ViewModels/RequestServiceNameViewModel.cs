@@ -312,10 +312,8 @@ namespace Warewolf.Studio.ViewModels
             _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
+            if (mainViewModel?.ExplorerViewModel != null)
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
-            }
 
             return ViewResult;
         }
