@@ -290,11 +290,7 @@ namespace Warewolf.Studio.ViewModels
             ValidateName();
             _view.DataContext = this;
             _view.ShowView();
-
-            _environmentViewModel.IsSaveDialog = false;
-            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
-            _environmentViewModel.Filter(string.Empty);
-
+            
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
@@ -307,6 +303,10 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel.SetPermissions((Permissions) permissions);
                 }
             }
+
+            _environmentViewModel.Filter(string.Empty);
+            _environmentViewModel.IsSaveDialog = false;
+            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             return ViewResult;
         }
