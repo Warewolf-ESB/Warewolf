@@ -57,12 +57,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.DropBoxDownloadFileName}"
+                                ToolTip="{x:Static languages:Tooltips.DropBoxDownloadFileNameTooltip}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxDownloadFileName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DropBoxDownloadFileNameHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
@@ -80,7 +80,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               ToolTip="{x:Static languages:Core.DropBoxToolTipLocalSource}"
+                               ToolTip="{x:Static languages:Tooltips.DropBoxToolTipLocalSource}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -91,7 +91,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Tooltips.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FromPath"
                                      SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"

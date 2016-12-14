@@ -54,14 +54,14 @@
                                 AllowUserInsertLine="False"
                                 DefaultText="[[Recordset()]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static languages:Core.LengthToolTipRecordset}"
+                                ToolTip="{x:Static languages:Tooltips.LengthToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.LengthHelpRecordset}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.LengthHelpRecordset}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="RecordsetNameValue"
                                      SourcePropertyValue="{Binding RecordsetNameValue, UpdateSourceTrigger=PropertyChanged}"
@@ -83,11 +83,11 @@
                       Grid.Column="1"
                       Grid.Row="0"
                       Margin="-6,-0,0,0"
-                      ToolTip="{x:Static languages:Core.TreatNullAsZeroToolTip}"
+                      ToolTip="{x:Static languages:Tooltips.TreatNullAsZeroToolTip}"
                       IsChecked="{Binding Path=ModelItem.TreatNullAsZero, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NullAsCheckBox_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.TreatNullAsZeroHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.TreatNullAsZeroHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
 
@@ -97,13 +97,13 @@
                                 Margin="0,-1,0,0"
                                 DefaultText="[[Length]]"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.LengthToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.LengthToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.LengthHelpResult}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.LengthHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RecordsLength"
                                      SourcePropertyValue="{Binding ModelItem.RecordsLength, UpdateSourceTrigger=PropertyChanged}"

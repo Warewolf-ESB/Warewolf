@@ -51,11 +51,11 @@
                   Margin="{StaticResource ControlBorderRight}"
                   IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                   SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                  ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
+                  ToolTip="{x:Static languages:Tooltips.SharepointToolTipServer}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpServer}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpServer}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
@@ -65,7 +65,7 @@
                 ToolTip="Edit Sharepoint Server Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointEditServerHelp}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointEditServerHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
 
@@ -81,7 +81,7 @@
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.LocalInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadLocalFolderToolTipFolder}"
+                                ToolTip="{x:Static languages:Tooltips.ReadLocalFolderToolTipFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -91,7 +91,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadLocalHelpFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadLocalHelpFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.LocalInputPath"
                                      SourcePropertyValue="{Binding  ModelItem.LocalInputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -109,7 +109,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SharePointUploadPathToolTip}"
+                                ToolTip="{x:Static languages:Tooltips.SharePointUploadPathToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -118,7 +118,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharePointUploadHelpFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharePointUploadHelpFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ServerInputPath"
                                      SourcePropertyValue="{Binding  ModelItem.ServerInputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -136,11 +136,11 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

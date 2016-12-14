@@ -62,11 +62,11 @@
                      Grid.Column="1" 
                      Grid.Row="0"
                      Text="{Binding HostName,UpdateSourceTrigger=PropertyChanged}"
-                     ToolTip="{x:Static languages:Core.ManageWebSourceHostNameTooltip}"
+                     ToolTip="{x:Static languages:Tooltips.ManageWebSourceHostNameTooltip}"
                      Focusable="True"
                      views:FocusExtension.IsFocused="True">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.WebServiceSourceServerHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.WebServiceSourceServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
             <TextBlock VerticalAlignment="Center" 
@@ -78,25 +78,25 @@
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,-3,0,0">
                 <RadioButton Margin="{StaticResource ControlBorderRight}" 
                              x:Name="AnonymousRadioButton" 
-                             ToolTip="{x:Static languages:Core.AnonymousAuthenticationToolTip}" 
+                             ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.Anonymous}}" 
                              Content="Anonymous">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.WindowsAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.WindowsAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
                 <RadioButton x:Name="UserRadioButton" 
-                             ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
+                             ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.User}}" 
                              Content="User">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.UserAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.UserAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
             </StackPanel>
@@ -118,10 +118,10 @@
             <TextBox x:Name="UserNameTextBox" 
                      Grid.Row="0" 
                      Grid.Column="1"
-                     ToolTip="{x:Static languages:Core.ManageWebSourceUserNameTooltip}"
+                     ToolTip="{x:Static languages:Tooltips.ManageWebSourceUserNameTooltip}"
                      Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
             <TextBlock Grid.Row="1" 
@@ -131,12 +131,12 @@
             <PasswordBox x:Name="PasswordTextBox" 
                          Grid.Column="1"
                          Grid.Row="1" 
-                         ToolTip="{x:Static languages:Core.ManageWebSourcePasswordTooltip}"
+                         ToolTip="{x:Static languages:Tooltips.ManageWebSourcePasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
                          customControls:PasswordBoxAssistant.BindPassword="true" 
                          customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
         </Grid>
@@ -151,10 +151,10 @@
             <TextBlock Text="{x:Static languages:Core.DefaultQueryLabel}"/>
             <TextBox x:Name="DefaultQueryTextBox" 
                      Grid.Column="1"
-                     ToolTip="{x:Static languages:Core.ManageWebSourceDefaultQueryTooltip}"
+                     ToolTip="{x:Static languages:Tooltips.ManageWebSourceDefaultQueryTooltip}"
                      Text="{Binding DefaultQuery,UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
@@ -187,14 +187,14 @@
                     Height="30" 
                     Command="{Binding TestCommand}" 
                     Content="{x:Static languages:Core.TestConnectionLabel}" 
-                    ToolTip="{x:Static languages:Core.ManageWebSourceTestTooltip}">
+                    ToolTip="{x:Static languages:Tooltips.ManageWebSourceTestTooltip}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="CancelButton" Width="120" 
                     Height="30" 
-                    ToolTip="{x:Static languages:Core.ManageWebSourceCancelTestTooltip}"
+                    ToolTip="{x:Static languages:Tooltips.ManageWebSourceCancelTestTooltip}"
                     Command="{Binding CancelTestCommand}" 
                     Content="{x:Static languages:Core.CancelTest}"></Button>
         </StackPanel>
@@ -208,13 +208,13 @@
                 <Hyperlink x:Name="TestDefault" 
                            Command="{Binding ViewInBrowserCommand}" 
                            
-                           ToolTip="{x:Static languages:Core.ManageWebSourceViewInBrowserTooltip}"
+                           ToolTip="{x:Static languages:Tooltips.ManageWebSourceViewInBrowserTooltip}"
                            Style="{StaticResource HyperLinkStyle}"
                            NavigateUri="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" >
                     <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                 </Hyperlink>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBlock>
         </StackPanel>

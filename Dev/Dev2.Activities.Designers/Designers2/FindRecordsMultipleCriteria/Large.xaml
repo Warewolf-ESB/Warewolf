@@ -82,12 +82,12 @@
                                     FilterType="RecordsetFields"
                                     AllowMultipleVariables="True"
                                     Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.FindToolTipInFields}"
+                                    ToolTip="{x:Static languages:Tooltips.FindToolTipInFields}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldsToSearchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearchtxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpInFields}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpInFields}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.FieldsToSearch"
                                          SourcePropertyValue="{Binding  ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
@@ -137,7 +137,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
+                                      ToolTip="{x:Static languages:Tooltips.FindToolTipLookForMatchType}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -145,7 +145,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpLookForMatchType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="SearchType"
                                                          SourcePropertyValue="{Binding SearchType, UpdateSourceTrigger=PropertyChanged}"
@@ -193,9 +193,9 @@
                                                         IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static languages:Core.FindToolTipMatch}">
+                                                        ToolTip="{x:Static languages:Tooltips.FindToolTipMatch}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="SearchCriteria"
                                                              SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
@@ -227,7 +227,7 @@
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsFromHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindRecordsFromHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="From"
                                                              SourcePropertyValue="{Binding From, UpdateSourceTrigger=PropertyChanged}"
@@ -259,7 +259,7 @@
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindRecordsToHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:HelpText.FindRecordsToHelpText}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="To"
                                                              SourcePropertyValue="{Binding To, UpdateSourceTrigger=PropertyChanged}"
@@ -288,10 +288,10 @@
                   Margin="-6,0,0,0"
                   Content="Require All Matches To Be True"
                   IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.FindToolTipRequireAllMatchesToBeTrue}"
+                  ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllMatchesToBeTrue}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
 
@@ -301,10 +301,10 @@
                   Margin="-6,0,0,0"
                   Content="Requires All Fields To Match"
                   IsChecked="{Binding ModelItem.RequireAllFieldsToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.FindToolTipRequireAllFieldsToMatch}"
+                  ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllFieldsToMatch}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllFieldsToMatch_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllFieldsToMatch}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpRequireAllFieldsToMatch}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
 
@@ -326,9 +326,9 @@
                                     Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static languages:Core.FindToolTipResult}">
+                                    ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="Result"
                                          SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

@@ -46,13 +46,13 @@ namespace Dev2.Activities.Designers2.Core.Source
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
-            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.ComPluginServiceSourcesHelp;
-            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ComPluginServiceEditSourceHelp;
-            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ComPluginServiceNewSourceHelp;
+            SourcesHelpText = Warewolf.Studio.Resources.Languages.HelpText.ComPluginServiceSourcesHelp;
+            EditSourceHelpText = Warewolf.Studio.Resources.Languages.HelpText.ComPluginServiceEditSourceHelp;
+            NewSourceHelpText = Warewolf.Studio.Resources.Languages.HelpText.ComPluginServiceNewSourceHelp;
 
-            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ComManagePluginServiceSourcesTooltip;
-            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ComManagePluginServiceEditSourceTooltip;
-            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ComManagePluginServiceNewSourceTooltip;
+            SourcesTooltip = Warewolf.Studio.Resources.Languages.Tooltips.ComManagePluginServiceSourcesTooltip;
+            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Tooltips.ComManagePluginServiceEditSourceTooltip;
+            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Tooltips.ComManagePluginServiceNewSourceTooltip;
 
             if (SourceId != Guid.Empty)
             {

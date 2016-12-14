@@ -77,7 +77,7 @@
                                               Text="{Binding SearchText, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                               ToolTip="{Binding SearchToolTip}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.ExplorerViewFilterSearchHelp}" />
+                        <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.ExplorerViewFilterSearchHelp}" />
                     </i:Interaction.Behaviors>
                 </customControls:SearchTextBox>
                 <Button Grid.Row="0"
@@ -98,7 +98,7 @@
                                     Icon="Refresh"
                                     TextOptions.TextFormattingMode="Display" />
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.ExplorerViewRefreshHelp}" />
+                        <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.ExplorerViewRefreshHelp}" />
                     </i:Interaction.Behaviors>
                 </Button>
                 <views:CircularProgressBar Grid.Row="0"

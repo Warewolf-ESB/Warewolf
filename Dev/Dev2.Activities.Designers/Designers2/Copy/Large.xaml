@@ -71,7 +71,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.CopyToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -82,7 +82,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpFileFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpFileFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputPath"
                                      SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -98,12 +98,12 @@
                                 WrapInBrackets="False"
                                 AllowUserInsertLine="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.CopyToolTipUsername}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpUsername}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpUsername}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Username"
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
@@ -115,13 +115,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="2"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Core.CopyToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.CopyToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
@@ -138,7 +138,7 @@
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -149,7 +149,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.PrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -166,7 +166,7 @@
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.CopyToolTipDestination}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipDestination}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Destinationtxt_AutoID}">
@@ -177,7 +177,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpDestination}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpDestination}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Path=ModelItem.OutputPath"
                                      SourcePropertyValue="{Binding Path=ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -193,12 +193,12 @@
                                 WrapInBrackets="False"
                                 AllowUserInsertLine="False"
                                 Text="{Binding Path=ModelItem.DestinationUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.CopyToolTipUsername}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpUsername}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpUsername}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationUsername"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationUsername, UpdateSourceTrigger=PropertyChanged}"
@@ -210,13 +210,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="6"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Core.CopyToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.CopyToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.DestinationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPassword"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationPassword, UpdateSourceTrigger=PropertyChanged}"
@@ -233,7 +233,7 @@
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.DestinationPrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -244,7 +244,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationPrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -258,9 +258,9 @@
                   Margin="-6,-1,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.CopyToolTipForceoverwrite}">
+                  ToolTip="{x:Static languages:Tooltips.CopyToolTipForceoverwrite}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpForceoverwrite}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpForceoverwrite}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Overwrite"
                                      SourcePropertyValue="{Binding  ModelItem.Overwrite, UpdateSourceTrigger=PropertyChanged}"
@@ -277,11 +277,11 @@
                                 WrapInBrackets="True"
                                 Margin="0,-1,0,0"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.CopyToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CopyHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

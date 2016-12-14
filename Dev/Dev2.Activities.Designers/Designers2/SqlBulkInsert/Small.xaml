@@ -54,11 +54,11 @@
                   Margin="{StaticResource ControlBorderRight}"
                   DisplayMemberPath="ResourceName"
                   SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"
-                  ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipDatabase}"
+                  ToolTip="{x:Static languages:Tooltips.SqlBulkInsertToolTipDatabase}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpDatabase}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertHelpDatabase}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
@@ -68,7 +68,7 @@
                 ToolTip="Edit Database Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertEditDatabaseHelp}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertEditDatabaseHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
 
@@ -83,11 +83,11 @@
                   DisplayMemberPath="FullName"
                   Margin="{StaticResource ControlBorderTopRight}"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
-                  ToolTip="{x:Static languages:Core.SQLBulkInsertToolTipTable}"
+                  ToolTip="{x:Static languages:Tooltips.SQLBulkInsertToolTipTable}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpTable}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertHelpTable}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
@@ -100,7 +100,7 @@
                 <fa:FontAwesome Icon="Refresh"></fa:FontAwesome>
             </Button.Content>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertRefreshListHelp}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertRefreshListHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
 
@@ -132,11 +132,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipInputColumn}"
+                                                    ToolTip="{x:Static languages:Tooltips.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertToolTipInputData}"
+                                    <core1:HelpSetter Text="{x:Static languages:Tooltips.SQLBulkInsertToolTipInputData}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="InputColumn"
@@ -194,10 +194,10 @@
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.SqlBulkInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

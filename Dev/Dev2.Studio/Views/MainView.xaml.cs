@@ -186,6 +186,20 @@ namespace Dev2.Studio.Views
 
         private void Shell_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            {
+                var windowCollection = System.Windows.Application.Current.Windows;
+
+                foreach (var window in windowCollection)
+                {
+                    var window1 = window as Window;
+
+                    if (window1 != null && window1.Name != "MainViewWindow")
+                    {
+                        window1.Close();
+                    }
+                }
+            }
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 var imageWindow = new ImageWindow();
