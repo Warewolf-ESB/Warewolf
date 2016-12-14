@@ -6,21 +6,22 @@ Feature: WorkflowTestingTab
 
 Scenario: Unsaved Tests Contain a Star in their Name
 	Given The Warewolf Studio is running
-	When I Click View Tests In Explorer Context Menu for "Hello World"
+	When I Click View Tests In Explorer Context Menu for Sub Item "Control Flow - Decision"
 	And I Click The Create a New Test Button
-	Then The Added Test Exists
-	And The Added Test "Has" Unsaved Star
+	Then The "1st" Added Test Exists
+	And The "1st" Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
-	Then The Added Test "Has No" Unsaved Star
+	Then The "1st" Added Test "Has No" Unsaved Star
 	When I Click The Create a New Test Button
-	Then The Second Added Test Exists
-	And The Second Added Test "Has" Unsaved Star
+	Then The "2nd" Added Test Exists
+	And The "2nd" Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
-	Then The Second Added Test "Has No" Unsaved Star
-	When I Toggle First Added Test Enabled
-	Then The Added Test "Has" Unsaved Star
+	Then The "2nd" Added Test "Has No" Unsaved Star
+	When I Toggle "1st" Added Test Enabled
+	Then The "1st" Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
-	Then The Added Test "Has No" Unsaved Star
+	Then The "1st" Added Test "Has No" Unsaved Star
+	And I Click Close Tests Tab
 
 Scenario: Run Passing Tests
 	When I Click New Workflow Ribbon Button
