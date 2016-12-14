@@ -2658,6 +2658,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
+        internal void RemoveAllWorkflowName(string unsavedName)
+        {
+            NewWorkflowNames.Instance.RemoveAll(unsavedName);
+        }
         private void DisposeDesigner()
         {
             if (_wd != null)

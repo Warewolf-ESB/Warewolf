@@ -37,8 +37,6 @@ namespace Dev2.Common.Interfaces.Studio
         string DebugLabel { get; }
         string SettingsLabel { get; }
         string SupportLabel { get; }
-        string ForumsLabel { get; }
-        string ToursLabel { get; }
         string NewVersionLabel { get; }
         string LockLabel { get; }
         string LockImage { get; }
