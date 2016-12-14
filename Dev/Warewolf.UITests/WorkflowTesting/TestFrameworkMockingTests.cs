@@ -85,10 +85,14 @@ namespace Warewolf.UITests
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_EnableDisable_This_Test_CheckBox(true);
             UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
             UIMap.Click_New_Workflow_Tab();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
 
