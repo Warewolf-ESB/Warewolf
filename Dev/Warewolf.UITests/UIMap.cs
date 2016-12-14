@@ -790,11 +790,12 @@ namespace Warewolf.UITests
 
         public void TryCloseWorkflowTestingTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton))
                 {
-                    Click_Close_Workflow_Tab_Button();
+                    Click_Close_Tests_Tab();
                 }
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
                 {
@@ -803,13 +804,18 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close Workflow Testing tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging workflow testing tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
         [When(@"I Try Close Settings Tab")]
         public void TryCloseSettingsTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab))
@@ -823,7 +829,11 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Settings tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close settings tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging settings tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -1366,6 +1376,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
 
+
+
+        [When(@"I Click Deploy Tab Deploy Button")]
+        [Then(@"I Click Deploy Tab Deploy Button")]
+        [Given(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
@@ -1480,6 +1495,17 @@ namespace Warewolf.UITests
                 Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
+
+        [Given(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
+        [When(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
+        [Then(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
+        public void ThenDirtyIsWhenIClickEnableDisableTest(string dirty, int test)
+        {
+            if(dirty.ToUpper() == "NO")
+                Click_EnableDisable_This_Test_CheckBox(testInstance: test);
+            else
+                Click_EnableDisable_This_Test_CheckBox(true, testInstance: test);
+        }        
 
         public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false, int testInstance = 1)
         {
@@ -1750,6 +1776,9 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestNameTextbox.Text = "Dice_Test";
         }
 
+        [Given(@"I Delete Test ""(.*)""")]
+        [When(@"I Delete Test ""(.*)""")]
+        [Then(@"I Delete Test ""(.*)""")]
         public void Click_Delete_Test_Button(int testInstance = 1)
         {
             var currentTest = GetCurrentTest(testInstance);
@@ -2253,6 +2282,15 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [Given(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        [Then(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        public void GivenIRefreshExplorerWithpoutWaitingForSpinner()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+        }
+
+
         public void TryRemoveTests()
         {
             WpfList testsListBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList;
@@ -2350,6 +2388,15 @@ namespace Warewolf.UITests
             Show_Explorer_First_Item_Tests_With_Context_Menu();
         }
 
+        [Given(@"I Click View Tests In Explorer Context Menu for Sub Item ""(.*)""")]
+        [When(@"I Click View Tests In Explorer Context Menu for Sub Item ""(.*)""")]
+        [Then(@"I Click View Tests In Explorer Context Menu for Sub Item ""(.*)""")]
+        public void Click_View_Tests_In_Explorer_Context_Menu_For_Sub_Item(string ServiceName)
+        {
+            Filter_Explorer(ServiceName);
+            Show_Explorer_First_Sub_Item_Tests_With_Context_Menu();
+        }
+
         [Given(@"That The First Test ""(.*)"" Unsaved Star")]
         [When(@"The First Test ""(.*)"" Unsaved Star")]
         [Then(@"The First Test ""(.*)"" Unsaved Star")]
@@ -2401,7 +2448,18 @@ namespace Warewolf.UITests
         public void Assert_Workflow_Testing_Tab_Added_Test_Has_Unsaved_Star(bool HasStar)
         {
             Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TabDescription.DisplayText.Contains("*"), "Test tab title does not contain unsaved star.");
-            Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestNameDisplay.DisplayText.Contains("*"), "First test title does not contain unsaved star.");
+        }
+
+        public void Assert_Test_Has_Unsaved_Star(string test, bool HasStar)
+        {
+            if (test == "1st")
+                Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestNameDisplay.DisplayText.Contains("*"), "1st test title does not contain unsaved star.");
+            if (test == "2nd")
+                Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestNameDisplay.DisplayText.Contains("*"), "2nd test title does not contain unsaved star.");
+            if (test == "3rd")
+                Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestNameDisplay.DisplayText.Contains("*"), "3rd test title does not contain unsaved star.");
+            if (test == "4th")
+                Assert.AreEqual(HasStar, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestNameDisplay.DisplayText.Contains("*"), "4th test title does not contain unsaved star.");
         }
 
         [Given(@"That The Second Test ""(.*)"" Unsaved Star")]
@@ -2452,15 +2510,40 @@ namespace Warewolf.UITests
         [Then("The Added Test Exists")]
         public void Assert_Workflow_Testing_Tab_Added_Test_Exists()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No first test on workflow testing tab.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test on workflow testing tab.");
         }
+
+        [Given(@"The ""(.*)"" Added Test Exists")]
+        [When(@"The ""(.*)"" Added Test Exists")]
+        [Then(@"The ""(.*)"" Added Test Exists")]
+        public void ThenTheAddedTestExists(string test)
+        {
+            if(test == "1st")            
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "No 1st test on workflow testing tab.");
+            if(test == "2nd")            
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "No 2nd test on workflow testing tab.");
+            if(test == "3rd")            
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Exists, "No 3rd test on workflow testing tab.");
+            if(test == "4th")            
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test on workflow testing tab.");
+        }
+
+        [Given(@"The ""(.*)"" Added Test ""(.*)"" Unsaved Star")]
+        [When(@"The ""(.*)"" Added Test ""(.*)"" Unsaved Star")]
+        [Then(@"The ""(.*)"" Added Test ""(.*)"" Unsaved Star")]
+        public void TheAddedTestUnsavedStar(string test, string star)
+        {
+            Assert_Workflow_Testing_Tab_Added_Test_Has_Unsaved_Star(star == "Has");
+            Assert_Test_Has_Unsaved_Star(test, star == "Has");
+        }
+
 
         [Given("The Second Test Exists")]
         [When("The Second Test Exists")]
         [Then("The Second Test Exists")]
         public void Assert_Workflow_Testing_Tab_Second_Test_Exists()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "No second test on workflow testing tab.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "No 2nd test on workflow testing tab.");
         }
 
         [Given("The Second Added Test Exists")]
@@ -2468,7 +2551,7 @@ namespace Warewolf.UITests
         [Then("The Second Added Test Exists")]
         public void Assert_Workflow_Testing_Tab_Second_Added_Test_Exists()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.Exists, "No second Added test on workflow testing tab.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.Exists, "No 5th Added test on workflow testing tab.");
         }
 
         [Given("I Toggle First Test Enabled")]
@@ -2485,6 +2568,21 @@ namespace Warewolf.UITests
         public void Toggle_Workflow_Testing_Tab_First_Added_Test_Enabled()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
+        }
+
+        [Given(@"I Toggle ""(.*)"" Added Test Enabled")]
+        [When(@"I Toggle ""(.*)"" Added Test Enabled")]
+        [Then(@"I Toggle ""(.*)"" Added Test Enabled")]
+        public void WhenIToggleAddedTestEnabled(string test)
+        {
+            if(test == "1st")
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
+            if (test == "2nd")
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestEnabledSelector, new Point(10, 10));
+            if (test == "3rd")
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestEnabledSelector, new Point(10, 10));
+            if (test == "4th")
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector, new Point(10, 10));
         }
 
         [Given("I Click Test (.*) Run Button")]
@@ -3151,7 +3249,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Switch";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch, new Point(13, 17));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.UISacdVerticalConnectoCustom);
         }
 
         public void Drag_Toolbox_Decision_Onto_Sequence_LargeTool()
@@ -3159,7 +3257,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Decision";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Decision, new Point(13, 17));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.UISacdVerticalConnectoCustom);
         }
 
         [Given("Dice Is Selected InSettings Tab Permissions Row 1")]
@@ -3210,6 +3308,14 @@ namespace Warewolf.UITests
         public void Show_Explorer_First_Item_Tests_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
+        }
+
+        public void Show_Explorer_First_Sub_Item_Tests_With_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
@@ -7721,6 +7827,16 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
+        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+        }
+
         [When(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Source Server Combobox")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
@@ -8024,6 +8140,14 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+        [Given(@"I Double Click Localhost Server")]
+        [When(@"I Double Click Localhost Server")]
+        [Then(@"I Double Click Localhost Server")]
+        public void DoubleClick_Localhost_Server()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
         [When(@"I Click Web Browser Error Messagebox OK Button")]
         public void Click_Web_Browser_Error_Messagebox_OK_Button()
         {
@@ -8294,7 +8418,8 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
+            Point point;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point));
         }
 
         [Then(@"Filtered Resourse Is Checked For Deploy")]

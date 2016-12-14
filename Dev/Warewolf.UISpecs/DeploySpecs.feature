@@ -94,7 +94,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled
-	When I Click Deploy Ribbon Button
+	When I Click Deploy Tab Deploy Button
 	Then Deploy Version Conflict Window Shows
 	And I Click MessageBox Cancel
 	And Deploy Window Is Still Open
@@ -107,12 +107,11 @@ Scenario: Deploy Disconnect Clears Destination
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled
-	When I Click Deploy Ribbon Button
+	When I Click Deploy Tab Deploy Button
 	Then Deploy Version Conflict Window Shows
 	And I Click MessageBox Cancel
 	And Deploy Window Is Still Open
 	Then I Click Deploy Tab Destination Server Connect Button
-	And Destination Deploy Information Clears
 #
 #Scenario: Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Explorer
 #	Given I Try Connect To Remote Server
