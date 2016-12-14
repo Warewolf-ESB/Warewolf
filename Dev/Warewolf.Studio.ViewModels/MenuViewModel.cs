@@ -157,8 +157,6 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => DebugLabel);
             OnPropertyChanged(() => SettingsLabel);
             OnPropertyChanged(() => SupportLabel);
-            OnPropertyChanged(() => ForumsLabel);
-            OnPropertyChanged(() => ToursLabel);
             OnPropertyChanged(() => NewVersionLabel);
             OnPropertyChanged(() => LockLabel);
             OnPropertyChanged(() => ButtonWidth);
@@ -359,24 +357,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogSupportLabel;
-                return string.Empty;
-            }
-        }
-        public string ForumsLabel
-        {
-            get
-            {
-                if (ButtonWidth == 125)
-                    return Resources.Languages.Core.MenuDialogForumsLabel;
-                return string.Empty;
-            }
-        }
-        public string ToursLabel
-        {
-            get
-            {
-                if (ButtonWidth == 125)
-                    return Resources.Languages.Core.MenuDialogToursLabel;
                 return string.Empty;
             }
         }
