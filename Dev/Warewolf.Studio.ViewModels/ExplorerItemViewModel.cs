@@ -623,7 +623,7 @@ namespace Warewolf.Studio.ViewModels
         {
             int count = 0;
             string folderName = Resources.Languages.Core.NewFolderLabel;
-            while (Children.Any(a => a.ResourceName == folderName))
+            while (UnfilteredChildren != null && UnfilteredChildren.Any(a => a.ResourceName == folderName))
             {
                 count++;
                 folderName = Resources.Languages.Core.NewFolderLabel + " " + count;
@@ -925,11 +925,19 @@ namespace Warewolf.Studio.ViewModels
             return value;
         }
 
+        public ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
+
         public ObservableCollection<IExplorerItemViewModel> Children
         {
             get
             {
-                return _children == null ? new AsyncObservableCollection<IExplorerItemViewModel>() : new AsyncObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
+                if (_children == null)
+                {
+                    return new AsyncObservableCollection<IExplorerItemViewModel>();
+                }
+                var collection = _children;
+                UnfilteredChildren = collection;
+                return new AsyncObservableCollection<IExplorerItemViewModel>(collection.Where(a => a.IsVisible));
             }
             set
             {
