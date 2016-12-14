@@ -61,6 +61,7 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.Views;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
@@ -1108,6 +1109,12 @@ namespace Dev2.Studio.ViewModels
                     viewModel?.DoDeactivate(true);
                 }
             }
+        }
+
+        public void ResetMainView()
+        {
+            MainView mainView = MainView.GetInstance();
+            mainView.ResetToStartupView();
         }
 
         public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json)

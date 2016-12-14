@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 using Dev2.Data.Interfaces;
+using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.UI;
 using ICSharpCode.AvalonEdit;
@@ -457,20 +458,8 @@ namespace Dev2.Studio.Views.Workflow
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                if (Application.Current != null)
-                {
-                    var windowCollection = Application.Current.Windows;
-
-                    foreach (var window in windowCollection)
-                    {
-                        var window1 = window as Window;
-
-                        if (window1 != null && window1.Name != "MainViewWindow")
-                        {
-                            window1.Close();
-                        }
-                    }
-                }
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                mainViewModel?.ResetMainView();
             }
         }
     }
