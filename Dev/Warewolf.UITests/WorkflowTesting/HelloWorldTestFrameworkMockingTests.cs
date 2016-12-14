@@ -24,7 +24,10 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.Exists, "Create New Test Button does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists, "Decision test step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists, "Assign To Name Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.Exists, "Set The Output Variable Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists, "Set The Output Variable Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         [TestMethod]
@@ -35,6 +38,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
             Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
             UIMap.Click_MessageBox_OK();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         [TestMethod]
@@ -43,6 +48,11 @@ namespace Warewolf.UITests
         {
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.Exists);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            UIMap.Click_Delete_Test_Button(4);
+            UIMap.Click_MessageBox_Yes();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         [TestMethod]
@@ -52,15 +62,22 @@ namespace Warewolf.UITests
             UIMap.Click_Delete_On_AssignValue_TestStep();
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point), "Test step still visible after clicking the delete button on that test step.");
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            UIMap.Click_Delete_Test_Button(4);
+            UIMap.Click_MessageBox_Yes();
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
-            UIMap.Click_MockRadioButton_On_AssignValue_TestStep();
-            Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.Pending.TryGetClickablePoint(out point), "Pending status icon is still visible on assign test step after checking the mock radio button.");
+            UIMap.Click_MockRadioButton_On_AssignValue_TestStep(); ;
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.Exists, "Pending status icon is still visible on assign test step after checking the mock radio button.");
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         [TestMethod]
