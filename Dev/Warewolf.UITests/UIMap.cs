@@ -55,19 +55,10 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
             try
             {
-                TryClickMessageBoxOK();
-                TryCloseHangingDebugInputDialog();
-                TryCloseHangingSaveDialog();
-                TryCloseHangingServicePickerDialog();
-                TryCloseHangingWindowsGroupDialog();
-                TryPin_Unpinned_Pane_To_Default_Position();
-                TryCloseHangingCriticalErrorDialog();
-                TryCloseHangingErrorDialog();
-                TryCloseHangingWebBrowserErrorDialog();
-                TryCloseHangingDecisionDialog();
                 TryCloseSettingsTab();
                 TryCloseWorkflowTestingTab();
                 var TimeBefore = System.DateTime.Now;
@@ -798,11 +789,12 @@ namespace Warewolf.UITests
 
         public void TryCloseWorkflowTestingTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton))
                 {
-                    Click_Close_Workflow_Tab_Button();
+                    Click_Close_Tests_Tab();
                 }
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
                 {
@@ -811,13 +803,18 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close Workflow Testing tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging workflow testing tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
         [When(@"I Try Close Settings Tab")]
         public void TryCloseSettingsTab()
         {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab))
@@ -831,7 +828,11 @@ namespace Warewolf.UITests
             }
             catch (Exception e)
             {
-                Console.WriteLine("TryClose method failed to close Settings tab.\n" + e.Message);
+                Console.WriteLine("Exception trying to close settings tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging settings tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
         }
 
@@ -882,6 +883,12 @@ namespace Warewolf.UITests
         public void WaitForExplorerFirstRemoteServerSpinner()
         {
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+        }
+
+        [When(@"I Wait For Save Dialog Explorer Spinner")]
+        public void WaitForSaveDialogExplorerSpinner()
+        {
+            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
@@ -1134,6 +1141,14 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
         }
 
+        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        [When(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        public void Enter_Service_Name_Into_Save_Dialog_and_Append_Unique_Guid(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName + Guid.NewGuid().ToString().Substring(0, 8), false, false, false, SaveOrDuplicate.Save);
+        }
+
         [Given(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         [When(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
         [Then(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
@@ -1145,7 +1160,6 @@ namespace Warewolf.UITests
             Click_SaveDialog_Save_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
 
         [Given(@"I Click SaveDialog Save Button")]
         [When(@"I Click SaveDialog Save Button")]
@@ -1382,6 +1396,11 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
 
+
+
+        [When(@"I Click Deploy Tab Deploy Button")]
+        [Then(@"I Click Deploy Tab Deploy Button")]
+        [Given(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
