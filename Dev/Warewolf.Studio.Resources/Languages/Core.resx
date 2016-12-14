@@ -180,9 +180,6 @@
   <data name="MenuDialogDLLLabel" xml:space="preserve">
     <value>DLL</value>
   </data>
-  <data name="MenuDialogForumsLabel" xml:space="preserve">
-    <value>Forums</value>
-  </data>
   <data name="MenuDialogLockLabel" xml:space="preserve">
     <value>Lock Menu</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="MenuDialogTaskLabel" xml:space="preserve">
     <value>Task</value>
-  </data>
-  <data name="MenuDialogToursLabel" xml:space="preserve">
-    <value>Tours</value>
   </data>
   <data name="MenuDialogUnLockLabel" xml:space="preserve">
     <value>Unlock Menu</value>

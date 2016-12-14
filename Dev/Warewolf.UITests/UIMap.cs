@@ -55,19 +55,10 @@ namespace Warewolf.UITests
         public void CloseHangingDialogs()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
             try
             {
-                TryClickMessageBoxOK();
-                TryCloseHangingDebugInputDialog();
-                TryCloseHangingSaveDialog();
-                TryCloseHangingServicePickerDialog();
-                TryCloseHangingWindowsGroupDialog();
-                TryPin_Unpinned_Pane_To_Default_Position();
-                TryCloseHangingCriticalErrorDialog();
-                TryCloseHangingErrorDialog();
-                TryCloseHangingWebBrowserErrorDialog();
-                TryCloseHangingDecisionDialog();
                 TryCloseSettingsTab();
                 TryCloseWorkflowTestingTab();
                 var TimeBefore = System.DateTime.Now;
@@ -1126,6 +1117,14 @@ namespace Warewolf.UITests
         public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
         {
             Save_With_Ribbon_Button_And_Dialog(p0 + Guid.NewGuid().ToString().Substring(0, 8));
+        }
+
+        [Given(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        [When(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        [Then(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
+        public void Enter_Service_Name_Into_Save_Dialog_and_Append_Unique_Guid(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName + Guid.NewGuid().ToString().Substring(0, 8), false, false, false, SaveOrDuplicate.Save);
         }
 
         [Given(@"I Save With Ribbon Button And Dialog As ""(.*)""")]

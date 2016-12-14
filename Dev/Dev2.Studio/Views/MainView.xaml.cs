@@ -29,6 +29,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
+using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 
 // ReSharper disable CheckNamespace
@@ -39,8 +40,14 @@ namespace Dev2.Studio.Views
         private static bool _isSuperMaximising;
         private bool _isLocked;
         readonly string _savedLayout;
+        private static MainView _this;
 
         #region Constructor
+
+        public static MainView GetInstance()
+        {
+            return _this;
+        }
 
         public MainView()
         {
@@ -76,6 +83,8 @@ namespace Dev2.Studio.Views
                     }
                 }
             }
+
+            _this = this;
         }
 
         private string FilePath => Path.Combine(new[]
@@ -233,6 +242,17 @@ namespace Dev2.Studio.Views
                     window1.Close();
                 }
             }
+            for (int i = TabManager.Items.Count - 1; i>= 0; i--)
+            {
+                var item = TabManager.Items[i];
+                var contentPane = item as ContentPane;
+                var item1 = contentPane?.Content as WorkflowDesignerViewModel;
+                if (item1?.ResourceModel != null)
+                    WorkspaceItemRepository.Instance.ClearWorkspaceItems(item1.ResourceModel);
+                item1?.RemoveAllWorkflowName(item1.DisplayName);
+            }
+            
+            TabManager.Items.Clear();
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
