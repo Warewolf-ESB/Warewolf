@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
 
-            UpdateHelpDescriptor(Resources.Languages.Core.ServiceTestGenericHelpText);
+            UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
 
             WorkflowDesignerViewModel = workflowDesignerViewModel;
             WorkflowDesignerViewModel.IsTestView = true;
@@ -1536,11 +1536,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (SelectedServiceTest.NewTest)
                 {
-                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Core.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
+                    SelectedServiceTest.DuplicateTestTooltip = Resources.Languages.Tooltips.ServiceTestNewTestDisabledDuplicateSelectedTestTooltip;
                 }
                 else
                 {
-                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Core.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Core.ServiceTestDisabledDuplicateSelectedTestTooltip;
+                    SelectedServiceTest.DuplicateTestTooltip = CanDuplicateTest ? Resources.Languages.Tooltips.ServiceTestDuplicateSelectedTestTooltip : Resources.Languages.Tooltips.ServiceTestDisabledDuplicateSelectedTestTooltip;
                 }
             }
         }

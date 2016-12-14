@@ -52,12 +52,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.DropBoxDeleteFileNameTooltip}"
+                                ToolTip="{x:Static languages:Tooltips.DropBoxDeleteFileNameTooltip}"
                                 Text="{Binding DeletePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxDeleteFileNameHelpText}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DropBoxDeleteFileNameHelpText}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding DeletePath, UpdateSourceTrigger=PropertyChanged}"

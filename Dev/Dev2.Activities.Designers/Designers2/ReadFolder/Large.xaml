@@ -65,7 +65,7 @@
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFolderToolTipFolder}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -75,7 +75,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputPath"
                                      SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -88,7 +88,7 @@
                     Orientation="Horizontal"
                     Margin="0,-2,0,0"
                     Grid.Row="1"
-                    ToolTip="{x:Static languages:Core.ReadFolderToolTipRead}">
+                    ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipRead}">
             <RadioButton Margin="{StaticResource ControlBorderRight}"
                          IsChecked="{Binding Path=ModelItem.IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
             <RadioButton Margin="{StaticResource ControlBorderRight}"
@@ -96,7 +96,7 @@
             <RadioButton Margin="{StaticResource ControlBorderRight}"
                          IsChecked="{Binding Path=ModelItem.IsFilesAndFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files &amp; Folders</RadioButton>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpRead}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpRead}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </StackPanel>
 
@@ -108,12 +108,12 @@
                                 WrapInBrackets="False"
                                 Margin="0,-2,0,0"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFolderToolTipUsername}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpUsername}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpUsername}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Username"
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
@@ -125,13 +125,13 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="3"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Core.ReadFolderToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
@@ -148,7 +148,7 @@
                                 DefaultText="[[PathToPrivateKey]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -159,7 +159,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.PrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -176,11 +176,11 @@
                                 Margin="{StaticResource ActivityBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFolderToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFolderHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

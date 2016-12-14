@@ -133,7 +133,7 @@ Scenario: Deploying items from one server to the next with the same name
 	 Then I select Destination Server as "DestinationServer" with SameName confilcts
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 And I select "bob" from Source Server
+	 And I select "Control Flow - Sequence" from Source Server
 	 When I deploy
 	 Then the User is prompted to "Rename or Delete" one of the resources
 

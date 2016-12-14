@@ -47,6 +47,12 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" echo ERROR CANNOT DELETE %PROGRAMDA
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROGRAMDATA%\Warewolf\Server Settings
 @echo on
 
+REM ** Clear Studio debug input data
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat") else (rd /S /Q "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat")
+@echo off
+IF EXIST "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat" echo ERROR CANNOT DELETE %LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat
+@echo on
+
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again

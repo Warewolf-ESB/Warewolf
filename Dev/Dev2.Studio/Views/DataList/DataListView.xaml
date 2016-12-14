@@ -50,7 +50,7 @@
                                           x:Name="SearchTextBox" 
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
-                                          ClearSearchToolTip="{x:Static languages:Core.ClearVariableListFilterTooltip}"
+                                          ClearSearchToolTip="{x:Static languages:Tooltips.ClearVariableListFilterTooltip}"
                                           LabelText="Search for Variables"
                                           HorizontalAlignment="Stretch" 
                                           Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
@@ -65,7 +65,7 @@
                     ToolTip="Removes all unused variables from the variable list">
                 <fa:FontAwesome Icon="Trash" FontSize="15"></fa:FontAwesome>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DataListDeleteButtonHelp}"
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListDeleteButtonHelp}"
                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                 </i:Interaction.Behaviors>
             </Button>
@@ -77,7 +77,7 @@
                     ToolTip="Sorts the items alphabeticaly">
                 <fa:FontAwesome Icon="Sort" FontSize="15"></fa:FontAwesome>
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DataListSortButtonHelp}"
+                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListSortButtonHelp}"
                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                 </i:Interaction.Behaviors>
             </Button>
@@ -124,7 +124,7 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
+                                                                ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
@@ -147,7 +147,7 @@
                                     </customControls:VariableTextBox.Style>
                                     <i:Interaction.Behaviors>
                                         <behaviors:TextboxSelectAllOnFocusBehavior />
-                                        <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.DataListVariableInputHelp}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                     </i:Interaction.Behaviors>
                                 </customControls:VariableTextBox>
@@ -162,10 +162,10 @@
                                       Focusable="True"
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListInputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListInputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -179,10 +179,10 @@
                                       Focusable="True"
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListOutputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListOutputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -211,7 +211,7 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
+                                                                ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
@@ -234,7 +234,7 @@
                                     </customControls:VariableTextBox.Style>
                                     <i:Interaction.Behaviors>
                                         <behaviors:TextboxSelectAllOnFocusBehavior />
-                                        <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.DataListVariableInputHelp}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                     </i:Interaction.Behaviors>
                                 </customControls:VariableTextBox>
@@ -249,10 +249,10 @@
                                       Focusable="True"
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListInputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListInputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -266,10 +266,10 @@
                                       Focusable="True"
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListOutputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListOutputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -298,7 +298,7 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
+                                                                ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
@@ -321,7 +321,7 @@
                                     </customControls:VariableTextBox.Style>
                                     <i:Interaction.Behaviors>
                                         <behaviors:TextboxSelectAllOnFocusBehavior />
-                                        <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.DataListVariableInputHelp}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                     </i:Interaction.Behaviors>
                                 </customControls:VariableTextBox>
@@ -336,10 +336,10 @@
                                       Focusable="True"
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListInputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListInputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -353,10 +353,10 @@
                                       Focusable="True"
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
-                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListOutputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListOutputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -384,7 +384,7 @@
                                                                     Focusable="True"
                                                                     IsTabStop="True" 
                                                                     Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                                    ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
+                                                                    ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                     ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -408,7 +408,7 @@
                                             </Style>
                                         </customControls:VariableTextBox.Style>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.DataListVariableInputHelp}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                         </i:Interaction.Behaviors>
                                     </customControls:VariableTextBox>
@@ -426,10 +426,10 @@
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
                                       Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
-                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListInputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListInputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
@@ -444,10 +444,10 @@
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
                                       Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
-                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
+                                      ToolTip="{x:Static languages:Tooltips.DataListOutputCheckBoxTooltip}"
                                       AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                 <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.DataListOutputCheckBoxHelp}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>

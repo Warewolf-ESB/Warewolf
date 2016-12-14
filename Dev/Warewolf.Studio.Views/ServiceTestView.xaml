@@ -68,20 +68,20 @@
                 <Button Grid.Column="0" 
 					Content="Run All" 
 					Width="Auto" 
-					ToolTip="{x:Static languages:Core.ServiceTestRunAllTestTooltip}" 
+					ToolTip="{x:Static languages:Tooltips.ServiceTestRunAllTestTooltip}" 
 					HorizontalAlignment="Left" 
 					Command="{Binding RunAllTestsCommand}" 
                     AutomationProperties.AutomationId="UI_RunAll_AutoID"
 					Margin="{StaticResource ElementBorderRight}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunAllTestHelpText}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestRunAllTestHelpText}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </Button>
 
                 <TextBlock Grid.Column="1" Margin="{StaticResource ElementBorderLeft}" >
 					<Hyperlink x:Name="RunAllTestsUrl" 
 								Command="{Binding RunAllTestsInBrowserCommand}" 
-								ToolTip="{x:Static languages:Core.ServiceTestRunAllTestsInBrowserTooltip}"
+								ToolTip="{x:Static languages:Tooltips.ServiceTestRunAllTestsInBrowserTooltip}"
 								Style="{StaticResource HyperLinkStyle}"
 								NavigateUri="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" >
 							<TextBlock Text="{Binding RunAllTestsUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"/>
@@ -129,10 +129,10 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" >
-                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="20" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="20"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" Margin="{StaticResource ControlBorderLeft}" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="20"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="20" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="20" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="20"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" Margin="{StaticResource ControlBorderLeft}" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="20"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="20" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         </StackPanel>
 
                                         <views:CircularProgressBar Grid.Row="0"
@@ -151,12 +151,12 @@
                                                   x:Name="SelectedTestCheckBox"
                                                   HorizontalAlignment="Left" Style="{StaticResource CheckBoxRoundedStyle}" 
                                                   Margin="-2,0,0,0"
-                                                  ToolTip="{x:Static languages:Core.ServiceTestEnableRunSelectedTestTooltip}"
+                                                  ToolTip="{x:Static languages:Tooltips.ServiceTestEnableRunSelectedTestTooltip}"
                                                   IsChecked="{Binding Enabled}" 
                                                   Visibility="{Binding IsTestLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                                   PreviewMouseLeftButtonDown="SelectedTestCheckBox_OnPreviewMouseLeftButtonDown">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestEnableRunSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                             </i:Interaction.Behaviors>
                                         </CheckBox>
 
@@ -180,7 +180,7 @@
                                         <TextBlock Grid.Column="2" 
 												    Grid.Row="1" 
 												    Text="{Binding NeverRunString}" 
-												    ToolTip="{x:Static languages:Core.ServiceTestNeverRunTooltip}"
+												    ToolTip="{x:Static languages:Tooltips.ServiceTestNeverRunTooltip}"
 												    FontSize="11" 
 												    Margin="0,-4,0,0"
 												    Visibility="{Binding NeverRunStringVisibility, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -198,7 +198,7 @@
                                                 <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent"/>
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestRunSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                             </i:Interaction.Behaviors>
                                         </Button>
 
@@ -214,7 +214,7 @@
                                                 <fa:FontAwesome Icon="Stop" FontSize="18" Background="Transparent"/>
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStopSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                             </i:Interaction.Behaviors>
                                         </Button>
 
@@ -231,7 +231,7 @@
                                                 <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.TestsDeleteSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.TestsDeleteSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                             </i:Interaction.Behaviors>
                                         </Button>
                                     </Grid>
@@ -241,7 +241,7 @@
 											    HorizontalAlignment="Stretch" 
 											    VerticalAlignment="Stretch" 
 											    Command="{Binding ElementName=TestsListbox, Path=DataContext.CreateTestCommand }"
-											    ToolTip="{x:Static languages:Core.ServiceTestNewTestTooltip}">
+											    ToolTip="{x:Static languages:Tooltips.ServiceTestNewTestTooltip}">
                                             <Button.Content>
                                                 <Grid>
                                                     <Grid.ColumnDefinitions >
@@ -256,7 +256,7 @@
                                                 </Grid>
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNewTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestNewTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                             </i:Interaction.Behaviors>
                                         </Button>
                                     </Grid>
@@ -289,7 +289,7 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
 									<Hyperlink x:Name="RunSelectedTestUrl" 
 												Command="{Binding RunSelectedTestInBrowserCommand}" 
-												ToolTip="{x:Static languages:Core.ServiceTestRunSelectedTestInBrowserTooltip}"
+												ToolTip="{x:Static languages:Tooltips.ServiceTestRunSelectedTestInBrowserTooltip}"
 												Style="{StaticResource HyperLinkStyle}"
 												NavigateUri="{Binding SelectedServiceTest.RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" >
 											<TextBlock Text="{Binding SelectedServiceTest.RunSelectedTestUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"/>
@@ -300,14 +300,14 @@
                                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedServiceTest.TestName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 																		 ToolTip="{Binding SelectedServiceTest.TestName}">
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNameHelpText}" DataContext="{Binding}" />
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestNameHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
                                 <Button Grid.Row="1" Grid.Column="2" Command="{Binding DuplicateTestCommand}" Margin="{StaticResource ControlBorderLeft}" Style="{StaticResource ServiceTestDuplicateButtonStyle}" 
 																		ToolTip="{Binding SelectedServiceTest.DuplicateTestTooltip}">
                                     <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Clone" />
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDuplicateSelectedTestHelpText}" DataContext="{Binding}" />
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestDuplicateSelectedTestHelpText}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </Button>
 
@@ -318,7 +318,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <RadioButton ToolTip="{x:Static languages:Core.WindowsAuthenticationToolTip}" 
+                                    <RadioButton ToolTip="{x:Static languages:Tooltips.WindowsAuthenticationToolTip}" 
 											Padding="0,0,5,0" 
 											x:Name="WindowsRadioButton" 
 											VerticalAlignment="Center" 
@@ -327,12 +327,12 @@
 											IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
 						ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestWindowsHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestWindowsHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </RadioButton>
                                     <RadioButton Grid.Column="1" 
 											x:Name="UserRadioButton" 
-											ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
+											ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}" 
 											Padding="0,0,5,0" 
 											VerticalAlignment="Center" 
 											HorizontalAlignment="Left" 
@@ -340,19 +340,19 @@
 											IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
 								ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestUserHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestUserHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </RadioButton>
                                     <RadioButton Grid.Column="2" 
 											x:Name="PublicRadioButton" 
-											ToolTip="{x:Static languages:Core.ServerSourceDialogPublicToolTip}" 
+											ToolTip="{x:Static languages:Tooltips.ServerSourceDialogPublicToolTip}" 
 											Padding="0,0,5,0" 
 											VerticalAlignment="Center" 
 											HorizontalAlignment="Left" 
 											IsChecked="{Binding SelectedServiceTest.AuthenticationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBoolConverter}, 
 								ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestPublicHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestPublicHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </RadioButton>
                                 </Grid>
@@ -373,9 +373,9 @@
 										Grid.Column="1" 
 										x:Name="UsernameTextBox"
 										Text="{Binding SelectedServiceTest.UserName}" 
-										ToolTip="{x:Static languages:Core.UserNameToolTip}" >
+										ToolTip="{x:Static languages:Tooltips.UserNameToolTip}" >
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestUserNameHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestUserNameHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" Text="{x:Static languages:Core.PasswordLabel}" />
@@ -383,11 +383,11 @@
 																						 Grid.Row="1" 
 																						 Grid.Column="1"
 																						 Margin="{StaticResource ControlBorderTop}"
-																						 ToolTip="{x:Static languages:Core.PasswordToolTip}"
+																						 ToolTip="{x:Static languages:Tooltips.PasswordToolTip}"
 																						 customControls:PasswordBoxAssistant.BindPassword="true"
 																						 customControls:PasswordBoxAssistant.BoundPassword="{Binding SelectedServiceTest.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestPasswordHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestPasswordHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </PasswordBox>
                                 </Grid>
@@ -439,10 +439,10 @@
 																														 AcceptsReturn="True"
                                                              VerticalScrollBarVisibility="Auto"
                                                              Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																														 ToolTip="{x:Static languages:Core.ServiceTestInputValueTooltip}"
+																														 ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
 																														 AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                             <i:Interaction.Behaviors>
-                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
                                                         </TextBox>
                                                     </DataTemplate>
@@ -460,10 +460,10 @@
 																															HorizontalAlignment="Center"
 																															Checked="ToggleButton_OnChecked"
 																															Unchecked="ToggleButton_OnChecked"
-																															ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}"
+																															ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}"
 																															AutomationProperties.AutomationId="UI_TestInputsEmptyIsNull_AutoID">
                                                             <i:Interaction.Behaviors>
-                                                                <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
                                                         </CheckBox>
                                                     </DataTemplate>
@@ -503,10 +503,10 @@
                                                         <DockPanel Background="{StaticResource WarewolfPanelGreyBrush}" LastChildFill="False" Visibility="{Binding Path=Node.Data.IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
                                                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="{StaticResource ControlBorderLeft}">
 
-                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,2,0,0"/>
-                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPending, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,2,0,0"/>
+                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPending, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
 
                                                                 <Image Source="{Binding Path=Node.Data.StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                 <TextBlock Text="{Binding Path=Node.Data.StepDescription}" 
@@ -521,12 +521,11 @@
 																Margin="0,-3,0,0" 
 																Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
 																CommandParameter="{Binding Path=Node.Data}"
-																ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
-                                                                AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=Node.Data.StepDescription}"
-																>
+																ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
+																AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
                                                                 <fa:FontAwesome Icon="Trash"/>
                                                                 <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                 </i:Interaction.Behaviors>
                                                             </Button>
                                                         </DockPanel>
@@ -542,10 +541,10 @@
                                                                     <DockPanel LastChildFill="False" >
                                                                         <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                                                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="2,0,0,0"/>
-                                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="2,0,0,0"/>
+                                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                                                             </StackPanel>
                                                                             <Image Source="{Binding Path=StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                             <TextBlock Text="{Binding Path=StepDescription}" 
@@ -560,11 +559,11 @@
 																			Margin="0,-3,0,0" 
 																			Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
 																			CommandParameter="{Binding ElementName=DeleteTestStepButton, Path=DataContext}"
-																			ToolTip="{x:Static languages:Core.ServiceTestStepDeleteStepTooltip}"
+																			ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
 																			AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
                                                                             <fa:FontAwesome Icon="Trash"/>
                                                                             <i:Interaction.Behaviors>
-                                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                             </i:Interaction.Behaviors>
                                                                         </Button>
                                                                     </DockPanel>
@@ -586,10 +585,10 @@
                                                                         <DataGridTemplateColumn.CellTemplate>
                                                                             <DataTemplate>
                                                                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                                                    <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                    <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                    <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
-                                                                                    <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                    <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                    <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                    <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
+                                                                                    <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                                                                 </StackPanel>
                                                                             </DataTemplate>
                                                                         </DataGridTemplateColumn.CellTemplate>
@@ -599,14 +598,12 @@
                                                                             <DataTemplate>
                                                                                 <TextBox Margin="1,0,1,1"
 																					Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																					ToolTip="{x:Static languages:Core.ServiceTestStepAssertVariableTooltip}"
-                                                                                     IsEnabled="{Binding Path=CanEditVariable}">
+																					ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertVariableTooltip}"
+                                                                                     IsEnabled="{Binding Path=CanEditVariable}"
+																					AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
-                                                                                    <AutomationProperties.AutomationId >
-                                                                                        <Binding StringFormat="UI_AssertValue_{0}_AutoID" Path="Variable"/>
-                                                                                    </AutomationProperties.AutomationId>
                                                                                 </TextBox>
                                                                             </DataTemplate>
                                                                         </DataGridTemplateColumn.CellTemplate>
@@ -621,24 +618,24 @@
                                                                                         <ColumnDefinition Width="50*"/>
                                                                                     </Grid.ColumnDefinitions>
                                                                                     <RadioButton Grid.Column="0" 
-																							ToolTip="{x:Static languages:Core.ServiceTestStepAssertRadioButtonTooltip}" 
+																							ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertRadioButtonTooltip}" 
 																							Content="Assert" 
 																							Margin="8,-3,0,0"
 																							IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 																							AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_AssertRadioButton_{0}_AutoID}">
                                                                                         <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
                                                                                     </RadioButton>
                                                                                     <RadioButton Grid.Column="1" 
-																							ToolTip="{x:Static languages:Core.ServiceTestStepMockRadioButtonTooltip}" 
+																							ToolTip="{x:Static languages:Tooltips.ServiceTestStepMockRadioButtonTooltip}" 
 																							Content="Mock" 
 																							Margin="0,-3,0,0"
 																							IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.MockSelected}"
                                                                                             AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_MockRadioButton_{0}_AutoID}"
 																							>
                                                                                         <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
                                                                                     </RadioButton>
                                                                                 </Grid>
@@ -651,11 +648,13 @@
 																					    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 																					    ItemsSource="{Binding Path=AssertOps}"
 																					    SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+																					    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertOpsTooltip}"
+																					    AutomationProperties.AutomationId="UI_AssertOps_AutoID">
 																					    ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
                                                                                         AutomationProperties.AutomationId="{Binding Path=Variable, StringFormat=UI_AssertOp_{0}_AutoID}"
 																					    >
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
                                                                                 </ComboBox>
                                                                             </DataTemplate>
@@ -679,13 +678,13 @@
 																							Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                                                                         <TextBox Margin="1,0,1,1"
 																							Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																							ToolTip="{x:Static languages:Core.ServiceTestStepAssertValueTooltip}"
+																							ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
 																							IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
 																							Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                                                                             AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}"
 																							>
                                                                                             <i:Interaction.Behaviors>
-                                                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
                                                                                         </TextBox>
                                                                                     </StackPanel>
@@ -694,26 +693,26 @@
                                                                                     <TextBox Margin="1,0,1,1"
 																					    Grid.Column="0"
 																					    Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																					    ToolTip="{x:Static languages:Core.ServiceTestStepAssertFromTooltip}"
+																					    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertFromTooltip}"
 																					    Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																					    customControls:WatermarkTextBox.Watermark="From"
                                                                                         AutomationProperties.AutomationId="{Binding Path=From, StringFormat=UI_AssertFrom_{0}_AutoID}"
 																					    >
                                                                                         <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
                                                                                     </TextBox>
 
                                                                                     <TextBox Margin="1,0,1,1"
 																						Grid.Column="1"
 																						Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																						ToolTip="{x:Static languages:Core.ServiceTestStepAssertToTooltip}"
+																						ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertToTooltip}"
 																						Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																						customControls:WatermarkTextBox.Watermark="To"
                                                                                         AutomationProperties.AutomationId="{Binding Path=To, StringFormat=UI_AssertTo_{0}_AutoID}"
 																						>
                                                                                         <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                         </i:Interaction.Behaviors>
                                                                                     </TextBox>
 
@@ -725,10 +724,12 @@
 																							ItemsSource="{Binding Path=OptionsForValue}"
 																							SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
 																							Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+																							ToolTip="{x:Static languages:Tooltips.ServiceTestStepOptionsForValueTooltip}"
+																							AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
 																							ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
 																							AutomationProperties.AutomationId="{Binding StringFormat=UI_OptionsForValue_{0}_AutoID, Path=Variable}">
                                                                                             <i:Interaction.Behaviors>
-                                                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
                                                                                         </ComboBox>
                                                                                     </StackPanel>
@@ -760,10 +761,10 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Core.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Core.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Core.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
-                                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Core.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
+                                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -777,10 +778,10 @@
                                                     <DataTemplate>
                                                         <TextBox Margin="1,0,1,1"
 															Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-															ToolTip="{x:Static languages:Core.ServiceTestOutputVariableTooltip}"
+															ToolTip="{x:Static languages:Tooltips.ServiceTestOutputVariableTooltip}"
 															AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                             <i:Interaction.Behaviors>
-                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
                                                         </TextBox>
                                                     </DataTemplate>
@@ -794,10 +795,10 @@
 															    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 															    ItemsSource="{Binding Path=AssertOps}"
 															    SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-															    ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
+															    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertOpsTooltip}"
 															    AutomationProperties.AutomationId="UI_AssertOps_AutoID">
                                                             <i:Interaction.Behaviors>
-                                                                <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
                                                         </ComboBox>
                                                     </DataTemplate>
@@ -820,12 +821,12 @@
 																	Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                                                 <TextBox Margin="1,0,1,1"
 																	Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																	ToolTip="{x:Static languages:Core.ServiceTestOutputValueTooltip}"
+																	ToolTip="{x:Static languages:Tooltips.ServiceTestOutputValueTooltip}"
 																	IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
 																	Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																	AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                                     <i:Interaction.Behaviors>
-                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                     </i:Interaction.Behaviors>
                                                                 </TextBox>
                                                             </StackPanel>
@@ -833,24 +834,24 @@
                                                             <TextBox Margin="1,0,1,1"
 																Grid.Column="0"
 																Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																ToolTip="{x:Static languages:Core.ServiceTestOutputFromTooltip}"
+																ToolTip="{x:Static languages:Tooltips.ServiceTestOutputFromTooltip}"
 																Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																customControls:WatermarkTextBox.Watermark="From"
 																AutomationProperties.AutomationId="UI_AssertFrom_AutoID">
                                                                 <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                 </i:Interaction.Behaviors>
                                                             </TextBox>
 
                                                             <TextBox Margin="1,0,1,1"
 																Grid.Column="1"
 																Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																ToolTip="{x:Static languages:Core.ServiceTestOutputToTooltip}"
+																ToolTip="{x:Static languages:Tooltips.ServiceTestOutputToTooltip}"
 																Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																customControls:WatermarkTextBox.Watermark="To"
 																AutomationProperties.AutomationId="UI_AssertTo_AutoID">
                                                                 <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:Core.ServiceTestOutputToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                 </i:Interaction.Behaviors>
                                                             </TextBox>
 
@@ -862,10 +863,10 @@
 																	    ItemsSource="{Binding Path=OptionsForValue}"
 																	    SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
 																	    Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																	    ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
+																	    ToolTip="{x:Static languages:Tooltips.ServiceTestStepOptionsForValueTooltip}"
 																	    AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
                                                                     <i:Interaction.Behaviors>
-                                                                        <core:HelpSetter Text="{x:Static languages:Core.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                     </i:Interaction.Behaviors>
                                                                 </ComboBox>
                                                             </StackPanel>
@@ -891,34 +892,34 @@
                                              Grid.Column="1"
                                              GroupName="NoError_Settings"
                                              Padding="0,0,5,0" 
-                                             ToolTip="{x:Static languages:Core.ServiceTestNoErrorExpectedTooltip}" 
+                                             ToolTip="{x:Static languages:Tooltips.ServiceTestNoErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              IsChecked="{Binding SelectedServiceTest.NoErrorExpected, Mode=TwoWay}"
                                              Content="No Error">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestNoErrorExpectedHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestNoErrorExpectedHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </RadioButton>
                                     <RadioButton x:Name="ErrorRadioButton" 
                                              Grid.Column="2"
                                              GroupName="Error_Settings"
-                                             ToolTip="{x:Static languages:Core.ServiceTestErrorExpectedTooltip}" 
+                                             ToolTip="{x:Static languages:Tooltips.ServiceTestErrorExpectedTooltip}" 
                                              VerticalAlignment="Center" 
                                              HorizontalAlignment="Left" 
                                              IsChecked="{Binding SelectedServiceTest.ErrorExpected, Mode=TwoWay}" 
                                              Content="Error">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestErrorExpectedHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestErrorExpectedHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </RadioButton>
                                     <TextBlock Grid.Column="3" Text="Contains" Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <TextBox Grid.Column="4" 
 										Text="{Binding SelectedServiceTest.ErrorContainsText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-										ToolTip="{x:Static languages:Core.ServiceTestErrorContainsTextTooltip}"
+										ToolTip="{x:Static languages:Tooltips.ServiceTestErrorContainsTextTooltip}"
 										Visibility="{Binding SelectedServiceTest.ErrorExpected, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestErrorContainsTextHelpText}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestErrorContainsTextHelpText}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
                                 </Grid>

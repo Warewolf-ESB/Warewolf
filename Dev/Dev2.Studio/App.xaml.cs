@@ -202,7 +202,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
 
             var textToDisplay = Warewolf.Studio.Resources.Languages.Core.StandardStyling.Replace("\r\n", "") +
-                                Warewolf.Studio.Resources.Languages.Core.WarewolfDefaultHelpDescription +
+                                Warewolf.Studio.Resources.Languages.HelpText.WarewolfDefaultHelpDescription +
                                 Warewolf.Studio.Resources.Languages.Core.StandardBodyParagraphClosing;
 
             var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));

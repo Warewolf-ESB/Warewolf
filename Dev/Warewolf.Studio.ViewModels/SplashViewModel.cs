@@ -25,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
             ContributorsUrl = conUri;
             Uri comUri = new Uri(Resources.Languages.Core.CommunityUrl);
             CommunityUrl = comUri;
-            Uri expUri = new Uri(Resources.Languages.Core.ExpertHelpUrl);
+            Uri expUri = new Uri(Resources.Languages.HelpText.ExpertHelpUrl);
             ExpertHelpUrl = expUri;
             Uri warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;

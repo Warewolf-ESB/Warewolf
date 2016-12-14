@@ -60,14 +60,14 @@
                                 DefaultText="Whole or decimal"
                                 FilterType="All"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.FormatNumberToolTipNumber}"
+                                ToolTip="{x:Static languages:Tooltips.FormatNumberToolTipNumber}"
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Number_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpNumber}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FormatNumberHelpNumber}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Expression"
                                      SourcePropertyValue="{Binding ModelItem.Expression, UpdateSourceTrigger=PropertyChanged}"
@@ -84,9 +84,9 @@
                    Width="Auto"
                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                    SelectedValue="{Binding SelectedRoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                   ToolTip="{x:Static languages:Core.FormatNumberToolTipRoundType}">
+                   ToolTip="{x:Static languages:Tooltips.FormatNumberToolTipRoundType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpRoundType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FormatNumberHelpRoundType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedRoundingType"
                                      SourcePropertyValue="{Binding SelectedRoundingType, UpdateSourceTrigger=PropertyChanged}"
@@ -106,9 +106,9 @@
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Rounding_Inputtxt_AutoID}"
-                                ToolTip="{x:Static languages:Core.FormatNumberToolTipRoundvalue}">
+                                ToolTip="{x:Static languages:Tooltips.FormatNumberToolTipRoundvalue}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpRoundValue}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FormatNumberHelpRoundValue}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RoundingDecimalPlaces"
                                      SourcePropertyValue="{Binding ModelItem.RoundingDecimalPlaces, UpdateSourceTrigger=PropertyChanged}"
@@ -121,14 +121,14 @@
                                 Grid.Row="2"
                                 FilterType="All"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.FormatNumberToolTipDecimalsToShow}"
+                                ToolTip="{x:Static languages:Tooltips.FormatNumberToolTipDecimalsToShow}"
                                 WrapInBrackets="False"
                                 AllowUserInsertLine="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DecimalsToShow_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpDecimalsToShow}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FormatNumberHelpDecimalsToShow}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DecimalPlacesToShow"
                                      SourcePropertyValue="{Binding ModelItem.DecimalPlacesToShow, UpdateSourceTrigger=PropertyChanged}"
@@ -144,14 +144,14 @@
                                 DefaultText="[[Result]]"
                                 AllowUserInsertLine="False"
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.FormatNumberToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.FormatNumberToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Stretch"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FormatNumberHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

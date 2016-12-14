@@ -47,7 +47,7 @@
                                  Height="53"
                                  MinHeight="53"
                                  FilterType="All"
-                                 ToolTip="{x:Static languages:Core.ScriptingToolTipScript}"
+                                 ToolTip="{x:Static languages:Tooltips.ScriptingToolTipScript}"
                                  AllowUserCalculateMode="False"
                                  IsInCalculateMode="True"
                                  Margin="{StaticResource ControlBorderTop}"
@@ -58,7 +58,7 @@
                 <TextBlock Text="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,-1,0,0"></TextBlock>
             </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpScript}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Script"
                                      SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
@@ -75,11 +75,11 @@
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.ScriptingToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.ScriptingToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ScriptingHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

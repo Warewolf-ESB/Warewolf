@@ -88,14 +88,14 @@ namespace Warewolf.Studio.Views
         private void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
-            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.Core.ServiceTestGenericHelpText);
+            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestGenericHelpText);
             e.Handled = true;
         }
 
         private void ListBoxItemGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
-            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.Core.ServiceTestSelectedTestHelpText);
+            serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestSelectedTestHelpText);
             e.Handled = true;
         }
     }

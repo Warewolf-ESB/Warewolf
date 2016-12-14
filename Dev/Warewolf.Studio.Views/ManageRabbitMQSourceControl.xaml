@@ -67,10 +67,10 @@
                     <TextBox x:Name="HostTextBox" 
                              Grid.Row="0" 
                              Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ManageRabbitMQHostTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ManageRabbitMQHostTooltip}"
                              Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceHostHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceHostHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{Binding PortLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -78,10 +78,10 @@
                              Grid.Row="1" 
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
-                             ToolTip="{x:Static languages:Core.ManageRabbitMQPortTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ManageRabbitMQPortTooltip}"
                              Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourcePortHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourcePortHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Text="{Binding UserNameLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -89,10 +89,10 @@
                              Grid.Row="2" 
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
-                             ToolTip="{x:Static languages:Core.ManageRabbitMQUserNameTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ManageRabbitMQUserNameTooltip}"
                              Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceUserNameHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceUserNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="{Binding PasswordLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -100,11 +100,11 @@
                                  Grid.Row="3" 
                                  Grid.Column="1"
                                  Margin="{StaticResource ControlBorderTop}"
-                                 ToolTip="{x:Static languages:Core.ManageRabbitMQPasswordTooltip}"
+                                 ToolTip="{x:Static languages:Tooltips.ManageRabbitMQPasswordTooltip}"
                                  customControls:PasswordBoxAssistant.BindPassword="true"
                                  customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourcePasswordHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourcePasswordHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
                     <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Text="{Binding VirtualHostLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -112,10 +112,10 @@
                              Grid.Row="4" 
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
-                             ToolTip="{x:Static languages:Core.ManageRabbitMQVirtualHostTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.ManageRabbitMQVirtualHostTooltip}"
                              Text="{Binding VirtualHost, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceVirtualHostHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourceVirtualHostHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                 </Grid>
@@ -161,14 +161,14 @@
                                                     Margin="{StaticResource ControlBorderRight}" 
                                                     Visibility="{Binding Path=Testing, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Button x:Name="TestPublishCommand"
-                                Margin="{StaticResource ControlBorderRight}"
-                                Width="120" 
-                                Height="30" 
-                                Content="{x:Static languages:Core.TestConnectionLabel}" 
-                                ToolTip="{x:Static languages:Core.ManagePublishTooltip}"
-                                Command="{Binding Path=PublishCommand}">
+                            Margin="{StaticResource ControlBorderRight}"
+                            Width="120" 
+                            Height="30" 
+                            Content="{x:Static languages:Core.TestConnectionLabel}" 
+                            ToolTip="{x:Static languages:Tooltips.ManagePublishTooltip}"
+                            Command="{Binding Path=PublishCommand}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.ServerTestConnectionHelp}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.ServerTestConnectionHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </Button>
                     </StackPanel>

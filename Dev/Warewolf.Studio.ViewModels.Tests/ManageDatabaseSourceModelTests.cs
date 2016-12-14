@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameWithBrackets()
+        public void TestDatabaseSourceServerNameWithBrackets()
         {
             //arrange
             _target = new ManageDatabaseSourceModel(_updateRepositoryMock.Object, _queryProxyMock.Object, _serverName+"(word in brackets)");

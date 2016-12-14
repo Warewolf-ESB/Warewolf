@@ -49,7 +49,7 @@
                                 FilterType="All" 
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.WriteFileToolTipFilename}"
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -59,7 +59,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WriteFileHelpFilename}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpFilename}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputPath"
                                      SourcePropertyValue="{Binding  ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -73,7 +73,7 @@
                Grid.Row="1" />
         <ui:IntellisenseTextBox  Grid.Column="1"
                                  Grid.Row="1"
-                                 ToolTip="{x:Static languages:Core.WriteFileToolTipContents}"
+                                 ToolTip="{x:Static languages:Tooltips.WriteFileToolTipContents}"
                                  DefaultText="[[DataToWrite]]"
                                  AcceptsReturn="True"
                                  Margin="{StaticResource ControlBorderTop}"
@@ -84,7 +84,7 @@
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WriteFileHelpContents}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpContents}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.FileContents"
                                      SourcePropertyValue="{Binding ModelItem.FileContents, UpdateSourceTrigger=PropertyChanged}"
@@ -106,9 +106,9 @@
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
-                                ToolTip="{x:Static languages:Core.WriteFileToolTipResult}">
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipResult}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WriteFileHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

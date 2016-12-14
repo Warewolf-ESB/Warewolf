@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Test Result -----------------------
             // ReSharper disable once PossibleNullReferenceException
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
-            Assert.AreEqual("javascript", toolDescriptorInfo.FilterTag );
+            Assert.AreEqual("javascript script JSON JS", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-JavaScript", toolDescriptorInfo.Icon );
             Assert.AreEqual("JavaScript", toolDescriptorInfo.Name );
         }

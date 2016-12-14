@@ -152,11 +152,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string SearchToolTip => Resources.Languages.Core.ExplorerSearchToolTip;
+        public string SearchToolTip => Resources.Languages.Tooltips.ExplorerSearchToolTip;
 
-        public string ExplorerClearSearchTooltip => Resources.Languages.Core.ExplorerClearSearchTooltip;
+        public string ExplorerClearSearchTooltip => Resources.Languages.Tooltips.ExplorerClearSearchTooltip;
 
-        public string RefreshToolTip => Resources.Languages.Core.ExplorerRefreshToolTip;
+        public string RefreshToolTip => Resources.Languages.Tooltips.ExplorerRefreshToolTip;
 
         public async void RefreshEnvironment(Guid environmentId)
         {
@@ -422,6 +422,11 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             OnPropertyChanged(() => Environments);
+            if (SelectedServer != null && this is DeployDestinationViewModel)
+            {
+                OnPropertyChanged(() => SelectedServer.IsConnected);
+            }
+            
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)

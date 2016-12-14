@@ -27,7 +27,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {         
             UIMap.Open_Sequence_Large_tool_View();
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_LargeTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
                 , "Error message is not about being unable to drop switch onto the Sequence tool");
             UIMap.Click_MessageBox_OK();
@@ -39,7 +39,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {         
             UIMap.Open_Sequence_Large_tool_View();
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_LargeTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
                 , "Error message is not about being unable to drop decision onto the Sequence tool");
             UIMap.Click_MessageBox_OK();
@@ -58,7 +58,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void ToolDesigners_SequenceSmallView_DraggingSwitch_NotAllowed_UITest()
         {
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_SmallTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
                 , "Error message is not about being unable to drop switch onto the Sequence tool");
             UIMap.Click_MessageBox_OK();
@@ -69,7 +69,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void ToolDesigners_SequenceSmallView_DraggingDecision_NotAllowed_UITest()
         {
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_SmallTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
                 , "Error message is not about being unable to drop decision onto the Sequence tool");
             UIMap.Click_MessageBox_OK();

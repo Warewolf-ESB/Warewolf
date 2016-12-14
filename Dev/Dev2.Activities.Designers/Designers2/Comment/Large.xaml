@@ -45,7 +45,7 @@
                                 WrapInBrackets="False" 
                                 HorizontalScrollBarVisibility="Auto"
                                 Style="{StaticResource AutoCompleteBoxWithWrapStyle}"
-                                ToolTip="{x:Static languages:Core.CommentToolTipComment}"
+                                ToolTip="{x:Static languages:Tooltips.CommentToolTipComment}"
                                 Text="{Binding Path=ModelItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Commenttxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
@@ -55,7 +55,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CommentHelpComment}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CommentHelpComment}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Text"
                                      SourcePropertyValue="{Binding  ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
