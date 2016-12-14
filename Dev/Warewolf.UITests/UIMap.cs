@@ -107,7 +107,8 @@ namespace Warewolf.UITests
         [When(@"I Try Click MessageBox No")]
         [Then(@"I Try Click MessageBox No")]
         public void TryClickMessageBoxNo()
-        {var TimeBefore = System.DateTime.Now;
+        {
+            var TimeBefore = System.DateTime.Now;
             try
             {
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
@@ -123,7 +124,7 @@ namespace Warewolf.UITests
             {
                 Console.WriteLine("No hanging message box to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
             }
-            
+
         }
         public void TryCloseHangingDebugInputDialog()
         {
@@ -603,6 +604,17 @@ namespace Warewolf.UITests
             {
                 TryClearExplorerFilter();
             }
+        }
+
+        [Given(@"I Connect To Remote Server")]
+        [When(@"I Connect To Remote Server")]
+        [Then(@"I Connect To Remote Server")]
+        public void ConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
+            Click_Explorer_RemoteServer_Connect_Button();
         }
 
         [Given(@"I Try Connect To Remote Server")]
@@ -8029,7 +8041,7 @@ namespace Warewolf.UITests
         [Given(@"I Click Create Test From Debug")]
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
-        {            
+        {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
@@ -8048,18 +8060,18 @@ namespace Warewolf.UITests
 
         public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.SmallDataGridTable.Row1.AssertValueCell.AssertValue.Text = message;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.UIUI_StepOutputs_SetthTable.UIItemRow.UIItemWarewolfStudioViCell.AssertValue_HelloEdit.Text = message;
         }
 
         public void Click_Delete_On_AssignValue_TestStep()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.AssertHeader.DeleteAssertButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);
         }
 
         [When(@"I Click AssigName From DesignSurface")]
         public void Click_AssigName_From_DesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom);
         }
 
         public int Expand_Comment_Tool_Size()
@@ -8718,7 +8730,7 @@ namespace Warewolf.UITests
         [When(@"I Select NewExchangeSource FromExplorerContextMenu")]
         public void Select_NewExchangeSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));            
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSourceMenuItem);
@@ -8760,6 +8772,19 @@ namespace Warewolf.UITests
         public void WhenIDragATool(string tool)
         {
             Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
+        }
+
+        /// <summary>
+        /// Click_Output_Step
+        /// </summary>
+        public void Click_Output_Step()
+        {
+            #region Variable Declarations
+            WpfCustom uIDsfMultiAssignActiviCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignActiviCustom;
+            #endregion
+
+            // Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(uIDsfMultiAssignActiviCustom, new Point(77, 8));
         }
     }
 }
