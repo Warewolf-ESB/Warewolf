@@ -10,6 +10,7 @@
         Style="{StaticResource WindowBorderlessStyle}"
         Closing="ManageEmailAttachmentView_OnClosing"
         MouseDown="ManageEmailAttachmentView_OnMouseDown"
+        KeyUp="ManageEmailAttachmentView_OnKeyUp"
         WindowStartupLocation="CenterScreen"
         Width="600"
         Height="450"
