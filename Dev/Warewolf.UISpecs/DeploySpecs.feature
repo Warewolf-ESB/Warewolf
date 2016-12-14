@@ -1,4 +1,5 @@
-﻿Feature: DeploySpecs
+﻿@DeploySpecsFeature 
+Feature: Deploy
 
 Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	Given I Filter the Explorer with "Hello World"
@@ -24,6 +25,58 @@ Scenario: Deploy From RemoteConnection
 	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
 	And I Deploy "Hello world" From Deploy View
 
+
+
+Scenario: Deploy button is enabling when selecting resource in source side
+	 Given The Warewolf Studio is running
+	 When I Click Deploy Ribbon Button
+	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	 And I Click Deploy Tab Destination Server Connect Button
+	 And I Select "Hello world" from the source tab 
+	 Then Deploy Button is enabled  "true"	
+	 And I Click Deploy Tab Destination Server Connect Button
+	 Then Deploy Button is enabled  "false"
+
+Scenario: Filtering and clearing filter on source side
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I filter for "Date and Time" on the source filter
+	And "1" resource is visible on the tree
+	And I filter for "" on the source filter	
+
+Scenario: Deploying with filter enabled
+     Given The Warewolf Studio is running
+	 When I Click Deploy Ribbon Button
+	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	 And I Click Deploy Tab Destination Server Connect Button
+	 And I filter for "Date and Time" on the source filter
+	 And Resources is visible on the tree
+	 And I Select "Date and Time" from the source tab 
+	 And I Click Deploy button	
+
+Scenario: Deploy is enabled when I change server after validation thrown
+  Given The Warewolf Studio is running
+  When I Click Deploy Ribbon Button
+  And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
+  And I Select LocalhostConnected From Deploy Tab Destination Server Combobox 
+  And I filter for "Date and Time" on the source filter
+  And Deploy Button is enabled  "false"
+  And The deploy validation message is "Source and Destination cannot be the same."
+  And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+  And I Click Deploy Tab Destination Server Connect Button
+  And I Select "Date and Time" from the source tab 
+  And Deploy Button is enabled  "true"
+
+Scenario: Select All resources to deploy
+  Given The Warewolf Studio is running
+  When I Click Deploy Ribbon Button
+  And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
+  And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+  And I Click Deploy Tab Destination Server Connect Button
+  And I filter for "DateTime" on the source filter
+  And I Select localhost from the source tab 
+  And Deploy Button is enabled  "true"
 
 Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder Already Checked
 	Given I Filter the Explorer with "Unit Tests"
@@ -60,3 +113,14 @@ Scenario: Deploy Disconnect Clears Destination
 	And Deploy Window Is Still Open
 	Then I Click Deploy Tab Destination Server Connect Button
 	And Destination Deploy Information Clears
+#
+#Scenario: Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Explorer
+#	Given I Try Connect To Remote Server
+#	And I Click Deploy Ribbon Button
+#	And I Click Deploy Tab Destination Server Combobox
+#	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
+#	And I Click Deploy Tab Destination Server Connect Button
+#	And I Click Explorer Connect Remote Server Button
+#	Then Destination Remote Server Is Connected
+
+

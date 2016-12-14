@@ -13,6 +13,7 @@ namespace Warewolf.UISpecs
         {
             Uimap.SetPlaybackSettings();
         }
+        
 
         UIMap Uimap
         {
