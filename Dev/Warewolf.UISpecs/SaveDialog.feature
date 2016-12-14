@@ -1,4 +1,4 @@
-﻿@Save
+﻿@Save Dialog
 Feature: SaveDialog
 	In order to save services
 	As a warewolf studio user
