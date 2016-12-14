@@ -1,5 +1,5 @@
-﻿@DeploySpecsFeature 
-Feature: Deploy
+﻿@Deploy 
+Feature: DeploySpecs
 
 Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	Given I Filter the Explorer with "Hello World"

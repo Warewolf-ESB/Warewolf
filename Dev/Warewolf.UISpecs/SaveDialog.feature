@@ -1,5 +1,5 @@
-﻿@SaveDialogFeature
-Feature: Save Dialog
+﻿@Save
+Feature: SaveDialog
 	In order to save services
 	As a warewolf studio user
 	I want to give the workflow a name and location
