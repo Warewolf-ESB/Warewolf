@@ -7,7 +7,9 @@ namespace Warewolf.UITests
     public class TestFrameworkMockingTests
     {
         private const string HelloWorld = "Hello World";
-        private const string RandomWorkFlow = "RandomTool WorkFlow";
+        private const string RandomWorkFlow = "RandomToolWorkFlow";
+        private const string DiceRoll = "Dice Roll";
+        private const string Nestedwf = "NestedWF";
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
@@ -48,13 +50,17 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Filter_Explorer(HelloWorld);
+            UIMap.Click_New_Workflow_Ribbon_Button();            
+            UIMap.Filter_Explorer(DiceRoll);
+            UIMap.Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
             UIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
-            UIMap.Press_F6();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("NesetedWF");
+            UIMap.Press_F6();            
+            UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
