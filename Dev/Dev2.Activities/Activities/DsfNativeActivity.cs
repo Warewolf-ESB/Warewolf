@@ -42,6 +42,7 @@ using Dev2.Util;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
@@ -653,7 +654,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsServiceTestExecution)
             {
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps;
-                var testSteps = serviceTestSteps as IList<IServiceTestStep> ?? serviceTestSteps?.ToList();
                 var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
@@ -735,17 +735,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    var msg = Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    var msg = Messages.Test_FailureResult;
                     if (assertPassed)
                     {
-                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                        msg = Messages.Test_PassedResult;
                     }
-                    var hasError = msg == Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    var hasError = msg == Messages.Test_FailureResult;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
                 }
                 else
                 {
-                    dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
+                    dataObject.Environment.AddError(Messages.Test_FailureResult);
                 }
             }
         }
@@ -767,22 +767,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
-                    var msg = Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    var msg = Messages.Test_FailureResult;
                     if (assertPassed)
                     {
-                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                        msg = Messages.Test_PassedResult;
                     }
-                    var hasError = msg == Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                    var hasError = msg == Messages.Test_FailureResult;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
                 }
                 else
                 {
-                    dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
+                    dataObject.Environment.AddError(Messages.Test_FailureResult);
                 }
             }
         }
 
-        protected void UpdateWithAssertions(IDSFDataObject dataObject)
+        private void UpdateWithAssertions(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution)
             {
@@ -928,9 +928,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceTestOutput.Result.RunTestResult = RunResult.TestFailed;
                 dataObject.ServiceTest.Result.RunTestResult = RunResult.TestFailed;
                 dataObject.ServiceTest.TestFailing = true;
-                serviceTestOutput.Result.Message = Warewolf.Resource.Messages.Messages.Test_FailureResult;
+                serviceTestOutput.Result.Message = Messages.Test_FailureResult;
                 stepToBeAsserted.Result.RunTestResult = RunResult.TestFailed;
-                dataObject.Environment.AddError(Warewolf.Resource.Messages.Messages.Test_FailureResult);
+                dataObject.Environment.AddError(Messages.Test_FailureResult);
             }
             UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { stepToBeAsserted.Result }, "");
         }
@@ -939,15 +939,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (output == null)
             {
-                var testResult = new TestRunResult();
-                testResult.RunTestResult = RunResult.TestPending;
+                var testResult = new TestRunResult
+                {
+                    RunTestResult = RunResult.TestInvalid
+                };
                 return new List<TestRunResult> {testResult};
             }
             if (output.Result != null)
             {
                 output.Result.RunTestResult = RunResult.TestInvalid;
             }
-
+            if (string.IsNullOrEmpty(output.Variable))
+            {
+                var testResult = new TestRunResult
+                {
+                    RunTestResult = RunResult.TestInvalid,
+                    Message = Messages.Test_NothingToAssert
+                };
+                output.Result = testResult;
+                AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(testResult.Message, true));
+                return new List<TestRunResult> { testResult };
+            }
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
 
@@ -1002,7 +1014,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var msg = testResult.Message;
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
-                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                        msg = Messages.Test_PassedResult;
                         msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
                     }
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;

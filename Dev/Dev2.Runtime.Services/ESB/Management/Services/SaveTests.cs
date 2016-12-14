@@ -84,7 +84,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     })
                 };
 
-                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModelTO>>(serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage());
+                var decompressedMessage = serializer.Deserialize<CompressedExecuteMessage>(testDefinitionMessage).GetDecompressedMessage();
+                var serviceTestModelTos = serializer.Deserialize<List<IServiceTestModelTO>>(decompressedMessage);
                 var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
                 if (resource == null)
                 {
