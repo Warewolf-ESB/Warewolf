@@ -13,6 +13,7 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -72,6 +73,29 @@ namespace Dev2.Runtime
                 return serviceTestModelTos;
             });
         }
+               
+        private void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
+        {
+            foreach(var serviceTestModelTO in testsToUpdate)
+            {
+                serviceTestModelTO.TestFailing = false;
+                serviceTestModelTO.TestPassed = false;
+                serviceTestModelTO.TestPending = false;
+                serviceTestModelTO.TestInvalid = true;
+                UpdateStepOutputsForTest(serviceTestModelTO);
+                if (serviceTestModelTO.Outputs != null)
+                {
+                    foreach(var serviceTestOutput in serviceTestModelTO.Outputs)
+                    {
+                        if (serviceTestOutput.Result != null)
+                        {
+                            serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
+                        }
+                    }
+                }
+                
+            }
+        }
 
         public void UpdateTestsBasedOnIOChange(Guid resourceID, IList<IDev2Definition> inputDefs, IList<IDev2Definition> outputDefs)
         {
@@ -80,14 +104,15 @@ namespace Dev2.Runtime
             {
                 foreach (var serviceTestModelTO in testsToUpdate)
                 {
-                    serviceTestModelTO.TestFailing = false;
-                    serviceTestModelTO.TestPassed = false;
-                    serviceTestModelTO.TestPending = false;
-                    serviceTestModelTO.TestInvalid = true;
-
-                    UpdateInputsForTest(serviceTestModelTO, inputDefs);
-                    UpdateOutputsForTest(serviceTestModelTO, outputDefs);
-                    UpdateStepOutputsForTest(serviceTestModelTO);
+                    UpdateTestToInvalid(testsToUpdate);
+                    if (inputDefs != null && inputDefs.Count > 0)
+                    {
+                        UpdateInputsForTest(serviceTestModelTO, inputDefs);
+                    }
+                    if (outputDefs != null && outputDefs.Count > 0)
+                    {
+                        UpdateOutputsForTest(serviceTestModelTO, outputDefs);
+                    }
                 }
                 SaveTests(resourceID, testsToUpdate);
             }
