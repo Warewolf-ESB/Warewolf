@@ -131,6 +131,25 @@ namespace Warewolf.UITests.Tabs
             UIMap.Restore_Unpinned_Tab_Using_Context_Menu();
         }
 
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void AssignToolInUnpinnedWorkflowTabAddRemoveVariablesUITest()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable1Name + "]]", Variable1Value, 1);
+            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            const string Variable2Name = "SomeOtherVariable";
+            const string Variable2Value = "100";
+            UIMap.Enter_Variable_And_Value_Into_Assign_On_Unpinned_Tab("[[" + Variable2Name + "]]", Variable2Value, 2);
+            Assert.AreEqual(Variable2Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            UIMap.Remove_Assign_Row_1_With_Context_Menu_On_Unpinned_Tab();
+            UIMap.Pin_Unpinned_Pane_To_Default_Position();
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
