@@ -239,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
 
             foreach (var explorerTreeItem in explorerTreeItems)
             {
-                if (explorerTreeItem.ResourceType.Equals("Folder", StringComparison.CurrentCultureIgnoreCase) && explorerTreeItem.Children.Count == 0)
+                if (explorerTreeItem.ResourceType != null && (explorerTreeItem.ResourceType.Equals("Folder", StringComparison.CurrentCultureIgnoreCase) && explorerTreeItem.Children.Count == 0))
                 {
                     var itemViewModels = SelectedEnvironment.AsList()
                         .Where(model => model.ResourceName.Equals(explorerTreeItem.ResourceName, StringComparison.InvariantCultureIgnoreCase))
