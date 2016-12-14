@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -65,7 +66,6 @@ namespace Warewolf.Studio.ViewModels
 
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
-
                 NewResourcesCount = _stats.NewResources.ToString();
                 OverridesCount = _stats.Overrides.ToString();
                 ConflictItems = _stats.Conflicts;
@@ -86,7 +86,16 @@ namespace Warewolf.Studio.ViewModels
             NewResourcesViewCommand = new DelegateCommand(ViewNewResources);
             OverridesViewCommand = new DelegateCommand(ViewOverrides);
             Destination.ServerStateChanged += DestinationServerStateChanged;
+            Destination.PropertyChanged += DestinationOnPropertyChanged;
             ShowConflicts = false;
+        }
+
+        private void DestinationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if(propertyChangedEventArgs.PropertyName == "IsConnected")
+            {
+                ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
+            }
         }
 
         void DestinationServerStateChanged(object sender, IServer server)
@@ -96,7 +105,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _stats.Calculate(_source?.SourceLoadedItems?.ToList());
             }
-            _stats.Calculate(_source?.SourceLoadedItems?.ToList());
         }
 
         public bool CanSelectDependencies
@@ -382,8 +390,15 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+
                 if (IsDeploying)
                     return false;
+
+                if (SourceConnectControlViewModel.SelectedConnection != null && !SourceConnectControlViewModel.SelectedConnection.IsConnected)
+                {
+                    ErrorMessage = Resources.Languages.Core.DeploySourceNotConnected;
+                    return false;
+                }
                 if (Source.SelectedEnvironment == null || !Source.SelectedEnvironment.IsConnected)
                 {
                     ErrorMessage = Resources.Languages.Core.DeploySourceNotConnected;
@@ -394,7 +409,11 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = Resources.Languages.Core.DeployDestinationNotConnected;
                     return false;
                 }
-
+                if (DestinationConnectControlViewModel.SelectedConnection != null && !DestinationConnectControlViewModel.SelectedConnection.IsConnected)
+                {
+                    ErrorMessage = Resources.Languages.Core.DeployDestinationNotConnected;
+                    return false;
+                }
                 if (Source.SelectedEnvironment.Server.EnvironmentID == Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID)
                 {
                     ErrorMessage = Resources.Languages.Core.DeploySourceDestinationAreSame;
@@ -617,9 +636,9 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _errorMessage = value;
-                if (!String.IsNullOrEmpty(DeploySuccessMessage) && !String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(DeploySuccessMessage) && !string.IsNullOrEmpty(value))
                 {
-                    DeploySuccessMessage = String.Empty;                    
+                    DeploySuccessMessage = string.Empty;                    
                     DeploySuccessfull = false;
                 }
                 OnPropertyChanged(() => ErrorMessage);
