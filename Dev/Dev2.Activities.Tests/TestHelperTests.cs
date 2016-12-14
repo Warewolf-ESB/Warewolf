@@ -463,7 +463,6 @@ namespace Dev2.Tests.Activities
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
-            Assert.AreEqual("Invalid: Nothing to assert.", serviceTestStepTO.Result.Message);
         }
 
         [TestMethod]
@@ -499,7 +498,216 @@ namespace Dev2.Tests.Activities
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
-            Assert.AreEqual("Invalid: Nothing to assert.", serviceTestStepTO.StepOutputs[0].Result.Message);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyValue_SetResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "[[var]]",
+                AssertOp = "=",
+                Value = "",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestFailed,serviceTestStepTO.Result.RunTestResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyValue_SetOutputResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "[[var]]",
+                AssertOp = "=",
+                Value = "",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestFailed, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableWithValue_SetResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "",
+                AssertOp = "=",
+                Value = "hello",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableWithValue_SetOutputResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "",
+                AssertOp = "=",
+                Value = "hello",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestInvalid, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableEmptyValue_SetResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "",
+                AssertOp = "=",
+                Value = "",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestPassed,serviceTestStepTO.Result.RunTestResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
+        public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableEmptyValue_SetOutputResultInvalid()
+        {
+            //------------Setup for test--------------------------
+            var mockDataObject = GetMockDataObject(true, Guid.NewGuid(), "Test1");
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            var uniqueID = Guid.NewGuid();
+            var serviceTestTestSteps = new List<IServiceTestStep>();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutputTO = new ServiceTestOutputTO
+            {
+                Variable = "",
+                AssertOp = "=",
+                Value = "",
+                Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+            };
+            var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("Bye") };
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
+            var dsfDataObject = mockDataObject.Object;
+            serviceTestOutputs.Add(serviceTestOutputTO);
+            var serviceTestStepTO = new ServiceTestStepTO(uniqueID, typeof(DsfMultiAssignActivity).Name, serviceTestOutputs, StepType.Assert);
+            serviceTestTestSteps.Add(serviceTestStepTO);
+            
+            var debugState = new DebugState { ID = uniqueID };
+            TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
+            //------------Execute Test---------------------------
+            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceTestStepTO.Result);
+            Assert.AreEqual(RunResult.TestPassed, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
         }
 
         private static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)

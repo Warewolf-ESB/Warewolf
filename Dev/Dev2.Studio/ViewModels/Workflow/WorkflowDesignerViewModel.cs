@@ -90,6 +90,7 @@ using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable UnusedMember.Global
+// ReSharper disable LoopCanBeConvertedToQuery
 
 
 // ReSharper disable CheckNamespace
@@ -2049,9 +2050,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
         {
             var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
-            // ReSharper disable MaximumChainedReferences
-            var selectedModelItem = (from mi in modelItems let instanceID = ModelItemUtils.GetUniqueID(mi) where instanceID == workSurfaceMappingId || instanceID == parentID select mi).FirstOrDefault();
-            // ReSharper restore MaximumChainedReferences
+            ModelItem selectedModelItem = null;
+            foreach(var mi in modelItems)
+            {
+                Guid instanceID = ModelItemUtils.GetUniqueID(mi);
+                if(instanceID == workSurfaceMappingId || instanceID == parentID)
+                {
+                    selectedModelItem = mi;
+                    break;
+                }
+            }
             return selectedModelItem;
         }
 
