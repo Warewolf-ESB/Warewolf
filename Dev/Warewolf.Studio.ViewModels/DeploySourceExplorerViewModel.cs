@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -168,10 +169,11 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return SelectedEnvironment?.AsList()
+                var explorerTreeItems = SelectedEnvironment?.AsList()
                     .Select(a => a as IExplorerTreeItem)
                     .Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value)
                     .ToList() ?? new List<IExplorerTreeItem>();
+                return explorerTreeItems;
             }
             set
             {             
@@ -234,6 +236,19 @@ namespace Warewolf.Studio.ViewModels
             }
 
             SelectedEnvironment.AsList().Apply(a => a.IsResourceChecked = explorerTreeItems.Contains(a));
+
+            foreach (var explorerTreeItem in explorerTreeItems)
+            {
+                if (explorerTreeItem.ResourceType != null && (explorerTreeItem.ResourceType.Equals("Folder", StringComparison.CurrentCultureIgnoreCase) && explorerTreeItem.Children.Count == 0))
+                {
+                    var itemViewModels = SelectedEnvironment.AsList()
+                        .Where(model => model.ResourceName.Equals(explorerTreeItem.ResourceName, StringComparison.InvariantCultureIgnoreCase))
+                        .Flatten(model => model.Children);
+                    SelectedEnvironment.AsList()
+                        .Where(model => model.ResourceType.Equals("Folder", StringComparison.InvariantCultureIgnoreCase))
+                        .Apply(a => a.IsResourceChecked = itemViewModels.Contains(a));
+                }
+            }
         }
 
         #endregion
