@@ -68,7 +68,11 @@ namespace Warewolf.UITests
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
             UIMap.Click_Delete_On_AssignValue_TestStep();
-            UIMap.Click_AssigName_From_DesignSurface();
+            UIMap.Click_Output_Step();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
+            UIMap.Click_Close_Tests_Tab();
+            UIMap.Click_MessageBox_No();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
