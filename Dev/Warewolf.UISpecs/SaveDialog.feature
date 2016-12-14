@@ -15,7 +15,7 @@ Scenario: SaveDialogServiceNameValidation
 	And I Click SaveDialog Save Button
 	And I Click Close Workflow Tab Button
 	And I Click Duplicate From Explorer Context Menu for Service "TestingWF"
-	And I Wait For Save Dialog Explorer Spinner
+	And I Select LocalHost on the Save Dialog
 	And I Enter Service Name Into Duplicate Dialog As "TestingWF1"
 	And I Enter Invalid Service Name Into Duplicate Dialog As "Inv@lid N&m#"
 	And I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As "Test "
@@ -107,6 +107,7 @@ Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Ex
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Name New Folder as "I_Will_Delete_This_Folder"
+	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "I_Will_Delete_This_Folder"
 	And I RightClick Explorer Localhost First Item
 	And I Select Delete FromExplorerContextMenu
@@ -136,9 +137,12 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Name New Folder as "New Created Folder"
+	And I Click SaveDialog CancelButton
+	And I Refresh Explorer
 	And I Filter the Explorer with "New Created Folder"
-	Then Explorer Contain Item "New Created Folder"	
-	Then I Click Close Workflow Tab Button
+	Then Explorer Contain Item "New Created Folder"
+	And I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	Given I Click New Workflow Ribbon Button
