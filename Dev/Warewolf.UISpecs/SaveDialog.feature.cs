@@ -30,9 +30,10 @@ namespace Warewolf.UISpecs
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Save Dialog", "\tIn order to save services\r\n\tAs a warewolf studio user\r\n\tI want to give the workf" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SaveDialog", "\tIn order to save services\r\n\tAs a warewolf studio user\r\n\tI want to give the workf" +
                     "low a name and location", ProgrammingLanguage.CSharp, new string[] {
-                        "SaveDialogFeature"});
+                        "Save",
+                        "Dialog"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,7 +48,7 @@ namespace Warewolf.UISpecs
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "Save Dialog")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "SaveDialog")))
             {
                 Warewolf.UISpecs.SaveDialogFeature.FeatureSetup(null);
             }
@@ -71,8 +72,9 @@ namespace Warewolf.UISpecs
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SaveDialogServiceNameValidation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void SaveDialogServiceNameValidation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SaveDialogServiceNameValidation", ((string[])(null)));
@@ -114,8 +116,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create WorkFlow In Folder Opens Save Dialog With Folder Already Selected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateWorkFlowInFolderOpensSaveDialogWithFolderAlreadySelected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create WorkFlow In Folder Opens Save Dialog With Folder Already Selected", ((string[])(null)));
@@ -150,8 +153,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Double Click Item In Save Dialog Does Not Open Resource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void DoubleClickItemInSaveDialogDoesNotOpenResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Double Click Item In Save Dialog Does Not Open Resource", ((string[])(null)));
@@ -181,8 +185,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter Save Dialog Close And ReOpen Clears The Filter")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void FilterSaveDialogCloseAndReOpenClearsTheFilter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filter Save Dialog Close And ReOpen Clears The Filter", ((string[])(null)));
@@ -218,8 +223,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Close Save Dialog Removes Explorer Filter")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CloseSaveDialogRemovesExplorerFilter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close Save Dialog Removes Explorer Filter", ((string[])(null)));
@@ -249,8 +255,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Folder From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void RenameFolderFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Folder From Save Dialog", ((string[])(null)));
@@ -286,8 +293,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Then Open Context Menu Server From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateNewFolderInLocalhostThenOpenContextMenuServerFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Then Open Context Menu Server From Save Dialog", ((string[])(null)));
@@ -323,8 +331,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost From Save Dialog Then Delete In Main Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateNewFolderInLocalhostFromSaveDialogThenDeleteInMainExplorer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost From Save Dialog Then Delete In Main Explorer", ((string[])(null)));
@@ -363,8 +372,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Fo" +
             "lder")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateNewFolderInLocalhostServerFromSaveDialogThenEscapeCreatesTheFolder()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Fo" +
@@ -401,8 +411,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Localhost Server From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateNewFolderInLocalhostServerFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Localhost Server From Save Dialog", ((string[])(null)));
@@ -434,8 +445,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Folder In Existing Folder As A Sub Folder From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void CreateNewFolderInExistingFolderAsASubFolderFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Folder In Existing Folder As A Sub Folder From Save Dialog", ((string[])(null)));
@@ -469,8 +481,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Resource From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void RenameResourceFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Resource From Save Dialog", ((string[])(null)));
@@ -506,8 +519,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Resource From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void DeleteResourceFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Resource From Save Dialog", ((string[])(null)));
@@ -543,8 +557,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Resource To Localhost From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void MoveResourceToLocalhostFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Resource To Localhost From Save Dialog", ((string[])(null)));
@@ -576,8 +591,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Folder To FolderToRename From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void MoveFolderToFolderToRenameFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Folder To FolderToRename From Save Dialog", ((string[])(null)));
@@ -609,8 +625,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Folder To Same Location From Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Save Dialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SaveDialogFeature")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SaveDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Dialog")]
         public virtual void MoveFolderToSameLocationFromSaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Folder To Same Location From Save Dialog", ((string[])(null)));
