@@ -1,4 +1,5 @@
-﻿Feature: WorkflowTestingTab
+﻿@WorkflowTestingTabFeature
+Feature: WorkflowTestingTab
 	In order to test workflows
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions

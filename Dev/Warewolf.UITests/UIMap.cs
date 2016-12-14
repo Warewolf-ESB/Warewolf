@@ -2253,6 +2253,15 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [Given(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        [Then(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        public void GivenIRefreshExplorerWithpoutWaitingForSpinner()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+        }
+
+
         public void TryRemoveTests()
         {
             WpfList testsListBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList;
@@ -7721,6 +7730,16 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
+        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+        }
+
         [When(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Source Server Combobox")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
@@ -8024,6 +8043,14 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+        [Given(@"I Double Click Localhost Server")]
+        [When(@"I Double Click Localhost Server")]
+        [Then(@"I Double Click Localhost Server")]
+        public void DoubleClick_Localhost_Server()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
         [When(@"I Click Web Browser Error Messagebox OK Button")]
         public void Click_Web_Browser_Error_Messagebox_OK_Button()
         {
@@ -8294,7 +8321,8 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
             Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner));
+            Point point;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point));
         }
 
         [Then(@"Filtered Resourse Is Checked For Deploy")]
