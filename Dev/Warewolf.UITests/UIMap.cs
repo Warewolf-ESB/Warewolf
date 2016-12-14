@@ -605,6 +605,17 @@ namespace Warewolf.UITests
             }
         }
 
+        [Given(@"I Connect To Remote Server")]
+        [When(@"I Connect To Remote Server")]
+        [Then(@"I Connect To Remote Server")]
+        public void ConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
+            Click_Explorer_RemoteServer_Connect_Button();
+        }
+
         [Given(@"I Try Connect To Remote Server")]
         [When(@"I Try Connect To Remote Server")]
         [Then(@"I Try Connect To Remote Server")]
