@@ -1,4 +1,0 @@
-﻿return {
-        1: "one",				    
-		2: "two",   
-        }.get(([[val1]] + [[val2]]), "not one or two")
