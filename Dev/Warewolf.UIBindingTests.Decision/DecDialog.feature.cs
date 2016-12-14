@@ -157,33 +157,6 @@ this.ScenarioSetup(scenarioInfo);
             this.EnsureInputsAreEnabledOnDecisionWindowLoad("3", "Visible, Visible, Visible, Visible", "[[a]]", "[[b]]", "5", "[[c]]", "15", "Is Between", ((string[])(null)));
 #line hidden
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation on incorrectly formatted variables")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void ValidationOnIncorrectlyFormattedVariables()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation on incorrectly formatted variables", new string[] {
-                        "Ignore"});
-#line 46
-this.ScenarioSetup(scenarioInfo);
-#line 47
- testRunner.Given("I have a workflow New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
- testRunner.And("drop a Decision tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
- testRunner.And("a decision variable \"[[A]]}\" value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
- testRunner.And("a decision variable \"[[rec().a]]\" value \"28/08/2015\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
- testRunner.And("Match Type equals \"=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
- testRunner.And("\"Done\" is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
