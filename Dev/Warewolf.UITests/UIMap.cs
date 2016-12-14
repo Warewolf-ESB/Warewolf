@@ -5666,8 +5666,8 @@ namespace Warewolf.UITests
         [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
         public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = "LocalSchedulerAdmin";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "987Sched#@!";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = "integrationtester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";
         }
 
         [When(@"I Enter Public As Windows Group")]
