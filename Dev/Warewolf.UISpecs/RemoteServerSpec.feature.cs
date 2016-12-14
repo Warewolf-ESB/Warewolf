@@ -70,13 +70,13 @@ namespace Warewolf.UISpecs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create A Workflow On The Remote Server Refreshes Only The Remote Server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Refresh Remote Server Refreshes Only The Remote Server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemoteServerSpec")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RemoteServerSpecFeature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
-        public virtual void CreateAWorkflowOnTheRemoteServerRefreshesOnlyTheRemoteServer()
+        public virtual void RefreshRemoteServerRefreshesOnlyTheRemoteServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create A Workflow On The Remote Server Refreshes Only The Remote Server", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Refresh Remote Server Refreshes Only The Remote Server", new string[] {
                         "mytag"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
