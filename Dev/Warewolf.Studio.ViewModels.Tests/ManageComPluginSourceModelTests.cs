@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameBrackets()
+        public void TestComPluginSourceServerNameBrackets()
         {
             //arrange  
             _target = new ManageComPluginSourceModel(_updateRepositoryMock.Object, _queryProxyMock.Object, _serverName + "(sthInBrackets)");
