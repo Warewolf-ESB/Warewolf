@@ -258,22 +258,25 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (DataObject.IsDebugMode())
                 {
-                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
-                    DebugItem outputDebugItem = new DebugItem();
-                    if (test != null)
+                    if (!DataObject.StopExecution)
                     {
-                        var msg = test.FailureMessage;
-                        if (test.TestPassed)
+                        var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
+                        DebugItem outputDebugItem = new DebugItem();
+                        if (test != null)
                         {
-                            msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                            var msg = test.FailureMessage;
+                            if (test.TestPassed)
+                            {
+                                msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                            }
+                            outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
                         }
-                        outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+                        debugState.AssertResultList.Add(outputDebugItem);
+                        wfappUtils.WriteDebug(DataObject, debugState);
                     }
-                    debugState.AssertResultList.Add(outputDebugItem);
-                    wfappUtils.WriteDebug(DataObject, debugState);
-
                     var testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
                     AggregateTestResult(resourceId, test);
+
                     DebugItem itemToAdd = new DebugItem();
                     if (test != null)
                     {
@@ -467,7 +470,6 @@ namespace Dev2.Runtime.ESB.Execution
         private static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
         {
             UpdateTestWithStepValues(test);
-
             UpdateTestWithFinalResult(resourceId, test);
         }
 
@@ -511,6 +513,22 @@ namespace Dev2.Runtime.ESB.Execution
         private static StringBuilder UpdateFailureMessage(bool hasPendingSteps, IList<IServiceTestStep> pendingTestSteps, bool hasInvalidSteps, IList<IServiceTestStep> invalidTestSteps, bool hasFailingSteps, IList<IServiceTestStep> failingTestSteps, bool hasPendingOutputs, IList<IServiceTestOutput> pendingTestOutputs, bool hasInvalidOutputs, IList<IServiceTestOutput> invalidTestOutputs, bool hasFailingOutputs, IList<IServiceTestOutput> failingTestOutputs, List<IServiceTestStep> serviceTestSteps)
         {
             var failureMessage = new StringBuilder();
+            if (hasFailingSteps)
+            {
+                foreach (var serviceTestStep in failingTestSteps)
+                {
+                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+                }
+            }
+            if (hasInvalidSteps)
+            {
+                foreach (var serviceTestStep in invalidTestSteps)
+                {
+                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+                }
+            }
             if (hasPendingSteps)
             {
                 foreach(var serviceTestStep in pendingTestSteps)
@@ -518,42 +536,32 @@ namespace Dev2.Runtime.ESB.Execution
                     failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
                 }
             }
-            if(hasInvalidSteps)
-            {
-                foreach(var serviceTestStep in invalidTestSteps)
-                {
-                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription);
-                }
-            }
-            if(hasFailingSteps)
-            {
-                foreach(var serviceTestStep in failingTestSteps)
-                {
-                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription);
-                }
-            }
 
-            if(hasPendingOutputs)
+            if (hasFailingOutputs)
+            {
+                foreach (var serviceTestStep in failingTestOutputs)
+                {
+                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable);
+                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+                }
+            }
+            if (hasInvalidOutputs)
+            {
+                foreach (var serviceTestStep in invalidTestOutputs)
+                {
+                    failureMessage.AppendLine("Invalid Output for Variable: " + serviceTestStep.Variable);
+                    failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
+                }
+            }
+            if (hasPendingOutputs)
             {
                 foreach(var serviceTestStep in pendingTestOutputs)
                 {
                     failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
                 }
             }
-            if(hasInvalidOutputs)
-            {
-                foreach(var serviceTestStep in invalidTestOutputs)
-                {
-                    failureMessage.AppendLine("Invalid Output for Variable: " + serviceTestStep.Variable);
-                }
-            }
-            if(hasFailingOutputs)
-            {
-                foreach(var serviceTestStep in failingTestOutputs)
-                {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable);
-                }
-            }
+            
+            
 
             failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
             return failureMessage;
