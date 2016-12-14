@@ -877,6 +877,12 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
+        [When(@"I Wait For Save Dialog Explorer Spinner")]
+        public void WaitForSaveDialogExplorerSpinner()
+        {
+            WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
             WaitForControlNotVisible(control, searchTimeout);
@@ -1138,7 +1144,6 @@ namespace Warewolf.UITests
             Click_SaveDialog_Save_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
 
         [Given(@"I Click SaveDialog Save Button")]
         [When(@"I Click SaveDialog Save Button")]
