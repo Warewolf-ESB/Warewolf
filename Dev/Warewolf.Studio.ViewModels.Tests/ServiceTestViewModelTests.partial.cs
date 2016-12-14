@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Core.Tests.Environments;
 using Dev2.Diagnostics.Debug;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
@@ -31,6 +32,77 @@ namespace Warewolf.Studio.ViewModels.Tests
 {
     partial class ServiceTestViewModelTests
     {
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
+        public void ServiceTestViewModel_PopulateFromDebug_WithError_ShouldSetTestToExpectErrorWithDebugErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
+            var debugState = new DebugState
+            {
+                HasError = true,
+                ErrorMessage = "Error in Debug",
+                StateType = StateType.End
+            };
+            debugStateTreeViewItemViewModel.Content = debugState;
+            debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
+            Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.NoErrorExpected);
+            Assert.AreEqual("Error in Debug",testFrameworkViewModel.SelectedServiceTest.ErrorContainsText);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
+        public void ServiceTestViewModel_PopulateFromDebug_WithNoError_ShouldSetTestToExpectNoErrorWithDebugErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
+            var debugState = new DebugState
+            {
+                HasError = false,
+                ErrorMessage = "",
+                StateType = StateType.End
+            };
+            debugStateTreeViewItemViewModel.Content = debugState;
+            debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
+            Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NoErrorExpected);
+            Assert.AreEqual("",testFrameworkViewModel.SelectedServiceTest.ErrorContainsText);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PrepopulateTestsUsingDebug_DebugItemDesicion_ShouldHaveAddServiceTestStep()

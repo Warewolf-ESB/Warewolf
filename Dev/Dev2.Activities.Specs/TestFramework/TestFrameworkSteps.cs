@@ -666,7 +666,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(test.TestPassed);
             Assert.IsTrue(test.TestFailing);
         }
-
+        
         [When(@"I remove input ""(.*)"" from workflow ""(.*)""")]
         public void WhenIRemoveInputFromWorkflow(string input, string workflow)
         {

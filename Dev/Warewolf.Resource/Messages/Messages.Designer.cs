@@ -439,6 +439,15 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid: Nothing to assert..
+        /// </summary>
+        public static string Test_NothingToAssert {
+            get {
+                return ResourceManager.GetString("Test_NothingToAssert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string Test_PassedResult {
