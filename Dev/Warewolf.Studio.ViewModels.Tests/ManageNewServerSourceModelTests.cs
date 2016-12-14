@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameBrackets()
+        public void TestServerSourceServerNameBrackets()
         {
             //arrange  
             _target = new ManageNewServerSourceModel(_updateRepositoryMock.Object, _queryProxyMock.Object, _serverName + "(sthInBrackets)");

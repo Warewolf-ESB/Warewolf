@@ -220,14 +220,14 @@ namespace Warewolf.Studio.ViewModels
                     var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
                     var conf = from b in explorerItemViewModels
                                join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
-                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && (explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value)
+                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
                     _new = items.Where(p=>p.IsResourceChecked == true).Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
                               join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
-                              where (b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder")
+                              where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
