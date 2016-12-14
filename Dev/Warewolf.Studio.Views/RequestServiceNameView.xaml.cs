@@ -5,8 +5,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -134,20 +136,8 @@ namespace Warewolf.Studio.Views
 
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                if (Application.Current != null)
-                {
-                    var windowCollection = Application.Current.Windows;
-
-                    foreach (var window in windowCollection)
-                    {
-                        var window1 = window as Window;
-
-                        if (window1 != null && window1.Name != "MainViewWindow")
-                        {
-                            window1.Close();
-                        }
-                    }
-                }
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                mainViewModel?.ResetMainView();
             }
         }
     }
