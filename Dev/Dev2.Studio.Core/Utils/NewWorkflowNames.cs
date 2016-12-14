@@ -52,6 +52,12 @@ namespace Dev2.Studio.Core.Utils
             return result;
         }
 
+        public bool RemoveAll(string nameToRemove)
+        {
+            _workflowNamesHashSet.Remove(nameToRemove);
+            return true;
+        }
+
         /// <summary>
         /// Gets the next available name to use for createing new workflow
         /// </summary>
