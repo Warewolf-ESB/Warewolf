@@ -1,4 +1,5 @@
-﻿Feature: TestingFrameworkMocking
+﻿@TestingFrameworkMocking
+Feature: TestingFrameworkMocking
 
 Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests Tab
 	Given I have Hello World workflow on the Explorer

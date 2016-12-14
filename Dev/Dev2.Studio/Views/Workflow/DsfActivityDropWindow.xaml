@@ -15,6 +15,7 @@
         Style="{StaticResource WindowBorderlessStyle}"
         Closing="DsfActivityDropWindow_OnClosing"
         MouseDown="DsfActivityDropWindow_OnMouseDown"
+        KeyUp="DsfActivityDropWindow_OnKeyUp"
         mc:Ignorable="d"
         ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}"

@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Core.Interfaces;
+
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable CyclomaticComplexity
 
@@ -242,13 +243,22 @@ namespace Warewolf.Studio.ViewModels
                     Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending}
                 };
 
+                
+
                 if (testStep.MockSelected)
                 {
-                    testOutput.TestPending = false;
-                    testOutput.TestPassed = false;
-                    testOutput.TestFailing = false;
-                    testOutput.TestInvalid = false;
-                }
+                    if (!string.IsNullOrEmpty(testOutput.Variable))
+                    {
+                        testOutput.TestPassed = true;
+                    }
+                    else
+                    {
+                        testOutput.TestPending = false;
+                        testOutput.TestPassed = false;
+                        testOutput.TestFailing = false;
+                        testOutput.TestInvalid = true;
+                    }
+                }               
 
                 stepOutputs.Add(testOutput);
             }
