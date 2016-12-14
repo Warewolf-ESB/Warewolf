@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameBrackets()
+        public void TestEmailSourceServerNameBrackets()
         {
             //arrange  
             _target = new ManageEmailSourceModel(_updateRepositoryMock.Object, _queryProxyMock.Object, _serverName+"(sthInBrackets)");
