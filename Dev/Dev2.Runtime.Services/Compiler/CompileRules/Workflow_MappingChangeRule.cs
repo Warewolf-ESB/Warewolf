@@ -45,24 +45,23 @@ namespace Dev2.Runtime.Compiler.CompileRules
 
             var outputMappingsPost = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
             var inputMappingsPost = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
-
-            if(inputMappings.Count != inputMappingsPost.Count || outputMappings.Count != outputMappingsPost.Count)
+            if (inputMappings.Count != inputMappingsPost.Count || outputMappings.Count != outputMappingsPost.Count)
             {
                 var inputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
                 TestCatalog.Instance.UpdateTestsBasedOnIOChange(serviceID,inputDefs,outputDefs);
-                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
+                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr, ErrorType = ErrorType.Critical };
             }
-
             if(ServiceUtils.MappingNamesChanged(inputMappings, inputMappingsPost) || ServiceUtils.MappingNamesChanged(outputMappings, outputMappingsPost))
             {
                 var inputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
                 TestCatalog.Instance.UpdateTestsBasedOnIOChange(serviceID, inputDefs, outputDefs);
-                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
+                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr, ErrorType = ErrorType.Critical };
             }
+            TestCatalog.Instance.UpdateTestsBasedOnIOChange(serviceID, null, null);
             return null;
         }
     }
