@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameBrackets()
+        public void TestPluginSourceServerNameBrackets()
         {
             //arrange  
             _target = new ManagePluginSourceModel(_updateRepositoryMock.Object, _queryProxyMock.Object, _serverName + "(sthInBrackets)");
