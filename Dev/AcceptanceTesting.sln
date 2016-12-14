@@ -202,8 +202,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Decision", "Warewolf.UIBindingTests.Decision\Warewolf.UIBindingTests.Decision.csproj", "{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Switch", "Warewolf.UIBindingTests.Switch\Warewolf.UIBindingTests.Switch.csproj", "{681079A2-971B-4BC1-9637-C01BB80C2579}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyCommonInfo.ps1 = AssemblyCommonInfo.ps1
@@ -838,13 +836,6 @@ Global
 		{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}.Release|x86.ActiveCfg = Release|Any CPU
 		{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}.Release|x86.Build.0 = Release|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Debug|x86.Build.0 = Debug|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Release|x86.ActiveCfg = Release|Any CPU
-		{681079A2-971B-4BC1-9637-C01BB80C2579}.Release|x86.Build.0 = Release|Any CPU
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF41B889-B0EE-436C-9511-5943C77582E1}.Debug|x86.ActiveCfg = Debug|Any CPU

@@ -304,11 +304,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canCopyUrl = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    CopyUrlTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    CopyUrlTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    CopyUrlTooltip = _canCopyUrl ? Warewolf.Studio.Resources.Languages.Core.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    CopyUrlTooltip = _canCopyUrl ? Warewolf.Studio.Resources.Languages.Tooltips.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanCopyUrl");
             }
@@ -332,11 +332,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canViewSwagger = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    ViewSwaggerTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    ViewSwaggerTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    ViewSwaggerTooltip = _canViewSwagger ? Warewolf.Studio.Resources.Languages.Core.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    ViewSwaggerTooltip = _canViewSwagger ? Warewolf.Studio.Resources.Languages.Tooltips.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanViewSwagger");
             }
@@ -360,11 +360,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canShowDependencies = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    ShowDependenciesTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    ShowDependenciesTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    ShowDependenciesTooltip = _canShowDependencies ? Warewolf.Studio.Resources.Languages.Core.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    ShowDependenciesTooltip = _canShowDependencies ? Warewolf.Studio.Resources.Languages.Tooltips.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanShowDependencies");
             }
@@ -388,11 +388,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canDeploy = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    DeployTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    DeployTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    DeployTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Core.DeployToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DeployTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.DeployToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDeploy");
             }
@@ -416,11 +416,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canDuplicate = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    DuplicateTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    DuplicateTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    DuplicateTooltip = _canDuplicate ? Warewolf.Studio.Resources.Languages.Core.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DuplicateTooltip = _canDuplicate ? Warewolf.Studio.Resources.Languages.Tooltips.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDuplicate");
             }
@@ -444,11 +444,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canRunAllTests = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    RunAllTestsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    RunAllTestsTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    RunAllTestsTooltip = _canRunAllTests ? Warewolf.Studio.Resources.Languages.Core.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    RunAllTestsTooltip = _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanRunAllTests");
             }
@@ -472,11 +472,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canCreateTest = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    CreateTestTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    CreateTestTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    CreateTestTooltip = _canCreateTest ? Warewolf.Studio.Resources.Languages.Core.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    CreateTestTooltip = _canCreateTest ? Warewolf.Studio.Resources.Languages.Tooltips.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanCreateTest");
             }
@@ -500,11 +500,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canCreateSchedule = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    ScheduleTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    ScheduleTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    ScheduleTooltip = _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Core.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    ScheduleTooltip = _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Tooltips.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanCreateSchedule");
             }
@@ -528,11 +528,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _debugBrowser = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    DebugBrowserTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    DebugBrowserTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugBrowser");
             }
@@ -556,11 +556,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canDebugStudio = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    DebugStudioTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    DebugStudioTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugStudio");
             }
@@ -584,11 +584,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _canDebugInputs = value;
                 if (ResourceModel.IsNewWorkflow)
                 {
-                    DebugInputsTooltip = Warewolf.Studio.Resources.Languages.Core.DisabledToolTip;
+                    DebugInputsTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
                 }
                 else
                 {
-                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Core.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Core.NoPermissionsToolTip;
+                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 }
                 OnPropertyChanged("CanDebugInputs");
             }

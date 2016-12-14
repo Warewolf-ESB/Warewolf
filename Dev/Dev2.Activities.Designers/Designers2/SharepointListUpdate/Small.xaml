@@ -55,11 +55,11 @@
                   Margin="{StaticResource ControlBorderRight}"
                   IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                   SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                  ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
+                  ToolTip="{x:Static languages:Tooltips.SharepointToolTipServer}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpServer}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpServer}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
@@ -69,7 +69,7 @@
                 ToolTip="Edit Sharepoint Server Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointEditServerHelp}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointEditServerHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
 
@@ -85,11 +85,11 @@
                   DisplayMemberPath="FullName"
                   IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                   SelectedItem="{Binding SelectedList, Mode=TwoWay}"
-                  ToolTip="{x:Static languages:Core.SharepointToolTipList}"
+                  ToolTip="{x:Static languages:Tooltips.SharepointToolTipList}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpList}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpList}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
@@ -103,7 +103,7 @@
                 <fa:FontAwesome Icon="Refresh" FontSize="16" />
             </Button.Content>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointRefreshListHelp}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointRefreshListHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
         <customControls:CircularProgressBar Grid.Column="2" 
@@ -140,11 +140,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static languages:Core.SharepointToolTipToVariable}"
+                                                    ToolTip="{x:Static languages:Tooltips.SharepointToolTipToVariable}"
                                                     Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.SharepointToolTipToVariable}"
+                                    <core1:HelpSetter Text="{x:Static languages:Tooltips.SharepointToolTipToVariable}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="VariableName"
@@ -201,10 +201,10 @@
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.SharepointInsertToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.SharepointInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharepointInsertHelpResult}"
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointInsertHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

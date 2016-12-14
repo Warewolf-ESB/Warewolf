@@ -73,7 +73,7 @@
                                 VerticalScrollBarVisibility="Auto"
                                 Padding="2,5,2,2"
                                 Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.DataSplitToolTipString}"
+                                ToolTip="{x:Static languages:Tooltips.DataSplitToolTipString}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
@@ -81,7 +81,7 @@
                 <TextBlock Text="Data to split" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
             </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpString}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpString}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.SourceString"
                                      SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
@@ -101,10 +101,10 @@
                          GroupName="{Binding ProcessDirectionGroup, Mode=OneTime}"
                          VerticalAlignment="Center"
                          Margin="{StaticResource ControlBorderRight}"
-                         ToolTip="{x:Static languages:Core.DataSplitToolTipProcessDirection}"
+                         ToolTip="{x:Static languages:Tooltips.DataSplitToolTipProcessDirection}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ProcessDirectionForward_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
 
@@ -113,10 +113,10 @@
                          Margin="{StaticResource ControlBorderLeft}"
                          VerticalAlignment="Center"
                          IsChecked="{Binding ModelItem.ReverseOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static languages:Core.DataSplitToolTipProcessDirection}"
+                         ToolTip="{x:Static languages:Tooltips.DataSplitToolTipProcessDirection}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ProcessDirectionBackward_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </StackPanel>
@@ -126,10 +126,10 @@
                   Margin="-6,0,0,0"
                   Content="Skip blank rows"
                   IsChecked="{Binding ModelItem.SkipBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.DataSplitToolTipSkipBlankRows}"
+                  ToolTip="{x:Static languages:Tooltips.DataSplitToolTipSkipBlankRows}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SkipBlankRows_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpSkipBlankRows}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpSkipBlankRows}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
 
@@ -175,11 +175,11 @@
                                                     Margin="0,0,1,1"
                                                     AllowUserInsertLine="False"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.DataSplitToolTipResults}"
+                                                    ToolTip="{x:Static languages:Tooltips.DataSplitToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"
                                                          SourcePropertyValue="{Binding OutputVariable, UpdateSourceTrigger=PropertyChanged}"
@@ -208,7 +208,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static languages:Core.DataSplitToolTipWithtype}">
+                                      ToolTip="{x:Static languages:Tooltips.DataSplitToolTipWithtype}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.SplitTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -216,7 +216,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpWithType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpWithType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="SplitType"
                                                          SourcePropertyValue="{Binding SplitType, UpdateSourceTrigger=PropertyChanged}"
@@ -246,11 +246,11 @@
                                                     AllowUserInsertLine="False"
                                                     IsEnabled="{Binding EnableAt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.DataSplitToolTipUsing}"
+                                                    ToolTip="{x:Static languages:Tooltips.DataSplitToolTipUsing}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsAtFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpUsing}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpUsing}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding .}"
                                                          SourcePropertyName="At"
                                                          SourcePropertyValue="{Binding At, UpdateSourceTrigger=PropertyChanged}"
@@ -277,9 +277,9 @@
                         <DataTemplate>
                             <CheckBox  HorizontalAlignment="Center"
                                        IsChecked="{Binding Include, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       ToolTip="{x:Static languages:Core.DataSplitToolTipInclude}">
+                                       ToolTip="{x:Static languages:Tooltips.DataSplitToolTipInclude}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpInclude}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpInclude}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Include_Row{1}_AutoID">
@@ -305,11 +305,11 @@
                                                     AllowUserInsertLine="False"
                                                     IsEnabled="{Binding IsEscapeCharEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static languages:Core.DataSplitToolTipEscape}"
+                                                    ToolTip="{x:Static languages:Tooltips.DataSplitToolTipEscape}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsEscapeCharFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.DataSplitHelpEscape}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpEscape}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="EscapeChar"
                                                          SourcePropertyValue="{Binding EscapeChar, UpdateSourceTrigger=PropertyChanged}"

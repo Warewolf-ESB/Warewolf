@@ -44,9 +44,9 @@
                   SelectedValue="{Binding Path=SelectedRandomType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding RandomTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Wherecbx_AutoID}"
-                  ToolTip="{x:Static languages:Core.RandomToolTipType}">
+                  ToolTip="{x:Static languages:Tooltips.RandomToolTipType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RandomHelpType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RandomType"
                                      SourcePropertyValue="{Binding ModelItem.RandomType, UpdateSourceTrigger=PropertyChanged}"
@@ -67,12 +67,12 @@
                                     DefaultText="From" 
                                     Margin="0,0,1,1"
                                     AllowUserInsertLine="False"
-                                    ToolTip="{x:Static languages:Core.RandomToolTipRangeFrom}"
+                                    ToolTip="{x:Static languages:Tooltips.RandomToolTipRangeFrom}"
                                     Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpRangeFrom}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RandomHelpRangeFrom}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.From"
                                          SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
@@ -88,11 +88,11 @@
                                     AllowUserInsertLine="False"
                                     IsEnabled="{Binding Path=IsLengthPath}"
                                     Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    ToolTip="{x:Static languages:Core.RandomToolTipLength}"
+                                    ToolTip="{x:Static languages:Tooltips.RandomToolTipLength}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpLength}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RandomHelpLength}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Length"
                                          SourcePropertyValue="{Binding ModelItem.Length, UpdateSourceTrigger=PropertyChanged}"
@@ -108,9 +108,9 @@
                                     Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}"
-                                    ToolTip="{x:Static languages:Core.RandomToolTipRangeTo}">
+                                    ToolTip="{x:Static languages:Tooltips.RandomToolTipRangeTo}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpRangeTo}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.RandomHelpRangeTo}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.To"
                                          SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
@@ -126,12 +126,12 @@
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.RandomToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.RandomToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RandomHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

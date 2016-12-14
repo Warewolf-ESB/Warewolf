@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(() =>
             {
-                Process.Start(Resources.Languages.Core.WarewolfHelpURL);
+                Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 
             LockCommand = new DelegateCommand(Lock);

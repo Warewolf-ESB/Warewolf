@@ -44,7 +44,7 @@
                            Focusable="False"
                            views:FocusExtension.IsFocused="False">
             <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewSelectHelp}"
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ig:XamComboEditor>
@@ -56,7 +56,7 @@
                 ToolTip="{Binding Path=EditConnectionToolTip}"
                 Command="{Binding EditConnectionCommand}" >
             <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewEditHelp}" DataContext="{Binding}" />
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
         <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
@@ -74,7 +74,7 @@
                 </StackPanel>
             </Button.Content>
             <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewToggleConnectionHelp}"
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewToggleConnectionHelp}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>

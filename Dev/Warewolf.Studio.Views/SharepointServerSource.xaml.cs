@@ -109,7 +109,7 @@ namespace Warewolf.Studio.Views
 
         public string GetErrorMessage()
         {
-            BindingExpression be = ErrorTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            BindingExpression be = ErrorTextBlock.GetBindingExpression(TextBox.TextProperty);
             if (be != null)
             {
                 be.UpdateTarget();

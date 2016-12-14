@@ -11,6 +11,7 @@ namespace Warewolf.UITests.SaveDialog
         private const string FolderRenamed = "FolderToRename_Renamed";
 
         [TestMethod]
+        [TestCategory("Save Dialog")]
         public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
         {
             UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
@@ -22,6 +23,7 @@ namespace Warewolf.UITests.SaveDialog
         }
         
         [TestMethod]
+        [TestCategory("Save Dialog")]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
             UIMap.RightClick_Save_Dialog_Localhost();
@@ -32,6 +34,7 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
+        [TestCategory("Save Dialog")]
         public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
         {
             UIMap.Filter_Save_Dialog_Explorer(FolderToRename);
@@ -44,6 +47,7 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         [TestMethod]
+        [TestCategory("Save Dialog")]
         public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
         {            
             UIMap.Filter_Save_Dialog_Explorer(HelloWorld);

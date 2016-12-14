@@ -50,12 +50,12 @@
                                 MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
-                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipDatetime1}"
+                                ToolTip="{x:Static languages:Tooltips.DateTimeDifferenceToolTipDatetime1}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input1txt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpDatetime1}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DateTimeDifferenceHelpDatetime1}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input1"
                                      SourcePropertyValue="{Binding ModelItem.Input1, UpdateSourceTrigger=PropertyChanged}"
@@ -77,10 +77,10 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipDatetime2}"
+                                ToolTip="{x:Static languages:Tooltips.DateTimeDifferenceToolTipDatetime2}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input2txt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpDatetime2}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DateTimeDifferenceHelpDatetime2}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input2"
                                      SourcePropertyValue="{Binding ModelItem.Input2, UpdateSourceTrigger=PropertyChanged}"
@@ -102,10 +102,10 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipInputFormat}"
+                                ToolTip="{x:Static languages:Tooltips.DateTimeDifferenceToolTipInputFormat}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpInputFormat}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DateTimeDifferenceHelpInputFormat}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputFormat"
                                      SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
@@ -127,9 +127,9 @@
                   SelectedValue="{Binding SelectedOutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding OutputTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputIncbx_AutoID}"
-                  ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipOutputType}">
+                  ToolTip="{x:Static languages:Tooltips.DateTimeDifferenceToolTipOutputType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpOutputType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DateTimeDifferenceHelpOutputType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputType"
                                      SourcePropertyValue="{Binding ModelItem.OutputType, UpdateSourceTrigger=PropertyChanged}"
@@ -145,12 +145,12 @@
                                 AllowUserInsertLine="False"
                                 FilterType="All"
                                 WrapInBrackets="True"
-                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.DateTimeDifferenceToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.DateTimeDifferenceHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

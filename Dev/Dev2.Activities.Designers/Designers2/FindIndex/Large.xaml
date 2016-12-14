@@ -62,11 +62,11 @@
                                 AllowUserInsertLine="False"
                                 FilterType="All" 
                                 WrapInBrackets="False"
-                                ToolTip="{x:Static languages:Core.FindIndexToolTipInField}"
+                                ToolTip="{x:Static languages:Tooltips.FindIndexToolTipInField}"
                                 Text="{Binding Path=ModelItem.InField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFieldtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpInField}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindIndexHelpInField}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InField"
                                      SourcePropertyValue="{Binding ModelItem.InField, UpdateSourceTrigger=PropertyChanged}"
@@ -82,9 +82,9 @@
                   ItemsSource="{Binding Path=IndexList}"
                   SelectedValue="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}"
-                  ToolTip="{x:Static languages:Core.FindIndexToolTipIndexType}">
+                  ToolTip="{x:Static languages:Tooltips.FindIndexToolTipIndexType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpIndexType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindIndexHelpIndexType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedIndex"
                                      SourcePropertyValue="{Binding SelectedIndex, UpdateSourceTrigger=PropertyChanged}"
@@ -104,11 +104,11 @@
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.FindIndexToolTipCharacters}"
+                                ToolTip="{x:Static languages:Tooltips.FindIndexToolTipCharacters}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Characterstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpCharacters}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindIndexHelpCharacters}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Characters"
                                      SourcePropertyValue="{Binding ModelItem.Characters, UpdateSourceTrigger=PropertyChanged}"
@@ -124,9 +124,9 @@
                   ItemsSource="{Binding Path=DirectionList}"
                   SelectedValue="{Binding Path=SelectedDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}"
-                  ToolTip="{x:Static languages:Core.FindIndexToolTipDirectionType}">
+                  ToolTip="{x:Static languages:Tooltips.FindIndexToolTipDirectionType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpDirectiontype}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindIndexHelpDirectiontype}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedDirection"
                                      SourcePropertyValue="{Binding SelectedDirection, UpdateSourceTrigger=PropertyChanged}"
@@ -143,11 +143,11 @@
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="True" 
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static languages:Core.FindIndexToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.FindIndexToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FindIndexHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

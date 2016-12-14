@@ -75,7 +75,7 @@
                                 VerticalContentAlignment="Top"
                                 DefaultText="Excel like function."
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.CalculateToolTipFx}"
+                                ToolTip="{x:Static languages:Tooltips.CalculateToolTipFx}"
                                 Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
@@ -87,7 +87,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CalculateHelpFx}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CalculateHelpFx}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Expression"
                                      SourcePropertyValue="{Binding  ModelItem.Expression, UpdateSourceTrigger=PropertyChanged}"
@@ -101,14 +101,14 @@
                                 DefaultText="[[fxResult]]"
                                 FilterType="All"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.CalculateToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.CalculateToolTipResult}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CalculateHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CalculateHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

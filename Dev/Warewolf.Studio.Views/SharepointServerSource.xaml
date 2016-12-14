@@ -58,11 +58,11 @@
                          Focusable="True"
                          views:FocusExtension.IsFocused="True"
                          Grid.Row="0" Grid.Column="1" 
-                         ToolTip="{x:Static languages:Core.SharepointSourceServerNameTooltip}"
+                         ToolTip="{x:Static languages:Tooltips.SharepointSourceServerNameTooltip}"
                          Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" 
                          customControls:WatermarkTextBox.Watermark="http://YourSharePointServer">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.SharepointServiceSourceServerHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SharepointServiceSourceServerHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock x:Name="Authentication" 
@@ -77,19 +77,19 @@
                             HorizontalAlignment="Stretch">
                     <RadioButton x:Name="WindowsRadioButton" 
                                  GroupName="AuthenticationType" 
-                                 ToolTip="{x:Static languages:Core.AnonymousAuthenticationToolTip}"
+                                 ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}"
                                  IsChecked="{Binding IsWindows, UpdateSourceTrigger=PropertyChanged}" 
                                  Margin="{StaticResource ControlBorderRight}" >Windows
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.WindowsAuthenticationHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.WindowsAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </RadioButton>
                     <RadioButton x:Name="UserRadioButton" 
                                  GroupName="AuthenticationType" 
-                                 ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}"
+                                 ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}"
                                  IsChecked="{Binding IsUser, UpdateSourceTrigger=PropertyChanged}">User
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.UserAuthenticationHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.UserAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </RadioButton>
                 </StackPanel>
@@ -116,10 +116,10 @@
                          Margin="{StaticResource ControlBorderLeft}" 
                          Grid.Row="0" 
                          Grid.Column="1" 
-                         ToolTip="{x:Static languages:Core.SharepointSourceUserNameTooltip}"
+                         ToolTip="{x:Static languages:Tooltips.SharepointSourceUserNameTooltip}"
                          Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock VerticalAlignment="Center" 
@@ -131,12 +131,12 @@
                              x:Name="PasswordTextBox"
                              Grid.Row="1" 
                              Grid.Column="1"
-                             ToolTip="{x:Static languages:Core.SharepointSourcePasswordTooltip}"
+                             ToolTip="{x:Static languages:Tooltips.SharepointSourcePasswordTooltip}"
                              Margin="{StaticResource ControlBorderTopLeft}"
                              customControls:PasswordBoxAssistant.BindPassword="true"
                              customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </PasswordBox>
             </Grid>
@@ -170,18 +170,18 @@
                 <Button x:Name="TestConnection" 
                         Width="120" 
                         Height="30" 
-                        ToolTip="{x:Static languages:Core.SharepointSourceTestTooltip}"
+                        ToolTip="{x:Static languages:Tooltips.SharepointSourceTestTooltip}"
                         Margin="{StaticResource ControlBorderRight}" 
                         Content="{x:Static languages:Core.TestConnectionLabel}"
                         Command="{Binding TestCommand}" >
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.SharepointServiceSourceTestHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SharepointServiceSourceTestHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </Button>
                 <Button x:Name="CancelButton" 
                         Width="120" 
                         Height="30" 
-                        ToolTip="{x:Static languages:Core.SharepointSourceCancelTestTooltip}"
+                        ToolTip="{x:Static languages:Tooltips.SharepointSourceCancelTestTooltip}"
                         Command="{Binding CancelTestCommand}" 
                         Content="{x:Static languages:Core.CancelTest}"></Button>
             </StackPanel>

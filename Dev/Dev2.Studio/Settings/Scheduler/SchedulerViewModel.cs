@@ -660,7 +660,7 @@ namespace Dev2.Settings.Scheduler
         private void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
-            HelpText = Core.SchedulerSettingsHelpTextSettingsView;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.SchedulerSettingsHelpTextSettingsView;
         }
 
         private static ActivityDesignerToggle CreateHelpToggle()

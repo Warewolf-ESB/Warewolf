@@ -48,9 +48,9 @@
                       SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding ForeachTypes}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}"
-                      ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                      ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.ForEachType"
                                          SourcePropertyValue="{Binding ModelItem.ForEachType, UpdateSourceTrigger=PropertyChanged}"
@@ -67,9 +67,9 @@
                                     WrapInBrackets="False" 
                                     Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachFromTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.From"
                                          SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
@@ -86,9 +86,9 @@
                                     Visibility="{Binding ToVisibility}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachToTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.To"
                                          SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
@@ -106,9 +106,9 @@
                                     MinWidth="100"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachCSVIndexesTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.CsvIndexes"
                                          SourcePropertyValue="{Binding ModelItem.CsvIndexes, UpdateSourceTrigger=PropertyChanged}"
@@ -126,9 +126,9 @@
                                     MinWidth="106"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.NumOfExections"
                                          SourcePropertyValue="{Binding ModelItem.NumOfExections, UpdateSourceTrigger=PropertyChanged}"
@@ -148,9 +148,9 @@
                                     FilterType="RecordsetsOnly"
                                     attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
-                                    ToolTip="{x:Static languages:Core.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Recordset"
                                          SourcePropertyValue="{Binding ModelItem.Recordset, UpdateSourceTrigger=PropertyChanged}"

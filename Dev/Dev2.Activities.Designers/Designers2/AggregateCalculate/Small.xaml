@@ -59,7 +59,7 @@
                                 VerticalContentAlignment="Top"
                                 DefaultText="Excel like function."
                                 FilterType="All"
-                                ToolTip="{x:Static languages:Core.CalculateForAggregatesToolTipFx}"
+                                ToolTip="{x:Static languages:Tooltips.CalculateForAggregatesToolTipFx}"
                                 Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
@@ -70,7 +70,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CalculateForAggregatesHelpFx}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CalculateForAggregatesHelpFx}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Expression"
                                      SourcePropertyValue="{Binding  ModelItem.Expression, UpdateSourceTrigger=PropertyChanged}"
@@ -84,14 +84,14 @@
                                 DefaultText="[[fxResult]]"
                                 FilterType="All"
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.CalculateForAggregatesToolTipResult}"
+                                ToolTip="{x:Static languages:Tooltips.CalculateForAggregatesToolTipResult}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CalculateForAggregatesHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CalculateForAggregatesHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

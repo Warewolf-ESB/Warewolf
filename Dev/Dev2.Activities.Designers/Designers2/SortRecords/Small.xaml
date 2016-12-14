@@ -43,13 +43,13 @@
                                 AllowUserInsertLine="False"
                                 FilterType="RecordsetFields"
                                 WrapInBrackets="True"
-                                ToolTip="{x:Static languages:Core.SortToolTipSortField}"
+                                ToolTip="{x:Static languages:Tooltips.SortToolTipSortField}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
             AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortFieldtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SortHelpSortField}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SortHelpSortField}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SortField"
                                      SourcePropertyValue="{Binding ModelItem.SortField, UpdateSourceTrigger=PropertyChanged}"
@@ -66,9 +66,9 @@
                   SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding SortOrderTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}"
-                  ToolTip="{x:Static languages:Core.SortToolTipSortOrderType}">
+                  ToolTip="{x:Static languages:Tooltips.SortToolTipSortOrderType}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SortHelpSortOrderType}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.SortHelpSortOrderType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedSelectedSort"
                                      SourcePropertyValue="{Binding SelectedSelectedSort, UpdateSourceTrigger=PropertyChanged}"

@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerNameBrackets()
+        public void TestWebServiceServerNameBrackets()
         {
             //arrange  
             _target = new ManageWebServiceSourceModel(_updateRepositoryMock.Object, _serverName + "(sthInBrackets)");

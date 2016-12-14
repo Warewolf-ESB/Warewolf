@@ -16,7 +16,7 @@ namespace Warewolf.Core
             ToolType = toolType;
             Name = name;
             Icon = iconName;
-            FilterTag = Studio.Resources.Languages.Core.ResourceManager.GetString(tag) ?? "";
+            FilterTag = Studio.Resources.Languages.ToolboxSearchTags.ResourceManager.GetString(tag) ?? "";
         }
 
     

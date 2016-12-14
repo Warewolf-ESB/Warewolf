@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Test Result -----------------------
             // ReSharper disable once PossibleNullReferenceException
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
-            Assert.AreEqual("python", toolDescriptorInfo.FilterTag );
+            Assert.AreEqual("python script", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-Python", toolDescriptorInfo.Icon );
             Assert.AreEqual("Python", toolDescriptorInfo.Name );
         }

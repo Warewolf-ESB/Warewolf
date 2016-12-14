@@ -58,13 +58,13 @@
                                 AllowUserInsertLine="False"
                                 FilterType="RecordsetFields"
                                 AllowMultipleVariables="True"
-                                ToolTip="{x:Static languages:Core.UniqueToolTipInFields}"
+                                ToolTip="{x:Static languages:Tooltips.UniqueToolTipInFields}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.InFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtInFields_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpInFields}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.UniqueHelpInFields}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName=" ModelItem.InFields"
                                      SourcePropertyValue="{Binding  ModelItem.InFields, UpdateSourceTrigger=PropertyChanged}"
@@ -80,14 +80,14 @@
                                 Grid.Column="1"
                                 DefaultText="[[Rec().F3]]" 
                                 AllowUserInsertLine="False"
-                                ToolTip="{x:Static languages:Core.UniqueToolTipReturnFields}"
+                                ToolTip="{x:Static languages:Tooltips.UniqueToolTipReturnFields}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtReturnFields_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpReturnFields}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.UniqueHelpReturnFields}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ResultFields"
                                      SourcePropertyValue="{Binding ModelItem.ResultFields, UpdateSourceTrigger=PropertyChanged}"
@@ -104,13 +104,13 @@
                                 DefaultText="[[New().F1]]"
                                 AllowUserInsertLine="False"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.UniqueToolTipResults}"
+                                ToolTip="{x:Static languages:Tooltips.UniqueToolTipResults}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtResults_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpResults}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.UniqueHelpResults}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
