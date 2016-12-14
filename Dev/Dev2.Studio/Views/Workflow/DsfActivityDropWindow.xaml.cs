@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Dialogs;
+using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 
 // ReSharper disable once CheckNamespace
@@ -46,20 +47,8 @@ namespace Dev2.Studio.Views.Workflow
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                if (Application.Current != null)
-                {
-                    var windowCollection = Application.Current.Windows;
-
-                    foreach (var window in windowCollection)
-                    {
-                        var window1 = window as Window;
-
-                        if (window1 != null && window1.Name != "MainViewWindow")
-                        {
-                            window1.Close();
-                        }
-                    }
-                }
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                mainViewModel?.ResetMainView();
             }
         }
     }
