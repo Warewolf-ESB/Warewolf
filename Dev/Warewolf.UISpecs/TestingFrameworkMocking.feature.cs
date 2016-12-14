@@ -136,6 +136,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I Click Test Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
  testRunner.Then("The Test step in now \"Invalid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+ testRunner.And("I delete Test4 as a Cleanup step", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.And("I Click Close Workflow Tab Without Confirmation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

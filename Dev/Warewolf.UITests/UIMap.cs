@@ -466,6 +466,14 @@ namespace Warewolf.UITests
             Click_MessageBox_No();
         }
 
+        [Given(@"I Click Close Workflow Tab Without Confirmation")]
+        [When(@"I Click Close Workflow Tab Without Confirmation")]
+        [Then(@"I Click Close Workflow Tab Without Confirmation")]
+        public void ThenIClickCloseWorkflowTabWithoutConfirmation()
+        {
+            Click_Close_Workflow_Tab_Button();
+        }
+
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
@@ -992,6 +1000,14 @@ namespace Warewolf.UITests
         public void Click_LocalHost_Once()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
+        [Given(@"I Select LocalHost on the Save Dialog")]
+        [When(@"I Select LocalHost on the Save Dialog")]
+        [Then(@"I Select LocalHost on the Save Dialog")]
+        public void WhenISelectLocalHostOnTheSaveDialog()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost);
         }
 
         [Given(@"I Filter the Explorer with ""(.*)""")]
@@ -2609,6 +2625,14 @@ namespace Warewolf.UITests
                     Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.RunButton, new Point(10, 10));
                     break;
             }
+        }
+        [Then(@"I delete Test(.*) as a Cleanup step")]
+        public void ThenIDeleteTestAsACleanupStep(int p0)
+        {
+            Click_EnableDisable_This_Test_CheckBox(true, 4);
+            Click_Delete_Test_Button(4);
+            Click_MessageBox_Yes();
+            Click_Close_Tests_Tab();
         }
 
         [Given("I Click First Test Delete Button")]
@@ -8122,8 +8146,6 @@ namespace Warewolf.UITests
         public void Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.EnsureClickable(new Point(90, 7));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.DrawHighlight();
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
             Playback.Wait(2000);
@@ -8329,10 +8351,6 @@ namespace Warewolf.UITests
         [Given(@"I Click Run all tests button")]
         public void ThenIClickRunAllTestsButton()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton.DrawHighlight();
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.RunAllButton);
         }
 
@@ -8533,18 +8551,13 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
-            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
             #endregion
 
             // Type 'NewFolder' in text box
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(22, 16));
+            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
         }
 
         [Given(@"I Hit Escape Key On The Keyboard")]
@@ -8568,7 +8581,7 @@ namespace Warewolf.UITests
             WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
             WpfButton saveButton = this.SaveDialogWindow.SaveButton;
 
-            Keyboard.SendKeys(newFolderEdit, "{Enter}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
             // Click 'Save' button
             Mouse.Click(saveButton, new Point(22, 16));
         }
@@ -8580,7 +8593,6 @@ namespace Warewolf.UITests
         {
             #region Variable Declarations
             WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
-            WpfEdit namedFolderExit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
             WpfButton saveButton = this.SaveDialogWindow.SaveButton;
             #endregion
 
@@ -8588,7 +8600,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
         }
 
         [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
@@ -8606,7 +8618,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+            Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
         }
 
 
@@ -8627,7 +8639,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(namedFolderExit, "{Enter}", ModifierKeys.None);
+            Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
 
             // Click 'Save' button
             Mouse.Click(saveButton, new Point(22, 16));
