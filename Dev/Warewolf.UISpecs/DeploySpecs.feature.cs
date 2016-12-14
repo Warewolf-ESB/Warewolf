@@ -17,8 +17,8 @@ namespace Warewolf.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
-    public partial class DeploySpecsFeature
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    public partial class DeployFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,7 +30,7 @@ namespace Warewolf.UISpecs
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DeploySpecs", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Deploy", null, ProgrammingLanguage.CSharp, new string[] {
                         "DeploySpecsFeature"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -46,9 +46,9 @@ namespace Warewolf.UISpecs
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "DeploySpecs")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "Deploy")))
             {
-                Warewolf.UISpecs.DeploySpecsFeature.FeatureSetup(null);
+                Warewolf.UISpecs.DeployFeature.FeatureSetup(null);
             }
         }
         
@@ -70,7 +70,7 @@ namespace Warewolf.UISpecs
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying From Explorer Opens The Deploy With Resource Already Checked")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployingFromExplorerOpensTheDeployWithResourceAlreadyChecked()
         {
@@ -95,7 +95,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy ViewOnlyWorkflow to remoteConnection")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployViewOnlyWorkflowToRemoteConnection()
         {
@@ -121,7 +121,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy From RemoteConnection")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployFromRemoteConnection()
         {
@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy button is enabling when selecting resource in source side")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployButtonIsEnablingWhenSelectingResourceInSourceSide()
         {
@@ -175,7 +175,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filtering and clearing filter on source side")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void FilteringAndClearingFilterOnSourceSide()
         {
@@ -200,7 +200,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying with filter enabled")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployingWithFilterEnabled()
         {
@@ -229,7 +229,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy is enabled when I change server after validation thrown")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployIsEnabledWhenIChangeServerAfterValidationThrown()
         {
@@ -264,7 +264,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select All resources to deploy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void SelectAllResourcesToDeploy()
         {
@@ -294,7 +294,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying From Explorer Opens The Deploy With All Resources in Folder Already Che" +
             "cked")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployingFromExplorerOpensTheDeployWithAllResourcesInFolderAlreadyChecked()
         {
@@ -320,7 +320,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel Deploy Returns to Deploy Tab")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void CancelDeployReturnsToDeployTab()
         {
@@ -355,7 +355,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Disconnect Clears Destination")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeploySpecsFeature")]
         public virtual void DeployDisconnectClearsDestination()
         {
