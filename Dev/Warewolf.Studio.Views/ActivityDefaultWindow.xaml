@@ -6,6 +6,7 @@
         mc:Ignorable="d" 
         WindowStartupLocation="CenterScreen"
         MouseDown="WindowBorderLess_OnMouseDown"
+        KeyUp="ActivityDefaultWindow_OnKeyUp"
         Closed="WindowBorderLess_OnClosed"
         Title="ActivityDefaultWindow"
         d:DesignHeight="300" d:DesignWidth="300">

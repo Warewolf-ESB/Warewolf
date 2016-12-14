@@ -188,17 +188,7 @@ namespace Dev2.Studio.Views
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                var windowCollection = System.Windows.Application.Current.Windows;
-
-                foreach (var window in windowCollection)
-                {
-                    var window1 = window as Window;
-
-                    if (window1 != null && window1.Name != "MainViewWindow")
-                    {
-                        window1.Close();
-                    }
-                }
+                ResetToStartupView();
             }
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
@@ -226,6 +216,21 @@ namespace Dev2.Studio.Views
                     HideFullScreenPanel.IsHitTestVisible = true;
                     ShowFullScreenPanel.IsHitTestVisible = true;
                     EnterSuperMaximisedMode();
+                }
+            }
+        }
+
+        public void ResetToStartupView()
+        {
+            var windowCollection = System.Windows.Application.Current.Windows;
+
+            foreach (var window in windowCollection)
+            {
+                var window1 = window as Window;
+
+                if (window1 != null && window1.Name != "MainViewWindow")
+                {
+                    window1.Close();
                 }
             }
         }
