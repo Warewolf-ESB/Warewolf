@@ -650,8 +650,6 @@
 																					    SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
 																					    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertOpsTooltip}"
 																					    AutomationProperties.AutomationId="UI_AssertOps_AutoID">
-																					    ToolTip="{x:Static languages:Core.ServiceTestStepAssertOpsTooltip}"
-                                                                                        AutomationProperties.AutomationId="{Binding Path=Variable, StringFormat=UI_AssertOp_{0}_AutoID}"
 																					    >
                                                                                     <i:Interaction.Behaviors>
                                                                                         <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
@@ -726,8 +724,6 @@
 																							Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
 																							ToolTip="{x:Static languages:Tooltips.ServiceTestStepOptionsForValueTooltip}"
 																							AutomationProperties.AutomationId="UI_OptionsForValue_AutoID">
-																							ToolTip="{x:Static languages:Core.ServiceTestStepOptionsForValueTooltip}"
-																							AutomationProperties.AutomationId="{Binding StringFormat=UI_OptionsForValue_{0}_AutoID, Path=Variable}">
                                                                                             <i:Interaction.Behaviors>
                                                                                                 <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
