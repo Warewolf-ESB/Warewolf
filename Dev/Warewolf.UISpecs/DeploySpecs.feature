@@ -42,8 +42,8 @@ Scenario: Filtering and clearing filter on source side
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I filter for "Date and Time" on the source filter
-	And "1" resource is visible on the tree
 	And I filter for "" on the source filter	
+	And Deploy Button is enabled  "false"
 
 Scenario: Deploying with filter enabled
      Given The Warewolf Studio is running
@@ -103,8 +103,7 @@ Scenario: Deploy Disconnect Clears Destination
 	Given I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
-	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
+    And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled
 	When I Click Deploy Tab Deploy Button
