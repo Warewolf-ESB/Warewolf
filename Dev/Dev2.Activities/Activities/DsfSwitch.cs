@@ -305,34 +305,7 @@ namespace Dev2.Activities
         }
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-//            var dsfSwitchSwitches = _dsfSwitch.Switches;
-//            bool hasResult = false;
-//            if (dataObject.IsDebugMode())
-//            {
-//                InitializeDebug(dataObject);
-//            }
-//            if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
-//            {
-//                NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-//                if (dataObject.IsDebugMode())
-//                {
-//                    var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
-//                    AddDebugOutputItem(debugItemStaticDataParams);
-//                    AddDebugAssertResultItem(debugItemStaticDataParams);
-//                }
-//                hasResult = true;
-//            }            
-//            if (dataObject.IsDebugMode() && hasResult)
-//            {
-//               
-//                DispatchDebugState(dataObject, StateType.After, update);
-//                DispatchDebugState(dataObject, StateType.Duration, update);
-//            }
-//
-//            if (!hasResult)
-//            {
-//                throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
-//            }
+
         }
 
         #endregion
