@@ -184,6 +184,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
         }
 
+        public IList<IServer> GetAllServerConnections()
+        {            
+            var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
+            return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
+        }
+
         public IList<IToolDescriptor> LoadTools()
         {
             if (_tools == null || _tools.Count == 0)

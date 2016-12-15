@@ -16,7 +16,7 @@ namespace Warewolf.Studio.ViewModels
         #region Implementation of IDeployDestinationExplorerViewModel
 
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
-            : base(shellViewModel, aggregator)
+            : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             ConnectControlViewModel.ServerConnected+=ServerConnected;
