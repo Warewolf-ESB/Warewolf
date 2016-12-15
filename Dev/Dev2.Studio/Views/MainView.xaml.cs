@@ -253,6 +253,13 @@ namespace Dev2.Studio.Views
             }
             
             TabManager.Items.Clear();
+
+            var mainViewModel = DataContext as MainViewModel;
+            if (mainViewModel != null)
+            {
+                mainViewModel.ExplorerViewModel.SearchText = string.Empty;
+                mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
+            }
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
