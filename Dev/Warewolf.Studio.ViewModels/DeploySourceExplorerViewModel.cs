@@ -38,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
             LoadEnvironment(localhostEnvironment);
 
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
+            ConnectControlViewModel.ShouldUpdateActiveEnvironment = false;
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
