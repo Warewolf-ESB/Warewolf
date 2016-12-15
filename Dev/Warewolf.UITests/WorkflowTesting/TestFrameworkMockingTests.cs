@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     {
         private const string HelloWorld = "Hello World";
         private const string RandomWorkFlow = "RandomToolWorkFlow";
+        private const string RandomNewWorkFlow = "RandomToolNewWorkFlow";
         private const string DiceRoll = "Dice Roll";
         private const string Nestedwf = "NestedWF";
 
@@ -90,7 +91,7 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
             UIMap.Enter_Dice_Roll_Values();
-            UIMap.Save_With_Ribbon_Button_And_Dialog(RandomWorkFlow);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(RandomNewWorkFlow);
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_EnableDisable_This_Test_CheckBox(true);
@@ -112,9 +113,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif            
         }
 
         UIMap UIMap

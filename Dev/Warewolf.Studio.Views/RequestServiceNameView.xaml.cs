@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -8,7 +7,6 @@ using System.Windows.Threading;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -136,7 +134,7 @@ namespace Warewolf.Studio.Views
 
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 mainViewModel?.ResetMainView();
             }
         }

@@ -112,9 +112,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-#if !DEBUG
             UIMap.CloseHangingDialogs();
-#endif            
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();

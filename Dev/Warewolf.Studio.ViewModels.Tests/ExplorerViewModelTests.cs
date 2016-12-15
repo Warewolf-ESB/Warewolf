@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _localhostServerMock.SetupGet(it => it.ResourceName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
             _eventAggregatorMock = new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>();
-            _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
+            _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object,true);
         }
 
         #endregion Test initialize
@@ -411,7 +411,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConstructorArgumentNull()
         {
-            new ExplorerViewModel(null, _eventAggregatorMock.Object);
+            new ExplorerViewModel(null, _eventAggregatorMock.Object,true);
         }
 
         [TestMethod]

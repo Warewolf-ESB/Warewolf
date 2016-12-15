@@ -191,6 +191,11 @@ namespace Warewolf.Testing
             return null;
         }
 
+        public IList<IServer> GetAllServerConnections()
+        {
+            return null;
+        }
+
         public IExplorerRepository ExplorerRepository
         {
             get
