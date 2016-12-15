@@ -894,6 +894,18 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
         }
+        
+        [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
+        }
+
+        [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameWithWhitespaceIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
+        }
 
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
@@ -8551,7 +8563,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Hit Escape Key On The Keyboard")]
@@ -8594,7 +8606,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
@@ -8634,9 +8646,6 @@ namespace Warewolf.UITests
 
             // Type '{Enter}' in text box
             Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(22, 16));
         }
 
         [Given(@"Explorer Contain Item ""(.*)""")]
