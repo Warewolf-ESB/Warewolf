@@ -111,9 +111,6 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
-#if !DEBUG
-            UIMap.TryCloseSettingsTab();
-#endif
             UIMap.Click_Settings_Ribbon_Button();
         }
 
