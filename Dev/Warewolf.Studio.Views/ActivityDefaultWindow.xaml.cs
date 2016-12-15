@@ -5,8 +5,8 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.Views
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 mainViewModel?.ResetMainView();
             }
         }
