@@ -60,6 +60,6 @@ namespace Dev2.Interfaces
 
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
-        void ResetMainView();
+        
     }
 }
