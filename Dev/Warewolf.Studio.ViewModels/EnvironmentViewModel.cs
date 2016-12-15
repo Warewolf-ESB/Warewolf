@@ -502,6 +502,8 @@ namespace Warewolf.Studio.ViewModels
 
         public IServer Server { get; set; }
 
+        public ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
+
         public ObservableCollection<IExplorerItemViewModel> Children
         {
             get
@@ -511,6 +513,7 @@ namespace Warewolf.Studio.ViewModels
                     return new AsyncObservableCollection<IExplorerItemViewModel>();
                 }
                 var orderedCollection = _children.OrderByDescending(a => a.IsFolder).ThenBy(b => b.ResourceName).ToObservableCollection();
+                UnfilteredChildren = orderedCollection;
                 return new AsyncObservableCollection<IExplorerItemViewModel>(orderedCollection.Where(a => a.IsVisible));
             }
             set
@@ -893,7 +896,7 @@ namespace Warewolf.Studio.ViewModels
         {
             int count = 0;
             string folderName = Resources.Languages.Core.NewFolderLabel;
-            while (Children.Any(a => a.ResourceName == folderName))
+            while (UnfilteredChildren != null && UnfilteredChildren.Any(a => a.ResourceName == folderName))
             {
                 count++;
                 folderName = Resources.Languages.Core.NewFolderLabel + " " + count;

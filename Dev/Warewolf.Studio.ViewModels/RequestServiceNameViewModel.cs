@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -267,6 +268,7 @@ namespace Warewolf.Studio.ViewModels
 
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
+            SingleEnvironmentExplorerViewModel.SearchText = string.Empty;
 
             try
             {
@@ -298,15 +300,20 @@ namespace Warewolf.Studio.ViewModels
             var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
             if (permissions != null)
             {
-                foreach (var explorerItemViewModel in _environmentViewModel.Children)
-                {
-                    explorerItemViewModel.SetPermissions((Permissions) permissions);
-                }
+                if (_environmentViewModel.Children != null)
+                    foreach (var explorerItemViewModel in _environmentViewModel.Children)
+                    {
+                        explorerItemViewModel.SetPermissions((Permissions) permissions);
+                    }
             }
 
             _environmentViewModel.Filter(string.Empty);
             _environmentViewModel.IsSaveDialog = false;
             _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
+
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel?.ExplorerViewModel != null)
+                mainViewModel.ExplorerViewModel.SearchText = string.Empty;
 
             return ViewResult;
         }
