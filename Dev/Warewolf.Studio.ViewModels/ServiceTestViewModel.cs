@@ -238,7 +238,6 @@ namespace Warewolf.Studio.ViewModels
                     processFlowDecision.AssertSelected = false;
                     processFlowDecision.StepOutputs[0].Value = debugItemContent.AssertResultList[0].ResultsList[0].Value;
                 } 
-                //|| debugStateActivityTypeName == typeof(TestMockSwitchStep).Name
             }
         }
 
@@ -952,14 +951,12 @@ namespace Warewolf.Studio.ViewModels
                 var condition = modelItem.GetProperty("Expression");
                 var activity = (DsfFlowNodeActivity<string>)condition;
                 var flowSwitch = GetCurrentActivity<FlowSwitch<string>>(modelItem);
-                //var flowSwitch = modelItem.GetCurrentValue() as FlowSwitch<string>;
                 if (flowSwitch == null)
                 {
                     var modelItemParent = modelItem.Parent;
                     if (modelItemParent != null)
                     {
                         flowSwitch = GetCurrentActivity<FlowSwitch<string>>(modelItemParent);
-                        //flowSwitch = modelItemParent.GetCurrentValue() as FlowSwitch<string>;
                         condition = modelItemParent.GetProperty("Expression");
                     }
                     activity = (DsfFlowNodeActivity<string>)condition;
