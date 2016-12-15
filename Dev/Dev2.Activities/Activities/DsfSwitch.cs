@@ -220,6 +220,7 @@ namespace Dev2.Activities
             : base(dsfSwitch.DisplayName)
         {
             _dsfSwitch = dsfSwitch;
+            UniqueID = _dsfSwitch.UniqueID;
         }
 
         public override List<string> GetOutputs()
@@ -252,8 +253,7 @@ namespace Dev2.Activities
         {
             return null;
         }
-
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
             bool hasResult = false;
@@ -261,33 +261,38 @@ namespace Dev2.Activities
             {
                 InitializeDebug(dataObject);
             }
-            if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
+            IDev2Activity activity = null;
+            if (ConditionToUse == "Default")
             {
-                NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
-                if (dataObject.IsDebugMode())
+                if (_dsfSwitch.Default != null)
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
-                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                    activity = _dsfSwitch.Default.FirstOrDefault();
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);
+                        AddDebugAssertResultItem(debugItemStaticDataParams);
+                    }
+                    hasResult = true;
                 }
-                hasResult = true;
             }
-            if (_dsfSwitch.Default != null)
+            else
             {
-                var activity = _dsfSwitch.Default;
-                NextNodes = activity;
-                if (dataObject.IsDebugMode())
+                if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Default", "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
-                    AddDebugAssertResultItem(debugItemStaticDataParams);
+                    activity = dsfSwitchSwitches[ConditionToUse];
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
+                        AddDebugOutputItem(debugItemStaticDataParams);
+                        AddDebugAssertResultItem(debugItemStaticDataParams);
+                    }
+                    hasResult = true;
                 }
-                hasResult = true;
             }
-
             if (dataObject.IsDebugMode() && hasResult)
             {
-               
+
                 DispatchDebugState(dataObject, StateType.After, update);
                 DispatchDebugState(dataObject, StateType.Duration, update);
             }
@@ -296,6 +301,38 @@ namespace Dev2.Activities
             {
                 throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
             }
+            return activity;
+        }
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+//            var dsfSwitchSwitches = _dsfSwitch.Switches;
+//            bool hasResult = false;
+//            if (dataObject.IsDebugMode())
+//            {
+//                InitializeDebug(dataObject);
+//            }
+//            if (dsfSwitchSwitches.ContainsKey(ConditionToUse))
+//            {
+//                NextNodes = new List<IDev2Activity> { dsfSwitchSwitches[ConditionToUse] };
+//                if (dataObject.IsDebugMode())
+//                {
+//                    var debugItemStaticDataParams = new DebugItemStaticDataParams(ConditionToUse, "", true);
+//                    AddDebugOutputItem(debugItemStaticDataParams);
+//                    AddDebugAssertResultItem(debugItemStaticDataParams);
+//                }
+//                hasResult = true;
+//            }            
+//            if (dataObject.IsDebugMode() && hasResult)
+//            {
+//               
+//                DispatchDebugState(dataObject, StateType.After, update);
+//                DispatchDebugState(dataObject, StateType.Duration, update);
+//            }
+//
+//            if (!hasResult)
+//            {
+//                throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
+//            }
         }
 
         #endregion

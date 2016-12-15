@@ -13,6 +13,7 @@ namespace Dev2.Common.Interfaces
 
     public enum RunResult
     {
+        None,
         TestPassed,
         TestFailed,
         TestInvalid,

@@ -529,11 +529,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
             IDebugState state = new DebugState();
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { state });
-
-
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { itemViewModel, state });
             //---------------Test Result -----------------------
-
         }
 
         [TestMethod]

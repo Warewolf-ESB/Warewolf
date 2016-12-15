@@ -692,7 +692,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var factory = Dev2DecisionFactory.Instance();
             var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
             var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
             var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
             UpdateStepWithFinalResult(dataObject, stepToBeAsserted, testPassed, testRunResults, serviceTestFailureMessage);
@@ -822,7 +822,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var factory = Dev2DecisionFactory.Instance();
             var testRunResults = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory)).ToList();
-            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
             var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
             var finalResult = new TestRunResult();
             if(testPassed)
@@ -941,9 +941,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var testResult = new TestRunResult
                 {
-                    RunTestResult = RunResult.TestInvalid
+                    RunTestResult = RunResult.None
                 };
                 return new List<TestRunResult> {testResult};
+            }
+            if (string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
+            {
+                var testResult = new TestRunResult
+                {
+                    RunTestResult = RunResult.None
+                };
+                return new List<TestRunResult> { testResult };
             }
             if (output.Result != null)
             {
