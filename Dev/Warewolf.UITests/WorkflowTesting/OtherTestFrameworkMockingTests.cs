@@ -34,9 +34,6 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
-#if !DEBUG
-            UIMap.TryCloseWorkflowTestingTab();
-#endif
         }
 
         UIMap UIMap
