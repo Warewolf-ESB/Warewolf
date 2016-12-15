@@ -40,6 +40,11 @@ namespace Dev2.Core.Tests.Environments
             LoadInternalHitCount++;
         }
 
+        public override ICollection<IEnvironmentModel> ReloadAllServers()
+        {
+            return Environments;
+        }
+
         public override ICollection<IEnvironmentModel> All()
         {
             return Environments;
