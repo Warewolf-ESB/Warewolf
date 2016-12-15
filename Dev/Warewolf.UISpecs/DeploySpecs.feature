@@ -6,7 +6,7 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	And I Filter the Explorer with "Hello World"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
-	And I Enter "Hello World" Into Deploy Source Filter	
+	And I Select "Hello World" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Close Deploy Tab Button
 	
