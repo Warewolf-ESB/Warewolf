@@ -31,7 +31,9 @@ namespace Warewolf.UITests
         [TestCategory("Settings")]
         public void ConfigureSettingLogging()
         {
+#if !DEBUG
             UIMap.TryCloseSettingsTab();
+#endif
             UIMap.Click_ConfigureSetting_From_Menu();
             UIMap.Select_LoggingTab();
             UIMap.Click_Server_Log_File_Button();
@@ -46,6 +48,7 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
+            UIMap.TryCloseSettingsTab();
         }
 
         UIMap UIMap

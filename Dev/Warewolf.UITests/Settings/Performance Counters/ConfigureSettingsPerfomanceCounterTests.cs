@@ -30,6 +30,9 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.CloseHangingDialogs();
+#if !DEBUG
+            UIMap.TryCloseSettingsTab();
+#endif
             UIMap.Click_ConfigureSetting_From_Menu();
             UIMap.Select_PerfomanceCounterTab();
         }
