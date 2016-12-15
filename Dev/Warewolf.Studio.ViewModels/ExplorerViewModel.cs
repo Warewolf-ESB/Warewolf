@@ -306,7 +306,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator,bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
         {
             if (shellViewModel == null)
             {
@@ -324,6 +324,7 @@ namespace Warewolf.Studio.ViewModels
 #pragma warning restore 4014
 
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
+            ConnectControlViewModel.ShouldUpdateActiveEnvironment = shouldUpdateActiveEnvironment;
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
