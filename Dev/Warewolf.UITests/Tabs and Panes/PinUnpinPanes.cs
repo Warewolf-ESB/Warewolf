@@ -123,7 +123,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void AssignToolInUnpinnedWorkflowTabAdVariableUITest()
+        public void AssignToolInUnpinnedWorkflowTabAddVariableUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
