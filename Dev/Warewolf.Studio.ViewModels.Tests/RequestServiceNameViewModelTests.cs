@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasDuplicateName_ShouldReturnError()
         {
             //------------Setup for test--------------------------
-            const string expectedErrorMessage = "An item with name \'TestResource\' already exists in this folder.";
+            const string expectedErrorMessage = "An item with this name already exists in this folder.";
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
@@ -168,7 +168,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NoItemSelectedHasDuplicateName_ShouldReturnError()
         {
             //------------Setup for test--------------------------
-            const string expectedErrorMessage = "An item with name \'TestResource\' already exists in this folder.";
+            const string expectedErrorMessage = "An item with this name already exists in this folder.";
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();

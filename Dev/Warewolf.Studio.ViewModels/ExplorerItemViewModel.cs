@@ -1746,6 +1746,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             ValidateFolderExpand(filter);
+            IsSelected = false;
             OnPropertyChanged(() => Children);
         }
 

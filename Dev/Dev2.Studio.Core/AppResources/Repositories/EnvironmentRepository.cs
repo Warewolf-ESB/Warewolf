@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core
 
         static readonly object FileLock = new Object();
         static readonly object RestoreLock = new Object();
-        protected readonly List<IEnvironmentModel> Environments;
+        protected List<IEnvironmentModel> Environments;
         private bool _isDisposed;
 
         #region Singleton Instance
@@ -137,6 +137,11 @@ namespace Dev2.Studio.Core
             return Environments;
         }
 
+        public virtual ICollection<IEnvironmentModel> ReloadAllServers()
+        {
+            LoadComplete();
+            return Environments;
+        }
         public ICollection<IEnvironmentModel> Find(Expression<Func<IEnvironmentModel, bool>> expression)
         {
             LoadInternal();
@@ -350,7 +355,6 @@ namespace Dev2.Studio.Core
                     return;
                 }
                 var environments = LookupEnvironments(Source);
-
                 // Don't just clear and add, environments may be connected!!!
                 foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
                 {
@@ -373,6 +377,16 @@ namespace Dev2.Studio.Core
                 }
 
                 IsLoaded = true;
+            }
+        }
+
+        protected virtual void LoadComplete()
+        {
+            lock (RestoreLock)
+            {
+                var environments = LookupEnvironments(Source);
+                Environments = new List<IEnvironmentModel> { Source };
+                Environments.AddRange(environments.ToList());
             }
         }
 

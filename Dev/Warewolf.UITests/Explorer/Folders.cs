@@ -62,7 +62,7 @@ namespace Warewolf.UITests
         public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
         {
             UIMap.Right_Click_On_The_Folder_Count();
-            Assert.IsFalse(UIMap.MainStudioWindow.ExplorerContextMenu.Exists);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
         
         #region Additional test attributes
