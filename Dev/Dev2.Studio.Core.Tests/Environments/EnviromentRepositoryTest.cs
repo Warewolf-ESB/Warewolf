@@ -246,6 +246,18 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreEqual(1, repo.LoadInternalHitCount);
         }
 
+        [TestMethod]
+        public void EnvironmentRepositoryLoadCompleteExpectedEnvironmentsReturned()
+        {
+            var source = new Mock<IEnvironmentModel>();
+            var e1 = new Mock<IEnvironmentModel>();
+            var e2 = new Mock<IEnvironmentModel>();
+
+            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
+            var environments = repo.ReloadAllServers();
+            Assert.AreEqual(3,environments.Count);
+        }
+
         #endregion
 
         #region Save
