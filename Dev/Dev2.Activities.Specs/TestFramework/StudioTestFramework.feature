@@ -655,7 +655,6 @@ Scenario: Run a test with invalid inputs and pending results
 	Then test result is Failed	
 	When I delete "Test 1" 
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 	
 Scenario: Run a test with invalid and pending results
     Given the test builder is open with existing service "Hello World"	
@@ -677,9 +676,8 @@ Scenario: Run a test with invalid and pending results
          | Variable Name | Value      |
          | Message       | Hello Bob. |
 	When I run the test
-    Then test result is invalid
-	And test folder is cleaned
-
+	When I delete "Test 1" 
+	Then The "DeleteConfirmation" popup is shown I click Ok
 
 @TestFramework
 Scenario: Run a test with single scalar inputs and outputs failure
@@ -1062,7 +1060,7 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	And save is enabled
 	When I save
 	And I run the test
-	Then test result is invalid
+	Then test result is Failed
 
 #Data Category
 Scenario: Test WF with Assign
@@ -1664,12 +1662,12 @@ Scenario: Test WF with Calculate outputs with no variable
 	And a new test is added	
     And test name starts with "Test 1"
 	And I Add "TestCalculate" as TestStep
-And I add StepOutputs as 
+	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 |               | =         |       |		 
 	When I save
 	And I run the test
-	Then test result is invalid
+	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestWF" is deleted as cleanup	
@@ -1690,7 +1688,7 @@ Scenario: Test WF with Calculate No outPuts
 	And I Add "TestCalculate" as TestStep	 
 	When I save
 	And I run the test
-	Then test result is invalid
+	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup

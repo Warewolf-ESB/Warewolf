@@ -383,6 +383,7 @@ namespace Dev2.Activities
             : base(dsfDecision.DisplayName)
         {
             _dsfDecision = dsfDecision;
+            UniqueID = _dsfDecision.UniqueID;
         }
 
         public string NameOfArmToReturn { get; set; }

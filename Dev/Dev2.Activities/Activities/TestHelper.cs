@@ -25,7 +25,21 @@ namespace Dev2.Activities
         {
             if (output == null)
             {
-                return new List<TestRunResult>();
+                var testResult = new TestRunResult
+                {
+                    RunTestResult = RunResult.None
+                };
+                output.Result = testResult;
+                return new List<TestRunResult> { testResult };
+            }
+            if(string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
+            {
+                var testResult = new TestRunResult
+                {
+                    RunTestResult = RunResult.None
+                };
+                output.Result = testResult;
+                return new List<TestRunResult> { testResult };
             }
             if (output.Result != null)
             {
@@ -150,7 +164,7 @@ namespace Dev2.Activities
                         var factory = Dev2DecisionFactory.Instance();
                         var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
                         var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                        var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                        var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
                         var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
                         var finalResult = new TestRunResult();
