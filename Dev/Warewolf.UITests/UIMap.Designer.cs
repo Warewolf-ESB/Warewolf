@@ -80273,6 +80273,18 @@ namespace Warewolf.UITests
                 return this.mDeleteTaskButton;
             }
         }
+        
+        public HelloWorldResourListItem HelloWorldResourListItem
+        {
+            get
+            {
+                if ((this.mHelloWorldResourListItem == null))
+                {
+                    this.mHelloWorldResourListItem = new HelloWorldResourListItem(this);
+                }
+                return this.mHelloWorldResourListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -80283,6 +80295,8 @@ namespace Warewolf.UITests
         private NewTask mNewTask;
         
         private WpfButton mDeleteTaskButton;
+        
+        private HelloWorldResourListItem mHelloWorldResourListItem;
         #endregion
     }
     
@@ -80421,6 +80435,40 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mStatusCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HelloWorldResourListItem : WpfListItem
+    {
+        
+        public HelloWorldResourListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteScheduleButton
+        {
+            get
+            {
+                if ((this.mDeleteScheduleButton == null))
+                {
+                    this.mDeleteScheduleButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteScheduleButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDeleteScheduleButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteScheduleButton;
         #endregion
     }
     
