@@ -707,7 +707,7 @@ namespace Dev2.Tests.Activities
             TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
-            Assert.AreEqual(RunResult.TestPassed, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
+            Assert.AreEqual(RunResult.None, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
         }
 
         private static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
