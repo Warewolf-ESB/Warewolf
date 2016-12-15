@@ -59,7 +59,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
+            ShouldUpdateActiveEnvironment = false;
         }
+
+        public bool ShouldUpdateActiveEnvironment { get; set; }
 
         private bool CanExecuteMethod()
         {
@@ -252,7 +255,7 @@ namespace Warewolf.Studio.ViewModels
                     var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     if (value.ResourceName != null && value.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
                     {
-                        if (mainViewModel != null)
+                        if (mainViewModel != null && ShouldUpdateActiveEnvironment)
                         {
                             mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
                             mainViewModel.NewServerSource(string.Empty);
@@ -276,7 +279,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (mainViewModel != null)
                     {
-                        if (_selectedConnection.IsConnected && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                        if (_selectedConnection.IsConnected && ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
                         {
                             mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
                             mainViewModel.SetActiveServer(_selectedConnection);
@@ -349,8 +352,11 @@ namespace Warewolf.Studio.ViewModels
                     var connected = await connection.ConnectAsync();
                     if (connected)
                     {
-                        var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                        mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
+                        if (ShouldUpdateActiveEnvironment)
+                        {
+                            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                            mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
+                        }
                     }
                     else
                     {
