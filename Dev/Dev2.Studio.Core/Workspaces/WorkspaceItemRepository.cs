@@ -264,6 +264,16 @@ namespace Dev2.Workspaces
             resourceModel.Environment.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
         }
 
+        public void ClearWorkspaceItems(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel == null)
+            {
+                return;
+            }
+            WorkspaceItems.Clear();
+            resourceModel.Environment.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
+        }
+
         #endregion
 
     }

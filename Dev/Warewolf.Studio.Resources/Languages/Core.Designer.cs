@@ -593,15 +593,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forums.
-        /// </summary>
-        public static string MenuDialogForumsLabel {
-            get {
-                return ResourceManager.GetString("MenuDialogForumsLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Lock Menu.
         /// </summary>
         public static string MenuDialogLockLabel {
@@ -670,15 +661,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuDialogTaskLabel {
             get {
                 return ResourceManager.GetString("MenuDialogTaskLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tours.
-        /// </summary>
-        public static string MenuDialogToursLabel {
-            get {
-                return ResourceManager.GetString("MenuDialogToursLabel", resourceCulture);
             }
         }
         

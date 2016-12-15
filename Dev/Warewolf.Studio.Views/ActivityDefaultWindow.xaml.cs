@@ -6,6 +6,7 @@ using Dev2;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
@@ -81,20 +82,8 @@ namespace Warewolf.Studio.Views
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                if (Application.Current != null)
-                {
-                    var windowCollection = Application.Current.Windows;
-
-                    foreach (var window in windowCollection)
-                    {
-                        var window1 = window as Window;
-
-                        if (window1 != null && window1.Name != "MainViewWindow")
-                        {
-                            window1.Close();
-                        }
-                    }
-                }
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                mainViewModel?.ResetMainView();
             }
         }
     }

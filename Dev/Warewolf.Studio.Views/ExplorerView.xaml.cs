@@ -245,7 +245,7 @@ namespace Warewolf.Studio.Views
             {
                 var textBox = sender as TextBox;
                 var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-                if (explorerItemViewModel != null && !explorerItemViewModel.IsSaveDialog)
+                if (explorerItemViewModel != null)
                 {
                     explorerItemViewModel.ResourceName = textBox.Text;
                 }
@@ -390,6 +390,12 @@ namespace Warewolf.Studio.Views
             var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
             if (singleEnvironmentExplorerViewModel != null)
             {
+                if (e.Key == Key.F2)
+                {
+                    var expItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
+                    if (expItemViewModel != null)
+                        expItemViewModel.IsRenaming = expItemViewModel.CanRename;
+                }
                 return;
             }
             var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;

@@ -1,4 +1,5 @@
-﻿Feature: TestingFrameworkMocking
+﻿@TestingFrameworkMocking
+Feature: TestingFrameworkMocking
 
 Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests Tab
 	Given I have Hello World workflow on the Explorer
@@ -26,3 +27,5 @@ Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
 	When I Click Save Ribbon Button Without Expecting a Dialog
 	When I Click Test Tab
 	Then The Test step in now "Invalid"
+	And I delete Test4 as a Cleanup step
+	And I Click Close Workflow Tab Without Confirmation
