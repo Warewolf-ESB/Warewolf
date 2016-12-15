@@ -42,5 +42,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Clear();
+
+        ICollection<IEnvironmentModel> ReloadAllServers();
     }
 }
