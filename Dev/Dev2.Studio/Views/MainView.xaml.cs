@@ -242,6 +242,8 @@ namespace Dev2.Studio.Views
                     window1.Close();
                 }
             }
+
+            var mainViewModel = DataContext as MainViewModel;
             for (int i = TabManager.Items.Count - 1; i>= 0; i--)
             {
                 var item = TabManager.Items[i];
@@ -250,11 +252,13 @@ namespace Dev2.Studio.Views
                 if (item1?.ResourceModel != null)
                     WorkspaceItemRepository.Instance.ClearWorkspaceItems(item1.ResourceModel);
                 item1?.RemoveAllWorkflowName(item1.DisplayName);
+
+                var workSurfaceContextViewModel = contentPane?.DataContext as WorkSurfaceContextViewModel;
+                mainViewModel?.Items.Remove(workSurfaceContextViewModel);
             }
             
             TabManager.Items.Clear();
-
-            var mainViewModel = DataContext as MainViewModel;
+            
             if (mainViewModel != null)
             {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
