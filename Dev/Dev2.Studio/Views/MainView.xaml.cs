@@ -232,6 +232,7 @@ namespace Dev2.Studio.Views
         public void ResetToStartupView()
         {
             var windowCollection = System.Windows.Application.Current.Windows;
+            var mainViewModel = DataContext as MainViewModel;
 
             foreach (var window in windowCollection)
             {
@@ -239,27 +240,49 @@ namespace Dev2.Studio.Views
 
                 if (window1 != null && window1.Name != "MainViewWindow")
                 {
+                    if (window1.GetType().Name == "ToolWindowHostWindow")
+                    {
+                        var contentPane = window1.Content as PaneToolWindow;
+
+                        var splitPane = contentPane?.Pane;
+
+                        if (splitPane != null)
+                            foreach (var item in splitPane.Panes)
+                            {
+                                var pane = item as ContentPane;
+
+                                RemoveWorkspaceItems(pane, mainViewModel);
+                            }
+                    }
                     window1.Close();
                 }
             }
+
             for (int i = TabManager.Items.Count - 1; i>= 0; i--)
             {
                 var item = TabManager.Items[i];
                 var contentPane = item as ContentPane;
-                var item1 = contentPane?.Content as WorkflowDesignerViewModel;
-                if (item1?.ResourceModel != null)
-                    WorkspaceItemRepository.Instance.ClearWorkspaceItems(item1.ResourceModel);
-                item1?.RemoveAllWorkflowName(item1.DisplayName);
+                RemoveWorkspaceItems(contentPane, mainViewModel);
             }
             
             TabManager.Items.Clear();
-
-            var mainViewModel = DataContext as MainViewModel;
+            
             if (mainViewModel != null)
             {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
                 mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
             }
+        }
+
+        private static void RemoveWorkspaceItems(ContentPane pane, MainViewModel mainViewModel)
+        {
+            var item1 = pane?.Content as WorkflowDesignerViewModel;
+            if (item1?.ResourceModel != null)
+                WorkspaceItemRepository.Instance.ClearWorkspaceItems(item1.ResourceModel);
+            item1?.RemoveAllWorkflowName(item1.DisplayName);
+
+            var workSurfaceContextViewModel = pane?.DataContext as WorkSurfaceContextViewModel;
+            mainViewModel?.Items.Remove(workSurfaceContextViewModel);
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)

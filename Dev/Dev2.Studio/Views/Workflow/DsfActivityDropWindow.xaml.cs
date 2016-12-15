@@ -12,8 +12,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Dev2.Dialogs;
-using Dev2.Interfaces;
 using Warewolf.Studio.Core;
 
 // ReSharper disable once CheckNamespace
@@ -47,7 +47,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 mainViewModel?.ResetMainView();
             }
         }
