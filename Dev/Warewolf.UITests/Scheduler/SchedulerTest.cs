@@ -16,6 +16,8 @@ namespace Warewolf.UITests
             UIMap.Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab();
             UIMap.Click_Scheduler_Disable_Task_Radio_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog(30000);
+            UIMap.Click_Scheduler_Delete_Hello_World_Task();
+            UIMap.Click_MessageBox_Yes();
         }
 
         #region Additional test attributes
