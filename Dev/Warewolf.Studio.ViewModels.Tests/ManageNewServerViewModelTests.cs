@@ -441,7 +441,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetRequestServiceViewModel.AuthenticationType = expectedAuthenticationType;
             _targetRequestServiceViewModel.Password = expectedPassword;
             _targetRequestServiceViewModel.UserName = expectedUserName;
-            _targetRequestServiceViewModel.ServerName = new ComputerName() { Name = "somecomputer" };
+            _targetRequestServiceViewModel.ServerName = new ComputerName { Name = "somecomputer" };
             _targetRequestServiceViewModel.Protocol = "http";
             _targetRequestServiceViewModel.SelectedPort = "8080";
             _targetRequestServiceViewModel.SelectedGuid = Guid.NewGuid();
@@ -461,7 +461,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreNotEqual(Guid.Empty, _targetRequestServiceViewModel.Item.ID);
 
             Assert.AreEqual(expectedHeaderText, _targetRequestServiceViewModel.HeaderText);
-            Assert.AreEqual(expectedHeader, _targetRequestServiceViewModel.Header);
         }
 
         #endregion Test commands
@@ -949,7 +948,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreNotEqual(Guid.Empty, _targetRequestServiceViewModel.Item.ID);
             _updateManagerMock.Verify(it => it.Save(It.IsAny<IServerSource>()));
             Assert.AreEqual(expectedHeaderText, _targetRequestServiceViewModel.HeaderText);
-            Assert.AreEqual(expectedHeader, _targetRequestServiceViewModel.Header);
         }
 
 
@@ -1086,7 +1084,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedSelectedPort, _target.SelectedPort);
             Assert.AreEqual(expectedAddress, _target.Address);
             Assert.AreEqual(expectedPassword, _target.Password);
-            Assert.AreEqual(expectedHeader, _target.Header);
         }
 
         [TestMethod]
@@ -1125,7 +1122,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedSelectedPort, _target.SelectedPort);
             Assert.AreEqual(expectedAddress, _target.Address);
             Assert.AreEqual(expectedPassword, _target.Password);
-            Assert.AreEqual(expectedHeader, _target.Header);
         }
 
         [TestMethod]
