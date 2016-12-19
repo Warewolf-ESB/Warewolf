@@ -109,6 +109,7 @@ namespace Warewolf.Studio.ViewModels
                     // SHow error dialog
                 }
                 CloseView();
+                ViewResult = MessageBoxResult.OK;
             }
             catch (Exception)
             {
@@ -156,7 +157,6 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = ErrorResource.SaveToFolderOrRootOnly;
                 }
             }
-
         }
 
         bool HasLoaded
@@ -186,6 +186,7 @@ namespace Warewolf.Studio.ViewModels
         private void CloseView()
         {
             _view.RequestClose();
+            ViewResult = MessageBoxResult.Cancel;
             SingleEnvironmentExplorerViewModel = null;
         }
 
@@ -266,7 +267,8 @@ namespace Warewolf.Studio.ViewModels
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
 
-            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
+            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel,
+                Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             SingleEnvironmentExplorerViewModel.SearchText = string.Empty;
 
@@ -281,7 +283,8 @@ namespace Warewolf.Studio.ViewModels
                     });
                 }
                 _environmentViewModel.IsSaveDialog = true;
-                _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
+                _environmentViewModel.Children?.Flatten(model => model.Children)
+                    .Apply(model => model.IsSaveDialog = true);
             }
             catch (Exception)
             {
@@ -292,7 +295,12 @@ namespace Warewolf.Studio.ViewModels
             ValidateName();
             _view.DataContext = this;
             _view.ShowView();
-            
+
+            _environmentViewModel.Filter(string.Empty);
+            _environmentViewModel.IsSaveDialog = false;
+            _environmentViewModel.Children?.Flatten(model => model.Children)
+                .Apply(model => model.IsSaveDialog = false);
+
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
                 _environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
@@ -301,20 +309,15 @@ namespace Warewolf.Studio.ViewModels
             if (permissions != null)
             {
                 if (_environmentViewModel.Children != null)
-                    foreach (var explorerItemViewModel in _environmentViewModel.Children)
+                    foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
                     {
                         explorerItemViewModel.SetPermissions((Permissions) permissions);
                     }
             }
 
-            _environmentViewModel.Filter(string.Empty);
-            _environmentViewModel.IsSaveDialog = false;
-            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
-
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
             if (mainViewModel?.ExplorerViewModel != null)
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
-
             return ViewResult;
         }
 
@@ -357,19 +360,19 @@ namespace Warewolf.Studio.ViewModels
         {
             if (string.IsNullOrEmpty(Name))
             {
-                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'Name'");
+                ErrorMessage = ErrorResource.CannotBeNull;
             }
             else if (NameHasInvalidCharacters(Name))
             {
-                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'Name'");
+                ErrorMessage = ErrorResource.ContainsInvalidCharecters;
             }
             else if (Name.Trim() != Name)
             {
-                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'Name'");
+                ErrorMessage = ErrorResource.ContainsLeadingOrTrailingWhitespace;
             }
             else if (HasDuplicateName(Name))
             {
-                ErrorMessage = string.Format(ErrorResource.ItemWithNameAlreadyExists, Name);
+                ErrorMessage = ErrorResource.ItemWithNameAlreadyExists;
             }
             else
             {

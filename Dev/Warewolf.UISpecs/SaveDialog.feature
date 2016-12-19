@@ -4,23 +4,38 @@ Feature: SaveDialog
 	As a warewolf studio user
 	I want to give the workflow a name and location
 
-Scenario: SaveDialogServiceNameValidation
+Scenario: Save Dialog Service Name Validation Invalid Chars
+	Given The Warewolf Studio is running
+	When I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	And I Assign Value To Variable With Assign Tool Small View Row 1
+	And I Click Save Ribbon Button to Open Save Dialog	
+	And I Enter Invalid Service Name Into Save Dialog As "Inv@lid N&m#"
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
+
+Scenario: Save Dialog Service Name Validation Name Ends With Number
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	And I Assign Value To Variable With Assign Tool Small View Row 1
 	And I Click Save Ribbon Button to Open Save Dialog
-	And I Remove WorkflowName From Save Dialog
-	And I Enter Service Name Into Save Dialog As "TestingWF"
-	And I Click SaveDialog Save Button
-	And I Click Close Workflow Tab Button
-	And I Click Duplicate From Explorer Context Menu for Service "TestingWF"
-	And I Select LocalHost on the Save Dialog
-	And I Enter Service Name Into Duplicate Dialog As "TestingWF1"
-	And I Enter Invalid Service Name Into Duplicate Dialog As "Inv@lid N&m#"
-	And I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As "Test "
-	And I Enter Service Name Into Duplicate Dialog As "ValidWFName"
-	And I Click Duplicate From Duplicate Dialog
+	And I Enter Service Name Into Save Dialog As "TestingWF1"
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No	
+
+Scenario: Save Dialog Service Name Validation Name Ends With Empty Space
+	Given The Warewolf Studio is running
+	When I Click New Workflow Ribbon Button
+	And I Drag Toolbox MultiAssign Onto DesignSurface
+	And I Assign Value To Variable With Assign Tool Small View Row 1
+	And I Click Save Ribbon Button to Open Save Dialog
+	And I Enter Invalid Service Name With Whitespace Into Save Dialog As "Test "
+	And I Click SaveDialog CancelButton
+	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Selected 
 	Given I Filter the Explorer with "Unit Tests"
@@ -29,7 +44,6 @@ Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Select
 	And Unit Tests Url Exists
 	And I Drag Toolbox MultiAssign Onto DesignSurface   
 	And I Click Save Ribbon Button to Open Save Dialog
-	And Explorer Contain Item "Unit Tests"
 	Then I Enter Service Name Into Save Dialog As "TestService"
 	And I Click SaveDialog Save Button
 	And "TestService" Resource Exists In Windows Directory "C:\ProgramData\Warewolf\Resources\Unit Tests"
@@ -89,10 +103,10 @@ Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save
 	Given I Click New Workflow Ribbon Button
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
-	And I Filter Save Dialog Explorer with "Created Another New Folder"
+	And I Filter Save Dialog Explorer with "Created Another Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
-	And I Enter New Folder Name as "Created Another New Folder"
+	And I Enter New Folder Name as "Created Another Folder"
 	And I RightClick Save Dialog Localhost First Item
 	And Context Menu Has Two Items
 	And I Click SaveDialog CancelButton
@@ -114,6 +128,7 @@ Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Ex
 	And I Click MessageBox Yes
 	And Folder Is Removed From Explorer
 	Then I Click Close Workflow Tab Button
+	And I Click MessageBox No
 
 Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Folder
 	Given I Click New Workflow Ribbon Button
@@ -123,9 +138,8 @@ Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Cre
 	And I RightClick Save Dialog Localhost
 	And I Select New_Folder From SaveDialog ExplorerContextMenu
 	And I Hit Escape Key On The Keyboard
-	And I Filter Save Dialog Explorer with "New Folder"
-	And Save Dialog Explorer Contain Item "New Folder"	
-	And I Click SaveDialog CancelButton
+	And I Filter the Explorer with "New Folder"
+	And Explorer Contain Item "New Folder"
 	Then I Click Close Workflow Tab Button
 	And I Click MessageBox No
 
@@ -152,10 +166,11 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I RightClick Save Dialog Localhost First Item
 	And I Select New Folder From SaveDialog ExplorerContextMenu
 	And I Name New Sub Folder as "New Created Sub Folder"
+	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "New Created Sub Folder"
 	Then Explorer Contain Sub Item "New Created Sub Folder"
 	Then I Click Close Workflow Tab Button
-	And I Filter the Explorer with "New Created Sub Folder"
+	And I Click MessageBox No
 
 Scenario: Rename Resource From Save Dialog
 	Given I Click New Workflow Ribbon Button

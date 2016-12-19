@@ -67,7 +67,7 @@ namespace Dev2.Studio.ViewModels
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void NewService(string resourcePath);
         void NewDatabaseSource(string resourcePath);
-        void DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
+        bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewPluginSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
@@ -344,10 +344,11 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-        public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+        public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(explorerItemViewModel.ResourcePath, explorerItemViewModel.ResourceName, explorerItemViewModel);
-            var messageBoxResult = saveViewModel.Result.ShowSaveDialog();            
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(string.Empty, explorerItemViewModel.ResourceName, explorerItemViewModel);
+            var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
+            return messageBoxResult == MessageBoxResult.OK;
         }
 
         public void NewWebSource(string resourcePath)

@@ -894,6 +894,18 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
         }
+        
+        [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
+        }
+
+        [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameWithWhitespaceIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
+        }
 
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
@@ -1214,7 +1226,7 @@ namespace Warewolf.UITests
         public void Select_Test_Source_From_POST_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem10, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
         }
 
         [When(@"I Select Test Source From DELETE Web Large View Source Combobox")]
@@ -1597,8 +1609,6 @@ namespace Warewolf.UITests
         {
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
             Select_Deploy_First_Source_Item();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled,
-                "Deploy button is not enabled after valid server and resource are selected.");
         }
 
         [When(@"I Select localhost from the source tab")]
@@ -3596,7 +3606,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Deploy Tab Button")]
         public void Click_Close_Deploy_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "Settings close tab button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "DeployTab close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton, new Point(16, 6));
         }
 
@@ -4519,6 +4529,12 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Delete_Task()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton, new Point(3, 17));
+        }
+
+        [When(@"I Delete Hello World Task")]
+        public void Click_Scheduler_Delete_Hello_World_Task()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(3, 17));
         }
 
         [When(@"I Click Scheduler Disable Task Radio Button")]
@@ -7811,6 +7827,7 @@ namespace Warewolf.UITests
         [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration.");
@@ -8546,7 +8563,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Hit Escape Key On The Keyboard")]
@@ -8589,7 +8606,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
@@ -8629,9 +8646,6 @@ namespace Warewolf.UITests
 
             // Type '{Enter}' in text box
             Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(22, 16));
         }
 
         [Given(@"Explorer Contain Item ""(.*)""")]
