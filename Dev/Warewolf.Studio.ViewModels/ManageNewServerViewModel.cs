@@ -310,9 +310,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 Name = Item.Name,
                 Address = GetAddressName(),
-                AuthenticationType = Item.AuthenticationType,
-                Password = Item.Password,
-                UserName = Item.UserName,
+                AuthenticationType = AuthenticationType,
+                Password = Password,
+                UserName = UserName,
                 ID = Item.ID,
                 ResourcePath = Item.ResourcePath
             };
