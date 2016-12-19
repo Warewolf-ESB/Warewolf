@@ -17,6 +17,7 @@ using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+// ReSharper disable RedundantAssignment
 
 namespace Warewolf.UIBindingTests.ServerSource
 {
