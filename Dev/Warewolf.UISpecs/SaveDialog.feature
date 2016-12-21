@@ -41,7 +41,6 @@ Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Select
 	Given I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	Then I Select NewWorkflow FromExplorerContextMenu
-	And Unit Tests Url Exists
 	And I Drag Toolbox MultiAssign Onto DesignSurface   
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then I Enter Service Name Into Save Dialog As "TestService"
