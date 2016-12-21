@@ -65,6 +65,10 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             UIMap.Deploy_Service_From_Deploy_View("Hello World");
             UIMap.Click_Close_Deploy_Tab_Button();
+            //Deploy Conflicts(Names)
+            UIMap.Click_MessageBox_OK();
+            //Successful Deploy
+            UIMap.Click_MessageBox_OK();
         }
 
         [TestMethod]
