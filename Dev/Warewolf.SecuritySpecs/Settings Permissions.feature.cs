@@ -344,7 +344,7 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for Users", @__tags);
 #line 33
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -364,7 +364,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResourcePermissionsSecurity")]
@@ -383,7 +383,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResourcePermissionsSecurity")]
@@ -402,7 +402,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResourcePermissionsSecurity")]
@@ -421,7 +421,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResourcePermissionsSecurity")]
@@ -447,7 +447,7 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users overlapping groups", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for Users Overlapping Groups", @__tags);
 #line 47
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -467,7 +467,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -487,7 +487,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -507,7 +507,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -527,7 +527,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -547,7 +547,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -567,7 +567,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -587,7 +587,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -607,7 +607,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -627,7 +627,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -647,7 +647,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -667,7 +667,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -687,7 +687,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -707,7 +707,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -727,7 +727,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -747,7 +747,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -767,7 +767,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -787,7 +787,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -807,7 +807,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -827,7 +827,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -847,7 +847,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -867,7 +867,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -887,7 +887,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -907,7 +907,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -927,7 +927,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -947,7 +947,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
@@ -967,7 +967,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups: 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for Users Overlapping Groups: 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OverlappingUserGroupsPermissionsSecurity")]
