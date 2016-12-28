@@ -636,6 +636,8 @@ namespace Warewolf.UITests
             if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
             {
                 Click_Explorer_RemoteServer_Connect_Button();
+                Click_Connect_Control_InExplorer();
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
             }
             else
             {
@@ -644,8 +646,10 @@ namespace Warewolf.UITests
                 {
                     Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
                     Click_Explorer_RemoteServer_Connect_Button();
+                    Click_Connect_Control_InExplorer();
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
                 }
-            }
+            }            
         }
 
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
@@ -1086,16 +1090,8 @@ namespace Warewolf.UITests
         public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
         {
             var comboboxListItem = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(comboboxListItem.Text.Exists, "Server does not exist in explorer remote server drop down list.");
+            Click_Connect_Control_InExplorer();
             Mouse.Click(comboboxListItem.Text, new Point(79, 8));
-            //switch (serverName)
-            //{
-            //    default:
-            //    case "Remote Connection Integration":
-            //        Select_From_Explorer_Remote_Server_Dropdown_List(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text);
-            //        break;
-            //}
         }
 
         public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
@@ -1211,7 +1207,8 @@ namespace Warewolf.UITests
         [Then("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
+            Mouse.Hover(MainStudioWindow.SideMenuBar.NewWorkflowButton,new Point(6, 6), 1000);
+            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
 
@@ -3995,8 +3992,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
-            Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));            
         }
 
         [When(@"I Click Explorer Localhost First Item")]
@@ -8392,6 +8388,20 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
 
+        [Given(@"I Create New Workflow using shortcut")]
+        [When(@"I Create New Workflow using shortcut")]
+        [Then(@"I Create New Workflow using shortcut")]
+        public void Create_New_Workflow_In_LocalHost_With_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            Mouse.Click(localhost, new Point(74, 8));
+
+            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
+        }
+        
         public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
         {
             #region Variable Declarations
@@ -8515,7 +8525,7 @@ namespace Warewolf.UITests
         [Then(@"Filter Textbox is cleared")]
         public void ThenFilterTextboxIsCleared()
         {
-            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text));
+            Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
         }
 
         [Given(@"Filter Textbox has ""(.*)""")]
