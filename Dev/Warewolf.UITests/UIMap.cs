@@ -3730,6 +3730,8 @@ namespace Warewolf.UITests
         {
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+            if(MessageBoxWindow.Exists)
+                Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
         [Given(@"I Click Debug Output Assign Cell")]
