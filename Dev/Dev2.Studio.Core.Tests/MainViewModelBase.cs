@@ -17,6 +17,7 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
@@ -32,6 +33,7 @@ using Dev2.Studio.ViewModels;
 using Dev2.Workspaces;
 using Moq;
 using Newtonsoft.Json;
+using Warewolf.Studio.ViewModels.ToolBox;
 
 namespace Dev2.Core.Tests
 {

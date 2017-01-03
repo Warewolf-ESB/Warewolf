@@ -8,6 +8,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable PossibleUnintendedReferenceComparison
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 {
@@ -62,6 +63,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         public void TestNullRemoteModel()
         {
             new ToolboxViewModel(_localModelMock.Object, null);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShowToolBox_GivenIsNew_ShouldBeTrue()
+        {
+            //---------------Set up test pack-------------------
+            var toolboxViewModel = new ToolboxViewModel(_localModelMock.Object, _remoteModelMock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(toolboxViewModel);
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(toolboxViewModel.IsServiceTestShowToolBox);
         }
 
         #endregion Test construction
