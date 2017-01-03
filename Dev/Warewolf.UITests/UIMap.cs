@@ -52,7 +52,7 @@ namespace Warewolf.UITests
         }
 
         [Given("The Warewolf Studio is running")]
-        public void CloseHangingDialogs()
+        public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
