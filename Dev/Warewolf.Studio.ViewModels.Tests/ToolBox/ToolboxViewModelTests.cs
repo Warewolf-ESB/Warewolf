@@ -65,20 +65,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             new ToolboxViewModel(_localModelMock.Object, null);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ShowToolBox_GivenIsNew_ShouldBeTrue()
-        {
-            //---------------Set up test pack-------------------
-            var toolboxViewModel = new ToolboxViewModel(_localModelMock.Object, _remoteModelMock.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(toolboxViewModel);
-            //---------------Execute Test ----------------------
-
-            //---------------Test Result -----------------------
-            Assert.IsTrue(toolboxViewModel.IsServiceTestShowToolBox);
-        }
-
         #endregion Test construction
 
         #region Test commands

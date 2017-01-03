@@ -23,7 +23,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         private string _searchTerm;
         private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
         private bool _isVisible;
-        private bool _isServiceTestShowToolBox;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -34,7 +33,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
             BuildToolsList();
             ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
-            IsServiceTestShowToolBox = true;
         }
 
         public void BuildToolsList()
@@ -88,19 +86,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             {
                 _isVisible = value; 
                 OnPropertyChanged("IsVisible");
-            }
-        }
-
-        public bool IsServiceTestShowToolBox
-        {
-            get
-            {
-                return _isServiceTestShowToolBox;
-            }
-            set
-            {
-                _isServiceTestShowToolBox = value;
-                OnPropertyChanged("IsServiceTestShowToolBox");
             }
         }
 
