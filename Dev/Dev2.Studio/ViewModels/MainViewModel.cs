@@ -905,11 +905,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                var refresh = _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
-                if (refresh)
-                {
-                    ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
-                }
+                _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
             }
         }
 
