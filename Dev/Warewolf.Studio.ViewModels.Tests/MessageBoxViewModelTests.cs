@@ -20,6 +20,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         private bool _isInfo;
         private bool _isQuestion;
         private List<string> _duplicates;
+        private bool _isDeleteAnywayButtonVisible;
+        private bool _applyToAll;
 
         private List<string> _changedProperties;
         private MessageBoxViewModel _target;
@@ -40,6 +42,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _isInfo = true;
             _isQuestion = false;
             _duplicates = new List<string>();
+            _isDeleteAnywayButtonVisible = false;
+            _applyToAll = false;
             _changedProperties = new List<string>();
             _target = new MessageBoxViewModel(
                 _message,
@@ -50,7 +54,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _isError,
                 _isInfo,
                 _isQuestion,
-                _duplicates);
+                _duplicates,
+                _isDeleteAnywayButtonVisible,
+                _applyToAll);
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
         }
 
@@ -199,6 +205,34 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             _target.IsDependenciesButtonVisible = expectedValue;
             var value = _target.IsDependenciesButtonVisible;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+        }
+
+        [TestMethod]
+        public void TestIsDeleteAnywayButtonVisible()
+        {
+            //arrange
+            var expectedValue = true;
+
+            //act
+            _target.IsDeleteAnywayButtonVisible = expectedValue;
+            var value = _target.IsDeleteAnywayButtonVisible;
+
+            //asert
+            Assert.AreEqual(expectedValue, value);
+        }
+
+        [TestMethod]
+        public void TestIsApplyToAllCheckboxVisible()
+        {
+            //arrange
+            var expectedValue = true;
+
+            //act
+            _target.ApplyToAll = expectedValue;
+            var value = _target.ApplyToAll;
 
             //asert
             Assert.AreEqual(expectedValue, value);

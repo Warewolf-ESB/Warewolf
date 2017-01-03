@@ -195,7 +195,7 @@ namespace Dev2.Settings.Scheduler
         {
             _schedulerViewModel.PopupController?.Show(string.Format(Core.ServerDisconnected, _schedulerViewModel.CurrentEnvironment.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         public void CreateNewTask()
@@ -208,7 +208,7 @@ namespace Dev2.Settings.Scheduler
 
             if (_schedulerViewModel.IsDirty)
             {
-                _schedulerViewModel.PopupController.Show(Core.SchedulerUnsavedTaskMessage, Core.SchedulerUnsavedTaskHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                _schedulerViewModel.PopupController.Show(Core.SchedulerUnsavedTaskMessage, Core.SchedulerUnsavedTaskHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                 return;
             }
 

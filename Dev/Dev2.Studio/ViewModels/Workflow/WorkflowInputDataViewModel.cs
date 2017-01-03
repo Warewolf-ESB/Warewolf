@@ -304,7 +304,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             _popupController.Show(StringResources.DataInput_Error,
                                   StringResources.DataInput_Error_Title,
-                                  MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false);
+                                  MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
 
             IsInError = true;
         }

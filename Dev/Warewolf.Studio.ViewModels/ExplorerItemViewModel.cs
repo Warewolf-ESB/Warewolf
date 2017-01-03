@@ -885,7 +885,7 @@ namespace Warewolf.Studio.ViewModels
 
                                     _popupController.Show(Resources.Languages.Core.FailedToRenameResource,
                                         Resources.Languages.Core.FailedToRenameResourceHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true,
-                                        false, false);
+                                        false, false, false, false);
                                     _resourceName = oldName;
                                     ShellViewModel.SetRefreshExplorerState(false);
                                 }

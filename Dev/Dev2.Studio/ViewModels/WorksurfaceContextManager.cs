@@ -536,7 +536,7 @@ namespace Dev2.Studio.ViewModels
             var result = _mainViewModel.PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName),
                 $"Save {workflowVm.ResourceModel.ResourceName}?",
                 MessageBoxButton.YesNoCancel,
-                MessageBoxImage.Information, @"", false, false, true, false);
+                MessageBoxImage.Information, @"", false, false, true, false, false, false);
 
             switch (result)
             {
@@ -932,7 +932,7 @@ namespace Dev2.Studio.ViewModels
                         {
                             _mainViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage, 
                                 Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader, 
-                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                             ActivateAndReturnWorkSurfaceIfPresent(key);
                         }
                         else
@@ -1178,7 +1178,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     var result = _mainViewModel.PopupProvider.Show(string.Format(StringResources.DialogBody_DisconnectedItemNotSaved, workflowVm.ResourceModel.ResourceName),
                         $"Save not allowed {workflowVm.ResourceModel.ResourceName}?",
-                        MessageBoxButton.OKCancel, MessageBoxImage.Information, "", false, false, true, false);
+                        MessageBoxButton.OKCancel, MessageBoxImage.Information, "", false, false, true, false, false, false);
 
                     switch (result)
                     {
