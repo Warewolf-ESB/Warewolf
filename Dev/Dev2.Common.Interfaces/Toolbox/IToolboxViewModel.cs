@@ -26,6 +26,8 @@ namespace Dev2.Common.Interfaces.Toolbox
         ICommand ClearFilterCommand { get; set; }
         string SearchTerm { get; set; }
         ObservableCollection<IToolDescriptorViewModel> BackedUpTools { get; set; }
+        bool IsServiceTestShowToolBox { get; set; }
+
         void BuildToolsList();
     }
 }

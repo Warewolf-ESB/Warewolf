@@ -98,5 +98,7 @@ namespace Warewolf.Studio.Views
             serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestSelectedTestHelpText);
             e.Handled = true;
         }
+
+       
     }
 }
