@@ -340,6 +340,7 @@ namespace Warewolf.Studio.ViewModels
                     Address = GetAddressName(),
                     AuthenticationType = AuthenticationType,
                     Name = ResourceName,
+                    UserName = UserName,
                     Password = Password,
                     ID = _serverSource?.ID ?? SelectedGuid
                 }

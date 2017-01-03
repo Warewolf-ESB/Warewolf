@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Models;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -1746,6 +1745,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
             ValidateFolderExpand(filter);
+            IsSelected = false;
             OnPropertyChanged(() => Children);
         }
 

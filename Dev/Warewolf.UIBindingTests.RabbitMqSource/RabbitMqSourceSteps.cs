@@ -12,6 +12,7 @@ using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
+// ReSharper disable RedundantAssignment
 
 namespace Warewolf.UIBindingTests.RabbitMqSource
 {

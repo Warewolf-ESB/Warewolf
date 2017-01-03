@@ -2304,7 +2304,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)
         {
             var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
-
+            if (IsTestView)
+            {
+                return true;
+            }
             if (activityType != enDsfActivityType.All)
             {
                 var dialog = CreateResourcePickerDialog(activityType);

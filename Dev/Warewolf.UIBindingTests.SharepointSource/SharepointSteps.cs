@@ -15,6 +15,7 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+// ReSharper disable RedundantAssignment
 
 namespace Warewolf.UIBindingTests.SharepointSource
 {

@@ -12,7 +12,6 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using Dev2.Providers.Errors;
 
 // ReSharper disable InconsistentNaming
