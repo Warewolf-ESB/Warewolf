@@ -277,7 +277,8 @@ namespace Dev2.Activities.Specs.Permissions
             var resourceModels = environmentModel.ResourceRepository.All();
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
             var totalNumberOfResources = resourceModels.Count;
-            Assert.IsTrue(totalNumberOfResources - allMatch <= 1);
+            var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
+            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
         }
 
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]

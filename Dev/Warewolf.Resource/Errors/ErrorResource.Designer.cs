@@ -421,7 +421,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} contains invalid characters.
+        ///   Looks up a localized string similar to &apos;Name&apos; contains invalid characters.
         /// </summary>
         public static string ContainsInvalidCharecters {
             get {
@@ -430,7 +430,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} contains leading or trailing whitespace characters..
+        ///   Looks up a localized string similar to &apos;Name&apos; contains leading or trailing whitespace characters..
         /// </summary>
         public static string ContainsLeadingOrTrailingWhitespace {
             get {
@@ -1969,7 +1969,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An item with name &apos;{0}&apos; already exists in this folder..
+        ///   Looks up a localized string similar to An item with this name already exists in this folder..
         /// </summary>
         public static string ItemWithNameAlreadyExists {
             get {

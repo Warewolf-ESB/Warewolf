@@ -445,7 +445,7 @@ namespace Dev2.Studio.ViewModels
             MenuPanelWidth = 60;
             _menuExpanded = false;
 
-            ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(),true);
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             AddWorkspaceItems();
@@ -905,8 +905,11 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
-                ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+                var refresh = _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
+                if (refresh)
+                {
+                    ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
+                }
             }
         }
 
@@ -968,7 +971,7 @@ namespace Dev2.Studio.ViewModels
             var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
             if (ActiveEnvironment.IsConnected)
             {
-                if (ToolboxViewModel != null && (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0))
+                if (ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
                 {
                     ToolboxViewModel.BuildToolsList();
                 }
@@ -1132,6 +1135,7 @@ namespace Dev2.Studio.ViewModels
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
             SetActiveEnvironment(item.Environment);
+          
         }
 
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;

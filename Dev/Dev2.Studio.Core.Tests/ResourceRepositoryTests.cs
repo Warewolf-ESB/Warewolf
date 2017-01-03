@@ -50,6 +50,7 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
+// ReSharper disable NotAccessedVariable
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace

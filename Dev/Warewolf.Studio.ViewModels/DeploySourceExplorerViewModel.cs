@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once VirtualMemberCallInContructor
             LoadEnvironment(localhostEnvironment);
 
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator) { ShouldUpdateActiveEnvironment = false };
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;

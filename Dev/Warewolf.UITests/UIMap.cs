@@ -64,6 +64,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Try Click Message Box OK")]
+        [Then(@"I Try Click Message Box OK")]
+        [Given(@"I Try Click Message Box OK")]
         public void TryClickMessageBoxOK()
         {
             var TimeBefore = System.DateTime.Now;
@@ -634,6 +636,8 @@ namespace Warewolf.UITests
             if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
             {
                 Click_Explorer_RemoteServer_Connect_Button();
+                Click_Connect_Control_InExplorer();
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
             }
             else
             {
@@ -642,8 +646,10 @@ namespace Warewolf.UITests
                 {
                     Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
                     Click_Explorer_RemoteServer_Connect_Button();
+                    Click_Connect_Control_InExplorer();
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
                 }
-            }
+            }            
         }
 
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
@@ -892,6 +898,18 @@ namespace Warewolf.UITests
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
         }
+        
+        [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
+        }
+
+        [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        public void WhenIEnterInvalidServiceNameWithWhitespaceIntoSaveDialogAs(string ServiceName)
+        {
+            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
+        }
 
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
@@ -1072,16 +1090,8 @@ namespace Warewolf.UITests
         public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
         {
             var comboboxListItem = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
-            Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(comboboxListItem.Text.Exists, "Server does not exist in explorer remote server drop down list.");
+            Click_Connect_Control_InExplorer();
             Mouse.Click(comboboxListItem.Text, new Point(79, 8));
-            //switch (serverName)
-            //{
-            //    default:
-            //    case "Remote Connection Integration":
-            //        Select_From_Explorer_Remote_Server_Dropdown_List(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text);
-            //        break;
-            //}
         }
 
         public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
@@ -1197,7 +1207,8 @@ namespace Warewolf.UITests
         [Then("I Click New Workflow Ribbon Button")]
         public void Click_New_Workflow_Ribbon_Button()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(3, 8));
+            Mouse.Hover(MainStudioWindow.SideMenuBar.NewWorkflowButton,new Point(6, 6), 1000);
+            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
 
@@ -1212,7 +1223,7 @@ namespace Warewolf.UITests
         public void Select_Test_Source_From_POST_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem10, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
         }
 
         [When(@"I Select Test Source From DELETE Web Large View Source Combobox")]
@@ -1335,6 +1346,7 @@ namespace Warewolf.UITests
         [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
+          
             Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_Service_From_Service_Picker_Dialog(ResourceName);
@@ -1381,6 +1393,7 @@ namespace Warewolf.UITests
             Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
+
 
         public void Select_Deploy_First_Source_Item()
         {
@@ -1474,6 +1487,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.ConfigureSettingsButton.Exists, "Settings ribbon does not exist.");
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
+            WaitForControlVisible(MainStudioWindow.SideMenuBar.ConfigureSettingsButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
 
@@ -1512,11 +1526,11 @@ namespace Warewolf.UITests
         [Then(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
         public void ThenDirtyIsWhenIClickEnableDisableTest(string dirty, int test)
         {
-            if(dirty.ToUpper() == "NO")
+            if (dirty.ToUpper() == "NO")
                 Click_EnableDisable_This_Test_CheckBox(testInstance: test);
             else
                 Click_EnableDisable_This_Test_CheckBox(true, testInstance: test);
-        }        
+        }
 
         public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false, int testInstance = 1)
         {
@@ -1590,15 +1604,8 @@ namespace Warewolf.UITests
         [Given(@"I Select ""(.*)"" from the source tab")]
         public void WhenISelectFromTheSourceTab(string ServiceName)
         {
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-            TryClickMessageBoxOK();
             Select_Deploy_First_Source_Item();
-            TryClickMessageBoxOK();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled,
-                "Deploy button is not enabled after valid server and resource are selected.");
         }
 
         [When(@"I Select localhost from the source tab")]
@@ -1613,11 +1620,7 @@ namespace Warewolf.UITests
         [Given(@"I filter for ""(.*)"" on the source filter")]
         public void WhenIFilterForOnTheSourceFilter(string ServiceName)
         {
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-            TryClickMessageBoxOK();
         }
 
         [When(@"Resources is visible on the tree")]
@@ -1635,7 +1638,10 @@ namespace Warewolf.UITests
         public void ThenDeployButtonIsEnabled(string enabled)
         {
             var isEnabled = bool.Parse(enabled);
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.WaitForControlEnabled();
+            if (isEnabled)
+            {
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.WaitForControlEnabled();
+            }
             Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, isEnabled);
         }
 
@@ -1644,12 +1650,9 @@ namespace Warewolf.UITests
         [When(@"I Click Deploy button")]
         public void ThenIClickDeployButton()
         {
-            TryClickMessageBoxOK();
+            
             Click_Deploy_Tab_Deploy_Button();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
+            
         }
 
 
@@ -1658,20 +1661,11 @@ namespace Warewolf.UITests
         [Then(@"I Deploy ""(.*)"" From Deploy View")]
         public void Deploy_Service_From_Deploy_View(string ServiceName)
         {
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
             Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-            TryClickMessageBoxOK();
             Select_Deploy_First_Source_Item();
-            TryClickMessageBoxOK();
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled,
                 "Deploy button is not enabled after valid server and resource are selected.");
             Click_Deploy_Tab_Deploy_Button();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
             //WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Spinner);
         }
 
@@ -2529,13 +2523,13 @@ namespace Warewolf.UITests
         [Then(@"The ""(.*)"" Added Test Exists")]
         public void ThenTheAddedTestExists(string test)
         {
-            if(test == "1st")            
+            if (test == "1st")
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "No 1st test on workflow testing tab.");
-            if(test == "2nd")            
+            if (test == "2nd")
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "No 2nd test on workflow testing tab.");
-            if(test == "3rd")            
+            if (test == "3rd")
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Exists, "No 3rd test on workflow testing tab.");
-            if(test == "4th")            
+            if (test == "4th")
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test on workflow testing tab.");
         }
 
@@ -2586,7 +2580,7 @@ namespace Warewolf.UITests
         [Then(@"I Toggle ""(.*)"" Added Test Enabled")]
         public void WhenIToggleAddedTestEnabled(string test)
         {
-            if(test == "1st")
+            if (test == "1st")
                 Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector, new Point(10, 10));
             if (test == "2nd")
                 Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestEnabledSelector, new Point(10, 10));
@@ -3609,7 +3603,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Deploy Tab Button")]
         public void Click_Close_Deploy_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "Settings close tab button does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "DeployTab close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton, new Point(16, 6));
         }
 
@@ -3736,6 +3730,8 @@ namespace Warewolf.UITests
         {
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+            if(MessageBoxWindow.Exists)
+                Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
         [Given(@"I Click Debug Output Assign Cell")]
@@ -3855,7 +3851,7 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-            TryClickMessageBoxOK();//Dismiss resource conflict dialog
+            //Dismiss resource conflict dialog
         }
 
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
@@ -3998,8 +3994,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
-            Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));            
         }
 
         [When(@"I Click Explorer Localhost First Item")]
@@ -4532,6 +4527,12 @@ namespace Warewolf.UITests
         public void Click_Scheduler_Delete_Task()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton, new Point(3, 17));
+        }
+
+        [When(@"I Delete Hello World Task")]
+        public void Click_Scheduler_Delete_Hello_World_Task()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(3, 17));
         }
 
         [When(@"I Click Scheduler Disable Task Radio Button")]
@@ -7824,6 +7825,7 @@ namespace Warewolf.UITests
         [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
         public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration.");
@@ -7843,8 +7845,6 @@ namespace Warewolf.UITests
         [When(@"I Select localhost From Deploy Tab Source Server Combobox")]
         public void Select_localhost_From_Deploy_Tab_Source_Server_Combobox()
         {
-            TryClickMessageBoxOK();
-            TryClickMessageBoxOK();
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (Connected) option does not exist in Destination server combobox.");
             Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
@@ -8390,6 +8390,20 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
         }
 
+        [Given(@"I Create New Workflow using shortcut")]
+        [When(@"I Create New Workflow using shortcut")]
+        [Then(@"I Create New Workflow using shortcut")]
+        public void Create_New_Workflow_In_LocalHost_With_Shortcut()
+        {
+            #region Variable Declarations
+            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
+            #endregion
+
+            Mouse.Click(localhost, new Point(74, 8));
+
+            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
+        }
+        
         public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
         {
             #region Variable Declarations
@@ -8513,7 +8527,7 @@ namespace Warewolf.UITests
         [Then(@"Filter Textbox is cleared")]
         public void ThenFilterTextboxIsCleared()
         {
-            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text));
+            Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
         }
 
         [Given(@"Filter Textbox has ""(.*)""")]
@@ -8561,7 +8575,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Hit Escape Key On The Keyboard")]
@@ -8604,7 +8618,7 @@ namespace Warewolf.UITests
             newFolderEdit.Text = name;
 
             // Type '{Enter}' in text box
-            Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
+            Keyboard.SendKeys(newFolderEdit, "{Right}{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Enter New Sub Folder Name as ""(.*)""")]
@@ -8644,9 +8658,6 @@ namespace Warewolf.UITests
 
             // Type '{Enter}' in text box
             Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(22, 16));
         }
 
         [Given(@"Explorer Contain Item ""(.*)""")]

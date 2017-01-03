@@ -38,6 +38,7 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            UIMap.WaitForExplorerFirstRemoteServerSpinner();
             Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not disconnect after clicking disconnect button.");
@@ -52,8 +53,6 @@ namespace Warewolf.UITests
             Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Source Combobox text  is: " + UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText);
             UIMap.Click_Deploy_Tab_Source_Refresh_Button();
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            UIMap.TryClickMessageBoxOK();
-            UIMap.TryClickMessageBoxOK();
             Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText + "Deploy tab destination server did not disconnect after clicking disconnect button.");
             UIMap.Click_Close_Deploy_Tab_Button();
         }
@@ -66,6 +65,10 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             UIMap.Deploy_Service_From_Deploy_View("Hello World");
             UIMap.Click_Close_Deploy_Tab_Button();
+            //Deploy Conflicts(Names)
+            UIMap.Click_MessageBox_OK();
+            //Successful Deploy
+            UIMap.Click_MessageBox_OK();
         }
 
         [TestMethod]
@@ -74,7 +77,6 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            UIMap.TryClickMessageBoxOK(); //This Should not be happening
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote server name does not end in (Connected) in deploy destination server explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote server name still ends with (Connected) in deploy destination server explorer remote server dropdown list after clicking the disconnect button.");
@@ -88,7 +90,6 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            UIMap.TryClickMessageBoxOK(); //This Should not be happening
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote server name does not end in (Connected) in deploy source server explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote server name still ends with (Connected) in deploy source server explorer remote server dropdown list after clicking the disconnect button.");

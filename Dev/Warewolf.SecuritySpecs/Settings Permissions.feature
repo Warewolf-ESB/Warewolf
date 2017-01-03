@@ -30,7 +30,7 @@ Examples:
         | 16 |  Deploy To, Deploy From, Execute                   |  Deploy To, Deploy From, Execute                   |
 
 @ResourcePermissionsSecurity
-Scenario Outline: Setting Selected Resource Permissions for users 
+Scenario Outline: Setting Selected Resource Permissions for Users
         Given I have a server "localhost"
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
         When connected as user part of "<User Group>"
@@ -44,7 +44,7 @@ Examples:
         | 4  | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
 
 @OverlappingUserGroupsPermissionsSecurity
-Scenario Outline: Setting Selected Resource Permissions for users overlapping groups
+Scenario Outline: Setting Selected Resource Permissions for Users Overlapping Groups
 		Given I have Public with "<Given rights>" 
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
         When connected as user part of "<User Group>"

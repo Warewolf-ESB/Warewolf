@@ -664,10 +664,10 @@
     <value>Can only execute workflows from web browser</value>
   </data>
   <data name="ContainsInvalidCharecters" xml:space="preserve">
-    <value>{0} contains invalid characters</value>
+    <value>'Name' contains invalid characters</value>
   </data>
   <data name="ContainsLeadingOrTrailingWhitespace" xml:space="preserve">
-    <value>{0} contains leading or trailing whitespace characters.</value>
+    <value>'Name' contains leading or trailing whitespace characters.</value>
   </data>
   <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
     <value>CopyTo() failed:  supplied array was too small</value>
@@ -751,7 +751,7 @@
     <value>Invalid workflow selected</value>
   </data>
   <data name="ItemWithNameAlreadyExists" xml:space="preserve">
-    <value>An item with name '{0}' already exists in this folder.</value>
+    <value>An item with this name already exists in this folder.</value>
   </data>
   <data name="MalformedService" xml:space="preserve">
     <value>Malformed Service [{0}] it contains multiple actions</value>
