@@ -61,7 +61,17 @@
             </ListBox>
 
             <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}" Orientation="Horizontal">
+                <CheckBox x:Name="ChkBoxApplyToAll"
+                          IsChecked="{Binding Path=ApplyToAll}"
+                          Visibility="{Binding Path=IsDeleteAnywayButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Content="Apply to all?"/>
                 <Button Width="Auto" 
+                        Visibility="{Binding Path=IsDeleteAnywayButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        x:Name="BtnDeleteAll" 
+                        Click="BtnDeleteAll_OnClick"
+                        Content="Delete Anyway"/>
+                <Button Width="Auto" 
+                        Margin="{StaticResource ControlBorderLeft}" 
                         Visibility="{Binding Path=IsDependenciesButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Content="Show Dependencies" 
                         Name="BtnDependencies" Click="BtnDependencies_OnClick" />

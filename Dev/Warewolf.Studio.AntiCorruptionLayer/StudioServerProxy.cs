@@ -113,6 +113,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                             IsDeleted = true,
                             ShowDependencies = false
                         };
+                        bool showDependenciesApplyToAll = false;
                         foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
                         {
                             if (itemViewModel.ResourceType != "Folder")
@@ -120,13 +121,50 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                                 var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
                                 if (dependants != null)
                                 {
-                                    var deletedFileMetadata = HasDependencies(itemViewModel, graphGenerator, dependants);
-                                    
-                                    if (!deletedFileMetadata.IsDeleted)
+                                    if (showDependenciesApplyToAll)
                                     {
-                                        deleteFileMetaData.IsDeleted = false;
-                                        deleteFileMetaData.ShowDependencies = true;
-                                        deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                        var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
+                                        RemoveDeletedNodes(graph);
+                                        if (graph.Nodes.Count > 1)
+                                        {
+                                            itemViewModel.ShowDependencies();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var deletedFileMetadata = HasDependencies(itemViewModel, graphGenerator, dependants);
+                                        
+                                        if (deletedFileMetadata.DeleteAnyway && deletedFileMetadata.ApplyToAll)
+                                        {
+                                            deleteFileMetaData.IsDeleted = true;
+                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                            break;
+                                        }
+                                        if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
+                                        {
+                                            UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
+                                        }
+
+                                        if (!deletedFileMetadata.IsDeleted && deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
+                                        {
+                                            showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
+                                            deleteFileMetaData.IsDeleted = false;
+                                            deleteFileMetaData.ShowDependencies = true;
+                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                        }
+                                        else if (!deletedFileMetadata.IsDeleted && deletedFileMetadata.ApplyToAll)
+                                        {
+                                            deleteFileMetaData.IsDeleted = false;
+                                            deleteFileMetaData.ShowDependencies = true;
+                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                            break;
+                                        }
+                                        else if (!deletedFileMetadata.IsDeleted)
+                                        {
+                                            deleteFileMetaData.IsDeleted = false;
+                                            deleteFileMetaData.ShowDependencies = true;
+                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+                                        }
                                     }
                                 }
                             }
@@ -164,14 +202,29 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
                     string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
-                    MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
+                    MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, true, true);
+
+                if (_popupController.DeleteAnyway)
+                {
+                    return new DeletedFileMetadata
+                    {
+                        IsDeleted = false,
+                        ResourceId = explorerItemViewModel.ResourceId,
+                        ShowDependencies = false,
+                        ApplyToAll = _popupController.ApplyToAll,
+                        DeleteAnyway = _popupController.DeleteAnyway
+                    };
+                }
+
                 if (result == MessageBoxResult.OK)
                 {
                     return new DeletedFileMetadata
                     {
                         IsDeleted = false,
                         ResourceId = explorerItemViewModel.ResourceId,
-                        ShowDependencies = false
+                        ShowDependencies = false,
+                        ApplyToAll = _popupController.ApplyToAll,
+                        DeleteAnyway = _popupController.DeleteAnyway
                     };
                 }
                 explorerItemViewModel.ShowDependencies();
@@ -179,7 +232,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 {
                     IsDeleted = false,
                     ResourceId = explorerItemViewModel.ResourceId,
-                    ShowDependencies = true
+                    ShowDependencies = true,
+                    ApplyToAll = _popupController.ApplyToAll,
+                    DeleteAnyway = _popupController.DeleteAnyway
                 };
             }
             return new DeletedFileMetadata

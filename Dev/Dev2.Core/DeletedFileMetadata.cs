@@ -9,5 +9,7 @@ namespace Dev2
         public bool IsDeleted { get; set; }
         public Guid ResourceId { get; set; }
         public bool ShowDependencies { get; set; }
+        public bool ApplyToAll { get; set; }
+        public bool DeleteAnyway { get; set; }
     }
 }

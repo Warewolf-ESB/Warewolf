@@ -13,7 +13,6 @@ namespace Warewolf.Studio.ViewModels
         private MessageBoxButton _buttons = MessageBoxButton.OK;
         private string _message;
         private string _title;
-        private MessageBoxResult _result = MessageBoxResult.None;
         FontAwesomeIcon _icon;
         bool _isError;
         bool _isInfo;
@@ -22,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDuplicatesVisible;
 
         public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             Title = title;
             IsError = isError;
@@ -37,6 +36,8 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(Cancel);
             OkCommand = new DelegateCommand(Ok);
             IsDependenciesButtonVisible = isDependenciesButtonVisible;
+            IsDeleteAnywayButtonVisible = isDeleteAnywayButtonVisible;
+            ApplyToAll = applyToAll;
         }
 
         public List<string> UrlsFound
@@ -114,6 +115,12 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDependenciesButtonVisible { get; set; }
 
+        public bool IsDeleteAnywayButtonVisible { get; set; }
+
+        public bool IsDeleteAnywaySelected { get; set; }
+
+        public bool ApplyToAll { get; set; }
+
         public bool IsOkButtonVisible => _buttons == MessageBoxButton.OK || _buttons == MessageBoxButton.OKCancel;
 
         public string Message
@@ -144,29 +151,29 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public MessageBoxResult Result => _result;
+        public MessageBoxResult Result { get; set; } = MessageBoxResult.None;
 
         public void No()
         {
-            _result = MessageBoxResult.No;
+            Result = MessageBoxResult.No;
             TryClose(false);
         }
 
         public void Yes()
         {
-            _result = MessageBoxResult.Yes;
+            Result = MessageBoxResult.Yes;
             TryClose(true);
         }
 
         public void Cancel()
         {
-            _result = MessageBoxResult.Cancel;
+            Result = MessageBoxResult.Cancel;
             TryClose(false);
         }
 
         public void Ok()
         {
-            _result = MessageBoxResult.OK;
+            Result = MessageBoxResult.OK;
             TryClose(true);
         }
     }
