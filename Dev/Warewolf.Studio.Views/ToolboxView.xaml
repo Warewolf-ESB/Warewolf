@@ -12,8 +12,7 @@
 			 x:Class="Warewolf.Studio.Views.ToolboxView"
 			 x:Name="UserControl"
 			 d:DesignWidth="640" 
-             d:DesignHeight="480"
-             IsEnabled="{Binding IsServiceTestShowToolBox, UpdateSourceTrigger=PropertyChanged}">
+             d:DesignHeight="480">
 
 	<d:UserControl.DataContext>
 		<d:DesignInstance>

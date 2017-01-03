@@ -1130,11 +1130,6 @@ namespace Dev2.Studio.ViewModels
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
-            if (item?.WorkSurfaceViewModel is Dev2.ViewModels.StudioTestViewModel)
-                ToolboxViewModel.IsServiceTestShowToolBox = false;
-            else
-                ToolboxViewModel.IsServiceTestShowToolBox = true;
-
             _previousActive = ActiveItem;
             base.ActivateItem(item);
             ActiveItemChanged?.Invoke(item);
