@@ -100906,6 +100906,38 @@ namespace Warewolf.UITests
                 return this.mDeleteConfirmation;
             }
         }
+        
+        public WpfButton UIDeleteAnywayButton
+        {
+            get
+            {
+                if ((this.mUIDeleteAnywayButton == null))
+                {
+                    this.mUIDeleteAnywayButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDeleteAnywayButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
+                    this.mUIDeleteAnywayButton.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIDeleteAnywayButton;
+            }
+        }
+        
+        public WpfCheckBox UIApplytoallCheckBox
+        {
+            get
+            {
+                if ((this.mUIApplytoallCheckBox == null))
+                {
+                    this.mUIApplytoallCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIApplytoallCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ChkBoxApplyToAll";
+                    this.mUIApplytoallCheckBox.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIApplytoallCheckBox;
+            }
+        }
         #endregion
         
         #region Fields
@@ -100932,6 +100964,10 @@ namespace Warewolf.UITests
         private WpfText mDeployConflictsText;
         
         private WpfText mDeleteConfirmation;
+        
+        private WpfButton mUIDeleteAnywayButton;
+        
+        private WpfCheckBox mUIApplytoallCheckBox;
         #endregion
     }
     

@@ -40,6 +40,21 @@ namespace Warewolf.UITests
             Assert.IsNull(firstOrDefault);
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DeletedResourceShowDependencies()
+        {
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+            Assert.IsTrue(Directory.Exists(resourcesFolder));
+            UIMap.Filter_Explorer(flowSequence);
+            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Click_MessageBox_Yes();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
+            var firstOrDefault = allFiles.FirstOrDefault(s => s.StartsWith(flowSequence));
+            Assert.IsNull(firstOrDefault);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

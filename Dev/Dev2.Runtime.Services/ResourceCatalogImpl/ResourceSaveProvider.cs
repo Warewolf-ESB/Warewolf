@@ -136,6 +136,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 if (workspaceID == GlobalConstants.ServerWorkspaceID)
                 {
                     CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                    UpdateResourceDependencies(resource, contents);
                     SavedResourceCompileMessage(workspaceID, resource, result.Message);
                 }
                 if (ResourceSaved != null)
@@ -148,6 +149,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
 
             return result;
+        }
+
+        private void UpdateResourceDependencies(IResource resource, StringBuilder contents)
+        {
+            resource.LoadDependencies(contents.ToXElement());
         }
 
         protected void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, StringBuilder contents, ServiceAction beforeAction)

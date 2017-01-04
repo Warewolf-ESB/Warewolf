@@ -47,7 +47,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
         {
             var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
-            ExplorerItems = explorerItems;
             return explorerItems;
         }
         public Task<List<string>> LoadExplorerDuplicates()
@@ -57,16 +56,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         public IAdminManager AdminManagerProxy { get; set; }
-        public IExplorerItem ExplorerItems { get; set; }
         public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         public IQueryManager QueryManagerProxy { get; set; }
         public IExplorerUpdateManager UpdateManagerProxy { get; set; }
-
-        public IExplorerItem FindItemByID(Guid id)
-        {
-            var explorerItemModels = ExplorerItems.Descendants().ToList();
-            return id == Guid.Empty ? null : explorerItemModels.Find(item => item.ResourceId == id);
-        }
+      
 
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
@@ -94,8 +87,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     {
                         var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
                         var deleteFileMeta = HasDependencies(explorerItemViewModel, graphGenerator, dep);
-                        if (deleteFileMeta.IsDeleted)
+                        if (deleteFileMeta.IsDeleted || deleteFileMeta.DeleteAnyway)
                         {
+                            deleteFileMeta.IsDeleted = true;
                             UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
                         }
                         return deleteFileMeta;
@@ -124,7 +118,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                                     if (showDependenciesApplyToAll)
                                     {
                                         var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
-                                        RemoveDeletedNodes(graph);
                                         if (graph.Nodes.Count > 1)
                                         {
                                             itemViewModel.ShowDependencies();
@@ -142,6 +135,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                                         }
                                         if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
                                         {
+                                            explorerItemViewModel.RemoveChild(itemViewModel);
                                             UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
                                         }
 
@@ -197,7 +191,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
-            RemoveDeletedNodes(graph);
             if (graph.Nodes.Count > 1)
             {
                 var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
@@ -244,22 +237,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 ShowDependencies = false
             };
         }
-
-        private void RemoveDeletedNodes(Graph graph)
-        {
-            var nodes = graph.Nodes.Select(node => node.ID).ToList();
-            IList<Node> nodesToRemove = new List<Node>();
-            foreach (var nod in nodes)
-            {
-                var findNode = FindItemByID(new Guid(nod));
-                if(findNode == null)
-                    nodesToRemove.Add(graph.Nodes.FirstOrDefault(node => node.ID == nod));
-            }
-
-            foreach(var node in graph.Nodes.ToList().Where(node => nodesToRemove.Any(p => p.ID == node.ID)))
-                graph.Nodes.Remove(node);
-        }
-
+        
         public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
             return VersionManager.GetVersion(versionInfo, resourceId);
