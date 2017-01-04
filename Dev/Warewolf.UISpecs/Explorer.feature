@@ -8,7 +8,7 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	And I Try DisConnect To Remote Server
 	When I Create New Workflow using shortcut
-	And I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+	And I Select Remote Connection Integration From Explorer Remote Server Dropdown List
 	And I Click Explorer Connect Remote Server Button
 	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "workflow1"
@@ -24,7 +24,7 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 Scenario: Opening and Editing workflow from Explorer Remote
 	Given The Warewolf Studio is running
 	And I Try DisConnect To Remote Server
-	When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+	When I Select Remote Connection Integration From Explorer Remote Server Dropdown List
 	And I Click Explorer Connect Remote Server Button
 	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
@@ -55,7 +55,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
    Given The Warewolf Studio is running 
    And I Try DisConnect To Remote Server
    When I Filter the Explorer with "Hello World" 
-   When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+   When I Select Remote Connection Integration From Explorer Remote Server Dropdown List
    And I Click Explorer Connect Remote Server Button
    Then Filter Textbox is cleared
    And I Click Explorer Connect Remote Server Button
@@ -63,7 +63,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running  
    And I Try DisConnect To Remote Server
-   When I Select "Remote Connection Integration" From Explorer Remote Server Dropdown List
+   When I Select Remote Connection Integration From Explorer Remote Server Dropdown List
    And I Click Explorer Connect Remote Server Button
    And I Wait For Explorer First Remote Server Spinner
    And I Click New Workflow Ribbon Button

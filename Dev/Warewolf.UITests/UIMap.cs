@@ -1084,15 +1084,14 @@ namespace Warewolf.UITests
             }
         }
 
-        [When(@"I Select ""(.*)"" From Explorer Remote Server Dropdown List")]
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
+        [When(@"I Select Remote Connection Integration From Explorer Remote Server Dropdown List")]
+        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List()
         {
-            var comboboxListItem = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
             Click_Connect_Control_InExplorer();
-            Mouse.Click(comboboxListItem.Text, new Point(79, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(79, 8));
         }
 
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
+        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
         {
             Click_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(comboboxListItem.Exists, "Server does not exist in explorer remote server drop down list.");
