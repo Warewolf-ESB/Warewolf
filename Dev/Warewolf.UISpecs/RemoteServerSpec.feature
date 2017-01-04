@@ -4,12 +4,13 @@ Feature: RemoteServerSpec
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
-Scenario: Refresh Remote Server Refreshes Only The Remote Server	
-	Given I Connect To Remote Server
+Scenario: Refresh Remote Server Refreshes Only The Remote Server
+	Given The Warewolf Studio is running	
+	When I Connect To Remote Server
 	And I Double Click Localhost Server
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Refresh Explorer Withpout Waiting For Spinner
 	Then Remote Server Refreshes
-	And I Select RemoteConnectionIntegration From Explorer
+	When I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
+	#TODO: Give this test an ending
