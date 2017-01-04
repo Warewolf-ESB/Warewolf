@@ -27,7 +27,7 @@ namespace Warewolf.UITests.DebugInputWindow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Click_Debug_Ribbon_Button();
         }

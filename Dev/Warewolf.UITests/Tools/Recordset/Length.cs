@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools.Recordset
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_Toolbox_Length_Onto_DesignSurface();
         }

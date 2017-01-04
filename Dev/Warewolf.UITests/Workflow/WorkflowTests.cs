@@ -90,7 +90,7 @@ namespace Warewolf.UITests.Workflow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap
