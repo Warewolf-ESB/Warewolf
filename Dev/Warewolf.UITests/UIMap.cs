@@ -7084,6 +7084,21 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
         }
 
+        [Given(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        [When(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        [Then(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        public void RightClick_StackOverFlowService_OnDesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+
+        }
+
+        public void RightClick_AssignOnDesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject, MouseButtons.Right, ModifierKeys.None, new Point(156, 11));
+
+        }
+        
         [Given(@"I RightClick CaseConvert OnDesignSurface")]
         [When(@"I RightClick CaseConvert OnDesignSurface")]
         [Then(@"I RightClick CaseConvert OnDesignSurface")]
