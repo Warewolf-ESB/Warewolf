@@ -431,14 +431,14 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Exp" +
-            "lorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Ex" +
+            "plorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
-        public virtual void DisconnectRemoteIntegragionOnDeployDestinationDoesNotDisconectOnTheExplorer()
+        public virtual void DisconnectRemoteIntegrationOnDeployDestinationDoesNotDisconnectOnTheExplorer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Exp" +
-                    "lorer", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Ex" +
+                    "plorer", ((string[])(null)));
 #line 136
 this.ScenarioSetup(scenarioInfo);
 #line 137

@@ -76,4 +76,11 @@ Scenario: Clear filter
    Then Filter Textbox has "Hello World"
    And I Click Explorer Filter Clear Button
    Then Filter Textbox is cleared
-
+      
+Scenario: Refresh Remote Server Refreshes Only The Remote Server
+	Given The Warewolf Studio is running	
+	When I Connect To Remote Server
+	And I Double Click Localhost Server
+	And I Select Connected RemoteConnectionIntegration From Explorer
+	And I Refresh Explorer Withpout Waiting For Spinner
+	Then Remote Server Refreshes
