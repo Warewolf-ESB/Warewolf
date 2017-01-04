@@ -45,8 +45,8 @@ IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 )
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF EXIST "%~dp0..\..\Resources - Debug\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Resources" "%ServerBinDirectory%\Resources"
-IF EXIST "%~dp0..\..\Resources - Debug\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - Debug\Tests" "%ServerBinDirectory%\Tests"
+IF EXIST "%~dp0..\..\Resources - UITests\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Resources" "%ServerBinDirectory%\Resources"
+IF EXIST "%~dp0..\..\Resources - UITests\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Tests" "%ServerBinDirectory%\Tests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
 IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%ServerBinDirectory%\Resources" echo d | xcopy /S /Y "%ServerBinDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
