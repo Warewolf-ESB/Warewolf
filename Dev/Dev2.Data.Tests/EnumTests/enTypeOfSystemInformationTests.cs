@@ -172,11 +172,5 @@ namespace Dev2.Data.Tests.EnumTests
             Assert.AreEqual("Domain", disc);
         }
 
-        [TestMethod]
-        public void NumberOfWarewolfAgentsEnumExpectedDiscriptionOfNumberOfWarewolfAgents()
-        {
-            string disc = enTypeOfSystemInformationToGather.NumberOfWarewolfAgents.GetDescription();
-            Assert.AreEqual("Warewolf Agents", disc);
-        }
     }
 }
