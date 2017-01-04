@@ -7648,9 +7648,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
-        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
