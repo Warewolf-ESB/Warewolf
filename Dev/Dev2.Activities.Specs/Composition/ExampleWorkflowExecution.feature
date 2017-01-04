@@ -112,8 +112,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	 | 13 | [[Region]] =        | Region              |
 	 | 14 | [[UserRoles]] =     | User Roles          |
 	 | 15 | [[UserName]] =      | User Name           |
-	 | 16 | [[Domain]] =        | Domain              |
-	 | 17 | [[Agents]] =        | Warewolf Agents     |
+	 | 16 | [[Domain]] =        | Domain              |	 
 	 And the "Gather System Information (17)" in Workflow "Utility - System Information" debug outputs as    
 	   | #  |                               |
 	   | 1  | [[DateTime]]      =    String |
@@ -131,8 +130,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	   | 13 | [[Region]]        =    String |
 	   | 14 | [[UserRoles]]     =    String |
 	   | 15 | [[UserName]]      =    String |
-	   | 16 | [[Domain]]        =    String |
-	   | 17 | [[Agents]]        =    String |
+	   | 16 | [[Domain]]        =    String |	   
 
 
 Scenario: Example Executing Utility - Web Request example workflow
