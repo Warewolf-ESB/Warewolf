@@ -103,7 +103,8 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         public static T FindChild<T>(this DependencyObject parent, Func<T, bool> predicate)
             where T : DependencyObject
         {
-            return parent.FindChildren(predicate).First();
+            var findChildren = parent.FindChildren(predicate);
+            return findChildren.FirstOrDefault();
         }
 
         /// <summary>
