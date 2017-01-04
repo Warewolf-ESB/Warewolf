@@ -19,7 +19,7 @@ namespace Warewolf.UITests.Tools.Utility
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_RabbitMqConsume_Onto_DesignSurface();
         }

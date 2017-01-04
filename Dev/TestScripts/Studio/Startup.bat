@@ -86,6 +86,7 @@ IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET ServerBin
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Studio.exe") else (START "%ServerBinDirectory%\Warewolf Studio.exe" /D "%ServerBinDirectory%" "Warewolf Studio.exe")
+waitfor StudioStart /t 30 2>NUL
 @echo Started "%ServerBinDirectory%\Warewolf Studio.exe".
 
 exit 0

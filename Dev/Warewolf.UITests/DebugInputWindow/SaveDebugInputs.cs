@@ -51,7 +51,7 @@ namespace Warewolf.UITests.DebugInputWindow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap
