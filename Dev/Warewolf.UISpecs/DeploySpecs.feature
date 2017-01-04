@@ -135,7 +135,7 @@ Scenario: Deploy Disconnect Clears Destination
 
 Scenario: Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Explorer
 	Given The Warewolf Studio is running
-	And I Try Connect To Remote Server
+	When I Try Connect To Remote Server
 	And I Click Deploy Ribbon Button
 	And I Click Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
