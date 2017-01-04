@@ -4,7 +4,6 @@ Feature: Explorer
 	As a Warewolf Studio user
 	I want to perform a composition of recorded actions
 
-@ExplorerTest
 Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	And I Try DisConnect To Remote Server
@@ -22,7 +21,6 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Try Close Workflow
 	And I Try Close Workflow
 	
-@ExplorerTest
 Scenario: Opening and Editing workflow from Explorer Remote
 	Given The Warewolf Studio is running
 	And I Try DisConnect To Remote Server
@@ -53,7 +51,6 @@ Scenario: Opening and Editing workflow from Explorer Remote
    And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
 
-@ExplorerTest 
  Scenario: Filter Should Clear On Connection Of Remote Server
    Given The Warewolf Studio is running 
    And I Try DisConnect To Remote Server
@@ -63,7 +60,6 @@ Scenario: Opening and Editing workflow from Explorer Remote
    Then Filter Textbox is cleared
    And I Click Explorer Connect Remote Server Button
 
-@ExplorerTest  
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running  
    And I Try DisConnect To Remote Server
