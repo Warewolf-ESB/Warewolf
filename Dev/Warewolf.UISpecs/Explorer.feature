@@ -16,9 +16,6 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
 	And I Click Debug Output Workflow1 Name
-	And I Try DisConnect To Remote Server
-	And I Try Close Workflow
-	And I Try Close Workflow
 	
 Scenario: Opening and Editing workflow from Explorer Remote
 	Given The Warewolf Studio is running
@@ -53,7 +50,6 @@ Scenario: Opening and Editing workflow from Explorer Remote
    When I Select Remote Connection Integration From Explorer Remote Server Dropdown List
    And I Click Explorer Connect Remote Server Button
    Then Filter Textbox is cleared
-   And I Click Explorer Connect Remote Server Button
 
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running

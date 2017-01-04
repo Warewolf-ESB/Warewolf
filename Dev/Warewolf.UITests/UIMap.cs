@@ -878,7 +878,7 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List()
         {
             Click_Connect_Control_InExplorer();
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(79, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(79, 8));
         }
 
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
