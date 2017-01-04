@@ -4272,8 +4272,7 @@ namespace Warewolf.UITests
         [Then(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
-            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));
-            Assert.IsFalse(ControlExistsNow(MessageBoxWindow), "Message box does exist");
+            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));            
         }
 
         [Given(@"I Click Minimize TopRibbon Button")]
