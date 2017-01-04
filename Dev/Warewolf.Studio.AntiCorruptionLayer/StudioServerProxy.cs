@@ -139,25 +139,20 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                                             UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
                                         }
 
-                                        if (!deletedFileMetadata.IsDeleted && deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
-                                        {
-                                            showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
-                                            deleteFileMetaData.IsDeleted = false;
-                                            deleteFileMetaData.ShowDependencies = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-                                        }
-                                        else if (!deletedFileMetadata.IsDeleted && deletedFileMetadata.ApplyToAll)
+                                        if (!deletedFileMetadata.IsDeleted)
                                         {
                                             deleteFileMetaData.IsDeleted = false;
                                             deleteFileMetaData.ShowDependencies = true;
                                             deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-                                            break;
-                                        }
-                                        else if (!deletedFileMetadata.IsDeleted)
-                                        {
-                                            deleteFileMetaData.IsDeleted = false;
-                                            deleteFileMetaData.ShowDependencies = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
+
+                                            if (deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
+                                            {
+                                                showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
+                                            }
+                                            else if (deletedFileMetadata.ApplyToAll)
+                                            {
+                                                break;
+                                            }
                                         }
                                     }
                                 }
