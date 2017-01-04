@@ -597,10 +597,8 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
-
-        [Given(@"I Connect To Remote Server")]
+        
         [When(@"I Connect To Remote Server")]
-        [Then(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
@@ -2286,10 +2284,8 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
-        [Given(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        
         [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
-        [Then(@"I Refresh Explorer Withpout Waiting For Spinner")]
         public void GivenIRefreshExplorerWithpoutWaitingForSpinner()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
@@ -4013,10 +4009,8 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
-
-        [Given(@"I Click Explorer Connect Remote Server Button")]
+        
         [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
@@ -8169,10 +8163,8 @@ namespace Warewolf.UITests
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
-
-        [Given(@"I Double Click Localhost Server")]
+        
         [When(@"I Double Click Localhost Server")]
-        [Then(@"I Double Click Localhost Server")]
         public void DoubleClick_Localhost_Server()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
