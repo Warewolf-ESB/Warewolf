@@ -133,7 +133,7 @@ Scenario: Deploy Disconnect Clears Destination
 	And Deploy Window Is Still Open
 	Then I Click Deploy Tab Destination Server Connect Button
 
-Scenario: Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Explorer
+Scenario: Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Explorer
 	Given The Warewolf Studio is running
 	When I Try Connect To Remote Server
 	And I Click Deploy Ribbon Button
