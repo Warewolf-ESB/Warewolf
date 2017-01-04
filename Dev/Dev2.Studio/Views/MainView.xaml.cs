@@ -286,7 +286,7 @@ namespace Dev2.Studio.Views
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
-        {
+         {
             var xmlDocument = new XmlDocument();
             if (_savedLayout != null)
             {
@@ -305,16 +305,18 @@ namespace Dev2.Studio.Views
         private static void SetMenuExpanded(XmlDocument xmlDocument, MainViewModel mainViewModel)
         {
             var elementsByTagNameMenuExpanded = xmlDocument.GetElementsByTagName("MenuExpanded");
-            if (elementsByTagNameMenuExpanded.Count > 0)
+            if(elementsByTagNameMenuExpanded.Count > 0)
             {
                 var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
 
                 bool menuExpanded;
-                if (bool.TryParse(menuExpandedString, out menuExpanded))
+                if(bool.TryParse(menuExpandedString, out menuExpanded))
                 {
                     mainViewModel.MenuExpanded = menuExpanded;
                 }
             }
+            else
+                mainViewModel.MenuExpanded = true;
         }
 
         private static void SetMenuPanelOpen(XmlDocument xmlDocument, MainViewModel mainViewModel)
@@ -345,6 +347,8 @@ namespace Dev2.Studio.Views
                     mainViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
                 }
             }
+            else
+                mainViewModel.MenuViewModel.IsPanelLockedOpen = false;
         }
 
         #region Implementation of IWin32Window
