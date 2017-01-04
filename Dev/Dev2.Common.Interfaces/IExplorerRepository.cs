@@ -21,7 +21,6 @@ namespace Dev2.Common.Interfaces
 
         void CreateFolder(string parentPath, string name, Guid id);
 
-        IExplorerItem ExplorerItems { get; set; }
         IAdminManager AdminManagerProxy { get; set; }
         IQueryManager QueryManagerProxy { get; set; }
         IExplorerUpdateManager UpdateManagerProxy { get; set; }
@@ -29,7 +28,6 @@ namespace Dev2.Common.Interfaces
 
         Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
 
-        IExplorerItem FindItemByID(Guid id);
         StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
 
         Task<List<string>> LoadExplorerDuplicates();
