@@ -18,6 +18,17 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
             WorkflowControl.PreviewMouseLeftButtonUp += WorkflowDesignerViewPreviewMouseUp;
+            PreviewDragOver += DropPointOnDragEnter;
+            PreviewDrop += DropPointOnDragEnter;
+        }
+
+        private void DropPointOnDragEnter(object sender, DragEventArgs e)
+        {
+            if (sender != null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
         }
 
         void WorkflowDesignerViewPreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -98,5 +109,7 @@ namespace Warewolf.Studio.Views
             serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestSelectedTestHelpText);
             e.Handled = true;
         }
+
+       
     }
 }

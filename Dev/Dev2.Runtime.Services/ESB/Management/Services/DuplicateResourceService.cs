@@ -74,14 +74,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             if (destinationPath == null)
                             {
-                                var faliure = new ExecuteMessage { HasError = true, Message = new StringBuilder("Destination Paths not specified") };
-                                return serializer.SerializeToBuilder(faliure);
+                                var failure = new ExecuteMessage { HasError = true, Message = new StringBuilder("Destination Paths not specified") };
+                                return serializer.SerializeToBuilder(failure);
                             }
                             var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
                             var resourceCatalogResult = resourceCatalog.DuplicateResource(resourceId.ToString().ToGuid(), destinationPath.ToString(), newResourceName.ToString());
                             Dev2Logger.Error("DuplicateResourceService success");
-                            var result = new ExecuteMessage { HasError = false, Message = resourceCatalogResult.Message.ToStringBuilder() };
-                            return serializer.SerializeToBuilder(result);
+                            return serializer.SerializeToBuilder(resourceCatalogResult);
                         }
                         catch (Exception x)
                         {
