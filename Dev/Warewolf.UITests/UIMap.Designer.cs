@@ -187,6 +187,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIWpfWindow UIWpfWindow
+        {
+            get
+            {
+                if ((this.mUIWpfWindow == null))
+                {
+                    this.mUIWpfWindow = new UIWpfWindow();
+                }
+                return this.mUIWpfWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +225,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIWpfWindow mUIWpfWindow;
         #endregion
     }
     
@@ -100907,35 +100921,51 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton UIDeleteAnywayButton
+        public WpfButton DeleteAnyway
         {
             get
             {
-                if ((this.mUIDeleteAnywayButton == null))
+                if ((this.mDeleteAnyway == null))
                 {
-                    this.mUIDeleteAnywayButton = new WpfButton(this);
+                    this.mDeleteAnyway = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIDeleteAnywayButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
-                    this.mUIDeleteAnywayButton.WindowTitles.Add("WarewolfMessageBox");
+                    this.mDeleteAnyway.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
+                    this.mDeleteAnyway.WindowTitles.Add("WarewolfMessageBox");
                     #endregion
                 }
-                return this.mUIDeleteAnywayButton;
+                return this.mDeleteAnyway;
             }
         }
         
-        public WpfCheckBox UIApplytoallCheckBox
+        public WpfCheckBox Applytoall
         {
             get
             {
-                if ((this.mUIApplytoallCheckBox == null))
+                if ((this.mApplytoall == null))
                 {
-                    this.mUIApplytoallCheckBox = new WpfCheckBox(this);
+                    this.mApplytoall = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIApplytoallCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ChkBoxApplyToAll";
-                    this.mUIApplytoallCheckBox.WindowTitles.Add("WarewolfMessageBox");
+                    this.mApplytoall.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ChkBoxApplyToAll";
+                    this.mApplytoall.WindowTitles.Add("WarewolfMessageBox");
                     #endregion
                 }
-                return this.mUIApplytoallCheckBox;
+                return this.mApplytoall;
+            }
+        }
+        
+        public WpfButton ShowDependencies
+        {
+            get
+            {
+                if ((this.mShowDependencies == null))
+                {
+                    this.mShowDependencies = new WpfButton(this);
+                    #region Search Criteria
+                    this.mShowDependencies.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDependencies";
+                    this.mShowDependencies.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mShowDependencies;
             }
         }
         #endregion
@@ -100965,9 +100995,11 @@ namespace Warewolf.UITests
         
         private WpfText mDeleteConfirmation;
         
-        private WpfButton mUIDeleteAnywayButton;
+        private WpfButton mDeleteAnyway;
         
-        private WpfCheckBox mUIApplytoallCheckBox;
+        private WpfCheckBox mApplytoall;
+        
+        private WpfButton mShowDependencies;
         #endregion
     }
     
@@ -106344,5 +106376,17 @@ namespace Warewolf.UITests
         #region Fields
         private WinButton mOKButton;
         #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWpfWindow : WpfWindow
+    {
+        
+        public UIWpfWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            #endregion
+        }
     }
 }

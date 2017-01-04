@@ -13,6 +13,7 @@ namespace Warewolf.UITests
     {
         const string flowSwitch = "DeleteExplorerResource_FileToDelete";
         const string flowSequence = "DeleteExplorerResource_FileToDelete2";
+        const string uiTestDependencyOne = "UITestDependencyOne";
 
         [TestMethod]
         [TestCategory("Explorer")]
@@ -44,15 +45,14 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void DeletedResourceShowDependencies()
         {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
-            UIMap.Filter_Explorer(flowSequence);
+            UIMap.Filter_Explorer(uiTestDependencyOne);
             UIMap.Delete_FirstResource_FromContextMenu();
             UIMap.Click_MessageBox_Yes();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
-            var firstOrDefault = allFiles.FirstOrDefault(s => s.StartsWith(flowSequence));
-            Assert.IsNull(firstOrDefault);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            UIMap.Click_MessageBox_OK();
         }
 
         #region Additional test attributes
