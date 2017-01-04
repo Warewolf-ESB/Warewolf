@@ -67,6 +67,7 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -634,6 +635,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             set { _debugOutputViewModel = value; }
         }
 
+        #region Overrides of ViewAware
+
+        #endregion
 
         public IDataListViewModel DataListViewModel
         {
@@ -1583,10 +1587,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
                 _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
                 _wd.Context.Services.Publish(DesignerManagementService);
-
+                
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                //_wd..View.MouseEnter += ViewPreviewMouseWheel;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1622,10 +1627,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
                 SetPermission(ResourceModel.UserPermissions);
                 ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
+                UpdateErrorIconWithCorrectMessage();
             }
         }
-
         
+
         private void SetHashTable()
         {
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
@@ -1643,6 +1649,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 designerConfigService.PanModeEnabled = true;
                 designerConfigService.RubberBandSelectionEnabled = true;
                 designerConfigService.BackgroundValidationEnabled = true;
+                
                 // prevent design-time background validation from blocking UI thread
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
@@ -1694,7 +1701,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
-            ModelService.ModelChanged += ModelServiceModelChanged;
+            ModelService.ModelChanged += ModelServiceModelChanged;            
         }
 
         private void SubscribeToDebugSelectionChanged()
@@ -1941,7 +1948,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-
+                UpdateErrorIconWithCorrectMessage();
+                
                 // If we are opening from server skip this check, it cannot have "real" changes!
                 if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
                 {
@@ -1978,6 +1986,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                 _firstWorkflowChange = false;
+            }
+        }
+
+        private void UpdateErrorIconWithCorrectMessage()
+        {
+            if(_wd.IsInErrorState())
+            {
+                var validationIcon = DesignerView.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
+                if(validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    validationIcon.ToolTip = "Connect the start node to the first tool or service in your flow";
+                }
             }
         }
 
@@ -2106,6 +2126,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
         }
 
+        private void ViewPreviewMouseWheel(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var dp = mouseEventArgs.OriginalSource;
+            var validationIcon = dp as Border;
+            if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
+            {
+                validationIcon.ToolTip = "Connect the start node to the first tool or service in your flow";
+            }
+        }
+        
+
         /// <summary>
         /// Handles Mouse click events on Designer
         /// </summary>
@@ -2152,9 +2183,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 return true;
             }
-
+           
             return false;
         }
+
+
 
         [ExcludeFromCodeCoverage]
         private bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
