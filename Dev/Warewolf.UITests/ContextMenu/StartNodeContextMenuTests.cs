@@ -30,7 +30,7 @@ namespace Warewolf.UITests.ContextMenu
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap

@@ -84,6 +84,13 @@ namespace Dev2.Studio.Views.Workflow
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
+            var workSurfaceServiceId = ((Core.Models.ResourceModel)
+                             ((WorkflowDesignerViewModel)
+                             ((FrameworkElement)e.Source)
+                             .DataContext).ResourceModel).ID;
+            var data = dataObject.GetData("Warewolf.Studio.ViewModels.ExplorerItemViewModel");
+            var itemBeingDraggedOntoTheSurface = data as Warewolf.Studio.ViewModels.ExplorerItemViewModel;
+
             if (e.OriginalSource.GetType() == typeof(ScrollViewer))
             {
                 e.Effects = DragDropEffects.None;
@@ -102,6 +109,11 @@ namespace Dev2.Studio.Views.Workflow
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
+            }
+            else if (itemBeingDraggedOntoTheSurface != null && workSurfaceServiceId == itemBeingDraggedOntoTheSurface.ResourceId)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
             else if (_dragDropHelpers.PreventDrop(dataObject))
             {

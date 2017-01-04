@@ -905,11 +905,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                var refresh = _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
-                if (refresh)
-                {
-                    ExplorerViewModel?.RefreshEnvironment(ActiveServer.EnvironmentID);
-                }
+                _worksurfaceContextManager.DuplicateResource(explorerItemViewModel);
             }
         }
 
@@ -971,7 +967,7 @@ namespace Dev2.Studio.ViewModels
             var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
             if (ActiveEnvironment.IsConnected)
             {
-                if (ToolboxViewModel != null && (ToolboxViewModel.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0))
+                if (ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
                 {
                     ToolboxViewModel.BuildToolsList();
                 }
@@ -1135,6 +1131,7 @@ namespace Dev2.Studio.ViewModels
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
             SetActiveEnvironment(item.Environment);
+          
         }
 
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
