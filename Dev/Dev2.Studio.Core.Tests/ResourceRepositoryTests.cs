@@ -173,7 +173,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Setup(e => e.Connection.DisplayName).Returns("localhost");
 
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false)).Returns(MessageBoxResult.OK);
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
 
             var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
@@ -182,7 +182,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var model = ResourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             Assert.IsNull(model);
 
-            mockPopupController.Verify(manager => manager.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false), Times.Once);
+            mockPopupController.Verify(manager => manager.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false), Times.Once);
         }
 
         #endregion

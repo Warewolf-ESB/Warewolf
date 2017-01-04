@@ -119,5 +119,15 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
+
+        private void BtnDeleteAll_OnClick(object sender, RoutedEventArgs e)
+        {
+            var messageBoxViewModel = DataContext as MessageBoxViewModel;
+            if (messageBoxViewModel != null)
+            {
+                messageBoxViewModel.IsDeleteAnywaySelected = true;
+            }
+            DialogResult = false;
+        }
     }
 }
