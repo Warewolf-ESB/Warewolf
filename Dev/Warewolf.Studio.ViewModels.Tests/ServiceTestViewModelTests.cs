@@ -119,14 +119,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IPopupController>();
-            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
             CustomContainer.Register(mock.Object);
             var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testVM.ShowDuplicatePopup();
             //---------------Test Result -----------------------
-            mock.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+            mock.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
 
         }
 
@@ -435,7 +435,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.PopupController);
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -820,7 +820,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestViewModel.CreateTestCommand.Execute(null);            
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestViewModel.PopupController);
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -1272,7 +1272,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             testFrameworkViewModel.RunSelectedTestCommand.Execute(null);
             //---------------Test Result -----------------------
-            popupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+            popupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
         }
 
         [TestMethod]

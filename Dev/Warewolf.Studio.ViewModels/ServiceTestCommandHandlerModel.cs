@@ -89,7 +89,7 @@ namespace Warewolf.Studio.ViewModels
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
                 Resources.Languages.Core.ServiceTestRunAllUnsavedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
-                false, true, false, false);
+                false, true, false, false, false, false);
         }
 
         public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
@@ -122,7 +122,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             selectedServiceTest.IsTestRunning = false;
                             var popupController = CustomContainer.Get<IPopupController>();
-                            popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                             var shellViewModel = CustomContainer.Get<IShellViewModel>();
                             shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
                             return;

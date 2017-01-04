@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             MainViewModel.ShowPopup(new Mock<IPopupMessage>().Object);
-            PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, @"", false, true, false, false), Times.Once);
+            PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, @"", false, true, false, false, false, false),Times.Once);
         }
 
         [TestMethod]
@@ -354,7 +354,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, MainViewModel.Items.Count);
             FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
 
             var activetx =
                 MainViewModel.Items.ToList()
@@ -383,7 +383,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, MainViewModel.Items.Count);
             FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             MainViewModel.DeactivateItem(null, true);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Never());
         }
@@ -501,7 +501,7 @@ namespace Dev2.Core.Tests
             FirstResource.Setup(r => r.Rollback()).Verifiable();
             FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.No);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.No);
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             MainViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null);
             FirstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when not saved.");
@@ -521,7 +521,7 @@ namespace Dev2.Core.Tests
             FirstResource.Setup(r => r.Commit()).Verifiable();
             FirstResource.Setup(r => r.Rollback()).Verifiable();
 
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             MainViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null);
             FirstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
@@ -542,14 +542,14 @@ namespace Dev2.Core.Tests
             FirstResource.Setup(r => r.Commit()).Verifiable();
             FirstResource.Setup(r => r.Rollback()).Verifiable();
 
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             MainViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null, true);
             PopupController.Verify(
                 s =>
                     s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(),
                         It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
-                        It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
+                        It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
 
 
         }
@@ -568,7 +568,7 @@ namespace Dev2.Core.Tests
             FirstResource.Setup(r => r.Rollback()).Verifiable();
             var gu = Guid.NewGuid();
             FirstResource.Setup(a => a.ID).Returns(gu);
-            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var mckEnv = new Mock<IEnvironmentRepository>();
             var mockEnv = new Mock<IEnvironmentModel>();
             mckEnv.Setup(a => a.Get(It.IsAny<Guid>()))
@@ -581,7 +581,7 @@ namespace Dev2.Core.Tests
                 s =>
                     s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(),
                         It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
-                        It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
+                        It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
         }
 
         [TestMethod]
@@ -1128,7 +1128,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 3");
             Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
+            mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
@@ -1144,7 +1144,7 @@ namespace Dev2.Core.Tests
             mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
             mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
             Assert.AreEqual(mockMainViewModel.Items[1], mockMainViewModel.ActiveItem);
-            mockPopUp.Verify(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
+            mockPopUp.Verify(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
         }
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera
