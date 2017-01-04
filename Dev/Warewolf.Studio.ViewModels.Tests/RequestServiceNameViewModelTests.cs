@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -416,7 +417,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
             var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
 
-
             controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
@@ -445,7 +445,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             controller.Verify(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Verify(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
-            controller.Verify(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+            controller.Verify(communicationController => communicationController.ExecuteCommand<IResource>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
 
         [TestMethod]

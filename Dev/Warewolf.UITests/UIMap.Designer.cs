@@ -14006,6 +14006,23 @@ namespace Warewolf.UITests
                 return this.mAdornert_numbernText;
             }
         }
+        
+        public WpfCustom StackoverflowWorkflow
+        {
+            get
+            {
+                if ((this.mStackoverflowWorkflow == null))
+                {
+                    this.mStackoverflowWorkflow = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.AutomationId] = "stackoverflowTestWorkflow(ServiceDesigner)";
+                    this.mStackoverflowWorkflow.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mStackoverflowWorkflow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -14182,6 +14199,8 @@ namespace Warewolf.UITests
         private WcfService mWcfService;
         
         private Adornert_numbernText mAdornert_numbernText;
+        
+        private WpfCustom mStackoverflowWorkflow;
         #endregion
     }
     

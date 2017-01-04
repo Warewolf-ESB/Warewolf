@@ -1,0 +1,9 @@
+
+<Source ID="09dbd47e-50cf-4741-9a35-3e7efc12133b" Name="GET" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>GET</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:52:13.8209079+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="09dbd47e-50cf-4741-9a35-3e7efc12133b" VersionId="a0129a7e-779c-4f7d-9fd4-a487df3cb45d" />
+</Source>

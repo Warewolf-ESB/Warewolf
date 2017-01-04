@@ -35,7 +35,7 @@ namespace Warewolf.UITests.Tools.Scripting
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
             UIMap.Drag_Toolbox_CMD_Line_Onto_DesignSurface();
         }
