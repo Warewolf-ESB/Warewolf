@@ -422,10 +422,8 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             Click_Explorer_RemoteServer_Connect_Button();
         }
-
-        [Given(@"I Try Connect To Remote Server")]
+        
         [When(@"I Try Connect To Remote Server")]
-        [Then(@"I Try Connect To Remote Server")]
         public void TryConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
@@ -1279,10 +1277,8 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.SideMenuBar.ConfigureSettingsButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
-
-        [Given(@"I Click Deploy Ribbon Button")]
+        
         [When(@"I Click Deploy Ribbon Button")]
-        [Then(@"I Click Deploy Ribbon Button")]
         public void Click_Deploy_Ribbon_Button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
@@ -3620,25 +3616,20 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Combobox")]
+        
         [When(@"I Click Deploy Tab Destination Server Combobox")]
-        [Then(@"I Click Deploy Tab Destination Server Combobox")]
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
+        
         [When(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-            //Dismiss resource conflict dialog
         }
 
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
@@ -3648,10 +3639,8 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        
         [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
-        [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
@@ -8612,7 +8601,6 @@ namespace Warewolf.UITests
         }
 
         [Given(@"Destination Remote Server Is Connected")]
-        [When(@"Destination Remote Server Is Connected")]
         [Then(@"Destination Remote Server Is Connected")]
         public void ThenDestinationRemoteServerIsConnected()
         {
