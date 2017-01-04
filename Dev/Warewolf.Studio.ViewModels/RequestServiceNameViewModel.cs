@@ -9,9 +9,9 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
@@ -102,12 +102,35 @@ namespace Warewolf.Studio.ViewModels
 
 
                 // ReSharper disable once UnusedVariable
-                var executeCommand = _lazyComs.ExecuteCommand<ExecuteMessage>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
-                if (executeCommand?.HasError ?? false)
+                var executeCommand = _lazyComs.ExecuteCommand<IResource>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+
+                var child = new ExplorerItemViewModel(_explorerItemViewModel.Server, _explorerItemViewModel.Parent, _explorerItemViewModel.SelectAction, _explorerItemViewModel.ShellViewModel, null)
                 {
-                    //   var vm = new MessageBoxViewModel("Failed Duplicating", "Duplicate Failure", MessageBoxButton.OK, FontAwesomeIcon.AlignCenter, false, true, false, false,new List<string>());
-                    // SHow error dialog
-                }
+                    ResourceName = executeCommand.ResourceName
+                    ,
+                    ResourceId = executeCommand.ResourceID
+                    ,                                        
+                    ResourceType = executeCommand.ResourceType                                        
+                    ,
+                    ResourcePath = executeCommand.GetSavePath()
+                    ,                    
+                    AllowResourceCheck = false
+                    ,
+                    ShowContextMenu = true
+                    ,
+                    IsFolder = false
+                    ,
+                    IsService = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService.ToString()
+                    ,
+                    IsSource = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source.ToString()
+                    ,
+                    IsServer = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server.ToString()
+                };
+                var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
+                if(permissions != null)
+                    child.SetPermissions((Permissions)permissions);
+                var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
+                environmentViewModel?.AddChild(child);
                 CloseView();
                 ViewResult = MessageBoxResult.OK;
             }

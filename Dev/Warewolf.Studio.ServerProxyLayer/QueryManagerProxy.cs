@@ -122,7 +122,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         public IList<IToolDescriptor> FetchTools()

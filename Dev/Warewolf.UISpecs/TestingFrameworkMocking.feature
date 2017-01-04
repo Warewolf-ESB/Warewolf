@@ -2,7 +2,8 @@
 Feature: TestingFrameworkMocking
 
 Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests Tab
-	Given I have Hello World workflow on the Explorer
+	Given The Warewolf Studio is running
+	And I have Hello World workflow on the Explorer
 	And I Open Explorer First Item Tests With Context Menu
 	And I Click The Create "4"th test Button
 	Then I Open Explorer First Item Context Menu
@@ -16,7 +17,8 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Try Click MessageBox No
 
 Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
-	Given I have Hello World workflow on the Explorer
+	Given The Warewolf Studio is running
+	And I have Hello World workflow on the Explorer
 	Then I Open Explorer First Item Context Menu
 	And I Press F6
 	And I Click Create Test From Debug
