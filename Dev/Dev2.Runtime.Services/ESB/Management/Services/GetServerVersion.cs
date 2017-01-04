@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        static string GetVersion()
+        public static string GetVersion()
         {
             var asm = Assembly.GetExecutingAssembly();
             var fileName = asm.Location;

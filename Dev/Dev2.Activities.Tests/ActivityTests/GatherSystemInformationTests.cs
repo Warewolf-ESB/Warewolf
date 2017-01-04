@@ -76,6 +76,66 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        public void GatherSystemInformationWhereGetWarewolfCPUExpectCPUDetails()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "50";
+            mock.Setup(information => information.GetWarewolfCPU()).Returns(ExpectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.WarewolfCPU);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetWarewolfServerMemoryExpectmoryDetails()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "500";
+            mock.Setup(information => information.GetWarewolfServerMemory()).Returns(ExpectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.WarewolfMemory);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetWareWolfVersionExpectVersion()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "5";
+            mock.Setup(information => information.GetWareWolfVersion()).Returns(ExpectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.WarewolfServerVersion);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetComputerNameInformationExpectPCDetails()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "my awesome PC";
+            mock.Setup(information => information.GetComputerName()).Returns(ExpectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.ComputerName);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
+        }
+
+        [TestMethod]
         public void GatherSystemInformationWhereGetOperatingSystemInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
@@ -85,6 +145,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = DsfGatherSystemInformationActivity(mock);
             //------------Execute Test---------------------------
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.OperatingSystem);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetOperatingSystemVersionInformationExpectOSDetails()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string ExpectedValue = "10";
+            mock.Setup(information => information.GetOperatingSystemVersionInformation()).Returns(ExpectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.OperatingSystemVersion);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedValue, operatingSystemInformation);
@@ -177,6 +252,34 @@ namespace Dev2.Tests.Activities.ActivityTests
             var diskInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DiskTotal);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, diskInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetVirtualMemoryAvailableInformationExpectVirtualMemoryInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Ram: 2GB";
+            mock.Setup(information => information.GetVirtualMemoryAvailableInformation()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.VirtualMemoryAvailable);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, memoryInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetVirtualMemoryTotalInformationExpectVirtualMemoryInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Ram: 2GB";
+            mock.Setup(information => information.GetVirtualMemoryTotalInformation()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.VirtualMemoryTotal);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, memoryInformation);
         }
 
         [TestMethod]
@@ -306,18 +409,75 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void GatherSystemInformationWhereGetNumberOfWareWolfAgentsInformationExpectNumberOfWareWolfAgentsInformation()
+        public void GatherSystemInformationWhereGetDefaultGatewayExpectIPInformation()
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "2";
-            mock.Setup(information => information.GetNumberOfWareWolfAgentsInformation()).Returns(expectedValue);
+            const string expectedValue = "192.168.1.2";
+            mock.Setup(information => information.GetDefaultGateway()).Returns(expectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             //------------Execute Test---------------------------
-            var numWareWolfAgents = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.NumberOfWarewolfAgents);
+            var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.GateWayAddress);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue, numWareWolfAgents);
+            Assert.AreEqual(expectedValue, userNameInformation);
         }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetDNSServerExpectIPInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "192.168.1.3";
+            mock.Setup(information => information.GetDNSServer()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DNSAddress);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetIPv4AdressesExpectIPInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "192.168.1.5";
+            mock.Setup(information => information.GetIPv4Adresses()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.IPv4Address);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetIPv6AdressesExpectIPInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "fe80::d186:a188:d9cd:848d%2";
+            mock.Setup(information => information.GetIPv6Adresses()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.IPv6Address);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
+        [TestMethod]
+        public void GatherSystemInformationWhereGetMACAdressesExpectIPInformation()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "00-16-41-3C-68-FC";
+            mock.Setup(information => information.GetMACAdresses()).Returns(expectedValue);
+            var activity = DsfGatherSystemInformationActivity(mock);
+            //------------Execute Test---------------------------
+            var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.MacAddress);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
 
         [TestMethod]
         public void GetFindMissingTypeExpectDataGridActivityType()
