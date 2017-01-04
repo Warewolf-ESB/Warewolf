@@ -60,22 +60,31 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}" Orientation="Horizontal">
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
                 <CheckBox x:Name="ChkBoxApplyToAll"
+                          Grid.Column="0"
                           IsChecked="{Binding Path=ApplyToAll}"
+                          HorizontalAlignment="Left"
                           Visibility="{Binding Path=IsDeleteAnywayButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                           Content="Apply to all?"/>
-                <Button Width="Auto" 
+                
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}" Orientation="Horizontal">
+                    <Button Width="Auto" 
                         Visibility="{Binding Path=IsDeleteAnywayButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                         x:Name="BtnDeleteAll" 
                         Click="BtnDeleteAll_OnClick"
                         Content="Delete Anyway"/>
-                <Button Width="Auto" 
+                    <Button Width="Auto" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         Visibility="{Binding Path=IsDependenciesButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
                         Content="Show Dependencies" 
                         Name="BtnDependencies" Click="BtnDependencies_OnClick" />
-                <Button Width="70" 
+                    <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
                         x:Name="BtnYesCommand"
@@ -83,7 +92,7 @@
                         Command="{Binding Path=YesCommand}" 
                         cal:Message.Attach="Yes" 
                         Content="Yes" />
-                <Button Width="70" 
+                    <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
                         x:Name="BtnNoCommand"
@@ -91,7 +100,7 @@
                         Command="{Binding Path=NoCommand}" 
                         cal:Message.Attach="No" 
                         Content="No" />
-                <Button Width="70" 
+                    <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
                         Visibility="{Binding Path=IsOkButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
@@ -99,7 +108,7 @@
                         cal:Message.Attach="Ok" 
                         x:Name="BtnOkCommand"
                         Content="OK" />
-                <Button Width="70" 
+                    <Button Width="70" 
                         Margin="{StaticResource ControlBorderLeft}" 
                         IsCancel="True" 
                         x:Name="BtnCancelCommand"
@@ -107,7 +116,8 @@
                         Command="{Binding Path=CancelCommand}" 
                         cal:Message.Attach="Cancel" 
                         Content="Cancel" />
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 
