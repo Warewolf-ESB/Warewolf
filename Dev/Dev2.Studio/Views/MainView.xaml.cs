@@ -11,6 +11,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Data;
@@ -271,6 +272,28 @@ namespace Dev2.Studio.Views
             {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
                 mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
+
+                if(mainViewModel.LocalhostServer.IsConnected)
+                {
+                    if (mainViewModel.ActiveServer != mainViewModel.LocalhostServer) {
+                        mainViewModel.SetActiveEnvironment(mainViewModel.LocalhostServer.EnvironmentID);
+                        mainViewModel.SetActiveServer(mainViewModel.LocalhostServer);
+                    }
+
+                    foreach (var server in mainViewModel.ExplorerViewModel.ConnectControlViewModel.Servers)
+                    {
+                        if (server.DisplayName != mainViewModel.LocalhostServer.DisplayName && server.IsConnected)
+                        {
+                            server.Disconnect();
+                        }
+                    }
+
+                    for (var i = 0;  i < mainViewModel.ExplorerViewModel.Environments.Count-1; i++)
+                    {
+                        var remoteEnvironment = mainViewModel.ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId != Guid.Empty);
+                        mainViewModel.ExplorerViewModel.Environments.Remove(remoteEnvironment);
+                    }
+                }
             }
         }
 
