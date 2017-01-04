@@ -20,7 +20,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();            
+            UIMap.AssertStudioIsRunning();            
         }
 
         UIMap UIMap

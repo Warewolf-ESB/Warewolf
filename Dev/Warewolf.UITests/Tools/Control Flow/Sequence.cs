@@ -82,7 +82,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.CloseHangingDialogs();
+            UIMap.AssertStudioIsRunning();
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Sequence_Onto_DesignSurface();
         }

@@ -431,20 +431,20 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Exp" +
-            "lorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Ex" +
+            "plorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeploySpecs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
-        public virtual void DisconnectRemoteIntegragionOnDeployDestinationDoesNotDisconectOnTheExplorer()
+        public virtual void DisconnectRemoteIntegrationOnDeployDestinationDoesNotDisconnectOnTheExplorer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnect Remote Integragion On Deploy Destination Does Not Disconect On The Exp" +
-                    "lorer", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Ex" +
+                    "plorer", ((string[])(null)));
 #line 136
 this.ScenarioSetup(scenarioInfo);
 #line 137
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 138
- testRunner.And("I Try Connect To Remote Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Try Connect To Remote Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 139
  testRunner.And("I Click Deploy Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
