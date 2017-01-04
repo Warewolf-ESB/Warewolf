@@ -1,0 +1,9 @@
+
+<Source ID="532ba82d-794f-42a6-949f-be6a941fdf1e" Name="POST" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>POST</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:53:34.7700726+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="532ba82d-794f-42a6-949f-be6a941fdf1e" VersionId="e91ce7db-ac40-4aae-990e-0137d042516e" />
+</Source>

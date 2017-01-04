@@ -235,7 +235,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
 		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
 		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
-		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
+		TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1 = TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1
 		TestScripts\Tests\Write Failing Tests Playlist.ps1 = TestScripts\Tests\Write Failing Tests Playlist.ps1
 	EndProjectSection
 EndProject
