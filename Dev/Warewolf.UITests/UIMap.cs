@@ -4267,6 +4267,15 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
+        [Given(@"I Click MessageBox DeleteAnyway")]
+        [When(@"I Click MessageBox DeleteAnyway")]
+        [Then(@"I Click MessageBox DeleteAnyway")]
+        [Given(@"I Click MessageBox DeleteAnyway")]
+        public void Click_MessageBox_DeleteAnyway()
+        {
+            Mouse.Click(MessageBoxWindow.DeleteAnyway, new Point(35, 11));
+        }
+
         [Given(@"I Click MessageBox Yes")]
         [When(@"I Click MessageBox Yes")]
         [Then(@"I Click MessageBox Yes")]
