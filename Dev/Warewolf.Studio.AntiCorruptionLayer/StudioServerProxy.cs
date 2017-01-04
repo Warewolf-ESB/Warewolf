@@ -190,7 +190,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
                     string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
-                    MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, true, true);
+                    MessageBoxButton.OK, MessageBoxImage.Warning, "false", true, false, true, false, true, true);
 
                 if (_popupController.DeleteAnyway)
                 {
