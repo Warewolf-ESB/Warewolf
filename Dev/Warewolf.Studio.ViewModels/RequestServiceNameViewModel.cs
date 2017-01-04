@@ -110,10 +110,25 @@ namespace Warewolf.Studio.ViewModels
                     ,
                     ResourceId = executeCommand.ResourceID
                     ,                                        
-                    ResourceType = executeCommand.ResourceType
+                    ResourceType = executeCommand.ResourceType                                        
                     ,
-                    ResourcePath = executeCommand.GetSavePath(),
-                };                
+                    ResourcePath = executeCommand.GetSavePath()
+                    ,                    
+                    AllowResourceCheck = false
+                    ,
+                    ShowContextMenu = true
+                    ,
+                    IsFolder = false
+                    ,
+                    IsService = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService.ToString()
+                    ,
+                    IsSource = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source.ToString()
+                    ,
+                    IsServer = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server.ToString()
+                };
+                var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
+                if(permissions != null)
+                    child.SetPermissions((Permissions)permissions);
                 var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                 environmentViewModel?.AddChild(child);
                 CloseView();

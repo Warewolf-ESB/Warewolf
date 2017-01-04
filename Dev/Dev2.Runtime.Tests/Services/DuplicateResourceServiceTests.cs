@@ -72,33 +72,31 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, handlesType.Actions.Count);
         }
 
-        //[TestMethod]
-        //[Owner("Nkosinathi Sangweni")]
-        //public void Execute_GivenResourcePayLoad_ShouldExctactPayLoad()
-        //{
-        //    const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-        //    //---------------Set up test pack-------------------
-        //    var resourceCatalog = new Mock<IResourceCatalog>();
-        //    var resource = new Mock<IResource>();
-        //    resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
-        //        .Returns(resource.Object);
-        //    var workScpace = new Mock<IWorkspace>();
-        //    DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
-        //    //---------------Assert Precondition----------------
-        //    Assert.IsNotNull(resourceService);
-        //    //---------------Execute Test ----------------------
-        //    var stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
-        //    {
-        //        {"ResourceID", new StringBuilder(guid) },
-        //        {"NewResourceName", new StringBuilder("NewName") },
-        //        {"destinationPath", new StringBuilder("NewName") },
-        //    }, workScpace.Object);
-        //    //---------------Test Result -----------------------
-        //    resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
-        //    var serializer = new Dev2JsonSerializer();
-        //    var executeMessage = serializer.Deserialize<StringBuilder>(stringBuilder);
-        //    Assert.IsNotNull(executeMessage);
-        //}
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenResourcePayLoad_ShouldExctactPayLoad()
+        {
+            const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
+            //---------------Set up test pack-------------------
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var workScpace = new Mock<IWorkspace>();
+            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(resourceService);
+            //---------------Execute Test ----------------------
+            var stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
+            {
+                {"ResourceID", new StringBuilder(guid) },
+                {"NewResourceName", new StringBuilder("NewName") },
+                {"destinationPath", new StringBuilder("NewName") },
+            }, workScpace.Object);
+            //---------------Test Result -----------------------
+            resourceCatalog.Verify(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
+            Assert.IsNotNull(stringBuilder);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
