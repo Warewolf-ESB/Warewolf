@@ -125,7 +125,7 @@ namespace Dev2.Settings.Scheduler
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(Core.ServerDisconnected, _model.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         public void Dispose()

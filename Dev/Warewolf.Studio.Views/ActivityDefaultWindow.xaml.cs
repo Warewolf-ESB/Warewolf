@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Views
                 dataContext.Validate();
                 if (dataContext.Errors != null)
                 {
-                    PopupController.Show(dataContext.Errors[0].Message, "Decision Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                    PopupController.Show(dataContext.Errors[0].Message, "Decision Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
                     valid = false;
                 }
             }

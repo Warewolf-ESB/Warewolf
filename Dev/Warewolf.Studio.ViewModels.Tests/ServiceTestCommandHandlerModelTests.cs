@@ -212,7 +212,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             testFrameworkViewModel.RunAllTestsCommand(true, new ObservableCollection<IServiceTestModel>(), new Mock<IContextualResourceModel>().Object, new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -427,7 +427,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
@@ -441,7 +441,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestCommandHandler.RunSelectedTest(selectedServiceTest, mockResourceModel.Object, new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.ExecuteTest(It.IsAny<IContextualResourceModel>(), It.IsAny<string>()));
-            mockPopupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+            mockPopupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
             mockShellViewModel.Verify(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
 
@@ -458,7 +458,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupController.Object);
             testFrameworkViewModel.RunAllTestsInBrowser(true, "Url", new Mock<IExternalProcessExecutor>().Object);
             //------------Assert Results-------------------------
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false), Times.Once);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
         }
 
         [TestMethod]
@@ -692,7 +692,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
@@ -755,7 +755,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false)).Verifiable();
+            mockPopupController.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.CloseResourceTestView(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
