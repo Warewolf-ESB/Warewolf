@@ -18,6 +18,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
     {
         private readonly IResourceCatalog _resourceCatalog;
         private ITestCatalog _testCatalog;
+        private IResource _newDuplicatedResource;
 
         public ResourceDuplicateProvider(IResourceCatalog resourceCatalog)
         {
@@ -45,18 +46,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult DuplicateResource(Guid resourceId, string newPath, string newName)
+        public IResource DuplicateResource(Guid resourceId, string newPath, string newName)
         {
 
             try
             {
                 SaveResource(resourceId, newPath, newName);
-                return ResourceCatalogResultBuilder.CreateSuccessResult("Duplicated Successfully");
+                return _newDuplicatedResource;
             }
             catch (Exception x)
             {
                 Dev2Logger.Error($"resource{resourceId} ", x);
-                return ResourceCatalogResultBuilder.CreateFailResult("Duplicated Failure " + x.Message);
+                return null;
             }
         }
         private void SaveResource(Guid resourceId, string newPath, string newResourceName)
@@ -70,6 +71,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var resourceID = Guid.NewGuid();
             resource.ResourceName = newResourceName;
             resource.ResourceID = resourceID;
+            _newDuplicatedResource = resource;
             xElement.SetElementValue("DisplayName", newResourceName);
             var fixedResource = xElement.ToStringBuilder();
             _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, resource, fixedResource, newPath);
