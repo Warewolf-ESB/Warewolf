@@ -52,7 +52,7 @@ namespace Warewolf.UITests
         }
 
         [Given("The Warewolf Studio is running")]
-        public void CloseHangingDialogs()
+        public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
@@ -110,45 +110,6 @@ namespace Warewolf.UITests
             }
 
         }
-        public void TryCloseHangingDebugInputDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DebugInputDialog))
-                {
-                    Click_DebugInput_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Debug Input dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Debug Input dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingSaveDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(SaveDialogWindow.CancelButton))
-                {
-                    Click_SaveDialog_CancelButton();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Save dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Save dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
         {
@@ -170,131 +131,10 @@ namespace Warewolf.UITests
             }
         }
 
-        private void TryCloseHangingServicePickerDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(ServicePickerDialog.Cancel))
-                {
-                    Click_Service_Picker_Dialog_Cancel();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Service Picker dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Service Picker dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingWindowsGroupDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(SelectWindowsGroupDialog))
-                {
-                    Click_Select_Windows_Group_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Windows Group dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Windows Group dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingErrorDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(ErrorWindow))
-                {
-                    Click_Close_Error_Dialog();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Error dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingCriticalErrorDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(CriticalErrorWindow))
-                {
-                    Click_Close_Critical_Error_Dialog();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Critical Error dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Critical Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingWebBrowserErrorDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(WebBrowserErrorWindow))
-                {
-                    Click_Web_Browser_Error_Messagebox_OK_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging Web Browser Error dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging Web Browser Error dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
-        public void TryCloseHangingDecisionDialog()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (ControlExistsNow(DecisionOrSwitchDialog))
-                {
-                    Click_Decision_Dialog_Cancel_Button();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught a " + e.Message + " trying to close a hanging decision dialog before the test starts.");
-            }
-            finally
-            {
-                Console.WriteLine("No hanging decision dialog to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
         bool OnErrorHandlerDisabled = false;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
             if (OnErrorHandlerDisabled) return;
-            e.Result = PlaybackErrorOptions.Retry;
             var type = e.Error.GetType().ToString();
             var messageText = type + "\n" + e.Error.Message;
             switch (type)
@@ -302,18 +142,14 @@ namespace Warewolf.UITests
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
                     UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
                     break;
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
-                    UITestControlNotAvailableExceptionHandler(type, messageText, e.Error as UITestControlNotAvailableException);
-                    break;
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
-                    FailedToPerformActionOnBlockedControlExceptionHandler(type, messageText, e.Error as FailedToPerformActionOnBlockedControlException);
-                    break;
                 default:
                     Console.WriteLine(messageText);
                     break;
             }
 #if DEBUG
             throw e.Error;
+#else
+            e.Result = PlaybackErrorOptions.Retry;
 #endif
         }
 
@@ -340,26 +176,6 @@ namespace Warewolf.UITests
                     Console.WriteLine(messageText);
                     parent.DrawHighlight();
                 }
-            }
-        }
-
-        void UITestControlNotAvailableExceptionHandler(string type, string message, UITestControlNotAvailableException e)
-        {
-            var exceptionSource = e.ExceptionSource;
-            if (exceptionSource is UITestControl)
-            {
-                Console.WriteLine(message);
-                (exceptionSource as UITestControl).DrawHighlight();
-            }
-        }
-
-        void FailedToPerformActionOnBlockedControlExceptionHandler(string type, string message, FailedToPerformActionOnBlockedControlException e)
-        {
-            var exceptionSource = e.ExceptionSource;
-            if (exceptionSource is UITestControl)
-            {
-                Console.WriteLine(message);
-                (exceptionSource as UITestControl).DrawHighlight();
             }
         }
 
@@ -597,10 +413,8 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
-
-        [Given(@"I Connect To Remote Server")]
+        
         [When(@"I Connect To Remote Server")]
-        [Then(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
@@ -626,30 +440,6 @@ namespace Warewolf.UITests
                 Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
                 Click_Explorer_RemoteServer_Connect_Button();
             }
-        }
-
-        [Given(@"I Try DisConnect To Remote Server")]
-        [When(@"I Try DisConnect To Remote Server")]
-        [Then(@"I Try DisConnect To Remote Server")]
-        public void TryDisConnectToRemoteServer()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-            {
-                Click_Explorer_RemoteServer_Connect_Button();
-                Click_Connect_Control_InExplorer();
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
-            else
-            {
-                Click_Connect_Control_InExplorer();
-                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
-                    Click_Explorer_RemoteServer_Connect_Button();
-                    Click_Connect_Control_InExplorer();
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-                }
-            }            
         }
 
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
@@ -1086,15 +876,14 @@ namespace Warewolf.UITests
             }
         }
 
-        [When(@"I Select ""(.*)"" From Explorer Remote Server Dropdown List")]
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(string serverName)
+        [When(@"I Select Remote Connection Integration From Explorer Remote Server Dropdown List")]
+        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List()
         {
-            var comboboxListItem = MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration;
             Click_Connect_Control_InExplorer();
-            Mouse.Click(comboboxListItem.Text, new Point(79, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(79, 8));
         }
 
-        public void Select_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
+        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
         {
             Click_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(comboboxListItem.Exists, "Server does not exist in explorer remote server drop down list.");
@@ -2286,10 +2075,8 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
-        [Given(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        
         [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
-        [Then(@"I Refresh Explorer Withpout Waiting For Spinner")]
         public void GivenIRefreshExplorerWithpoutWaitingForSpinner()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
@@ -4013,10 +3800,8 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
-
-        [Given(@"I Click Explorer Connect Remote Server Button")]
+        
         [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
@@ -8169,10 +7954,8 @@ namespace Warewolf.UITests
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
-
-        [Given(@"I Double Click Localhost Server")]
+        
         [When(@"I Double Click Localhost Server")]
-        [Then(@"I Double Click Localhost Server")]
         public void DoubleClick_Localhost_Server()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
