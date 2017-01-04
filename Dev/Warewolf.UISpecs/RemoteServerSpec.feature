@@ -11,6 +11,3 @@ Scenario: Refresh Remote Server Refreshes Only The Remote Server
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Refresh Explorer Withpout Waiting For Spinner
 	Then Remote Server Refreshes
-	When I Select RemoteConnectionIntegration From Explorer
-	And I Click Explorer Connect Remote Server Button
-	#TODO: Give this test an ending
