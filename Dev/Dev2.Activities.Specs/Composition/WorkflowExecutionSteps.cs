@@ -3250,7 +3250,7 @@ namespace Dev2.Activities.Specs.Composition
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\PostgreSourceTest").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid()).FirstOrDefault();
 
             if (resource == null)
             {
@@ -3357,7 +3357,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\mysqlSource").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid()).FirstOrDefault();
 
             if (resource == null)
             {
@@ -3550,7 +3550,7 @@ namespace Dev2.Activities.Specs.Composition
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\testingDBSrc").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid()).FirstOrDefault();
 
             if (resource == null)
             {
