@@ -1599,7 +1599,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.NewCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
-            popupController.Verify(a => a.Show("Please save currently edited Task(s) before creating a new one.", "Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
+            popupController.Verify(a => a.Show("Please save currently edited Task(s) before creating a new one.", "Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
         }
 
         [TestMethod]
@@ -1609,7 +1609,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
-            popupController.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false)).Returns(MessageBoxResult.OK).Verifiable();
+            popupController.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false, false, false)).Returns(MessageBoxResult.OK).Verifiable();
             var env = new Mock<IEnvironmentModel>();
             env.Setup(a => a.IsConnected).Returns(true);
             var svr = new Mock<IServer>();
@@ -1639,7 +1639,7 @@ namespace Dev2.Core.Tests.Settings
 
             schedulerViewModel.NewCommand.Execute(null);
             //------------Assert Results-------------------------
-            popupController.Verify(a => a.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false));
+            popupController.Verify(a => a.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false, false, false));
         }
 
         [TestMethod]

@@ -18,6 +18,7 @@ using Dev2.Common.DependencyVisualization;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -186,8 +187,14 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 List<Guid> seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
                 GetItems(new List<Node> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
-            
-                AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
+                if (acc.Count == 0 || acc.LastOrDefault() == null)
+                {
+                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>();
+                }
+                else
+                {
+                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
+                }
             }
         }
 
@@ -216,15 +223,17 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
                 {
-                    var exploreritem = _server.ExplorerRepository.FindItemByID(Guid.Parse(node.ID));
+                    var env = CustomContainer.Get<IMainViewModel>()
+                        .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
+                    var exploreritem = env.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId== Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
                         ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)
                         {
-                            ResourceName = exploreritem.DisplayName,
+                            ResourceName = exploreritem.ResourceName,
                             TextVisibility = true,
                             ResourceType = exploreritem.ResourceType,
-                            IsMainNode = exploreritem.DisplayName.Equals(ResourceModel.ResourceName),
+                            IsMainNode = exploreritem.ResourceName.Equals(ResourceModel.ResourceName),
                             ResourceId = Guid.Parse(node.ID)
                         };
                         if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)

@@ -136,7 +136,7 @@ namespace Dev2.Studio.Controller
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                          MessageBoxImage.Error, null, false, true, false, false);
+                                          MessageBoxImage.Error, null, false, true, false, false, false, false);
                 }
             }
             return null;
@@ -190,7 +190,7 @@ namespace Dev2.Studio.Controller
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                          MessageBoxImage.Error, null, false, true, false, false);
+                                          MessageBoxImage.Error, null, false, true, false, false, false, false);
                 }
             }
         }
@@ -242,7 +242,7 @@ namespace Dev2.Studio.Controller
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                          MessageBoxImage.Error, null, false, true, false, false);
+                                          MessageBoxImage.Error, null, false, true, false, false, false, false);
                 }
             }
         }

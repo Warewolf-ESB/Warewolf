@@ -929,6 +929,7 @@
 								    x:Name="WorkflowControl"
 								    Visibility="{Binding SelectedServiceTest, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" 
 								    Content="{Binding Path=WorkflowDesignerViewModel.DesignerView}"
+                                    AllowDrop="False"
 								    DataContext="{Binding ElementName=ServiceTestUserControl, Path=DataContext}"
 								    AutomationProperties.AutomationId="{Binding Path=WorkflowDesignerViewModel.DesignerText}">
                         <ig:DragDropManager.DropTarget >
