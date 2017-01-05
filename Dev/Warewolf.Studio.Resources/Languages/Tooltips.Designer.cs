@@ -4397,6 +4397,699 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Assign_Object_Tags.
+        /// </summary>
+        public static string Tool_Data_Assign_Object_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Assign_Object_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Assign_Tags.
+        /// </summary>
+        public static string Tool_Data_Assign_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Assign_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Base_Convert_Tags.
+        /// </summary>
+        public static string Tool_Data_Base_Convert_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Base_Convert_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Case_Convert_Tags.
+        /// </summary>
+        public static string Tool_Data_Case_Convert_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Case_Convert_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Data_Merge_Tags.
+        /// </summary>
+        public static string Tool_Data_Data_Merge_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Data_Merge_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Data_Split_Tags.
+        /// </summary>
+        public static string Tool_Data_Data_Split_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Data_Split_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Find_Index_Tags.
+        /// </summary>
+        public static string Tool_Data_Find_Index_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Find_Index_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Replace_Tags.
+        /// </summary>
+        public static string Tool_Data_Replace_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Data_Replace_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_MySQL_Tags.
+        /// </summary>
+        public static string Tool_Database_MySQL_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_MySQL_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_ODBC_Tags.
+        /// </summary>
+        public static string Tool_Database_ODBC_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_ODBC_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_Oracle_Tags.
+        /// </summary>
+        public static string Tool_Database_Oracle_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_Oracle_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_PostgreSQL_Tags.
+        /// </summary>
+        public static string Tool_Database_PostgreSQL_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_PostgreSQL_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_SQL_Bulk_Insert_Tags.
+        /// </summary>
+        public static string Tool_Database_SQL_Bulk_Insert_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_SQL_Bulk_Insert_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_SQL_Server_Tags.
+        /// </summary>
+        public static string Tool_Database_SQL_Server_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Database_SQL_Server_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Delete_Tags.
+        /// </summary>
+        public static string Tool_Dropbox_Delete_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Delete_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Download_Tags.
+        /// </summary>
+        public static string Tool_Dropbox_Download_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Download_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_List_Contents_Tags.
+        /// </summary>
+        public static string Tool_Dropbox_List_Contents_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_List_Contents_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Upload_Tags.
+        /// </summary>
+        public static string Tool_Dropbox_Upload_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Upload_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Email_Exchange_Send_Tags.
+        /// </summary>
+        public static string Tool_Email_Exchange_Send_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Email_Exchange_Send_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Email_SMTP_Send_Tags.
+        /// </summary>
+        public static string Tool_Email_SMTP_Send_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Email_SMTP_Send_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Copy_Tags.
+        /// </summary>
+        public static string Tool_File_Copy_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Copy_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Create_Tags.
+        /// </summary>
+        public static string Tool_File_Create_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Create_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Delete_Tags.
+        /// </summary>
+        public static string Tool_File_Delete_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Delete_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Move_Tags.
+        /// </summary>
+        public static string Tool_File_Move_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Move_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Read_File_Tags.
+        /// </summary>
+        public static string Tool_File_Read_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Read_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Read_Folder_Tags.
+        /// </summary>
+        public static string Tool_File_Read_Folder_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Read_Folder_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Rename_Tags.
+        /// </summary>
+        public static string Tool_File_Rename_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Rename_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Unzip_Tags.
+        /// </summary>
+        public static string Tool_File_Unzip_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Unzip_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Write_File_Tags.
+        /// </summary>
+        public static string Tool_File_Write_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Write_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Zip_Tags.
+        /// </summary>
+        public static string Tool_File_Zip_Tags {
+            get {
+                return ResourceManager.GetString("Tool_File_Zip_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Decision_Tags.
+        /// </summary>
+        public static string Tool_Flow_Decision_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Decision_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Sequence_Tags.
+        /// </summary>
+        public static string Tool_Flow_Sequence_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Sequence_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Switch_Tags.
+        /// </summary>
+        public static string Tool_Flow_Switch_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Switch_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Javascript_Tag.
+        /// </summary>
+        public static string Tool_Javascript_Tag {
+            get {
+                return ResourceManager.GetString("Tool_Javascript_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_LoopConstruct_For_Each_Tags.
+        /// </summary>
+        public static string Tool_LoopConstruct_For_Each_Tags {
+            get {
+                return ResourceManager.GetString("Tool_LoopConstruct_For_Each_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_LoopConstruct_Select_and_Apply_Tags.
+        /// </summary>
+        public static string Tool_LoopConstruct_Select_and_Apply_Tags {
+            get {
+                return ResourceManager.GetString("Tool_LoopConstruct_Select_and_Apply_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Python_Tag.
+        /// </summary>
+        public static string Tool_Python_Tag {
+            get {
+                return ResourceManager.GetString("Tool_Python_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Count_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Count_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Count_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Delete_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Delete_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Delete_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Find_Records_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Find_Records_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Find_Records_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Length_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Length_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Length_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Sort_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Sort_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Sort_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Unique_Records_Tags.
+        /// </summary>
+        public static string Tool_Recordset_Unique_Records_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Unique_Records_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Com_DLL_Tags.
+        /// </summary>
+        public static string Tool_Resources_Com_DLL_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Com_DLL_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Dot_net_DLL_Tags.
+        /// </summary>
+        public static string Tool_Resources_Dot_net_DLL_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Dot_net_DLL_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Service_Tags.
+        /// </summary>
+        public static string Tool_Resources_Service_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Service_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_WCF_Tags.
+        /// </summary>
+        public static string Tool_Resources_WCF_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Resources_WCF_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Ruby_Tag.
+        /// </summary>
+        public static string Tool_Ruby_Tag {
+            get {
+                return ResourceManager.GetString("Tool_Ruby_Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Scripting_CMD_Script_Tags.
+        /// </summary>
+        public static string Tool_Scripting_CMD_Script_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Scripting_CMD_Script_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Scripting_Script_Tags.
+        /// </summary>
+        public static string Tool_Scripting_Script_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Scripting_Script_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Copy_File_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Copy_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Copy_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Create_List_Item_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Create_List_Item_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Create_List_Item_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Delete_File_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Delete_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Delete_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Delete_List_Item_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Delete_List_Item_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Delete_List_Item_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Download_File_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Download_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Download_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Move_File_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Move_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Move_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Read_Folder_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Read_Folder_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Read_Folder_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Read_List_Item_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Read_List_Item_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Read_List_Item_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Update_List_Item_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Update_List_Item_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Update_List_Item_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Upload_File_Tags.
+        /// </summary>
+        public static string Tool_SharePoint_Upload_File_Tags {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Upload_File_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Aggregate_Calculate_Tags.
+        /// </summary>
+        public static string Tool_Utility_Aggregate_Calculate_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Aggregate_Calculate_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Calculate_Tags.
+        /// </summary>
+        public static string Tool_Utility_Calculate_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Calculate_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Comment_Tags.
+        /// </summary>
+        public static string Tool_Utility_Comment_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Comment_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Create_JSON_Tags.
+        /// </summary>
+        public static string Tool_Utility_Create_JSON_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Create_JSON_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Date_Time_Diff_Tags.
+        /// </summary>
+        public static string Tool_Utility_Date_Time_Diff_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Diff_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Date_Time_Tags.
+        /// </summary>
+        public static string Tool_Utility_Date_Time_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Format_Number_Tags.
+        /// </summary>
+        public static string Tool_Utility_Format_Number_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Format_Number_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Consume_Tags.
+        /// </summary>
+        public static string Tool_Utility_Rabbit_MQ_Consume_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Consume_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Publish_Tags.
+        /// </summary>
+        public static string Tool_Utility_Rabbit_MQ_Publish_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Publish_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Random_Tags.
+        /// </summary>
+        public static string Tool_Utility_Random_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Random_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Sys_Info_Tags.
+        /// </summary>
+        public static string Tool_Utility_Sys_Info_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Sys_Info_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Web_Request_Tags.
+        /// </summary>
+        public static string Tool_Utility_Web_Request_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Web_Request_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Xpath_Tags.
+        /// </summary>
+        public static string Tool_Utility_Xpath_Tags {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Xpath_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Delete_Tags.
+        /// </summary>
+        public static string Tool_WebMethod_Delete_Tags {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Delete_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Get_Tags.
+        /// </summary>
+        public static string Tool_WebMethod_Get_Tags {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Get_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Post_Tags.
+        /// </summary>
+        public static string Tool_WebMethod_Post_Tags {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Post_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Put_Tags.
+        /// </summary>
+        public static string Tool_WebMethod_Put_Tags {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Put_Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string ToolboxClearSearchTooltip {

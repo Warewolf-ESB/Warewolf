@@ -52,6 +52,8 @@ namespace Dev2.Common.Interfaces.Toolbox
         string IconUri { get; }
 
         string FilterTag { get; set; }
+        string ResourceToolTip { get; set; }
+        string ResourceHelpText { get; set; }
     }
 
     public interface IWarewolfType  
