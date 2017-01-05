@@ -481,8 +481,7 @@
 								  Header="Duplicate"
 								  Style="{StaticResource MenuItemStyle}"
 								  IsEnabled="{Binding CanDuplicate}"
-								  ToolTip="{Binding DuplicateTooltip}"
-								  Visibility="{Binding IsDuplicateVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+								  ToolTip="{Binding DuplicateTooltip}">
                             <MenuItem.Icon>
                                 <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
                             </MenuItem.Icon>
