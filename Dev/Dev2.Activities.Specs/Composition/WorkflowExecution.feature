@@ -1325,6 +1325,54 @@ Scenario: Workflow with ForEach which contains assign
 		| # |                     |
 		| 1 | [[rec(2).a]] = Test |
 
+Scenario: Gather System Info returns values
+	Given I have a workflow "WorkflowWithGatherSystemInfo"
+	And "WorkflowWithGatherSystemInfo" contains Gather System Info "System info" as
+	| Variable                   | Selected                             |
+	| [[ComputerName]]           | Computer Name                        |
+	| [[OperatingSystemVersion]] | Operating System Version             |
+	| [[VirtualMemoryAvailable]] | Virtual Memory Available (MB)        |
+	| [[VirtualMemoryTotal]]     | Virtual Memory Total (MB)            |
+	| [[MacAddress]]             | MAC Addresses                        |
+	| [[GateWayAddress]]         | Defaut Gateway Addresses             |
+	| [[DNSAddress]]             | DNS Server Addresses                 |
+	| [[IPv4Address]]            | IPv4 Addresses                       |
+	| [[IPv6Address]]            | IPv6 Addresses                       |
+	| [[WarewolfMemory]]         | Warewolf Memory Usage                |
+	| [[WarewolfCPU]]            | Warewolf Total CPU Usage (All Cores) |
+	| [[WarewolfServerVersion]]  | Warewolf Server Version              |
+	 When "WorkflowWithGatherSystemInfo" is executed
+	  Then the workflow execution has "NO" error
+	  And the "System info" in WorkFlow "WorkflowWithGatherSystemInfo" debug inputs as
+	  | #  |                              |                                      |
+	  | 1  | [[ComputerName]] =           | Computer Name                        |
+	  | 2  | [[OperatingSystemVersion]] = | Operating System Version             |
+	  | 3  | [[VirtualMemoryAvailable]] = | Virtual Memory Available (MB)        |
+	  | 4  | [[VirtualMemoryTotal]] =     | Virtual Memory Total (MB)            |
+	  | 5  | [[MacAddress]] =             | MAC Addresses                        |
+	  | 6  | [[GateWayAddress]] =         | Defaut Gateway Addresses             |
+	  | 7  | [[DNSAddress]] =             | DNS Server Addresses                 |
+	  | 8  | [[IPv4Address]] =            | IPv4 Addresses                       |
+	  | 9  | [[IPv6Address]] =            | IPv6 Addresses                       |
+	  | 10 | [[WarewolfMemory]] =         | Warewolf Memory Usage                |
+	  | 11 | [[WarewolfCPU]] =            | Warewolf Total CPU Usage (All Cores) |
+	  | 12 | [[WarewolfServerVersion]] =  | Warewolf Server Version              |
+	  And the "System info" in Workflow "WorkflowWithGatherSystemInfo" debug outputs as
+	  | #  |                                     |
+	  | 1  | [[ComputerName]] = String           |
+	  | 2  | [[OperatingSystemVersion]] = String |
+	  | 3  | [[VirtualMemoryAvailable]] = String |
+	  | 4  | [[VirtualMemoryTotal]] = String     |
+	  | 5  | [[MacAddress]] = String             |
+	  | 6  | [[GateWayAddress]] = String         |
+	  | 7  | [[DNSAddress]] = String             |
+	  | 8  | [[IPv4Address]] = String            |
+	  | 9  | [[IPv6Address]] = String            |
+	  | 10 | [[WarewolfMemory]] = String         |
+	  | 11 | [[WarewolfCPU]] = String            |
+	  | 12 | [[WarewolfServerVersion]] = String  |
+
+
 Scenario: Workflow with ForEach which contains Sequence
       Given I have a workflow "WorkflowWithForEachContainingSeq"
 	  And "WorkflowWithForEachContainingSeq" contains an Assign "RecVal" as
