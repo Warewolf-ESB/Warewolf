@@ -99,9 +99,8 @@ namespace Warewolf.Studio.Views
                     toolboxViewModel?.UpdateHelpDescriptor(viewModel?.Tool.ResourceHelpText);
                 } else
                 {
-                    //Double clicking a tool in the toolbox shows information popup: To use a tool, drag it onto the design surface. [OK]
                     var popupController = CustomContainer.Get<IPopupController>();
-                    popupController?.Show("To use a tool, drag it onto the design surface.","How to use a tool", MessageBoxButton.OK, MessageBoxImage.Information,"",false,false,true, false, false, false);
+                    popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information,"",false,false,true, false, false, false);
                 }
             }
 
