@@ -145,7 +145,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{cb0f5535-5e1d-41f9-a23c-f59fdc816b75}</Project>
-      <Name>Warewolf.AcceptanceTesting.Core</Name>
+      <Name>Warewolf.UIBindingTests.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
