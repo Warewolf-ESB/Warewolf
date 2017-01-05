@@ -15,8 +15,12 @@ namespace Dev2.Data.Enums
 {
     public enum enTypeOfSystemInformationToGather
     {
+        [Description("Computer Name")]
+        ComputerName,
         [Description("Operating System")]
         OperatingSystem,
+        [Description("Operating System Version")]
+        OperatingSystemVersion,
         [Description("Service Pack")]
         ServicePack,
         [Description("32/64 Bit")]
@@ -29,6 +33,10 @@ namespace Dev2.Data.Enums
         DiskAvailable,
         [Description("Disk Total (GB)")]
         DiskTotal,
+        [Description("Virtual Memory Available (MB)")]
+        VirtualMemoryAvailable,
+        [Description("Virtual Memory Total (MB)")]
+        VirtualMemoryTotal,
         [Description("RAM Available (MB)")]
         PhysicalMemoryAvailable,
         [Description("RAM Total (MB)")]
@@ -47,8 +55,24 @@ namespace Dev2.Data.Enums
         UserName,
         [Description("Domain")]
         Domain,
-        [Description("Warewolf Agents")]
-        NumberOfWarewolfAgents
+        [Description("Number of NICS on the Server")]
+        NumberOfServerNICS,
+        [Description("MAC Addresses")]
+        MacAddress,
+        [Description("Defaut Gateway Addresses")]
+        GateWayAddress,
+        [Description("DNS Server Addresses")]
+        DNSAddress,
+        [Description("IPv4 Addresses")]
+        IPv4Address,
+        [Description("IPv6 Addresses")]
+        IPv6Address,
+        [Description("Warewolf Memory Usage")]
+        WarewolfMemory,
+        [Description("Warewolf Total CPU Usage (All Cores)")]
+        WarewolfCPU,
+        [Description("Warewolf Server Version")]
+        WarewolfServerVersion
     }
 
     public enum enMailPriorityEnum
