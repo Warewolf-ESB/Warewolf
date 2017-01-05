@@ -3250,7 +3250,7 @@ namespace Dev2.Activities.Specs.Composition
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid()).FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "62652f31-813a-4b97-b488-02e4c16150ff".ToGuid()).FirstOrDefault();
 
             if (resource == null)
             {
