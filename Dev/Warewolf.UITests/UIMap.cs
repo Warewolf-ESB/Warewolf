@@ -227,7 +227,6 @@ namespace Warewolf.UITests
             if (MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text != string.Empty)
             {
                 Click_Clear_Toolbox_Filter_Clear_Button();
-                Click_Clear_Toolbox_Filter_Clear_Button();
             }
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
@@ -1072,13 +1071,8 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
-            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(34, 10));
-            Assert.IsTrue(connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
-            Assert.IsTrue(commentOnTheDesignSurface.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
-            TryClearToolboxFilter();
+            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");            
         }
-
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox(string text)
         {
             if (MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text != text)
@@ -4471,7 +4465,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
         }
 
+        [Given(@"I Click Switch Dialog Done Button")]
         [When(@"I Click Switch Dialog Done Button")]
+        [Then(@"I Click Switch Dialog Done Button")]
         public void Click_Switch_Dialog_Done_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
@@ -8686,7 +8682,7 @@ namespace Warewolf.UITests
         [Given(@"Folder ContextMenu appears")]
         [When(@"Folder ContextMenu appears")]
         [Then(@"Folder ContextMenu appears")]
-        public void ThenFolderContextMenuAppears()
+        public void FolderContextMenuAppears()
         {
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Enabled);
