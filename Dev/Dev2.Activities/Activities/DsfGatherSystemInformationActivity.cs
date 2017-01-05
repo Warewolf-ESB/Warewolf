@@ -30,6 +30,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable CyclomaticComplexity
 
 namespace Dev2.Activities
 {
@@ -221,8 +222,12 @@ namespace Dev2.Activities
         {
             switch(enTypeOfSystemInformation)
             {
+                case enTypeOfSystemInformationToGather.ComputerName:
+                    return GetSystemInformation.GetComputerName();
                 case enTypeOfSystemInformationToGather.OperatingSystem:
                     return GetSystemInformation.GetOperatingSystemInformation();
+                case enTypeOfSystemInformationToGather.OperatingSystemVersion:
+                    return GetSystemInformation.GetOperatingSystemVersionInformation();
                 case enTypeOfSystemInformationToGather.ServicePack:
                     return GetSystemInformation.GetServicePackInformation();
                 case enTypeOfSystemInformationToGather.OSBitValue:
@@ -235,6 +240,10 @@ namespace Dev2.Activities
                     return GetSystemInformation.GetDiskSpaceAvailableInformation();
                 case enTypeOfSystemInformationToGather.DiskTotal:
                     return GetSystemInformation.GetDiskSpaceTotalInformation();
+                case enTypeOfSystemInformationToGather.VirtualMemoryAvailable:
+                    return GetSystemInformation.GetVirtualMemoryAvailableInformation();
+                case enTypeOfSystemInformationToGather.VirtualMemoryTotal:
+                    return GetSystemInformation.GetVirtualMemoryTotalInformation();
                 case enTypeOfSystemInformationToGather.PhysicalMemoryAvailable:
                     return GetSystemInformation.GetPhysicalMemoryAvailableInformation();
                 case enTypeOfSystemInformationToGather.PhysicalMemoryTotal:
@@ -253,8 +262,24 @@ namespace Dev2.Activities
                     return GetSystemInformation.GetUserNameInformation();
                 case enTypeOfSystemInformationToGather.Domain:
                     return GetSystemInformation.GetDomainInformation();
-                case enTypeOfSystemInformationToGather.NumberOfWarewolfAgents:
-                    return GetSystemInformation.GetNumberOfWareWolfAgentsInformation();
+                case enTypeOfSystemInformationToGather.NumberOfServerNICS:
+                    return GetSystemInformation.GetNumberOfNICS();
+                case enTypeOfSystemInformationToGather.MacAddress:
+                    return GetSystemInformation.GetMACAdresses();
+                case enTypeOfSystemInformationToGather.GateWayAddress:
+                    return GetSystemInformation.GetDefaultGateway();
+                case enTypeOfSystemInformationToGather.DNSAddress:
+                    return GetSystemInformation.GetDNSServer();
+                case enTypeOfSystemInformationToGather.IPv4Address:
+                    return GetSystemInformation.GetIPv4Adresses();
+                case enTypeOfSystemInformationToGather.IPv6Address:
+                    return GetSystemInformation.GetIPv6Adresses();
+                case enTypeOfSystemInformationToGather.WarewolfMemory:
+                    return GetSystemInformation.GetWarewolfServerMemory();
+                case enTypeOfSystemInformationToGather.WarewolfCPU:
+                    return GetSystemInformation.GetWarewolfCPU();
+                case enTypeOfSystemInformationToGather.WarewolfServerVersion:
+                    return GetSystemInformation.GetWareWolfVersion();
                 default:
                     throw new ArgumentOutOfRangeException("enTypeOfSystemInformation");
             }

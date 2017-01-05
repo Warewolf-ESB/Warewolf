@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
             var items = new List<GatherSystemInformationTO> { new GatherSystemInformationTO() };
             var viewModel = new GatherSystemInformationDesignerViewModel(CreateModelItem(items));
             viewModel.Validate();
-            Assert.AreEqual(17, viewModel.ItemsList.Count);
+            Assert.AreEqual(29, viewModel.ItemsList.Count);
             Assert.IsTrue(viewModel.HasLargeView);
         }
 
