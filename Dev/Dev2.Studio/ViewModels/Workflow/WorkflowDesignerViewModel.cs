@@ -1991,13 +1991,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void UpdateErrorIconWithCorrectMessage()
         {
-            if(_wd.IsInErrorState())
+            var validationIcon = DesignerView.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
+            if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
             {
-                var validationIcon = DesignerView.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
-                if(validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
-                }
+                validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
             }
         }
 
