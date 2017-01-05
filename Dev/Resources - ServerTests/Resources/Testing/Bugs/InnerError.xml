@@ -1,5 +1,5 @@
 
-<Service ID="83b698ee-296a-4b70-b3e6-d4c57ef33aa1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="InnerError" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6213.18869">
+<Service ID="83b698ee-296a-4b70-b3e6-d4c57ef33aa1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="InnerError" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6212.23827">
   <DisplayName>InnerError</DisplayName>
   <Category>Testing\Bugs\InnerError</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

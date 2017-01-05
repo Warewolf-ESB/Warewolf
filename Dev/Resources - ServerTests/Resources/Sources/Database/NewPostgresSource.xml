@@ -1,0 +1,22 @@
+
+<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAY/F6gQ5E1UyU18CzCcmvxwQAAAACAAAAAAADZgAAwAAAABAAAAC7M03wIXqoo+NEYJ4WO0fSAAAAAASAAACgAAAAEAAAALce+GwV759Q4rjmzuLjPQWQAAAABa3cOdCzkYIE1kZL+89OCUqODWiVG/SUkXsmVcIa2l8v/h1Hs0KvXapmXbfCxEne86wt/NoHfAQXYNHr3Zd+MQiZ5e4wdMlfsyElunV1uoxk8RvGxqFOqW5JeEul4X0DKs2ONJaScN7GxRRhwTaXkJCEDq5j/0yQ2mcDEer51FxJMJdBeqzk6FRUWGVooZ8GFAAAAHimslqwU8kKH1zHg9e3D0eUxycD" ServerVersion="0.0.6212.23827" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewPostgresSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-20T23:49:33.1116191+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="3" ResourceId="f8b1a579-2394-489e-835e-21b42e304e09" VersionId="084651e8-fe33-49da-b6b6-5771a9d34fc4" />
+</Source>
