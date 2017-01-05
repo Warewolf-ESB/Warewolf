@@ -1741,4 +1741,235 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Any variable and/or data goes in here.
 To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
+  <data name="Tool_Javascript_Tag" xml:space="preserve">
+    <value>Tool_Javascript_Tag</value>
+  </data>
+  <data name="Tool_WebMethod_Put_Tags" xml:space="preserve">
+    <value>Tool_WebMethod_Put_Tags</value>
+  </data>
+  <data name="Tool_WebMethod_Post_Tags" xml:space="preserve">
+    <value>Tool_WebMethod_Post_Tags</value>
+  </data>
+  <data name="Tool_WebMethod_Get_Tags" xml:space="preserve">
+    <value>Tool_WebMethod_Get_Tags</value>
+  </data>
+  <data name="Tool_WebMethod_Delete_Tags" xml:space="preserve">
+    <value>Tool_WebMethod_Delete_Tags</value>
+  </data>
+  <data name="Tool_Utility_Xpath_Tags" xml:space="preserve">
+    <value>Tool_Utility_Xpath_Tags</value>
+  </data>
+  <data name="Tool_Utility_Web_Request_Tags" xml:space="preserve">
+    <value>Tool_Utility_Web_Request_Tags</value>
+  </data>
+  <data name="Tool_Utility_Sys_Info_Tags" xml:space="preserve">
+    <value>Tool_Utility_Sys_Info_Tags</value>
+  </data>
+  <data name="Tool_Utility_Random_Tags" xml:space="preserve">
+    <value>Tool_Utility_Random_Tags</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Publish_Tags" xml:space="preserve">
+    <value>Tool_Utility_Rabbit_MQ_Publish_Tags</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Consume_Tags" xml:space="preserve">
+    <value>Tool_Utility_Rabbit_MQ_Consume_Tags</value>
+  </data>
+  <data name="Tool_Utility_Format_Number_Tags" xml:space="preserve">
+    <value>Tool_Utility_Format_Number_Tags</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Tags" xml:space="preserve">
+    <value>Tool_Utility_Date_Time_Tags</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Diff_Tags" xml:space="preserve">
+    <value>Tool_Utility_Date_Time_Diff_Tags</value>
+  </data>
+  <data name="Tool_Utility_Create_JSON_Tags" xml:space="preserve">
+    <value>Tool_Utility_Create_JSON_Tags</value>
+  </data>
+  <data name="Tool_Utility_Comment_Tags" xml:space="preserve">
+    <value>Tool_Utility_Comment_Tags</value>
+  </data>
+  <data name="Tool_Utility_Calculate_Tags" xml:space="preserve">
+    <value>Tool_Utility_Calculate_Tags</value>
+  </data>
+  <data name="Tool_Utility_Aggregate_Calculate_Tags" xml:space="preserve">
+    <value>Tool_Utility_Aggregate_Calculate_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Upload_File_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Upload_File_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Update_List_Item_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Update_List_Item_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Read_List_Item_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Read_List_Item_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Read_Folder_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Read_Folder_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Move_File_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Move_File_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Download_File_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Download_File_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_List_Item_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Delete_List_Item_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_File_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Delete_File_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Create_List_Item_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Create_List_Item_Tags</value>
+  </data>
+  <data name="Tool_SharePoint_Copy_File_Tags" xml:space="preserve">
+    <value>Tool_SharePoint_Copy_File_Tags</value>
+  </data>
+  <data name="Tool_Scripting_Script_Tags" xml:space="preserve">
+    <value>Tool_Scripting_Script_Tags</value>
+  </data>
+  <data name="Tool_Scripting_CMD_Script_Tags" xml:space="preserve">
+    <value>Tool_Scripting_CMD_Script_Tags</value>
+  </data>
+  <data name="Tool_Resources_WCF_Tags" xml:space="preserve">
+    <value>Tool_Resources_WCF_Tags</value>
+  </data>
+  <data name="Tool_Resources_Service_Tags" xml:space="preserve">
+    <value>Tool_Resources_Service_Tags</value>
+  </data>
+  <data name="Tool_Resources_Dot_net_DLL_Tags" xml:space="preserve">
+    <value>Tool_Resources_Dot_net_DLL_Tags</value>
+  </data>
+  <data name="Tool_Resources_Com_DLL_Tags" xml:space="preserve">
+    <value>Tool_Resources_Com_DLL_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Unique_Records_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Unique_Records_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Sort_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Sort_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Length_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Length_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Find_Records_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Find_Records_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Delete_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Delete_Tags</value>
+  </data>
+  <data name="Tool_Recordset_Count_Tags" xml:space="preserve">
+    <value>Tool_Recordset_Count_Tags</value>
+  </data>
+  <data name="Tool_LoopConstruct_Select_and_Apply_Tags" xml:space="preserve">
+    <value>Tool_LoopConstruct_Select_and_Apply_Tags</value>
+  </data>
+  <data name="Tool_LoopConstruct_For_Each_Tags" xml:space="preserve">
+    <value>Tool_LoopConstruct_For_Each_Tags</value>
+  </data>
+  <data name="Tool_Flow_Switch_Tags" xml:space="preserve">
+    <value>Tool_Flow_Switch_Tags</value>
+  </data>
+  <data name="Tool_Flow_Sequence_Tags" xml:space="preserve">
+    <value>Tool_Flow_Sequence_Tags</value>
+  </data>
+  <data name="Tool_Flow_Decision_Tags" xml:space="preserve">
+    <value>Tool_Flow_Decision_Tags</value>
+  </data>
+  <data name="Tool_File_Zip_Tags" xml:space="preserve">
+    <value>Tool_File_Zip_Tags</value>
+  </data>
+  <data name="Tool_File_Write_File_Tags" xml:space="preserve">
+    <value>Tool_File_Write_File_Tags</value>
+  </data>
+  <data name="Tool_File_Unzip_Tags" xml:space="preserve">
+    <value>Tool_File_Unzip_Tags</value>
+  </data>
+  <data name="Tool_File_Rename_Tags" xml:space="preserve">
+    <value>Tool_File_Rename_Tags</value>
+  </data>
+  <data name="Tool_File_Read_Folder_Tags" xml:space="preserve">
+    <value>Tool_File_Read_Folder_Tags</value>
+  </data>
+  <data name="Tool_File_Read_File_Tags" xml:space="preserve">
+    <value>Tool_File_Read_File_Tags</value>
+  </data>
+  <data name="Tool_File_Move_Tags" xml:space="preserve">
+    <value>Tool_File_Move_Tags</value>
+  </data>
+  <data name="Tool_File_Delete_Tags" xml:space="preserve">
+    <value>Tool_File_Delete_Tags</value>
+  </data>
+  <data name="Tool_File_Create_Tags" xml:space="preserve">
+    <value>Tool_File_Create_Tags</value>
+  </data>
+  <data name="Tool_File_Copy_Tags" xml:space="preserve">
+    <value>Tool_File_Copy_Tags</value>
+  </data>
+  <data name="Tool_Email_SMTP_Send_Tags" xml:space="preserve">
+    <value>Tool_Email_SMTP_Send_Tags</value>
+  </data>
+  <data name="Tool_Email_Exchange_Send_Tags" xml:space="preserve">
+    <value>Tool_Email_Exchange_Send_Tags</value>
+  </data>
+  <data name="Tool_Dropbox_Upload_Tags" xml:space="preserve">
+    <value>Tool_Dropbox_Upload_Tags</value>
+  </data>
+  <data name="Tool_Dropbox_List_Contents_Tags" xml:space="preserve">
+    <value>Tool_Dropbox_List_Contents_Tags</value>
+  </data>
+  <data name="Tool_Dropbox_Download_Tags" xml:space="preserve">
+    <value>Tool_Dropbox_Download_Tags</value>
+  </data>
+  <data name="Tool_Dropbox_Delete_Tags" xml:space="preserve">
+    <value>Tool_Dropbox_Delete_Tags</value>
+  </data>
+  <data name="Tool_Database_SQL_Server_Tags" xml:space="preserve">
+    <value>Tool_Database_SQL_Server_Tags</value>
+  </data>
+  <data name="Tool_Database_SQL_Bulk_Insert_Tags" xml:space="preserve">
+    <value>Tool_Database_SQL_Bulk_Insert_Tags</value>
+  </data>
+  <data name="Tool_Database_PostgreSQL_Tags" xml:space="preserve">
+    <value>Tool_Database_PostgreSQL_Tags</value>
+  </data>
+  <data name="Tool_Database_Oracle_Tags" xml:space="preserve">
+    <value>Tool_Database_Oracle_Tags</value>
+  </data>
+  <data name="Tool_Database_ODBC_Tags" xml:space="preserve">
+    <value>Tool_Database_ODBC_Tags</value>
+  </data>
+  <data name="Tool_Database_MySQL_Tags" xml:space="preserve">
+    <value>Tool_Database_MySQL_Tags</value>
+  </data>
+  <data name="Tool_Data_Replace_Tags" xml:space="preserve">
+    <value>Tool_Data_Replace_Tags</value>
+  </data>
+  <data name="Tool_Data_Find_Index_Tags" xml:space="preserve">
+    <value>Tool_Data_Find_Index_Tags</value>
+  </data>
+  <data name="Tool_Data_Data_Split_Tags" xml:space="preserve">
+    <value>Tool_Data_Data_Split_Tags</value>
+  </data>
+  <data name="Tool_Data_Data_Merge_Tags" xml:space="preserve">
+    <value>Tool_Data_Data_Merge_Tags</value>
+  </data>
+  <data name="Tool_Data_Case_Convert_Tags" xml:space="preserve">
+    <value>Tool_Data_Case_Convert_Tags</value>
+  </data>
+  <data name="Tool_Data_Base_Convert_Tags" xml:space="preserve">
+    <value>Tool_Data_Base_Convert_Tags</value>
+  </data>
+  <data name="Tool_Data_Assign_Tags" xml:space="preserve">
+    <value>Tool_Data_Assign_Tags</value>
+  </data>
+  <data name="Tool_Data_Assign_Object_Tags" xml:space="preserve">
+    <value>Tool_Data_Assign_Object_Tags</value>
+  </data>
+  <data name="Tool_Ruby_Tag" xml:space="preserve">
+    <value>Tool_Ruby_Tag</value>
+  </data>
+  <data name="Tool_Python_Tag" xml:space="preserve">
+    <value>Tool_Python_Tag</value>
+  </data>
 </root>

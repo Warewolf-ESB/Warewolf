@@ -9,6 +9,7 @@
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.MultiAssign"
                        xmlns:quickVariableInput="clr-namespace:Dev2.Activities.Designers2.Core.QuickVariableInput"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                       xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:MultiAssignDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
@@ -25,6 +26,7 @@
 
             <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
                 <Setter Property="Content" Value="{DynamicResource Small}" />
+                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.Tool_Data_Assign_Tags}" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
                         <Setter Property="Content" Value="{DynamicResource Large}" />
