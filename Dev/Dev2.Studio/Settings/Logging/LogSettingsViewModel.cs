@@ -147,7 +147,7 @@ namespace Dev2.Settings.Logging
             }
             else
             {
-                CustomContainer.Get<IPopupController>().Show("Studio Log file does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                CustomContainer.Get<IPopupController>().Show("Studio Log file does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
             }
         }
 

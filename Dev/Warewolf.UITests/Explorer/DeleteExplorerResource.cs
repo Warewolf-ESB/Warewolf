@@ -13,6 +13,8 @@ namespace Warewolf.UITests
     {
         const string flowSwitch = "DeleteExplorerResource_FileToDelete";
         const string flowSequence = "DeleteExplorerResource_FileToDelete2";
+        const string uiTestDependencyOne = "UITestDependencyOne";
+        const string uiTestDependencyFolder = "UITestDependency";
 
         [TestMethod]
         [TestCategory("Explorer")]
@@ -38,6 +40,35 @@ namespace Warewolf.UITests
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
             var firstOrDefault = allFiles.FirstOrDefault(s => s.StartsWith(flowSequence));
             Assert.IsNull(firstOrDefault);
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DeletedResourceShowDependencies()
+        {
+            UIMap.Filter_Explorer(uiTestDependencyOne);
+            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            UIMap.Click_MessageBox_OK();
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DeletedFolderShowDependencies()
+        {
+            UIMap.Filter_Explorer(uiTestDependencyFolder);
+            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            UIMap.Click_MessageBox_DeleteAnyway();
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
         }
 
         #region Additional test attributes

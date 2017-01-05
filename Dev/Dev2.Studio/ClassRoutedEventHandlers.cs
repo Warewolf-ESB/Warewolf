@@ -53,7 +53,7 @@ namespace Dev2.Studio
                 popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. "
                     + Environment.NewLine + Environment.NewLine +
                     "Please note that tabs are fully supported at runtime, in variables and when reading from files.",
-                    "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog, false, false, true, false);
+                    "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog, false, false, true, false, false, false);
             }), null);
         }
 

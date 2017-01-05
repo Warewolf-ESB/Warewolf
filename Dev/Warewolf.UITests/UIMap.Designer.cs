@@ -187,6 +187,18 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
+        
+        public UIWpfWindow UIWpfWindow
+        {
+            get
+            {
+                if ((this.mUIWpfWindow == null))
+                {
+                    this.mUIWpfWindow = new UIWpfWindow();
+                }
+                return this.mUIWpfWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -213,6 +225,8 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
+        
+        private UIWpfWindow mUIWpfWindow;
         #endregion
     }
     
@@ -100925,6 +100939,54 @@ namespace Warewolf.UITests
                 return this.mDeleteConfirmation;
             }
         }
+        
+        public WpfButton DeleteAnyway
+        {
+            get
+            {
+                if ((this.mDeleteAnyway == null))
+                {
+                    this.mDeleteAnyway = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteAnyway.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
+                    this.mDeleteAnyway.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeleteAnyway;
+            }
+        }
+        
+        public WpfCheckBox Applytoall
+        {
+            get
+            {
+                if ((this.mApplytoall == null))
+                {
+                    this.mApplytoall = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mApplytoall.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ChkBoxApplyToAll";
+                    this.mApplytoall.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mApplytoall;
+            }
+        }
+        
+        public WpfButton ShowDependencies
+        {
+            get
+            {
+                if ((this.mShowDependencies == null))
+                {
+                    this.mShowDependencies = new WpfButton(this);
+                    #region Search Criteria
+                    this.mShowDependencies.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDependencies";
+                    this.mShowDependencies.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mShowDependencies;
+            }
+        }
         #endregion
         
         #region Fields
@@ -100951,6 +101013,12 @@ namespace Warewolf.UITests
         private WpfText mDeployConflictsText;
         
         private WpfText mDeleteConfirmation;
+        
+        private WpfButton mDeleteAnyway;
+        
+        private WpfCheckBox mApplytoall;
+        
+        private WpfButton mShowDependencies;
         #endregion
     }
     
@@ -106327,5 +106395,17 @@ namespace Warewolf.UITests
         #region Fields
         private WinButton mOKButton;
         #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWpfWindow : WpfWindow
+    {
+        
+        public UIWpfWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            #endregion
+        }
     }
 }
