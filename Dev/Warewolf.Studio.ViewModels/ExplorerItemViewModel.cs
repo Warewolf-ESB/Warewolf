@@ -496,7 +496,6 @@ namespace Warewolf.Studio.ViewModels
             IsRunAllTestsVisible = _isService;
             IsViewSwaggerVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
-            IsDuplicateVisible = _isService;
 
             IsDebugInputsVisible = _isService;
             IsDebugStudioVisible = _isService;

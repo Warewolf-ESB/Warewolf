@@ -864,6 +864,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NoPermissionsToolTip" xml:space="preserve">
     <value>You do not have permissions to execute this command</value>
   </data>
+  <data name="StartNodeNotConnectedToolTip" xml:space="preserve">
+    <value>Connect the start node to the first tool or service in your flow</value>
+  </data>
   <data name="NewWebSourceTooltip" xml:space="preserve">
     <value>Create a new web source</value>
   </data>
