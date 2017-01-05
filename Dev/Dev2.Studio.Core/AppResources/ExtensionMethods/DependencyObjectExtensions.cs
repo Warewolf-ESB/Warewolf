@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -103,7 +103,8 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         public static T FindChild<T>(this DependencyObject parent, Func<T, bool> predicate)
             where T : DependencyObject
         {
-            return parent.FindChildren(predicate).First();
+            var findChildren = parent.FindChildren(predicate);
+            return findChildren.FirstOrDefault();
         }
 
         /// <summary>

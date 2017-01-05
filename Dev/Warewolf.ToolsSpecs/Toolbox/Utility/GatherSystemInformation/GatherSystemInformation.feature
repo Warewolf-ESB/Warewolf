@@ -149,15 +149,6 @@ Scenario: Assign a system Domain into a scalar
 	| # |                      |
 	| 1 | [[testvar]] = String |
 
-Scenario: Assign a system Number Of Warewolf Agents into a scalar
-	Given I have a variable "[[testvar]]" and I selected "NumberOfWarewolfAgents"	
-	When the gather system infomartion tool is executed
-	Then the value of the variable "[[testvar]]" is a valid "String"
-	And the execution has "NO" error
-	And the debug output as 
-	| # |                      |
-	| 1 | [[testvar]] = String |
-
 Scenario: Assign User Roles into a recordset
 	Given I have a variable "[[my(2).roles]]" and I selected "UserRoles"	
 	When the gather system infomartion tool is executed
