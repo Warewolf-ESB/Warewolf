@@ -1996,7 +1996,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var validationIcon = DesignerView.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
                 if(validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    validationIcon.ToolTip = "Connect the start node to the first tool or service in your flow";
+                    validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
                 }
             }
         }
@@ -2125,17 +2125,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
         }
-
-        private void ViewPreviewMouseWheel(object sender, MouseEventArgs mouseEventArgs)
-        {
-            var dp = mouseEventArgs.OriginalSource;
-            var validationIcon = dp as Border;
-            if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
-            {
-                validationIcon.ToolTip = "Connect the start node to the first tool or service in your flow";
-            }
-        }
-        
 
         /// <summary>
         /// Handles Mouse click events on Designer
