@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -798,7 +798,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowPopup(IPopupMessage popupMessage)
         {
-            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false);
+            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false, false, false);
         }
 
         public void EditServer(IServerSource selectedServer)
@@ -894,7 +894,7 @@ namespace Dev2.Studio.ViewModels
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
@@ -1150,7 +1150,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     var result = PopupProvider.Show(string.Format(StringResources.DialogBody_HasDependencies, model.ResourceName, model.ResourceType.GetDescription()),
                                                     string.Format(StringResources.DialogTitle_HasDependencies, model.ResourceType.GetDescription()),
-                                                    MessageBoxButton.OK, MessageBoxImage.Error, "", true, true, false, false);
+                                                    MessageBoxButton.OK, MessageBoxImage.Error, "", true, true, false, false, true, true);
 
                     if (result != MessageBoxResult.OK)
                     {
@@ -1191,7 +1191,7 @@ namespace Dev2.Studio.ViewModels
 
                         var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
                                                               StringResources.DialogTitle_ConfirmDelete,
-                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false) == MessageBoxResult.Yes;
+                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
 
                         return shouldDelete;
                     }
@@ -1204,7 +1204,7 @@ namespace Dev2.Studio.ViewModels
         {
             var popupResult = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmFolderDelete, folderBeingDeleted),
                                StringResources.DialogTitle_ConfirmDelete,
-                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false);
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false);
 
             var confirmDelete = popupResult == MessageBoxResult.Yes;
 

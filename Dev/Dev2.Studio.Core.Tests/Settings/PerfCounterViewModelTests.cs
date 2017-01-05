@@ -357,7 +357,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),It.IsAny<MessageBoxButton>(),It.IsAny<MessageBoxImage>(),It.IsAny<string>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>())).Verifiable();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),It.IsAny<MessageBoxButton>(),It.IsAny<MessageBoxImage>(),It.IsAny<string>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
             var performanceCounterTo = new PerformanceCounterTo();
             performanceCounterTo.NativeCounters.Add(new TestCounter(WarewolfPerfCounterType.AverageExecutionTime));
@@ -376,7 +376,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("ResetPerformanceCounters", perfcounterViewModel.CommunicationController.ServiceName);
             mockCommsController.Verify(controller => controller.ExecuteCommand<IExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
-            mockPopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+            mockPopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
         }
         
         [TestMethod]
@@ -386,7 +386,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),It.IsAny<MessageBoxButton>(),It.IsAny<MessageBoxImage>(),It.IsAny<string>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>())).Verifiable();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),It.IsAny<MessageBoxButton>(),It.IsAny<MessageBoxImage>(),It.IsAny<string>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(),It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             CustomContainer.Register(mockPopupController.Object);
             var performanceCounterTo = new PerformanceCounterTo();
             performanceCounterTo.NativeCounters.Add(new TestCounter(WarewolfPerfCounterType.AverageExecutionTime));
@@ -405,7 +405,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("ResetPerformanceCounters", perfcounterViewModel.CommunicationController.ServiceName);
             mockCommsController.Verify(controller => controller.ExecuteCommand<IExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
-            mockPopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
+            mockPopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [TestMethod]

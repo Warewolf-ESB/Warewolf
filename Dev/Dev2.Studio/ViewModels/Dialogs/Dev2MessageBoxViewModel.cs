@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,6 +37,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         private readonly MessageBoxResult _defaultResult;
         private readonly string _dontShowAgainKey;
         private bool _dontShowAgain;
+        private static bool _deleteAnyway;
 
         private static Dictionary<string, MessageBoxResult> _dontShowAgainOptions;
 
@@ -149,6 +150,15 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
         public string DontShowAgainKey => _dontShowAgainKey;
 
+        public bool DeleteAnyway
+        {
+            get { return _deleteAnyway; }
+            set
+            {
+                _deleteAnyway = value; 
+            }
+        }
+
         #endregion Properties
 
         #region Static Methods
@@ -230,8 +240,8 @@ namespace Dev2.Studio.ViewModels.Dialogs
             return result;
         }
 
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
+        public static MessageBoxViewModel Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey, bool isDependenciesButtonVisible,
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             // Claculate the appropriate default result
             var defaultResult = MessageBoxResult.OK;
@@ -247,19 +257,21 @@ namespace Dev2.Studio.ViewModels.Dialogs
                     break;
             }
 
-            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
+            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
         }
 
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon,
+        public static MessageBoxViewModel Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon,
                                             MessageBoxResult defaultResult, string dontShowAgainKey, bool isDependenciesButtonVisible,
-            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound)
+            bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             // Check for don't show again option
             var dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
-            if(dontShowAgainOption.Item1)
+            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
+            if (dontShowAgainOption.Item1)
             {
                 // Return the remembered option
-                return dontShowAgainOption.Item2;
+                msgBoxViewModel.Result = dontShowAgainOption.Item2;
+                return msgBoxViewModel;
             }
 
             if (caption != "Duplicated Resources")
@@ -267,7 +279,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 urlsFound = new List<string>();
             }
 
-            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
+            
 
             var msgBoxView = new MessageBoxView
             {
@@ -278,9 +290,12 @@ namespace Dev2.Studio.ViewModels.Dialogs
             msgBoxViewModel.IsInfo = isInfo;
             msgBoxViewModel.IsQuestion = isQuestion;
             msgBoxViewModel.IsDependenciesButtonVisible = isDependenciesButtonVisible;
+            msgBoxViewModel.IsDeleteAnywayButtonVisible = isDeleteAnywayButtonVisible;
+            msgBoxViewModel.ApplyToAll = applyToAll;
+
             msgBoxView.ShowDialog();
 
-            return msgBoxViewModel.Result;
+            return msgBoxViewModel;
         }
 
         #endregion Static Methods

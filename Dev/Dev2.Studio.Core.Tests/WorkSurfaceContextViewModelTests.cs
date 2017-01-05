@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -675,7 +675,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
-            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false));
+            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
         }
 
 
@@ -1004,7 +1004,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.QuickDebug();
 
-            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false));
+            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
 
         }
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -125,7 +125,7 @@ namespace Dev2.Settings.Scheduler
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(Core.ServerDisconnected, _model.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         public void Dispose()

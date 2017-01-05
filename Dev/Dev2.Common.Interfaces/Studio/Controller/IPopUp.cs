@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,11 +26,13 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxImage ImageType { get; set; }
         MessageBoxButton Buttons { get; set; }
         string DontShowAgainKey { get; set; }
+        bool DeleteAnyway { get; }
+        bool ApplyToAll { get; }
         MessageBoxResult Show(IPopupMessage popupMessage);
         MessageBoxResult Show();
 
         MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image,
-            string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion);
+            string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible, bool applyToAll);
 
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);

@@ -171,7 +171,7 @@ namespace Dev2.ViewModels
                     var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
                         $"Save {ViewModel.DisplayName.Replace("*", "")}?",
                         MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Information, "", false, false, true, false);
+                        MessageBoxImage.Information, "", false, false, true, false, false, false);
 
                     switch (result)
                     {

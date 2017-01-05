@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -125,7 +125,7 @@ namespace Dev2.Controller
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, false, true, false);
+                MessageBoxImage.Error, "", false, false, true, false, false, false);
         }
 
         
@@ -218,7 +218,7 @@ namespace Dev2.Controller
                 if(connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
                     popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
-                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
+                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
         }
@@ -233,7 +233,7 @@ namespace Dev2.Controller
                     {
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                               ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                            MessageBoxImage.Information, "", false, false, true, false);
+                            MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
                 catch(Exception e)
@@ -268,7 +268,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                               ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                                              MessageBoxImage.Information, "", false, false, true, false);
+                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
             }
@@ -338,7 +338,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                               ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
-                                              MessageBoxImage.Information, "", false, false, true, false);
+                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
             }
@@ -385,7 +385,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                               ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
-                                              MessageBoxImage.Information, "", false, false, true, false);
+                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
             }

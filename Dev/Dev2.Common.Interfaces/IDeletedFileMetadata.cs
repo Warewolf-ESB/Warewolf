@@ -7,5 +7,7 @@ namespace Dev2.Common.Interfaces
         bool IsDeleted { get; set; }
         Guid ResourceId { get; set; }
         bool ShowDependencies { get; set; }
+        bool ApplyToAll { get; set; }
+        bool DeleteAnyway { get; set; }
     }
 }

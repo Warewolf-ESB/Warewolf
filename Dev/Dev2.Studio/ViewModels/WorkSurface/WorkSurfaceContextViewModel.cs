@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -506,7 +506,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 _popupController.Show(StringResources.Debugging_Error,
                                       StringResources.Debugging_Error_Title,
-                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
 
                 SetDebugStatus(DebugStatus.Finished);
                 return;
@@ -576,7 +576,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 _popupController.Show(string.Format(StringResources.Saving_Error + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage),
                                       StringResources.Saving_Error_Title,
-                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
 
                 return false;
             }

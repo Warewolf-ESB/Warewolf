@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("WorkflowService");
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),MessageBoxButton.OK, MessageBoxImage.Error, "false",true,true,false,false)).Returns(MessageBoxResult.OK);
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),MessageBoxButton.OK, MessageBoxImage.Error, "false",true,true,false,false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
             var item = studioServerProxy.Delete(mockExplorerItemModel.Object);
@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Version");
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),MessageBoxButton.OK, MessageBoxImage.Error, "false",true,true,false,false)).Returns(MessageBoxResult.OK);
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),MessageBoxButton.OK, MessageBoxImage.Error, "false",true,true,false,false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
             var item = studioServerProxy.Delete(mockExplorerItemModel.Object);
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentConnection.Setup(a => a.DisplayName).Returns("localhost");
             var versionManagerProxy = new VersionManagerProxy(new CommunicationControllerFactory(), environmentConnection.Object);
             var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false)).Returns(MessageBoxResult.OK);
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
 
             var versions = versionManagerProxy.GetVersions(It.IsAny<Guid>());
