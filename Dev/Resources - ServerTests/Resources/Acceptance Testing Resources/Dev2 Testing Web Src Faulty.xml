@@ -1,9 +1,0 @@
-
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACb3TKh08MNcsbhxJcVJ1vWAAAAAASAAACgAAAAEAAAAJUZCk94fdxbqJYJLsFgPUAYAQAAP2B/rYLTB6gPbk+jrQ5hSEntNVaSL9ezZIy6eiaOSEaUIZD4P44Do0c2jr+InqL3QdOgCeLpJg0KDj9xQE6u434w98eXkN1gOSPo5LM4wRvb2tLUGuoc0QsRzSx5Q01W/GdtX4dTJOpYQRyx/GElsfdCWPSYJ4x/jjo+wfXTG9d3PLKnKDvO5FjcfCEJXKrdNEyMMBVCMX15F+mg1VYgk5N+O16AOuYixgKKq28pOilNHQ+c2q+DpnJLiFi10txkc/qgv3MTOUZkLDJ2s8ff7HPtsH7d0BiIayT1N8N/fEiZznN2axK6os0YAOHbJ70P3Bq83J9yq7cFZb2R0usn18uWVnLtKPpkjTxtRcBEyCLnfL1yX8jELxQAAABeeszEq6M+Afy16uzBndOgQhaEZg==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5862.23067">
-  <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
-  <Category>Acceptance Testing Resources\Dev2 Testing Web Src Faulty</Category>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>WebSource</TypeOf>
-</Source>
