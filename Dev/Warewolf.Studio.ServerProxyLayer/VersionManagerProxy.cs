@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                MessageBoxImage.Error, "", false, true, false, false);
+                MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
+using Warewolf.Studio.ViewModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
@@ -38,6 +39,9 @@ namespace Dev2.Studio.Controller
         public bool IsQuestion { get; private set; }
         public List<string> UrlsFound { get; private set; }
         public bool IsDependenciesButtonVisible { get; private set; }
+        public bool IsDeleteAnywayButtonVisible { get; private set; }
+        public bool DeleteAnyway { get; private set; }
+        public bool ApplyToAll { get; private set; }
 
         public MessageBoxResult Show(IPopupMessage popupMessage)
         {
@@ -46,10 +50,13 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound);
+            var dev2MessageBoxViewModel = ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
+            DeleteAnyway = dev2MessageBoxViewModel.IsDeleteAnywaySelected;
+            ApplyToAll = dev2MessageBoxViewModel.ApplyToAll;
+            return dev2MessageBoxViewModel.Result;
         }
 
-        public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null, bool isDependenciesButtonVisible = false, bool isError = false, bool isInfo = false, bool isQuestion = false)
+        public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null, bool isDependenciesButtonVisible = false, bool isError = false, bool isInfo = false, bool isQuestion = false, bool isDeleteAnywayButtonVisible = false, bool applyToAll = false)
         {
             Buttons = buttons;
             Description = description;
@@ -60,10 +67,12 @@ namespace Dev2.Studio.Controller
             IsError = isError;
             IsInfo = isInfo;
             IsQuestion = isQuestion;
+            IsDeleteAnywayButtonVisible = isDeleteAnywayButtonVisible;
+            ApplyToAll = applyToAll;
             return Show();
         }
 
-        public Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, MessageBoxResult> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound);
+        public Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, bool, bool, MessageBoxViewModel> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
 
         public MessageBoxResult ShowNotConnected()
         {
@@ -75,6 +84,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -89,6 +100,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -105,6 +118,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -119,6 +134,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -133,6 +150,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -146,6 +165,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
         public MessageBoxResult ShowExceptionViewAppreciation()
@@ -159,6 +180,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
         public MessageBoxResult ShowCorruptTaskResult(string errorMessage)
@@ -174,6 +197,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -193,6 +218,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -219,6 +246,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -240,6 +269,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -262,6 +293,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -278,6 +311,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -297,42 +332,43 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
         public MessageBoxResult ShowDeployNameConflict(string message)
         {
-
             Buttons = MessageBoxButton.OK;
             Header = "Deploy Name Conflicts";
-
             Description = message;
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
         public MessageBoxResult ShowDeploySuccessful(string message)
         {
-
             Buttons = MessageBoxButton.OK;
             Header = "Resource(s) Deployed Successfully";
-
             Description = message;
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
-
             Header = "Settings Have Changed";
             var description = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
@@ -348,6 +384,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -368,6 +406,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -384,6 +424,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -401,6 +443,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -414,6 +458,8 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             Show();
         }
 
@@ -428,6 +474,8 @@ namespace Dev2.Studio.Controller
             IsInfo = true;
             IsError = false;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
             return Show();
         }
 
@@ -455,8 +503,7 @@ namespace Dev2.Studio.Controller
             {
                 Buttons = MessageBoxButton.OK,
                 Header = Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader,
-                Description = $"The name {name} already exists. Please choose a different name.",
-
+                Description = $"The name {name} already exists. Please choose a different name."
             };
         }
     }

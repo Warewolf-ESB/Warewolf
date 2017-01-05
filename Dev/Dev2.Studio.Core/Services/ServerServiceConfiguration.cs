@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,7 +51,7 @@ namespace Dev2.Services
                     throw new Exception(ErrorResource.NullPopupController);
                 }
 
-                var startResult = PopupController.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNo, MessageBoxImage.Question, null, false, false, false, true);
+                var startResult = PopupController.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNo, MessageBoxImage.Question, null, false, false, false, true, false, false);
 
                 if(startResult == MessageBoxResult.None || startResult == MessageBoxResult.No || startResult == MessageBoxResult.Cancel)
                 {
@@ -75,7 +75,7 @@ namespace Dev2.Services
             {
                 if(!ServiceManager.Start())
                 {
-                    PopupController.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                    PopupController.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                     return false;
                 }
             }
@@ -87,7 +87,7 @@ namespace Dev2.Services
         {
             if(!ServiceManager.Exists())
             {
-                PopupController.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                PopupController.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                 return false;
             }
 

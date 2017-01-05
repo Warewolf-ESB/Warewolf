@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -122,6 +123,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 isMatched = explorerItemModel.IsService;
             }
 
+            var explorerViewModelBase = ((Warewolf.Studio.ViewModels.ExplorerViewModelBase)SingleEnvironmentExplorerViewModel);
+            var conductorBaseWithActiveItem = (Caliburn.Micro.ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>)
+                ((Warewolf.Studio.ViewModels.ExplorerItemViewModel)explorerViewModelBase?.SelectedItem)?.ShellViewModel;
+            var workSurfaceContextViewModel = conductorBaseWithActiveItem?.ActiveItem;
+            var contextualResourceModel = workSurfaceContextViewModel?.ContextualResourceModel;
+            var guid = contextualResourceModel?.ID;
+            if(explorerItemModel != null && explorerItemModel.ResourceId == guid)
+            {
+                return false;
+            }
+
             return explorerItemModel != null && isMatched;
         }
 
@@ -145,6 +157,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Okay()
         {
             var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+
+
+
             if(selectedItem == null)
             {
                 return;

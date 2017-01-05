@@ -422,10 +422,8 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             Click_Explorer_RemoteServer_Connect_Button();
         }
-
-        [Given(@"I Try Connect To Remote Server")]
+        
         [When(@"I Try Connect To Remote Server")]
-        [Then(@"I Try Connect To Remote Server")]
         public void TryConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
@@ -880,7 +878,7 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List()
         {
             Click_Connect_Control_InExplorer();
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(79, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(79, 8));
         }
 
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
@@ -1279,15 +1277,12 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.SideMenuBar.ConfigureSettingsButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
-
-        [Given(@"I Click Deploy Ribbon Button")]
+        
         [When(@"I Click Deploy Ribbon Button")]
-        [Then(@"I Click Deploy Ribbon Button")]
         public void Click_Deploy_Ribbon_Button()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -3620,25 +3615,20 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Combobox")]
+        
         [When(@"I Click Deploy Tab Destination Server Combobox")]
-        [Then(@"I Click Deploy Tab Destination Server Combobox")]
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
+        
         [When(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
         public void Click_Deploy_Tab_Destination_Server_Connect_Button()
         {
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-            //Dismiss resource conflict dialog
         }
 
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
@@ -3648,10 +3638,8 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
-
-        [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
+        
         [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
-        [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
@@ -4052,13 +4040,21 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
+        [Given(@"I Click MessageBox DeleteAnyway")]
+        [When(@"I Click MessageBox DeleteAnyway")]
+        [Then(@"I Click MessageBox DeleteAnyway")]
+        [Given(@"I Click MessageBox DeleteAnyway")]
+        public void Click_MessageBox_DeleteAnyway()
+        {
+            Mouse.Click(MessageBoxWindow.DeleteAnyway, new Point(35, 11));
+        }
+
         [Given(@"I Click MessageBox Yes")]
         [When(@"I Click MessageBox Yes")]
         [Then(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
-            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));
-            Assert.IsFalse(ControlExistsNow(MessageBoxWindow), "Message box does exist");
+            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));            
         }
 
         [Given(@"I Click Minimize TopRibbon Button")]
@@ -5327,9 +5323,9 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Copy File";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(311, 128));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.SharepointTools.CopyFile, new Point(10, 16));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(311, 128));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.Exists, "server lookup does not exist on the sharepoint small view.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
@@ -6875,6 +6871,21 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
         }
 
+        [Given(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        [When(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        [Then(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
+        public void RightClick_StackOverFlowService_OnDesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+
+        }
+
+        public void RightClick_AssignOnDesignSurface()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject, MouseButtons.Right, ModifierKeys.None, new Point(156, 11));
+
+        }
+        
         [Given(@"I RightClick CaseConvert OnDesignSurface")]
         [When(@"I RightClick CaseConvert OnDesignSurface")]
         [Then(@"I RightClick CaseConvert OnDesignSurface")]
@@ -7644,9 +7655,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
-        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
@@ -8612,7 +8623,6 @@ namespace Warewolf.UITests
         }
 
         [Given(@"Destination Remote Server Is Connected")]
-        [When(@"Destination Remote Server Is Connected")]
         [Then(@"Destination Remote Server Is Connected")]
         public void ThenDestinationRemoteServerIsConnected()
         {
