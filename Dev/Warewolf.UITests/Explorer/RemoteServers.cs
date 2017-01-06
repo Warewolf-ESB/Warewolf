@@ -12,6 +12,7 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected), "Remote server name still ends with (Connected) in explorer remote server dropdown list after clicking the disconnect button.");
@@ -23,6 +24,7 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
