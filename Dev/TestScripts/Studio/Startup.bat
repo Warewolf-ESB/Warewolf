@@ -45,12 +45,12 @@ IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 )
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF EXIST "%~dp0..\..\Resources - UITests\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Resources" "%ServerBinDirectory%\Resources"
-IF EXIST "%~dp0..\..\Resources - UITests\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Tests" "%ServerBinDirectory%\Tests"
+IF EXIST "%~dp0..\..\Resources - UITests\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Resources" "%ServerBinDirectory%\Resources - UITests"
+IF EXIST "%~dp0..\..\Resources - UITests\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Tests" "%ServerBinDirectory%\Tests - UITests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
-IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%ServerBinDirectory%\Resources" echo d | xcopy /S /Y "%ServerBinDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
-IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%ServerBinDirectory%\Tests" echo d | xcopy /S /Y "%ServerBinDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
+IF NOT EXIST "%ProgramData%\Warewolf\Resources - UITests" IF EXIST "%ServerBinDirectory%\Resources" echo d | xcopy /S /Y "%ServerBinDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
+IF NOT EXIST "%ProgramData%\Warewolf\Tests - UITests" IF EXIST "%ServerBinDirectory%\Tests" echo d | xcopy /S /Y "%ServerBinDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%ServerBinDirectory%\ServerStarted" DEL "%ServerBinDirectory%\ServerStarted"
