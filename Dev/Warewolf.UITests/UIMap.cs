@@ -55,7 +55,7 @@ namespace Warewolf.UITests
         public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            //Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -647,7 +647,7 @@ namespace Warewolf.UITests
                 return control.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
-
+        
         public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
         {
             control.WaitForControlCondition((uicontrol) =>
@@ -676,8 +676,33 @@ namespace Warewolf.UITests
         }
 
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
-        {
+        {            
             WaitForControlNotVisible(control, searchTimeout);
+        }
+
+        [Given(@"I Try DisConnect To Remote Server")]
+        [When(@"I Try DisConnect To Remote Server")]
+        [Then(@"I Try DisConnect To Remote Server")]
+        public void TryDisConnectToRemoteServer()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
+            {
+                Click_Explorer_RemoteServer_Connect_Button();
+                Click_Connect_Control_InExplorer();
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+            }
+            else
+            {
+                Click_Connect_Control_InExplorer();
+                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+                {
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
+                    Click_Explorer_RemoteServer_Connect_Button();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists);
+                    Click_Connect_Control_InExplorer();
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+                }
+            }
         }
 
         [Given(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
@@ -3529,11 +3554,8 @@ namespace Warewolf.UITests
         [When(@"I Click Connect Control InExplorer")]
         [Then(@"I Click Connect Control InExplorer")]
         public void Click_Connect_Control_InExplorer()
-        {
-            //WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+        {            
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            if(MessageBoxWindow.Exists)
-                Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
         [Given(@"I Click Debug Output Assign Cell")]
@@ -3821,7 +3843,6 @@ namespace Warewolf.UITests
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
         }
 
         [Given(@"I Click First Recordset Input Checkbox")]
