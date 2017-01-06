@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -212,6 +213,10 @@ namespace Dev2.Studio.Views
             if (e.Key == Key.I && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
 
+            }
+            if (e.Key == Key.F1)
+            {
+                Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
             }
             if (e.Key == Key.F11 && _isLocked)
             {
