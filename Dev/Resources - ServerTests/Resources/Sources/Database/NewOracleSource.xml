@@ -1,5 +1,5 @@
 
-<Source ID="b1c12282-1712-419c-9929-5dfe42c90210" Name="NewOracleSource" ResourceType="Oracle" IsValid="false" ServerType="Oracle" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAY/F6gQ5E1UyU18CzCcmvxwQAAAACAAAAAAADZgAAwAAAABAAAADsslePE8WXg+aAEgYPldJ9AAAAAASAAACgAAAAEAAAAA+Pvnz0ER1H69+FgShY7jSYAAAAzstPWoVFUQvTihuDVkWgCD9hhbqlNc6aXC2nW1TGekX3AzeZnLONXxtyAc35zzcqKnbqy04osqmpwtqz9ZfWsKC0U8RqGHWPZkF4Jg29YdKIRFxyo2WNrWw7iBUSJ1emIyK6Ng8WuZw0j/TmMphVHAAVGQkeR/96fefB9uq3JEDlprU3fuIHeANFsAkF9IXGUOykxjhrDpUUAAAAQz5w1xxD21JuhfAIQPsJ161j/dM=" ServerVersion="0.0.6212.23827" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="b1c12282-1712-419c-9929-5dfe42c90210" Name="NewOracleSource" ResourceType="Oracle" IsValid="false" ServerType="Oracle" Type="DbSource" ConnectionString="User Id=Testuser;Password=test123;Data Source=RSAKLFSVRGENDEV;Database=HR;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewOracleSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
