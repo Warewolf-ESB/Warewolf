@@ -84,12 +84,12 @@ GOTO StartService
 
 :StartService
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF EXIST "%~dp0..\..\..\Resources - ServerTests\Resources" echo d | xcopy /S /Y "%~dp0..\..\..\Resourses - ServerTests\Resources" "%DeploymentDirectory%\Resources"
-IF EXIST "%~dp0..\..\..\Resources - ServerTests\Tests" echo d | xcopy /S /Y "%~dp0..\..\..\Resources - ServerTests\Tests" "%DeploymentDirectory%\Tests"
+IF EXIST "%~dp0..\..\..\Resources - ServerTests\Resources" echo d | xcopy /S /Y "%~dp0..\..\..\Resourses - ServerTests\Resources" "%DeploymentDirectory%\Resources - ServerTests"
+IF EXIST "%~dp0..\..\..\Resources - ServerTests\Tests" echo d | xcopy /S /Y "%~dp0..\..\..\Resources - ServerTests\Tests" "%DeploymentDirectory%\Tests - ServerTests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
-IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%DeploymentDirectory%\Resources" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
-IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%DeploymentDirectory%\Tests" echo d | xcopy /S /Y "%DeploymentDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
+IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%DeploymentDirectory%\Resources - ServerTests" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources - ServerTests" "%ProgramData%\Warewolf\Resources"
+IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%DeploymentDirectory%\Tests - ServerTests" echo d | xcopy /S /Y "%DeploymentDirectory%\Tests - ServerTests" "%ProgramData%\Warewolf\Tests"
 
 REM ** Start the server service
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
