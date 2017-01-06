@@ -136,10 +136,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError(DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
-                    if (DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
-                        dataObject.Environment.Assign(Result, GlobalConstants.DropBoxFailure, update);
-                    else
-                        dataObject.Environment.Assign(Result, null, update);
+                    dataObject.Environment.Assign(Result, DisplayName.ToUpper().Contains("Dropbox".ToUpper()) ? GlobalConstants.DropBoxFailure : null, update);
                 }
                 if (dataObject.IsDebugMode())
                 {
