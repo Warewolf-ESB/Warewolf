@@ -93,6 +93,7 @@ namespace Dev2.Activities.Specs.Composition
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         const int EnvironmentConnectionTimeout = 3000;
@@ -238,11 +239,18 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [BeforeFeature()]
+        private static void SetUpLocalHost()
+        {
+            EnvModel = EnvironmentRepository.Instance.Source;
+            EnvModel.Connect();
+        }
+
+        private static IEnvironmentModel EnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
@@ -323,7 +331,8 @@ namespace Dev2.Activities.Specs.Composition
                 _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
-            environmentModel.Connect();
+            if (!environmentModel.IsConnected)
+                environmentModel.Connect();
             if (!environmentModel.IsConnected)
             {
                 timeout--;
@@ -3194,7 +3203,7 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs =inputs,
+                Inputs = inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
@@ -3245,25 +3254,14 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings as")]
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
-
-            //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "62652f31-813a-4b97-b488-02e4c16150ff".ToGuid()).FirstOrDefault();
-
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
+            
+            var resourceId="62652f31-813a-4b97-b488-02e4c16150ff".ToGuid();
 
             var postGreActivity = new DsfPostgreSqlActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = resourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
@@ -3350,27 +3348,17 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+        
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            //Load Source based on the name
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid()).FirstOrDefault();
-
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
-
+          
+            var mySqlResourceId = "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = mySqlResourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
@@ -3546,24 +3534,15 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.ID == "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid()).FirstOrDefault();
-
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
+            
+            var resourceId = "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid();
+           
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = resourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
