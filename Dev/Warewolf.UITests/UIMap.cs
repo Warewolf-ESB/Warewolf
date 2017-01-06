@@ -3356,6 +3356,20 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton, new Point(8, 7));
         }
 
+        public void DoubleClick_Toolbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            Playback.Wait(1500);
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
+        }
+
+        public void SingleClick_Toolbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            Playback.Wait(1500);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
+        }
+
         [Given(@"I Click Close Critical Error Dialog")]
         [When(@"I Click Close Critical Error Dialog")]
         [Then(@"I Click Close Critical Error Dialog")]
