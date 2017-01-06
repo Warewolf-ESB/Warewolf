@@ -2144,10 +2144,15 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper restore InconsistentNaming
         {
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
+            var environmentModel = EnvModel;
+            if (!environmentModel.IsConnected)
+                environmentModel.Connect();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
+            if(resource == null)
+            {
+                environmentModel.LoadResources();
+                resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
+            }
             if (resource == null)
             {
                 // ReSharper disable NotResolvedInText
