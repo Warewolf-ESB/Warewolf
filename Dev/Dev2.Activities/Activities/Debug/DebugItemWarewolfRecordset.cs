@@ -12,7 +12,7 @@ namespace Dev2.Activities.Debug
         readonly string _labelText;
         string _operand;
         readonly string _variable;
-        private bool _mockSelected;
+        private readonly bool _mockSelected;
 
         public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand, bool mockSelected = false)
         {
