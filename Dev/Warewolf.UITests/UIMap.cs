@@ -5156,7 +5156,6 @@ namespace Warewolf.UITests
         public void Drag_Toolbox_Move_Onto_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Move";
-            Playback.Wait(2000);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 129));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FileAndFTP.Move, new Point(32, 4));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 129));
@@ -7096,6 +7095,25 @@ namespace Warewolf.UITests
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
+        [Given(@"I Rename Item using Shortcut")]
+        [When(@"I Rename Item using Shortcut")]
+        [Then(@"I Rename Item using Shortcut")]
+        public void ThenIRenameItemUsingShortcut()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(77, 9));
+            Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, "{F2}");
+        }
+
+        [Given(@"I Create New Folder Item using Shortcut")]
+        [When(@"I Create New Folder Item using Shortcut")]
+        [Then(@"I Create New Folder Item using Shortcut")]
+        public void ThenICreateNewFolderItemUsingShortcut()
+        {
+            Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(77, 9));
+            Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, "F", (ModifierKeys.Control | ModifierKeys.Shift));
+        } 
+
+
         [When(@"I RightClick FindIndex OnDesignSurface")]
         public void RightClick_FindIndex_OnDesignSurface()
         {
@@ -8583,10 +8601,10 @@ namespace Warewolf.UITests
         [Then(@"""(.*)"" Resource Exists In Windows Directory ""(.*)""")]
         public void ResourceExistsInWindowsDirectory(string serviceName, string path)
         {
-            var folder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Unit Tests";
-            var allFiles = Directory.GetFiles(folder, "*.xml", SearchOption.AllDirectories);
-            Assert.IsTrue(allFiles.Any(p => p.Contains(serviceName)));
+            Filter_Explorer(serviceName);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);            
         }
+
 
         [Given(@"Context Menu Has Two Items")]
         [When(@"Context Menu Has Two Items")]
