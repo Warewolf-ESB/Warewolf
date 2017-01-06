@@ -46,6 +46,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Delete_Tags;
         }
 
         public ICommand NewSourceCommand { get; set; }
@@ -151,10 +152,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -163,7 +161,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public ObservableCollection<DropBoxSource> LoadOAuthSources()

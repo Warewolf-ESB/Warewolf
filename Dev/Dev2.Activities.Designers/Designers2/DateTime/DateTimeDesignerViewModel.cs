@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.DateTime
             TimeModifierTypes = new List<string>(DateTimeFormatter.TimeModifierTypes);
             SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time_Tags;
         }
 
         public List<string> TimeModifierTypes { get; private set; }
@@ -64,10 +65,7 @@ namespace Dev2.Activities.Designers2.DateTime
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

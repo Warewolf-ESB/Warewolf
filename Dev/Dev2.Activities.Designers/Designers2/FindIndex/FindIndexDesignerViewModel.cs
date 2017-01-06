@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.FindIndex
             SelectedIndex = string.IsNullOrEmpty(Index) ? IndexList[0] : Index;
             SelectedDirection = string.IsNullOrEmpty(Direction) ? DirectionList[0] : Direction;
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Find_Index_Tags;
         }
 
         public IList<string> IndexList { get; private set; }
@@ -82,10 +83,7 @@ namespace Dev2.Activities.Designers2.FindIndex
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

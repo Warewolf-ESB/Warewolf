@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
             dynamic mi = ModelItem;
             InitializeItems(mi.JsonMappings);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Create_JSON_Tags;
         }
 
         public override string CollectionName => "JsonMappings";

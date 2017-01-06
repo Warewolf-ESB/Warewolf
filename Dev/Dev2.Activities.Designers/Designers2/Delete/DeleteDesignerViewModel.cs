@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Delete
             : base(modelItem, "File or Folder", string.Empty)
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Delete_Tags;
         }
 
         public override void Validate()
@@ -32,10 +33,7 @@ namespace Dev2.Activities.Designers2.Delete
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

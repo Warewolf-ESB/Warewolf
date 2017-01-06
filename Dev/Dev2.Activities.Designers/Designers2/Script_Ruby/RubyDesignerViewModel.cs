@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers2.Script_Ruby
             ChooseScriptSourceCommand = new DelegateCommand(o => ChooseScriptSources());
             AddTitleBarLargeToggle();
             _scriptChooser = new ScriptChooser();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Ruby_Tag;
         }
 
         public string IncludeFile

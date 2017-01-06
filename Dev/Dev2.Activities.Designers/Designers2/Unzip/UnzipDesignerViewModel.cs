@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Unzip
             : base(modelItem, "Zip Name", "Destination")
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Unzip_Tags;
         }
 
         public override void Validate()
@@ -38,10 +39,7 @@ namespace Dev2.Activities.Designers2.Unzip
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

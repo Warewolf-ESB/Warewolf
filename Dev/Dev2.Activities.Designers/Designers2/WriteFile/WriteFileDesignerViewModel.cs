@@ -30,6 +30,7 @@ namespace Dev2.Activities.Designers2.WriteFile
             }
 
             Modelitem = modelItem;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Write_File_Tags;
         }
 
         public override void Validate()
@@ -50,10 +51,7 @@ namespace Dev2.Activities.Designers2.WriteFile
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

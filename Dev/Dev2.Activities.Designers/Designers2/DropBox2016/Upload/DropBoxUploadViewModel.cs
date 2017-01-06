@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Upload_Tags;
         }
 
         public ICommand NewSourceCommand { get; set; }
@@ -192,10 +193,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
