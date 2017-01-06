@@ -442,7 +442,7 @@ namespace Warewolf.UITests
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
-        public void ThenITryRemoveFromRemoteServerExplorer(string ResourceName)
+        public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
         {
             TryConnectToRemoteServer();
             Filter_Explorer(ResourceName);
@@ -872,20 +872,22 @@ namespace Warewolf.UITests
         {
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
             Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
-        }
-
-        [When(@"I Select ""(.*)"" From Service Picker")]
-        public void Select_Service_From_Service_Picker_Dialog(string ServiceName)
+        }        
+        public void Select_First_Service_From_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
-            if (ControlExistsNow(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1.TreeItem11))
-            {
-                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1.TreeItem11);
-            }
-            else
-            {
-                Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
-            }
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
+            Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
+            Click_Service_Picker_Dialog_OK();
+        }
+
+        [Given(@"I Select ""(.*)"" From Service Picker")]
+        [When(@"I Select ""(.*)"" From Service Picker")]
+        [Then(@"I Select ""(.*)"" From Service Picker")]
+        public void Select_SubItem_Service_From_Service_Picker_Dialog(string ServiceName)
+        {
+            ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1.TreeItem11);
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
         }
@@ -982,9 +984,7 @@ namespace Warewolf.UITests
         [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
-            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            //Playback.Wait(1000);
-            //Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
+            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));            
         }
 
         public void TryCloseNewDotNetPluginSourceWizardTab()
@@ -1153,10 +1153,9 @@ namespace Warewolf.UITests
         [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
-          
             Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
-            Select_Service_From_Service_Picker_Dialog(ResourceName);
+            Select_SubItem_Service_From_Service_Picker_Dialog(ResourceName);
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
             if (setView)
             {
@@ -1292,9 +1291,8 @@ namespace Warewolf.UITests
 
         public void Click_Settings_Ribbon_Button()
         {
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.ConfigureSettingsButton.Exists, "Settings ribbon does not exist.");
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
-            WaitForControlVisible(MainStudioWindow.SideMenuBar.ConfigureSettingsButton);
+            Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
         
@@ -2004,6 +2002,15 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "Scheduler tab does not exist after clicking scheduler ribbon button.");
+        }
+
+        public void Try_Click_Delete_Scheduler_Button()
+        {
+            if(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton))
+            {
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton.DrawHighlight();
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(4, 12));
+            }
         }
 
         public void Click_Scheduler_ResourcePicker()
