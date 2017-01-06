@@ -4,7 +4,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -65,9 +64,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
                     var resourceCatalogResult = resourceCatalog.DuplicateFolder(sourcePath.ToString(), destinationPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
-                    Dev2Logger.Error(resourceCatalogResult.Message);
-                    var result = new ExecuteMessage { HasError = resourceCatalogResult.Status != ExecStatus.Success, Message = resourceCatalogResult.Message.ToStringBuilder() };
-                    return serializer.SerializeToBuilder(result);
+                    Dev2Logger.Error(resourceCatalogResult.Message);                    
+                    return serializer.SerializeToBuilder(resourceCatalogResult);
 
                 }
                 catch (Exception x)
