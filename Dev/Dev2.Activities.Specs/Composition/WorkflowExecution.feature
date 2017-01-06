@@ -6,7 +6,6 @@ Feature: WorkflowExecution
 	 
 Background: Setup for workflow execution
 			Given Debug events are reset
-			And All environments disconnected
 			And Debug states are cleared
 
 Scenario: Workflow with multiple tools executing against the server
