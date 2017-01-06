@@ -73,6 +73,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinWebSourceWizardTab()
         {
             UIMap.Click_New_Web_Source_Ribbon_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
         }
 
