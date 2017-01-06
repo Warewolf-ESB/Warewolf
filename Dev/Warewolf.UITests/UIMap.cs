@@ -873,14 +873,7 @@ namespace Warewolf.UITests
                 Click_Explorer_Refresh_Button();
             }
         }
-
-        [When(@"I Select Remote Connection Integration From Explorer Remote Server Dropdown List")]
-        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Click_Connect_Control_InExplorer();
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(79, 8));
-        }
-
+        
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
         {
             Click_Explorer_Remote_Server_Dropdown_List();
@@ -953,8 +946,8 @@ namespace Warewolf.UITests
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            Playback.Wait(1000);
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
+            //Playback.Wait(1000);
+            //Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
         }
 
         public void TryCloseNewDotNetPluginSourceWizardTab()
@@ -3507,7 +3500,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Connect Control InExplorer")]
         public void Click_Connect_Control_InExplorer()
         {
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            //WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
             if(MessageBoxWindow.Exists)
                 Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
@@ -3553,13 +3546,13 @@ namespace Warewolf.UITests
                             "null IsBreakpointEnabled=null IsBreakpointBounded=null ValidationState=Valid ", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.ItemStatus, "Calculate tool small view is not selected.");
         }
 
-        [Given(@"I Click Debug Output Workflow1 Name")]
-        [When(@"I Click Debug Output Workflow1 Name")]
-        [Then(@"I Click Debug Output Workflow1 Name")]
-        public void Click_Debug_Output_Workflow1_Name()
+        [Given(@"I Click Debug Output GenericResource Name")]
+        [When(@"I Click Debug Output GenericResource Name")]
+        [Then(@"I Click Debug Output GenericResource Name")]
+        public void Click_Debug_Output_GenericResource_Name()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.Workflow1Button, new Point(24, 8));
-            Assert.AreEqual("workflow1", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Workflow1ciremoteText.DisplayText, "Workflow1 remote workflow tab is not open.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.GenericResourceButton, new Point(24, 8));
+            Assert.AreEqual("GenericResource", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Workflow1ciremoteText.DisplayText, "GenericResource remote workflow tab is not open.");
         }
 
         [Given(@"I Click DebugInput Cancel Button")]
