@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -74,12 +75,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             if (destinationPath == null)
                             {
-                                var failure = new ExecuteMessage { HasError = true, Message = new StringBuilder("Destination Paths not specified") };
+                                var failure = new ResourceCatalogDuplicateResult { Status = ExecStatus.Fail, Message = "Destination Paths not specified" };
                                 return serializer.SerializeToBuilder(failure);
                             }
                             var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
                             var resourceCatalogResult = resourceCatalog.DuplicateResource(resourceId.ToString().ToGuid(), destinationPath.ToString(), newResourceName.ToString());
-                            Dev2Logger.Error("DuplicateResourceService success");
                             return serializer.SerializeToBuilder(resourceCatalogResult);
                         }
                         catch (Exception x)

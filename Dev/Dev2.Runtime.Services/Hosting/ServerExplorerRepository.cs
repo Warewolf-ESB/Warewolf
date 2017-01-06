@@ -27,6 +27,8 @@ using Dev2.Runtime.Security;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ArrangeTypeMemberModifiers
+// ReSharper disable UnusedMember.Local
 
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable MemberCanBePrivate.Global
@@ -91,7 +93,7 @@ namespace Dev2.Runtime.Hosting
 
 
 
-        protected IExplorerItemFactory ExplorerItemFactory { get; private set; }
+        public IExplorerItemFactory ExplorerItemFactory { get; private set; }
         public IDirectory Directory { get; private set; }
 
         public IResourceCatalog ResourceCatalogue { get; private set; }
@@ -218,6 +220,8 @@ namespace Dev2.Runtime.Hosting
             {
                 var newExplorerItem = ExplorerItemFactory.CreateResourceItem(resource, GlobalConstants.ServerWorkspaceID); 
                 parentItem.Children.Add(newExplorerItem);
+                newExplorerItem.Parent = parentItem;
+                return newExplorerItem;
             }
             return null;
         }
