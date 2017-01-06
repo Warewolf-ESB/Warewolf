@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Debug
 {
@@ -12,17 +14,15 @@ namespace Dev2.Activities.Debug
         readonly string _leftLabel;
         readonly string _rightLabel;
         readonly string _operand;
-        readonly string _variable;
         readonly string _assignFromVariable;
-        readonly DebugItemResultType _type;
         private readonly bool _mockSelected;
 
         public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, bool mockSelected = false)
         {
             _value = value;
             _leftLabel = leftLabel;
-            _variable = variable;
-            _type = DebugItemResultType.Variable;
+            Variable = variable;
+            Type = DebugItemResultType.Variable;
             _operand = "=";
             _mockSelected = mockSelected;
             if (_mockSelected)
@@ -38,9 +38,9 @@ namespace Dev2.Activities.Debug
             _leftLabel = leftLabel;
             _rightLabel = rightLabel;
             _operand = operand;
-            _variable = variable;
+            Variable = variable;
             _assignFromVariable = assignFromVariable;
-            _type = DebugItemResultType.Variable;
+            Type = DebugItemResultType.Variable;
             _mockSelected = mockSelected;
         }
 
@@ -48,9 +48,9 @@ namespace Dev2.Activities.Debug
 
         public override string LabelText => _leftLabel;
 
-        public string Variable => _variable;
+        public string Variable { get; }
 
-        public DebugItemResultType Type => _type;
+        public DebugItemResultType Type { get; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {
