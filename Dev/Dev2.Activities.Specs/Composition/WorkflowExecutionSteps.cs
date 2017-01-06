@@ -29,6 +29,7 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -105,6 +106,69 @@ namespace Dev2.Activities.Specs.Composition
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
+        }
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
+        [BeforeFeature("@ExampleWorkflowExecution")]
+        public static void BeforeExampleWorkLOfwFeature()
+        {
+            var resourcePath = EnvironmentVariables.ResourcePath;
+
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var examples = Path.Combine(baseDirectory, "Resources", "Examples");
+            resourcePath = Path.Combine(resourcePath, "Examples");
+            if (Directory.Exists(resourcePath))
+            {
+                Directory.Delete(resourcePath, true);
+            }
+            Directory.CreateDirectory(resourcePath);
+            DirectoryCopy(examples, resourcePath,true);
+        }
+
+        [AfterFeature("@ExampleWorkflowExecution")]
+        public static void AfterExampleWorkLOfwFeature()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var examples = Path.Combine(baseDirectory, "Resources", "Examples");
+            if (Directory.Exists(examples))
+            {
+                DirectoryHelper.CleanUp(examples);
+            }
         }
 
         [BeforeScenario]
@@ -586,7 +650,13 @@ namespace Dev2.Activities.Specs.Composition
                 var splitNameAndCat = remoteWf.Split('/');
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
-                                                                                                || model.Category == remoteWf.Replace('/', '\\'), true);
+                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                if(remoteResourceModel == null)
+                {
+                    remoteEnvironment.LoadResources();
+                    remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
+                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                }
                 if (remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -2504,10 +2574,7 @@ namespace Dev2.Activities.Specs.Composition
                 _debugWriterSubscriptionService.Unsubscribe();
                 _debugWriterSubscriptionService.Dispose();
             }
-            if (_resetEvt != null)
-            {
-                _resetEvt.Close();
-            }
+            _resetEvt?.Close();
         }
 
         [Then(@"I set logging to ""(.*)""")]
