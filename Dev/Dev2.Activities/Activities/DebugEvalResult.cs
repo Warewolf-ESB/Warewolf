@@ -8,13 +8,14 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities
 {
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
-        readonly CommonFunctions.WarewolfEvalResult _evalResult;
+        CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false, bool mockSelected = false)
@@ -35,67 +36,11 @@ namespace Dev2.Activities
                 }
                 if (isDataMerge)
                 {
-                    var evalForDataMerge = environment.EvalForDataMerge(_inputVariable, update);
-                    var innerIterator = new WarewolfListIterator();
-                    var innerListOfIters = new List<WarewolfIterator>();
-                    foreach (var listOfIterator in evalForDataMerge)
-                    {
-                        var inIterator = new WarewolfIterator(listOfIterator);
-                        innerIterator.AddVariableToIterateOn(inIterator);
-                        innerListOfIters.Add(inIterator);
-                    }
-                    var atomList = new List<DataStorage.WarewolfAtom>();
-                    while (innerIterator.HasMoreData())
-                    {
-                        var stringToUse = "";
-                        // ReSharper disable once LoopCanBeConvertedToQuery
-                        foreach (var warewolfIterator in innerListOfIters)
-                        {
-                            stringToUse += warewolfIterator.GetNextValue();
-                        }
-                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
-                    }
-                    var finalString = string.Join("", atomList);
-                    _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
-                    if (DataListUtil.IsFullyEvaluated(finalString))
-                    {
-                        _inputVariable = finalString;
-                        _evalResult = environment.Eval(finalString, update);
-                    }
-                    else
-                    {
-                        var evalToExpression = environment.EvalToExpression(_inputVariable, update);
-                        if (DataListUtil.IsEvaluated(evalToExpression))
-                        {
-                            _inputVariable = evalToExpression;
-                        }
-                    }
+                    DataMergeItem(environment, update);
                 }
                 else
                 {
-                    var evalToExpression = environment.EvalToExpression(_inputVariable, update);
-                    if (DataListUtil.IsEvaluated(evalToExpression))
-                    {
-                        _inputVariable = evalToExpression;
-                    }
-                    _evalResult = environment.Eval(_inputVariable, update);
-                    string cleanExpression;
-                    var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
-                    if (isCalcExpression && !isCalculate)
-                    {
-                        if (_evalResult.IsWarewolfAtomResult)
-                        {
-                            var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                            if (atomResult != null)
-                            {
-                                var res = atomResult.Item.ToString();
-                                string resValue;
-                                DataListUtil.IsCalcEvaluation(res, out resValue);
-                                _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
-                            }
-                        }
-                        _inputVariable = cleanExpression;
-                    }
+                    RegularItem(environment, update, isCalculate);
                 }
 
             }
@@ -107,10 +52,76 @@ namespace Dev2.Activities
             
         }
 
+        private void RegularItem(IExecutionEnvironment environment, int update, bool isCalculate)
+        {
+            var evalToExpression = environment.EvalToExpression(_inputVariable, update);
+            if(DataListUtil.IsEvaluated(evalToExpression))
+            {
+                _inputVariable = evalToExpression;
+            }
+            _evalResult = environment.Eval(_inputVariable, update);
+            string cleanExpression;
+            var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+            if(isCalcExpression && !isCalculate)
+            {
+                if(_evalResult.IsWarewolfAtomResult)
+                {
+                    var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    if(atomResult != null)
+                    {
+                        var res = atomResult.Item.ToString();
+                        string resValue;
+                        DataListUtil.IsCalcEvaluation(res, out resValue);
+                        _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
+                    }
+                }
+                _inputVariable = cleanExpression;
+            }
+        }
+
+        private void DataMergeItem(IExecutionEnvironment environment, int update)
+        {
+            var evalForDataMerge = environment.EvalForDataMerge(_inputVariable, update);
+            var innerIterator = new WarewolfListIterator();
+            var innerListOfIters = new List<WarewolfIterator>();
+            foreach(var listOfIterator in evalForDataMerge)
+            {
+                var inIterator = new WarewolfIterator(listOfIterator);
+                innerIterator.AddVariableToIterateOn(inIterator);
+                innerListOfIters.Add(inIterator);
+            }
+            var atomList = new List<DataStorage.WarewolfAtom>();
+            while(innerIterator.HasMoreData())
+            {
+                var stringToUse = "";
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach(var warewolfIterator in innerListOfIters)
+                {
+                    stringToUse += warewolfIterator.GetNextValue();
+                }
+                atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
+            }
+            var finalString = string.Join("", atomList);
+            _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
+            if(DataListUtil.IsFullyEvaluated(finalString))
+            {
+                _inputVariable = finalString;
+                _evalResult = environment.Eval(finalString, update);
+            }
+            else
+            {
+                var evalToExpression = environment.EvalToExpression(_inputVariable, update);
+                if(DataListUtil.IsEvaluated(evalToExpression))
+                {
+                    _inputVariable = evalToExpression;
+                }
+            }
+        }
+
         #region Overrides of DebugOutputBase
 
         public override string LabelText { get; }
-        public bool MockSelected { get; set; }
+        public bool MockSelected { get; }
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {
