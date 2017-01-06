@@ -680,47 +680,72 @@ namespace Warewolf.UITests
             WaitForControlNotVisible(control, searchTimeout);
         }
 
+        [Given(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        [Then(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
+        public void I_Enter_Invalid_Service_Name_With_Whitespace_Into_SaveDialog(string ServiceName)
+        {
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
+            Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+        }
+
+        [Given(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
         [When(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
+        [Then(@"I Enter Invalid Service Name With Whitespace Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_With_Whitespace_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
+            Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
         
+        [Given(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
         [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
-        public void WhenIEnterInvalidServiceNameIntoSaveDialogAs(string ServiceName)
+        [Then(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
+        public void I_Enter_Invalid_Service_Name_Into_SaveDialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
+            Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-
-        [When(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
-        public void WhenIEnterInvalidServiceNameWithWhitespaceIntoSaveDialogAs(string ServiceName)
-        {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, true, SaveOrDuplicate.Duplicate);
-        }
-
+        
+        [Given(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
+        [Then(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Invalid_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, true, false, SaveOrDuplicate.Duplicate);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
+            Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
+        [Given(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         [When(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
+        [Then(@"I Enter Service Name Into Duplicate Dialog As ""(.*)""")]
         public void Enter_Service_Name_Into_Duplicate_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Duplicate);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.IsTrue(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         [Given(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         [When(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
-        public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
+        public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Save);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
-
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
 
@@ -933,7 +958,9 @@ namespace Warewolf.UITests
         [Then(@"I Enter Service Name Into Save Dialog As ""(.*)"" and Append Unique Guid")]
         public void Enter_Service_Name_Into_Save_Dialog_and_Append_Unique_Guid(string ServiceName)
         {
-            Enter_Service_Name_Into_Save_Dialog(ServiceName + Guid.NewGuid().ToString().Substring(0, 8), false, false, false, SaveOrDuplicate.Save);
+            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName + Guid.NewGuid().ToString().Substring(0, 8);
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         [Given(@"I Save With Ribbon Button And Dialog As ""(.*)""")]
@@ -943,7 +970,18 @@ namespace Warewolf.UITests
         {
             Click_Save_Ribbon_Button_to_Open_Save_Dialog();
             WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
-            Enter_Service_Name_Into_Save_Dialog(Name);
+            Enter_Valid_Service_Name_Into_Save_Dialog(Name);
+            Click_SaveDialog_Save_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        [Given(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        [When(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        [Then(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        public void Save_Valid_Service_With_Ribbon_Button_And_Dialog(string Name)
+        {
+            Click_Save_Ribbon_Button_to_Open_Save_Dialog();
+            Enter_Valid_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
@@ -954,9 +992,9 @@ namespace Warewolf.UITests
         public void Click_SaveDialog_Save_Button()
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
-            Playback.Wait(1000);
-            Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            //Playback.Wait(1000);
+            //Assert.IsFalse(ControlExistsNow(SaveDialogWindow.SaveButton), "Save dialog still exists after clicking save button.");
+            //WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
         public void TryCloseNewDotNetPluginSourceWizardTab()
@@ -1001,7 +1039,7 @@ namespace Warewolf.UITests
         public void Select_Test_Source_From_GET_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem6, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem5, new Point(163, 17));
         }
 
         [When(@"I Select Test Source From POST Web Large View Source Combobox")]
@@ -1022,7 +1060,7 @@ namespace Warewolf.UITests
         public void Select_Test_Source_From_PUT_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem11, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem4, new Point(163, 17));
         }
 
         [Given(@"I Click New Web Source Ribbon Button")]
@@ -7944,23 +7982,11 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
             Playback.Wait(2000);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }
-
-        [When(@"I Click Explorer Localhost First Item Expander")]
-        public void Click_Explorer_Localhost_First_Item_Expander()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExpansionToggleButton);
-        }
-
-        [When(@"I Expand Explorer Localhost First Item By Double Click")]
-        [Given(@"I Expand Explorer Localhost First Item By Double Click")]
-        [Then(@"I Expand Explorer Localhost First Item By Double Click")]
-        public void Expand_Explorer_Localhost_First_Item_With_Double_Click()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
-        }
+        }       
         
+        [Given(@"I Double Click Localhost Server")]
         [When(@"I Double Click Localhost Server")]
+        [Then(@"I Double Click Localhost Server")]
         public void DoubleClick_Localhost_Server()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
@@ -7985,7 +8011,6 @@ namespace Warewolf.UITests
         public void Click_Create_Test_From_Debug()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
 
@@ -8038,7 +8063,7 @@ namespace Warewolf.UITests
         }
         public void Click_MockRadioButton_On_DataSplitAssign_TestStep()
         {
-            //Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.DataSplitItem.UIUI_StepOutputs_AssigTable.UIPART_ColumnHeadersPrHeader.UIItemColumnHeader.UIMockRadioButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.DataSplitItem.UIUI_StepOutputs_AssigTable.UIPART_ColumnHeadersPrHeader.UIItemColumnHeader.UIMockRadioButton, new Point(5, 5));
         }
 
         [When(@"I Expand Debug Output Recordset")]
@@ -8703,7 +8728,7 @@ namespace Warewolf.UITests
         [Given(@"Filtered Item Exists")]
         [When(@"Filtered Item Exists")]
         [Then(@"Filtered Item Exists")]
-        public void ThenFilteredItemExists()
+        public void FilteredItemExists()
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
         }

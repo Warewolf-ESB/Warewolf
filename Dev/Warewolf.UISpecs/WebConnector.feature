@@ -10,7 +10,7 @@ Scenario: Create and Execute New Web GET Connector
 	And I Click New Web Source Ribbon Button
 	And I Type The Testing Site into Web GET Source Wizard Address Textbox
 	And I Click New Web Source Test Connection Button
-	And I Save With Ribbon Button And Dialog As "WebGETUITestingSource"
+	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"
 	And I Click Close Web Source Wizard Tab Button
 	And I Drag GET Web Connector Onto DesignSurface
 	And I Select Test Source From GET Web Large View Source Combobox
@@ -20,6 +20,8 @@ Scenario: Create and Execute New Web GET Connector
 	And I Click GET Web Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
+	And I Click Close Workflow Tab
+	And I Click MessageBox No
 	
 Scenario: Create and Execute New Web POST Connector
 	Given The Warewolf Studio is running
@@ -30,6 +32,8 @@ Scenario: Create and Execute New Web POST Connector
 	And I Click POST Web Large View Test Inputs Button
 	And I Click POST Web Large View Test Inputs Done Button
 	And I Click POST Web Large View Done Button
+	And I Click Close Workflow Tab
+	And I Click MessageBox No
 	
 Scenario: Create and Execute New Web PUT Connector
 	Given The Warewolf Studio is running
@@ -40,6 +44,8 @@ Scenario: Create and Execute New Web PUT Connector
 	And I Click PUT Web Large View Test Inputs Button
 	And I Click PUT Web Large View Test Inputs Done Button
 	And I Click PUT Web Large View Done Button
+	And I Click Close Workflow Tab
+	And I Click MessageBox No
 	
 Scenario: Create and Execute New Web DELETE Connector
 	Given The Warewolf Studio is running
@@ -50,6 +56,8 @@ Scenario: Create and Execute New Web DELETE Connector
 	And I Click DELETE Web Large View Test Inputs Button
 	And I Click DELETE Web Large View Test Inputs Done Button
 	And I Click DELETE Web Large View Done Button
+	And I Click Close Workflow Tab
+	And I Click MessageBox No
 
 Scenario: Right click adorner control with error
 	Given The Warewolf Studio is running
@@ -61,6 +69,8 @@ Scenario: Right click adorner control with error
 	Then There is an error
 	And I RightClick Ardoner Hyperlink
 	And There is an error
+	And I Click Close Workflow Tab
+	And I Click MessageBox No
 
 
 
