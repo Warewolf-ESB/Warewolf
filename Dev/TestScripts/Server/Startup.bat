@@ -47,12 +47,12 @@ IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirect
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF EXIST "%~dp0..\..\Resourses - ServerTests\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - ServerTests\Resources" "%DeploymentDirectory%\Resources"
-IF EXIST "%~dp0..\..\Resources - ServerTests\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - ServerTests\Tests" "%DeploymentDirectory%\Tests"
+IF EXIST "%~dp0..\..\Resourses - ServerTests" echo d | xcopy /S /Y "%~dp0..\..\Resources - ServerTests" "%DeploymentDirectory%"
+IF EXIST "%~dp0..\..\Resourses - Release" echo d | xcopy /S /Y "%~dp0..\..\Resources - Release" "%DeploymentDirectory%"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
-IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%DeploymentDirectory%\Resources - ServerTests" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
-IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%DeploymentDirectory%\Tests - ServerTests" echo d | xcopy /S /Y "%DeploymentDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
+IF EXIST "%DeploymentDirectory%\Resources - ServerTests" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources - ServerTests" "%ProgramData%\Warewolf"
+IF EXIST "%DeploymentDirectory%\Resources - Release" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources - Release" "%ProgramData%\Warewolf"
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
