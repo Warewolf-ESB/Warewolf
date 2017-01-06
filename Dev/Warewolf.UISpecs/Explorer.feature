@@ -7,15 +7,15 @@ Feature: Explorer
 Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
-	And I Select Remote Connection Integration From Explorer Remote Server Dropdown List
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
 	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "GenericResource"
 	And I Drag Explorer Remote GenericResource Onto Workflow Design Surface
-	And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflow"
+	And I Save With Ribbon Button And Dialog As "LocalGenericResourceWithRemoteSubworkflow"
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
-	And I Click Debug Output Workflow1 Name
+	And I Click Debug Output GenericResource Name
 	And I Try DisConnect To Remote Server
 	And I Try Close Workflow
 	

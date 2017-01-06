@@ -70998,26 +70998,26 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton Workflow1Button
+        public WpfButton GenericResourceButton
         {
             get
             {
-                if ((this.mWorkflow1Button == null))
+                if ((this.mGenericResourceButton == null))
                 {
-                    this.mWorkflow1Button = new WpfButton(this);
+                    this.mGenericResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "GenericResource";
-                    this.mWorkflow1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mWorkflow1Button.WindowTitles.Add("Warewolf");
+                    this.mGenericResourceButton.SearchProperties[WpfButton.PropertyNames.Name] = "GenericResource";
+                    this.mGenericResourceButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mGenericResourceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mWorkflow1Button;
+                return this.mGenericResourceButton;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mWorkflow1Button;
+        private WpfButton mGenericResourceButton;
         #endregion
     }
     
