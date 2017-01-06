@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Find_Records_Tags;
         }
 
         public override string CollectionName => "ResultsCollection";
@@ -140,10 +141,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         public IRuleSet GetRuleSet(string propertyName)

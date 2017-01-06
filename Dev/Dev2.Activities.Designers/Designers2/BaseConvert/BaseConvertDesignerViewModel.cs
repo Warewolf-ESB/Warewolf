@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.BaseConvert
             InitializeItems(mi.ConvertCollection);
 
             ConvertTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enDev2BaseConvertType>();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Base_Convert_Tags;
         }
 
         public IList<string> ConvertTypes { get; set; }

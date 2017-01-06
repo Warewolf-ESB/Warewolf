@@ -43,6 +43,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             IServer server = shellViewModel.ActiveServer;
             _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
             SetupCommonViewModelProperties();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Consume_Tags;
         }
 
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem, IRabbitMQSourceModel model)
@@ -99,7 +100,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             set
             {
                 _selectedRabbitMQSource = value;
-                RabbitMQSourceResourceId = _selectedRabbitMQSource == null ? Guid.Empty : _selectedRabbitMQSource.ResourceID;
+                RabbitMQSourceResourceId = _selectedRabbitMQSource?.ResourceID ?? Guid.Empty;
                 OnPropertyChanged("IsRabbitMQSourceSelected");
                 EditRabbitMQSourceCommand.RaiseCanExecuteChanged();
             }
@@ -233,19 +234,13 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
         private void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

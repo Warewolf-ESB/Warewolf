@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Rename
             : base(modelItem, "File or Folder", "New Name")
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Rename_Tags;
         }
 
         public override void Validate()
@@ -33,10 +34,7 @@ namespace Dev2.Activities.Designers2.Rename
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

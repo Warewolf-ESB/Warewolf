@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.SortRecords
             SortOrderTypes = new List<string> { "Forward", "Backwards" };
             SelectedSelectedSort = string.IsNullOrEmpty(SelectedSort) ? SortOrderTypes[0] : SelectedSort;
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Sort_Tags;
         }
 
         public List<string> SortOrderTypes { get; private set; }
@@ -53,8 +54,6 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public override void Validate()
         {
-
-
             // ReSharper disable once ExplicitCallerInfoArgument
             IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => GetProperty<string>("SortField"));
             var single = rule.Check();
@@ -69,10 +68,7 @@ namespace Dev2.Activities.Designers2.SortRecords
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

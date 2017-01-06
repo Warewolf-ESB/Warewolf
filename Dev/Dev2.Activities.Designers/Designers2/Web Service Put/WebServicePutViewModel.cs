@@ -50,6 +50,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put_Tags;
         }
 
         public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)
@@ -333,10 +334,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if(mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

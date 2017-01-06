@@ -61,6 +61,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_PostgreSQL_Tags;
         }
 
         // ReSharper disable once ConvertPropertyToExpressionBody

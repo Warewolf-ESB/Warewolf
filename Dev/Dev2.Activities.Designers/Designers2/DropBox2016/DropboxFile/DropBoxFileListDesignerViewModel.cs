@@ -51,6 +51,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             IncludeDeleted = false;
             IsRecursive = false;
             IncludeMediaInfo = false;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_List_Contents_Tags;
         }
 
         public ICommand NewSourceCommand { get; set; }
@@ -250,10 +251,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -263,10 +261,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             if (propertyName != null && propertyName.ToUpper() == "SelectedSource".ToUpper())
             {
                 ToPath = String.Empty;

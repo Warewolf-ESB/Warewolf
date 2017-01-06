@@ -52,6 +52,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Delete_Tags;
         }
         Guid UniqueID => GetProperty<Guid>();
 
@@ -322,10 +323,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

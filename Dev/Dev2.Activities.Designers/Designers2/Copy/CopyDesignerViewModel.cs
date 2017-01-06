@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Copy
             : base(modelItem, "File or Folder", "Destination")
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Copy_Tags;
         }
 
         public override void Validate()
