@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -138,10 +138,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
+                                      
+                    StringBuilder result = xml?.ToStringBuilder();
 
-                    StringBuilder result = xml.ToStringBuilder();
-
-                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var isValid = result!=null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
