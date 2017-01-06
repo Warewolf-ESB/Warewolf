@@ -138,10 +138,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
+                                      
+                    StringBuilder result = xml?.ToStringBuilder();
 
-                    StringBuilder result = xml.ToStringBuilder();
-
-                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var isValid = result!=null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
