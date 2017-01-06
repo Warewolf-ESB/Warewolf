@@ -935,6 +935,14 @@
   <ItemGroup>
     <Folder Include="Views\Dialogs\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\PageNotAvailable.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\PageNotAvailable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>
