@@ -1,5 +1,5 @@
 
-<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAY/F6gQ5E1UyU18CzCcmvxwQAAAACAAAAAAADZgAAwAAAABAAAAC7M03wIXqoo+NEYJ4WO0fSAAAAAASAAACgAAAAEAAAALce+GwV759Q4rjmzuLjPQWQAAAABa3cOdCzkYIE1kZL+89OCUqODWiVG/SUkXsmVcIa2l8v/h1Hs0KvXapmXbfCxEne86wt/NoHfAQXYNHr3Zd+MQiZ5e4wdMlfsyElunV1uoxk8RvGxqFOqW5JeEul4X0DKs2ONJaScN7GxRRhwTaXkJCEDq5j/0yQ2mcDEer51FxJMJdBeqzk6FRUWGVooZ8GFAAAAHimslqwU8kKH1zHg9e3D0eUxycD" ServerVersion="0.0.6212.23827" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="f8b1a579-2394-489e-835e-21b42e304e09" Name="NewPostgresSource" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="Host=RSAKLFSVRGENDEV;Username=postgres;Password=test123;Database=TestDB" ServerVersion="0.0.6165.13855" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>NewPostgresSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
