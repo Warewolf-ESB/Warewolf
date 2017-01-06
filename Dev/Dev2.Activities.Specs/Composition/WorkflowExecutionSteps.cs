@@ -124,17 +124,6 @@ namespace Dev2.Activities.Specs.Composition
             CustomContainer.Register(mockshell.Object);
         }
 
-        [Given(@"All environments disconnected")]
-        public void GivenAllEnvironmentsDisconnected()
-        {
-            IEnvironmentModel environmentModel;
-            TryGetValue("environment", out environmentModel);
-            if (environmentModel != null && environmentModel.IsConnected)
-            {
-                environmentModel.Disconnect();
-            }
-        }
-
         [Given(@"Debug states are cleared")]
         public void GivenDebugStatesAreCleared()
         {
@@ -242,15 +231,17 @@ namespace Dev2.Activities.Specs.Composition
         [BeforeFeature()]
         private static void SetUpLocalHost()
         {
-            EnvModel = EnvironmentRepository.Instance.Source;
-            EnvModel.Connect();
+            LocalEnvModel = EnvironmentRepository.Instance.Source;
+            LocalEnvModel.Connect();
+            LocalEnvModel.ForceLoadResources();
         }
 
-        private static IEnvironmentModel EnvModel { get; set; }
+        private static IEnvironmentModel LocalEnvModel { get; set; }
+        private static IEnvironmentModel RemoteEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
-            var environmentModel = EnvModel;
+            var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
@@ -575,22 +566,27 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source, EnvironmentConnectionTimeout);
-            EnvironmentRepository.Instance.Source.ForceLoadResources();
+            var localHostEnv = LocalEnvModel;
+
+            EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
 
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
             {
-                var environments = EnvironmentRepository.Instance.LookupEnvironments(EnvironmentRepository.Instance.Source);
+                var environments = EnvironmentRepository.Instance.LookupEnvironments(localHostEnv);
                 remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
             }
             if (remoteEnvironment != null)
             {
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
-                remoteEnvironment.ForceLoadResources();
+                if (!remoteEnvironment.HasLoadedResources)
+                {
+                    remoteEnvironment.ForceLoadResources();
+                }
                 var splitNameAndCat = remoteWf.Split('/');
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName || model.Category == remoteWf.Replace('/', '\\'), true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
+                                                                                                || model.Category == remoteWf.Replace('/', '\\'), true);
                 if (remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -2144,11 +2140,11 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper restore InconsistentNaming
         {
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
-            var environmentModel = EnvModel;
+            var environmentModel = LocalEnvModel;
             if (!environmentModel.IsConnected)
                 environmentModel.Connect();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
-            if(resource == null)
+            if (resource == null)
             {
                 environmentModel.LoadResources();
                 resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
@@ -3259,8 +3255,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings as")]
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
-            
-            var resourceId="62652f31-813a-4b97-b488-02e4c16150ff".ToGuid();
+
+            var resourceId = "62652f31-813a-4b97-b488-02e4c16150ff".ToGuid();
 
             var postGreActivity = new DsfPostgreSqlActivity
             {
@@ -3353,11 +3349,11 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
-        
+
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-          
+
             var mySqlResourceId = "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
@@ -3539,9 +3535,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            
+
             var resourceId = "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid();
-           
+
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
