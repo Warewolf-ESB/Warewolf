@@ -9,13 +9,15 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
 using Dev2.Interfaces;
+using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
@@ -100,39 +102,22 @@ namespace Warewolf.Studio.ViewModels
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
-
-                // ReSharper disable once UnusedVariable
-                var executeCommand = _lazyComs.ExecuteCommand<IResource>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
-
-                var child = new ExplorerItemViewModel(_explorerItemViewModel.Server, _explorerItemViewModel.Parent, _explorerItemViewModel.SelectAction, _explorerItemViewModel.ShellViewModel, null)
+                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+                if (executeCommand.Status == ExecStatus.Success)
                 {
-                    ResourceName = executeCommand.ResourceName
-                    ,
-                    ResourceId = executeCommand.ResourceID
-                    ,                                        
-                    ResourceType = executeCommand.ResourceType                                        
-                    ,
-                    ResourcePath = executeCommand.GetSavePath()
-                    ,                    
-                    AllowResourceCheck = false
-                    ,
-                    ShowContextMenu = true
-                    ,
-                    IsFolder = false
-                    ,
-                    IsService = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService.ToString()
-                    ,
-                    IsSource = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source.ToString()
-                    ,
-                    IsServer = executeCommand.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server.ToString()
-                };
-                var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
-                if(permissions != null)
-                    child.SetPermissions((Permissions)permissions);
-                var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
-                environmentViewModel?.AddChild(child);
-                CloseView();
-                ViewResult = MessageBoxResult.OK;
+                    var duplicatedItems = executeCommand.DuplicatedItems;
+                    var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
+                    var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
+                    var childItems = environmentViewModel.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                    var explorerItemViewModels = parentItem.Children;
+                    explorerItemViewModels.AddRange(childItems);
+                    parentItem.Children = explorerItemViewModels;
+                    CloseView();
+                    ViewResult = MessageBoxResult.OK;
+                }else
+                {
+                    ErrorMessage = executeCommand.Message;
+                }
             }
             catch (Exception)
             {
