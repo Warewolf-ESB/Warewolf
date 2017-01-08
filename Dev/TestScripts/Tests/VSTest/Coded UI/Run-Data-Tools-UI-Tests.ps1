@@ -53,7 +53,7 @@ if (Test-Path "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
 if (Test-Path "$SolutionDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
 if (Test-Path "$SolutionDir\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests.dll"
