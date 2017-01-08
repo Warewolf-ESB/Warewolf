@@ -1,4 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+if ([string]::IsNullOrEmpty($PSScriptRoot)) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 $SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
@@ -48,16 +48,29 @@ $TestSettingsFile = "$PSScriptRoot\DataToolsUITesting.testsettings"
 </TestSettings>
 "@)
 
-# Create full VSTest argument string.
+# Find test assembly
 if (Test-Path "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
-	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=Data Tools`""
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UITests.dll"
+}
+if (-not Test-Path $TestAssemblyPath) {
+	Write-Host Cannot find Warewolf.UITests.dll at $SolutionDir\Warewolf.UITests\bin\Debug or $SolutionDir
+	exit 1
+}
+
+# Create full VSTest argument string.
+if ($TestList -eq "") {
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Data Tools`""
 } else {
-	if (Test-Path "$SolutionDir\..\Warewolf.UITests.dll") {
-		$FullArgsList = " `"" + $SolutionDir + "\..\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=Data Tools`""
-	} else {
-		Write-Host Cannot find Warewolf.UITests.dll at $SolutionDir\Warewolf.UITests\bin\Debug or $SolutionDir\..
-		exit 1
-	}
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 
 # Display full command including full argument string.
