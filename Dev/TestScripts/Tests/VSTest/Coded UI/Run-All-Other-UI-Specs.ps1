@@ -59,7 +59,7 @@ if (Test-Path "$SolutionDir\Warewolf.UISpecs.dll") {
 if (Test-Path "$SolutionDir\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs.dll"
 }
-if (!Test-Path $TestAssemblyPath) {
+if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UISpecs.dll at $SolutionDir\Warewolf.UISpecs\bin\Debug or $SolutionDir
 	exit 1
 }
