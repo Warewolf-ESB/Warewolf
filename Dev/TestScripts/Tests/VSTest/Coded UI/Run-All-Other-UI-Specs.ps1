@@ -46,8 +46,30 @@ $TestSettingsFile = "$PSScriptRoot\OtherUISpecs.testsettings"
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs.dll"
+}
+if (!Test-Path $TestAssemblyPath) {
+	Write-Host Cannot find Warewolf.UISpecs.dll at $SolutionDir\Warewolf.UISpecs\bin\Debug or $SolutionDir
+	exit 1
+}
+
 # Create full VSTest argument string.
-$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)`""
+if ($TestList -eq "") {
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=DBConnector)&(TestCategory!=PluginConnector)&(TestCategory!=WebConnector)&(TestCategory!=Explorer)`""
+} else {
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
