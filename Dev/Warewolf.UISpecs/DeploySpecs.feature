@@ -47,7 +47,7 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 And I Click Deploy Tab Destination Server Connect Button
 	 And I Select "Hello world" from the source tab 
 	 Then Deploy Button is enabled  "true"	
-	 And I Click Deploy Tab Destination Server Connect Button
+	 When I Click Deploy Tab Destination Server Connect Button
 	 Then Deploy Button is enabled  "false"
 
 Scenario: Filtering and clearing filter on source side
