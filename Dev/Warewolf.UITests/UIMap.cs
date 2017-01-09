@@ -55,7 +55,7 @@ namespace Warewolf.UITests
         public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
-            //Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -1321,12 +1321,12 @@ namespace Warewolf.UITests
             Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "settings tab does not exist after clicking settings ribbon button.");
         }
-        
+
         [When(@"I Click Deploy Ribbon Button")]
         public void Click_Deploy_Ribbon_Button()
         {
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -8381,7 +8381,8 @@ namespace Warewolf.UITests
         [Then(@"Filter Textbox is cleared")]
         public void ThenFilterTextboxIsCleared()
         {
-            Assert.AreEqual("", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text, "Explorer Filter Textbox text is not blank after clicking the clear button.");
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text), "Explorer Filter Textbox text is not blank after clicking the clear button.");
         }
 
         [Given(@"Filter Textbox has ""(.*)""")]
