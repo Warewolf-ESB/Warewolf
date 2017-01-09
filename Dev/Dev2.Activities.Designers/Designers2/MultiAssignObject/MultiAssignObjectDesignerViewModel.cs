@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
 
             dynamic mi = ModelItem;
             InitializeItems(mi.FieldsCollection);
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Assign_Object_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Assign_Object;
         }
 
         public override string CollectionName => "FieldsCollection";

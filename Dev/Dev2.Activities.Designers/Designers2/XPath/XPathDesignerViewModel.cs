@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.XPath
             AddTitleBarQuickVariableInputToggle();
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Xpath_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Xpath;
         }
         public override string CollectionName => "ResultsCollection";
 

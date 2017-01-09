@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.Zip
                 : (CompressionRatios)Enum.Parse(typeof(CompressionRatios), CompressionRatio);
 
             SelectedCompressionRatioDescription = selectionRatio.GetDescription();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Zip_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Zip;
         }
 
         public string SelectedCompressionRatioDescription

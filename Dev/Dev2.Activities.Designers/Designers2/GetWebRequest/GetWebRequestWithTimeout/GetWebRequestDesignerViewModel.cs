@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 Headers = string.Empty;
             }
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Web_Request_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Web_Request;
         }
 
         public PreviewViewModel PreviewViewModel { get; private set; }

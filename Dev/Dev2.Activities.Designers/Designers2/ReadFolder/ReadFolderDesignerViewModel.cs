@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.ReadFolder
             {
                 IsFilesSelected = true;
             }
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Read_Folder_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Read_Folder;
         }
 
         public override void Validate()

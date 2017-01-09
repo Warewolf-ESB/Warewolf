@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.FormatNumber
             RoundingTypes = new List<string>(Dev2EnumConverter.ConvertEnumsTypeToStringList<enRoundingType>());
             SelectedRoundingType = string.IsNullOrEmpty(RoundingType) ? RoundingTypes[0] : RoundingType;
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Format_Number_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Format_Number;
         }
 
         public List<string> RoundingTypes { get; set; }

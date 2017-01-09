@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             }
 
             ItemsList = Dev2EnumConverter.ConvertEnumsTypeToStringList<enTypeOfSystemInformationToGather>();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Sys_Info_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Sys_Info;
         }
         public override string CollectionName => "SystemInformationCollection";
 

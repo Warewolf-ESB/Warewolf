@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.DataMerge
             {
                 OnMergeTypeChanged(i);
             }
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Data_Merge_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Data_Merge;
         }
         public override string CollectionName => "MergeCollection";
 

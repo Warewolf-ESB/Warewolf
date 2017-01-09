@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
         public SharepointListCreateDesignerViewModel(ModelItem modelItem)
             : base(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator,true)
         {
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Create_List_Item_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Create_List_Item;
         }
 
         public override string CollectionName => "FilterCriteria";

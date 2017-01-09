@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Upload_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Upload;
         }
 
         public ICommand NewSourceCommand { get; set; }

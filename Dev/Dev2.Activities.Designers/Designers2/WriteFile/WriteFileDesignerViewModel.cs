@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.WriteFile
             }
 
             Modelitem = modelItem;
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Write_File_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Write_File;
         }
 
         public override void Validate()

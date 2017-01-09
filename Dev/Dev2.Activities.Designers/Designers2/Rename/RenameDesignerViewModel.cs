@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Rename
             : base(modelItem, "File or Folder", "New Name")
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Rename_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Rename;
         }
 
         public override void Validate()

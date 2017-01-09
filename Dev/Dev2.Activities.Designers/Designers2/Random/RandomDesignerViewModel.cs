@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Random
             RandomTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enRandomType>();
             SelectedRandomType = Dev2EnumConverter.ConvertEnumValueToString(RandomType);
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Random_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Random;
         }
 
         public IList<string> RandomTypes { get; private set; }

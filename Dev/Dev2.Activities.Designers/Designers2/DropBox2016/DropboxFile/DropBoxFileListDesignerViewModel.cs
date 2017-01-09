@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             IncludeDeleted = false;
             IsRecursive = false;
             IncludeMediaInfo = false;
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_List_Contents_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_List_Contents;
         }
 
         public ICommand NewSourceCommand { get; set; }

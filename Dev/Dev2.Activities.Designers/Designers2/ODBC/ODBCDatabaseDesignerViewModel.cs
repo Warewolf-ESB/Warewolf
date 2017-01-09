@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
             SetupCommonProperties();
             this.RunViewSetup();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_ODBC_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_ODBC;
         }
 
         Guid UniqueID => GetProperty<Guid>();

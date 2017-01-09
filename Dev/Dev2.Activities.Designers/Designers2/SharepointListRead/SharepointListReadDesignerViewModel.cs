@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_List_Item_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_List_Item;
         }
 
         public override string CollectionName => "FilterCriteria";

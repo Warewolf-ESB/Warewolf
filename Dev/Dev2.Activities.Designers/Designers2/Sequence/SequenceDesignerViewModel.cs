@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.Sequence
             dynamic mi = ModelItem;
             ModelItemCollection activities = mi.Activities;
             activities.CollectionChanged += ActivitiesOnCollectionChanged;
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Sequence_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Sequence;
         }
 
         void ActivitiesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)

@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Switch
         public SwitchDesignerViewModel(ModelItem mi, string display):base(mi)
         {
             Initialize(display);
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Switch_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Switch;
         }
 
         void Initialize(string display)

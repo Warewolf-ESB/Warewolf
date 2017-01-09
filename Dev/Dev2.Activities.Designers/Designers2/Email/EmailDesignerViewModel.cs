@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers2.Email
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             RefreshSources(true);
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_SMTP_Send_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_SMTP_Send;
         }
 
         public EmailSource SelectedEmailSource

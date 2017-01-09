@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Foreach
             ForeachTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enForEachType>();
             SelectedForeachType = Dev2EnumConverter.ConvertEnumValueToString(ForEachType);
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_For_Each_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_For_Each;
         }
 
         public IList<string> ForeachTypes { get; private set; }

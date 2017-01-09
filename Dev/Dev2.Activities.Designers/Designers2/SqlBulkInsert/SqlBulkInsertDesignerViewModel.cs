@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 IsSqlDatabase = SelectedDatabase.ServerType == enSourceType.SqlDatabase;
             }
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_SQL_Bulk_Insert_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_SQL_Bulk_Insert;
         }
 
         #region Properties
