@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
+using Dev2.Explorer;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
@@ -79,8 +82,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var duplicatedItems = new List<IExplorerItem> {new ServerExplorerItem("test1",Guid.NewGuid(),"Folder",new List<IExplorerItem>(),Permissions.Contribute,"" )};
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Returns(new ResourceCatalogResult() { Message = "Hi" });
+                .Returns(new ResourceCatalogDuplicateResult { Message = "Hi",DuplicatedItems = duplicatedItems });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
             DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
@@ -98,9 +102,10 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()));
             var serializer = new Dev2JsonSerializer();
-            var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
-            Assert.IsFalse(executeMessage.HasError);
-            Assert.IsFalse(string.IsNullOrEmpty(executeMessage.Message.ToString()));
+            var executeMessage = serializer.Deserialize<ResourceCatalogDuplicateResult>(stringBuilder);
+            Assert.AreEqual(ExecStatus.Success,executeMessage.Status);
+            Assert.AreEqual("Hi",executeMessage.Message);
+            CollectionAssert.AreEqual(duplicatedItems,executeMessage.DuplicatedItems);
         }
 
         [TestMethod]
@@ -109,9 +114,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
+            var duplicatedItems = new List<IExplorerItem> { new ServerExplorerItem("test1", Guid.NewGuid(), "Folder", new List<IExplorerItem>(), Permissions.Contribute, "") };
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Returns(new ResourceCatalogResult { Message = "Hi" });
-            var mockTestCatalog = new Mock<ITestCatalog>();
+                .Returns(new ResourceCatalogDuplicateResult { Message = "Hi", DuplicatedItems = duplicatedItems });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
             DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
@@ -129,9 +134,10 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()));
             var serializer = new Dev2JsonSerializer();
-            var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
-            Assert.IsFalse(executeMessage.HasError);
-            Assert.IsFalse(string.IsNullOrEmpty(executeMessage.Message.ToString()));
+            var executeMessage = serializer.Deserialize<ResourceCatalogDuplicateResult>(stringBuilder);
+            Assert.AreEqual(ExecStatus.Success, executeMessage.Status);
+            Assert.AreEqual("Hi", executeMessage.Message);
+            CollectionAssert.AreEqual(duplicatedItems, executeMessage.DuplicatedItems);
         }
 
         [TestMethod]
@@ -141,7 +147,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Returns(new ResourceCatalogResult() { Message = "Hi" });
+                .Returns(new ResourceCatalogDuplicateResult() { Message = "Hi" });
             var workScpace = new Mock<IWorkspace>();
             DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
