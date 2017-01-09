@@ -719,6 +719,12 @@ namespace Warewolf.UITests
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Save);
         }
 
+        [Given(@"same name error message is shown")]
+        public void GivenSameNameErrorMessageIsShown()
+        {
+            Assert.AreEqual("An item with this name already exists in this folder.",SaveDialogWindow.ErrorLabel.DisplayText);
+        }
+
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
         {
 
