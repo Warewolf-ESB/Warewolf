@@ -1132,12 +1132,25 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return;
+            var explorerItemModels = CreateExplorerItemModels(explorerItems, server, parent, isDialog, isDeploy);
+            if (parent != null)
+            {
+                parent.Children = explorerItemModels;
+            }
+            if (isDeploy)
+            {
+                ShowContextMenu = false;
+            }
+        }
+
+        public ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy)
+        {
             var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var explorerItem in explorerItems)
+            foreach(var explorerItem in explorerItems)
             {
                 var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());
-                if (existingItem != null)
+                if(existingItem != null)
                 {
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
@@ -1149,16 +1162,8 @@ namespace Warewolf.Studio.ViewModels
                     CreateExplorerItemsSync(explorerItem.Children, server, itemCreated, isDialog, isDeploy);
                     explorerItemModels.Add(itemCreated);
                 }
-                
             }
-            if (parent != null)
-            {
-                parent.Children = explorerItemModels;
-            }
-            if (isDeploy)
-            {
-                ShowContextMenu = false;
-            }
+            return explorerItemModels;
         }
 
         private ExplorerItemViewModel CreateExplorerItem(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IExplorerItem explorerItem)
