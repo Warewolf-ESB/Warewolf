@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Replace
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Replace;
         }
        
         public override void Validate()
@@ -29,10 +30,7 @@ namespace Dev2.Activities.Designers2.Replace
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

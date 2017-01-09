@@ -48,6 +48,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 Headers = string.Empty;
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Web_Request;
         }
 
         public PreviewViewModel PreviewViewModel { get; private set; }
@@ -287,10 +288,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

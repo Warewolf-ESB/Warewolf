@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.UniqueRecords
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Unique_Records;
         }
 
         public override void Validate()
@@ -29,10 +30,7 @@ namespace Dev2.Activities.Designers2.UniqueRecords
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

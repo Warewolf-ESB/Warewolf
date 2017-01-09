@@ -23,6 +23,7 @@ namespace Dev2.Activities.Designers2.RecordsLengthNullHandler
         {
             RecordsetNameValue = RecordsetName;
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Length;
         }
         
         public string RecordsetNameValue { get { return (string)GetValue(RecordsetNameValueProperty); } set { SetValue(RecordsetNameValueProperty, value); } }

@@ -3732,6 +3732,699 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Assign.
+        /// </summary>
+        public static string Tool_Data_Assign {
+            get {
+                return ResourceManager.GetString("Tool_Data_Assign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Assign_Object.
+        /// </summary>
+        public static string Tool_Data_Assign_Object {
+            get {
+                return ResourceManager.GetString("Tool_Data_Assign_Object", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Base_Convert.
+        /// </summary>
+        public static string Tool_Data_Base_Convert {
+            get {
+                return ResourceManager.GetString("Tool_Data_Base_Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Case_Convert.
+        /// </summary>
+        public static string Tool_Data_Case_Convert {
+            get {
+                return ResourceManager.GetString("Tool_Data_Case_Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Data_Merge.
+        /// </summary>
+        public static string Tool_Data_Data_Merge {
+            get {
+                return ResourceManager.GetString("Tool_Data_Data_Merge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Data_Split.
+        /// </summary>
+        public static string Tool_Data_Data_Split {
+            get {
+                return ResourceManager.GetString("Tool_Data_Data_Split", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Find_Index.
+        /// </summary>
+        public static string Tool_Data_Find_Index {
+            get {
+                return ResourceManager.GetString("Tool_Data_Find_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Data_Replace.
+        /// </summary>
+        public static string Tool_Data_Replace {
+            get {
+                return ResourceManager.GetString("Tool_Data_Replace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_MySQL.
+        /// </summary>
+        public static string Tool_Database_MySQL {
+            get {
+                return ResourceManager.GetString("Tool_Database_MySQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_ODBC.
+        /// </summary>
+        public static string Tool_Database_ODBC {
+            get {
+                return ResourceManager.GetString("Tool_Database_ODBC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_Oracle.
+        /// </summary>
+        public static string Tool_Database_Oracle {
+            get {
+                return ResourceManager.GetString("Tool_Database_Oracle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_PostgreSQL.
+        /// </summary>
+        public static string Tool_Database_PostgreSQL {
+            get {
+                return ResourceManager.GetString("Tool_Database_PostgreSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_SQL_Bulk_Insert.
+        /// </summary>
+        public static string Tool_Database_SQL_Bulk_Insert {
+            get {
+                return ResourceManager.GetString("Tool_Database_SQL_Bulk_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Database_SQL_Server.
+        /// </summary>
+        public static string Tool_Database_SQL_Server {
+            get {
+                return ResourceManager.GetString("Tool_Database_SQL_Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Delete.
+        /// </summary>
+        public static string Tool_Dropbox_Delete {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Download.
+        /// </summary>
+        public static string Tool_Dropbox_Download {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_List_Contents.
+        /// </summary>
+        public static string Tool_Dropbox_List_Contents {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_List_Contents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Dropbox_Upload.
+        /// </summary>
+        public static string Tool_Dropbox_Upload {
+            get {
+                return ResourceManager.GetString("Tool_Dropbox_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Email_Exchange_Send.
+        /// </summary>
+        public static string Tool_Email_Exchange_Send {
+            get {
+                return ResourceManager.GetString("Tool_Email_Exchange_Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Email_SMTP_Send.
+        /// </summary>
+        public static string Tool_Email_SMTP_Send {
+            get {
+                return ResourceManager.GetString("Tool_Email_SMTP_Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Copy.
+        /// </summary>
+        public static string Tool_File_Copy {
+            get {
+                return ResourceManager.GetString("Tool_File_Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Create.
+        /// </summary>
+        public static string Tool_File_Create {
+            get {
+                return ResourceManager.GetString("Tool_File_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Delete.
+        /// </summary>
+        public static string Tool_File_Delete {
+            get {
+                return ResourceManager.GetString("Tool_File_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Move.
+        /// </summary>
+        public static string Tool_File_Move {
+            get {
+                return ResourceManager.GetString("Tool_File_Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Read_File.
+        /// </summary>
+        public static string Tool_File_Read_File {
+            get {
+                return ResourceManager.GetString("Tool_File_Read_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Read_Folder.
+        /// </summary>
+        public static string Tool_File_Read_Folder {
+            get {
+                return ResourceManager.GetString("Tool_File_Read_Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Rename.
+        /// </summary>
+        public static string Tool_File_Rename {
+            get {
+                return ResourceManager.GetString("Tool_File_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Unzip.
+        /// </summary>
+        public static string Tool_File_Unzip {
+            get {
+                return ResourceManager.GetString("Tool_File_Unzip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Write_File.
+        /// </summary>
+        public static string Tool_File_Write_File {
+            get {
+                return ResourceManager.GetString("Tool_File_Write_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_File_Zip.
+        /// </summary>
+        public static string Tool_File_Zip {
+            get {
+                return ResourceManager.GetString("Tool_File_Zip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Decision.
+        /// </summary>
+        public static string Tool_Flow_Decision {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Decision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Sequence.
+        /// </summary>
+        public static string Tool_Flow_Sequence {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Flow_Switch.
+        /// </summary>
+        public static string Tool_Flow_Switch {
+            get {
+                return ResourceManager.GetString("Tool_Flow_Switch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Javascript.
+        /// </summary>
+        public static string Tool_Javascript {
+            get {
+                return ResourceManager.GetString("Tool_Javascript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_LoopConstruct_For_Each.
+        /// </summary>
+        public static string Tool_LoopConstruct_For_Each {
+            get {
+                return ResourceManager.GetString("Tool_LoopConstruct_For_Each", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_LoopConstruct_Select_and_Apply.
+        /// </summary>
+        public static string Tool_LoopConstruct_Select_and_Apply {
+            get {
+                return ResourceManager.GetString("Tool_LoopConstruct_Select_and_Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Python.
+        /// </summary>
+        public static string Tool_Python {
+            get {
+                return ResourceManager.GetString("Tool_Python", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Count.
+        /// </summary>
+        public static string Tool_Recordset_Count {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Delete.
+        /// </summary>
+        public static string Tool_Recordset_Delete {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Find_Records.
+        /// </summary>
+        public static string Tool_Recordset_Find_Records {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Find_Records", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Length.
+        /// </summary>
+        public static string Tool_Recordset_Length {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Sort.
+        /// </summary>
+        public static string Tool_Recordset_Sort {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Sort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Recordset_Unique_Records.
+        /// </summary>
+        public static string Tool_Recordset_Unique_Records {
+            get {
+                return ResourceManager.GetString("Tool_Recordset_Unique_Records", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Com_DLL.
+        /// </summary>
+        public static string Tool_Resources_Com_DLL {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Com_DLL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Dot_net_DLL.
+        /// </summary>
+        public static string Tool_Resources_Dot_net_DLL {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Dot_net_DLL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_Service.
+        /// </summary>
+        public static string Tool_Resources_Service {
+            get {
+                return ResourceManager.GetString("Tool_Resources_Service", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Resources_WCF.
+        /// </summary>
+        public static string Tool_Resources_WCF {
+            get {
+                return ResourceManager.GetString("Tool_Resources_WCF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Ruby.
+        /// </summary>
+        public static string Tool_Ruby {
+            get {
+                return ResourceManager.GetString("Tool_Ruby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Scripting_CMD_Script.
+        /// </summary>
+        public static string Tool_Scripting_CMD_Script {
+            get {
+                return ResourceManager.GetString("Tool_Scripting_CMD_Script", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Scripting_Script.
+        /// </summary>
+        public static string Tool_Scripting_Script {
+            get {
+                return ResourceManager.GetString("Tool_Scripting_Script", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Copy_File.
+        /// </summary>
+        public static string Tool_SharePoint_Copy_File {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Copy_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Create_List_Item.
+        /// </summary>
+        public static string Tool_SharePoint_Create_List_Item {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Create_List_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Delete_File.
+        /// </summary>
+        public static string Tool_SharePoint_Delete_File {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Delete_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Delete_List_Item.
+        /// </summary>
+        public static string Tool_SharePoint_Delete_List_Item {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Delete_List_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Download_File.
+        /// </summary>
+        public static string Tool_SharePoint_Download_File {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Download_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Move_File.
+        /// </summary>
+        public static string Tool_SharePoint_Move_File {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Move_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Read_Folder.
+        /// </summary>
+        public static string Tool_SharePoint_Read_Folder {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Read_Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Read_List_Item.
+        /// </summary>
+        public static string Tool_SharePoint_Read_List_Item {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Read_List_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Update_List_Item.
+        /// </summary>
+        public static string Tool_SharePoint_Update_List_Item {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Update_List_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_SharePoint_Upload_File.
+        /// </summary>
+        public static string Tool_SharePoint_Upload_File {
+            get {
+                return ResourceManager.GetString("Tool_SharePoint_Upload_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Aggregate_Calculate.
+        /// </summary>
+        public static string Tool_Utility_Aggregate_Calculate {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Aggregate_Calculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Calculate.
+        /// </summary>
+        public static string Tool_Utility_Calculate {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Calculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Comment.
+        /// </summary>
+        public static string Tool_Utility_Comment {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Create_JSON.
+        /// </summary>
+        public static string Tool_Utility_Create_JSON {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Create_JSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Date_Time.
+        /// </summary>
+        public static string Tool_Utility_Date_Time {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Date_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Date_Time_Diff.
+        /// </summary>
+        public static string Tool_Utility_Date_Time_Diff {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Date_Time_Diff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Format_Number.
+        /// </summary>
+        public static string Tool_Utility_Format_Number {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Format_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Consume.
+        /// </summary>
+        public static string Tool_Utility_Rabbit_MQ_Consume {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Consume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Publish.
+        /// </summary>
+        public static string Tool_Utility_Rabbit_MQ_Publish {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Rabbit_MQ_Publish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Random.
+        /// </summary>
+        public static string Tool_Utility_Random {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Random", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Sys_Info.
+        /// </summary>
+        public static string Tool_Utility_Sys_Info {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Sys_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Web_Request.
+        /// </summary>
+        public static string Tool_Utility_Web_Request {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Web_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_Utility_Xpath.
+        /// </summary>
+        public static string Tool_Utility_Xpath {
+            get {
+                return ResourceManager.GetString("Tool_Utility_Xpath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Delete.
+        /// </summary>
+        public static string Tool_WebMethod_Delete {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Get.
+        /// </summary>
+        public static string Tool_WebMethod_Get {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Get", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Post.
+        /// </summary>
+        public static string Tool_WebMethod_Post {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Post", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool_WebMethod_Put.
+        /// </summary>
+        public static string Tool_WebMethod_Put {
+            get {
+                return ResourceManager.GetString("Tool_WebMethod_Put", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filters the content of the toolbox..
         /// </summary>
         public static string ToolboxViewFilterSearchHelp {

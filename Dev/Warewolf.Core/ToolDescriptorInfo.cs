@@ -17,6 +17,8 @@ namespace Warewolf.Core
             Name = name;
             Icon = iconName;
             FilterTag = Studio.Resources.Languages.ToolboxSearchTags.ResourceManager.GetString(tag) ?? "";
+            ResourceToolTip = Studio.Resources.Languages.Tooltips.ResourceManager.GetString(tag) ?? "";
+            ResourceHelpText = Studio.Resources.Languages.HelpText.ResourceManager.GetString(tag) ?? "";
         }
 
     
@@ -33,5 +35,7 @@ namespace Warewolf.Core
         public string Category { get; private set; }
         public string IconUri { get; private set; }
         public string FilterTag { get; set; }
+        public string ResourceToolTip { get; set; }
+        public string ResourceHelpText { get; set; }
     }
 }
