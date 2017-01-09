@@ -33,7 +33,7 @@ using Warewolf.Storage;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    [ToolDescriptorInfo("Utility-FormatNumber", "Format Number", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Format Number_Tags")]
+    [ToolDescriptorInfo("Utility-FormatNumber", "Format Number", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Format Number")]
     public class DsfNumberFormatActivity : DsfActivityAbstract<string>
     {
         #region Class Members

@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.DataSplit
         public DataSplitDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            ProcessDirectionGroup = string.Format("ProcessDirectionGroup{0}", Guid.NewGuid());
+            ProcessDirectionGroup = $"ProcessDirectionGroup{Guid.NewGuid()}";
 
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
@@ -57,6 +57,8 @@ namespace Dev2.Activities.Designers2.DataSplit
             {
                 OnSplitTypeChanged(i);
             }
+
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Data_Split;
         }
 
         public override string CollectionName => "ResultsCollection";
@@ -148,10 +150,7 @@ namespace Dev2.Activities.Designers2.DataSplit
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         IRuleSet GetRuleSet(string propertyName)

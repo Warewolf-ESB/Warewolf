@@ -26,7 +26,7 @@ namespace Dev2.Activities.Scripting
     /// <summary>
     /// Activity used for executing JavaScript through a tool
     /// </summary>
-    [ToolDescriptorInfo("Scripting-Ruby", "Ruby", ToolType.Native, "3E9FF6C9-E9C6-4C6C-B605-EF6D803373DC", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Ruby_Tag")]
+    [ToolDescriptorInfo("Scripting-Ruby", "Ruby", ToolType.Native, "3E9FF6C9-E9C6-4C6C-B605-EF6D803373DC", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Ruby")]
     public class DsfRubyActivity : DsfActivityAbstract<string>
     {
         public DsfRubyActivity()
