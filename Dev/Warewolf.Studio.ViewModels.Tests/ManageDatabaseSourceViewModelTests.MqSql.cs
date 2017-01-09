@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,8 +19,7 @@ using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
-    [TestClass]
-    public class ManageDatabaseSourceViewModelTests
+    public partial class ManageDatabaseSourceViewModelTests
     {
         #region Fields
 
