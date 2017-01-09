@@ -702,6 +702,7 @@ namespace Warewolf.UITests
                     Click_Connect_Control_InExplorer();
                     Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
                 }
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
             }
         }
 
@@ -8016,16 +8017,13 @@ namespace Warewolf.UITests
             Playback.Wait(2000);
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-
-        [When(@"I Drag Explorer Second Sub Item Onto Third Sub Item")]
-        public void Drag_Explorer_Second_Sub_Item_Onto_Third_Sub_Item()
+        [When(@"I Drag Explorer First Item Onto Second Sub Item")]
+        public void Drag_Explorer_First_Item_Onto_Second_Item()
         {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem);
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ThirdSubItem);
-            Playback.Wait(2000);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }       
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
+        }        
         
         [Given(@"I Double Click Localhost Server")]
         [When(@"I Double Click Localhost Server")]
