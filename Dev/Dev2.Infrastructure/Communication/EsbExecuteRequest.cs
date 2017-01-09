@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,6 +25,8 @@ namespace Dev2.Communication
         public string TestName { get; set; }
 
         public Dictionary<string, StringBuilder> Args { get; set; }
+
+        public Guid ResourceID { get; set; }
 
         public StringBuilder ExecuteResult { get; set; }
 
