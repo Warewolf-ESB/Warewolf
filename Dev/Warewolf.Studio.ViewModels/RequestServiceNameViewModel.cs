@@ -400,6 +400,10 @@ namespace Warewolf.Studio.ViewModels
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
                 {
                     var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                    if (IsDuplicate)
+                    {
+                        return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower());
+                    }
                     return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
                 }
             }
