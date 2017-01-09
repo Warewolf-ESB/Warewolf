@@ -49,7 +49,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Get_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Get;
         }
         Guid UniqueID => GetProperty<Guid>();
 

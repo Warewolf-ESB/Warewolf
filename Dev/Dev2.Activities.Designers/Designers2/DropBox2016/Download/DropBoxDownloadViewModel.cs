@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Download_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Download;
         }
         public ICommand NewSourceCommand { get; set; }
         public OauthSource SelectedSource

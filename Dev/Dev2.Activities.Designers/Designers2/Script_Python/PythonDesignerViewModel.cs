@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.Script_Python
             ChooseScriptSourceCommand = new DelegateCommand(o => ChooseScriptSources());
             AddTitleBarLargeToggle();
             _scriptChooser = new ScriptChooser();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Python_Tag;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Python;
         }
 
         public string IncludeFile

@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
             {
                 IsFilesSelected = true;
             }
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_Folder_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_Folder;
         }
 
         public SharePointReadFolderDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)

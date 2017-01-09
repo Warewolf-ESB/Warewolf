@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_Select_and_Apply_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_Select_and_Apply;
         }
 
         public override void Validate()

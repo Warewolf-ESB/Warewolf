@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.CommandLine
         {
             AddTitleBarLargeToggle();
             InitializeCommandPriorities();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Scripting_CMD_Script_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Scripting_CMD_Script;
         }
 
         public List<KeyValuePair<ProcessPriorityClass, string>> CommandPriorities { get; private set; }

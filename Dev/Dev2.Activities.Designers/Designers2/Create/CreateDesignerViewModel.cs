@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Create
             : base(modelItem, string.Empty, "File or Folder")
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Create_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_File_Create;
         }
 
         public override void Validate()

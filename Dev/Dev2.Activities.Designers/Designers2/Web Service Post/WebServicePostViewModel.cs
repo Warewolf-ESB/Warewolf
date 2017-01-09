@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Post_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Post;
         }
         Guid UniqueID => GetProperty<Guid>();
 

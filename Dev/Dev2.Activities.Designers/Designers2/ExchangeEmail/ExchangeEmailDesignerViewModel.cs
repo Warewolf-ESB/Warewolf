@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             SetupCommonProperties();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_Exchange_Send_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_Exchange_Send;
         }
 
         private void SetupCommonProperties()

@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
             OutputTypes = new List<string>(DateTimeComparer.OutputFormatTypes);
             SelectedOutputType = string.IsNullOrEmpty(OutputType) ? OutputTypes[0] : OutputType;
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time_Diff_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time_Diff;
         }
 
         public List<string> OutputTypes { get; private set; }

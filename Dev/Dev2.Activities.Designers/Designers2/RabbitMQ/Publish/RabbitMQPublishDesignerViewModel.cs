@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             IServer server = shellViewModel.ActiveServer;
             _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
             SetupCommonViewModelProperties();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Publish;
         }
 
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQSourceModel model)

@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.SharePointFileDownload
         public SharePointFileDownLoadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Download_File_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Download_File;
         }
 
         #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>

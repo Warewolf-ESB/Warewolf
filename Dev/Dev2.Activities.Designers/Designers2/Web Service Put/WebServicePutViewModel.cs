@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put;
         }
 
         public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)

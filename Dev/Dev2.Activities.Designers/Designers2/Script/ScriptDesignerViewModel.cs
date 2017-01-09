@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Script
             SelectedScriptType = Dev2EnumConverter.ConvertEnumValueToString(ScriptType);
             ChooseScriptSourceCommand = new DelegateCommand(o => ChooseScriptSources());
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Scripting_Script_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Scripting_Script;
         }
 
         public string IncludeFile

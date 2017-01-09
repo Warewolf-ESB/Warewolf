@@ -26,7 +26,7 @@ namespace Dev2.Activities.Scripting
     /// <summary>
     /// Activity used for executing JavaScript through a tool
     /// </summary>
-    [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript_Tag")]
+    [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript")]
     public class DsfJavascriptActivity : DsfActivityAbstract<string>
     {
         public DsfJavascriptActivity()

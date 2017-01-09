@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Delete_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Delete;
         }
         Guid UniqueID => GetProperty<Guid>();
 

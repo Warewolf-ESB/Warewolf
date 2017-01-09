@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Delete_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Dropbox_Delete;
         }
 
         public ICommand NewSourceCommand { get; set; }

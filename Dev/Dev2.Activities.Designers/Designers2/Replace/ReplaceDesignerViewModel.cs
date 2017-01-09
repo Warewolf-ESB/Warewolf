@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Replace
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Replace_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Replace;
         }
        
         public override void Validate()

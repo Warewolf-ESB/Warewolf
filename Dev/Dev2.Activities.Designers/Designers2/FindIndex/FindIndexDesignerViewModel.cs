@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.FindIndex
             SelectedIndex = string.IsNullOrEmpty(Index) ? IndexList[0] : Index;
             SelectedDirection = string.IsNullOrEmpty(Direction) ? DirectionList[0] : Direction;
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Find_Index_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Find_Index;
         }
 
         public IList<string> IndexList { get; private set; }

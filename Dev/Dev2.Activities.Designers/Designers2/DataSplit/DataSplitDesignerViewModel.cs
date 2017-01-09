@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.DataSplit
                 OnSplitTypeChanged(i);
             }
 
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Data_Split_Tags;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Data_Split;
         }
 
         public override string CollectionName => "ResultsCollection";
