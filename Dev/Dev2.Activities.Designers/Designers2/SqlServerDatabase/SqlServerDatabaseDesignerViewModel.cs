@@ -63,6 +63,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_SQL_Server;
         }
 
         Guid UniqueID => GetProperty<Guid>();

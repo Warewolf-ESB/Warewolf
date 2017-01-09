@@ -60,6 +60,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Resources_WCF;
         }
 
         Guid UniqueID => GetProperty<Guid>();
@@ -314,10 +315,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

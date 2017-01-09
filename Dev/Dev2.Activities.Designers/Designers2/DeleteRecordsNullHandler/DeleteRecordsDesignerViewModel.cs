@@ -22,6 +22,7 @@ namespace Dev2.Activities.Designers2.DeleteRecordsNullHandler
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Delete;
         }
 
         public override void Validate()

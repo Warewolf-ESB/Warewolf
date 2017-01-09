@@ -37,6 +37,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
             }
 
             ItemsList = CaseConverter.ConvertTypes.ToObservableCollection();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Case_Convert;
         }
 
         public override string CollectionName => "ConvertCollection";
