@@ -49,7 +49,11 @@ $TestSettingsFile = "$PSScriptRoot\SaveDialogUISpecs.testsettings"
 "@)
 
 # Create full VSTest argument string.
-$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=Save Dialog`""
+if ($TestList -eq "") {
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Save Dialog`""
+} else {
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
