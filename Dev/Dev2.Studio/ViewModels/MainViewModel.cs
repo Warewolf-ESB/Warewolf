@@ -90,7 +90,11 @@ namespace Dev2.Studio.ViewModels
 
         private AuthorizeCommand<string> _newServiceCommand;
         private AuthorizeCommand<string> _newPluginSourceCommand;
-        private AuthorizeCommand<string> _newDatabaseSourceCommand;
+        private AuthorizeCommand<string> _newSqlServerSourceCommand;
+        private AuthorizeCommand<string> _newMySqlSourceCommand;
+        private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
+        private AuthorizeCommand<string> _newOracleSourceCommand;
+        private AuthorizeCommand<string> _newOdbcSourceCommand;
         private AuthorizeCommand<string> _newWebSourceCommand;
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
@@ -168,7 +172,11 @@ namespace Dev2.Studio.ViewModels
 
         void OnActiveEnvironmentChanged()
         {
-            NewDatabaseSourceCommand.UpdateContext(ActiveEnvironment);
+            NewSqlServerSourceCommand.UpdateContext(ActiveEnvironment);
+            NewMySqlSourceCommand.UpdateContext(ActiveEnvironment);
+            NewPostgreSqlSourceCommand.UpdateContext(ActiveEnvironment);
+            NewOracleSourceCommand.UpdateContext(ActiveEnvironment);
+            NewOdbcSourceCommand.UpdateContext(ActiveEnvironment);
             NewServiceCommand.UpdateContext(ActiveEnvironment);
             NewPluginSourceCommand.UpdateContext(ActiveEnvironment);
             NewWebSourceCommand.UpdateContext(ActiveEnvironment);
@@ -304,12 +312,48 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewDatabaseSourceCommand
+        public AuthorizeCommand<string> NewSqlServerSourceCommand
         {
             get
             {
-                return _newDatabaseSourceCommand ?? (_newDatabaseSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDatabaseSource(@""), param => IsActiveEnvironmentConnected()));
+                return _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveEnvironmentConnected()));
+            }
+        }
+
+        public AuthorizeCommand<string> NewMySqlSourceCommand
+        {
+            get
+            {
+                return _newMySqlSourceCommand ?? (_newMySqlSourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveEnvironmentConnected()));
+            }
+        }
+
+        public AuthorizeCommand<string> NewPostgreSqlSourceCommand
+        {
+            get
+            {
+                return _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveEnvironmentConnected()));
+            }
+        }
+
+        public AuthorizeCommand<string> NewOracleSourceCommand
+        {
+            get
+            {
+                return _newOracleSourceCommand ?? (_newOracleSourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveEnvironmentConnected()));
+            }
+        }
+
+        public AuthorizeCommand<string> NewOdbcSourceCommand
+        {
+            get
+            {
+                return _newOdbcSourceCommand ?? (_newOdbcSourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -864,9 +908,29 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void NewDatabaseSource(string resourcePath)
+        public void NewSqlServerSource(string resourcePath)
         {
-            _worksurfaceContextManager.NewDatabaseSource(resourcePath);
+            _worksurfaceContextManager.NewSqlServerSource(resourcePath);
+        }
+
+        public void NewMySqlSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewMySqlSource(resourcePath);
+        }
+
+        public void NewPostgreSqlSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewPostgreSqlSource(resourcePath);
+        }
+
+        public void NewOracleSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewOracleSource(resourcePath);
+        }
+
+        public void NewOdbcSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewOdbcSource(resourcePath);
         }
 
         public void NewWebSource(string resourcePath)

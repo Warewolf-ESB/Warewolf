@@ -161,7 +161,11 @@ namespace Warewolf.Studio.ViewModels
         private string _openVersionTooltip;
         private string _newServiceTooltip;
         private string _newServerSourceTooltip;
-        private string _newDataBaseSourceTooltip;
+        private string _newSqlServerSourceTooltip;
+        private string _newMySqlSourceTooltip;
+        private string _newPostgreSqlSourceTooltip;
+        private string _newOracleSourceTooltip;
+        private string _newOdbcSourceTooltip;
         private string _newWebSourceTooltip;
         private string _newPluginSourceTooltip;
         private string _newComPluginSourceTooltip;
@@ -280,9 +284,29 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.NewServerSourceCommand(ResourcePath, Server);
             });
 
-            NewDatabaseSourceCommand = new DelegateCommand(o =>
+            NewSqlServerSourceCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.NewDatabaseSourceCommand(ResourcePath, Server);
+                _explorerItemViewModelCommandController.NewSqlServerSourceCommand(ResourcePath, Server);
+            });
+
+            NewMySqlSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewMySqlSourceCommand(ResourcePath, Server);
+            });
+
+            NewPostgreSqlSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewPostgreSqlSourceCommand(ResourcePath, Server);
+            });
+
+            NewOracleSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewOracleSourceCommand(ResourcePath, Server);
+            });
+
+            NewOdbcSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewOdbcSourceCommand(ResourcePath, Server);
             });
 
             NewPluginSourceCommand = new DelegateCommand(o =>
@@ -987,7 +1011,11 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
-        public ICommand NewDatabaseSourceCommand { get; set; }
+        public ICommand NewSqlServerSourceCommand { get; set; }
+        public ICommand NewMySqlSourceCommand { get; set; }
+        public ICommand NewPostgreSqlSourceCommand { get; set; }
+        public ICommand NewOracleSourceCommand { get; set; }
+        public ICommand NewOdbcSourceCommand { get; set; }
         public ICommand NewPluginSourceCommand { get; set; }
         public ICommand NewComPluginSourceCommand { get; set; }
         public ICommand NewWcfSourceCommand { get; set; }
@@ -1166,7 +1194,11 @@ namespace Warewolf.Studio.ViewModels
                 _canCreateSource = value;
 
                 NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewDataBaseSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDataBaseSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewSqlServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSqlServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewMySqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewMySqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewPostgreSqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewOracleSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOracleSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewOdbcSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOdbcSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
@@ -1963,13 +1995,49 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NewServerSourceTooltip);
             }
         }
-        public string NewDataBaseSourceTooltip
+        public string NewSqlServerSourceTooltip
         {
-            get { return _newDataBaseSourceTooltip; }
+            get { return _newSqlServerSourceTooltip; }
             set
             {
-                _newDataBaseSourceTooltip = value; 
-                OnPropertyChanged(() => NewDataBaseSourceTooltip);
+                _newSqlServerSourceTooltip = value; 
+                OnPropertyChanged(() => NewSqlServerSourceTooltip);
+            }
+        }
+        public string NewMySqlSourceTooltip
+        {
+            get { return _newMySqlSourceTooltip; }
+            set
+            {
+                _newMySqlSourceTooltip = value; 
+                OnPropertyChanged(() => NewMySqlSourceTooltip);
+            }
+        }
+        public string NewPostgreSqlSourceTooltip
+        {
+            get { return _newPostgreSqlSourceTooltip; }
+            set
+            {
+                _newPostgreSqlSourceTooltip = value; 
+                OnPropertyChanged(() => NewPostgreSqlSourceTooltip);
+            }
+        }
+        public string NewOracleSourceTooltip
+        {
+            get { return _newOracleSourceTooltip; }
+            set
+            {
+                _newOracleSourceTooltip = value; 
+                OnPropertyChanged(() => NewOracleSourceTooltip);
+            }
+        }
+        public string NewOdbcSourceTooltip
+        {
+            get { return _newOdbcSourceTooltip; }
+            set
+            {
+                _newOdbcSourceTooltip = value; 
+                OnPropertyChanged(() => NewOdbcSourceTooltip);
             }
         }
         public string NewWebSourceTooltip
