@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels
                     var duplicatedItems = executeCommand.DuplicatedItems;
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                     var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                    var childItems = environmentViewModel.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                    var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
                     var explorerItemViewModels = parentItem.Children;
                     explorerItemViewModels.AddRange(childItems);
                     parentItem.Children = explorerItemViewModels;
@@ -400,6 +400,10 @@ namespace Warewolf.Studio.ViewModels
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
                 {
                     var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                    if (IsDuplicate)
+                    {
+                        return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower());
+                    }
                     return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
                 }
             }

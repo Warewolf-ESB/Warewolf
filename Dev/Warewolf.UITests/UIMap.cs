@@ -56,6 +56,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            TryClickMessageBoxOK();
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -768,6 +769,12 @@ namespace Warewolf.UITests
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
             Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+        }
+
+        [Given(@"same name error message is shown")]
+        public void GivenSameNameErrorMessageIsShown()
+        {
+            Assert.AreEqual("An item with this name already exists in this folder.",SaveDialogWindow.ErrorLabel.DisplayText);
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
@@ -3413,6 +3420,20 @@ namespace Warewolf.UITests
         public void Click_Clear_Toolbox_Filter_Clear_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.ClearFilterButton, new Point(8, 7));
+        }
+
+        public void DoubleClick_Toolbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            Playback.Wait(1500);
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
+        }
+
+        public void SingleClick_Toolbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            Playback.Wait(1500);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
         [Given(@"I Click Close Critical Error Dialog")]

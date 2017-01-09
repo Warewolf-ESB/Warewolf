@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
         public SharePointFileUploadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
-           
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Upload_File;
         }
 
         #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>
@@ -34,10 +34,7 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
         public string LocalInputPath => GetProperty<string>();
 

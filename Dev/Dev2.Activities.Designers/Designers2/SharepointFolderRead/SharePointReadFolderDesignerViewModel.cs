@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
             {
                 IsFilesSelected = true;
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_Folder;
         }
 
         public SharePointReadFolderDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
@@ -42,10 +43,7 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
         
         public bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }

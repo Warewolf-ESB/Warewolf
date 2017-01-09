@@ -16,6 +16,24 @@ namespace Warewolf.UITests.Toolbox
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text));
         }
 
+        [TestMethod]
+        [TestCategory("ToolBox")]
+        public void DoubleClickToolboxAssignToolShowsPopup()
+        {
+            UIMap.DoubleClick_Toolbox();
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("ToolBox")]
+        public void SingleClickToolboxAssignToolUpdatesHelpText()
+        {
+            var initialImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
+            UIMap.SingleClick_Toolbox();
+            var assignImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
+            Assert.AreNotEqual(initialImage, assignImage);
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

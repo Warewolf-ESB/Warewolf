@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Read_List_Item;
         }
 
         public override string CollectionName => "FilterCriteria";
@@ -46,10 +47,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

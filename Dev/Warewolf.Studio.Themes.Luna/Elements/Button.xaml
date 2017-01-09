@@ -520,7 +520,7 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
