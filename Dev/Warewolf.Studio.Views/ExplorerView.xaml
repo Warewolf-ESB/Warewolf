@@ -130,15 +130,18 @@
                       DragLeave="ExplorerTree_OnDragLeave"
                       DragEnter="ExplorerTree_OnDragEnter">
                 <TreeView.Resources>
-                    <ContextMenu x:Key="ExplorerEnvironmentMenu" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
-                                             Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ContextMenu x:Key="ExplorerEnvironmentMenu"
+                                 Style="{StaticResource ContextMenuStyle}"
+                                 StaysOpen="true"
+                                 Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 KeyUp="ExplorerContextMenuView_OnKeyUp">
                         <MenuItem Name="NewService"
-                                Command="{Binding NewServiceCommand}"
-                                Header="New Workflow Service"
-                                Style="{StaticResource MenuItemStyle}"
-                                InputGestureText="[Ctrl+W]"
-                                IsEnabled="{Binding CanCreateWorkflowService}"
-                                ToolTip="{Binding NewServiceTooltip}"
+                                  Command="{Binding NewServiceCommand}"
+                                  Header="New Workflow Service"
+                                  Style="{StaticResource MenuItemStyle}"
+                                  InputGestureText="[Ctrl+W]"
+                                  IsEnabled="{Binding CanCreateWorkflowService}"
+                                  ToolTip="{Binding NewServiceTooltip}"
                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                             <MenuItem.Icon>
                                 <Image Style="{StaticResource NewServiceIcon}"/>
