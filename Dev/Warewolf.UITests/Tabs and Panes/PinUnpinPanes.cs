@@ -132,7 +132,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             const string Variable1Name = "SomeVariable";
             UIMap.Enter_Variable_Into_Assign_Row1_On_Unpinned_Tab("[[" + Variable1Name + "]]");
-            Assert.AreEqual(Variable1Name, UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            Assert.AreEqual("[[" + Variable1Name + "]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
         }
 
         #region Additional test attributes
