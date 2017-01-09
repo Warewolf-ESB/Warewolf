@@ -19,7 +19,6 @@ using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
-using Microsoft.VisualBasic.Devices;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Dev2.Runtime.ESB.Management.Services;
@@ -156,39 +155,57 @@ namespace Dev2.Activities
 
         public string GetPhysicalMemoryAvailableInformation()
         {
-            var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
-            var availablePhysicalMemory = ConvertToMB(computerInfo.AvailablePhysicalMemory);
-            stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
+            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            var searcher = new ManagementObjectSearcher(winQuery);
+            foreach (var o in searcher.Get())
+            {
+                var item = (ManagementObject)o;
+                var availablePhysicalMemory = (uint.Parse(item["FreePhysicalMemory"].ToString()) / 1024).ToString();
+                stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
+            }
             return stringBuilder.ToString();
         }
 
-
         public string GetPhysicalMemoryTotalInformation()
         {
-            var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
-            var totalPhysicalMemory = ConvertToMB(computerInfo.TotalPhysicalMemory);
-            stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
+            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            var searcher = new ManagementObjectSearcher(winQuery);
+            foreach (var o in searcher.Get())
+            {
+                var item = (ManagementObject)o;
+                var totalPhysicalMemory = (uint.Parse(item["TotalVisibleMemorySize"].ToString()) / 1024).ToString();
+                stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
+            }
             return stringBuilder.ToString();
         }
 
         public string GetVirtualMemoryAvailableInformation()
         {
-            var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
-            var availableVirtualMemory = ConvertToMB(computerInfo.AvailableVirtualMemory);
-            stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
+            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            var searcher = new ManagementObjectSearcher(winQuery);
+            foreach (var o in searcher.Get())
+            {
+                var item = (ManagementObject)o;
+                var totalVirtualMemory = (uint.Parse(item["FreeVirtualMemory"].ToString()) / 1024).ToString();
+                stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
+            }
             return stringBuilder.ToString();
         }
-
-
+        
         public string GetVirtualMemoryTotalInformation()
         {
-            var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
-            var totalVirtualMemory = ConvertToMB(computerInfo.TotalVirtualMemory);
-            stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
+            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            var searcher = new ManagementObjectSearcher(winQuery);
+            foreach (var o in searcher.Get())
+            {
+                var item = (ManagementObject)o;
+                var availableVirtualMemory = (uint.Parse(item["TotalVirtualMemorySize"].ToString()) / 1024).ToString();
+                stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
+            }
             return stringBuilder.ToString();
         }
 
