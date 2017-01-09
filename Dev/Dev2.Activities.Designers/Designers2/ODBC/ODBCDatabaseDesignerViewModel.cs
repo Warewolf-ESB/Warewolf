@@ -67,6 +67,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_ODBC;
         }
 
         Guid UniqueID => GetProperty<Guid>();
@@ -342,10 +343,7 @@ namespace Dev2.Activities.Designers2.ODBC
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

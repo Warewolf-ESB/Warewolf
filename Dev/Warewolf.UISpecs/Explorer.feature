@@ -80,3 +80,9 @@ Scenario: Refresh Remote Server Refreshes Only The Remote Server
 	And I Select Connected RemoteConnectionIntegration From Explorer
 	And I Refresh Explorer Withpout Waiting For Spinner
 	Then Remote Server Refreshes
+
+Scenario: Duplicate folder with same name as existing folder should have error message
+	Given The Warewolf Studio is running	
+	And I Click Duplicate From Explorer Context Menu for Service "DuplicateFolderNameError"
+	And same name error message is shown
+	And I Click SaveDialog CancelButton

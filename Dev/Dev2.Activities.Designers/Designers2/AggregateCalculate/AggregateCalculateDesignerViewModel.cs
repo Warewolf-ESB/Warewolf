@@ -10,6 +10,7 @@ namespace Dev2.Activities.Designers2.AggregateCalculate
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Aggregate_Calculate;
         }
 
         public override void Validate()

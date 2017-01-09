@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
 
             dynamic mi = ModelItem;
             InitializeItems(mi.FieldsCollection);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Assign_Object;
         }
 
         public override string CollectionName => "FieldsCollection";
@@ -62,10 +63,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

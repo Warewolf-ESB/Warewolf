@@ -11,9 +11,11 @@
 using Dev2.Common.Interfaces.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Common.Interfaces
 {
@@ -58,5 +60,7 @@ namespace Dev2.Common.Interfaces
 
         Task<bool> LoadDialog(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);
+
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy);
     }
 }
