@@ -64,6 +64,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_MySQL;
         }
 
         Guid UniqueID => GetProperty<Guid>();

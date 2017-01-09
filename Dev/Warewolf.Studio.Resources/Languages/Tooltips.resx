@@ -1849,4 +1849,235 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="DropBoxDownloadFileNameTooltip" xml:space="preserve">
     <value>Any variable and/or data goes in here.	This is the name of the file that will be downloaded from Dropbox.	NOTE: The file path must use "/" to identify folders and not "\".</value>
   </data>
+  <data name="Tool_Javascript" xml:space="preserve">
+    <value>Tool_Javascript</value>
+  </data>
+  <data name="Tool_WebMethod_Put" xml:space="preserve">
+    <value>Tool_WebMethod_Put</value>
+  </data>
+  <data name="Tool_WebMethod_Post" xml:space="preserve">
+    <value>Tool_WebMethod_Post</value>
+  </data>
+  <data name="Tool_WebMethod_Get" xml:space="preserve">
+    <value>Tool_WebMethod_Get</value>
+  </data>
+  <data name="Tool_WebMethod_Delete" xml:space="preserve">
+    <value>Tool_WebMethod_Delete</value>
+  </data>
+  <data name="Tool_Utility_Xpath" xml:space="preserve">
+    <value>Tool_Utility_Xpath</value>
+  </data>
+  <data name="Tool_Utility_Web_Request" xml:space="preserve">
+    <value>Tool_Utility_Web_Request</value>
+  </data>
+  <data name="Tool_Utility_Sys_Info" xml:space="preserve">
+    <value>Tool_Utility_Sys_Info</value>
+  </data>
+  <data name="Tool_Utility_Random" xml:space="preserve">
+    <value>Tool_Utility_Random</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Publish" xml:space="preserve">
+    <value>Tool_Utility_Rabbit_MQ_Publish</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
+    <value>Tool_Utility_Rabbit_MQ_Consume</value>
+  </data>
+  <data name="Tool_Utility_Format_Number" xml:space="preserve">
+    <value>Tool_Utility_Format_Number</value>
+  </data>
+  <data name="Tool_Utility_Date_Time" xml:space="preserve">
+    <value>Tool_Utility_Date_Time</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Diff" xml:space="preserve">
+    <value>Tool_Utility_Date_Time_Diff</value>
+  </data>
+  <data name="Tool_Utility_Create_JSON" xml:space="preserve">
+    <value>Tool_Utility_Create_JSON</value>
+  </data>
+  <data name="Tool_Utility_Comment" xml:space="preserve">
+    <value>Tool_Utility_Comment</value>
+  </data>
+  <data name="Tool_Utility_Calculate" xml:space="preserve">
+    <value>Tool_Utility_Calculate</value>
+  </data>
+  <data name="Tool_Utility_Aggregate_Calculate" xml:space="preserve">
+    <value>Tool_Utility_Aggregate_Calculate</value>
+  </data>
+  <data name="Tool_SharePoint_Upload_File" xml:space="preserve">
+    <value>Tool_SharePoint_Upload_File</value>
+  </data>
+  <data name="Tool_SharePoint_Update_List_Item" xml:space="preserve">
+    <value>Tool_SharePoint_Update_List_Item</value>
+  </data>
+  <data name="Tool_SharePoint_Read_List_Item" xml:space="preserve">
+    <value>Tool_SharePoint_Read_List_Item</value>
+  </data>
+  <data name="Tool_SharePoint_Read_Folder" xml:space="preserve">
+    <value>Tool_SharePoint_Read_Folder</value>
+  </data>
+  <data name="Tool_SharePoint_Move_File" xml:space="preserve">
+    <value>Tool_SharePoint_Move_File</value>
+  </data>
+  <data name="Tool_SharePoint_Download_File" xml:space="preserve">
+    <value>Tool_SharePoint_Download_File</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_List_Item" xml:space="preserve">
+    <value>Tool_SharePoint_Delete_List_Item</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_File" xml:space="preserve">
+    <value>Tool_SharePoint_Delete_File</value>
+  </data>
+  <data name="Tool_SharePoint_Create_List_Item" xml:space="preserve">
+    <value>Tool_SharePoint_Create_List_Item</value>
+  </data>
+  <data name="Tool_SharePoint_Copy_File" xml:space="preserve">
+    <value>Tool_SharePoint_Copy_File</value>
+  </data>
+  <data name="Tool_Scripting_Script" xml:space="preserve">
+    <value>Tool_Scripting_Script</value>
+  </data>
+  <data name="Tool_Scripting_CMD_Script" xml:space="preserve">
+    <value>Tool_Scripting_CMD_Script</value>
+  </data>
+  <data name="Tool_Resources_WCF" xml:space="preserve">
+    <value>Tool_Resources_WCF</value>
+  </data>
+  <data name="Tool_Resources_Service" xml:space="preserve">
+    <value>Tool_Resources_Service</value>
+  </data>
+  <data name="Tool_Resources_Dot_net_DLL" xml:space="preserve">
+    <value>Tool_Resources_Dot_net_DLL</value>
+  </data>
+  <data name="Tool_Resources_Com_DLL" xml:space="preserve">
+    <value>Tool_Resources_Com_DLL</value>
+  </data>
+  <data name="Tool_Recordset_Unique_Records" xml:space="preserve">
+    <value>Tool_Recordset_Unique_Records</value>
+  </data>
+  <data name="Tool_Recordset_Sort" xml:space="preserve">
+    <value>Tool_Recordset_Sort</value>
+  </data>
+  <data name="Tool_Recordset_Length" xml:space="preserve">
+    <value>Tool_Recordset_Length</value>
+  </data>
+  <data name="Tool_Recordset_Find_Records" xml:space="preserve">
+    <value>Tool_Recordset_Find_Records</value>
+  </data>
+  <data name="Tool_Recordset_Delete" xml:space="preserve">
+    <value>Tool_Recordset_Delete</value>
+  </data>
+  <data name="Tool_Recordset_Count" xml:space="preserve">
+    <value>Tool_Recordset_Count</value>
+  </data>
+  <data name="Tool_LoopConstruct_Select_and_Apply" xml:space="preserve">
+    <value>Tool_LoopConstruct_Select_and_Apply</value>
+  </data>
+  <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
+    <value>Tool_LoopConstruct_For_Each</value>
+  </data>
+  <data name="Tool_Flow_Switch" xml:space="preserve">
+    <value>Tool_Flow_Switch</value>
+  </data>
+  <data name="Tool_Flow_Sequence" xml:space="preserve">
+    <value>Tool_Flow_Sequence</value>
+  </data>
+  <data name="Tool_Flow_Decision" xml:space="preserve">
+    <value>Tool_Flow_Decision</value>
+  </data>
+  <data name="Tool_File_Zip" xml:space="preserve">
+    <value>Tool_File_Zip</value>
+  </data>
+  <data name="Tool_File_Write_File" xml:space="preserve">
+    <value>Tool_File_Write_File</value>
+  </data>
+  <data name="Tool_File_Unzip" xml:space="preserve">
+    <value>Tool_File_Unzip</value>
+  </data>
+  <data name="Tool_File_Rename" xml:space="preserve">
+    <value>Tool_File_Rename</value>
+  </data>
+  <data name="Tool_File_Read_Folder" xml:space="preserve">
+    <value>Tool_File_Read_Folder</value>
+  </data>
+  <data name="Tool_File_Read_File" xml:space="preserve">
+    <value>Tool_File_Read_File</value>
+  </data>
+  <data name="Tool_File_Move" xml:space="preserve">
+    <value>Tool_File_Move</value>
+  </data>
+  <data name="Tool_File_Delete" xml:space="preserve">
+    <value>Tool_File_Delete</value>
+  </data>
+  <data name="Tool_File_Create" xml:space="preserve">
+    <value>Tool_File_Create</value>
+  </data>
+  <data name="Tool_File_Copy" xml:space="preserve">
+    <value>Tool_File_Copy</value>
+  </data>
+  <data name="Tool_Email_SMTP_Send" xml:space="preserve">
+    <value>Tool_Email_SMTP_Send</value>
+  </data>
+  <data name="Tool_Email_Exchange_Send" xml:space="preserve">
+    <value>Tool_Email_Exchange_Send</value>
+  </data>
+  <data name="Tool_Dropbox_Upload" xml:space="preserve">
+    <value>Tool_Dropbox_Upload</value>
+  </data>
+  <data name="Tool_Dropbox_List_Contents" xml:space="preserve">
+    <value>Tool_Dropbox_List_Contents</value>
+  </data>
+  <data name="Tool_Dropbox_Download" xml:space="preserve">
+    <value>Tool_Dropbox_Download</value>
+  </data>
+  <data name="Tool_Dropbox_Delete" xml:space="preserve">
+    <value>Tool_Dropbox_Delete</value>
+  </data>
+  <data name="Tool_Database_SQL_Server" xml:space="preserve">
+    <value>Tool_Database_SQL_Server</value>
+  </data>
+  <data name="Tool_Database_SQL_Bulk_Insert" xml:space="preserve">
+    <value>Tool_Database_SQL_Bulk_Insert</value>
+  </data>
+  <data name="Tool_Database_PostgreSQL" xml:space="preserve">
+    <value>Tool_Database_PostgreSQL</value>
+  </data>
+  <data name="Tool_Database_Oracle" xml:space="preserve">
+    <value>Tool_Database_Oracle</value>
+  </data>
+  <data name="Tool_Database_ODBC" xml:space="preserve">
+    <value>Tool_Database_ODBC</value>
+  </data>
+  <data name="Tool_Database_MySQL" xml:space="preserve">
+    <value>Tool_Database_MySQL</value>
+  </data>
+  <data name="Tool_Data_Replace" xml:space="preserve">
+    <value>Tool_Data_Replace</value>
+  </data>
+  <data name="Tool_Data_Find_Index" xml:space="preserve">
+    <value>Tool_Data_Find_Index</value>
+  </data>
+  <data name="Tool_Data_Data_Split" xml:space="preserve">
+    <value>Tool_Data_Data_Split</value>
+  </data>
+  <data name="Tool_Data_Data_Merge" xml:space="preserve">
+    <value>Tool_Data_Data_Merge</value>
+  </data>
+  <data name="Tool_Data_Case_Convert" xml:space="preserve">
+    <value>Tool_Data_Case_Convert</value>
+  </data>
+  <data name="Tool_Data_Base_Convert" xml:space="preserve">
+    <value>Tool_Data_Base_Convert</value>
+  </data>
+  <data name="Tool_Data_Assign" xml:space="preserve">
+    <value>Tool_Data_Assign</value>
+  </data>
+  <data name="Tool_Data_Assign_Object" xml:space="preserve">
+    <value>Tool_Data_Assign_Object</value>
+  </data>
+  <data name="Tool_Ruby" xml:space="preserve">
+    <value>Tool_Ruby</value>
+  </data>
+  <data name="Tool_Python" xml:space="preserve">
+    <value>Tool_Python</value>
+  </data>
 </root>

@@ -68,6 +68,7 @@ namespace Dev2.Activities.Designers2.Decision
                 DisplayName = "Decision";
                 DisplayText = DisplayName;
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Decision;
         }
 
         void CollectionCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

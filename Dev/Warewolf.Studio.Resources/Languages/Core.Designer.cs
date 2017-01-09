@@ -1172,6 +1172,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To use a tool, drag it onto the design surface..
+        /// </summary>
+        public static string ToolboxPopupDescription {
+            get {
+                return ResourceManager.GetString("ToolboxPopupDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to use a tool.
+        /// </summary>
+        public static string ToolboxPopupHeader {
+            get {
+                return ResourceManager.GetString("ToolboxPopupHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name:.
         /// </summary>
         public static string UserNameLabel {
