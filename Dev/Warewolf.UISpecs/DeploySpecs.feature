@@ -98,7 +98,7 @@ Scenario: Select All resources to deploy
 
 Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder Already Checked
 	Given The Warewolf Studio is running
-	And I Filter the Explorer with "Unit Tests"
+	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
 	And I Enter "Unit Tests" Into Deploy Source Filter	
@@ -107,7 +107,7 @@ Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder 
 
 Scenario: Cancel Deploy Returns to Deploy Tab
 	Given The Warewolf Studio is running
-	And I Filter the Explorer with "Unit Tests"
+	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
 	And I Click Deploy Tab Destination Server Combobox
@@ -121,7 +121,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 
 Scenario: Deploy Disconnect Clears Destination
 	Given The Warewolf Studio is running
-	And I Filter the Explorer with "Unit Tests"
+	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy FromExplorerContextMenu
     And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
