@@ -43,7 +43,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
-
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {
             if (ReferenceEquals(x, y)) return true;

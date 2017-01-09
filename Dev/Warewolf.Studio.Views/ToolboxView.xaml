@@ -39,7 +39,7 @@
 				</CollectionViewSource.GroupDescriptions>
 			</CollectionViewSource>
 			<DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
-				<Grid MouseMove="UIElement_OnMouseMove" MouseEnter="ToolGrid_OnMouseEnter"
+				<Grid MouseMove="UIElement_OnMouseMove" MouseEnter="ToolGrid_OnMouseEnter" MouseLeftButtonDown="ToolGrid_OnMouseLeftButtonDown"
 					  x:Name="ToolGrid"
 					  HorizontalAlignment="Stretch" 
 					  VerticalAlignment="Stretch"

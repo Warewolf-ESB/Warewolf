@@ -63,6 +63,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_Oracle;
         }
 
         Guid UniqueId => GetProperty<Guid>();
