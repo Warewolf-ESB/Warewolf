@@ -1055,14 +1055,14 @@ namespace Warewolf.UITests
         public void Select_Test_Source_From_GET_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem5, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem2, new Point(163, 17));
         }
 
         [When(@"I Select Test Source From POST Web Large View Source Combobox")]
         public void Select_Test_Source_From_POST_Web_Large_View_Source_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox, new Point(175, 9));
-            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem1, new Point(163, 17));
+            Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem3, new Point(163, 17));
         }
 
         [When(@"I Select Test Source From DELETE Web Large View Source Combobox")]
