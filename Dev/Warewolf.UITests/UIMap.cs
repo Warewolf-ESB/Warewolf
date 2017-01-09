@@ -1360,6 +1360,12 @@ namespace Warewolf.UITests
                 Click_EnableDisable_This_Test_CheckBox(true, testInstance: test);
         }
 
+        [Then(@"I Click EnableDisable Test (.*), dirty ""(.*)""")]
+        public void ThenIClickEnableDisableTestDirty(int instance, string dirty)
+        {
+            Click_EnableDisable_This_Test_CheckBox(dirty == "true", instance);
+        }
+
         public void Click_EnableDisable_This_Test_CheckBox(bool nameContainsStar = false, int testInstance = 1)
         {
             var currentTest = GetCurrentTest(testInstance);
