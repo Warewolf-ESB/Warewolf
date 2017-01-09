@@ -4351,7 +4351,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connect the start node to the first tool or service in your flow.
+        ///   Looks up a localized string similar to Connect the Start node to the first tool or service in your flow.
         /// </summary>
         public static string StartNodeNotConnectedToolTip {
             get {
