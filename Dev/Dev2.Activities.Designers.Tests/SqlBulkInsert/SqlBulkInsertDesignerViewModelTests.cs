@@ -609,7 +609,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var eventPublisher = new Mock<IEventAggregator>();
 
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.NewDatabaseSource(It.IsAny<string>()));
+            mockShellViewModel.Setup(model => model.NewSqlServerSource(It.IsAny<string>()));
             var shellViewModel = mockShellViewModel.Object;
             CustomContainer.Register(shellViewModel);
 
@@ -625,7 +625,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.NewDatabaseSource(It.IsAny<string>()));
+            mockShellViewModel.Verify(model => model.NewSqlServerSource(It.IsAny<string>()));
         }
 
         [TestMethod]

@@ -160,15 +160,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Database Source.
-        /// </summary>
-        public static string DatabaseSourceServerNewHeaderLabel {
-            get {
-                return ResourceManager.GetString("DatabaseSourceServerNewHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Type:.
         /// </summary>
         public static string DatabaseSourceTypeLabel {
@@ -683,6 +674,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New MySQL Source.
+        /// </summary>
+        public static string MySqlSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("MySqlSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
@@ -737,6 +737,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New ODBC Source.
+        /// </summary>
+        public static string OdbcSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("OdbcSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Oracle Source.
+        /// </summary>
+        public static string OracleSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("OracleSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string OutputsLabel {
@@ -769,6 +787,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PortLabel {
             get {
                 return ResourceManager.GetString("PortLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New PostgreSQL Source.
+        /// </summary>
+        public static string PostgreSqlSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("PostgreSqlSourceNewHeaderLabel", resourceCulture);
             }
         }
         
@@ -1132,6 +1159,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharePointServiceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("SharePointServiceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Microsoft SQL Server Source.
+        /// </summary>
+        public static string SqlServerSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("SqlServerSourceNewHeaderLabel", resourceCulture);
             }
         }
         

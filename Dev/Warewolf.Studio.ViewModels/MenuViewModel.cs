@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
             _viewModel = mainViewModel;
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
-            NewDatabaseSourceCommand = _viewModel.NewDatabaseSourceCommand;
+            //NewDatabaseSourceCommand = _viewModel.NewDatabaseSourceCommand;
             NewPluginSourceCommand = _viewModel.NewPluginSourceCommand;
             NewWebSourceCommand = _viewModel.NewWebSourceCommand;
             DeployCommand = _viewModel.DeployCommand;
