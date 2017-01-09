@@ -64,5 +64,7 @@ namespace Dev2.Common.Interfaces
         void RemoveChild(IExplorerItemViewModel child);
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
         void UpdateChildrenCount();
+
+        
     }
 }

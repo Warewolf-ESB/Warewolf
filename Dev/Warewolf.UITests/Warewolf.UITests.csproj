@@ -177,6 +177,10 @@
     <Compile Include="Tools\Data\Assign.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="UIMap.uitest">
