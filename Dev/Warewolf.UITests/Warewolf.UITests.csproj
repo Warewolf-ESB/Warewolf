@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Explorer\Duplicate.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
     <Compile Include="Explorer\ResourceVersion.cs" />

@@ -3764,8 +3764,6 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(SaveDialogWindow.DuplicateButton.Exists, "Duplicate button does not exist");
             Mouse.Click(SaveDialogWindow.DuplicateButton, new Point(26, 10));
-            Assert.IsTrue(SaveDialogWindow.Exists, "Save Dialog does not exist after clicking Duplicate button");
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         [Given(@"I Click EditSharepointSource Button")]
@@ -5634,9 +5632,9 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Enter Duplicate workflow name")]
-        public void Enter_Duplicate_workflow_name()
+        public void Enter_Duplicate_workflow_name(string name)
         {
-            SaveDialogWindow.ServiceNameTextBox.Text = "DuplicatedWorkFlow";
+            SaveDialogWindow.ServiceNameTextBox.Text = name;
         }
 
         [When(@"I Enter InputDebug value")]
@@ -6887,7 +6885,7 @@ namespace Warewolf.UITests
         [Then(@"I Duplicate FirstResource FromContextMenu")]
         public void Duplicate_FirstResource_FromContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Duplicate);
         }
 
