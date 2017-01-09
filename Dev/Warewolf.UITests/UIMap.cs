@@ -56,6 +56,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            TryClickMessageBoxOK();
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
