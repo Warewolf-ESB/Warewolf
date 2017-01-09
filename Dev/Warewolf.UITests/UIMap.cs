@@ -56,6 +56,7 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            TryClickMessageBoxOK();
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -717,6 +718,12 @@ namespace Warewolf.UITests
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             Enter_Service_Name_Into_Save_Dialog(ServiceName, false, false, false, SaveOrDuplicate.Save);
+        }
+
+        [Given(@"same name error message is shown")]
+        public void GivenSameNameErrorMessageIsShown()
+        {
+            Assert.AreEqual("An item with this name already exists in this folder.",SaveDialogWindow.ErrorLabel.DisplayText);
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
