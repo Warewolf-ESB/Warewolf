@@ -22,6 +22,7 @@ namespace Dev2.Activities.Designers2.Comment
         {
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Comment;
         }
 
         #region Overrides of ActivityDesignerViewModel

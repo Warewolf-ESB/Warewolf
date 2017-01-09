@@ -250,6 +250,12 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="FailedToRenameResourceHeader" xml:space="preserve">
     <value>Rename Resource Error</value>
   </data>
+  <data name="ToolboxPopupHeader" xml:space="preserve">
+    <value>How to use a tool</value>
+  </data>
+  <data name="ToolboxPopupDescription" xml:space="preserve">
+    <value>To use a tool, drag it onto the design surface.</value>
+  </data>
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>

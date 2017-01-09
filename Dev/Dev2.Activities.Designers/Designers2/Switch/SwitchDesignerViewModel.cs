@@ -16,6 +16,7 @@ namespace Dev2.Activities.Designers2.Switch
         public SwitchDesignerViewModel(ModelItem mi, string display):base(mi)
         {
             Initialize(display);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Switch;
         }
 
         void Initialize(string display)
@@ -23,7 +24,7 @@ namespace Dev2.Activities.Designers2.Switch
             var expressionText = ModelItem.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             ModelProperty switchCaseValue = ModelItem.Properties["Case"];
             Dev2Switch ds;
-            if (expressionText != null && expressionText.Value != null)
+            if (expressionText?.Value != null)
             {
                 ds = new Dev2Switch();
                 var val = ActivityHelper.ExtractData(expressionText.Value.ToString());
@@ -39,7 +40,7 @@ namespace Dev2.Activities.Designers2.Switch
             if (string.IsNullOrEmpty(display))
             {
                 var displayName = ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
-                if (displayName != null && displayName.Value != null)
+                if (displayName?.Value != null)
                 {
                     ds.DisplayText = displayName.Value.ToString();
                 }
@@ -122,10 +123,7 @@ namespace Dev2.Activities.Designers2.Switch
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

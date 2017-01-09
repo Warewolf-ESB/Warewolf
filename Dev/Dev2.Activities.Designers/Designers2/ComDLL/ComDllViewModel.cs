@@ -62,6 +62,7 @@ namespace Dev2.Activities.Designers2.ComDLL
 
             SetupCommonProperties();
             this.RunViewSetup();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Resources_Com_DLL;
         }
 
         Guid UniqueID => GetProperty<Guid>();

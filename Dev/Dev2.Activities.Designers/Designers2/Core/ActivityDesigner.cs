@@ -146,7 +146,14 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (e.Key == Key.Return)
                 e.Handled = true;
-           // base.OnPreviewMouseDoubleClick(e);
+        }
+
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                UpdateHelpDescriptor(ViewModel.HelpText);
+            }
         }
 
         #endregion

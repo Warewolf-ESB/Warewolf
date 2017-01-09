@@ -45,12 +45,10 @@ IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 )
 
 REM ** Try Refresh Warewolf Server Bin Resources and Tests
-IF EXIST "%~dp0..\..\Resources - UITests\Resources" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Resources" "%ServerBinDirectory%\Resources"
-IF EXIST "%~dp0..\..\Resources - UITests\Tests" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests\Tests" "%ServerBinDirectory%\Tests"
+IF EXIST "%~dp0..\..\Resources - UITests" echo d | xcopy /S /Y "%~dp0..\..\Resources - UITests" "%ServerBinDirectory%\Resources - UITests"
 
 REM ** Try Refresh Warewolf ProgramData Resources and Tests
-IF NOT EXIST "%ProgramData%\Warewolf\Resources" IF EXIST "%ServerBinDirectory%\Resources" echo d | xcopy /S /Y "%ServerBinDirectory%\Resources" "%ProgramData%\Warewolf\Resources"
-IF NOT EXIST "%ProgramData%\Warewolf\Tests" IF EXIST "%ServerBinDirectory%\Tests" echo d | xcopy /S /Y "%ServerBinDirectory%\Tests" "%ProgramData%\Warewolf\Tests"
+IF EXIST "%ServerBinDirectory%\Resources - UITests" echo d | xcopy /S /Y "%ServerBinDirectory%\Resources - UITests" "%ProgramData%\Warewolf"
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%ServerBinDirectory%\ServerStarted" DEL "%ServerBinDirectory%\ServerStarted"
@@ -86,7 +84,7 @@ IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET ServerBin
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Studio.exe") else (START "%ServerBinDirectory%\Warewolf Studio.exe" /D "%ServerBinDirectory%" "Warewolf Studio.exe")
-waitfor StudioStart /t 30 2>NUL
+waitfor StudioStart /t 60 2>NUL
 @echo Started "%ServerBinDirectory%\Warewolf Studio.exe".
 
 exit 0

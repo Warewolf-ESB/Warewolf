@@ -2,7 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Infragistics.Windows.DockManager;
 using Warewolf.Studio.ViewModels.ToolBox;
 
@@ -42,7 +44,7 @@ namespace Warewolf.Studio.Views
         {
             var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
-            if (imageSource == null && rectSource==null)
+            if (imageSource == null && rectSource == null)
             {
                 TextBox tb = sender as TextBox;
                 if (tb != null)
@@ -58,6 +60,12 @@ namespace Warewolf.Studio.Views
 
         private void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
         {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var viewModel = grid.DataContext as ToolDescriptorViewModel;
+                grid.ToolTip = viewModel?.Tool.ResourceToolTip;
+            }
             var variablesPane = Application.Current.MainWindow.FindName("Variables") as ContentPane;
             var explorerPane = Application.Current.MainWindow.FindName("Explorer") as ContentPane;
             var outputPane = Application.Current.MainWindow.FindName("OutputPane") as ContentPane;
@@ -77,6 +85,25 @@ namespace Warewolf.Studio.Views
         {
             e.Effects = DragDropEffects.None;
             e.Handled = true;
+        }
+
+        private void ToolGrid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var viewModel = grid.DataContext as ToolDescriptorViewModel;
+                if (e.ClickCount == 1)
+                {
+                    var toolboxViewModel = DataContext as ToolboxViewModel;
+                    toolboxViewModel?.UpdateHelpDescriptor(viewModel?.Tool.ResourceHelpText);
+                } else
+                {
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information,"",false,false,true, false, false, false);
+                }
+            }
+
         }
     }
 }

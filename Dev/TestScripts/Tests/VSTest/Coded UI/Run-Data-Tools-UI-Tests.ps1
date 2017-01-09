@@ -1,4 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+if ([string]::IsNullOrEmpty($PSScriptRoot)) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 $SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
@@ -48,8 +48,30 @@ $TestSettingsFile = "$PSScriptRoot\DataToolsUITesting.testsettings"
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UITests.dll"
+}
+if (!Test-Path $TestAssemblyPath) {
+	Write-Host Cannot find Warewolf.UITests.dll at $SolutionDir\Warewolf.UITests\bin\Debug or $SolutionDir
+	exit 1
+}
+
 # Create full VSTest argument string.
-$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList + " /TestCaseFilter:`"TestCategory=Data Tools`""
+if ($TestList -eq "") {
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Data Tools`""
+} else {
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList

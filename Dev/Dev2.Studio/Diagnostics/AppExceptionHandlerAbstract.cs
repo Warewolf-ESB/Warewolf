@@ -29,7 +29,7 @@ namespace Dev2.Studio.Diagnostics
             {
                 throw new ArgumentNullException("e");
             }
-            if (_busy || (e.Source!=null && (e.Source.Contains("InfragisticsWPF4.DragDrop") || e.Source.Contains("PresentationFramework"))))
+            if (_busy || e.Message.ToLowerInvariant().Equals("The remote name could not be resolved: 'warewolf.io'".ToLowerInvariant()) || (e.Source!=null && (e.Source.Contains("InfragisticsWPF4.DragDrop") || e.Source.Contains("PresentationFramework"))))
             {
                 return true;
             }
