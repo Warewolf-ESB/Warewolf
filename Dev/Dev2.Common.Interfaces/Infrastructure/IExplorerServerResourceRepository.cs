@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Runtime;
 
 namespace Dev2.Common.Interfaces.Infrastructure
 {
@@ -26,5 +27,7 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerItem Find(Func<IExplorerItem,bool> predicate);
 
         List<string> LoadDuplicate();
+
+        IExplorerItemFactory ExplorerItemFactory { get; }
     }
 }
