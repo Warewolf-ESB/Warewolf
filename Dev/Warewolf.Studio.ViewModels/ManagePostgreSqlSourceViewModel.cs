@@ -16,7 +16,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManagePostgreSqlSourceViewModel : DatabaseSourceViewModelBase
     {
-        private readonly IPostgreSource _postgreSource;
         public ManagePostgreSqlSourceViewModel(IAsyncWorker asyncWorker)
             : base(asyncWorker, "PostgreSQL")
         {
@@ -33,8 +32,7 @@ namespace Warewolf.Studio.ViewModels
         public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "PostgreSQL")
         {
-            VerifyArgument.IsNotNull("postgreSource", _postgreSource);
-            _postgreSource = dbSource as IPostgreSource;
+            VerifyArgument.IsNotNull("postgreSource", dbSource);
             InitializeViewModel();
         }
 
@@ -57,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 EmptyServerName = ServerName.Name ?? postgreSource.ServerName;
             }
-            AuthenticationType = service.AuthenticationType;
+            AuthenticationType = postgreSource.AuthenticationType;
             UserName = postgreSource.UserName;
             Password = postgreSource.Password;
             Path = postgreSource.Path;
@@ -86,13 +84,38 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.PostgreSQL,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _postgreSource?.Id ?? Guid.NewGuid()
+                Id = DbSource?.Id ?? Guid.NewGuid()
             };
         }
 
+        #region Overrides of DatabaseSourceViewModelBase
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new PostgreSourceDefinition
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.PostgreSQL,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
+            };
+        }
+
+        #endregion
+
         protected override IDbSource ToDbSource()
         {
-            return _postgreSource == null ? new PostgreSourceDefinition
+            return DbSource == null ? new PostgreSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -102,7 +125,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _postgreSource?.Id ?? SelectedGuid
+                Id = DbSource?.Id ?? SelectedGuid
             } : new PostgreSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
@@ -113,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = (Guid)_postgreSource?.Id
+                Id = (Guid)DbSource?.Id
             };
         }
 
@@ -121,14 +144,12 @@ namespace Warewolf.Studio.ViewModels
         {
             return new PostgreSourceDefinition
             {
-                AuthenticationType = _postgreSource.AuthenticationType,
-                DbName = _postgreSource.DbName,
-                Id = _postgreSource.Id,
-                Name = _postgreSource.Name,
-                Password = _postgreSource.Password,
-                Path = _postgreSource.Path,
-                ServerName = _postgreSource.ServerName,
-                UserName = _postgreSource.UserName,
+                AuthenticationType = DbSource.AuthenticationType,
+                DbName = DbSource.DbName,
+                Id = DbSource.Id,
+                Name = DbSource.Name,
+                Path = DbSource.Path,
+                ServerName = DbSource.ServerName,
                 Type = enSourceType.PostgreSQL
             };
         }
