@@ -12210,6 +12210,79 @@ this.FeatureBackground();
             this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.SQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing unsaved workflow should execute by ID")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ExecutingUnsavedWorkflowShouldExecuteByID()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing unsaved workflow should execute by ID", ((string[])(null)));
+#line 3296
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 3297
+ testRunner.Given("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table647 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table647.AddRow(new string[] {
+                        "[[rec(1).a]]",
+                        "yes"});
+            table647.AddRow(new string[] {
+                        "[[rec(2).a]]",
+                        "no"});
+#line 3298
+ testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table647, "And ");
+#line 3302
+   testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3303
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table648 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table648.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = yes"});
+            table648.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = no"});
+#line 3304
+   testRunner.And("the \"Rec To Convert\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table648, "And ");
+#line 3308
+   testRunner.Then("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table649 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table649.AddRow(new string[] {
+                        "[[rec(1).a]]",
+                        "1"});
+            table649.AddRow(new string[] {
+                        "[[rec(2).a]]",
+                        "2"});
+#line 3309
+   testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table649, "And ");
+#line 3313
+   testRunner.When("\'2\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table650 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table650.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = 1"});
+            table650.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = 2"});
+#line 3314
+   testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table650, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
