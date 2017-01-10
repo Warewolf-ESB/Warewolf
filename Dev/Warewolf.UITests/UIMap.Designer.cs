@@ -187,18 +187,6 @@ namespace Warewolf.UITests
                 return this.mWebBrowserErrorWindow;
             }
         }
-        
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -225,8 +213,6 @@ namespace Warewolf.UITests
         private CriticalErrorWindow mCriticalErrorWindow;
         
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
-        
-        private UIWpfWindow mUIWpfWindow;
         #endregion
     }
     
@@ -12600,7 +12586,7 @@ namespace Warewolf.UITests
                 {
                     this.mWorkflow1ciremoteText = new WpfText(this);
                     #region Search Criteria
-                    this.mWorkflow1ciremoteText.SearchProperties[WpfText.PropertyNames.Name] = "workflow1";
+                    this.mWorkflow1ciremoteText.SearchProperties[WpfText.PropertyNames.Name] = "GenericResource";
                     this.mWorkflow1ciremoteText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -12929,6 +12915,23 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfCustom StackoverflowWorkflow
+        {
+            get
+            {
+                if ((this.mStackoverflowWorkflow == null))
+                {
+                    this.mStackoverflowWorkflow = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignObjectDesigner";
+                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign Object (0)(MultiAssignObjectDesigner)";
+                    this.mStackoverflowWorkflow.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mStackoverflowWorkflow;
+            }
+        }
+        
         public RabbitMQPublish RabbitMQPublish
         {
             get
@@ -13130,7 +13133,7 @@ namespace Warewolf.UITests
                     this.mSubWorkflow = new WpfCustom(this);
                     #region Search Criteria
                     this.mSubWorkflow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-                    this.mSubWorkflow.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "workflow", PropertyExpressionOperator.Contains));
+                    this.mSubWorkflow.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "GenericResource(ServiceDesigner)", PropertyExpressionOperator.Contains));
                     this.mSubWorkflow.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -14006,26 +14009,11 @@ namespace Warewolf.UITests
                 return this.mAdornert_numbernText;
             }
         }
-        
-        public WpfCustom StackoverflowWorkflow
-        {
-            get
-            {
-                if ((this.mStackoverflowWorkflow == null))
-                {
-                    this.mStackoverflowWorkflow = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-                    this.mStackoverflowWorkflow.SearchProperties[WpfControl.PropertyNames.AutomationId] = "stackoverflowTestWorkflow(ServiceDesigner)";
-                    this.mStackoverflowWorkflow.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-                    #endregion
-                }
-                return this.mStackoverflowWorkflow;
-            }
-        }
         #endregion
         
         #region Fields
+        private WpfCustom mStackoverflowWorkflow;
+        
         private RabbitMQPublish mRabbitMQPublish;
         
         private RabbitMQConsume mRabbitMQConsume;
@@ -14199,8 +14187,6 @@ namespace Warewolf.UITests
         private WcfService mWcfService;
         
         private Adornert_numbernText mAdornert_numbernText;
-        
-        private WpfCustom mStackoverflowWorkflow;
         #endregion
     }
     
@@ -70998,26 +70984,26 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfButton Workflow1Button
+        public WpfButton GenericResourceButton
         {
             get
             {
-                if ((this.mWorkflow1Button == null))
+                if ((this.mGenericResourceButton == null))
                 {
-                    this.mWorkflow1Button = new WpfButton(this);
+                    this.mGenericResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "workflow1";
-                    this.mWorkflow1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mWorkflow1Button.WindowTitles.Add("Warewolf");
+                    this.mGenericResourceButton.SearchProperties[WpfButton.PropertyNames.Name] = "GenericResource";
+                    this.mGenericResourceButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mGenericResourceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mWorkflow1Button;
+                return this.mGenericResourceButton;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mWorkflow1Button;
+        private WpfButton mGenericResourceButton;
         #endregion
     }
     
@@ -74952,7 +74938,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Set the output variable (1)_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -74999,7 +74985,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "UI_StepOutputs_Set the output variable (1)_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -75438,9 +75424,7 @@ namespace Warewolf.UITests
                 {
                     this.mMockRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_MockRadioButton_AutoID";
                     this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
-                    this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.HelpText] = "ServiceTestStepMockRadioButtonTooltip";
                     this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mMockRadioButton.WindowTitles.Add("Warewolf");
                     #endregion
@@ -80341,7 +80325,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:workflow1 ResourceId:00000000-0000-0000-0000-000000000000";
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:GenericResource ResourceId:00000000-0000-0000-0000-000000000000";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -100512,7 +100496,7 @@ namespace Warewolf.UITests
                 {
                     this.mWorkflow1Button = new WpfButton(this);
                     #region Search Criteria
-                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "workflow1";
+                    this.mWorkflow1Button.SearchProperties[WpfButton.PropertyNames.Name] = "GenericResource";
                     this.mWorkflow1Button.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mWorkflow1Button.WindowTitles.Add("Warewolf");
                     #endregion
@@ -100940,22 +100924,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton DeleteAnyway
-        {
-            get
-            {
-                if ((this.mDeleteAnyway == null))
-                {
-                    this.mDeleteAnyway = new WpfButton(this);
-                    #region Search Criteria
-                    this.mDeleteAnyway.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
-                    this.mDeleteAnyway.WindowTitles.Add("WarewolfMessageBox");
-                    #endregion
-                }
-                return this.mDeleteAnyway;
-            }
-        }
-        
         public WpfCheckBox Applytoall
         {
             get
@@ -100987,6 +100955,22 @@ namespace Warewolf.UITests
                 return this.mShowDependencies;
             }
         }
+        
+        public WpfButton DeleteAnyway
+        {
+            get
+            {
+                if ((this.mDeleteAnyway == null))
+                {
+                    this.mDeleteAnyway = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteAnyway.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnDeleteAll";
+                    this.mDeleteAnyway.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeleteAnyway;
+            }
+        }
         #endregion
         
         #region Fields
@@ -101014,11 +100998,11 @@ namespace Warewolf.UITests
         
         private WpfText mDeleteConfirmation;
         
-        private WpfButton mDeleteAnyway;
-        
         private WpfCheckBox mApplytoall;
         
         private WpfButton mShowDependencies;
+        
+        private WpfButton mDeleteAnyway;
         #endregion
     }
     
@@ -106395,17 +106379,5 @@ namespace Warewolf.UITests
         #region Fields
         private WinButton mOKButton;
         #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWpfWindow : WpfWindow
-    {
-        
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
     }
 }

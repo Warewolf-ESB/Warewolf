@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Workflow
         private const string HelloWorld = "Hello World";
 
         [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void Unsaved_Workflow_Name_Counter()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();

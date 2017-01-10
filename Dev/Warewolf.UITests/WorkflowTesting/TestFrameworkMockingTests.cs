@@ -53,7 +53,7 @@ namespace Warewolf.UITests
         {
             UIMap.Click_New_Workflow_Ribbon_Button();            
             UIMap.Filter_Explorer(DiceRoll);
-            UIMap.Drag_Explorer_Localhost_Second_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
+            UIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
             UIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             UIMap.Press_F6();            
             UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
