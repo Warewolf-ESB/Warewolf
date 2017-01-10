@@ -52,7 +52,19 @@ IF EXIST "%ServerBinDirectory%\Resources - UITests" echo d | xcopy /S /Y "%Serve
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%ServerBinDirectory%\ServerStarted" DEL "%ServerBinDirectory%\ServerStarted"
-IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Server.exe") else (START "%ServerBinDirectory%\Warewolf Server.exe" /D "%ServerBinDirectory%" "Warewolf Server.exe")
+IF EXIST %windir%\nircmd.exe (
+	IF NOT "%1"=="" (
+		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+	) else (
+		nircmd elevate "%ServerBinDirectory%\Warewolf Server.exe"
+	)
+) else (
+	IF NOT "%1"=="" (
+		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+	) else (
+		START "%ServerBinDirectory%\Warewolf Server.exe" /D "%ServerBinDirectory%" "Warewolf Server.exe"
+	)
+)
 @echo Started "%ServerBinDirectory%\Warewolf Server.exe".
 
 REM ** Wait for server start
@@ -68,23 +80,32 @@ waitfor ServerStart /t 10 2>NUL
 goto MainLoopBody
 
 :StartStudio
-REM Try use Default Workspace Layout
-IF EXIST "%ServerBinDirectory%\DefaultWorkspaceLayout.xml" COPY /Y "%ServerBinDirectory%\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
-IF EXIST "%ServerBinDirectory%\..\DefaultWorkspaceLayout.xml" COPY /Y "%ServerBinDirectory%\..\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
-IF EXIST "%~dp0..\..\Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml" COPY /Y "%~dp0..\..\Warewolf.UITests\Properties\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
+REM Try Delete Workspace Layout
+IF EXIST "%LocalAppData%\Warewolf\UserInterfaceLayouts\DefaultWorkspaceLayout.xml" DEL "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 REM Init paths to Warewolf studio under test
-IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET ServerBinDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
-IF EXIST "%~dp0..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET ServerBinDirectory=%~dp0..\..\..\Dev2.Studio\bin\Debug
-IF EXIST "%~dp0..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET ServerBinDirectory=%~dp0..\..\..\..\Dev2.Studio\bin\Debug
-IF EXIST "%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET ServerBinDirectory=%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug
-IF EXIST "%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET ServerBinDirectory=%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug
-IF EXIST "%ServerBinDirectory%\..\Studio\Warewolf Studio.exe" SET ServerBinDirectory=%ServerBinDirectory%\..\Studio
-IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET ServerBinDirectory=%ServerBinDirectory%\..\DebugStudio
+IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\..\..\..\..\Dev2.Studio\bin\Debug
+IF EXIST "%ServerBinDirectory%\..\Studio\Warewolf Studio.exe" SET StudioBinDirectory=%ServerBinDirectory%\..\Studio
+IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET StudioBinDirectory=%ServerBinDirectory%\..\DebugStudio
 
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
-IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Studio.exe") else (START "%ServerBinDirectory%\Warewolf Studio.exe" /D "%ServerBinDirectory%" "Warewolf Studio.exe")
+IF EXIST %windir%\nircmd.exe (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	) else (
+		nircmd elevate "%StudioBinDirectory%\Warewolf Studio.exe"
+	)
+) else (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	) else (
+		START "%StudioBinDirectory%\Warewolf Studio.exe" /D "%StudioBinDirectory%" "Warewolf Studio.exe"
+	)
+)
 waitfor StudioStart /t 60 2>NUL
-@echo Started "%ServerBinDirectory%\Warewolf Studio.exe".
+@echo Started "%StudioBinDirectory%\Warewolf Studio.exe".
 
-exit 0

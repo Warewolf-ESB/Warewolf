@@ -55,7 +55,19 @@ IF EXIST "%DeploymentDirectory%\Resources - ServerTests" echo d | xcopy /S /Y "%
 IF EXIST "%DeploymentDirectory%\Resources - Release" echo d | xcopy /S /Y "%DeploymentDirectory%\Resources - Release" "%ProgramData%\Warewolf"
 
 REM ** Start Warewolf server from deployed binaries **
-IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
+IF EXIST %windir%\nircmd.exe (
+	IF NOT "%1"=="" (
+		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+	) else (
+		nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe"
+	)
+) else (
+	IF NOT "%1"=="" (
+		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Logs\dotCover.dcvr"
+	) else (
+		START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+	)
+)
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 :WaitForServerStart
