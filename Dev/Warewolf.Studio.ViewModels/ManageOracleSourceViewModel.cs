@@ -32,8 +32,7 @@ namespace Warewolf.Studio.ViewModels
         public ManageOracleSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "Oracle")
         {
-            VerifyArgument.IsNotNull("oracleSource", _oracleSource);
-            _oracleSource = dbSource as IOracleSource;
+            VerifyArgument.IsNotNull("oracleSource", dbSource);
             InitializeViewModel();
         }
 
