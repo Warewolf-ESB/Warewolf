@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ViewModels
             //    UserName = _dbSource.UserName,
             //    Type = _dbSource.Type
             //};
-            Item = ToSourceDefination();
+            Item = ToSourceDefinition();
             switch (_dbSource.Type)
             {
                 case enSourceType.SqlDatabase:
@@ -479,7 +479,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected abstract IDbSource ToNewDbSource();
         protected abstract IDbSource ToDbSource();
-        protected abstract IDbSource ToSourceDefination();
+        protected abstract IDbSource ToSourceDefinition();
         public override IDbSource ToModel()
         {
             if (Item == null)
@@ -644,7 +644,7 @@ namespace Warewolf.Studio.ViewModels
         public ManageOracleSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
             : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
         {
-            VerifyArgument.IsNotNull("dbSource", _oracleSource);
+            VerifyArgument.IsNotNull("oracleSource", _oracleSource);
             _oracleSource = dbSource as IOracleSource;
         }
 
@@ -721,7 +721,7 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        protected override IDbSource ToSourceDefination()
+        protected override IDbSource ToSourceDefinition()
         {
             return new DbSourceDefinition
             {
@@ -734,6 +734,442 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = _oracleSource.ServerName,
                 UserName = _oracleSource.UserName,
                 Type = enSourceType.Oracle
+            };
+        }
+
+        #endregion
+    }
+
+    public class ManagePostgreSqlSourceViewModel : DatabaseSourceViewModelBase
+    {
+        private readonly IPostgreSource _postgreSource;
+        public ManagePostgreSqlSourceViewModel(IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
+        {
+            VerifyArgument.IsNotNull("postgreSource", _postgreSource);
+            _postgreSource = dbSource as IPostgreSource;
+        }
+
+        #region Overrides of SourceBaseImpl<IDbSource>
+
+        public override string Name { get; set; }
+
+        public override void FromModel(IDbSource service)
+        {
+            var postgreSource = (IPostgreSource)service;
+            ResourceName = postgreSource.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(postgreSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            if (ServerName != null)
+            {
+                EmptyServerName = ServerName.Name ?? postgreSource.ServerName;
+            }
+            AuthenticationType = service.AuthenticationType;
+            UserName = postgreSource.UserName;
+            Password = postgreSource.Password;
+            Path = postgreSource.Path;
+            TestConnection();
+            DatabaseName = postgreSource.DbName;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        #endregion
+
+        #region Overrides of DatabaseSourceViewModelBase
+
+        protected override IDbSource ToNewDbSource()
+        {
+            return new PostgreSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.PostgreSQL,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _postgreSource?.Id ?? Guid.NewGuid()
+            };
+        }
+
+        protected override IDbSource ToDbSource()
+        {
+            return _postgreSource == null ? new PostgreSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.PostgreSQL,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _postgreSource?.Id ?? SelectedGuid
+            } : new PostgreSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.PostgreSQL,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = (Guid)_postgreSource?.Id
+            };
+        }
+
+        protected override IDbSource ToSourceDefinition()
+        {
+            return new DbSourceDefinition
+            {
+                AuthenticationType = _postgreSource.AuthenticationType,
+                DbName = _postgreSource.DbName,
+                Id = _postgreSource.Id,
+                Name = _postgreSource.Name,
+                Password = _postgreSource.Password,
+                Path = _postgreSource.Path,
+                ServerName = _postgreSource.ServerName,
+                UserName = _postgreSource.UserName,
+                Type = enSourceType.PostgreSQL
+            };
+        }
+
+        #endregion
+    }
+
+    public class ManageOdbcSourceViewModel : DatabaseSourceViewModelBase
+    {
+        private readonly IOdbcSource _odbcSource;
+        public ManageOdbcSourceViewModel(IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
+        {
+            VerifyArgument.IsNotNull("odbcSource", _odbcSource);
+            _odbcSource = dbSource as IOdbcSource;
+        }
+
+        #region Overrides of SourceBaseImpl<IDbSource>
+
+        public override string Name { get; set; }
+
+        public override void FromModel(IDbSource service)
+        {
+            var odbcSource = (IOdbcSource)service;
+            ResourceName = odbcSource.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(odbcSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            if (ServerName != null)
+            {
+                EmptyServerName = ServerName.Name ?? odbcSource.ServerName;
+            }
+            AuthenticationType = service.AuthenticationType;
+            Path = odbcSource.Path;
+            TestConnection();
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        #endregion
+
+        #region Overrides of DatabaseSourceViewModelBase
+
+        protected override IDbSource ToNewDbSource()
+        {
+            return new OdbcSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.ODBC,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _odbcSource?.Id ?? Guid.NewGuid()
+            };
+        }
+
+        protected override IDbSource ToDbSource()
+        {
+            return _odbcSource == null ? new OdbcSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Type = enSourceType.ODBC,
+                Path = Path,
+                Name = ResourceName,
+                Id = _odbcSource?.Id ?? SelectedGuid
+            } : new OdbcSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Type = enSourceType.ODBC,
+                Path = Path,
+                Name = ResourceName,
+                Id = (Guid)_odbcSource?.Id
+            };
+        }
+
+        protected override IDbSource ToSourceDefinition()
+        {
+            return new DbSourceDefinition
+            {
+                AuthenticationType = _odbcSource.AuthenticationType,
+                Id = _odbcSource.Id,
+                Name = _odbcSource.Name,
+                Path = _odbcSource.Path,
+                ServerName = _odbcSource.ServerName,
+                Type = enSourceType.ODBC
+            };
+        }
+
+        #endregion
+    }
+
+    public class ManageMySqlSourceViewModel : DatabaseSourceViewModelBase
+    {
+        private readonly IMySqlSource _mySqlSource;
+        public ManageMySqlSourceViewModel(IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageMySqlSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageMySqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
+        {
+            VerifyArgument.IsNotNull("mySqlSource", _mySqlSource);
+            _mySqlSource = dbSource as IMySqlSource;
+        }
+
+        #region Overrides of SourceBaseImpl<IDbSource>
+
+        public override string Name { get; set; }
+
+        public override void FromModel(IDbSource service)
+        {
+            var mySqlSource = (IMySqlSource)service;
+            ResourceName = mySqlSource.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(mySqlSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            if (ServerName != null)
+            {
+                EmptyServerName = ServerName.Name ?? mySqlSource.ServerName;
+            }
+            AuthenticationType = service.AuthenticationType;
+            UserName = mySqlSource.UserName;
+            Password = mySqlSource.Password;
+            Path = mySqlSource.Path;
+            TestConnection();
+            DatabaseName = mySqlSource.DbName;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        #endregion
+
+        #region Overrides of DatabaseSourceViewModelBase
+
+        protected override IDbSource ToNewDbSource()
+        {
+            return new MySqlSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.MySqlDatabase,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _mySqlSource?.Id ?? Guid.NewGuid()
+            };
+        }
+
+        protected override IDbSource ToDbSource()
+        {
+            return _mySqlSource == null ? new MySqlSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.MySqlDatabase,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _mySqlSource?.Id ?? SelectedGuid
+            } : new MySqlSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.MySqlDatabase,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = (Guid)_mySqlSource?.Id
+            };
+        }
+
+        protected override IDbSource ToSourceDefinition()
+        {
+            return new DbSourceDefinition
+            {
+                AuthenticationType = _mySqlSource.AuthenticationType,
+                DbName = _mySqlSource.DbName,
+                Id = _mySqlSource.Id,
+                Name = _mySqlSource.Name,
+                Password = _mySqlSource.Password,
+                Path = _mySqlSource.Path,
+                ServerName = _mySqlSource.ServerName,
+                UserName = _mySqlSource.UserName,
+                Type = enSourceType.MySqlDatabase
+            };
+        }
+
+        #endregion
+    }
+
+    public class ManageSqlServerSourceViewModel : DatabaseSourceViewModelBase
+    {
+        private readonly ISqlServerSource _sqlServerSource;
+        public ManageSqlServerSourceViewModel(IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageSqlServerSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, dbSourceImage)
+        {
+        }
+
+        public ManageSqlServerSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
+            : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
+        {
+            VerifyArgument.IsNotNull("sqlServerSource", _sqlServerSource);
+            _sqlServerSource = dbSource as ISqlServerSource;
+        }
+
+        #region Overrides of SourceBaseImpl<IDbSource>
+
+        public override string Name { get; set; }
+
+        public override void FromModel(IDbSource service)
+        {
+            var sqlServerSource = (ISqlServerSource)service;
+            ResourceName = sqlServerSource.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(sqlServerSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            if (ServerName != null)
+            {
+                EmptyServerName = ServerName.Name ?? sqlServerSource.ServerName;
+            }
+            AuthenticationType = service.AuthenticationType;
+            UserName = sqlServerSource.UserName;
+            Password = sqlServerSource.Password;
+            Path = sqlServerSource.Path;
+            TestConnection();
+            DatabaseName = sqlServerSource.DbName;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        #endregion
+
+        #region Overrides of DatabaseSourceViewModelBase
+
+        protected override IDbSource ToNewDbSource()
+        {
+            return new SqlServerSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.SqlDatabase,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _sqlServerSource?.Id ?? Guid.NewGuid()
+            };
+        }
+
+        protected override IDbSource ToDbSource()
+        {
+            return _sqlServerSource == null ? new SqlServerSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.SqlDatabase,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = _sqlServerSource?.Id ?? SelectedGuid
+            } : new SqlServerSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.SqlDatabase,
+                Path = Path,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = (Guid)_sqlServerSource?.Id
+            };
+        }
+
+        protected override IDbSource ToSourceDefinition()
+        {
+            return new DbSourceDefinition
+            {
+                AuthenticationType = _sqlServerSource.AuthenticationType,
+                DbName = _sqlServerSource.DbName,
+                Id = _sqlServerSource.Id,
+                Name = _sqlServerSource.Name,
+                Password = _sqlServerSource.Password,
+                Path = _sqlServerSource.Path,
+                ServerName = _sqlServerSource.ServerName,
+                UserName = _sqlServerSource.UserName,
+                Type = enSourceType.SqlDatabase
             };
         }
 
