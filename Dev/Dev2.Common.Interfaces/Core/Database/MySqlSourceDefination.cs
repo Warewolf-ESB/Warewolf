@@ -5,7 +5,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core.Database
 {
-    public class MqSqlSourceDefination : IMySqlSource, IEquatable<MqSqlSourceDefination>
+    public class MySqlSourceDefination : IMySqlSource, IEquatable<MySqlSourceDefination>
     {
         AuthenticationType _authenticationType;
 
@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(MqSqlSourceDefination other)
+        public bool Equals(MySqlSourceDefination other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDbSource other)
         {
-            return Equals(other as MqSqlSourceDefination);
+            return Equals(other as MySqlSourceDefination);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 return false;
             }
-            return Equals((MqSqlSourceDefination)obj);
+            return Equals((MySqlSourceDefination)obj);
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace Dev2.Common.Interfaces.Core.Database
             }
         }
 
-        public static bool operator ==(MqSqlSourceDefination left, MqSqlSourceDefination right)
+        public static bool operator ==(MySqlSourceDefination left, MySqlSourceDefination right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(MqSqlSourceDefination left, MqSqlSourceDefination right)
+        public static bool operator !=(MySqlSourceDefination left, MySqlSourceDefination right)
         {
             return !Equals(left, right);
         }
