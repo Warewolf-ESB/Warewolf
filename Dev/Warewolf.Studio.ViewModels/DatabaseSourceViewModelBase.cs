@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels
         ICommand TestCommand { get; set; }
         ICommand CancelTestCommand { get; set; }
         ICommand OkCommand { get; set; }
-        string TestMessage { get; }
+        string TestMessage { get; set; }
         string HeaderText { get; set; }
         bool TestPassed { get; set; }
         bool TestFailed { get; set; }
@@ -65,7 +65,6 @@ namespace Warewolf.Studio.ViewModels
         private string _resourceName;
         private string _headerText;
         private string _emptyServerName;
-        private string _databaseType;
         private string _path;
         private bool _canSelectWindows;
         private bool _canSelectServer;
@@ -127,9 +126,7 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
-            private set
-            // ReSharper restore UnusedMember.Local
+            set
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -349,7 +346,6 @@ namespace Warewolf.Studio.ViewModels
             : base(dbSourceImage)
         {
             AsyncWorker = asyncWorker;
-            _databaseType = dbSourceImage;
             InitializeViewModel(dbSourceImage);
         }
 
@@ -506,7 +502,7 @@ namespace Warewolf.Studio.ViewModels
         //protected abstract IDbSource ToModel();
         public override IDbSource ToModel()
         {
-            throw new NotImplementedException("");
+            throw new NotImplementedException("Model not implemented");
         }
 
         protected string GetServerName()
