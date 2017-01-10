@@ -29,6 +29,16 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "MakeCurrentVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.OpenVersionMenuItem.Exists, "OpenVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
         }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void ExplorerFolderContextMenuItemsUITest()
+        {
+            UIMap.Filter_Explorer("Acceptance Testing Resources");
+            UIMap.RightClick_Explorer_Localhost_First_Item();
+            UIMap.FolderContextMenuAppears();
+        }
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void Explorer_Server_ContextMenuItems_UITest()

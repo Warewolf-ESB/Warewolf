@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels
                     var duplicatedItems = executeCommand.DuplicatedItems;
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                     var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                    var childItems = environmentViewModel.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                    var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
                     var explorerItemViewModels = parentItem.Children;
                     explorerItemViewModels.AddRange(childItems);
                     parentItem.Children = explorerItemViewModels;

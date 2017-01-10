@@ -417,7 +417,7 @@
     <Style TargetType="Image" x:Key="NewMySqlSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>
-        <Setter Property="Source" Value="{StaticResource MySqlSource}"/>
+        <Setter Property="Source" Value="{StaticResource DatabaseSource}"/>
     </Style>
     <Style TargetType="Image" x:Key="NewPostgreSqlSourceIcon">
         <Setter Property="Height" Value="12"/>
@@ -427,7 +427,7 @@
     <Style TargetType="Image" x:Key="NewOracleSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>
-        <Setter Property="Source" Value="{StaticResource OracleSource}"/>
+        <Setter Property="Source" Value="{StaticResource DatabaseSource}"/>
     </Style>
     <Style TargetType="Image" x:Key="NewOdbcSourceIcon">
         <Setter Property="Height" Value="12"/>

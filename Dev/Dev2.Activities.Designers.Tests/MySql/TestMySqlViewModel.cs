@@ -377,10 +377,10 @@ namespace Dev2.Activities.Designers.Tests.MySql
         public ICollection<IDbAction> Actions => _actions;
         public ICollection<IDbAction> RefreshActionsList => _refreshActions;
 
-        public void CreateNewSource()
+        public void CreateNewSource(enSourceType type)
         {
         }
-        public void EditSource(IDbSource selectedSource)
+        public void EditSource(IDbSource selectedSource, enSourceType type)
         {
         }
 

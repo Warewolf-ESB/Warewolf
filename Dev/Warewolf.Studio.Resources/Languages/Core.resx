@@ -165,9 +165,6 @@
   <data name="ServerNameLabel" xml:space="preserve">
     <value>Server Name:</value>
   </data>
-  <data name="MenuDialogDatabaseLabel" xml:space="preserve">
-    <value>Database</value>
-  </data>
   <data name="MenuDialogDebugLabel" xml:space="preserve">
     <value>Debug</value>
   </data>
@@ -176,9 +173,6 @@
   </data>
   <data name="MenuDialogDeployLabel" xml:space="preserve">
     <value>Deploy</value>
-  </data>
-  <data name="MenuDialogDLLLabel" xml:space="preserve">
-    <value>DLL</value>
   </data>
   <data name="MenuDialogLockLabel" xml:space="preserve">
     <value>Lock Menu</value>
@@ -203,9 +197,6 @@
   </data>
   <data name="MenuDialogUnLockLabel" xml:space="preserve">
     <value>Unlock Menu</value>
-  </data>
-  <data name="MenuDialogWebLabel" xml:space="preserve">
-    <value>Web</value>
   </data>
   <data name="EmailAddressLabel" xml:space="preserve">
     <value>Email Address</value>

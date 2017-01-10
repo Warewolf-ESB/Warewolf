@@ -410,10 +410,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         public ICollection<IDbAction> Actions => _actions;
 
-        public void CreateNewSource()
+        public void CreateNewSource(enSourceType type)
         {
         }
-        public void EditSource(IDbSource selectedSource)
+        public void EditSource(IDbSource selectedSource, enSourceType type)
         {
         }
 
