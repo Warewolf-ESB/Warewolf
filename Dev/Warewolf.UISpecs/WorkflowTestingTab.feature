@@ -44,3 +44,4 @@ Scenario: Run Passing Tests
 	Then The First Test "Is" Invalid
 	When I Click First Test Delete Button
 	And I Click MessageBox Yes
+	And I Click Close Tests Tab
