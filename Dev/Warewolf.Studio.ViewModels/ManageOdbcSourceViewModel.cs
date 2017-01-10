@@ -16,7 +16,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageOdbcSourceViewModel : DatabaseSourceViewModelBase
     {
-        private readonly IOdbcSource _odbcSource;
         public ManageOdbcSourceViewModel(IAsyncWorker asyncWorker)
             : base(asyncWorker, "ODBC")
         {
@@ -33,8 +32,6 @@ namespace Warewolf.Studio.ViewModels
         public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "ODBC")
         {
-            VerifyArgument.IsNotNull("odbcSource", _odbcSource);
-            _odbcSource = dbSource as IOdbcSource;
             InitializeViewModel();
         }
 
@@ -80,25 +77,23 @@ namespace Warewolf.Studio.ViewModels
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
-                Password = Password,
-                UserName = UserName,
                 Type = enSourceType.ODBC,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _odbcSource?.Id ?? Guid.NewGuid()
+                Id = DbSource?.Id ?? Guid.NewGuid()
             };
         }
 
         protected override IDbSource ToDbSource()
         {
-            return _odbcSource == null ? new OdbcSourceDefinition
+            return DbSource == null ? new OdbcSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
-                Id = _odbcSource?.Id ?? SelectedGuid
+                Id = DbSource?.Id ?? SelectedGuid
             } : new OdbcSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
@@ -106,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
-                Id = (Guid)_odbcSource?.Id
+                Id = (Guid)DbSource?.Id
             };
         }
 
@@ -114,12 +109,31 @@ namespace Warewolf.Studio.ViewModels
         {
             return new OdbcSourceDefinition
             {
-                AuthenticationType = _odbcSource.AuthenticationType,
-                Id = _odbcSource.Id,
-                Name = _odbcSource.Name,
-                Path = _odbcSource.Path,
-                ServerName = _odbcSource.ServerName,
+                AuthenticationType = DbSource.AuthenticationType,
+                Id = DbSource.Id,
+                Name = DbSource.Name,
+                Path = DbSource.Path,
+                ServerName = DbSource.ServerName,
                 Type = enSourceType.ODBC
+            };
+        }
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new OdbcSourceDefinition()
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Type = enSourceType.ODBC,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
             };
         }
 
