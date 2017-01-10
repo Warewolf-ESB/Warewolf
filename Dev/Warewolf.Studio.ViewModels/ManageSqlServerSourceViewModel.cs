@@ -23,13 +23,14 @@ namespace Warewolf.Studio.ViewModels
         public ManageSqlServerSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "SqlDatabase")
         {
+            HeaderText = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
+            Header = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
         }
 
         public ManageSqlServerSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "SqlDatabase")
         {
-            HeaderText = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
-            Header = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
+            VerifyArgument.IsNotNull("sqlServerSource", dbSource);
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
