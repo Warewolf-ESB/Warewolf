@@ -6,6 +6,7 @@
 //using Dev2;
 //using Dev2.Common.Interfaces;
 //using Dev2.Common.Interfaces.Core;
+//using Dev2.Common.Interfaces.Core.Database;
 //using Dev2.Common.Interfaces.Core.DynamicServices;
 //using Dev2.Common.Interfaces.Help;
 //using Dev2.Common.Interfaces.SaveDialog;
@@ -21,7 +22,7 @@
 //{
 //    public partial class ManageDatabaseSourceViewModelTests
 //    {
-//      /*  #region Fields
+//        #region Fields
 
 //        private Mock<IManageDatabaseSourceModel> _updateManagerMock;
 //        private Mock<IEventAggregator> _aggregatorMock;
@@ -39,7 +40,7 @@
 //        private ManageDatabaseSourceViewModel _targetUpdateManagerRequestServiceName;
 
 
-//        #endregion Fields
+//        //#endregion Fields
 
 //        #region Test initialize
 
@@ -757,7 +758,7 @@
 //            Assert.IsFalse(_targetAsyncWorker.Testing);
 //        }
 
-//        #endregion Test properties
+//        //#endregion Test properties
 
 //        #region Test commands
 
@@ -1337,6 +1338,6 @@
 //            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("DatabaseNames"));
 //        }
 
-//        #endregion Test methods*/
+//        #endregion Test methods
 //    }
 //}
