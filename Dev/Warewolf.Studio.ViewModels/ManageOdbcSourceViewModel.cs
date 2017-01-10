@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
@@ -24,15 +25,25 @@ namespace Warewolf.Studio.ViewModels
         public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "ODBC")
         {
+            HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
+            CanSelectServer = false;
+            CanSelectUser = false;
+            CanSelectWindows = true;
+            EmptyServerName = "Localhost";
+            AuthenticationType = AuthenticationType.Windows;
         }
 
         public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "ODBC")
         {
             VerifyArgument.IsNotNull("odbcSource", _odbcSource);
-            HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
             _odbcSource = dbSource as IOdbcSource;
+            CanSelectServer = false;
+            CanSelectUser = false;
+            CanSelectWindows = true;
+            EmptyServerName = "Localhost";
+            AuthenticationType = AuthenticationType.Windows;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -65,7 +76,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new OdbcSourceDefination
+            return new OdbcSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -80,7 +91,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return _odbcSource == null ? new OdbcSourceDefination
+            return _odbcSource == null ? new OdbcSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -88,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 Id = _odbcSource?.Id ?? SelectedGuid
-            } : new OdbcSourceDefination
+            } : new OdbcSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -101,7 +112,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToSourceDefinition()
         {
-            return new DbSourceDefinition
+            return new OdbcSourceDefinition
             {
                 AuthenticationType = _odbcSource.AuthenticationType,
                 Id = _odbcSource.Id,

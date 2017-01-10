@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
@@ -16,23 +17,33 @@ namespace Warewolf.Studio.ViewModels
     public class ManagePostgreSqlSourceViewModel : DatabaseSourceViewModelBase
     {
         private readonly IPostgreSource _postgreSource;
-        public ManagePostgreSqlSourceViewModel(IAsyncWorker asyncWorker, string dbSourceImage)
-            : base(asyncWorker, dbSourceImage)
+        public ManagePostgreSqlSourceViewModel(IAsyncWorker asyncWorker)
+            : base(asyncWorker, "PostgreSQL")
         {
         }
 
-        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
-            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, dbSourceImage)
+        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+            : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "PostgreSQL")
         {
+            HeaderText = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
+            CanSelectServer = true;
+            CanSelectUser = true;
+            CanSelectWindows = false;
+            AuthenticationType = AuthenticationType.User;
         }
 
-        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
-            : base(updateManager, aggregator, dbSource, asyncWorker, dbSourceImage)
+        public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
+            : base(updateManager, aggregator, dbSource, asyncWorker, "PostgreSQL")
         {
             VerifyArgument.IsNotNull("postgreSource", _postgreSource);
             HeaderText = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
             Header = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
             _postgreSource = dbSource as IPostgreSource;
+            CanSelectServer = true;
+            CanSelectUser = true;
+            CanSelectWindows = false;
+            AuthenticationType = AuthenticationType.User;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -68,7 +79,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new PostgreSourceDefination
+            return new PostgreSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -83,7 +94,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return _postgreSource == null ? new PostgreSourceDefination
+            return _postgreSource == null ? new PostgreSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -94,7 +105,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = _postgreSource?.Id ?? SelectedGuid
-            } : new PostgreSourceDefination
+            } : new PostgreSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -110,7 +121,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToSourceDefinition()
         {
-            return new DbSourceDefinition
+            return new PostgreSourceDefinition
             {
                 AuthenticationType = _postgreSource.AuthenticationType,
                 DbName = _postgreSource.DbName,
