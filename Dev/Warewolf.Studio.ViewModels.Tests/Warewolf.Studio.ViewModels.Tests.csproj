@@ -145,6 +145,10 @@
     <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />
     <Compile Include="ManageOracleSourceViewModelTests.oracle.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.SqlServer.cs" />
+    <Compile Include="ManageMySqlSourceViewModelTests.cs" />
+    <Compile Include="ManageDatabaseSourceViewModelTests.Postgre.cs" />
+    <Compile Include="ManageOracleSourceViewModelTests.cs" />
+    <Compile Include="ManageSqlServerSourceViewModelTests.cs" />
     <Compile Include="ManageEmailSourceModelTests.cs" />
     <Compile Include="ManageExchangeViewModelTests.cs" />
     <Compile Include="ManageRabbitMQSourceViewModelTests.cs" />
