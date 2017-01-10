@@ -27,21 +27,19 @@ namespace Warewolf.Studio.ViewModels
         {
             HeaderText = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
             Header = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
-            CanSelectServer = true;
-            CanSelectUser = true;
-            CanSelectWindows = false;
-            AuthenticationType = AuthenticationType.User;
+            InitializeViewModel();
         }
 
         public ManagePostgreSqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "PostgreSQL")
         {
             VerifyArgument.IsNotNull("postgreSource", _postgreSource);
-            HeaderText = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel;
             _postgreSource = dbSource as IPostgreSource;
-            CanSelectServer = true;
-            CanSelectUser = true;
+            InitializeViewModel();
+        }
+
+        private void InitializeViewModel()
+        {
             CanSelectWindows = false;
             AuthenticationType = AuthenticationType.User;
         }

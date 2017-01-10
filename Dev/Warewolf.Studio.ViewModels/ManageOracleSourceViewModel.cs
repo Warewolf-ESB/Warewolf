@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
@@ -24,15 +25,23 @@ namespace Warewolf.Studio.ViewModels
         public ManageOracleSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "Oracle")
         {
+            HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
+            InitializeViewModel();
         }
 
         public ManageOracleSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "Oracle")
         {
-            HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
             VerifyArgument.IsNotNull("oracleSource", _oracleSource);
             _oracleSource = dbSource as IOracleSource;
+            InitializeViewModel();
+        }
+
+        private void InitializeViewModel()
+        {
+            CanSelectWindows = false;
+            AuthenticationType = AuthenticationType.User;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -68,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new OracleSourceDefination
+            return new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -83,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return _oracleSource == null ? new OracleSourceDefination
+            return _oracleSource == null ? new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -94,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = _oracleSource?.Id ?? SelectedGuid
-            } : new OracleSourceDefination
+            } : new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),

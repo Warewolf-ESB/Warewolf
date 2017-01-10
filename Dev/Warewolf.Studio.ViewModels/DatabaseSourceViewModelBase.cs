@@ -351,6 +351,7 @@ namespace Warewolf.Studio.ViewModels
         {
             AsyncWorker = asyncWorker;
             _databaseType = dbSourceImage;
+            InitializeViewModel(dbSourceImage);
         }
 
         protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
@@ -359,8 +360,17 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             PerformInitialise(updateManager, aggregator);
             RequestServiceNameViewModel = requestServiceNameViewModel;
-            EmptyServerName = "";
+            InitializeViewModel(dbSourceImage);
             GetLoadComputerNamesTask(null);
+        }
+
+        private void InitializeViewModel(string dbSourceImage)
+        {
+            CanSelectServer = true;
+            CanSelectUser = true;
+            CanSelectWindows = true;
+            EmptyServerName = "";
+            Image = dbSourceImage;
         }
 
         protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
@@ -383,32 +393,6 @@ namespace Warewolf.Studio.ViewModels
             //    Type = _dbSource.Type
             //};
             Item = ToSourceDefinition();
-            switch (_dbSource.Type)
-            {
-                case enSourceType.SqlDatabase:
-                    Image = "SqlDatabase";
-                    break;
-
-                case enSourceType.MySqlDatabase:
-                    Image = "MySqlDatabase";
-                    break;
-
-                case enSourceType.PostgreSQL:
-                    Image = "PostgreSQL";
-                    break;
-
-                case enSourceType.Oracle:
-                    Image = "Oracle";
-                    break;
-
-                case enSourceType.ODBC:
-                    Image = "ODBC";
-                    break;
-
-                default:
-                    Image = "DbSource";
-                    break;
-            }
 
             GetLoadComputerNamesTask(() =>
             {

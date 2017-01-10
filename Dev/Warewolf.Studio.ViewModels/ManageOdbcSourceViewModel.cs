@@ -27,11 +27,7 @@ namespace Warewolf.Studio.ViewModels
         {
             HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
             Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
-            CanSelectServer = false;
-            CanSelectUser = false;
-            CanSelectWindows = true;
-            EmptyServerName = "Localhost";
-            AuthenticationType = AuthenticationType.Windows;
+            InitializeViewModel();
         }
 
         public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
@@ -39,9 +35,13 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("odbcSource", _odbcSource);
             _odbcSource = dbSource as IOdbcSource;
+            InitializeViewModel();
+        }
+
+        private void InitializeViewModel()
+        {
             CanSelectServer = false;
             CanSelectUser = false;
-            CanSelectWindows = true;
             EmptyServerName = "Localhost";
             AuthenticationType = AuthenticationType.Windows;
         }
