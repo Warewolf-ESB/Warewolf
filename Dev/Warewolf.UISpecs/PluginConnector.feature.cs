@@ -88,7 +88,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I Type \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Numerics.dll\" into" +
                     " Plugin Source Wizard Assembly Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And("I Save With Ribbon Button And Dialog As \"UITestingPluginSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Save Valid Service With Ribbon Button And Dialog As \"UITestingPluginSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
  testRunner.And("I Click Close Plugin Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14

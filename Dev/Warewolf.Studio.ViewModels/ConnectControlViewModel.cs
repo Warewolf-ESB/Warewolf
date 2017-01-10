@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -113,11 +114,11 @@ namespace Warewolf.Studio.ViewModels
 
                 if (SelectedConnection.EnvironmentID == server1.EnvironmentID)
                 {
-                    if (!IsConnecting && server1.EnvironmentID==Guid.Empty)
+                    if (!IsConnecting && server1.EnvironmentID == Guid.Empty)
                     {
                         ServerHasDisconnected(this, server1);
                     }
-                    SelectedConnection.DisplayName = SelectedConnection.DisplayName.Replace("(Connected)", "");
+                    SelectedConnection.DisplayName = SelectedConnection.ResourceName;
                     IsConnected = false;
                 }
             }
@@ -396,7 +397,7 @@ namespace Warewolf.Studio.ViewModels
                 foreach (var server in Servers)
                 {
                     if (!server.IsConnected && server.EnvironmentID != Guid.Empty)
-                        server.DisplayName = SelectedConnection.DisplayName.Replace("(Connected)", "");
+                        server.DisplayName = SelectedConnection.ResourceName;
                 }
             }
         }
