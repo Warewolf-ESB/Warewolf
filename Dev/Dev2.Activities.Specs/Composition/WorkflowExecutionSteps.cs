@@ -71,6 +71,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Studio.Core.Factories;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
@@ -1022,6 +1023,8 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
+        [Given(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
+        [When(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
@@ -1218,6 +1221,8 @@ namespace Dev2.Activities.Specs.Composition
             ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
         }
 
+        [Given(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        [When(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
@@ -2267,6 +2272,71 @@ namespace Dev2.Activities.Specs.Composition
         {
             var len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
+        }
+
+        public void SaveToWorkspace(IContextualResourceModel resourceModel)
+        {
+            BuildDataList();
+
+            var activityList = _commonSteps.GetActivityList();
+
+            var flowSteps = new List<FlowStep>();
+
+            TestStartNode = new FlowStep();
+            flowSteps.Add(TestStartNode);
+
+            foreach (var activity in activityList)
+            {
+                if (TestStartNode.Action == null)
+                {
+                    TestStartNode.Action = activity.Value;
+                }
+                else
+                {
+                    var flowStep = new FlowStep { Action = activity.Value };
+                    flowSteps.Last().Next = flowStep;
+                    flowSteps.Add(flowStep);
+                }
+            }
+
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            var currentDl = CurrentDl;
+            resourceModel.DataList = currentDl.Replace("root", "DataList");
+            var helper = new WorkflowHelper();
+            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            resourceModel.WorkflowXaml = xamlDefinition;
+            repository.Save(resourceModel);
+        }
+
+        [When(@"'(.*)' unsaved WF ""(.*)"" is executed")]
+        public void WhenUnsavedWFIsExecuted(int numberToExecute, string unsavedName)
+        {
+            var unsavedWFs = Get<List<IContextualResourceModel>>("unsavedWFS");
+            if (unsavedWFs != null && unsavedWFs.Count > 0)
+            {
+                var wfs = unsavedWFs.Where(model => model.ResourceName == unsavedName).ToList();
+                if (wfs.Count >= numberToExecute)
+                {
+                    var resourceModel = wfs[numberToExecute - 1];
+                    EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
+                    SaveToWorkspace(resourceModel);
+                    var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+                    var clientContext = resourceModel.Environment.Connection;
+                    if (clientContext != null)
+                    {
+                        var dataList = XElement.Parse(debugTo.XmlData);
+                        dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
+                        dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
+                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                        WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
+                        _resetEvt.WaitOne(1000);
+                    }
+                }
+            }
         }
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
@@ -3632,6 +3702,58 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
+        
+        
+        [Given(@"I create a new unsaved workflow with name ""(.*)""")]
+        [When(@"I create a new unsaved workflow with name ""(.*)""")]
+        [Then(@"I create a new unsaved workflow with name ""(.*)""")]
+        public void GivenICreateANewUnsavedWorkflowWithName(string serviceName)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(environmentModel, @"WorkflowService",
+                serviceName);
+            tempResource.Category = @"Unassigned\" + serviceName;
+            tempResource.ResourceName = serviceName;
+            tempResource.DisplayName = serviceName;
+            tempResource.IsNewWorkflow = true;
+
+            environmentModel.ResourceRepository.Add(tempResource);
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            if (_scenarioContext.ContainsKey("unsavedWFS"))
+            {
+                var unsavedWFs = Get<List<IContextualResourceModel>>("unsavedWFS");
+                unsavedWFs.Add(tempResource);
+            }
+            else
+            {
+                Add("unsavedWFS",new List<IContextualResourceModel> {tempResource});
+            }
+
+            environmentModel.ResourceRepository.Add(tempResource);
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            if (_scenarioContext.ContainsKey(serviceName))
+            {
+                _scenarioContext[serviceName] = tempResource;
+                _scenarioContext["parentWorkflowName"] = serviceName;
+                _scenarioContext["environment"] = environmentModel;
+                _scenarioContext["resourceRepo"] = environmentModel.ResourceRepository;
+                _scenarioContext["debugStates"] = new List<IDebugState>();
+
+            }
+            else
+            {
+                Add(serviceName, tempResource);
+                Add("parentWorkflowName", serviceName);
+                Add("environment", environmentModel);
+                Add("resourceRepo", environmentModel.ResourceRepository);
+                Add("debugStates", new List<IDebugState>());
+            }                       
+        }
+
 
     }
 }

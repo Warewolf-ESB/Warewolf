@@ -541,7 +541,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverArg.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
             serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
             serverConnectionMock.SetupGet(it => it.ResourceName).Returns("someName");
-            serverConnectionMock.SetupGet(it => it.DisplayName).Returns("My display name(Connected)");
+            serverConnectionMock.SetupGet(it => it.DisplayName).Returns("someName (Connected)");
             _target.ServerHasDisconnected =
                 (obj, arg) => { serverDisconnectedRaised = obj == _target && arg == serverArg.Object; };
             _serverMock.Setup(it => it.GetAllServerConnections())
@@ -559,7 +559,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Servers.Contains(serverConnectionMock.Object));
             Assert.IsFalse(_target.IsConnected);
             Assert.IsFalse(serverDisconnectedRaised);
-            serverConnectionMock.VerifySet(it => it.DisplayName = "My display name");
+            serverConnectionMock.VerifySet(it => it.DisplayName = "someName");
         }
 
         [TestMethod]
