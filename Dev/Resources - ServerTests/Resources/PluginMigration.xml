@@ -1,5 +1,5 @@
 
-<Service ID="a923113a-facf-4d9e-9e46-b6092c2fdf50" Version="1.0" ServerID="00000000-0000-0000-0000-000000000000" Name="PluginMigration" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5896.25256">
+<Service ID="a923113a-facf-4d9e-9e46-b6092c2fdf50" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PluginMigration" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.6212.23827">
   <DisplayName>PluginMigration</DisplayName>
   <Category>PluginMigration</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

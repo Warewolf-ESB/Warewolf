@@ -652,7 +652,7 @@ namespace Dev2.Settings
                 ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
             }
             var serializer = new Dev2JsonSerializer();
-            _backedUpSettings = serializer.Deserialize<Data.Settings.Settings>(payload.ToString());
+            _backedUpSettings = serializer.Deserialize<Data.Settings.Settings>(payload?.ToString());
             return payload;
         }
 
