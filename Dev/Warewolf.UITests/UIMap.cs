@@ -2043,6 +2043,10 @@ namespace Warewolf.UITests
             }
         }
 
+        public void Click_Close_Scheduler_Tab_Button()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.Exists);
+        }
         public void Click_Scheduler_ResourcePicker()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(20, 12));
@@ -8082,11 +8086,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.CreateTestButton, new Point(158, 10));
         }
 
-        public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.UIUI_StepOutputs_SetthTable.UIItemRow.UIItemWarewolfStudioViCell.UIUI_AssertValue_HelloEdit.Text = message;
-        }
-
         public void Click_Delete_On_AssignValue_TestStep()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);
@@ -8166,6 +8165,7 @@ namespace Warewolf.UITests
         public void ThenTestTabIsOpen()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists);
         }
 
         [Then(@"I Click Close Clean Workflow Tab")]
@@ -8195,16 +8195,7 @@ namespace Warewolf.UITests
             else
                 return TestResultEnum.Pass;
         }
-
-
-        [Then(@"I Enter ""(.*)"" in the Output test step")]
-        [When(@"I Enter ""(.*)"" in the Output test step")]
-        [Given(@"I Enter ""(.*)"" in the Output test step")]
-        public void ThenIEnterInTheOutputTestStep(string output)
-        {
-            EnterOutMessageValue_On_OutputMessage_TestStep(output);
-        }
-
+        
         [When(@"I Click Test Tab")]
         [Then(@"I Click Test Tab")]
         [Given(@"I Click Test Tab")]
