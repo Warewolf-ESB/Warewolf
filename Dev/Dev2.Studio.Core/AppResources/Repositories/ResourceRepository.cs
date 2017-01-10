@@ -41,6 +41,7 @@ using Warewolf.Resource.Errors;
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable CheckNamespace
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
@@ -596,7 +597,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
 
             var con = targetEnvironment.Connection;
-            var result = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            var result = comsController.ExecuteCommand<ExecuteMessage>(con, con.WorkspaceID);
 
             return result;
         }

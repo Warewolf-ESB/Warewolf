@@ -94,8 +94,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false };
-
                 var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), "Save");
+                if (workspaceId == GlobalConstants.ServerWorkspaceID)
+                {
+                    ResourceCatalog.Instance.SaveResource(theWorkspace.ID, resourceDefinition, savePathValue.ToString(), "Save");
+                }
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
                 
                 return serializer.SerializeToBuilder(res);
