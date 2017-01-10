@@ -23,13 +23,14 @@ namespace Warewolf.Studio.ViewModels
         public ManageMySqlSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "MySqlDatabase")
         {
+            HeaderText = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
         }
 
         public ManageMySqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "MySqlDatabase")
         {
-            HeaderText = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
+            VerifyArgument.IsNotNull("mySqlSource", dbSource);
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
