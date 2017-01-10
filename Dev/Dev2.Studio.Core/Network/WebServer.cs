@@ -72,7 +72,7 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static void SendErrorOpenInBrowser(List<string> exceptionList, string description, string url)
+        public static void SendErrorOpenInBrowser(IEnumerable<string> exceptionList, string description, string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             const string PayloadFormat = "\"header\":{0},\"description\":{1},\"type\":3,\"category\":27";
