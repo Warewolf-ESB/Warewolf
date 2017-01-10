@@ -52,7 +52,19 @@ IF EXIST "%ServerBinDirectory%\Resources - UITests" echo d | xcopy /S /Y "%Serve
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%ServerBinDirectory%\ServerStarted" DEL "%ServerBinDirectory%\ServerStarted"
-IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Server.exe") else (START "%ServerBinDirectory%\Warewolf Server.exe" /D "%ServerBinDirectory%" "Warewolf Server.exe")
+IF EXIST %windir%\nircmd.exe (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+	) else (
+		nircmd elevate "%ServerBinDirectory%\Warewolf Server.exe"
+	)
+) else (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+	) else (
+		START "%ServerBinDirectory%\Warewolf Server.exe" /D "%ServerBinDirectory%" "Warewolf Server.exe"
+	)
+)
 @echo Started "%ServerBinDirectory%\Warewolf Server.exe".
 
 REM ** Wait for server start
@@ -83,8 +95,19 @@ IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET ServerBin
 
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
-IF EXIST %windir%\nircmd.exe (nircmd elevate "%ServerBinDirectory%\Warewolf Studio.exe") else (START "%ServerBinDirectory%\Warewolf Studio.exe" /D "%ServerBinDirectory%" "Warewolf Studio.exe")
+IF EXIST %windir%\nircmd.exe (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	) else (
+		nircmd elevate "%ServerBinDirectory%\Warewolf Studio.exe"
+	)
+) else (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	) else (
+		START "%ServerBinDirectory%\Warewolf Studio.exe" /D "%ServerBinDirectory%" "Warewolf Studio.exe"
+	)
+)
 waitfor StudioStart /t 60 2>NUL
 @echo Started "%ServerBinDirectory%\Warewolf Studio.exe".
 
-exit 0
