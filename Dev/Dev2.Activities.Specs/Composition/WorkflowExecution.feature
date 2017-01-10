@@ -2861,12 +2861,9 @@ Scenario: Workflow with Assign  DeleteNullHandler and testing variables that has
 	  And the "DelRec" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
-	  And the "Delet12" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
-	  | Records      |
-	  | [[Del(1)]] = |
 	  And the "Delet12" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
 	  |                       |
-	  | [[result1]] = Failure |
+	  | [[result1]] = Success |
 
 
 Scenario: Workflow with Assign Sort and testing variables that hasn"t been assigned
@@ -3289,5 +3286,28 @@ Scenario Outline: Database SqlDB  service using scalar outputs
 	  | [[name]] = dora                  |
 	  | [[email]] = dora@explorers.co.za |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestWFWithDBSqlServerScalar | dbo.SQLEmail    | [[name]]     | [[email]]     | NO           |
+    | WorkflowName                | ServiceName  | nameVariable | emailVariable | errorOccured |
+    | TestWFWithDBSqlServerScalar | dbo.SQLEmail | [[name]]     | [[email]]     | NO           |
+
+Scenario: Executing unsaved workflow should execute by ID
+	Given I create a new unsaved workflow with name "Unsaved 1"
+	And "Unsaved 1" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec(1).a]] | yes   |
+	  | [[rec(2).a]] | no    |	 
+	  When '1' unsaved WF "Unsaved 1" is executed
+	  Then the workflow execution has "NO" error
+	  And the "Rec To Convert" in Workflow "Unsaved 1" debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = yes |
+	  | 2 | [[rec(2).a]] = no  |
+	  Then I create a new unsaved workflow with name "Unsaved 1"
+	  And "Unsaved 1" contains an Assign "Assign 1" as
+	  | variable    | value |
+	  | [[rec(1).a]] | 1   |
+	  | [[rec(2).a]] | 2    |	 
+	  When '2' unsaved WF "Unsaved 1" is executed	 
+	  And the "Assign 1" in Workflow "Unsaved 1" debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = 1 |
+	  | 2 | [[rec(2).a]] = 2  |
