@@ -37,7 +37,7 @@ namespace Warewolf.Studio.Views
             switch (controlName)
             {
                 case "Save":
-                    var viewModel = DataContext as ManageDatabaseSourceViewModel;
+                    var viewModel = DataContext as ManageOracleSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnectionButton.Command.CanExecute(null);
@@ -114,7 +114,7 @@ namespace Warewolf.Studio.Views
 
         public void PerformSave()
         {
-            var viewModel = DataContext as ManageDatabaseSourceViewModel;
+            var viewModel = DataContext as ManageOracleSourceViewModel;
             viewModel?.OkCommand.Execute(null);
         }
 
@@ -130,7 +130,8 @@ namespace Warewolf.Studio.Views
 
         public string GetErrorMessage()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).TestMessage;
+            //return ((ManageDatabaseSourceViewModel)DataContext).TestMessage;
+            return String.Empty;
         }
 
 
@@ -183,11 +184,13 @@ namespace Warewolf.Studio.Views
 
         public string GetHeader()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).HeaderText;
+            //return ((ManageDatabaseSourceViewModel)DataContext).HeaderText;
+            return String.Empty;
         }
         public string GetTabHeader()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).Header;
+            //return ((ManageDatabaseSourceViewModel)DataContext).Header;
+            return String.Empty;
         }
         public void CancelTest()
         {
@@ -198,6 +201,7 @@ namespace Warewolf.Studio.Views
         {
             WindowsRadioButton.Focus();
         }
+
     }
 
     public class NullToVisibilityConverter : IValueConverter

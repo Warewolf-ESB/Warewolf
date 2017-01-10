@@ -7,6 +7,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.MySqlDatabase;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.Database;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;

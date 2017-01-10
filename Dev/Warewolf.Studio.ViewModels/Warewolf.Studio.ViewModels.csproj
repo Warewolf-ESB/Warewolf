@@ -136,11 +136,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectControlViewModel.cs" />
+    <Compile Include="DatabaseSourceViewModelBase.cs" />
     <Compile Include="DeploySourceExplorerViewModel.cs" />
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DummyServiceTest.cs" />
     <Compile Include="IProcessor.cs" />
+    <Compile Include="ManageMySqlSourceViewModel.cs" />
+    <Compile Include="ManageOdbcSourceViewModel.cs" />
+    <Compile Include="ManageOracleSourceViewModel.cs" />
+    <Compile Include="ManagePostgreSqlSourceViewModel.cs" />
+    <Compile Include="ManageSqlServerSourceViewModel.cs" />
     <Compile Include="ServiceTestStep.cs" />
     <Compile Include="SingleExplorerDeployViewModel.cs" />
     <Compile Include="ExplorerItemViewModelCommandController.cs" />

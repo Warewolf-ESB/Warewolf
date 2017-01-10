@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Dev2.Activities.Designers2.PostgreSql;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.Database;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;

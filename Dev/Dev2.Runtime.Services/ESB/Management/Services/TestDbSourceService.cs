@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.Database;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
@@ -58,9 +59,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     AuthenticationType = src.AuthenticationType,
                     Server = src.ServerName,
-                    Password = src.Password,
+                    //Password = src.Password,
                     ServerType = src.Type,
-                    UserID = src.UserName
+                    //UserID = src.UserName
 
                 });
 

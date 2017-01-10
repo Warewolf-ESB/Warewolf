@@ -3,9 +3,9 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 
-namespace Dev2.Common.Interfaces.Core
+namespace Dev2.Common.Interfaces.Core.Database
 {
-    public class DbSourceDefinition : IDbSource, IEquatable<DbSourceDefinition>
+    public class MySqlSourceDefination : IMySqlSource, IEquatable<MySqlSourceDefination>
     {
         AuthenticationType _authenticationType;
 
@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbSourceDefinition other)
+        public bool Equals(MySqlSourceDefination other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDbSource other)
         {
-            return Equals(other as DbSourceDefinition);
+            return Equals(other as MySqlSourceDefination);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return false;
             }
-            return Equals((DbSourceDefinition)obj);
+            return Equals((MySqlSourceDefination)obj);
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(DbSourceDefinition left, DbSourceDefinition right)
+        public static bool operator ==(MySqlSourceDefination left, MySqlSourceDefination right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbSourceDefinition left, DbSourceDefinition right)
+        public static bool operator !=(MySqlSourceDefination left, MySqlSourceDefination right)
         {
             return !Equals(left, right);
         }

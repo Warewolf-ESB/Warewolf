@@ -15,10 +15,11 @@
              xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              mc:Ignorable="d" 
              PreviewMouseDown="ManageServerControl_OnPreviewMouseDown"
              d:DesignHeight="450" d:DesignWidth="800" BorderBrush="White"
-             d:DataContext="{d:DesignInstance Type=interfaces:IManageDatabaseSourceViewModel,
+             d:DataContext="{d:DesignInstance Type=viewModels:IDatabaseSourceViewModel,
                                               IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
