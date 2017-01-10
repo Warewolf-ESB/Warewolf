@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.Database;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -21,14 +21,14 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class ManageDatabaseSourceViewModelTests
+    public class ManageSqlServerSourceViewModelTests
     {
         #region Fields
 
         private Mock<IManageDatabaseSourceModel> _updateManagerMock;
         private Mock<IEventAggregator> _aggregatorMock;
         private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IDbSource> _dbSourceMock;
+        private Mock<ISqlServerSource> _dbSourceMock;
 
         private Mock<IRequestServiceNameViewModel> _requestServiceNameViewMock;
         private Task<IRequestServiceNameViewModel> _requestServiceNameView;
@@ -36,9 +36,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         private List<string> _changedPropertiesUpdateManagerAggregatorDbSource;
         private List<string> _changedUpdateManagerRequestServiceName;
 
-        private ManageDatabaseSourceViewModel _targetAsyncWorker;
-        private ManageDatabaseSourceViewModel _targetUpdateManagerAggregatorDbSource;
-        private ManageDatabaseSourceViewModel _targetUpdateManagerRequestServiceName;
+        private ManageSqlServerSourceViewModel _targetAsyncWorker;
+        private ManageSqlServerSourceViewModel _targetUpdateManagerAggregatorDbSource;
+        private ManageSqlServerSourceViewModel _targetUpdateManagerRequestServiceName;
 
 
         #endregion Fields
@@ -51,41 +51,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             _asyncWorkerMock = new Mock<IAsyncWorker>();
             _updateManagerMock = new Mock<IManageDatabaseSourceModel>();
             _aggregatorMock = new Mock<IEventAggregator>();
-            _dbSourceMock = new Mock<IDbSource>();
+            _dbSourceMock = new Mock<ISqlServerSource>();
             _requestServiceNameViewMock = new Mock<IRequestServiceNameViewModel>();
             _requestServiceNameView = Task.FromResult(_requestServiceNameViewMock.Object);
 
             _updateManagerMock.Setup(it => it.GetComputerNames())
                 .Returns(new List<string>() { "someName1", "someName2" });
-           
+
             _dbSourceMock.SetupGet(it => it.Name).Returns("someDbSourceName");
             _asyncWorkerMock.Setup(
                 it =>
-                it.Start<List<ComputerName>>(
+                it.Start(
                     It.IsAny<Func<List<ComputerName>>>(),
                     It.IsAny<Action<List<ComputerName>>>(),
                     It.IsAny<Action<Exception>>()))
                 .Callback<Func<List<ComputerName>>, Action<List<ComputerName>>, Action<Exception>>(
                     (progress, success, fail) =>
+                    {
+                        try
                         {
-                            try
-                            {
-                                success(progress());
-                            }
-                            catch (Exception ex)
-                            {
-                                fail(ex);
-                            }
-                        });
-            _targetAsyncWorker = new ManageDatabaseSourceViewModel(_asyncWorkerMock.Object);
+                            success(progress());
+                        }
+                        catch (Exception ex)
+                        {
+                            fail(ex);
+                        }
+                    });
+            _targetAsyncWorker = new ManageSqlServerSourceViewModel(_asyncWorkerMock.Object);
             _changedPropertiesAsyncWorker = new List<string>();
             _targetAsyncWorker.PropertyChanged += (sender, args) =>
-                {
-                    _changedPropertiesAsyncWorker.Add(args.PropertyName);
-                };
+            {
+                _changedPropertiesAsyncWorker.Add(args.PropertyName);
+            };
 
-         
-            _targetUpdateManagerAggregatorDbSource = new ManageDatabaseSourceViewModel(
+
+            _targetUpdateManagerAggregatorDbSource = new ManageSqlServerSourceViewModel(
                 _updateManagerMock.Object,
                 _aggregatorMock.Object,
                 _dbSourceMock.Object,
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _changedPropertiesUpdateManagerAggregatorDbSource.Add(args.PropertyName);
             };
 
-            _targetUpdateManagerRequestServiceName = new ManageDatabaseSourceViewModel(
+            _targetUpdateManagerRequestServiceName = new ManageSqlServerSourceViewModel(
                 _updateManagerMock.Object,
                 _requestServiceNameView,
                 _aggregatorMock.Object,
@@ -122,7 +122,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Throws(new Exception("someOuterExceptionMessage", new Exception(expectedExceptionMessage)));
 
             //act
-            _targetUpdateManagerRequestServiceName = new ManageDatabaseSourceViewModel(
+            _targetUpdateManagerRequestServiceName = new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
                  _requestServiceNameView,
                  _aggregatorMock.Object,
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock.Setup(it => it.GetComputerNames()).Throws(new Exception(expectedExceptionMessage));
 
             //act
-            _targetUpdateManagerRequestServiceName = new ManageDatabaseSourceViewModel(
+            _targetUpdateManagerRequestServiceName = new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
                  _requestServiceNameView,
                  _aggregatorMock.Object,
@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelUpdateManagerNull()
         {
-            new ManageDatabaseSourceViewModel(
+            new ManageSqlServerSourceViewModel(
                  null,
                  _requestServiceNameView,
                  _aggregatorMock.Object,
@@ -169,7 +169,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelAggregatorNull()
         {
-            new ManageDatabaseSourceViewModel(
+            new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
                  _requestServiceNameView,
                  null,
@@ -180,7 +180,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelRequestServiceNameViewModelNull()
         {
-            new ManageDatabaseSourceViewModel(
+            new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
                  null,
                   _aggregatorMock.Object,
@@ -191,7 +191,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelDbSourceNull()
         {
-            new ManageDatabaseSourceViewModel(
+            new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
                  _aggregatorMock.Object,
                  null,
@@ -205,14 +205,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestIsEmptyServerNameNonEmpty()
         {
-            //arrange
-            _targetAsyncWorker.ServerName = new ComputerName() { Name = "someName" };
+            /*   //arrange
+               _targetAsyncWorker.ServerName = new ComputerName() { Name = "someName" };
 
-            //act
-            var value = _targetAsyncWorker.IsEmpty;
+               //act
+               var value = _targetAsyncWorker.IsEmpty;
 
-            //assert
-            Assert.IsFalse(value);
+               //assert
+               Assert.IsFalse(value);*/
         }
 
         [TestMethod]
@@ -222,7 +222,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.ServerName = new ComputerName() { Name = "someName" };
 
             //act
-            
+
 
             //assert
             Assert.AreEqual("someName", _targetAsyncWorker.ServerName.ToString());
@@ -231,76 +231,74 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestIsEmptyAuthenticationTypeNonWindows()
         {
-            //arrange
-            _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-            _targetAsyncWorker.AuthenticationType= AuthenticationType.Public;
+            /*  //arrange
+              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
+              _targetAsyncWorker.AuthenticationType= AuthenticationType.Public;
 
-             //act
-             var value = _targetAsyncWorker.IsEmpty;
+               //act
+               var value = _targetAsyncWorker.IsEmpty;
 
-            //assert
-            Assert.IsFalse(value);
+              //assert
+              Assert.IsFalse(value);*/
         }
 
         [TestMethod]
         public void TestIsEmptyUserNameNonEmpty()
         {
-            //arrange
-            _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-            _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-            _targetAsyncWorker.UserName = "SomeUserName";
+            /*  //arrange
+              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
+              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
+              _targetAsyncWorker.UserName = "SomeUserName";
 
-            //act
-            var value = _targetAsyncWorker.IsEmpty;
+              //act
+              var value = _targetAsyncWorker.IsEmpty;
 
-            //assert
-            Assert.IsFalse(value);
+              //assert
+              Assert.IsFalse(value);*/
         }
 
         [TestMethod]
         public void TestIsEmptyPasswordNonEmpty()
         {
-            //arrange
-            _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-            _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-            _targetAsyncWorker.UserName = "";
-            _targetAsyncWorker.Password = "somePassword";
+            /*  //arrange
+              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
+              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
+              _targetAsyncWorker.UserName = "";
+              _targetAsyncWorker.Password = "somePassword";
 
-            //act
-            var value = _targetAsyncWorker.IsEmpty;
+              //act
+              var value = _targetAsyncWorker.IsEmpty;
 
-            //assert
-            Assert.IsFalse(value);
+              //assert
+              Assert.IsFalse(value);*/
         }
 
         [TestMethod]
         public void TestIsEmpty()
         {
-            //arrange
-            _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-            _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-            _targetAsyncWorker.UserName = "";
-            _targetAsyncWorker.Password = "";
+            /*  //arrange
+              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
+              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
+              _targetAsyncWorker.UserName = "";
+              _targetAsyncWorker.Password = "";
 
-            //act
-            var value = _targetAsyncWorker.IsEmpty;
+              //act
+              var value = _targetAsyncWorker.IsEmpty;
 
-            //assert
-            Assert.IsTrue(value);
+              //assert
+              Assert.IsTrue(value);*/
         }
 
         [TestMethod]
         public void TestDBSource()
         {
             //arrange
-            var expectedValueMock = new Mock<IDbSource>();
+            var expectedValueMock = new Mock<ISqlServerSource>();
 
             //act
-            _targetAsyncWorker.DBSource = expectedValueMock.Object;
-            var actualValue = _targetAsyncWorker.DBSource;
 
             //assert
-            Assert.AreSame(expectedValueMock.Object, actualValue);
+            //Assert.AreSame(expectedValueMock.Object, actualValue);
         }
 
         [TestMethod]
@@ -433,7 +431,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = "someName";
-            _targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -452,7 +449,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = "";
-            _targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -495,7 +491,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = new List<ComputerName>();
-            _targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
+            //_targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -535,37 +531,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void TestTypes()
-        {
-            //arrange
-            var expectedValue = new List<NameValue>();
-
-            //act
-            _targetAsyncWorker.Types = expectedValue;
-            var actualValue = _targetAsyncWorker.Types;
-
-            //assert
-            Assert.AreSame(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void TestServerType()
-        {
-            //arrange
-            var expectedValue = new NameValue("name","value");
-            _changedPropertiesAsyncWorker.Clear();
-
-            //act
-            _targetAsyncWorker.ServerType = expectedValue;
-            var actualValue = _targetAsyncWorker.ServerType;
-
-            //assert
-            Assert.AreSame(expectedValue, actualValue);
-            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("ServerType"));
-            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("Header"));
         }
 
         [TestMethod]
@@ -769,10 +734,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _targetUpdateManagerAggregatorDbSource.ServerName = new ComputerName() { Name = "someName" };
             _targetUpdateManagerAggregatorDbSource.AuthenticationType = AuthenticationType.Public;
-            
+
             //act
             var result = _targetUpdateManagerAggregatorDbSource.TestCommand.CanExecute(null);
-            
+
             //assert
             Assert.IsTrue(result);
         }
@@ -815,7 +780,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "someName" };
-            
+
             _asyncWorkerMock.Setup(
                 it =>
                 it.Start<IList<string>>(
@@ -928,7 +893,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.SqlDatabase;
             var expectedPath = "somePath";
             var expectedName = "someName";
             var expectedDbName = "someDbName";
@@ -936,7 +901,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.ServerName = new ComputerName() { Name = expectedServerName };
             _targetUpdateManagerRequestServiceName.Password = expectedPassword;
             _targetUpdateManagerRequestServiceName.UserName = expectedUsername;
-            _targetUpdateManagerRequestServiceName.ServerType.Value = expectedType.ToString();
             _targetUpdateManagerRequestServiceName.Path = expectedPath;
             _targetUpdateManagerRequestServiceName.ResourceName = expectedName;
             _targetUpdateManagerRequestServiceName.DatabaseName = expectedDbName;
@@ -945,18 +909,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(DbSourceDefinition));
+            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(SqlServerSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerRequestServiceName.Item));
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.HeaderText);
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.Header);
             Assert.AreEqual(expectedAuthenticationType, _targetUpdateManagerRequestServiceName.Item.AuthenticationType);
             Assert.AreEqual(expectedServerName, _targetUpdateManagerRequestServiceName.Item.ServerName);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerRequestServiceName.Item.Password);
-            Assert.AreEqual(expectedUsername, _targetUpdateManagerRequestServiceName.Item.UserName);
+            Assert.AreEqual(expectedPassword, ((ISqlServerSource)_targetUpdateManagerRequestServiceName.Item).Password);
+            Assert.AreEqual(expectedUsername, ((ISqlServerSource)_targetUpdateManagerRequestServiceName.Item).UserName);
             Assert.AreEqual(expectedType, _targetUpdateManagerRequestServiceName.Item.Type);
             Assert.AreEqual(resPath, _targetUpdateManagerRequestServiceName.Item.Path);
             Assert.AreEqual(resName, _targetUpdateManagerRequestServiceName.Item.Name);
-            Assert.AreEqual(expectedDbName, _targetUpdateManagerRequestServiceName.Item.DbName);
+            Assert.AreEqual(expectedDbName, ((ISqlServerSource)_targetUpdateManagerRequestServiceName.Item).DbName);
             Assert.AreNotEqual(Guid.Empty, _targetUpdateManagerRequestServiceName.Item.Id);
         }
 
@@ -968,7 +932,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.SqlDatabase;
             var expectedPath = "somePath";
             var expectedDbName = "someDbName";
             var dbSourceName = "dbSourceName";
@@ -977,7 +941,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerAggregatorDbSource.ServerName = new ComputerName() { Name = expectedServerName };
             _targetUpdateManagerAggregatorDbSource.Password = expectedPassword;
             _targetUpdateManagerAggregatorDbSource.UserName = expectedUsername;
-            _targetUpdateManagerAggregatorDbSource.ServerType.Value = expectedType.ToString();
             _targetUpdateManagerAggregatorDbSource.Path = expectedPath;
             _targetUpdateManagerAggregatorDbSource.DatabaseName = expectedDbName;
             _dbSourceMock.SetupGet(it => it.Id).Returns(expectedId);
@@ -988,18 +951,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerAggregatorDbSource.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item,typeof(DbSourceDefinition));
+            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item, typeof(SqlServerSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.HeaderText);
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);
             Assert.AreEqual(expectedAuthenticationType, _targetUpdateManagerAggregatorDbSource.Item.AuthenticationType);
             Assert.AreEqual(expectedServerName, _targetUpdateManagerAggregatorDbSource.Item.ServerName);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Item.Password);
-            Assert.AreEqual(expectedUsername, _targetUpdateManagerAggregatorDbSource.Item.UserName);
+            Assert.AreEqual(expectedPassword, ((ISqlServerSource)_targetUpdateManagerAggregatorDbSource.Item).Password);
+            Assert.AreEqual(expectedUsername, ((ISqlServerSource)_targetUpdateManagerAggregatorDbSource.Item).UserName);
             Assert.AreEqual(expectedType, _targetUpdateManagerAggregatorDbSource.Item.Type);
             Assert.AreEqual(expectedPath, _targetUpdateManagerAggregatorDbSource.Item.Path);
             Assert.AreEqual(dbSourceName, _targetUpdateManagerAggregatorDbSource.Item.Name);
-            Assert.AreEqual(expectedDbName, _targetUpdateManagerAggregatorDbSource.Item.DbName);
+            Assert.AreEqual(expectedDbName, ((ISqlServerSource)_targetUpdateManagerAggregatorDbSource.Item).DbName);
             Assert.AreEqual(expectedId, _targetUpdateManagerAggregatorDbSource.Item.Id);
         }
 
@@ -1017,7 +980,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCancelDBSourceTestCommandExecute()
         {
             //act
-            _targetUpdateManagerAggregatorDbSource.CancelTestCommand.Execute(null);           
+            _targetUpdateManagerAggregatorDbSource.CancelTestCommand.Execute(null);
         }
 
         #endregion Test commands
@@ -1030,8 +993,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
-            var expectedType = enSourceType.Dev2Server;
-            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
+            var expectedType = enSourceType.SqlDatabase;
+            //_targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1048,8 +1011,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.DatabaseName = expectedDbName;
             _targetAsyncWorker.SelectedGuid = gd;
             //act
-            var value = _targetAsyncWorker.ToModel();
-        
+            var value = (ISqlServerSource)_targetAsyncWorker.ToModel();
+
             //assert
             Assert.AreSame(_targetAsyncWorker.Item, value);
             Assert.AreEqual(expectedAuthenticationType, value.AuthenticationType);
@@ -1067,12 +1030,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNotNull()
         {
             //arrange
-            var dbSourceMock = new Mock<IDbSource>();
+            var dbSourceMock = new Mock<ISqlServerSource>();
             var expectedId = Guid.NewGuid();
             dbSourceMock.Setup(it => it.Id).Returns(expectedId);
             _targetAsyncWorker.Item = dbSourceMock.Object;
-            var expectedType = enSourceType.Dev2Server;
-            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
+            var expectedType = enSourceType.SqlDatabase;
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1087,7 +1049,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.DatabaseName = expectedDbName;
 
             //act
-            var value = _targetAsyncWorker.ToModel();
+            var value = (ISqlServerSource)_targetAsyncWorker.ToModel();
 
             //assert
             Assert.AreNotSame(_targetAsyncWorker.Item, value);
@@ -1122,7 +1084,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var exceptionMessage = "exceptionMessage";
-            _updateManagerMock.Setup(it => it.Save(It.IsAny<IDbSource>())).Throws(new Exception(exceptionMessage));
+            _updateManagerMock.Setup(it => it.Save(It.IsAny<ISqlServerSource>())).Throws(new Exception(exceptionMessage));
 
             //act
             _targetUpdateManagerAggregatorDbSource.Save();
@@ -1139,7 +1101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock.Setup(it => it.Save(It.IsAny<IDbSource>())).Throws(new Exception(exceptionMessage));
 
             //act
-            _targetUpdateManagerAggregatorDbSource.Save();    
+            _targetUpdateManagerAggregatorDbSource.Save();
 
             //assert
             Assert.AreEqual(exceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
@@ -1297,7 +1259,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFromModel()
         {
             //arrange
-            var dbSourceMock = new Mock<IDbSource>();
+            var dbSourceMock = new Mock<ISqlServerSource>();
             var expectedResourceName = "expectedResourceName";
             var expectedAuthenticationType = AuthenticationType.Windows;
             var expectedUserName = "expectedUserName";
@@ -1305,14 +1267,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dbSourceType = enSourceType.DynamicService;
             var expectedPassword = "expectedPassword";
             var expectedPath = "expectedPath";
-            var expectedServerType = new NameValue("name", dbSourceType.ToString());
-            _targetAsyncWorker.Types = new List<NameValue>();
-            _targetAsyncWorker.Types.Add(expectedServerType);
             var expectedServerName = new ComputerName() { Name = dbSourceServerName };
-            _targetAsyncWorker.ComputerNames = new List<ComputerName>();
-            _targetAsyncWorker.ComputerNames.Add(expectedServerName);
+            _targetAsyncWorker.ComputerNames = new List<ComputerName> { expectedServerName };
             var expectedDatabaseName = "expectedDatabaseName";
-          
+
             dbSourceMock.SetupGet(it => it.Name).Returns(expectedResourceName);
             dbSourceMock.SetupGet(it => it.AuthenticationType).Returns(expectedAuthenticationType);
             dbSourceMock.SetupGet(it => it.UserName).Returns(expectedUserName);
@@ -1327,14 +1285,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.FromModel(dbSourceMock.Object);
 
             //assert
-            Assert.AreEqual(expectedResourceName,_targetAsyncWorker.ResourceName);
+            Assert.AreEqual(expectedResourceName, _targetAsyncWorker.ResourceName);
             Assert.AreEqual(expectedAuthenticationType, _targetAsyncWorker.AuthenticationType);
             Assert.AreEqual(expectedUserName, _targetAsyncWorker.UserName);
             Assert.AreSame(expectedServerName, _targetAsyncWorker.ServerName);
             Assert.AreEqual(dbSourceServerName, _targetAsyncWorker.EmptyServerName);
             Assert.AreEqual(expectedPassword, _targetAsyncWorker.Password);
             Assert.AreEqual(expectedPath, _targetAsyncWorker.Path);
-            Assert.AreSame(expectedServerType, _targetAsyncWorker.ServerType);
+            //Assert.AreSame(expectedServerType, _targetAsyncWorker.ServerType);
             Assert.AreEqual(expectedDatabaseName, _targetAsyncWorker.DatabaseName);
             Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("DatabaseNames"));
         }

@@ -156,7 +156,12 @@
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeParser.cs" />
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
-    <Compile Include="Core\DbSourceDefinition.cs" />
+    <Compile Include="Core\Database\MySqlSourceDefination.cs" />
+    <Compile Include="Core\Database\OdbcSourceDefinition.cs" />
+    <Compile Include="Core\Database\OracleSourceDefinition.cs" />
+    <Compile Include="Core\Database\DbSourceDefinition.cs" />
+    <Compile Include="Core\Database\PostgreSourceDefinition.cs" />
+    <Compile Include="Core\Database\SqlServerSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />

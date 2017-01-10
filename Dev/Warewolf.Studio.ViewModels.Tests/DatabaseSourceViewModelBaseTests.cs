@@ -11,7 +11,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class ManageDatabaseSourceModelTests
+    public class DatabaseSourceViewModelBaseTests
     {
         #region Fields
 

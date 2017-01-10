@@ -1145,6 +1145,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Sql Server Source.
+        /// </summary>
+        public static string SqlServerSourceServerNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("SqlServerSourceServerNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;/div&gt;	&lt;/body&gt;	&lt;/html&gt;.
         /// </summary>
         public static string StandardBodyParagraphClosing {
