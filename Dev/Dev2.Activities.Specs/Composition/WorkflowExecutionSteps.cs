@@ -29,6 +29,7 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -70,6 +71,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Studio.Core.Factories;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
@@ -93,6 +95,7 @@ namespace Dev2.Activities.Specs.Composition
             if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         const int EnvironmentConnectionTimeout = 3000;
@@ -104,6 +107,69 @@ namespace Dev2.Activities.Specs.Composition
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
+        }
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
+        [BeforeFeature("@ExampleWorkflowExecution")]
+        public static void BeforeExampleWorkLOfwFeature()
+        {
+            var resourcePath = EnvironmentVariables.ResourcePath;
+
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var examples = Path.Combine(baseDirectory, "Resources", "Examples");
+            resourcePath = Path.Combine(resourcePath, "Examples");
+            if (Directory.Exists(resourcePath))
+            {
+                Directory.Delete(resourcePath, true);
+            }
+            Directory.CreateDirectory(resourcePath);
+            DirectoryCopy(examples, resourcePath,true);
+        }
+
+        [AfterFeature("@ExampleWorkflowExecution")]
+        public static void AfterExampleWorkLOfwFeature()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var examples = Path.Combine(baseDirectory, "Resources", "Examples");
+            if (Directory.Exists(examples))
+            {
+                DirectoryHelper.CleanUp(examples);
+            }
         }
 
         [BeforeScenario]
@@ -121,17 +187,6 @@ namespace Dev2.Activities.Specs.Composition
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
-        }
-
-        [Given(@"All environments disconnected")]
-        public void GivenAllEnvironmentsDisconnected()
-        {
-            IEnvironmentModel environmentModel;
-            TryGetValue("environment", out environmentModel);
-            if (environmentModel != null && environmentModel.IsConnected)
-            {
-                environmentModel.Disconnect();
-            }
         }
 
         [Given(@"Debug states are cleared")]
@@ -238,11 +293,20 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [BeforeFeature()]
+        private static void SetUpLocalHost()
+        {
+            LocalEnvModel = EnvironmentRepository.Instance.Source;
+            LocalEnvModel.Connect();
+            LocalEnvModel.ForceLoadResources();
+        }
+
+        private static IEnvironmentModel LocalEnvModel { get; set; }
+        private static IEnvironmentModel RemoteEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
@@ -323,7 +387,8 @@ namespace Dev2.Activities.Specs.Composition
                 _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
-            environmentModel.Connect();
+            if (!environmentModel.IsConnected)
+                environmentModel.Connect();
             if (!environmentModel.IsConnected)
             {
                 timeout--;
@@ -566,22 +631,33 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source, EnvironmentConnectionTimeout);
-            EnvironmentRepository.Instance.Source.ForceLoadResources();
+            var localHostEnv = LocalEnvModel;
+
+            EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
 
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
             {
-                var environments = EnvironmentRepository.Instance.LookupEnvironments(EnvironmentRepository.Instance.Source);
+                var environments = EnvironmentRepository.Instance.LookupEnvironments(localHostEnv);
                 remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
             }
             if (remoteEnvironment != null)
             {
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
-                remoteEnvironment.ForceLoadResources();
+                if (!remoteEnvironment.HasLoadedResources)
+                {
+                    remoteEnvironment.ForceLoadResources();
+                }
                 var splitNameAndCat = remoteWf.Split('/');
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName || model.Category == remoteWf.Replace('/', '\\'), true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
+                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                if(remoteResourceModel == null)
+                {
+                    remoteEnvironment.LoadResources();
+                    remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
+                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                }
                 if (remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -947,6 +1023,8 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
+        [Given(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
+        [When(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
@@ -1143,6 +1221,8 @@ namespace Dev2.Activities.Specs.Composition
             ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
         }
 
+        [Given(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        [When(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
@@ -2135,10 +2215,15 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper restore InconsistentNaming
         {
             var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
+            var environmentModel = LocalEnvModel;
+            if (!environmentModel.IsConnected)
+                environmentModel.Connect();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
+            if (resource == null)
+            {
+                environmentModel.LoadResources();
+                resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
+            }
             if (resource == null)
             {
                 // ReSharper disable NotResolvedInText
@@ -2187,6 +2272,71 @@ namespace Dev2.Activities.Specs.Composition
         {
             var len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
+        }
+
+        public void SaveToWorkspace(IContextualResourceModel resourceModel)
+        {
+            BuildDataList();
+
+            var activityList = _commonSteps.GetActivityList();
+
+            var flowSteps = new List<FlowStep>();
+
+            TestStartNode = new FlowStep();
+            flowSteps.Add(TestStartNode);
+
+            foreach (var activity in activityList)
+            {
+                if (TestStartNode.Action == null)
+                {
+                    TestStartNode.Action = activity.Value;
+                }
+                else
+                {
+                    var flowStep = new FlowStep { Action = activity.Value };
+                    flowSteps.Last().Next = flowStep;
+                    flowSteps.Add(flowStep);
+                }
+            }
+
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            var currentDl = CurrentDl;
+            resourceModel.DataList = currentDl.Replace("root", "DataList");
+            var helper = new WorkflowHelper();
+            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            resourceModel.WorkflowXaml = xamlDefinition;
+            repository.Save(resourceModel);
+        }
+
+        [When(@"'(.*)' unsaved WF ""(.*)"" is executed")]
+        public void WhenUnsavedWFIsExecuted(int numberToExecute, string unsavedName)
+        {
+            var unsavedWFs = Get<List<IContextualResourceModel>>("unsavedWFS");
+            if (unsavedWFs != null && unsavedWFs.Count > 0)
+            {
+                var wfs = unsavedWFs.Where(model => model.ResourceName == unsavedName).ToList();
+                if (wfs.Count >= numberToExecute)
+                {
+                    var resourceModel = wfs[numberToExecute - 1];
+                    EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
+                    SaveToWorkspace(resourceModel);
+                    var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+                    var clientContext = resourceModel.Environment.Connection;
+                    if (clientContext != null)
+                    {
+                        var dataList = XElement.Parse(debugTo.XmlData);
+                        dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
+                        dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
+                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                        WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
+                        _resetEvt.WaitOne(1000);
+                    }
+                }
+            }
         }
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
@@ -2494,10 +2644,7 @@ namespace Dev2.Activities.Specs.Composition
                 _debugWriterSubscriptionService.Unsubscribe();
                 _debugWriterSubscriptionService.Dispose();
             }
-            if (_resetEvt != null)
-            {
-                _resetEvt.Close();
-            }
+            _resetEvt?.Close();
         }
 
         [Then(@"I set logging to ""(.*)""")]
@@ -3194,7 +3341,7 @@ namespace Dev2.Activities.Specs.Composition
             var databaseService = new DatabaseService
             {
                 Source = dbSource,
-                Inputs =inputs,
+                Inputs = inputs,
                 Action = new DbAction()
                 {
                     Name = serviceName,
@@ -3246,24 +3393,13 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
 
-            //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\PostgreSourceTest").FirstOrDefault();
-
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
+            var resourceId = "62652f31-813a-4b97-b488-02e4c16150ff".ToGuid();
 
             var postGreActivity = new DsfPostgreSqlActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = resourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
@@ -3350,27 +3486,17 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            //Load Source based on the name
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\mysqlSource").FirstOrDefault();
 
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
-
+            var mySqlResourceId = "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = mySqlResourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
@@ -3546,24 +3672,15 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\testingDBSrc").FirstOrDefault();
 
-            if (resource == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resource");
-                // ReSharper restore NotResolvedInText
-            }
+            var resourceId = "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid();
+
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
                 ProcedureName = serviceName,
                 DisplayName = serviceName,
-                SourceId = resource.ID,
+                SourceId = resourceId,
                 Outputs = new List<IServiceOutputMapping>(),
                 Inputs = new List<IServiceInput>()
             };
@@ -3585,6 +3702,58 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
+        
+        
+        [Given(@"I create a new unsaved workflow with name ""(.*)""")]
+        [When(@"I create a new unsaved workflow with name ""(.*)""")]
+        [Then(@"I create a new unsaved workflow with name ""(.*)""")]
+        public void GivenICreateANewUnsavedWorkflowWithName(string serviceName)
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(environmentModel, @"WorkflowService",
+                serviceName);
+            tempResource.Category = @"Unassigned\" + serviceName;
+            tempResource.ResourceName = serviceName;
+            tempResource.DisplayName = serviceName;
+            tempResource.IsNewWorkflow = true;
+
+            environmentModel.ResourceRepository.Add(tempResource);
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            if (_scenarioContext.ContainsKey("unsavedWFS"))
+            {
+                var unsavedWFs = Get<List<IContextualResourceModel>>("unsavedWFS");
+                unsavedWFs.Add(tempResource);
+            }
+            else
+            {
+                Add("unsavedWFS",new List<IContextualResourceModel> {tempResource});
+            }
+
+            environmentModel.ResourceRepository.Add(tempResource);
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            if (_scenarioContext.ContainsKey(serviceName))
+            {
+                _scenarioContext[serviceName] = tempResource;
+                _scenarioContext["parentWorkflowName"] = serviceName;
+                _scenarioContext["environment"] = environmentModel;
+                _scenarioContext["resourceRepo"] = environmentModel.ResourceRepository;
+                _scenarioContext["debugStates"] = new List<IDebugState>();
+
+            }
+            else
+            {
+                Add(serviceName, tempResource);
+                Add("parentWorkflowName", serviceName);
+                Add("environment", environmentModel);
+                Add("resourceRepo", environmentModel.ResourceRepository);
+                Add("debugStates", new List<IDebugState>());
+            }                       
+        }
+
 
     }
 }

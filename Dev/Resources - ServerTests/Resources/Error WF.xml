@@ -1,5 +1,5 @@
 
-<Service ID="dbf66ac8-bec0-444d-82c6-6ab1ecffb92c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Error WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6114.30966">
+<Service ID="dbf66ac8-bec0-444d-82c6-6ab1ecffb92c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Error WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6213.18869">
   <DisplayName>Error WF</DisplayName>
   <Category>
   </Category>
