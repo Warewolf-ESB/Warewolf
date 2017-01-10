@@ -1,7 +1,4 @@
 ﻿
-using System;
-using System.IO;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,16 +33,13 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Explorer")]
         public void Create_Resource_InFolderUITest()
-        {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
+        {            
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
             UIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog(ResourceCreatedInFolder);
-            var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
-            var firstOrDefault = allFiles.FirstOrDefault(s => s.Contains("Resource Created In Folder.xml"));
-            if(firstOrDefault != null)
-                File.Delete(firstOrDefault);
+            UIMap.Filter_Explorer("Resource Created In Folder");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
 
         [TestMethod]
