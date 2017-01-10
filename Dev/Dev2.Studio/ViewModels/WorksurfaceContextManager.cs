@@ -57,7 +57,11 @@ namespace Dev2.Studio.ViewModels
         void Handle(RemoveResourceAndCloseTabMessage message);
         void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null);
         void EditServer(IServerSource selectedServer);
-        void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
+        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
@@ -87,7 +91,11 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
         void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server);
         void DisplayResourceWizard(IContextualResourceModel resourceModel);
-        void EditDbSource(IContextualResourceModel resourceModel);
+        void EditSqlServerSource(IContextualResourceModel resourceModel);
+        void EditMySqlSource(IContextualResourceModel resourceModel);
+        void EditPostgreSqlSource(IContextualResourceModel resourceModel);
+        void EditOracleSource(IContextualResourceModel resourceModel);
+        void EditOdbcSource(IContextualResourceModel resourceModel);
         void EditPluginSource(IContextualResourceModel resourceModel);
         void EditComPluginSource(IContextualResourceModel resourceModel);
         void EditWebSource(IContextualResourceModel resourceModel);
@@ -196,12 +204,64 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
             var vm = new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, dbSourceViewModel, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl());
 
-            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.DbSource, selectedSource.Id);
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSource.Id);
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
+            var vm = new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, dbSourceViewModel, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl());
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MySqlSource, selectedSource.Id);
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
+            var vm = new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, dbSourceViewModel, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl());
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.PostgreSqlSource, selectedSource.Id);
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
+            var vm = new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, dbSourceViewModel, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl());
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OracleSource, selectedSource.Id);
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
+            var vm = new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, dbSourceViewModel, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl());
+
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSource.Id);
 
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
@@ -342,7 +402,7 @@ namespace Dev2.Studio.ViewModels
         public void NewSqlServerSource(string resourcePath)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.SqlServerSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqlServerSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
@@ -351,7 +411,7 @@ namespace Dev2.Studio.ViewModels
         public void NewMySqlSource(string resourcePath)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.MySqlSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
@@ -360,7 +420,7 @@ namespace Dev2.Studio.ViewModels
         public void NewPostgreSqlSource(string resourcePath)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PostgreSqlSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
@@ -369,7 +429,7 @@ namespace Dev2.Studio.ViewModels
         public void NewOracleSource(string resourcePath)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OracleSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OracleSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
@@ -378,7 +438,7 @@ namespace Dev2.Studio.ViewModels
         public void NewOdbcSource(string resourcePath)
         {
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OdbcSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OdbcSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
@@ -632,12 +692,19 @@ namespace Dev2.Studio.ViewModels
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
+                    EditSqlServerSource(resourceModel);
+                    break;
                 case "ODBC":
+                    EditOdbcSource(resourceModel);
+                    break;
                 case "Oracle":
+                    EditOracleSource(resourceModel);
+                    break;
                 case "PostgreSQL":
+                    EditPostgreSqlSource(resourceModel);
+                    break;
                 case "MySqlDatabase":
-                case "DbSource":
-                    EditDbSource(resourceModel);
+                    EditMySqlSource(resourceModel);
                     break;
                 case "WebSource":
                     EditWebSource(resourceModel);
@@ -680,7 +747,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void EditDbSource(IContextualResourceModel resourceModel)
+        public void EditSqlServerSource(IContextualResourceModel resourceModel)
         {
             var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new DbSourceDefinition
@@ -695,11 +762,99 @@ namespace Dev2.Studio.ViewModels
                 Type = db.ServerType,
                 UserName = db.UserID
             };
-            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqlServerSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
-            EditResource(def, workSurfaceKey);
+            EditSqlServerResource(def, workSurfaceKey);
+        }
+
+        public void EditMySqlSource(IContextualResourceModel resourceModel)
+        {
+            var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new DbSourceDefinition
+            {
+                AuthenticationType = db.AuthenticationType,
+                DbName = db.DatabaseName,
+                Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
+                Name = db.ResourceName,
+                Password = db.Password,
+                ServerName = db.Server,
+                Type = db.ServerType,
+                UserName = db.UserID
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditMySqlResource(def, workSurfaceKey);
+        }
+
+        public void EditPostgreSqlSource(IContextualResourceModel resourceModel)
+        {
+            var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new DbSourceDefinition
+            {
+                AuthenticationType = db.AuthenticationType,
+                DbName = db.DatabaseName,
+                Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
+                Name = db.ResourceName,
+                Password = db.Password,
+                ServerName = db.Server,
+                Type = db.ServerType,
+                UserName = db.UserID
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PostgreSqlSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditPostgreSqlResource(def, workSurfaceKey);
+        }
+
+        public void EditOracleSource(IContextualResourceModel resourceModel)
+        {
+            var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new DbSourceDefinition
+            {
+                AuthenticationType = db.AuthenticationType,
+                DbName = db.DatabaseName,
+                Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
+                Name = db.ResourceName,
+                Password = db.Password,
+                ServerName = db.Server,
+                Type = db.ServerType,
+                UserName = db.UserID
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OracleSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditOracleResource(def, workSurfaceKey);
+        }
+
+        public void EditOdbcSource(IContextualResourceModel resourceModel)
+        {
+            var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new DbSourceDefinition
+            {
+                AuthenticationType = db.AuthenticationType,
+                DbName = db.DatabaseName,
+                Id = db.ResourceID,
+                Path = resourceModel.GetSavePath(),
+                Name = db.ResourceName,
+                Password = db.Password,
+                ServerName = db.Server,
+                Type = db.ServerType,
+                UserName = db.UserID
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OdbcSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditOdbcResource(def, workSurfaceKey);
         }
 
         public void EditPluginSource(IContextualResourceModel resourceModel)

@@ -850,9 +850,29 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditServer(selectedServer);
         }
 
-        public void EditResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            _worksurfaceContextManager.EditSqlServerResource(selectedSource, workSurfaceKey);
+        }
+
+        public void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            _worksurfaceContextManager.EditMySqlResource(selectedSource, workSurfaceKey);
+        }
+
+        public void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            _worksurfaceContextManager.EditPostgreSqlResource(selectedSource, workSurfaceKey);
+        }
+
+        public void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            _worksurfaceContextManager.EditOracleResource(selectedSource, workSurfaceKey);
+        }
+
+        public void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            _worksurfaceContextManager.EditOdbcResource(selectedSource, workSurfaceKey);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
