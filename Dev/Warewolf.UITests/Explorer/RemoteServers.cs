@@ -5,12 +5,11 @@ namespace Warewolf.UITests
 {
     [CodedUITest]
     public class RemoteServers
-    {        
+    {
         [TestMethod]
         [TestCategory("Explorer")]
         public void DisconnectedRemoteServerUITest()
         {
-            UIMap.Filter_Explorer("workflow1");
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
@@ -23,9 +22,9 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void Disconnected_Remote_Server_Seperately_UITest()
         {
-            UIMap.Filter_Explorer("workflow1");
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
@@ -34,7 +33,7 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Explorer")]
         public void Server_DropDown_Has_Remote_Servers_UITest()
-        {            
+        {
             UIMap.Click_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
         }
@@ -45,7 +44,6 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap

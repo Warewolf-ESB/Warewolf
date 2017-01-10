@@ -152,6 +152,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                             displayName += Resources.Languages.Core.ConnectedLabel;
                         }
                     }
+                    else if (!IsConnected && (HasLoaded || EnvironmentConnection.IsLocalHost))
+                    {
+                        displayName = EnvironmentConnection.DisplayName.Replace("(Connected)", "");
+                    }
                 }
 
                 return displayName;

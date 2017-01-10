@@ -22,6 +22,7 @@ namespace Warewolf.UITests.Tools
             UIMap.AssertStudioIsRunning();
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Move_Onto_DesignSurface();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
         UIMap UIMap
