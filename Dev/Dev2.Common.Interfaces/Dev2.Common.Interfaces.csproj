@@ -157,10 +157,10 @@
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
     <Compile Include="Core\Database\MySqlSourceDefination.cs" />
-    <Compile Include="Core\Database\OdbcSourceDefination.cs" />
+    <Compile Include="Core\Database\OdbcSourceDefinition.cs" />
     <Compile Include="Core\Database\OracleSourceDefination.cs" />
     <Compile Include="Core\Database\DbSourceDefinition.cs" />
-    <Compile Include="Core\Database\PostgreSourceDefination.cs" />
+    <Compile Include="Core\Database\PostgreSourceDefinition.cs" />
     <Compile Include="Core\Database\SqlServerSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />

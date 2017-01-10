@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core.Database
 {
-    public class OdbcSourceDefination : IOdbcSource, IEquatable<OdbcSourceDefination>
+    public class PostgreSourceDefinition : IPostgreSource, IEquatable<PostgreSourceDefinition>
     {
         AuthenticationType _authenticationType;
 
@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(OdbcSourceDefination other)
+        public bool Equals(PostgreSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDbSource other)
         {
-            return Equals(other as OdbcSourceDefination);
+            return Equals(other as PostgreSourceDefinition);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 return false;
             }
-            return Equals((OdbcSourceDefination)obj);
+            return Equals((PostgreSourceDefinition)obj);
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace Dev2.Common.Interfaces.Core.Database
             }
         }
 
-        public static bool operator ==(OdbcSourceDefination left, OdbcSourceDefination right)
+        public static bool operator ==(PostgreSourceDefinition left, PostgreSourceDefinition right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(OdbcSourceDefination left, OdbcSourceDefination right)
+        public static bool operator !=(PostgreSourceDefinition left, PostgreSourceDefinition right)
         {
             return !Equals(left, right);
         }

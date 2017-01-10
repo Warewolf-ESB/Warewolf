@@ -39,6 +39,10 @@ namespace Warewolf.Studio.ViewModels
         bool Testing { get; }
         string ResourceName { get; set; }
         IList<ComputerName> ComputerNames { get; set; }
+        bool UserAuthenticationSelected { get; }
+        bool CanSelectWindows { get; set; }
+        bool CanSelectUser { get; set; }
+        bool CanSelectServer { get; set; }
     }
 
     public abstract class DatabaseSourceViewModelBase : SourceBaseImpl<IDbSource>, IDatabaseSourceViewModel
@@ -64,6 +68,9 @@ namespace Warewolf.Studio.ViewModels
         private string _emptyServerName;
         private string _databaseType;
         private string _path;
+        private bool _canSelectWindows;
+        private bool _canSelectServer;
+        private bool _canSelectUser;
 
         #endregion
 
@@ -299,6 +306,44 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool CanSelectWindows
+        {
+            get
+            {
+                return _canSelectWindows;
+            }
+            set
+            {
+                _canSelectWindows = value;
+                OnPropertyChanged(() => CanSelectWindows);
+            }
+        }
+
+        public bool CanSelectUser
+        {
+            get
+            {
+                return _canSelectUser;
+            }
+            set
+            {
+                _canSelectUser = value;
+                OnPropertyChanged(() => CanSelectUser);
+            }
+        }
+
+        public bool CanSelectServer
+        {
+            get
+            {
+                return _canSelectServer;
+            }
+            set
+            {
+                _canSelectServer = value;
+                OnPropertyChanged(() => CanSelectServer);
+            }
+        }
         #endregion
 
         protected DatabaseSourceViewModelBase(IAsyncWorker asyncWorker, string dbSourceImage)
@@ -314,6 +359,7 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             PerformInitialise(updateManager, aggregator);
             RequestServiceNameViewModel = requestServiceNameViewModel;
+            EmptyServerName = "";
             GetLoadComputerNamesTask(null);
         }
 
