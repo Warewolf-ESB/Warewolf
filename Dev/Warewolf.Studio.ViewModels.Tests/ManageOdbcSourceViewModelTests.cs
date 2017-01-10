@@ -903,7 +903,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(OdbcSourceDefinition));
+            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(DbSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerRequestServiceName.Item));
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.HeaderText);
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.Header);
@@ -943,7 +943,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerAggregatorDbSource.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item, typeof(OdbcSourceDefinition));
+            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item, typeof(DbSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.HeaderText);
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);

@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new PostgreSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
 
-            return new PostgreSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return DbSource == null ? new PostgreSourceDefinition
+            return DbSource == null ? new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = DbSource?.Id ?? SelectedGuid
-            } : new PostgreSourceDefinition
+            } : new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToSourceDefinition()
         {
-            return new PostgreSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = DbSource.AuthenticationType,
                 DbName = DbSource.DbName,
