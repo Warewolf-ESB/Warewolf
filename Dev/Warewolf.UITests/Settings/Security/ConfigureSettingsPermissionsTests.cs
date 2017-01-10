@@ -102,6 +102,8 @@ namespace Warewolf.UITests
             UIMap.SetResourcePermissions("Hello World", "Public", true, true, true);
             UIMap.Click_Settings_Resource_Permissions_Row1_Delete_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after clicking delete row button on existing resource permission in the security tab of the settings tab.");
+            UIMap.Click_Close_Settings_Tab_Button();
+            UIMap.Click_MessageBox_Yes();
         }
 
         #region Additional test attributes
