@@ -2862,12 +2862,9 @@ Scenario: Workflow with Assign  DeleteNullHandler and testing variables that has
 	  And the "DelRec" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
-	  And the "Delet12" in WorkFlow "WorkflowWithAssignDelete12" debug inputs as
-	  | Records      |
-	  | [[Del(1)]] = |
 	  And the "Delet12" in Workflow "WorkflowWithAssignDelete12" debug outputs as  
 	  |                       |
-	  | [[result1]] = Failure |
+	  | [[result1]] = Success |
 
 
 Scenario: Workflow with Assign Sort and testing variables that hasn"t been assigned
