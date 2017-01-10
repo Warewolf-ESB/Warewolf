@@ -1086,12 +1086,14 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.WebServerSourceComboboxListItem4, new Point(163, 17));
         }
 
-        [Given(@"I Click New Web Source Ribbon Button")]
-        [When(@"I Click New Web Source Ribbon Button")]
-        [Then(@"I Click New Web Source Ribbon Button")]
-        public void Click_New_Web_Source_Ribbon_Button()
+        [Given(@"I Click New Web Source Explorer Context Menu Button")]
+        [When(@"I Click New Web Source Explorer Context Menu Button")]
+        [Then(@"I Click New Web Source Explorer Context Menu Button")]
+        public void Click_New_Web_Source_From_Explorer_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.WebSourceButton, new Point(13, 18));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
@@ -4155,12 +4157,14 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton, new Point(37, 10));
         }
 
-        [Given(@"I Click New Database Source Ribbon Button")]
-        [When(@"I Click New Database Source Ribbon Button")]
-        [Then(@"I Click New Database Source Ribbon Button")]
-        public void Click_New_Database_Source_Ribbon_Button()
+        [Given(@"I Click New SQLServerSource Explorer Context Menu")]
+        [When(@"I Click New SQLServerSource Explorer Context Menu")]
+        [Then(@"I Click New SQLServerSource Explorer Context Menu")]
+        public void Click_New_SQLServerSource_From_Explorer_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.DatabaseSourceButton, new Point(16, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSQLServerSource);
         }
 
         [Given(@"I Click New Workflow Tab")]
@@ -4171,12 +4175,14 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab, new Point(63, 18));
         }
 
-        [Given(@"I Click NewPluginSource Ribbon Button")]
-        [When(@"I Click NewPluginSource Ribbon Button")]
-        [Then(@"I Click NewPluginSource Ribbon Button")]
-        public void Click_NewPluginSource_Ribbon_Button()
+        [Given(@"I Click NewDotNetPluginSource Explorer Context Menu")]
+        [When(@"I Click NewDotNetPluginSource Explorer Context Menu")]
+        [Then(@"I Click NewDotNetPluginSource Explorer Context Menu")]
+        public void Click_NewDotNetPluginSource_From_Explorer_Context_Menu()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.PluginSourceButton, new Point(22, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(67, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDotNetPluginSource);
             Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.Exists, "Select assembly tree does not exist in new plugin source wizard tab.");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
@@ -7358,14 +7364,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
         }
 
-        [When(@"I Select Action From PostgreTool")]
-        public void Select_Action_From_PostgreTool()
-        {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(119, 7));
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox, new Point(114, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.LargeDataGridTable.Enabled, "Inputs grid is not enabled after selecting an Action.");
-        }
-
         [When(@"I Select AppData From MethodList")]
         public void Select_AppData_From_MethodList()
         {
@@ -7565,12 +7563,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MessageBoxWindow.DeleteConfirmation.Exists);
         }
 
-        [When(@"I Select NewDatabaseSource FromExplorerContextMenu")]
-        public void Select_NewDatabaseSource_FromExplorerContextMenu()
-        {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDatabaseSource, new Point(72, 14));
-        }
-
         [When(@"I Select NewDatabaseSource FromSqlServerTool")]
         public void Select_NewDatabaseSource_FromSqlServerTool()
         {
@@ -7583,7 +7575,9 @@ namespace Warewolf.UITests
         [When(@"I Select NewDropboxSource FromExplorerContextMenu")]
         public void Select_NewDropboxSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDropboxSource, new Point(119, 15));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDropboxSource);
         }
 
         [When(@"I Select NewEmailSource FromExplorerContextMenu")]
@@ -7599,20 +7593,25 @@ namespace Warewolf.UITests
         [When(@"I Select NewPluginSource FromExplorerContextMenu")]
         public void Select_NewPluginSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.SystemRandomListItem, new Point(78, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDotNetPluginSource);
         }
 
         [When(@"I Select NewServerSource FromExplorerContextMenu")]
         public void Select_NewServerSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewServerSource, new Point(44, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewServerSource);
         }
 
         [When(@"I Select NewSharepointSource FromExplorerContextMenu")]
         public void Select_NewSharepointSource_FromExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource, new Point(126, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource);
         }
 
         [When(@"I Select NewSharepointSource FromServer Lookup")]
@@ -7641,12 +7640,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox, new Point(107, 13));
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.SourceCombobox, "{Down}{Enter}", ModifierKeys.None);
-        }
-
-        [When(@"I Select NewWebSource FromExplorerContextMenu")]
-        public void Select_NewWebSource_FromExplorerContextMenu()
-        {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource, new Point(82, 20));
         }
 
         [Given(@"I Select NewWorkflow FromExplorerContextMenu")]
@@ -8768,7 +8761,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSourceMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTabPage.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
 
@@ -8821,5 +8814,62 @@ namespace Warewolf.UITests
             // Click 'DsfMultiAssignActivity' custom control
             Mouse.Click(uIDsfMultiAssignActiviCustom, new Point(77, 8));
         }
+
+        [When(@"I Select NewMySQLSource FromExplorerContextMenu")]
+        public void Select_NewMySQLSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewMySQLSource);
+        }
+
+        [When(@"I Select NewPostgreSQLSource FromExplorerContextMenu")]
+        public void Select_NewPostgreSQLSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewPostgreSQLSource);
+        }
+
+        [When(@"I Select NewOracleSource FromExplorerContextMenu")]
+        public void Select_NewOracleSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewOracleSource);
+        }
+
+        [When(@"I Select NewODBCSource FromExplorerContextMenu")]
+        public void Select_NewODBCSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewODBCSource);
+        }
+
+        [When(@"I Select NewCOMPluginSource FromExplorerContextMenu")]
+        public void Select_NewCOMPluginSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewCOMPluginSource);
+        }
+
+        [When(@"I Select NewRabbitMQSource FromExplorerContextMenu")]
+        public void Select_NewRabbitMQSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewRabbitMQSource);
+        }
+
+        [When(@"I Select NewWcfSource FromExplorerContextMenu")]
+        public void Select_NewWcfSource_FromExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWcfSource);
+        }
+
     }
 }
