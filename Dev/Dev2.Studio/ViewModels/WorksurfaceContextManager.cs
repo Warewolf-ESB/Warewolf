@@ -66,7 +66,11 @@ namespace Dev2.Studio.ViewModels
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void NewService(string resourcePath);
-        void NewDatabaseSource(string resourcePath);
+        void NewSqlServerSource(string resourcePath);
+        void NewMySqlSource(string resourcePath);
+        void NewPostgreSqlSource(string resourcePath);
+        void NewOracleSource(string resourcePath);
+        void NewOdbcSource(string resourcePath);
         bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewPluginSource(string resourcePath);
@@ -335,9 +339,45 @@ namespace Dev2.Studio.ViewModels
             TempSave(ActiveEnvironment, resourcePath);
         }
 
-        public void NewDatabaseSource(string resourcePath)
+        public void NewSqlServerSource(string resourcePath)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel);
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.SqlServerSourceNewHeaderLabel);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+        public void NewMySqlSource(string resourcePath)
+        {
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.MySqlSourceNewHeaderLabel);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+        public void NewPostgreSqlSource(string resourcePath)
+        {
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.PostgreSqlSourceNewHeaderLabel);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+        public void NewOracleSource(string resourcePath)
+        {
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OracleSourceNewHeaderLabel);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_mainViewModel.EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _mainViewModel.AsyncWorker) { SelectedGuid = key.ResourceID.Value }, _mainViewModel.PopupProvider, new ManageDatabaseSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+        public void NewOdbcSource(string resourcePath)
+        {
+            Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OdbcSourceNewHeaderLabel);
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException

@@ -62,9 +62,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Core.DatabaseSourceTypeLabel}"/>
+            <!--<TextBlock VerticalAlignment="Center" Text="{x:Static languages:Core.DatabaseSourceTypeLabel}"/>
             <ig:XamComboEditor Grid.Column="1" 
                                Grid.Row="0" 
                                x:Name="ServerTypeComboBox"
@@ -78,17 +77,17 @@
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceServerTypesHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </ig:XamComboEditor>
+            </ig:XamComboEditor>-->
             <TextBlock VerticalAlignment="Center"
                        IsEnabled="{Binding Path=CanSelectServer}"
-                       Grid.Row="1"
+                       Grid.Row="0"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.DatabaseSourceServerLabel}"/>
             <controls:AutoCompleteBox x:Name="ServerTextBox" 
                                        IsEnabled="{Binding Path=CanSelectServer}"
                                       VerticalAlignment="Top"
-                                      Grid.Row="1"
+                                      Grid.Row="0"
                                       Grid.Column="1" 
                                       Height="25"
                                       AllowUserInsertLine="False"
@@ -106,12 +105,12 @@
                 </i:Interaction.Behaviors>
             </controls:AutoCompleteBox>
             <TextBlock VerticalAlignment="Center" 
-                       Grid.Row="2"
+                       Grid.Row="1"
                        Grid.Column="0"
                        x:Name="Authentication"
                        Text="{x:Static languages:Core.AuthenticationTypeLabel}"/>
             <StackPanel Grid.Column="1" 
-                        Grid.Row="2" 
+                        Grid.Row="1" 
                         Margin="0,-3,0,0"
                         Orientation="Horizontal" >
                 <RadioButton x:Name="WindowsRadioButton"
