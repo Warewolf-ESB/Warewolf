@@ -85,7 +85,7 @@ namespace Warewolf.Studio.Views
         {
             try
             {
-                ServerTypeComboBox.SelectedItem = type;
+                //ServerTypeComboBox.SelectedItem = type;
             }
             catch (Exception)
             {
@@ -162,7 +162,8 @@ namespace Warewolf.Studio.Views
 
         public string GetSelectedDbOption()
         {
-            return ServerTypeComboBox.SelectedItem.ToString();
+            //return ServerTypeComboBox.SelectedItem.ToString();
+            return string.Empty;
         }
 
         public void Test()

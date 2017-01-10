@@ -106,8 +106,8 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
 
-            HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
-            Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
+            //HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
+            //Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);

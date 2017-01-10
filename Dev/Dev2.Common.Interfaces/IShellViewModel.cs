@@ -24,7 +24,11 @@ namespace Dev2.Common.Interfaces
     {
         void NewServerSource(string resourcePath);
         void NewService(string resourcePath);
-        void NewDatabaseSource(string resourcePath);
+        void NewSqlServerSource(string resourcePath);
+        void NewMySqlSource(string resourcePath);
+        void NewPostgreSqlSource(string resourcePath);
+        void NewOracleSource(string resourcePath);
+        void NewOdbcSource(string resourcePath);
         void NewPluginSource(string resourcePath);
         void NewWebSource(string resourcePath);
         void NewEmailSource(string resourcePath);

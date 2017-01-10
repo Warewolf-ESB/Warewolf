@@ -2631,15 +2631,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Aatabase source.
-        /// </summary>
-        public static string NewDataBaseSourceTooltip {
-            get {
-                return ResourceManager.GetString("NewDataBaseSourceTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create a new dropbox source.
         /// </summary>
         public static string NewDropboxSourceTooltip {
@@ -2676,11 +2667,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new MySQL database source.
+        /// </summary>
+        public static string NewMySqlSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewMySqlSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new ODBC database source.
+        /// </summary>
+        public static string NewOdbcSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewOdbcSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Oracle database source.
+        /// </summary>
+        public static string NewOracleSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewOracleSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new plugin source.
         /// </summary>
         public static string NewPluginSourceTooltip {
             get {
                 return ResourceManager.GetString("NewPluginSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new PostgreSQL database source.
+        /// </summary>
+        public static string NewPostgreSqlSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewPostgreSqlSourceTooltip", resourceCulture);
             }
         }
         
@@ -2717,6 +2744,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NewSharepointSourceTooltip {
             get {
                 return ResourceManager.GetString("NewSharepointSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Microsoft SQL Server source.
+        /// </summary>
+        public static string NewSqlServerSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewSqlServerSourceTooltip", resourceCulture);
             }
         }
         

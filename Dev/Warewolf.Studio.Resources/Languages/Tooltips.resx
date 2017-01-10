@@ -897,8 +897,20 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewDropboxSourceTooltip" xml:space="preserve">
     <value>Create a new dropbox source</value>
   </data>
-  <data name="NewDataBaseSourceTooltip" xml:space="preserve">
-    <value>Create a new Aatabase source</value>
+  <data name="NewSqlServerSourceTooltip" xml:space="preserve">
+    <value>Create a new Microsoft SQL Server source</value>
+  </data>
+  <data name="NewMySqlSourceTooltip" xml:space="preserve">
+    <value>Create a new MySQL database source</value>
+  </data>
+  <data name="NewPostgreSqlSourceTooltip" xml:space="preserve">
+    <value>Create a new PostgreSQL database source</value>
+  </data>
+  <data name="NewOracleSourceTooltip" xml:space="preserve">
+    <value>Create a new Oracle database source</value>
+  </data>
+  <data name="NewOdbcSourceTooltip" xml:space="preserve">
+    <value>Create a new ODBC database source</value>
   </data>
   <data name="NewComPluginSourceTooltip" xml:space="preserve">
     <value>Create a new com plugin source</value>
