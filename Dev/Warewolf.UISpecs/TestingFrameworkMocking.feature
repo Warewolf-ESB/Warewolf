@@ -13,6 +13,9 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Click MessageBox OK 
 	And Test tab is open
 	And I Click Close Clean Workflow Tab
+	And I Click EnableDisable Test 4, dirty "true"
+	And I Delete Test "4"
+	And I Click MessageBox Yes
 	And I Click Close Tests Tab
 	And I Try Click MessageBox No
 

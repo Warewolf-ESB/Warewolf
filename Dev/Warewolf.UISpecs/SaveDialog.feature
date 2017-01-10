@@ -89,8 +89,7 @@ Scenario: Rename Folder From Save Dialog
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "FolderToRename"
-	And I RightClick Save Dialog Localhost First Item
-	And I Select Rename From SaveDialog ExplorerContextMenu
+	And I Rename Item using Shortcut 
 	And I Rename Save Dialog Explorer First Item To "FolderToRename_Renamed"
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "FolderToRename_Renamed"
@@ -162,8 +161,7 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 	And I Drag Toolbox MultiAssign Onto DesignSurface
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "Acceptance Tests"
-	And I RightClick Save Dialog Localhost First Item
-	And I Select New Folder From SaveDialog ExplorerContextMenu
+	And I Create New Folder Item using Shortcut 
 	And I Name New Sub Folder as "New Created Sub Folder"
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "New Created Sub Folder"
