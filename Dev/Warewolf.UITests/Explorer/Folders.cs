@@ -7,11 +7,10 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class Folders
     {
-        const string HelloWorld = "Hello World";
         const string ResourceCreatedInFolder = "Resource Created In Folder";
         //[TestMethod]
         //[TestCategory("Explorer")]
-        //public void MergeFolders_InUnfileredExplorer_UITest()
+        //public void MergeFolders_InFileredExplorer_UITest()
         //{
         //    UIMap.Filter_Explorer("DragAndDropMergeFolder");
         //    UIMap.Drag_Explorer_First_Item_Onto_Second_Item();
@@ -19,16 +18,16 @@ namespace Warewolf.UITests
         //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         //}
 
-        [TestMethod]
-        [TestCategory("Explorer")]
-        public void MergeFolders_InFileredExplorer_UITest()
-        {
-            UIMap.TryClearExplorerFilter();
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
-            UIMap.Filter_Explorer("DragAndDropMergeFilteredFolder1");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
-        }
+        //[TestMethod]
+        //[TestCategory("Explorer")]
+        //public void MergeFolders_InUnFileredExplorer_UITest()
+        //{
+        //    UIMap.TryClearExplorerFilter();
+        //    UIMap.DoubleClick_Explorer_Localhost_First_Item();
+        //    UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
+        //    UIMap.Filter_Explorer("DragAndDropMergeFilteredFolder1");
+        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
+        //}
 
         [TestMethod]
         [TestCategory("Explorer")]
