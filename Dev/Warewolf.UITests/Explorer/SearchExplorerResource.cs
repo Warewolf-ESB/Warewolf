@@ -11,9 +11,9 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void Search_ExplorerResource()
         {
-            UIMap.Filter_Explorer("Error WF");
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.ExplorerItemCountEquals();
+            UIMap.Filter_Explorer("Hello World");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second Item exists in the Explorer Exists");
         }
 
         [TestMethod]
@@ -21,8 +21,8 @@ namespace Warewolf.UITests
         public void Search_ExplorerFolder()
         {
             UIMap.Filter_Explorer("Examples");
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.ExplorerItemCountEquals();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second Item exists in the Explorer Exists");
         }
       
 

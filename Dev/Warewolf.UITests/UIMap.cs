@@ -888,13 +888,6 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
-        [Then(@"I have one item in the explorer")]
-        public void ExplorerItemCountEquals()
-        {
-            var secondItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem;
-            Assert.IsFalse(ControlExistsNow(secondItem), "Second Item exists in the Explorer Exists");
-        }
-
         [When(@"I Filter the ToolBox with ""(.*)""")]
         public void Filter_ToolBox(string FilterText)
         {
@@ -920,7 +913,7 @@ namespace Warewolf.UITests
         public void Select_SubItem_Service_From_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
-            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1.TreeItem11);
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
         }
@@ -1381,10 +1374,8 @@ namespace Warewolf.UITests
             var beforeClick = testRunState.Checked;
 
             Mouse.Click(testRunState);
-            WaitForControlVisible(testRunState);
             Assert.AreNotEqual(beforeClick, testRunState.Checked);
 
-            WaitForControlVisible(selectedTestDeleteButton);
             if (beforeClick)
                 Assert.IsTrue(selectedTestDeleteButton.Enabled, "Delete button is disabled");
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
@@ -2338,7 +2329,6 @@ namespace Warewolf.UITests
         public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Duplicate_Explorer_Localhost_First_Item_With_Context_Menu();
         }
 
@@ -6959,7 +6949,7 @@ namespace Warewolf.UITests
         [Then(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
         public void RightClick_StackOverFlowService_OnDesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
 
         }
 
@@ -8093,7 +8083,7 @@ namespace Warewolf.UITests
 
         public void EnterOutMessageValue_On_OutputMessage_TestStep(string message)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.UIUI_StepOutputs_SetthTable.UIItemRow.UIItemWarewolfStudioViCell.AssertValue_HelloEdit.Text = message;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.UIUI_StepOutputs_SetthTable.UIItemRow.UIItemWarewolfStudioViCell.UIUI_AssertValue_HelloEdit.Text = message;
         }
 
         public void Click_Delete_On_AssignValue_TestStep()
