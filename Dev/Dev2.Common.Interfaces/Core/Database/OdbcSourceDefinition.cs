@@ -30,7 +30,7 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 return true;
             }
-            return string.Equals(ServerName, other.ServerName) && Type == other.Type && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType && Id == other.Id && string.Equals(DbName, other.DbName);
+            return string.Equals(ServerName, other.ServerName) && Type == other.Type && AuthenticationType == other.AuthenticationType && Id == other.Id && string.Equals(DbName, other.DbName);
         }
 
         /// <summary>
@@ -81,8 +81,6 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 var hashCode = ServerName != null ? ServerName.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (int)Type;
-                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
                 hashCode = (hashCode * 397) ^ (DbName != null ? DbName.GetHashCode() : 0);
                 return hashCode;
@@ -103,8 +101,6 @@ namespace Dev2.Common.Interfaces.Core.Database
 
         public string ServerName { get; set; }
         public enSourceType Type { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
         public AuthenticationType AuthenticationType
         {
             get
