@@ -73,7 +73,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new OdbcSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return DbSource == null ? new OdbcSourceDefinition
+            return DbSource == null ? new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 Id = DbSource?.Id ?? SelectedGuid
-            } : new OdbcSourceDefinition
+            } : new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -107,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToSourceDefinition()
         {
-            return new OdbcSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = DbSource.AuthenticationType,
                 Id = DbSource.Id,
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
 
-            return new OdbcSourceDefinition()
+            return new DbSourceDefinition()
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
