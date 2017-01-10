@@ -10,7 +10,11 @@ namespace Dev2.Common.Interfaces
 {
     public interface IShellViewModelEdit
     {
-        void EditResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
