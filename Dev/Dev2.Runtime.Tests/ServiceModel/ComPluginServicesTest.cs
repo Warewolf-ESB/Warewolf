@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ComPluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
             var services = new ComPluginServicesMock();
-            var result = ((ComPluginService)services.DeserializeService(null, "ComPluginService"));
+            var result = (ComPluginService)services.DeserializeService(null, "ComPluginService");
 
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var xml = XmlResource.Fetch("ComPluginService");
 
             var services = new ComPluginServicesMock();
-            var service = ((ComPluginService)services.DeserializeService(xml, "ComPluginService"));
+            var service = (ComPluginService)services.DeserializeService(xml, "ComPluginService");
 
             Assert.AreEqual(Guid.Parse("89098b76-ac11-40b2-b3e8-b175314cb3bb"), service.ResourceID);
             Assert.AreEqual("ComPluginService", service.ResourceType);
