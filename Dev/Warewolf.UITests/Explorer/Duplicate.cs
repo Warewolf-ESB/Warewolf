@@ -23,7 +23,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Examples");
             UIMap.Duplicate_FirstResource_FromContextMenu();
-            UIMap.Enter_Duplicate_workflow_name("Duplicated_ExamplesFolder");
+            UIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
