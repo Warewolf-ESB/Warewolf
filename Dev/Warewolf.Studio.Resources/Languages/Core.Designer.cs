@@ -548,15 +548,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database.
-        /// </summary>
-        public static string MenuDialogDatabaseLabel {
-            get {
-                return ResourceManager.GetString("MenuDialogDatabaseLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string MenuDialogDebugLabel {
@@ -571,15 +562,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuDialogDeployLabel {
             get {
                 return ResourceManager.GetString("MenuDialogDeployLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DLL.
-        /// </summary>
-        public static string MenuDialogDLLLabel {
-            get {
-                return ResourceManager.GetString("MenuDialogDLLLabel", resourceCulture);
             }
         }
         
@@ -661,15 +643,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuDialogUnLockLabel {
             get {
                 return ResourceManager.GetString("MenuDialogUnLockLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web.
-        /// </summary>
-        public static string MenuDialogWebLabel {
-            get {
-                return ResourceManager.GetString("MenuDialogWebLabel", resourceCulture);
             }
         }
         

@@ -63,21 +63,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <!--<TextBlock VerticalAlignment="Center" Text="{x:Static languages:Core.DatabaseSourceTypeLabel}"/>
-            <ig:XamComboEditor Grid.Column="1" 
-                               Grid.Row="0" 
-                               x:Name="ServerTypeComboBox"
-                               ItemsSource="{Binding Types}" 
-                               Focusable="True"
-                               ToolTip="{x:Static languages:Tooltips.ManageDbSourceServerTypeTooltip}"
-                               Style="{StaticResource XamComboEditorStyle}"
-                               IsEditable="False"
-                               views:FocusExtension.IsFocused="True"
-                               SelectedItem="{Binding ServerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceServerTypesHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ig:XamComboEditor>-->
             <TextBlock VerticalAlignment="Center"
                        IsEnabled="{Binding Path=CanSelectServer}"
                        Grid.Row="0"
@@ -85,7 +70,7 @@
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.DatabaseSourceServerLabel}"/>
             <controls:AutoCompleteBox x:Name="ServerTextBox" 
-                                       IsEnabled="{Binding Path=CanSelectServer}"
+                                      IsEnabled="{Binding Path=CanSelectServer}"
                                       VerticalAlignment="Top"
                                       Grid.Row="0"
                                       Grid.Column="1" 
@@ -118,6 +103,7 @@
                              ToolTip="{x:Static languages:Tooltips.WindowsAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
+                             Visibility="{Binding CanSelectWindows, Converter={StaticResource BoolToVisibilityConverter}}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}" 
                              Content="Windows">
@@ -130,6 +116,7 @@
                              ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
+                             Visibility="{Binding Path=CanSelectUser, Converter={StaticResource BoolToVisibilityConverter}}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                     ConverterParameter={x:Static serviceModel:AuthenticationType.User}}" 
                              Content="User">
