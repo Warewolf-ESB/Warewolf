@@ -7402,6 +7402,7 @@ namespace Warewolf.UITests
         public void Select_Delete_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
+            Assert.IsTrue(MessageBoxWindow.Exists, "Message box does not exist");
             Assert.IsTrue(MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
 
