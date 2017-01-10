@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Toolbox
         public void ClickToolboxClearButtonRemovesText()
         {
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
             UIMap.Click_Clear_Toolbox_Filter_Clear_Button();
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text));
         }
