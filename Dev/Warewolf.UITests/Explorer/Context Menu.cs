@@ -34,7 +34,7 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void ExplorerFolderContextMenuItemsUITest()
         {
-            UIMap.Filter_Explorer("Acceptance Testing Resources");
+            UIMap.Filter_Explorer("Examples");
             UIMap.RightClick_Explorer_Localhost_First_Item();
             UIMap.FolderContextMenuAppears();
         }
