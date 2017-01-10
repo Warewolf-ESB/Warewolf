@@ -15,7 +15,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageMySqlSourceViewModel : DatabaseSourceViewModelBase
     {
-        private readonly IMySqlSource _mySqlSource;
         public ManageMySqlSourceViewModel(IAsyncWorker asyncWorker)
             : base(asyncWorker, "MySqlDatabase")
         {
@@ -29,10 +28,8 @@ namespace Warewolf.Studio.ViewModels
         public ManageMySqlSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "MySqlDatabase")
         {
-            VerifyArgument.IsNotNull("mySqlSource", _mySqlSource);
             HeaderText = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
             Header = Resources.Languages.Core.MySqlSourceNewHeaderLabel;
-            _mySqlSource = dbSource as IMySqlSource;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -77,13 +74,13 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.MySqlDatabase,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _mySqlSource?.Id ?? Guid.NewGuid()
+                Id = DbSource?.Id ?? Guid.NewGuid()
             };
         }
 
         protected override IDbSource ToDbSource()
         {
-            return _mySqlSource == null ? new MySqlSourceDefination
+            return DbSource == null ? new MySqlSourceDefination
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -93,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _mySqlSource?.Id ?? SelectedGuid
+                Id = DbSource?.Id ?? SelectedGuid
             } : new MySqlSourceDefination
             {
                 AuthenticationType = AuthenticationType,
@@ -104,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = (Guid)_mySqlSource?.Id
+                Id = (Guid)DbSource?.Id
             };
         }
 
@@ -112,15 +109,36 @@ namespace Warewolf.Studio.ViewModels
         {
             return new DbSourceDefinition
             {
-                AuthenticationType = _mySqlSource.AuthenticationType,
-                DbName = _mySqlSource.DbName,
-                Id = _mySqlSource.Id,
-                Name = _mySqlSource.Name,
-                Password = _mySqlSource.Password,
-                Path = _mySqlSource.Path,
-                ServerName = _mySqlSource.ServerName,
-                UserName = _mySqlSource.UserName,
+                AuthenticationType = DbSource.AuthenticationType,
+                DbName = DbSource.DbName,
+                Id = DbSource.Id,
+                Name = DbSource.Name,
+                Password = ((IMySqlSource)DbSource).Password,
+                Path = DbSource.Path,
+                ServerName = DbSource.ServerName,
+                UserName = ((IMySqlSource)DbSource).UserName,
                 Type = enSourceType.MySqlDatabase
+            };
+        }
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new MySqlSourceDefination
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.Oracle,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
             };
         }
 
