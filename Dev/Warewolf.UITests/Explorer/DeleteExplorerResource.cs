@@ -11,15 +11,15 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DeleteExplorerResource
     {
-        const string flowSwitch = "DeleteExplorerResource_FileToDelete";
-        const string flowSequence = "DeleteExplorerResource_FileToDelete2";
+        const string flowSwitch = "DeleteExplorerResourceTestFile";
+        const string flowSequence = "DeleteResourceRemovalTestFile";
         const string uiTestDependencyOne = "UITestDependencyOne";
         const string uiTestDependencyFolder = "UITestDependency";
 
         [TestMethod]
         [TestCategory("Explorer")]
         public void Delete_ExplorerResource()
-        {            
+        {
             UIMap.Filter_Explorer(flowSwitch);
             UIMap.Delete_FirstResource_FromContextMenu();
             UIMap.Click_MessageBox_Yes();
