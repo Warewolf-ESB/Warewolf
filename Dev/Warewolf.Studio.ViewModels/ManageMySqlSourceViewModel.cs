@@ -135,7 +135,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
-                Type = enSourceType.Oracle,
+                Type = enSourceType.MySqlDatabase,
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = Item.Id

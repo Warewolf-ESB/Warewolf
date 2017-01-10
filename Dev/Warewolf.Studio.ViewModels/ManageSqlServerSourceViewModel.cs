@@ -15,7 +15,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageSqlServerSourceViewModel : DatabaseSourceViewModelBase
     {
-        private readonly ISqlServerSource _sqlServerSource;
         public ManageSqlServerSourceViewModel(IAsyncWorker asyncWorker)
             : base(asyncWorker, "SqlDatabase")
         {
@@ -29,10 +28,8 @@ namespace Warewolf.Studio.ViewModels
         public ManageSqlServerSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker)
             : base(updateManager, aggregator, dbSource, asyncWorker, "SqlDatabase")
         {
-            VerifyArgument.IsNotNull("sqlServerSource", _sqlServerSource);
             HeaderText = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
             Header = Resources.Languages.Core.SqlServerSourceServerNewHeaderLabel;
-            _sqlServerSource = dbSource as ISqlServerSource;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -77,13 +74,13 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.SqlDatabase,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _sqlServerSource?.Id ?? Guid.NewGuid()
+                Id = DbSource?.Id ?? Guid.NewGuid()
             };
         }
 
         protected override IDbSource ToDbSource()
         {
-            return _sqlServerSource == null ? new SqlServerSourceDefinition
+            return DbSource == null ? new SqlServerSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -93,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _sqlServerSource?.Id ?? SelectedGuid
+                Id = DbSource?.Id ?? SelectedGuid
             } : new SqlServerSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
@@ -104,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = (Guid)_sqlServerSource?.Id
+                Id = (Guid)DbSource?.Id
             };
         }
 
@@ -112,15 +109,36 @@ namespace Warewolf.Studio.ViewModels
         {
             return new DbSourceDefinition
             {
-                AuthenticationType = _sqlServerSource.AuthenticationType,
-                DbName = _sqlServerSource.DbName,
-                Id = _sqlServerSource.Id,
-                Name = _sqlServerSource.Name,
-                Password = _sqlServerSource.Password,
-                Path = _sqlServerSource.Path,
-                ServerName = _sqlServerSource.ServerName,
-                UserName = _sqlServerSource.UserName,
+                AuthenticationType = DbSource.AuthenticationType,
+                DbName = DbSource.DbName,
+                Id = DbSource.Id,
+                Name = DbSource.Name,
+                Password = ((ISqlServerSource)DbSource).Password,
+                Path = DbSource.Path,
+                ServerName = DbSource.ServerName,
+                UserName = ((ISqlServerSource)DbSource).UserName,
                 Type = enSourceType.SqlDatabase
+            };
+        }
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new SqlServerSourceDefinition
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.SqlDatabase,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
             };
         }
 
