@@ -969,7 +969,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerAggregatorDbSource.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item,typeof(OracleSourceDefination));
+            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item,typeof(OracleSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.HeaderText);
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);
