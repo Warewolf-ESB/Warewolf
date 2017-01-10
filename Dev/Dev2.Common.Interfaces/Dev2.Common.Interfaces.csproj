@@ -161,7 +161,7 @@
     <Compile Include="Core\Database\OracleSourceDefination.cs" />
     <Compile Include="Core\Database\DbSourceDefinition.cs" />
     <Compile Include="Core\Database\PostgreSourceDefination.cs" />
-    <Compile Include="Core\Database\SqlServerSourceDefination.cs" />
+    <Compile Include="Core\Database\SqlServerSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />

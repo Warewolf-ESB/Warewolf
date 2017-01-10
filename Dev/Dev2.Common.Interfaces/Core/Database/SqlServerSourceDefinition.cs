@@ -5,7 +5,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core.Database
 {
-    public class SqlServerSourceDefination : ISqlServerSource, IEquatable<SqlServerSourceDefination>
+    public class SqlServerSourceDefinition : ISqlServerSource, IEquatable<SqlServerSourceDefinition>
     {
         AuthenticationType _authenticationType;
 
@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(SqlServerSourceDefination other)
+        public bool Equals(SqlServerSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDbSource other)
         {
-            return Equals(other as SqlServerSourceDefination);
+            return Equals(other as SqlServerSourceDefinition);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 return false;
             }
-            return Equals((SqlServerSourceDefination)obj);
+            return Equals((SqlServerSourceDefinition)obj);
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace Dev2.Common.Interfaces.Core.Database
             }
         }
 
-        public static bool operator ==(SqlServerSourceDefination left, SqlServerSourceDefination right)
+        public static bool operator ==(SqlServerSourceDefinition left, SqlServerSourceDefinition right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(SqlServerSourceDefination left, SqlServerSourceDefination right)
+        public static bool operator !=(SqlServerSourceDefinition left, SqlServerSourceDefinition right)
         {
             return !Equals(left, right);
         }

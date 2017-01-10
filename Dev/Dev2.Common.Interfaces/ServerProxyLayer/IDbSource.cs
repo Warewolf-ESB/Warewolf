@@ -22,6 +22,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }
+        string DbName { get; set; }
         bool ReloadActions { get; set; }
     }
 
@@ -29,7 +30,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     {
         string UserName { get; set; }
         string Password { get; set; }
-        string DbName { get; set; }
     }
 
     public interface IOdbcSource : IDbSource
@@ -40,20 +40,17 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     {
         string UserName { get; set; }
         string Password { get; set; }
-        string DbName { get; set; }
     }
 
     public interface IMySqlSource : IDbSource
     {
         string UserName { get; set; }
         string Password { get; set; }
-        string DbName { get; set; }
     }
 
     public interface ISqlServerSource : IDbSource
     {
         string UserName { get; set; }
         string Password { get; set; }
-        string DbName { get; set; }
     }
 }
