@@ -1,5 +1,5 @@
 
-<Service ID="b05ebf4a-147c-4d27-a2a3-0bedfefed6a6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-860" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5779.13273">
+<Service ID="b05ebf4a-147c-4d27-a2a3-0bedfefed6a6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-860" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.6212.23827">
   <DisplayName>Wolf-860</DisplayName>
   <Category>Testing\Bugs\Wolf-860</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,18 +30,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-09-18T11:29:04.4434753+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b05ebf4a-147c-4d27-a2a3-0bedfefed6a6" VersionId="69d957da-4d8d-4972-9987-5a77c7464c8b" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>fheQ0C3kMQ2ixODBr7o851KWOaI=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>DOM7wZCQjWH4gRjPMBU7srQxv9X0IM2gAx2AMQ/P3+r2kRUm4M5fbcybJCjSDwMFqe1mMmYtk+D10374sjARbSUj20f11t77xCR9pwPfdlu4/u2wF1noAbMtMWE06kZU/6KyBzjiD6wqFOYn3GcLaYXR2qBKTMomeU+HNLXYnVA=</SignatureValue>
-  </Signature>
 </Service>
