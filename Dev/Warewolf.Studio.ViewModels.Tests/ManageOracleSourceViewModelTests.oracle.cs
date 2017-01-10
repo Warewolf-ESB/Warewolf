@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _dbSourceMock.SetupGet(it => it.Name).Returns("someDbSourceName");
             _asyncWorkerMock.Setup(
                 it =>
-                it.Start<List<ComputerName>>(
+                it.Start(
                     It.IsAny<Func<List<ComputerName>>>(),
                     It.IsAny<Action<List<ComputerName>>>(),
                     It.IsAny<Action<Exception>>()))
@@ -927,7 +927,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(DbSourceDefinition));
+            Assert.IsInstanceOfType(_targetUpdateManagerRequestServiceName.Item, typeof(OracleSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerRequestServiceName.Item));
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.HeaderText);
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.Header);
@@ -950,7 +950,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.Oracle;
             var expectedPath = "somePath";
             var expectedDbName = "someDbName";
             var dbSourceName = "dbSourceName";
@@ -969,7 +969,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerAggregatorDbSource.OkCommand.Execute(null);
 
             //assert
-            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item,typeof(OracleSourceDefination));
+            Assert.IsInstanceOfType(_targetUpdateManagerAggregatorDbSource.Item,typeof(OracleSourceDefinition));
             _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.HeaderText);
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);
@@ -1011,7 +1011,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.Oracle;
             //_targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
@@ -1052,7 +1052,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedId = Guid.NewGuid();
             dbSourceMock.Setup(it => it.Id).Returns(expectedId);
             _targetAsyncWorker.Item = dbSourceMock.Object;
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.Oracle;
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1285,10 +1285,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dbSourceType = enSourceType.DynamicService;
             var expectedPassword = "expectedPassword";
             var expectedPath = "expectedPath";
-            var expectedServerType = new NameValue("name", dbSourceType.ToString());
             var expectedServerName = new ComputerName() { Name = dbSourceServerName };
-            _targetAsyncWorker.ComputerNames = new List<ComputerName>();
-            _targetAsyncWorker.ComputerNames.Add(expectedServerName);
+            _targetAsyncWorker.ComputerNames = new List<ComputerName> { expectedServerName };
             var expectedDatabaseName = "expectedDatabaseName";
           
             dbSourceMock.SetupGet(it => it.Name).Returns(expectedResourceName);

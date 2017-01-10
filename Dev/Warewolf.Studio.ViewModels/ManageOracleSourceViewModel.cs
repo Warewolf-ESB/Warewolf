@@ -15,7 +15,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageOracleSourceViewModel : DatabaseSourceViewModelBase
     {
-        private readonly IOracleSource _oracleSource;
         public ManageOracleSourceViewModel(IAsyncWorker asyncWorker)
             : base(asyncWorker, "Oracle")
         {
@@ -31,8 +30,6 @@ namespace Warewolf.Studio.ViewModels
         {
             HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
             Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
-            VerifyArgument.IsNotNull("oracleSource", _oracleSource);
-            _oracleSource = dbSource as IOracleSource;
         }
 
         #region Overrides of SourceBaseImpl<IDbSource>
@@ -68,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new OracleSourceDefination
+            return new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -77,13 +74,38 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.Oracle,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _oracleSource?.Id ?? Guid.NewGuid()
+                Id = DbSource?.Id ?? Guid.NewGuid()
             };
         }
 
+        #region Overrides of DatabaseSourceViewModelBase
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new OracleSourceDefinition
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.Oracle,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
+            };
+        }
+
+        #endregion
+
         protected override IDbSource ToDbSource()
         {
-            return _oracleSource == null ? new OracleSourceDefination
+            return DbSource == null ? new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -93,8 +115,8 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = _oracleSource?.Id ?? SelectedGuid
-            } : new OracleSourceDefination
+                Id = DbSource?.Id ?? SelectedGuid
+            } : new OracleSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -104,22 +126,22 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = (Guid)_oracleSource?.Id
+                Id = (Guid)DbSource?.Id
             };
         }
 
         protected override IDbSource ToSourceDefinition()
         {
-            return new DbSourceDefinition
+            return new OracleSourceDefinition
             {
-                AuthenticationType = _oracleSource.AuthenticationType,
-                DbName = _oracleSource.DbName,
-                Id = _oracleSource.Id,
-                Name = _oracleSource.Name,
-                Password = _oracleSource.Password,
-                Path = _oracleSource.Path,
-                ServerName = _oracleSource.ServerName,
-                UserName = _oracleSource.UserName,
+                AuthenticationType = DbSource.AuthenticationType,
+                DbName = DbSource.DbName,
+                Id = DbSource.Id,
+                Name = DbSource.Name,
+                Password = ((IOracleSource)DbSource).Password,
+                Path = DbSource.Path,
+                ServerName = DbSource.ServerName,
+                UserName = ((IOracleSource)DbSource).UserName,
                 Type = enSourceType.Oracle
             };
         }
