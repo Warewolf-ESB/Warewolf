@@ -5,7 +5,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces.Core.Database
 {
-    public class OracleSourceDefination : IOracleSource, IEquatable<OracleSourceDefination>
+    public class OracleSourceDefinition : IOracleSource, IEquatable<OracleSourceDefinition>
     {
         AuthenticationType _authenticationType;
 
@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(OracleSourceDefination other)
+        public bool Equals(OracleSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -42,7 +42,7 @@ namespace Dev2.Common.Interfaces.Core.Database
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDbSource other)
         {
-            return Equals(other as OracleSourceDefination);
+            return Equals(other as OracleSourceDefinition);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces.Core.Database
             {
                 return false;
             }
-            return Equals((OracleSourceDefination)obj);
+            return Equals((OracleSourceDefinition)obj);
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace Dev2.Common.Interfaces.Core.Database
             }
         }
 
-        public static bool operator ==(OracleSourceDefination left, OracleSourceDefination right)
+        public static bool operator ==(OracleSourceDefinition left, OracleSourceDefinition right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(OracleSourceDefination left, OracleSourceDefination right)
+        public static bool operator !=(OracleSourceDefinition left, OracleSourceDefinition right)
         {
             return !Equals(left, right);
         }

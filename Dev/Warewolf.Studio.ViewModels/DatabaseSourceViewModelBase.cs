@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
         private IList<ComputerName> _computerNames;
         private ComputerName _serverName;
         private AuthenticationType _authenticationType;
-        private IDbSource _dbSource;
+       
         private string _userName;
         private string _password;
         private string _databaseName;
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
         #endregion
 
         #region Properties
-
+        protected IDbSource DbSource { get; set; }
         public IAsyncWorker AsyncWorker { get; set; }
         public bool TestPassed
         {
@@ -369,7 +369,7 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", dbSource);
             PerformInitialise(updateManager, aggregator);
             _warewolfserverName = updateManager.ServerName ?? "";
-            _dbSource = dbSource;
+            DbSource = dbSource;
             //Item = new DbSourceDefinition
             //{
             //    AuthenticationType = _dbSource.AuthenticationType,
@@ -383,7 +383,7 @@ namespace Warewolf.Studio.ViewModels
             //    Type = _dbSource.Type
             //};
             Item = ToSourceDefinition();
-            switch (_dbSource.Type)
+            switch (DbSource.Type)
             {
                 case enSourceType.SqlDatabase:
                     Image = "SqlDatabase";
@@ -412,7 +412,7 @@ namespace Warewolf.Studio.ViewModels
 
             GetLoadComputerNamesTask(() =>
             {
-                FromModel(_dbSource);
+                FromModel(DbSource);
                 SetupHeaderTextFromExisting();
             });
         }
@@ -496,9 +496,9 @@ namespace Warewolf.Studio.ViewModels
             if (_warewolfserverName != null)
             {
             }
-            HeaderText = (_dbSource == null ? ResourceName : _dbSource.Name).Trim();
+            HeaderText = (DbSource == null ? ResourceName : DbSource.Name).Trim();
 
-            Header = _dbSource == null ? ResourceName : _dbSource.Name;
+            Header = DbSource == null ? ResourceName : DbSource.Name;
         }
 
         public override bool CanSave()
@@ -520,25 +520,10 @@ namespace Warewolf.Studio.ViewModels
         protected abstract IDbSource ToNewDbSource();
         protected abstract IDbSource ToDbSource();
         protected abstract IDbSource ToSourceDefinition();
+        //protected abstract IDbSource ToModel();
         public override IDbSource ToModel()
         {
-            if (Item == null)
-            {
-                Item = ToDbSource();
-                return Item;
-            }
-
-            return new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
-                Password = Password,
-                UserName = UserName,
-                Type = (enSourceType)Enum.Parse(typeof(enSourceType), _databaseType),
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = Item.Id
-            };
+            throw new NotImplementedException("");
         }
 
         protected string GetServerName()
@@ -555,7 +540,7 @@ namespace Warewolf.Studio.ViewModels
             Testing = true;
             TestFailed = false;
             TestPassed = false;
-            if (_dbSource == null)
+            if (DbSource == null)
             {
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
@@ -572,8 +557,8 @@ namespace Warewolf.Studio.ViewModels
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null && !TestFailed)
                         {
-                            _dbSource = src;
-                            Path = _dbSource.Path;
+                            DbSource = src;
+                            Path = DbSource.Path;
                             SetupHeaderTextFromExisting();
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                         }
@@ -588,7 +573,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var src = ToDbSource();
                 Save(src);
-                _dbSource = src;
+                DbSource = src;
             }
         }
 

@@ -158,7 +158,7 @@
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
     <Compile Include="Core\Database\MySqlSourceDefination.cs" />
     <Compile Include="Core\Database\OdbcSourceDefinition.cs" />
-    <Compile Include="Core\Database\OracleSourceDefination.cs" />
+    <Compile Include="Core\Database\OracleSourceDefinition.cs" />
     <Compile Include="Core\Database\DbSourceDefinition.cs" />
     <Compile Include="Core\Database\PostgreSourceDefinition.cs" />
     <Compile Include="Core\Database\SqlServerSourceDefinition.cs" />
