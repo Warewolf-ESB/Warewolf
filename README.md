@@ -31,7 +31,7 @@ Release notes are available at http://warewolf.io/release-notes.php
 
 You can download the latest compiled release from https://warewolf.io
 
-Please note that Warewolf is built for Windows 7, Windows 8.1, Windows 10, Windows Server 2008 and Windows Server 2012. This repo includes an F# project which requires [Visual FSharp](http://www.microsoft.com/en-us/download/details.aspx?id=48179)
+Please note that Warewolf is built for Windows 7, Windows 8.1, Windows 10, Windows Server 2008, Windows Server 2012 and Windows Server 2016. This repo includes an F# project which requires [Visual FSharp](http://www.microsoft.com/en-us/download/details.aspx?id=48179)
 
 
 **License and Software Versions:** 

@@ -472,6 +472,15 @@ namespace Warewolf.Studio.Views
             }
         }
 
+        private void ExplorerContextMenuView_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            {
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                mainViewModel?.ResetMainView();
+            }
+        }
+
         private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             e.Handled = true;
