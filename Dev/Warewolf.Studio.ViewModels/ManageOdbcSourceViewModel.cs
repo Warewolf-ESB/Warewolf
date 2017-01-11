@@ -45,20 +45,30 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of SourceBaseImpl<IDbSource>
 
-        public override string Name { get; set; }
+        public override string Name
+        {
+            get
+            {
+                return ResourceName;
+            }
+            set
+            {
+                ResourceName = value;
+            }
+        }
 
         public override void FromModel(IDbSource service)
         {
-            var odbcSource = service;
-            ResourceName = odbcSource.Name;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(odbcSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            ResourceName = service.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(service.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
-                EmptyServerName = ServerName.Name ?? odbcSource.ServerName;
+                EmptyServerName = ServerName.Name ?? service.ServerName;
             }
             AuthenticationType = service.AuthenticationType;
-            Path = odbcSource.Path;
+            Path = service.Path;
             TestConnection();
+            DatabaseName = service.DbName;
         }
 
         public override void UpdateHelpDescriptor(string helpText)

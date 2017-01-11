@@ -491,7 +491,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = new List<ComputerName>();
-            //_targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -531,24 +530,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, actualValue);
-        }
-        
-
-        [TestMethod]
-        public void TestServerType()
-        {
-            //arrange
-            var expectedValue = new NameValue("name","value");
-            _changedPropertiesAsyncWorker.Clear();
-
-            //act
-            //_targetAsyncWorker.ServerType = expectedValue;
-            //var actualValue = _targetAsyncWorker.ServerType;
-
-            //assert
-            //Assert.AreSame(expectedValue, actualValue);
-            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("ServerType"));
-            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("Header"));
         }
 
         [TestMethod]
@@ -911,7 +892,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.Oracle;
             var expectedPath = "somePath";
             var expectedName = "someName";
             var expectedDbName = "someDbName";
