@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToNewDbSource()
         {
-            return new SqlServerSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override IDbSource ToDbSource()
         {
-            return DbSource == null ? new SqlServerSourceDefinition
+            return DbSource == null ? new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -92,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = DbSource?.Id ?? SelectedGuid
-            } : new SqlServerSourceDefinition
+            } : new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
@@ -130,7 +130,7 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
 
-            return new SqlServerSourceDefinition
+            return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = GetServerName(),
