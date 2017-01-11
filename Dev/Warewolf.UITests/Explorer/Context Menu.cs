@@ -46,11 +46,6 @@ namespace Warewolf.UITests
             UIMap.RefreshExplorerWithpoutWaitingForSpinner();
             UIMap.RightClick_Localhost();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists, "New Workflow Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewFolder.Exists, "New Folder Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Deploy.Exists, "Deploy Context menu item does not exist on explorer context menu for workflows.");            
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "SourcesMenuItem does not exist on explorer context menu for workflows.");            
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowServerVersion.Exists, "Show Server Version Context menu item does not exist on explorer context menu for workflows.");
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewApis.Exists, "ViewApisJsonMenuItem Context menu item does not exist on explorer context menu for workflows.");            
         }
 
         #region Additional test attributes
