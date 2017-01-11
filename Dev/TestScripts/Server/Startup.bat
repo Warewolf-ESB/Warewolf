@@ -40,7 +40,7 @@ IF NOT "%1"=="" (
 	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
 		set DotCoverExePath="%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe"
 	) else (
-		set DotCoverExePath="%1"
+		set DotCoverExePath=%1
 	)
 )
 
