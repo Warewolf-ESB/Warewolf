@@ -35,7 +35,17 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of SourceBaseImpl<IDbSource>
 
-        public override string Name { get; set; }
+        public override string Name
+        {
+            get
+            {
+                return ResourceName;
+            }
+            set
+            {
+                ResourceName = value;
+            }
+        }
 
         public override void FromModel(IDbSource service)
         {
