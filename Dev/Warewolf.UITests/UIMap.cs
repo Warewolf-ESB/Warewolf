@@ -8788,7 +8788,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox, new Point(1469, 10));
             Mouse.Click(MainStudioWindow.ComboboxListItemAsmysqlDB);
-            //Assert.AreEqual("mysql", MainStudioWindow.ComboboxListItemAsmysqlDB.Text);
+            Assert.AreEqual("mysql",MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIMysqlText.DisplayText);
         }
 
         [When(@"I Select postgres From DB Source Wizard Database Combobox")]
@@ -8819,6 +8819,34 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox, new Point(1469, 10));
             Mouse.Click(MainStudioWindow.ComboboxListItemAsExcelFilesDB);
             Assert.AreEqual("Excel Files", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIExcelFilesText.DisplayText);
+        }
+
+        [When(@"I Click PostgreSQL Tool Large View New Source Button")]
+        public void Click_PostgreSQLTool_LargeView_NewSourceButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.NewSourceButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New PostgreSQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        [When(@"I Click OracleDatabase Tool Large View New Source Button")]
+        public void Click_OracleDatabaseTool_LargeView_NewSourceButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeView.NewSourceButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New Oracle DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        [When(@"I Click ODBC Tool Large View New Source Button")]
+        public void Click_ODBCTool_LargeView_NewSourceButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.NewSourceButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New ODBC DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        [When(@"I Click MySQL Tool Large View New Source Button")]
+        public void Click_MySQLTool_LargeView_NewSourceButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.NewSourceButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New MySQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
         }
     }
 }
