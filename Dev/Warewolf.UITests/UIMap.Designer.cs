@@ -212,6 +212,18 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
+        
+        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
+                {
+                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
+                }
+                return this.mUIWarewolfDEV2DYLANDELWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -240,6 +252,8 @@ namespace Warewolf.UITests
         private WebBrowserErrorWindow mWebBrowserErrorWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        
+        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -71697,6 +71711,22 @@ namespace Warewolf.UITests
                 return this.mUIExcelFilesText;
             }
         }
+        
+        public WpfText UIMysqlText
+        {
+            get
+            {
+                if ((this.mUIMysqlText == null))
+                {
+                    this.mUIMysqlText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIMysqlText.SearchProperties[WpfText.PropertyNames.Name] = "mysql";
+                    this.mUIMysqlText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIMysqlText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -71707,6 +71737,8 @@ namespace Warewolf.UITests
         private WpfText mUIHRText;
         
         private WpfText mUIExcelFilesText;
+        
+        private WpfText mUIMysqlText;
         #endregion
     }
     
@@ -106736,6 +106768,75 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfMenuItem mDeployMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2DYLANDELWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseSourceControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIDatabaseComboxBoxCustom
+        {
+            get
+            {
+                if ((this.mUIDatabaseComboxBoxCustom == null))
+                {
+                    this.mUIDatabaseComboxBoxCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDatabaseComboxBoxCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+                    this.mUIDatabaseComboxBoxCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
+                    this.mUIDatabaseComboxBoxCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIDatabaseComboxBoxCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIDatabaseComboxBoxCustom;
         #endregion
     }
 }
