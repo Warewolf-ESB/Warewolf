@@ -186,8 +186,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Var
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WebSource", "Warewolf.UIBindingTests.WebSource\Warewolf.UIBindingTests.WebSource.csproj", "{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.DatabaseSource", "Warewolf.UIBindingTests.DatabaseSource\Warewolf.UIBindingTests.DatabaseSource.csproj", "{2406B584-C85C-4676-8186-5523618EEB5B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.PluginSource", "Warewolf.UIBindingTests.PluginSource\Warewolf.UIBindingTests.PluginSource.csproj", "{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.EmailSource", "Warewolf.UIBindingTests.EmailSource\Warewolf.UIBindingTests.EmailSource.csproj", "{F99EC086-EBEF-468F-82D7-52E911649DA8}"
@@ -789,13 +787,6 @@ Global
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Release|x86.Build.0 = Release|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Debug|x86.Build.0 = Debug|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Release|x86.ActiveCfg = Release|Any CPU
-		{2406B584-C85C-4676-8186-5523618EEB5B}.Release|x86.Build.0 = Release|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Debug|x86.ActiveCfg = Debug|Any CPU
