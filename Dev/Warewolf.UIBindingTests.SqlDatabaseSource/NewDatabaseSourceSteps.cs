@@ -234,14 +234,6 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             Assert.IsTrue(serverOptions.All(a => rows.Contains(a)));
         }
 
-        [Then(@"type options has ""(.*)"" as the default")]
-        public void ThenTypeOptionsHasAsTheDefault(string defaultDbType)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            Assert.IsTrue(manageDatabaseSourceControl.GetSelectedDbOption() == defaultDbType);
-        }
-
         [Given(@"I type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
         {
@@ -464,26 +456,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             manageDatabaseSourceControl.Test();
         }
 
-        [When(@"I change type option from ""(.*)"" to ""(.*)""")]
-        public void WhenIChangeTypeOptionFromTo(string p0, string p1)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            Assert.AreEqual(p0, manageDatabaseSourceControl.GetSelectedDbOption());
-            manageDatabaseSourceControl.SelectType(p1);
-            manageDatabaseSourceControl.SelectDatabase(string.Empty);
-            var viewModel = (ManageSqlServerSourceViewModel)manageDatabaseSourceControl.DataContext;
-            Assert.AreEqual(p1, manageDatabaseSourceControl.GetSelectedDbOption());
-            Assert.AreEqual(string.Empty, viewModel.DatabaseName);
-        }
-
-        [Then(@"I select type ""(.*)""")]
-        public void ThenISelectType(string p0)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectType(p0);
-            var viewModel = (ManageSqlServerSourceViewModel)manageDatabaseSourceControl.DataContext;
-            Assert.AreEqual(p0, manageDatabaseSourceControl.GetSelectedDbOption());
-        }
+       
 
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
