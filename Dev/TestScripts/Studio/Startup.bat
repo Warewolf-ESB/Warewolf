@@ -108,4 +108,4 @@ IF EXIST %windir%\nircmd.exe (
 )
 waitfor StudioStart /t 60 2>NUL
 @echo Started "%StudioBinDirectory%\Warewolf Studio.exe".
-
+exit 0
