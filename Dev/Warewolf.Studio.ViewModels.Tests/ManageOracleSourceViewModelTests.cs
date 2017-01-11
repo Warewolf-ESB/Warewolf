@@ -354,33 +354,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestAuthenticationType_dbSourceNotNullUser()
-        {
-            //arrange
-            var expectedValue = AuthenticationType.User;
-            _dbSourceMock.SetupGet(it => it.AuthenticationType).Returns(AuthenticationType.Public);
-            _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
-            _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "DatabaseNamesItem" };
-
-            //act
-            _targetUpdateManagerAggregatorDbSource.AuthenticationType = expectedValue;
-            var actualValue = _targetUpdateManagerAggregatorDbSource.AuthenticationType;
-
-            //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.IsTrue(string.IsNullOrEmpty(_targetUpdateManagerAggregatorDbSource.Password));
-            Assert.IsTrue(string.IsNullOrEmpty(_targetUpdateManagerAggregatorDbSource.UserName));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("AuthenticationType"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("Header"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("UserAuthenticationSelected"));
-            Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.DatabaseNames.Any());
-            Assert.IsFalse(_targetAsyncWorker.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_targetAsyncWorker.TestMessage));
-            Assert.IsFalse(_targetAsyncWorker.TestFailed);
-            Assert.IsFalse(_targetAsyncWorker.Testing);
-        }
-
-        [TestMethod]
         public void TestAuthenticationType_dbSourceNotNullUserSameDbSource()
         {
             //arrange
