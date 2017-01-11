@@ -33,19 +33,14 @@ Scenario: Creating New DB Source General Testing
    | RSAKLFSVRGENDEV |
    | RSAKLFSVRSBSPDC |
    | RSAKLFSVRTFSBLD |
-   | RSAKLFSVRWRWBLD |
-   And type options contains
-   | Options              |
-   | Microsoft SQL Server |
-   | MySQL                |
+   | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRGENDEV"
    And Database dropdown is "Collapsed"
-   And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
-   And "Test Connection" is "Enabled"
-   Then Username field is "Collapsed"
-   And Password field is "Collapsed"
+   And "Test Connection" is "Disabled"
    Then Database dropdown is "Collapsed"
+   When I type Username as "testuser"
+  And I type Password as "test123"
    And "Test Connection" is "Enabled"
    And "Cancel Test" is "Disabled"
    When I click "Test Connection"
@@ -66,8 +61,6 @@ Scenario: Creating New DB Source General Testing
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
-	And I Select Authentication Type as "User"
-	Then Username field is "Visible"
 	And Password field is "Visible"
 	And "Save" is "Disabled"
 	When I type Username as "testuser"
@@ -84,27 +77,10 @@ Scenario: Creating New DB Source as User Auth
 	When I save the source
 	Then the save dialog is opened
 
-@OracleDbSource
-Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
-	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRTFSBLD"
-	  And "Save" is "Disabled"
-	  And I Select Authentication Type as "Windows"
-	  Then Username field is "Collapsed"
-	  And Password field is "Collapsed"
-	  Then Database dropdown is "Collapsed"
-	  And "Test Connection" is "Enabled"
-	  When Test Connecton is "Unsuccessful"
-	  Then Database dropdown is "Collapsed"
-	  And "Save" is "Disabled"
-
  @OracleDbSource
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRTFSBLD"
-	  And I Select Authentication Type as "User"
-	  Then Username field is "Visible"
-	  And Password field is "Visible"
+	  And I type Server as "RSAKLFSVRTFSBLD"	  
 	  When I type Username as "testuser"
 	  And I type Password as "test123"
 	  Then Database dropdown is "Collapsed"
@@ -116,10 +92,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
  @OracleDbSource
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRGENDEV"
-	  And I Select Authentication Type as "User"
-	  Then Username field is "Visible"
-	  And Password field is "Visible"
+	  And I type Server as "RSAKLFSVRGENDEV"	
 	  When I type Username as "test"
 	  And I type Password as "test"
 	  Then Database dropdown is "Collapsed"
@@ -128,64 +101,11 @@ Scenario: Incorrect Server Address Shows correct error message
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
-
-@OracleDbSource
-Scenario: Testing as Windows and swapping it resets the test connection 
-	  Given I open New Database Source
-	  And "Save" is "Disabled"
-	  And I type Server as "RSAKLFSVRTFSBLD"
-	  And "Test Connection" is "Enabled"
-	  And I Select Authentication Type as "User"
-	  Then Username field is "Visible"
-	  And Password field is "Visible"
-	  And "Test Connection" is "Disabled"
-	  And "Save" is "Disabled"
-	  When I type Username as "testuser"
-	  And I type Password as "test123"
-	  Then "Test Connection" is "Enabled" 
-	  And "Save" is "Disabled"
-	  Then Database dropdown is "Collapsed"
-	  Then Test Connecton is "Successful"
-	  And "Save" is "Disabled"
-	  And Database dropdown is "Visible"
-	  When I select "Dev2TestingDB" as Database
-	  And I Select Authentication Type as "Windows"
-	  And "Save" is "Disabled"
-	  When I Select Authentication Type as "User"
-	  Then Username field is "Visible"
-	  And Password field is "Visible"
-
-@OracleDbSource
-Scenario: Editing saved DB Source Remembers Previous Auth Selection
-	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRGENDEV"
-	And Authentication Type is selected as "User"
-	And Username field is "testuser"
-	And Password field is "******"
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
-	When I Select Authentication Type as "Windows"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	And Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	And Test Connecton is "Successful"
-	And "Save" is "Enabled"
-	And Database dropdown is "Visible"
-	And I select "Dev2TestingDB2" as Database
-	And "Save" is "Enabled" 
-	When I Select Authentication Type as "User"
-	Then "Test Connection" is "Disabled" 
-	And "Save" is "Disabled"
-	And Database "Dev2TestingDB" is selected 
-	And "Test Connection" is "Disabled"
-	And "Save" is "Disabled"
-	
+	  	
 @OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRGENDEV"
-	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
 	And "Test Connection" is "Enabled"
@@ -207,58 +127,24 @@ Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRGENDEV"
    And "Save" is "Disabled"
-   And "Test Connection" is "Enabled"
-   And I Select Authentication Type as "User"
+   And "Test Connection" is "Disabled"
    When I type Username as "testuser"
    And I type Password as "******"
+   And "Test Connection" is "Enabled"
    When Test Connecton is "Long Running"
    And I Cancel the Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
 
-
-@OracleDbSource
-Scenario: Changing database type after testing connection
-   Given I open New Database Source
-   Then "New Database Source" tab is opened
-   And title is "New Database Source"
-   When I type Server as "RSAKLFSVR"
-   Then the intellisense contains these options
-   | Options         |
-   | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
-   | RSAKLFSVRTFSBLD |
-   | RSAKLFSVRWRWBLD |
-   And type options contains
-   | Options              |
-   | Microsoft SQL Server |
-   | MySQL                |
-   And I type Select The Server as "RSAKLFSVRGENDEV"
-   And I Select Authentication Type as "Windows"
-   And "Test Connection" is "Enabled"
-   When I click "Test Connection"
-   Then Test Connecton is "Successful"
-   Then Database dropdown is "Visible"
-   Then I select "Dev2TestingDB" as Database
-   And "Save" is "Enabled"   
-   Then "Save" is "Disabled"
-   And "Test Connection" is "Enabled"   
-   When Test Connecton is "Successful"
-   Then Database dropdown is "Visible"
-   And I select "test" as Database
-   Then "Save" is "Enabled"
-
 @OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials for Oracle
 Given I open "Database Source - testOracle" 
 	And Server as "localhost"
-	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
 	And Database "Dev2TestingDB" is selected 
 	And "Save" is "Disabled"
-	When I Select Authentication Type as "Windows"
 	Then "Test Connection" is "Enabled" 
 	And "Save" is "Disabled"
 	And Database dropdown is "Collapsed"
@@ -269,22 +155,4 @@ Given I open "Database Source - testOracle"
 	And I select "Dev2TestingDB2" as Database
 	And "Save" is "Enabled" 
 
-
-@OracleDbSource
-Scenario: Creating New Oracle Source as User Auth
-	Given I open New Database Source
-	And I type Server as "RSAKLFSVRGENDEV"
-	And I Select Authentication Type as "User"
-	Then Username field is "Visible"
-	And Password field is "Visible"
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	Then Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	Then Test Connecton is "Successful"
-	And "Save" is "Disabled"
-	And Database dropdown is "Visible"
-	When I select "Dev2TestingDB" as Database
-	Then "Save" is "Enabled" 
 	

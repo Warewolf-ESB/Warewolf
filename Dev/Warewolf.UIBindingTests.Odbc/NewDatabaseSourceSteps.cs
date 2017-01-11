@@ -27,7 +27,6 @@ namespace Warewolf.UIBindingTests.Odbc
     public class NewDatabaseSourceSteps
     {
         string loginFailedForUserTest = "Login failed for user 'test'";
-
         [BeforeFeature("DbSource")]
         public static void SetupForSystem()
         {
@@ -51,13 +50,20 @@ namespace Warewolf.UIBindingTests.Odbc
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("DbSource")]
+        [BeforeScenario("ODBCSource")]
         public void SetupForDatabaseSource()
         {
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageOdbcSourceViewModel>(Utils.ViewModelNameKey));
+        }
+
+        [When(@"I click ""(.*)""")]
+        public void WhenIClick(string ConectTo)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.Test();
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -247,7 +253,7 @@ namespace Warewolf.UIBindingTests.Odbc
             mockRequestServiceNameViewModel.Verify();
         }
 
-        //[AfterScenario("DbSource")]
+        [AfterScenario("ODBCSource")]
         public void Cleanup()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
@@ -264,15 +270,6 @@ namespace Warewolf.UIBindingTests.Odbc
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
-
-        [When(@"I click ""(.*)""")]
-        public void WhenIClick(string ConectTo)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.Test();
-        }
-
-       
 
 
         [Then(@"database dropdown is ""(.*)""")]
