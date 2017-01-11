@@ -43,8 +43,6 @@ Scenario: Creating New DB Source General Testing
    Then the save dialog is opened
    Then "SavedDBSource" tab is opened
    And title is "SavedDBSource"
-   Then "SavedDBSource *" is the tab Header
-   And title is "SavedDBSource"
 
 @ODBCSource
 Scenario: Cancel DB Source Test
@@ -62,12 +60,10 @@ Scenario: Creating New DB Source as Windows Auth
 	Given I open New Database Source
 	And "Save" is "Disabled"
 	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	Then Database dropdown is "Collapsed"
+	And "Save" is "Disabled"	
 	And "Test Connection" is "Enabled"
-	Then Test Connecton is "Successful"
+	Then Test Connecton is "Successful"	
 	And "Save" is "Disabled"
-	And Database dropdown is "Visible"
 	When I select "Dev2TestingDB" as Database
 	Then "Save" is "Enabled" 
 	
