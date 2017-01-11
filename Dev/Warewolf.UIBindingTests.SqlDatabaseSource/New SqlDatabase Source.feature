@@ -39,7 +39,6 @@ Scenario: Creating New DB Source General Testing
    | Microsoft SQL Server |
    | MySQL                |
    And I type Select The Server as "RSAKLFSVRGENDEV"
-   And type options has "Microsoft SQL Server" as the default
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
