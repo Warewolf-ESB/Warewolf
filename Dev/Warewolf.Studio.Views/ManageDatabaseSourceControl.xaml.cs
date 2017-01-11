@@ -61,6 +61,11 @@ namespace Warewolf.Studio.Views
         {
             try
             {
+                var viewModelBase = DataContext as DatabaseSourceViewModelBase;
+                if(viewModelBase != null)
+                {
+                    viewModelBase.DatabaseName = databaseName;
+                }
                 DatabaseComboxBox.SelectedItem = databaseName;
             }
             catch (Exception)
@@ -120,11 +125,21 @@ namespace Warewolf.Studio.Views
 
         public void EnterUserName(string userName)
         {
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
+            if(viewModel != null)
+            {
+                viewModel.UserName = userName;
+            }
             UserNameTextBox.Text = userName;
         }
 
         public void EnterPassword(string password)
         {
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
+            if (viewModel != null)
+            {
+                viewModel.Password = password;
+            }
             PasswordTextBox.Password = password;
         }
 
