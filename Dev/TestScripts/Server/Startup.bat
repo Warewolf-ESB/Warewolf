@@ -35,6 +35,15 @@ if %errorLevel% == 0 (
 REM ** Cleanup **
 call "%~dp0Cleanup.bat"
 
+REM ** Init path to DotCover Exe **
+IF NOT "%1"=="" (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		set DotCoverExePath="%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe"
+	) else (
+		set DotCoverExePath="%1"
+	)
+)
+
 REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
@@ -57,13 +66,13 @@ IF EXIST "%DeploymentDirectory%\Resources - Release" echo d | xcopy /S /Y "%Depl
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST %windir%\nircmd.exe (
 	IF NOT "%1"=="" (
-		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+		nircmd elevate %DotCoverExePath% cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
 	) else (
 		nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe"
 	)
 ) else (
 	IF NOT "%1"=="" (
-		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Logs\dotCover.dcvr"
+		%DotCoverExePath% cover /TargetExecutable="%DeploymentDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Logs\dotCover.dcvr"
 	) else (
 		START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
 	)
