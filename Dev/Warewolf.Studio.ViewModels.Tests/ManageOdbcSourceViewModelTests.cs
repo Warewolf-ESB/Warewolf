@@ -843,7 +843,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _requestServiceNameViewMock.Setup(it => it.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             _requestServiceNameViewMock.Setup(it => it.ResourceName).Returns(new ResourceName(resPath, resName));
             var expectedAuthenticationType = AuthenticationType.Anonymous;
-            var expectedServerName = "expectedServerName";
+            var expectedServerName = "Localhost";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
             var expectedType = enSourceType.ODBC;
@@ -880,7 +880,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedAuthenticationType = AuthenticationType.Anonymous;
-            var expectedServerName = "expectedServerName";
+            var expectedServerName = "Localhost";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
             var expectedType = enSourceType.ODBC;
