@@ -22,7 +22,7 @@ using Warewolf.UIBindingTests.Core;
 
 // ReSharper disable RedundantAssignment
 
-namespace Warewolf.UIBindingTests.MySqlDatabaseSource
+namespace Warewolf.UIBindingTests.OracleSource
 {
     [Binding]
     public class NewDatabaseSourceSteps
@@ -42,7 +42,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var manageDatabaseSourceViewModel = new ManageMySqlSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var manageDatabaseSourceViewModel = new ManageOracleSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             manageDatabaseSourceControl.DataContext = manageDatabaseSourceViewModel;
             Utils.ShowTheViewForTesting(manageDatabaseSourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
@@ -58,7 +58,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageMySqlSourceViewModel>(Utils.ViewModelNameKey));
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageOracleSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -105,11 +105,11 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             };
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var viewModel = new ManageMySqlSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+            var viewModel = new ManageOracleSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
             // ReSharper disable PossibleNullReferenceException
-            (manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel).AuthenticationType = (AuthenticationType)authp;
+            (manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel).AuthenticationType = (AuthenticationType)authp;
             // ReSharper restore PossibleNullReferenceException
         }
 
@@ -154,7 +154,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
@@ -240,7 +240,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(serverName);
             //manageDatabaseSourceControl.EnterServerName(serverName);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
             Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
 
@@ -249,7 +249,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Database dropdown is ""(.*)""")]
         public void GivenDropdownIs(string visibility)
         {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
@@ -269,7 +269,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"I Select Authentication Type as ""(.*)""")]
         public void GivenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
-            var authenticationType = string.Equals(authenticationTypeString, "Windows",
+            var authenticationType = String.Equals(authenticationTypeString, "Windows",
                 StringComparison.InvariantCultureIgnoreCase)
                 ? AuthenticationType.Windows
                 : AuthenticationType.User;
@@ -285,7 +285,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(databaseName);
-            var viewModel = (ManageMySqlSourceViewModel)manageDatabaseSourceControl.DataContext;
+            var viewModel = (ManageOracleSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(databaseName, viewModel.DatabaseName);
         }
 
@@ -311,7 +311,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Username field is ""(.*)""")]
         public void ThenUsernameFieldIs(string visibility)
         {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetUsernameVisibility();
@@ -337,7 +337,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Password field is ""(.*)""")]
         public void ThenPasswordFieldIs(string visibility)
         {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetPasswordVisibility();
@@ -351,7 +351,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterUserName(userName);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
         }
 
@@ -362,7 +362,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
@@ -371,7 +371,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + loginFailedForUserTest;
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -381,8 +381,8 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTestConnectonIs(string successString)
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var isSuccess = string.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
-            var isLongRunning = string.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
+            var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
+            var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
@@ -390,7 +390,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             }
             else if (isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+                var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
@@ -415,7 +415,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTheValidationMessageAs(string message)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOracleSourceViewModel>("viewModel");
             var errorMessageFromControl = manageDatabaseSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(message, StringComparison.OrdinalIgnoreCase);
@@ -439,12 +439,12 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManageOracleSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
@@ -468,7 +468,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)
         {
-            var expectedVisibility = string.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);

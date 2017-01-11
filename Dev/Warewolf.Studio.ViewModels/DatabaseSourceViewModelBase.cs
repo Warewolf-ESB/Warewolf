@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
@@ -375,18 +374,6 @@ namespace Warewolf.Studio.ViewModels
             PerformInitialise(updateManager, aggregator);
             _warewolfserverName = updateManager.ServerName ?? "";
             DbSource = dbSource;
-            //Item = new DbSourceDefinition
-            //{
-            //    AuthenticationType = _dbSource.AuthenticationType,
-            //    DbName = _dbSource.DbName,
-            //    Id = _dbSource.Id,
-            //    Name = _dbSource.Name,
-            //    Password = _dbSource.Password,
-            //    Path = _dbSource.Path,
-            //    ServerName = _dbSource.ServerName,
-            //    UserName = _dbSource.UserName,
-            //    Type = _dbSource.Type
-            //};
             Item = ToSourceDefinition();
 
             GetLoadComputerNamesTask(() =>
