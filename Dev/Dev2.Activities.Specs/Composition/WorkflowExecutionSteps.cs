@@ -238,7 +238,6 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         private static IEnvironmentModel LocalEnvModel { get; set; }
-        private static IEnvironmentModel RemoteEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -772,8 +771,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                   where String.Equals((string)elements.Attribute("RecordsetAlias"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         String.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
+                                   where string.Equals((string)elements.Attribute("RecordsetAlias"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         string.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
                                    select elements).SingleOrDefault();
 
                     if (element != null)
@@ -863,14 +862,11 @@ namespace Dev2.Activities.Specs.Composition
                         var fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where String.Equals((string)elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         String.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
+                                   where string.Equals((string)elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         string.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
                                    select elements).SingleOrDefault();
 
-                        if (element != null)
-                        {
-                            element.SetAttributeValue("Value", fromVariable);
-                        }
+                        element?.SetAttributeValue("Value", fromVariable);
 
                         inputSb.Append(element);
                     }
@@ -879,13 +875,10 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where String.Equals((string)elements.Attribute("Name"), recordsetName, StringComparison.InvariantCultureIgnoreCase)
+                                   where string.Equals((string)elements.Attribute("Name"), recordsetName, StringComparison.InvariantCultureIgnoreCase)
                                    select elements).SingleOrDefault();
 
-                        if (element != null)
-                        {
-                            element.SetAttributeValue("Source", fromVariable);
-                        }
+                        element?.SetAttributeValue("Source", fromVariable);
                     }
 
                     if (element != null)
@@ -1307,7 +1300,7 @@ namespace Dev2.Activities.Specs.Composition
                     int maxLength;
                     bool.TryParse(isNullableStr, out isNullable);
                     bool.TryParse(isAutoIncrementStr, out isAutoIncrement);
-                    Int32.TryParse(maxLengthStr, out maxLength);
+                    int.TryParse(maxLengthStr, out maxLength);
                     SqlDbType dataType;
                     Enum.TryParse(dataTypeName, true, out dataType);
 
@@ -1767,7 +1760,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 fixedName = fixedName.Remove(startIndexOfEncoding - 1, endIndexOfEncoding - startIndexOfEncoding);
             }
-            if (fixedName[0] == 'f' || fixedName[0] == '_' || Char.IsNumber(fixedName[0]))
+            if (fixedName[0] == 'f' || fixedName[0] == '_' || char.IsNumber(fixedName[0]))
             {
                 fixedName = fixedName.Remove(0, 1);
             }
@@ -2195,7 +2188,7 @@ namespace Dev2.Activities.Specs.Composition
             foreach (var rule in table.Rows)
             {
                 act.ResultsCollection.Add(new FindRecordsTO(rule[4], rule[3], 0));
-                act.FieldsToSearch = String.IsNullOrEmpty(act.FieldsToSearch) ? rule[1] : "," + rule[1];
+                act.FieldsToSearch = string.IsNullOrEmpty(act.FieldsToSearch) ? rule[1] : "," + rule[1];
                 act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim() == "YES";
                 act.RequireAllTrue = rule[6].ToUpper().Trim() == "YES";
             }
