@@ -6,7 +6,7 @@ Scenario: Executing Release Tests for Hello World should all be passing
 	Given The Warewolf Studio is running
 	And I have Hello World workflow on the Explorer
 	And I Open Explorer First Item Tests With Context Menu
-	When I Press F6
+	And I Click Run all tests button
 	Then The First Test "Is" Passing	
 	And The Second Test "Is" Passing	
 	And The Third Test "Is" Passing	
