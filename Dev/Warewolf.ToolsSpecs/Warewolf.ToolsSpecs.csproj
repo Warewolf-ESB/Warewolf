@@ -337,8 +337,8 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
-    <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Database\SqlServerConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\SqlServer\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\SqlServer\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
@@ -656,7 +656,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
+    <None Include="Toolbox\Resources\SqlServer\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
