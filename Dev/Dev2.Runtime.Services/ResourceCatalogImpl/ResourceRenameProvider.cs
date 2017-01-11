@@ -1,4 +1,5 @@
 using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var oldPath = resource.GetSavePath();
-            var newPath = Regex.Replace(oldPath, oldCategory, newCategory, RegexOptions.IgnoreCase);
+            var newPath = oldPath.Replace(oldCategory, newCategory);// Regex.Replace(oldPath, oldCategory, newCategory, RegexOptions.IgnoreCase);
             if (string.IsNullOrEmpty(oldPath))
             {
                 newPath = newCategory;
