@@ -14,29 +14,36 @@ if %errorLevel% == 0 (
 REM ** Cleanup **
 call "%~dp0Cleanup.bat"
 
-:StopRetryingClean
+REM ** Init path to DotCover Exe **
+IF NOT "%1"=="" (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		set DotCoverExePath="%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe"
+	) else (
+		set DotCoverExePath="%1"
+	)
+)
 
-REM Init paths to Warewolf server under test
-IF EXIST "%~dp0Warewolf Server.exe" SET ServerBinDirectory=%~dp0
-IF EXIST "%~dp0Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Server
-IF EXIST "%~dp0DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0DebugServer
-IF EXIST "%~dp0Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Dev2.Server\bin\Debug
-IF EXIST "%~dp0..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..
-IF EXIST "%~dp0..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\Server
-IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\DebugServer
-IF EXIST "%~dp0..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\Dev2.Server\bin\Debug
-IF EXIST "%~dp0..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..
-IF EXIST "%~dp0..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\Server
-IF EXIST "%~dp0..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\DebugServer
-IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\Dev2.Server\bin\Debug
-IF EXIST "%~dp0..\..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..
-IF EXIST "%~dp0..\..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\Server
-IF EXIST "%~dp0..\..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\DebugServer
-IF EXIST "%~dp0..\..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\Dev2.Server\bin\Debug
+REM ** Init paths to Warewolf server under test **
 IF EXIST "%~dp0..\..\..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..
 IF EXIST "%~dp0..\..\..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\Server
 IF EXIST "%~dp0..\..\..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\DebugServer
 IF EXIST "%~dp0..\..\..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\..\Dev2.Server\bin\Debug
+IF EXIST "%~dp0..\..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..
+IF EXIST "%~dp0..\..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\Server
+IF EXIST "%~dp0..\..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\DebugServer
+IF EXIST "%~dp0..\..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\..\Dev2.Server\bin\Debug
+IF EXIST "%~dp0..\..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..
+IF EXIST "%~dp0..\..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\Server
+IF EXIST "%~dp0..\..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\DebugServer
+IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\..\Dev2.Server\bin\Debug
+IF EXIST "%~dp0..\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..
+IF EXIST "%~dp0..\Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\Server
+IF EXIST "%~dp0..\DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\DebugServer
+IF EXIST "%~dp0..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0..\Dev2.Server\bin\Debug
+IF EXIST "%~dp0Warewolf Server.exe" SET ServerBinDirectory=%~dp0
+IF EXIST "%~dp0Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Server
+IF EXIST "%~dp0DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0DebugServer
+IF EXIST "%~dp0Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Dev2.Server\bin\Debug
 IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 	echo Success: Warewolf server found at %ServerBinDirectory%\Warewolf Server.exe.
 ) else (
@@ -54,13 +61,13 @@ REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%ServerBinDirectory%\ServerStarted" DEL "%ServerBinDirectory%\ServerStarted"
 IF EXIST %windir%\nircmd.exe (
 	IF NOT "%1"=="" (
-		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+		nircmd elevate %DotCoverExePath% cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
 	) else (
 		nircmd elevate "%ServerBinDirectory%\Warewolf Server.exe"
 	)
 ) else (
 	IF NOT "%1"=="" (
-		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
+		%DotCoverExePath% cover /TargetExecutable="%ServerBinDirectory%\Warewolf Server.exe" /LogFile="%ProgramData%\Warewolf\Server Log\dotCover.log" /Output="%ProgramData%\Warewolf\Server Log\dotCover.dcvr"
 	) else (
 		START "%ServerBinDirectory%\Warewolf Server.exe" /D "%ServerBinDirectory%" "Warewolf Server.exe"
 	)
@@ -94,14 +101,14 @@ IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET StudioBin
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
 IF EXIST %windir%\nircmd.exe (
-	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
-		nircmd elevate "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	IF EXIST %DotCoverExePath% (
+		nircmd elevate %DotCoverExePath% cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
 	) else (
 		nircmd elevate "%StudioBinDirectory%\Warewolf Studio.exe"
 	)
 ) else (
-	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
-		"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
+	IF EXIST %DotCoverExePath% (
+		%DotCoverExePath% cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
 	) else (
 		START "%StudioBinDirectory%\Warewolf Studio.exe" /D "%StudioBinDirectory%" "Warewolf Studio.exe"
 	)
