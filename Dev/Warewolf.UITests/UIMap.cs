@@ -2152,7 +2152,7 @@ namespace Warewolf.UITests
         }
         
         [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
-        public void GivenIRefreshExplorerWithpoutWaitingForSpinner()
+        public void RefreshExplorerWithpoutWaitingForSpinner()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
         }
