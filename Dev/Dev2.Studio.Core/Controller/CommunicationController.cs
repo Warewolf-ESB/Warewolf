@@ -128,7 +128,7 @@ namespace Dev2.Controller
                 MessageBoxImage.Error, "", false, false, true, false, false, false);
         }
 
-        
+
         /// <summary>
         /// Executes the command.
         /// </summary>
@@ -155,7 +155,7 @@ namespace Dev2.Controller
                 StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
                 ValidatePayload(connection, payload, popupController);
                 var executeCommand = serializer.Deserialize<T>(payload);
-                if (executeCommand==null)
+                if (executeCommand == null)
                 {
                     var execMessage = serializer.Deserialize<ExecuteMessage>(payload);
                     if (execMessage != null)
@@ -176,7 +176,7 @@ namespace Dev2.Controller
         }
 
 
-        private static T CheckAuthorization<T>(ExecuteMessage message) where T:class
+        private static T CheckAuthorization<T>(ExecuteMessage message) where T : class
         {
             if (message != null)
             {
@@ -187,8 +187,8 @@ namespace Dev2.Controller
                     ShowAuthorizationErrorPopup(s);
                     if (typeof(T) == typeof(IExplorerRepositoryResult))
                     {
-                       var explorerRepositoryResult = new ExplorerRepositoryResult(ExecStatus.Fail, s);
-                       return explorerRepositoryResult as T;
+                        var explorerRepositoryResult = new ExplorerRepositoryResult(ExecStatus.Fail, s);
+                        return explorerRepositoryResult as T;
                     }
                     if (typeof(T) == typeof(ExecuteMessage))
                     {
@@ -206,16 +206,16 @@ namespace Dev2.Controller
                     {
                         return message as T;
                     }
-                }                
+                }
             }
             return default(T);
         }
 
         private static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
-            if(payload == null || payload.Length == 0)
+            if (payload == null || payload.Length == 0)
             {
-                if(connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
+                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
                     popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
                         , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
@@ -225,18 +225,18 @@ namespace Dev2.Controller
 
         private static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
         {
-            if(connection != null)
+            if (connection != null)
             {
                 try
                 {
-                    if(!connection.IsConnecting)
+                    if (!connection.IsConnecting)
                     {
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                               ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                             MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Error("Error popup", e);
                 }
@@ -337,7 +337,7 @@ namespace Dev2.Controller
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
+                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Information, "", false, false, true, false, false, false);
                     }
                 }
@@ -376,22 +376,17 @@ namespace Dev2.Controller
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
-            if (connection == null || !connection.IsConnected)
+            if (connection == null)
+            { return default(T); }
+            if (!connection.IsConnected && !connection.IsConnecting)
             {
-                if (connection != null)
-                {
-                    if (!connection.IsConnecting)
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK, 
-                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
-                    }
-                }
+                var popupController = CustomContainer.Get<IPopupController>();
+                popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
+                                      ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
+                                      MessageBoxImage.Information, "", false, false, true, false, false, false);
             }
             else
             {
-
                 // now bundle it up into a nice string builder ;)
                 if (ServicePayload == null)
                 {
