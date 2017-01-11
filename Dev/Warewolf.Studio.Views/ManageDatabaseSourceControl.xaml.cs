@@ -37,7 +37,7 @@ namespace Warewolf.Studio.Views
             switch (controlName)
             {
                 case "Save":
-                    var viewModel = DataContext as ManageOracleSourceViewModel;
+                    var viewModel = DataContext as DatabaseSourceViewModelBase;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnectionButton.Command.CanExecute(null);
@@ -114,7 +114,7 @@ namespace Warewolf.Studio.Views
 
         public void PerformSave()
         {
-            var viewModel = DataContext as ManageOracleSourceViewModel;
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
             viewModel?.OkCommand.Execute(null);
         }
 
@@ -130,8 +130,7 @@ namespace Warewolf.Studio.Views
 
         public string GetErrorMessage()
         {
-            //return ((ManageDatabaseSourceViewModel)DataContext).TestMessage;
-            return String.Empty;
+            return ((DatabaseSourceViewModelBase)DataContext).TestMessage;
         }
 
 
@@ -161,12 +160,6 @@ namespace Warewolf.Studio.Views
             return new List<string>();
         }
 
-        public string GetSelectedDbOption()
-        {
-            //return ServerTypeComboBox.SelectedItem.ToString();
-            return string.Empty;
-        }
-
         public void Test()
         {
             TestConnectionButton.Command.Execute(null);
@@ -184,13 +177,11 @@ namespace Warewolf.Studio.Views
 
         public string GetHeader()
         {
-            //return ((ManageDatabaseSourceViewModel)DataContext).HeaderText;
-            return String.Empty;
+            return ((DatabaseSourceViewModelBase)DataContext).HeaderText;
         }
         public string GetTabHeader()
         {
-            //return ((ManageDatabaseSourceViewModel)DataContext).Header;
-            return String.Empty;
+            return ((DatabaseSourceViewModelBase)DataContext).Header;
         }
         public void CancelTest()
         {
