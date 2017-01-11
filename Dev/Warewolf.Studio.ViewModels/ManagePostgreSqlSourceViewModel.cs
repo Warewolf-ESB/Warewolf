@@ -134,8 +134,6 @@ namespace Warewolf.Studio.ViewModels
                 Name = DbSource.Name,
                 Password = DbSource.Password,
                 Path = DbSource.Path,
-                Password = DbSource.Password,
-                UserName = DbSource.UserName,
                 ServerName = DbSource.ServerName,
                 UserName = DbSource.UserName,
                 Type = enSourceType.PostgreSQL
