@@ -48,15 +48,33 @@ $TestSettingsFile = "$PSScriptRoot\SaveDialogUISpecs.testsettings"
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UISpecs.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs.dll"
+}
+if (!(Test-Path $TestAssemblyPath)) {
+	Write-Host Cannot find Warewolf.UISpecs.dll at $SolutionDir\Warewolf.UISpecs\bin\Debug or $SolutionDir
+	exit 1
+}
+
 # Create full VSTest argument string.
 if ($TestList -eq "") {
-	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Save Dialog`""
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=SaveDialog`""
 } else {
-	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

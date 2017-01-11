@@ -113,8 +113,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
 
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
-
+            var resource = request.ResourceID != Guid.Empty ? ResourceCatalog.Instance.GetResource(workspaceID, request.ResourceID) : ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
             {

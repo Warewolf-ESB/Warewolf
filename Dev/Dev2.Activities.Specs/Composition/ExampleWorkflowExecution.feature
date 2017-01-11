@@ -6,7 +6,6 @@ Feature: ExampleWorkflowExecution
 	 
 Background: Setup for example workflow execution
 			Given Debug events are reset
-			And All environments disconnected
 			And Debug states are cleared
 
 Scenario: Example Executing Utility - Format Number example workflow

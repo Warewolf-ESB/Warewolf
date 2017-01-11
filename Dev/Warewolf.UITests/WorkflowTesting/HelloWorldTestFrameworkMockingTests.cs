@@ -96,7 +96,6 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
-            UIMap.EnterOutMessageValue_On_OutputMessage_TestStep(Message);
             UIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Failed status icon does not exist after running a text with the wrong output message.");
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
