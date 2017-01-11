@@ -2558,9 +2558,35 @@ namespace Warewolf.UITests
             Assert_Workflow_Testing_Tab_First_Test_Is_Passing(IsIsNot == "Is");
         }
 
+        [Given(@"That The Second Test ""(.*)"" Passing")]
+        [When(@"The Second Test ""(.*)"" Passing")]
+        [Then(@"The Second Test ""(.*)"" Passing")]
+        public void Assert_Workflow_Testing_Tab_Second_Test_Is_Passing(string IsIsNot)
+        {
+            Assert_Workflow_Testing_Tab_Second_Test_Is_Passing(IsIsNot == "Is");
+        }
+
+        [Given(@"That The Third Test ""(.*)"" Passing")]
+        [When(@"The Third Test ""(.*)"" Passing")]
+        [Then(@"The Third Test ""(.*)"" Passing")]
+        public void Assert_Workflow_Testing_Tab_Third_Test_Is_Passing(string IsIsNot)
+        {
+            Assert_Workflow_Testing_Tab_Third_Test_Is_Passing(IsIsNot == "Is");
+        }
+
         public void Assert_Workflow_Testing_Tab_First_Test_Is_Passing(bool passing = true)
         {
             Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists, (passing ? "First test is not passing." : "First test is passing."));
+        }
+
+        public void Assert_Workflow_Testing_Tab_Second_Test_Is_Passing(bool passing = true)
+        {
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Passing.Exists, (passing ? "Second test is not passing." : "Second test is passing."));
+        }
+
+        public void Assert_Workflow_Testing_Tab_Third_Test_Is_Passing(bool passing = true)
+        {
+            Assert.AreEqual(passing, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Passing.Exists, (passing ? "Third test is not passing." : "Third test is passing."));
         }
 
         [Given(@"That The First Test ""(.*)"" Invalid")]
