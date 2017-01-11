@@ -1519,8 +1519,7 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
-            var isDirty = IsDirty;
-            SetDisplayName(isDirty);
+            
         }
         private bool _canAddFromDebug;
         private bool _isLoading;
@@ -1574,6 +1573,8 @@ namespace Warewolf.Studio.ViewModels
                 _tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
+            var isDirty = IsDirty;
+            SetDisplayName(isDirty);
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
