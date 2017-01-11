@@ -178,11 +178,11 @@ namespace Warewolf.Studio.Views
 
         public string GetHeader()
         {
-            return ((ManageSqlServerSourceViewModel)DataContext).HeaderText;
+            return ((DatabaseSourceViewModelBase)DataContext).HeaderText;
         }
         public string GetTabHeader()
         {
-            return ((ManageSqlServerSourceViewModel)DataContext).Header;
+            return ((DatabaseSourceViewModelBase)DataContext).Header;
         }
         public void CancelTest()
         {
