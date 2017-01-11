@@ -18,7 +18,7 @@ namespace Warewolf.UITests
             UIMap.TryClearExplorerFilter();
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
-            UIMap.Filter_Explorer("DragAndDropMergeFilteredFolder1");
+            UIMap.Filter_Explorer("DragFilteredFolder1");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
         }
 
