@@ -222,17 +222,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
                 manageDatabaseSourceControl.VerifyServerExistsintComboBox(server);
             }
         }
-
-        [Then(@"type options contains")]
-        public void ThenTypeOptionsContains(Table table)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            var rows = table.Rows[0].Values;
-
-            var serverOptions = manageDatabaseSourceControl.GetServerOptions();
-            Assert.IsTrue(serverOptions.All(a => rows.Contains(a)));
-        }
+        
 
         [Given(@"I type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
@@ -431,7 +421,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             mockRequestServiceNameViewModel.Verify();
         }
 
-        //[AfterScenario("DbSource")]
+        [AfterScenario("DbSource")]
         public void Cleanup()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");

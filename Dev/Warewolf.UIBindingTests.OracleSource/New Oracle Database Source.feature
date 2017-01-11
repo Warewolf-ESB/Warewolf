@@ -22,7 +22,7 @@ Feature: New Oracle Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New Oracle Source" tab is opened
@@ -62,7 +62,7 @@ Scenario: Creating New DB Source General Testing
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
    
-@SQLDbSource
+@OracleDbSource
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
@@ -84,7 +84,7 @@ Scenario: Creating New DB Source as User Auth
 	When I save the source
 	Then the save dialog is opened
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -98,7 +98,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 
- @SQLDbSource
+ @OracleDbSource
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -113,7 +113,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
- @SQLDbSource
+ @OracleDbSource
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRGENDEV"
@@ -129,7 +129,7 @@ Scenario: Incorrect Server Address Shows correct error message
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Testing as Windows and swapping it resets the test connection 
 	  Given I open New Database Source
 	  And "Save" is "Disabled"
@@ -155,7 +155,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRGENDEV"
@@ -181,7 +181,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	And "Test Connection" is "Disabled"
 	And "Save" is "Disabled"
 	
-@SQLDbSource
+@OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRGENDEV"
@@ -202,7 +202,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	When Test Connecton is "Successful"
 	Then "Save" is "Enabled"
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRGENDEV"
@@ -218,7 +218,7 @@ Scenario: Cancel DB Source Test
    And "Save" is "Disabled"
 
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New Database Source" tab is opened
@@ -249,7 +249,7 @@ Scenario: Changing database type after testing connection
    And I select "test" as Database
    Then "Save" is "Enabled"
 
-@SQLDbSource
+@OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials for Oracle
 Given I open "Database Source - testOracle" 
 	And Server as "localhost"
@@ -270,13 +270,13 @@ Given I open "Database Source - testOracle"
 	And "Save" is "Enabled" 
 
 
-@SQLDbSource
-Scenario: Creating New DB Source as Windows Auth
+@OracleDbSource
+Scenario: Creating New Oracle Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
-	And I Select Authentication Type as "Windows"
-	Then Username field is "Collapsed"
-	And Password field is "Collapsed"
+	And I Select Authentication Type as "User"
+	Then Username field is "Visible"
+	And Password field is "Visible"
 	And "Save" is "Disabled"
 	Then "Test Connection" is "Enabled" 
 	And "Save" is "Disabled"
