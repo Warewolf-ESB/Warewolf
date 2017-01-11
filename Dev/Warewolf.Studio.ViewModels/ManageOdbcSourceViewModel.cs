@@ -24,8 +24,8 @@ namespace Warewolf.Studio.ViewModels
         public ManageOdbcSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base(updateManager, requestServiceNameViewModel, aggregator, asyncWorker, "ODBC")
         {
-            HeaderText = Resources.Languages.Core.OracleSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.OracleSourceNewHeaderLabel;
+            HeaderText = Resources.Languages.Core.OdbcSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.OdbcSourceNewHeaderLabel;
             InitializeViewModel();
         }
 
