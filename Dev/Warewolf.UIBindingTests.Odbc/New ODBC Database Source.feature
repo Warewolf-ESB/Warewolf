@@ -45,87 +45,8 @@ Scenario: Creating New DB Source General Testing
    And title is "SavedDBSource"
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
-   
-@SQLDbSource
-Scenario: Creating New DB Source as User Auth
-	Given I open New Database Source
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	Then Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	Then Test Connecton is "Successful"
-	And "Save" is "Disabled"
-	And Database dropdown is "Visible"
-	When I select "Dev2TestingDB" as Database
-	Then "Save" is "Enabled" 
-	When I save the source
-	Then the save dialog is opened
 
-@SQLDbSource
-Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
-	  Given I open New Database Source
-	  And "Save" is "Disabled"
-	  Then Database dropdown is "Collapsed"
-	  And "Test Connection" is "Enabled"
-	  When Test Connecton is "Unsuccessful"
-	  Then Database dropdown is "Collapsed"
-	  And "Save" is "Disabled"
 
- @SQLDbSource
-Scenario: Incorrect Server Address Doesnt Allow Save User Auth
-	  Given I open New Database Source
-	  Then Database dropdown is "Collapsed"
-	  And "Test Connection" is "Enabled"
-	  When Test Connecton is "Unsuccessful"
-	  Then Database dropdown is "Collapsed"
-	  And "Save" is "Disabled"
-	  
- @SQLDbSource
-Scenario: Incorrect Server Address Shows correct error message
-	  Given I open New Database Source
-	  Then Database dropdown is "Collapsed"
-	  And "Test Connection" is "Enabled"
-	  When Test Connecton is "Unsuccessful"
-	  Then Database dropdown is "Collapsed"
-	  And "Save" is "Disabled"
-	  And the error message is "Login failed for user 'test'"
-
-@SQLDbSource
-Scenario: Testing as Windows and swapping it resets the test connection 
-	  Given I open New Database Source
-	  And "Save" is "Disabled"
-	  And "Test Connection" is "Enabled"
-	  And "Test Connection" is "Disabled"
-	  And "Save" is "Disabled"
-	  Then "Test Connection" is "Enabled" 
-	  And "Save" is "Disabled"
-	  Then Database dropdown is "Collapsed"
-	  Then Test Connecton is "Successful"
-	  And "Save" is "Disabled"
-	  And Database dropdown is "Visible"
-	  When I select "Dev2TestingDB" as Database
-	  And "Save" is "Disabled"
-
-@SQLDbSource
-Scenario: Editing saved DB Source Remembers Previous Auth Selection
-	Given I open "Database Source - Test" 
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	And Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	And Test Connecton is "Successful"
-	And "Save" is "Enabled"
-	And Database dropdown is "Visible"
-	And I select "Dev2TestingDB2" as Database
-	And "Save" is "Enabled" 
-	Then "Test Connection" is "Disabled" 
-	And "Save" is "Disabled"
-	And Database "Dev2TestingDB" is selected 
-	And "Test Connection" is "Disabled"
-	And "Save" is "Disabled"
 	
 @SQLDbSource
 Scenario: Editing saved DB Source Remembers credentials
@@ -150,41 +71,6 @@ Scenario: Cancel DB Source Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
-
-
-@SQLDbSource
-Scenario: Changing database type after testing connection
-   Given I open New Database Source
-   Then "New Database Source" tab is opened
-   And title is "New Database Source"
-   And "Test Connection" is "Enabled"
-   When I click "Test Connection"
-   Then Test Connecton is "Successful"
-   Then Database dropdown is "Visible"
-   Then I select "Dev2TestingDB" as Database
-   And "Save" is "Enabled"   
-   Then "Save" is "Disabled"
-   And "Test Connection" is "Enabled"   
-   When Test Connecton is "Successful"
-   Then Database dropdown is "Visible"
-   And I select "test" as Database
-   Then "Save" is "Enabled"
-
-@SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials for Oracle
-Given I open "Database Source - testOracle" 
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	And Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	And Test Connecton is "Successful"
-	And "Save" is "Enabled"
-	And Database dropdown is "Visible"
-	And I select "Dev2TestingDB2" as Database
-	And "Save" is "Enabled" 
-
 
 @SQLDbSource
 Scenario: Creating New DB Source as Windows Auth
