@@ -22,7 +22,7 @@ Feature: New ODBC Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@SQLDbSource
+@ODBCSource
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New ODBC Source" tab is opened
@@ -46,22 +46,7 @@ Scenario: Creating New DB Source General Testing
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
 
-
-	
-@SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials
-	Given I open "Database Source - Test" 
-	And "Test Connection" is "Enabled"
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	Then Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	When Test Connecton is "Successful"
-	Then "Save" is "Enabled"
-
-@SQLDbSource
+@ODBCSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    And "Save" is "Disabled"
@@ -72,7 +57,7 @@ Scenario: Cancel DB Source Test
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
 
-@SQLDbSource
+@ODBCSource
 Scenario: Creating New DB Source as Windows Auth
 	Given I open New Database Source
 	And "Save" is "Disabled"
