@@ -97,31 +97,6 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        #region Overrides of DatabaseSourceViewModelBase
-
-        public override IDbSource ToModel()
-        {
-            if (Item == null)
-            {
-                Item = ToDbSource();
-                return Item;
-            }
-
-            return new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
-                Password = Password,
-                UserName = UserName,
-                Type = enSourceType.PostgreSQL,
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = Item.Id
-            };
-        }
-
-        #endregion
-
         protected override IDbSource ToDbSource()
         {
             return DbSource == null ? new DbSourceDefinition
@@ -157,11 +132,34 @@ namespace Warewolf.Studio.ViewModels
                 DbName = DbSource.DbName,
                 Id = DbSource.Id,
                 Name = DbSource.Name,
+                Password = DbSource.Password,
                 Path = DbSource.Path,
                 Password = DbSource.Password,
                 UserName = DbSource.UserName,
                 ServerName = DbSource.ServerName,
+                UserName = DbSource.UserName,
                 Type = enSourceType.PostgreSQL
+            };
+        }
+
+        public override IDbSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToDbSource();
+                return Item;
+            }
+
+            return new DbSourceDefinition
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = GetServerName(),
+                Password = Password,
+                UserName = UserName,
+                Type = enSourceType.PostgreSQL,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id = Item.Id
             };
         }
 

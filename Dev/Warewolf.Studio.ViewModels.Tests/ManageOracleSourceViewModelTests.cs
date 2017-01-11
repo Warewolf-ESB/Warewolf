@@ -114,47 +114,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsExceptionWithInnerException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames())
-                .Throws(new Exception("someOuterExceptionMessage", new Exception(expectedExceptionMessage)));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManageOracleSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames()).Throws(new Exception(expectedExceptionMessage));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManageOracleSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelUpdateManagerNull()
         {
@@ -321,63 +280,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("Header"));
             Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("UserAuthenticationSelected"));
             Assert.IsFalse(_targetAsyncWorker.DatabaseNames.Any());
-            Assert.IsFalse(_targetAsyncWorker.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_targetAsyncWorker.TestMessage));
-            Assert.IsFalse(_targetAsyncWorker.TestFailed);
-            Assert.IsFalse(_targetAsyncWorker.Testing);
-        }
-
-        [TestMethod]
-        public void TestAuthenticationType_dbSourceNotNullPublic()
-        {
-            //arrange
-            var expectedValue = AuthenticationType.Public;
-            _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
-            _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "DatabaseNamesItem" };
-
-            //act
-            _targetUpdateManagerAggregatorDbSource.AuthenticationType = expectedValue;
-            var actualValue = _targetUpdateManagerAggregatorDbSource.AuthenticationType;
-
-            //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.IsTrue(string.IsNullOrEmpty(_targetUpdateManagerAggregatorDbSource.Password));
-            Assert.IsTrue(string.IsNullOrEmpty(_targetUpdateManagerAggregatorDbSource.UserName));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("AuthenticationType"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("Header"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("UserAuthenticationSelected"));
-            Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.DatabaseNames.Any());
-            Assert.IsFalse(_targetAsyncWorker.TestPassed);
-            Assert.IsTrue(string.IsNullOrEmpty(_targetAsyncWorker.TestMessage));
-            Assert.IsFalse(_targetAsyncWorker.TestFailed);
-            Assert.IsFalse(_targetAsyncWorker.Testing);
-        }
-
-        [TestMethod]
-        public void TestAuthenticationType_dbSourceNotNullUserSameDbSource()
-        {
-            //arrange
-            var expectedValue = AuthenticationType.User;
-            _dbSourceMock.SetupGet(it => it.AuthenticationType).Returns(AuthenticationType.User);
-            var expectedPassword = "somePassword";
-            var expectedUsername = "someUsername";
-            _dbSourceMock.SetupGet(it => it.Password).Returns(expectedPassword);
-            _dbSourceMock.SetupGet(it => it.UserName).Returns(expectedUsername);
-            _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
-            _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "DatabaseNamesItem" };
-
-            //act
-            _targetUpdateManagerAggregatorDbSource.AuthenticationType = expectedValue;
-            var actualValue = _targetUpdateManagerAggregatorDbSource.AuthenticationType;
-
-            //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Password);
-            Assert.AreEqual(expectedUsername, _targetUpdateManagerAggregatorDbSource.UserName);
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("AuthenticationType"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("Header"));
-            Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("UserAuthenticationSelected"));
-            Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.DatabaseNames.Any());
             Assert.IsFalse(_targetAsyncWorker.TestPassed);
             Assert.IsTrue(string.IsNullOrEmpty(_targetAsyncWorker.TestMessage));
             Assert.IsFalse(_targetAsyncWorker.TestFailed);
@@ -705,8 +607,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _targetUpdateManagerAggregatorDbSource.ServerName = new ComputerName() { Name = "someName" };
-            _targetUpdateManagerAggregatorDbSource.AuthenticationType = AuthenticationType.Public;
-            
+            _targetUpdateManagerAggregatorDbSource.AuthenticationType = AuthenticationType.User;
+            _targetUpdateManagerAggregatorDbSource.UserName = "someusername";
+            _targetUpdateManagerAggregatorDbSource.Password = "somepassword";
+            _targetUpdateManagerAggregatorDbSource.DatabaseName = "somedatabase";
+
             //act
             var result = _targetUpdateManagerAggregatorDbSource.TestCommand.CanExecute(null);
             
@@ -1048,20 +953,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
-        }
-
-        [TestMethod]
-        public void TestSave()
-        {
-            //arrange
-            var exceptionMessage = "exceptionMessage";
-            _updateManagerMock.Setup(it => it.Save(It.IsAny<IDbSource>())).Throws(new Exception(exceptionMessage));
-
-            //act
-            _targetUpdateManagerAggregatorDbSource.Save();
-
-            //assert
-            _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
         }
 
         [TestMethod]
