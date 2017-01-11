@@ -1,6 +1,6 @@
 
-<Service ID="5444d7d9-14d4-4e94-b065-a878aa8819cb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DragAndDropMergeFilteredResource2" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6218.19220">
-  <DisplayName>DragAndDropMergeFilteredResource2</DisplayName>
+<Service ID="5444d7d9-14d4-4e94-b065-a878aa8819cb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DragFilteredResource2" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6219.14711">
+  <DisplayName>DragFilteredResource2</DisplayName>
   <Category>Acceptance Testing Resources\DragAndDropMergeFilteredFolder1\DragAndDropMergeFilteredResource1</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
