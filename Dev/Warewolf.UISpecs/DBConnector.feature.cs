@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.And("I Click UserButton On Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I Enter RunAsUser Username And Password on Database source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter TestUser Username And Password on Database source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.And("I Click DB Source Wizard Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -168,7 +168,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.And("I Drag Toolbox SQL Server Tool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.And("I Select NewDatabaseSource FromSqlServerTool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select NewSQLServerDatabaseSource FromSqlServerTool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.And("I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41

@@ -12,7 +12,7 @@ Scenario: Create and Execute New DB Connector With Variables
 	Given RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
 	When I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
 	And I Click UserButton On Database Source
-	And I Enter RunAsUser Username And Password on Database source
+	And I Enter TestUser Username And Password on Database source
 	And I Click DB Source Wizard Test Connection Button
 	Given The DB Source Wizard Test Succeeded Image Is Visible
 	When I Select Dev2TestingDB From DB Source Wizard Database Combobox
@@ -36,7 +36,7 @@ Scenario: Create DB Source From Tool
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Drag Toolbox SQL Server Tool Onto DesignSurface
-	And I Select NewDatabaseSource FromSqlServerTool
+	And I Select NewSQLServerDatabaseSource FromSqlServerTool
 	And I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox
 	And I Click DB Source Wizard Test Connection Button
 	Then The DB Source Wizard Test Succeeded Image Is Visible
