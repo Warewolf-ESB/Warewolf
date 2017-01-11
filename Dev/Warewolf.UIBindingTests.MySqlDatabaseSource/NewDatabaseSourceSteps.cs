@@ -249,7 +249,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Database dropdown is ""(.*)""")]
         public void GivenDropdownIs(string visibility)
         {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
@@ -269,7 +269,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"I Select Authentication Type as ""(.*)""")]
         public void GivenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
-            var authenticationType = String.Equals(authenticationTypeString, "Windows",
+            var authenticationType = string.Equals(authenticationTypeString, "Windows",
                 StringComparison.InvariantCultureIgnoreCase)
                 ? AuthenticationType.Windows
                 : AuthenticationType.User;
@@ -311,7 +311,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Username field is ""(.*)""")]
         public void ThenUsernameFieldIs(string visibility)
         {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetUsernameVisibility();
@@ -337,7 +337,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Password field is ""(.*)""")]
         public void ThenPasswordFieldIs(string visibility)
         {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetPasswordVisibility();
@@ -381,8 +381,8 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTestConnectonIs(string successString)
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
-            var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
+            var isSuccess = string.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
+            var isLongRunning = string.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
@@ -468,7 +468,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)
         {
-            var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = string.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);

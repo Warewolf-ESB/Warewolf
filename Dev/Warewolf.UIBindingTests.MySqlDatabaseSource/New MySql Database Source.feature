@@ -25,8 +25,8 @@ Feature: New MySql Database Source
 @SQLDbSource
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
-   Then "New MySql Source" tab is opened
-   And title is "New MySql Source"
+   Then "New MySQL Source" tab is opened
+   And title is "New MySQL Source"
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
@@ -250,7 +250,7 @@ Scenario: Changing database type after testing connection
    Then "Save" is "Enabled"
 
 @SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials for Oracle
+Scenario: Editing saved DB Source Remembers credentials for MySql
 Given I open "MySQL Source - testOracle" 
 	And Server as "localhost"
 	And Authentication Type is selected as "User"
