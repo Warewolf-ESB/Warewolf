@@ -73,11 +73,11 @@ namespace Warewolf.UIBindingTests.OracleSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source General Testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void CreatingNewDBSourceGeneralTesting()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source General Testing", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 26
 this.ScenarioSetup(scenarioInfo);
 #line 27
@@ -164,11 +164,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as User Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void CreatingNewDBSourceAsUserAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as User Auth", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 66
 this.ScenarioSetup(scenarioInfo);
 #line 67
@@ -217,11 +217,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Doesnt Allow Save Windows Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void IncorrectServerAddressDoesntAllowSaveWindowsAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Doesnt Allow Save Windows Auth", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 88
 this.ScenarioSetup(scenarioInfo);
 #line 89
@@ -254,11 +254,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Doesnt Allow Save User Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void IncorrectServerAddressDoesntAllowSaveUserAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Doesnt Allow Save User Auth", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 102
 this.ScenarioSetup(scenarioInfo);
 #line 103
@@ -293,11 +293,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Shows correct error message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void IncorrectServerAddressShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Shows correct error message", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 117
 this.ScenarioSetup(scenarioInfo);
 #line 118
@@ -334,11 +334,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing as Windows and swapping it resets the test connection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void TestingAsWindowsAndSwappingItResetsTheTestConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing as Windows and swapping it resets the test connection", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 133
 this.ScenarioSetup(scenarioInfo);
 #line 134
@@ -395,11 +395,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers Previous Auth Selection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void EditingSavedDBSourceRemembersPreviousAuthSelection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers Previous Auth Selection", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 159
 this.ScenarioSetup(scenarioInfo);
 #line 160
@@ -456,11 +456,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers credentials")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void EditingSavedDBSourceRemembersCredentials()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers credentials", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 185
 this.ScenarioSetup(scenarioInfo);
 #line 186
@@ -507,11 +507,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel DB Source Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void CancelDBSourceTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel DB Source Test", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 206
 this.ScenarioSetup(scenarioInfo);
 #line 207
@@ -546,11 +546,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing database type after testing connection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void ChangingDatabaseTypeAfterTestingConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing database type after testing connection", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 222
 this.ScenarioSetup(scenarioInfo);
 #line 223
@@ -619,11 +619,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers credentials for Oracle")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
         public virtual void EditingSavedDBSourceRemembersCredentialsForOracle()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers credentials for Oracle", new string[] {
-                        "SQLDbSource"});
+                        "OracleDbSource"});
 #line 253
 this.ScenarioSetup(scenarioInfo);
 #line 254
@@ -665,14 +665,14 @@ testRunner.Given("I open \"Database Source - testOracle\"", ((string)(null)), ((
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as Windows Auth")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New Oracle Source as User Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
-        public virtual void CreatingNewDBSourceAsWindowsAuth()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleDbSource")]
+        public virtual void CreatingNewOracleSourceAsUserAuth()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as Windows Auth", new string[] {
-                        "SQLDbSource"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New Oracle Source as User Auth", new string[] {
+                        "OracleDbSource"});
 #line 274
 this.ScenarioSetup(scenarioInfo);
 #line 275
@@ -680,11 +680,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 276
  testRunner.And("I type Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 277
- testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 278
- testRunner.Then("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Username field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 279
- testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password field is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 281
