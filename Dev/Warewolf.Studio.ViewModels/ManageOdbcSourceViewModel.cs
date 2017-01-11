@@ -86,7 +86,9 @@ namespace Warewolf.Studio.ViewModels
             return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
+                ServerName = EmptyServerName,
+                Password = Password,
+                UserName = UserName,
                 Type = enSourceType.ODBC,
                 Name = ResourceName,
                 DbName = DatabaseName,
@@ -99,7 +101,9 @@ namespace Warewolf.Studio.ViewModels
             return DbSource == null ? new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
+                ServerName = EmptyServerName,
+                Password = Password,
+                UserName = UserName,
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
@@ -108,7 +112,9 @@ namespace Warewolf.Studio.ViewModels
             } : new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
+                ServerName = EmptyServerName,
+                Password = Password,
+                UserName = UserName,
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
@@ -122,10 +128,13 @@ namespace Warewolf.Studio.ViewModels
             return new DbSourceDefinition
             {
                 AuthenticationType = DbSource.AuthenticationType,
+                DbName = DbSource.DbName,
                 Id = DbSource.Id,
                 Name = DbSource.Name,
+                Password = DbSource.Password,
                 Path = DbSource.Path,
-                ServerName = DbSource.ServerName,
+                ServerName = string.IsNullOrWhiteSpace(EmptyServerName) ? "Localhost" : EmptyServerName,
+                UserName = DbSource.UserName,
                 Type = enSourceType.ODBC
             };
         }
@@ -141,7 +150,9 @@ namespace Warewolf.Studio.ViewModels
             return new DbSourceDefinition()
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
+                ServerName = EmptyServerName,
+                Password = Password,
+                UserName = UserName,
                 Type = enSourceType.ODBC,
                 Name = ResourceName,
                 DbName = DatabaseName,

@@ -114,47 +114,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        public void TestManagePostgreSqlSourceViewModelUpdateManagerThrowsExceptionWithInnerException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames())
-                .Throws(new Exception("someOuterExceptionMessage", new Exception(expectedExceptionMessage)));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManagePostgreSqlSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
-        public void TestManagePostgreSqlSourceViewModelUpdateManagerThrowsException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames()).Throws(new Exception(expectedExceptionMessage));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManagePostgreSqlSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManagePostgreSqlSourceViewModelUpdateManagerNull()
         {
@@ -550,6 +509,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _targetUpdateManagerAggregatorDbSource.ServerName = new ComputerName() { Name = "someName" };
             _targetUpdateManagerAggregatorDbSource.AuthenticationType = AuthenticationType.User;
+            _targetUpdateManagerAggregatorDbSource.UserName = "someusername";
+            _targetUpdateManagerAggregatorDbSource.Password = "somepassword";
+            _targetUpdateManagerAggregatorDbSource.DatabaseName = "somedatabase";
 
             //act
             var result = _targetUpdateManagerAggregatorDbSource.TestCommand.CanExecute(null);
@@ -773,8 +735,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);
             Assert.AreEqual(expectedAuthenticationType, _targetUpdateManagerAggregatorDbSource.Item.AuthenticationType);
             Assert.AreEqual(expectedServerName, _targetUpdateManagerAggregatorDbSource.Item.ServerName);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerRequestServiceName.Item.Password);
-            Assert.AreEqual(expectedUsername, _targetUpdateManagerRequestServiceName.Item.UserName);
+            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Item.Password);
+            Assert.AreEqual(expectedUsername, _targetUpdateManagerAggregatorDbSource.Item.UserName);
             Assert.AreEqual(expectedType, _targetUpdateManagerAggregatorDbSource.Item.Type);
             Assert.AreEqual(expectedPath, _targetUpdateManagerAggregatorDbSource.Item.Path);
             Assert.AreEqual(dbSourceName, _targetUpdateManagerAggregatorDbSource.Item.Name);
@@ -892,20 +854,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
-        }
-
-        [TestMethod]
-        public void TestSave()
-        {
-            //arrange
-            var exceptionMessage = "exceptionMessage";
-            _updateManagerMock.Setup(it => it.Save(It.IsAny<IDbSource>())).Throws(new Exception(exceptionMessage));
-
-            //act
-            _targetUpdateManagerAggregatorDbSource.Save();
-
-            //assert
-            _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
         }
 
         [TestMethod]
