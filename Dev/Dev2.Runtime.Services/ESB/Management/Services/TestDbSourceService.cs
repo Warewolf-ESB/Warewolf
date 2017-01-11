@@ -59,9 +59,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     AuthenticationType = src.AuthenticationType,
                     Server = src.ServerName,
-                    //Password = src.Password,
+                    Password = src.Password,
                     ServerType = src.Type,
-                    //UserID = src.UserName
+                    UserID = src.UserName
 
                 });
 
