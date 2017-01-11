@@ -84,7 +84,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.And("I Open Explorer First Item Tests With Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
- testRunner.When("I Press F6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I Click Run all tests button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.Then("The First Test \"Is\" Passing", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
