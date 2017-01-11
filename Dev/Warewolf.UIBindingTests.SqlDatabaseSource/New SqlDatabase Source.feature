@@ -221,8 +221,8 @@ Scenario: Cancel DB Source Test
 @SQLDbSource
 Scenario: Changing database type after testing connection
    Given I open New Database Source
-   Then "New Database Source" tab is opened
-   And title is "New Database Source"
+   Then "New Sql Server Source" tab is opened
+   And title is "New Sql Server Source"
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
@@ -235,7 +235,6 @@ Scenario: Changing database type after testing connection
    | Microsoft SQL Server |
    | MySQL                |
    And I type Select The Server as "RSAKLFSVRGENDEV"
-   And type options has "Microsoft SQL Server" as the default
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
    When I click "Test Connection"
@@ -243,8 +242,6 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database
    And "Save" is "Enabled"   
-   When I change type option from "Microsoft SQL Server" to "MySql Database"
-   Then "Save" is "Disabled"
    And "Test Connection" is "Enabled"   
    When Test Connecton is "Successful"
    Then Database dropdown is "Visible"
@@ -252,9 +249,8 @@ Scenario: Changing database type after testing connection
    Then "Save" is "Enabled"
 
 @SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials for Oracle
+Scenario: Editing saved DB Source Remembers credentials for SqlServer
 Given I open "Database Source - testOracle" 
-	And type option has "Oracle Database" selected
     And Server as "localhost"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
