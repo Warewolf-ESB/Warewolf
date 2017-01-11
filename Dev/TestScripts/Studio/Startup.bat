@@ -113,6 +113,10 @@ IF EXIST %windir%\nircmd.exe (
 		START "%StudioBinDirectory%\Warewolf Studio.exe" /D "%StudioBinDirectory%" "Warewolf Studio.exe"
 	)
 )
-waitfor StudioStart /t 60 2>NUL
+IF NOT "%1"=="" (
+	waitfor StudioStart /t 120 2>NUL
+) else (
+	waitfor StudioStart /t 60 2>NUL
+)
 @echo Started "%StudioBinDirectory%\Warewolf Studio.exe".
 exit 0
