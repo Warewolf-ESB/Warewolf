@@ -101,13 +101,13 @@ IF EXIST "%ServerBinDirectory%\..\DebugStudio\Warewolf Studio.exe" SET StudioBin
 REM ** Start Warewolf studio from deployed binaries **
 @echo on
 IF EXIST %windir%\nircmd.exe (
-	IF EXIST %DotCoverExePath% (
+	IF NOT "%1"=="" (
 		nircmd elevate %DotCoverExePath% cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
 	) else (
 		nircmd elevate "%StudioBinDirectory%\Warewolf Studio.exe"
 	)
 ) else (
-	IF EXIST %DotCoverExePath% (
+	IF NOT "%1"=="" (
 		%DotCoverExePath% cover /TargetExecutable="%StudioBinDirectory%\Warewolf Studio.exe" /LogFile="%LocalAppData%\Warewolf\Studio Logs\dotCover.log" /Output="%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr"
 	) else (
 		START "%StudioBinDirectory%\Warewolf Studio.exe" /D "%StudioBinDirectory%" "Warewolf Studio.exe"
