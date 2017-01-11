@@ -491,7 +491,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = new List<ComputerName>();
-            //_targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -893,7 +892,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.MySqlDatabase;
             var expectedPath = "somePath";
             var expectedName = "someName";
             var expectedDbName = "someDbName";
@@ -932,7 +931,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Oracle;
+            var expectedType = enSourceType.MySqlDatabase;
             var expectedPath = "somePath";
             var expectedDbName = "someDbName";
             var dbSourceName = "dbSourceName";
@@ -993,8 +992,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
-            var expectedType = enSourceType.Oracle;
-            //_targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
+            var expectedType = enSourceType.MySqlDatabase;
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";

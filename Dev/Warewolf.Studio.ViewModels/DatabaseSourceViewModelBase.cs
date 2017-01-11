@@ -180,16 +180,16 @@ namespace Warewolf.Studio.ViewModels
                 if (_authenticationType != value)
                 {
                     _authenticationType = value;
-                    /* if (_dbSource != null && _authenticationType == AuthenticationType.User && _authenticationType == _dbSource.AuthenticationType)
-                     {
-                         Password = _dbSource.Password;
-                         UserName = _dbSource.UserName;
-                     }
-                     else
-                     {
-                         Password = string.Empty;
-                         UserName = string.Empty;
-                     }*/
+                    if (DbSource != null && _authenticationType == AuthenticationType.User && _authenticationType == DbSource.AuthenticationType)
+                    {
+                        Password = DbSource.Password;
+                        UserName = DbSource.UserName;
+                    }
+                    else
+                    {
+                        Password = string.Empty;
+                        UserName = string.Empty;
+                    }
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
@@ -407,15 +407,6 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
-            //Types = new List<NameValue>
-            //{
-            //    new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
-            //    new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
-            //    new NameValue { Name = "PostgreSQL Database", Value = enSourceType.PostgreSQL.ToString() },
-            //    new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() },
-            //    new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
-            //};
-            //ServerType = Types[0];
             _testPassed = false;
             _testFailed = false;
             DatabaseNames = new List<string>();
