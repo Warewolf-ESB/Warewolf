@@ -19,9 +19,14 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
             UIMap.IClickUserButtonOnDatabaseSource();
             UIMap.Enter_Text_Into_DatabaseServer_Tab();
-            UIMap.IEnterRunAsUserUsernameAndPasswordOnDatabaseSource();
+            UIMap.IEnterRunAsUserTestUserOnDatabaseSource();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
+            UIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Save_With_Ribbon_Button_And_Dialog("TestSQLServerDBSource");
+            UIMap.Filter_Explorer("TestSQLServerDBSource");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Database did not save in the explorer UI.");
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes
