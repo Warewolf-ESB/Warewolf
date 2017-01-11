@@ -13,6 +13,15 @@ if %errorLevel% == 0 (
 REM ** Cleanup **
 call "%~dp0Cleanup.bat"
 
+REM ** Init path to DotCover Exe **
+IF NOT "%1"=="" (
+	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
+		set DotCoverExePath=\"%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe\"
+	) else (
+		set DotCoverExePath=%1
+	)
+)
+
 REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..\Dev2.Server\bin\Debug
@@ -23,6 +32,7 @@ IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Warewolf Server.exe" SET Dep
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\..\..\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\..\..
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
+IF NOT EXIST "%DeploymentDirectory%\Warewolf Server.exe" echo Cannot find Warewolf Server.exe & waitfor ErrorMessage /t 10 2>NUL & exit 1
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 sc interrogate "Warewolf Server"
@@ -35,7 +45,19 @@ if %ERRORLEVEL% EQU 0 GOTO Running
 @echo on
 @echo Creating Warewolf Server Service... Please any key to continue. Consider changing the user the service runs as to ensure accurate test results.
 PAUSE
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
+IF EXIST %windir%\nircmd.exe (
+	IF NOT "%1"=="" (
+		nircmd elevate sc create "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand
+	) else (
+		nircmd elevate sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand
+	)
+) else (
+	IF NOT "%1"=="" (
+		sc create "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand
+	) else (
+		sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand
+	)
+)
 GOTO StartService
 
 :NotReady
@@ -54,11 +76,19 @@ goto WaitForServiceReadyLoopBody
 
 :Running
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
+IF NOT "%1"=="" (
+	IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand) else (sc config "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand)
+) else (
+	IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
+)
 GOTO StartService
 
 :NotStarted
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
+IF NOT "%1"=="" (
+	IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand) else (sc config "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand)
+) else (
+	IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand) else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" start= demand)
+)
 GOTO StartService
 
 :StartService
