@@ -41,8 +41,8 @@ namespace Dev2.DynamicServices.Test
 
         const enDynamicServiceObjectType ServiceType = enDynamicServiceObjectType.DynamicService;
 
-        readonly static object SyncRoot = new object();
-        readonly static object MonitorLock = new object();
+        static readonly object SyncRoot = new object();
+        static readonly object MonitorLock = new object();
 
         #region TestInitialize/Cleanup
 

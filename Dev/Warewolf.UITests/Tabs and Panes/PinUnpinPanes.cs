@@ -56,7 +56,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDBSourceWizardTab()
         {
-            UIMap.Click_New_Database_Source_Ribbon_Button();
+            UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab);
         }
 
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
-            UIMap.Click_NewPluginSource_Ribbon_Button();
+            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab);
         }
 
@@ -72,7 +72,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinWebSourceWizardTab()
         {
-            UIMap.Click_New_Web_Source_Ribbon_Button();
+            UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
         }
@@ -112,6 +112,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
+        [Ignore]
         public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -125,6 +126,17 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
+        [Ignore]
+        public void DragAssignToolInUnpinnedWorkflowTabUITest()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        [Ignore]
         public void AssignToolInUnpinnedWorkflowTabAddVariableUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
