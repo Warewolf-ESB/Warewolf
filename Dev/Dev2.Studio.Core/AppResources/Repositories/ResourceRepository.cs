@@ -107,13 +107,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
         {
-            var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
-            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), resourceType));
-
-            var con = _environmentModel.Connection;
-            comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-
             var effectedResources = FindAffectedResources(new List<Guid> { resourceId }, resourceType, equalityComparer, fetchXaml);
 
             return effectedResources;
@@ -561,14 +554,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         resource.AddError(error);
                     }
-                }
-
-                if (fetchXaml)
-                {
-                    var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id, prepairForDeployment);
-                    if (msg == null || msg.HasError)
-                        return null;
-                    resource.WorkflowXaml = msg.Message;
                 }
 
                 if (isNewWorkflow)
