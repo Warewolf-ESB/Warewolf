@@ -22,7 +22,7 @@ Feature: New MySql Database Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -33,11 +33,7 @@ Scenario: Creating New DB Source General Testing
    | RSAKLFSVRGENDEV |
    | RSAKLFSVRSBSPDC |
    | RSAKLFSVRTFSBLD |
-   | RSAKLFSVRWRWBLD |
-   And type options contains
-   | Options              |
-   | Microsoft SQL Server |
-   | MySQL                |
+   | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRGENDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
@@ -62,7 +58,7 @@ Scenario: Creating New DB Source General Testing
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
    
-@SQLDbSource
+@MySqlDbSource
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
@@ -84,7 +80,7 @@ Scenario: Creating New DB Source as User Auth
 	When I save the source
 	Then the save dialog is opened
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -98,7 +94,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 
- @SQLDbSource
+ @MySqlDbSource
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -113,7 +109,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
- @SQLDbSource
+ @MySqlDbSource
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRGENDEV"
@@ -129,7 +125,7 @@ Scenario: Incorrect Server Address Shows correct error message
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Testing as Windows and swapping it resets the test connection 
 	  Given I open New Database Source
 	  And "Save" is "Disabled"
@@ -155,7 +151,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRGENDEV"
@@ -181,7 +177,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	And "Test Connection" is "Disabled"
 	And "Save" is "Disabled"
 	
-@SQLDbSource
+@MySqlDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRGENDEV"
@@ -202,7 +198,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	When Test Connecton is "Successful"
 	Then "Save" is "Enabled"
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRGENDEV"
@@ -218,22 +214,18 @@ Scenario: Cancel DB Source Test
    And "Save" is "Disabled"
 
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Changing database type after testing connection
    Given I open New Database Source
-   Then "New MySql Source" tab is opened
-   And title is "New MySql Source"
+   Then "New MySQL Source" tab is opened
+   And title is "New MySQL Source"
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
    | RSAKLFSVRSBSPDC |
    | RSAKLFSVRTFSBLD |
-   | RSAKLFSVRWRWBLD |
-   And type options contains
-   | Options              |
-   | Microsoft SQL Server |
-   | MySQL                |
+   | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRGENDEV"
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
@@ -242,14 +234,13 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database
    And "Save" is "Enabled"   
-   Then "Save" is "Disabled"
    And "Test Connection" is "Enabled"   
    When Test Connecton is "Successful"
    Then Database dropdown is "Visible"
    And I select "test" as Database
    Then "Save" is "Enabled"
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Editing saved DB Source Remembers credentials for MySql
 Given I open "MySQL Source - testOracle" 
 	And Server as "localhost"
@@ -270,7 +261,7 @@ Given I open "MySQL Source - testOracle"
 	And "Save" is "Enabled" 
 
 
-@SQLDbSource
+@MySqlDbSource
 Scenario: Creating New DB Source as Windows Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
