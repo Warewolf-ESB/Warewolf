@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,6 +11,17 @@ namespace Warewolf.UITests
     public class Folders
     {
         const string ResourceCreatedInFolder = "Resource Created In Folder";
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void MergeFolders_InUnfileredExplorer_UITest()
+        {
+            UIMap.TryClearExplorerFilter();
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item();
+            UIMap.Filter_Explorer("DragAndDropMergeFilteredFolder1");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
+        }
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void MergeFolders_InFileredExplorer_UITest()
@@ -20,23 +34,17 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        public void MergeFolders_InUnFileredExplorer_UITest()
-        {
-            UIMap.TryClearExplorerFilter();
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FirstItem.Exists, "Resource did not merge into folder after drag and drop in an unfiltered explorer UI.");
-        }
-
-        [TestMethod]
-        [TestCategory("Explorer")]
         public void Create_Resource_InFolderUITest()
-        {            
+        {
+            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
             UIMap.Filter_Explorer("Acceptance Tests");
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
             UIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog(ResourceCreatedInFolder);
-            UIMap.Filter_Explorer("Resource Created In Folder");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
+            var firstOrDefault = allFiles.FirstOrDefault(s => s.Contains("Resource Created In Folder.xml"));
+            if (firstOrDefault != null)
+                File.Delete(firstOrDefault);
         }
 
         [TestMethod]
@@ -48,7 +56,7 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer("New Folder");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
-        
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
@@ -56,7 +64,7 @@ namespace Warewolf.UITests
             UIMap.Right_Click_On_The_Folder_Count();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
-        
+
         #region Additional test attributes
 
         [TestInitialize()]
