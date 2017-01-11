@@ -1,4 +1,4 @@
-﻿@DBConnector
+﻿@DBConnectorI Click New Database Source Ribbon Button
 Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user
@@ -7,8 +7,7 @@ Feature: DBConnector
 Scenario: Create and Execute New DB Connector With Variables
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Click New Database Source Ribbon Button
-	And I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown
+	And I Click New SQLServerSource Explorer Context Menu
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
 	Given RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
 	When I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
