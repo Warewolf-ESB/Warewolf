@@ -3026,7 +3026,7 @@ namespace Warewolf.UITests
         [Given(@"I Click UserButton On Database Source")]
         [When(@"I Click UserButton On Database Source")]
         [Then(@"I Click UserButton On Database Source")]
-        public void WhenIClickUserButtonOnDatabaseSource()
+        public void IClickUserButtonOnDatabaseSource()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton);
         }
@@ -3034,42 +3034,10 @@ namespace Warewolf.UITests
         [Given(@"I Enter RunAsUser Username And Password on Database source")]
         [When(@"I Enter RunAsUser Username And Password on Database source")]
         [Then(@"I Enter RunAsUser Username And Password on Database source")]
-        public void WhenIEnterRunAsUserUsernameAndPasswordOnDatabaseSource()
+        public void IEnterRunAsUserUsernameAndPasswordOnDatabaseSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
-        [Given(@"I Change Selected Database ToMySql DataBase")]
-        [When(@"I Change Selected Database ToMySql DataBase")]
-        [Then(@"I Change Selected Database ToMySql DataBase")]
-        public void WhenIChangeSelectedDatabaseToMySqlDataBase()
-        {
-            Change_Selected_Database_ToMySql_DataBase();
-        }
-
-        [Given(@"I Change Selected Database ToPostgreSql DataBase")]
-        [When(@"I Change Selected Database ToPostgreSql DataBase")]
-        [Then(@"I Change Selected Database ToPostgreSql DataBase")]
-        public void WhenIChangeSelectedDatabaseToPostgreSqlDataBase()
-        {
-            Change_Selected_Database_ToPostgreSql_DataBase();
-        }
-
-        [Given(@"I Change Selected Database ToOracle DataBase")]
-        [When(@"I Change Selected Database ToOracle DataBase")]
-        [Then(@"I Change Selected Database ToOracle DataBase")]
-        public void WhenIChangeSelectedDatabaseToOracleDataBase()
-        {
-            Change_Selected_Database_ToOracle_DataBase();
-        }
-
-        [Given(@"I Change Selected Database ToODBC DataBase")]
-        [When(@"I Change Selected Database ToODBC DataBase")]
-        [Then(@"I Change Selected Database ToODBC DataBase")]
-        public void WhenIChangeSelectedDatabaseToODBCDataBase()
-        {
-            Change_Selected_Database_ToODBC_DataBase();
         }
 
         [Given(@"I Click DotNet DLL Large View Test Cancel Done Button")]
@@ -3079,7 +3047,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CancelButton);
         }
-
         public void Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
@@ -3087,7 +3054,6 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject, new Point(13, 17));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom);
         }
-
         public void Drag_Toolbox_AssignObject_Onto_Sequence_LargeTool()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
@@ -3095,7 +3061,6 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject, new Point(13, 17));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
         }
-
         public void Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
@@ -8870,6 +8835,14 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWcfSource);
         }
+
+        public void Enter_Text_Into_DatabaseServer_Tab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";           
+        }
+
+
+
 
     }
 }
