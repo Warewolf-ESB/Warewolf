@@ -114,47 +114,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsExceptionWithInnerException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames())
-                .Throws(new Exception("someOuterExceptionMessage", new Exception(expectedExceptionMessage)));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManageOdbcSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsException()
-        {
-            //arrange
-            var expectedExceptionMessage = "someExceptionMessage";
-            _updateManagerMock.Setup(it => it.GetComputerNames()).Throws(new Exception(expectedExceptionMessage));
-
-            //act
-            _targetUpdateManagerRequestServiceName = new ManageOdbcSourceViewModel(
-                 _updateManagerMock.Object,
-                 _requestServiceNameView,
-                 _aggregatorMock.Object,
-                 _asyncWorkerMock.Object);
-
-            //assert
-            Assert.IsTrue(_targetUpdateManagerRequestServiceName.TestFailed);
-            Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
-            Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageDatabaseSourceViewModelUpdateManagerNull()
         {
@@ -887,7 +846,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedServerName = "expectedServerName";
             var expectedPassword = "expectedPassword";
             var expectedUsername = "expectedUsername";
-            var expectedType = enSourceType.Dev2Server;
+            var expectedType = enSourceType.ODBC;
             var expectedPath = "somePath";
             var expectedName = "someName";
             var expectedDbName = "someDbName";
@@ -1248,10 +1207,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dbSourceMock = new Mock<IDbSource>();
             var expectedResourceName = "expectedResourceName";
             var expectedAuthenticationType = AuthenticationType.Windows;
-            var expectedUserName = "expectedUserName";
             var dbSourceServerName = "dbSoureServerName";
             var dbSourceType = enSourceType.DynamicService;
-            var expectedPassword = "expectedPassword";
             var expectedPath = "expectedPath";
             var expectedServerName = new ComputerName() { Name = dbSourceServerName };
             _targetAsyncWorker.ComputerNames = new List<ComputerName> { expectedServerName };
@@ -1271,12 +1228,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreEqual(expectedResourceName, _targetAsyncWorker.ResourceName);
             Assert.AreEqual(expectedAuthenticationType, _targetAsyncWorker.AuthenticationType);
-            Assert.AreEqual(expectedUserName, _targetAsyncWorker.UserName);
             Assert.AreSame(expectedServerName, _targetAsyncWorker.ServerName);
             Assert.AreEqual(dbSourceServerName, _targetAsyncWorker.EmptyServerName);
-            Assert.AreEqual(expectedPassword, _targetAsyncWorker.Password);
             Assert.AreEqual(expectedPath, _targetAsyncWorker.Path);
-            //Assert.AreSame(expectedServerType, _targetAsyncWorker.ServerType);
             Assert.AreEqual(expectedDatabaseName, _targetAsyncWorker.DatabaseName);
             Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("DatabaseNames"));
         }

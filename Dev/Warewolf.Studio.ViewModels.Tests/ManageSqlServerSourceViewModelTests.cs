@@ -399,8 +399,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedValue, actualValue);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Password);
             Assert.AreEqual(expectedUsername, _targetUpdateManagerAggregatorDbSource.UserName);
+            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Password);
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("AuthenticationType"));
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("Header"));
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("UserAuthenticationSelected"));
