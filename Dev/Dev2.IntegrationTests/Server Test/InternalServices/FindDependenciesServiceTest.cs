@@ -29,13 +29,14 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
        
         public void FindDependencies_ExistingService_Expected_AllDependanciesReturned() {
-            string postData = String.Format("{0}{1}", _webserverURI, @"FindDependencyService?ResourceId=e59b7fe3-ad37-4363-8678-74601b9ea3cb");
-            XElement response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
+            //WorkflowName - WorkflowMappingsInnerWorkflow
+            string postData = $"{_webserverURI}{@"FindDependencyService?ResourceId=2ac0f29a-638e-4f9a-a2cb-b9694087f96c"}";
+            var response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
 
-            IEnumerable<XNode> nodes = response.DescendantNodes();
-            int count = nodes.Count();
+            var nodes = response.DescendantNodes();
+            var count = nodes.Count();
             // More than 2 nodes indicate that the service returned dependancies
-            Assert.AreEqual(19, count);
+            Assert.AreEqual(5, count);
 
         }
 
