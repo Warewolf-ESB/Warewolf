@@ -48,19 +48,18 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IDbSource service)
         {
-            var oracleSource = (IOracleSource)service;
-            ResourceName = oracleSource.Name;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(oracleSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            ResourceName = service.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(service.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
-                EmptyServerName = ServerName.Name ?? oracleSource.ServerName;
+                EmptyServerName = ServerName.Name ?? service.ServerName;
             }
             AuthenticationType = service.AuthenticationType;
-            UserName = oracleSource.UserName;
-            Password = oracleSource.Password;
-            Path = oracleSource.Path;
+            UserName = service.UserName;
+            Password = service.Password;
+            Path = service.Path;
             TestConnection();
-            DatabaseName = oracleSource.DbName;
+            DatabaseName = service.DbName;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -148,10 +147,10 @@ namespace Warewolf.Studio.ViewModels
                 DbName = DbSource.DbName,
                 Id = DbSource.Id,
                 Name = DbSource.Name,
-                Password = ((IOracleSource)DbSource).Password,
+                Password = DbSource.Password,
                 Path = DbSource.Path,
                 ServerName = DbSource.ServerName,
-                UserName = ((IOracleSource)DbSource).UserName,
+                UserName = DbSource.UserName,
                 Type = enSourceType.Oracle
             };
         }

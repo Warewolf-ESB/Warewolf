@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IDbSource service)
         {
-            var odbcSource = (IOdbcSource)service;
+            var odbcSource = service;
             ResourceName = odbcSource.Name;
             ServerName = ComputerNames.FirstOrDefault(name => string.Equals(odbcSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
@@ -93,6 +93,7 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
+                DbName = DatabaseName,
                 Id = DbSource?.Id ?? SelectedGuid
             } : new DbSourceDefinition
             {
@@ -101,6 +102,7 @@ namespace Warewolf.Studio.ViewModels
                 Type = enSourceType.ODBC,
                 Path = Path,
                 Name = ResourceName,
+                DbName = DatabaseName,
                 Id = (Guid)DbSource?.Id
             };
         }

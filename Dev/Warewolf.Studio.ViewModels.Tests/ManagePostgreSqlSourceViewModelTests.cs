@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<IManageDatabaseSourceModel> _updateManagerMock;
         private Mock<IEventAggregator> _aggregatorMock;
         private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IPostgreSource> _dbSourceMock;
+        private Mock<IDbSource> _dbSourceMock;
 
         private Mock<IRequestServiceNameViewModel> _requestServiceNameViewMock;
         private Task<IRequestServiceNameViewModel> _requestServiceNameView;
@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _asyncWorkerMock = new Mock<IAsyncWorker>();
             _updateManagerMock = new Mock<IManageDatabaseSourceModel>();
             _aggregatorMock = new Mock<IEventAggregator>();
-            _dbSourceMock = new Mock<IPostgreSource>();
+            _dbSourceMock = new Mock<IDbSource>();
             _requestServiceNameViewMock = new Mock<IRequestServiceNameViewModel>();
             _requestServiceNameView = Task.FromResult(_requestServiceNameViewMock.Object);
 
@@ -731,12 +731,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_targetUpdateManagerRequestServiceName.Item.Name, _targetUpdateManagerRequestServiceName.Header);
             Assert.AreEqual(expectedAuthenticationType, _targetUpdateManagerRequestServiceName.Item.AuthenticationType);
             Assert.AreEqual(expectedServerName, _targetUpdateManagerRequestServiceName.Item.ServerName);
-            Assert.AreEqual(expectedPassword, ((IPostgreSource)_targetUpdateManagerRequestServiceName.Item).Password);
-            Assert.AreEqual(expectedUsername, ((IPostgreSource)_targetUpdateManagerRequestServiceName.Item).UserName);
+            Assert.AreEqual(expectedPassword, _targetUpdateManagerRequestServiceName.Item.Password);
+            Assert.AreEqual(expectedUsername, _targetUpdateManagerRequestServiceName.Item.UserName);
             Assert.AreEqual(expectedType, _targetUpdateManagerRequestServiceName.Item.Type);
             Assert.AreEqual(resPath, _targetUpdateManagerRequestServiceName.Item.Path);
             Assert.AreEqual(resName, _targetUpdateManagerRequestServiceName.Item.Name);
-            Assert.AreEqual(expectedDbName, ((IPostgreSource)_targetUpdateManagerRequestServiceName.Item).DbName);
+            Assert.AreEqual(expectedDbName, _targetUpdateManagerRequestServiceName.Item.DbName);
             Assert.AreNotEqual(Guid.Empty, _targetUpdateManagerRequestServiceName.Item.Id);
         }
 
@@ -773,8 +773,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_targetUpdateManagerAggregatorDbSource.Item.Name, _targetUpdateManagerAggregatorDbSource.Header);
             Assert.AreEqual(expectedAuthenticationType, _targetUpdateManagerAggregatorDbSource.Item.AuthenticationType);
             Assert.AreEqual(expectedServerName, _targetUpdateManagerAggregatorDbSource.Item.ServerName);
-            Assert.AreEqual(expectedPassword, ((IPostgreSource)_targetUpdateManagerRequestServiceName.Item).Password);
-            Assert.AreEqual(expectedUsername, ((IPostgreSource)_targetUpdateManagerRequestServiceName.Item).UserName);
+            Assert.AreEqual(expectedPassword, _targetUpdateManagerRequestServiceName.Item.Password);
+            Assert.AreEqual(expectedUsername, _targetUpdateManagerRequestServiceName.Item.UserName);
             Assert.AreEqual(expectedType, _targetUpdateManagerAggregatorDbSource.Item.Type);
             Assert.AreEqual(expectedPath, _targetUpdateManagerAggregatorDbSource.Item.Path);
             Assert.AreEqual(dbSourceName, _targetUpdateManagerAggregatorDbSource.Item.Name);
@@ -826,7 +826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.DatabaseName = expectedDbName;
             _targetAsyncWorker.SelectedGuid = gd;
             //act
-            var value = (IPostgreSource)_targetAsyncWorker.ToModel();
+            var value = _targetAsyncWorker.ToModel();
 
             //assert
             Assert.AreSame(_targetAsyncWorker.Item, value);
@@ -864,7 +864,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.DatabaseName = expectedDbName;
 
             //act
-            var value = (IPostgreSource)_targetAsyncWorker.ToModel();
+            var value = _targetAsyncWorker.ToModel();
 
             //assert
             Assert.AreNotSame(_targetAsyncWorker.Item, value);
@@ -1078,7 +1078,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFromModel()
         {
             //arrange
-            var dbSourceMock = new Mock<IPostgreSource>();
+            var dbSourceMock = new Mock<IDbSource>();
             var expectedResourceName = "expectedResourceName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedUserName = "expectedUserName";
