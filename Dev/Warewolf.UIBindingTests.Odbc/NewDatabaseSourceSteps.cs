@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,7 +21,7 @@ using Warewolf.UIBindingTests.Core;
 
 // ReSharper disable RedundantAssignment
 
-namespace Warewolf.UIBindingTests.MySqlDatabaseSource
+namespace Warewolf.UIBindingTests.Odbc
 {
     [Binding]
     public class NewDatabaseSourceSteps
@@ -42,7 +41,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var manageDatabaseSourceViewModel = new ManageMySqlSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var manageDatabaseSourceViewModel = new ManageOdbcSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             manageDatabaseSourceControl.DataContext = manageDatabaseSourceViewModel;
             Utils.ShowTheViewForTesting(manageDatabaseSourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
@@ -58,7 +57,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageMySqlSourceViewModel>(Utils.ViewModelNameKey));
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageOdbcSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -100,83 +99,17 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             {
                 Name = name,
                 Id = Guid.NewGuid(),
-                ServerName = "RSAKLFSVRGENDEV",
+                ServerName = "Localhost",
                 AuthenticationType = AuthenticationType.Windows
             };
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var viewModel = new ManageMySqlSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+            var viewModel = new ManageOdbcSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
-        }
-
-        [Given(@"Server as ""(.*)""")]
-        public void GivenServerAs(string server)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            db.ServerName = server;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectServer("server");
-        }
-
-        [When(@"I Edit Server as ""(.*)""")]
-        public void WhenIEditServerAs(string server)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            db.ServerName = server;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectServer("server");
-        }
-
-        [Given(@"Authentication Type is selected as ""(.*)""")]
-        public void GivenAuthenticationTypeIsSelectedAs(string authstr)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            var authp = Enum.Parse(typeof(AuthenticationType), authstr);
-            db.AuthenticationType = (AuthenticationType)authp;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
-            // ReSharper disable PossibleNullReferenceException
-            (manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel).AuthenticationType = (AuthenticationType)authp;
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        [Then(@"Authentication Type is selected as ""(.*)""")]
-        public void ThenAuthenticationTypeIsSelectedAs(string authstr)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            var authp = Enum.Parse(typeof(AuthenticationType), authstr);
-            db.AuthenticationType = (AuthenticationType)authp;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
-            {
-                Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
-            }
-        }
-
-        [Given(@"Username field is ""(.*)""")]
-        public void GivenUsernameFieldIs(string user)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            db.UserName = user;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterUserName(user);
-        }
-
-        [Given(@"Password field is ""(.*)""")]
-        public void GivenPasswordFieldIs(string pwd)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            db.Password = pwd;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterPassword(pwd);
         }
 
         [Given(@"Database ""(.*)"" is selected")]
@@ -196,60 +129,14 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
-
-        [When(@"I type Server as ""(.*)""")]
-        public void WhenITypeServerAs(string p0)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectServer(p0);
-        }
-
-        [Then(@"I type Select The Server as ""(.*)""")]
-        public void ThenITypeSelectTheServerAs(string p0)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectServer(p0);
-        }
-
-        [Then(@"the intellisense contains these options")]
-        public void ThenTheIntellisenseContainsTheseOptions(Table table)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            var rows = table.Rows[0].Values;
-            foreach (var server in rows)
-            {
-                manageDatabaseSourceControl.VerifyServerExistsintComboBox(server);
-            }
-        }
-
-        [Then(@"type options contains")]
-        public void ThenTypeOptionsContains(Table table)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            var rows = table.Rows[0].Values;
-
-            var serverOptions = manageDatabaseSourceControl.GetServerOptions();
-            Assert.IsTrue(serverOptions.All(a => rows.Contains(a)));
-        }
-
-        [Given(@"I type Server as ""(.*)""")]
-        public void GivenITypeServerAs(string serverName)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SelectServer(serverName);
-            //manageDatabaseSourceControl.EnterServerName(serverName);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
-            Assert.AreEqual(serverName, viewModel.ServerName.Name);
-        }
+        
 
         [Given(@"Database dropdown is ""(.*)""")]
         [When(@"Database dropdown is ""(.*)""")]
         [Then(@"Database dropdown is ""(.*)""")]
         public void GivenDropdownIs(string visibility)
         {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
@@ -264,20 +151,6 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
 
-        [Given(@"I Select Authentication Type as ""(.*)""")]
-        [When(@"I Select Authentication Type as ""(.*)""")]
-        [Then(@"I Select Authentication Type as ""(.*)""")]
-        public void GivenISelectAuthenticationTypeAs(string authenticationTypeString)
-        {
-            var authenticationType = string.Equals(authenticationTypeString, "Windows",
-                StringComparison.InvariantCultureIgnoreCase)
-                ? AuthenticationType.Windows
-                : AuthenticationType.User;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
-        }
-
         [Given(@"I select ""(.*)"" as Database")]
         [When(@"I select ""(.*)"" as Database")]
         [Then(@"I select ""(.*)"" as Database")]
@@ -285,7 +158,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(databaseName);
-            var viewModel = (ManageMySqlSourceViewModel)manageDatabaseSourceControl.DataContext;
+            var viewModel = (ManageOdbcSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(databaseName, viewModel.DatabaseName);
         }
 
@@ -307,71 +180,14 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
-
-        [Then(@"Username field is ""(.*)""")]
-        public void ThenUsernameFieldIs(string visibility)
-        {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageDatabaseSourceControl.GetUsernameVisibility();
-            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
-        }
-
-        [Then(@"Username is ""(.*)""")]
-        public void ThenUsernameIs(string userName)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            Assert.AreEqual(userName, manageDatabaseSourceControl.GetUsername());
-        }
-
-        [Then(@"Password  is ""(.*)""")]
-        public void ThenPasswordIs(string password)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
-            Assert.AreEqual(password, manageDatabaseSourceControl.GetPassword());
-        }
-
-        [Then(@"Password field is ""(.*)""")]
-        public void ThenPasswordFieldIs(string visibility)
-        {
-            var expectedVisibility = string.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageDatabaseSourceControl.GetPasswordVisibility();
-            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
-        }
-
-        [Given(@"I type Username as ""(.*)""")]
-        [When(@"I type Username as ""(.*)""")]
-        [Then(@"I type Username as ""(.*)""")]
-        public void WhenITypeUsernameAs(string userName)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterUserName(userName);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
-        }
-
-        [Given(@"I type Password as ""(.*)""")]
-        [When(@"I type Password as ""(.*)""")]
-        [Then(@"I type Password as ""(.*)""")]
-        public void WhenITypePasswordAs(string password)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.Password);
-        }
+        
 
         [Then(@"the error message is ""(.*)""")]
         public void ThenTheErrorMessageIs(string errorMessage)
         {
             errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + loginFailedForUserTest;
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -381,8 +197,8 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTestConnectonIs(string successString)
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var isSuccess = string.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
-            var isLongRunning = string.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
+            var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
+            var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
@@ -390,7 +206,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             }
             else if (isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+                var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
@@ -415,7 +231,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTheValidationMessageAs(string message)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
             var errorMessageFromControl = manageDatabaseSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(message, StringComparison.OrdinalIgnoreCase);
@@ -439,12 +255,12 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManageOdbcSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
@@ -458,17 +274,11 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
 
        
 
-        [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
-        public void ThenAuthenticationTypeIs(string p0, string p1)
-        {
-            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
-        }
-
 
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)
         {
-            var expectedVisibility = string.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
