@@ -8778,13 +8778,13 @@ namespace Warewolf.UITests
         [Then(@"Folder ContextMenu appears")]
         public void FolderContextMenuAppears()
         {
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflow.Exists);
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolder.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewWorkflowItem.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Rename.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Delete.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Duplicate.Exists);
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Deploy.Exists);
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApis.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.DeployItem.Exists);
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);            
         }
 
