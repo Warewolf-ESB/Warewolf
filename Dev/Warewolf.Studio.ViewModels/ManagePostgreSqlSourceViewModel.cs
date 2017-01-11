@@ -48,19 +48,18 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IDbSource service)
         {
-            var postgreSource = (IPostgreSource)service;
-            ResourceName = postgreSource.Name;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(postgreSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            ResourceName = service.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(service.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
-                EmptyServerName = ServerName.Name ?? postgreSource.ServerName;
+                EmptyServerName = ServerName.Name ?? service.ServerName;
             }
-            AuthenticationType = postgreSource.AuthenticationType;
-            UserName = postgreSource.UserName;
-            Password = postgreSource.Password;
-            Path = postgreSource.Path;
+            AuthenticationType = service.AuthenticationType;
+            UserName = service.UserName;
+            Password = service.Password;
+            Path = service.Path;
             TestConnection();
-            DatabaseName = postgreSource.DbName;
+            DatabaseName = service.DbName;
         }
 
         public override void UpdateHelpDescriptor(string helpText)

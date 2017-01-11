@@ -39,19 +39,18 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IDbSource service)
         {
-            var sqlServerSource = (ISqlServerSource)service;
-            ResourceName = sqlServerSource.Name;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(sqlServerSource.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            ResourceName = service.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(service.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
-                EmptyServerName = ServerName.Name ?? sqlServerSource.ServerName;
+                EmptyServerName = ServerName.Name ?? service.ServerName;
             }
             AuthenticationType = service.AuthenticationType;
-            UserName = sqlServerSource.UserName;
-            Password = sqlServerSource.Password;
-            Path = sqlServerSource.Path;
+            UserName = service.UserName;
+            Password = service.Password;
+            Path = service.Path;
             TestConnection();
-            DatabaseName = sqlServerSource.DbName;
+            DatabaseName = service.DbName;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -114,10 +113,10 @@ namespace Warewolf.Studio.ViewModels
                 DbName = DbSource.DbName,
                 Id = DbSource.Id,
                 Name = DbSource.Name,
-                Password = ((ISqlServerSource)DbSource).Password,
+                Password = DbSource.Password,
                 Path = DbSource.Path,
                 ServerName = DbSource.ServerName,
-                UserName = ((ISqlServerSource)DbSource).UserName,
+                UserName = DbSource.UserName,
                 Type = enSourceType.SqlDatabase
             };
         }

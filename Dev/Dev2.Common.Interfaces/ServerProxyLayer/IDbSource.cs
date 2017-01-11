@@ -19,38 +19,12 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string ServerName { get; set; }
         enSourceType Type { get; set; }
         AuthenticationType AuthenticationType { get; set; }
+        string UserName { get; set; }
+        string Password { get; set; }
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }
         string DbName { get; set; }
         bool ReloadActions { get; set; }
-    }
-
-    public interface IOracleSource : IDbSource
-    {
-        string UserName { get; set; }
-        string Password { get; set; }
-    }
-
-    public interface IOdbcSource : IDbSource
-    {
-    }
-
-    public interface IPostgreSource : IDbSource
-    {
-        string UserName { get; set; }
-        string Password { get; set; }
-    }
-
-    public interface IMySqlSource : IDbSource
-    {
-        string UserName { get; set; }
-        string Password { get; set; }
-    }
-
-    public interface ISqlServerSource : IDbSource
-    {
-        string UserName { get; set; }
-        string Password { get; set; }
     }
 }

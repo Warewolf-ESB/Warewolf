@@ -518,7 +518,7 @@ namespace Warewolf.Studio.ViewModels
         {
             Testing = true;
             TestFailed = false;
-            TestPassed = false;
+            
             if (DbSource == null)
             {
                 RequestServiceNameViewModel.Wait();
