@@ -161,12 +161,6 @@ namespace Warewolf.Studio.Views
             return new List<string>();
         }
 
-        public string GetSelectedDbOption()
-        {
-            //return ServerTypeComboBox.SelectedItem.ToString();
-            return string.Empty;
-        }
-
         public void Test()
         {
             TestConnectionButton.Command.Execute(null);
@@ -184,13 +178,11 @@ namespace Warewolf.Studio.Views
 
         public string GetHeader()
         {
-            //return ((ManageDatabaseSourceViewModel)DataContext).HeaderText;
-            return String.Empty;
+            return ((DatabaseSourceViewModelBase)DataContext).HeaderText;
         }
         public string GetTabHeader()
         {
-            //return ((ManageDatabaseSourceViewModel)DataContext).Header;
-            return String.Empty;
+            return ((DatabaseSourceViewModelBase)DataContext).Header;
         }
         public void CancelTest()
         {
