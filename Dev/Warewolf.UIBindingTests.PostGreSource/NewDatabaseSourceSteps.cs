@@ -431,7 +431,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             mockRequestServiceNameViewModel.Verify();
         }
 
-        //[AfterScenario("DbSource")]
+        [AfterScenario("PostgresDbSource")]
         public void Cleanup()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
