@@ -2070,7 +2070,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-            DoWorkspaceSave();
+            //DoWorkspaceSave();
+            UpdateDataList();
         }
 
         public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)

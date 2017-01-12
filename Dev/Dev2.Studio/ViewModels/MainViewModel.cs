@@ -682,14 +682,20 @@ namespace Dev2.Studio.ViewModels
         }
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
-            if (environmentModel != null)
+            if(_lastOpenResourceID != Guid.Empty)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                if (contextualResourceModel != null)
+                if(_lastOpenResourceID == resourceId && _lastOpenEnvironmentId==environmentId)
                 {
-                    _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                    return;
                 }
+            }
+            _lastOpenEnvironmentId = environmentId;
+            _lastOpenResourceID = resourceId;
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            if(contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
         }
 
@@ -810,6 +816,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
+            _lastOpenResourceID = Guid.Empty;
             var environmentModel = EnvironmentRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
@@ -1499,6 +1506,8 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         private IExplorerViewModel _explorerViewModel;
         private IWorksurfaceContextManager _worksurfaceContextManager;
+        private Guid _lastOpenResourceID;
+        private Guid _lastOpenEnvironmentId;
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
