@@ -41,7 +41,11 @@ namespace Dev2.Interfaces
         ICommand ShowStartPageCommand { get; }
         AuthorizeCommand<string> NewServiceCommand { get; }
         AuthorizeCommand<string> NewPluginSourceCommand { get; }
-        AuthorizeCommand<string> NewDatabaseSourceCommand { get; }
+        AuthorizeCommand<string> NewSqlServerSourceCommand { get; }
+        AuthorizeCommand<string> NewMySqlSourceCommand { get; }
+        AuthorizeCommand<string> NewPostgreSqlSourceCommand { get; }
+        AuthorizeCommand<string> NewOracleSourceCommand { get; }
+        AuthorizeCommand<string> NewOdbcSourceCommand { get; }
         AuthorizeCommand<string> NewWebSourceCommand { get; }
         AuthorizeCommand<string> NewServerSourceCommand { get; }
         AuthorizeCommand<string> NewEmailSourceCommand { get; }

@@ -19,7 +19,7 @@ IF NOT "%1"=="" (
 	IF EXIST "%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe" (
 		set DotCoverExePath="%LocalAppData%\JetBrains\Installations\dotCover07\dotCover.exe"
 	) else (
-		set DotCoverExePath="%1"
+		set DotCoverExePath=%1
 	)
 )
 
@@ -81,7 +81,7 @@ set /a LoopCounter=0
 :MainLoopBody
 IF EXIST "%ServerBinDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 echo Timed out waiting for the Warewolf server to start. &exit /b
+IF %LoopCounter% EQU 300 echo Timed out waiting for the Warewolf server to start. &exit /b
 @echo Waiting 10 more seconds for %ServerBinDirectory%\ServerStarted file to appear...
 waitfor ServerStart /t 10 2>NUL
 goto MainLoopBody
@@ -113,6 +113,10 @@ IF EXIST %windir%\nircmd.exe (
 		START "%StudioBinDirectory%\Warewolf Studio.exe" /D "%StudioBinDirectory%" "Warewolf Studio.exe"
 	)
 )
-waitfor StudioStart /t 60 2>NUL
+IF NOT "%1"=="" (
+	waitfor StudioStart /t 300 2>NUL
+) else (
+	waitfor StudioStart /t 60 2>NUL
+)
 @echo Started "%StudioBinDirectory%\Warewolf Studio.exe".
 exit 0

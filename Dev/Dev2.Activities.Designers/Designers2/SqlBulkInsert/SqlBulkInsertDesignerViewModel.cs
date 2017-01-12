@@ -501,7 +501,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDatabaseSource(string.Empty);
+            CustomContainer.Get<IShellViewModel>().NewSqlServerSource(string.Empty);
             RefreshDatabases();
         }
 

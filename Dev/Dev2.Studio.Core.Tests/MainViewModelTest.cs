@@ -1828,8 +1828,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("MainViewModel_EditDatabaseSource")]
-        public void MainViewModel_EditDatabaseSource_Handle_Result()
+        [TestCategory("MainViewModel_EditSqlServerSource")]
+        public void MainViewModel_EditSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
             CreateFullExportsAndVm();
@@ -1847,11 +1847,123 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.Name).Returns("TestDatabase");
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
-            mockWM.Setup(manager => manager.EditResource(It.IsAny<IDbSource>(), null)).Verifiable();
+            mockWM.Setup(manager => manager.EditSqlServerResource(It.IsAny<IDbSource>(), null)).Verifiable();
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
-            MainViewModel.WorksurfaceContextManager.EditResource(source.Object);
-            mockWM.Verify(manager => manager.EditResource(It.IsAny<IDbSource>(), null));
-            MainViewModel.EditResource(source.Object);
+            MainViewModel.WorksurfaceContextManager.EditSqlServerResource(source.Object);
+            mockWM.Verify(manager => manager.EditSqlServerResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditSqlServerResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditMySqlSource")]
+        public void MainViewModel_EditMySqlSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IDbSource>();
+            source.Setup(a => a.Name).Returns("TestDatabase");
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditMySqlResource(It.IsAny<IDbSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditMySqlResource(source.Object);
+            mockWM.Verify(manager => manager.EditMySqlResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditMySqlResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditPostgreSqlSource")]
+        public void MainViewModel_EditPostgreSqlSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IDbSource>();
+            source.Setup(a => a.Name).Returns("TestDatabase");
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditPostgreSqlResource(It.IsAny<IDbSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditPostgreSqlResource(source.Object);
+            mockWM.Verify(manager => manager.EditPostgreSqlResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditPostgreSqlResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditOracleSource")]
+        public void MainViewModel_EditOracleSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IDbSource>();
+            source.Setup(a => a.Name).Returns("TestDatabase");
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditOracleResource(It.IsAny<IDbSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditOracleResource(source.Object);
+            mockWM.Verify(manager => manager.EditOracleResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditOracleResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditOdbcSource")]
+        public void MainViewModel_EditOdbcSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IDbSource>();
+            source.Setup(a => a.Name).Returns("TestDatabase");
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.EditOdbcResource(It.IsAny<IDbSource>(), null)).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.WorksurfaceContextManager.EditOdbcResource(source.Object);
+            mockWM.Verify(manager => manager.EditOdbcResource(It.IsAny<IDbSource>(), null));
+            MainViewModel.EditOdbcResource(source.Object);
         }
 
         [TestMethod]
@@ -2147,8 +2259,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("MainViewModel_NewDatabaseSource")]
-        public void MainViewModel_NewDatabaseSource_Handle_Result()
+        [TestCategory("MainViewModel_NewSqlServerSource")]
+        public void MainViewModel_NewSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
@@ -2164,15 +2276,135 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
             Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
 
-            var canExecute = MainViewModel.NewDatabaseSourceCommand.CanExecute(null);
+            var canExecute = MainViewModel.NewSqlServerSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
 
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
-            mockWM.Setup(manager => manager.NewDatabaseSource(It.IsAny<string>())).Verifiable();
+            mockWM.Setup(manager => manager.NewSqlServerSource(It.IsAny<string>())).Verifiable();
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
-            MainViewModel.NewDatabaseSourceCommand.Execute(null);
-            mockWM.Verify(manager => manager.NewDatabaseSource(It.IsAny<string>()));
+            MainViewModel.NewSqlServerSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewSqlServerSource(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewMySqlSource")]
+        public void MainViewModel_NewMySqlSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewMySqlSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewMySqlSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.NewMySqlSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewMySqlSource(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewPostgreSqlSource")]
+        public void MainViewModel_NewPostgreSqlSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewPostgreSqlSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewPostgreSqlSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.NewPostgreSqlSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewPostgreSqlSource(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewOracleSource")]
+        public void MainViewModel_NewOracleSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewOracleSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewOracleSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.NewOracleSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewOracleSource(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewOdbcSource")]
+        public void MainViewModel_NewOdbcSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewOdbcSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewOdbcSource(It.IsAny<string>())).Verifiable();
+            MainViewModel.WorksurfaceContextManager = mockWM.Object;
+            MainViewModel.NewOdbcSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewOdbcSource(It.IsAny<string>()));
         }
 
         [TestMethod]

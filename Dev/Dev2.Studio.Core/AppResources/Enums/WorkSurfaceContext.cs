@@ -39,7 +39,11 @@ namespace Dev2.Studio.Core.AppResources.Enums
 
         EmailSource,
         ServerSource,
-        DbSource,
+        SqlServerSource,
+        MySqlSource,
+        PostgreSqlSource,
+        OracleSource,
+        OdbcSource,
         OAuthSource,
         WebSource,
         PluginSource,

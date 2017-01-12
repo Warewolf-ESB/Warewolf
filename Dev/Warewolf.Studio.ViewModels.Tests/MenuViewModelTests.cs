@@ -537,58 +537,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestDatabaseLabelNotNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 125;
-
-            //act
-            var value = _target.DatabaseLabel;
-
-            //assert
-            Assert.IsFalse(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
-        public void TestDatabaseLabelNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 1;
-
-            //act
-            var value = _target.DatabaseLabel;
-
-            //assert
-            Assert.IsTrue(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
-        public void TestDLLLabelNotNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 125;
-
-            //act
-            var value = _target.DLLLabel;
-
-            //assert
-            Assert.IsFalse(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
-        public void TestDLLLabelNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 1;
-
-            //act
-            var value = _target.DLLLabel;
-
-            //assert
-            Assert.IsTrue(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
         public void TestTaskLabelNotNullOrEmpty()
         {
             //arrange
@@ -609,32 +557,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             var value = _target.TaskLabel;
-
-            //assert
-            Assert.IsTrue(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
-        public void TestWebLabelNotNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 125;
-
-            //act
-            var value = _target.WebLabel;
-
-            //assert
-            Assert.IsFalse(string.IsNullOrEmpty(value));
-        }
-
-        [TestMethod]
-        public void TestWebLabelNullOrEmpty()
-        {
-            //arrange
-            _target.ButtonWidth = 1;
-
-            //act
-            var value = _target.WebLabel;
 
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(value));
@@ -860,9 +782,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("NewLabel"));
             Assert.IsTrue(_changedProperties.Contains("SaveLabel"));
             Assert.IsTrue(_changedProperties.Contains("DeployLabel"));
-            Assert.IsTrue(_changedProperties.Contains("DatabaseLabel"));
-            Assert.IsTrue(_changedProperties.Contains("DLLLabel"));
-            Assert.IsTrue(_changedProperties.Contains("WebLabel"));
             Assert.IsTrue(_changedProperties.Contains("TaskLabel"));
             Assert.IsTrue(_changedProperties.Contains("DebugLabel"));
             Assert.IsTrue(_changedProperties.Contains("SettingsLabel"));

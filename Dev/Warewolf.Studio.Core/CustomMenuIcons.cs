@@ -12,7 +12,11 @@ namespace Warewolf.Studio.Core
             Version,
             PluginService,
             WebService,
-            DbSource,
+            SqlServerSource,
+            MySqlSource,
+            PostgreSqlSource,
+            OracleSource,
+            OdbcSource,
             PluginSource,
             WebSource,
             EmailSource,
@@ -46,7 +50,11 @@ namespace Warewolf.Studio.Core
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
             {MenuIcons.ExchangeSource, "ExchangeSource"},
             {MenuIcons.RabbitMqSource, "RabbitMqSource"},
-            {MenuIcons.DbSource, "DatabaseSource"},
+            {MenuIcons.SqlServerSource, "MicrosoftSQLSource"},
+            {MenuIcons.MySqlSource, "DatabaseSource"},
+            {MenuIcons.PostgreSqlSource, "PostgreSource"},
+            {MenuIcons.OracleSource, "DatabaseSource"},
+            {MenuIcons.OdbcSource, "OdbcSource"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},
             {MenuIcons.StartPage, "Fa-Home"}
@@ -72,7 +80,15 @@ namespace Warewolf.Studio.Core
 
         public static string View => MenuIconsDictionary[MenuIcons.View];
 
-        public static string DbSource => MenuIconsDictionary[MenuIcons.DbSource];
+        public static string SqlServerSource => MenuIconsDictionary[MenuIcons.SqlServerSource];
+
+        public static string MySqlSource => MenuIconsDictionary[MenuIcons.MySqlSource];
+
+        public static string PostgreSqlSource => MenuIconsDictionary[MenuIcons.PostgreSqlSource];
+
+        public static string OracleSource => MenuIconsDictionary[MenuIcons.OracleSource];
+
+        public static string OdbcSource => MenuIconsDictionary[MenuIcons.OdbcSource];
 
         public static string PluginSource => MenuIconsDictionary[MenuIcons.PluginSource];
 

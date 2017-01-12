@@ -61,7 +61,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
+    <Compile Include="ComPluginSource\ComPluginSourceTests.cs" />
+    <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
+    <Compile Include="DropboxSource\DropboxSourceTests.cs" />
+    <Compile Include="ODBCSource\ODBCSourceTests.cs" />
+    <Compile Include="OracleSource\OracleSourceTests.cs" />
+    <Compile Include="PostgreSQLSource\PostgreSQLSourceTests.cs" />
+    <Compile Include="MySQLSource\MySQLSourceTests.cs" />
     <Compile Include="Explorer\Duplicate.cs" />
+    <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
+    <Compile Include="ServerSource\ServerSourceTests.cs" />
+    <Compile Include="SharepointSource\SharepointSourceTests.cs" />
+    <Compile Include="SQLServerSource\SQLServerSourceTests.cs" />
+    <Compile Include="WcfSource\WcfSourceTests.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
     <Compile Include="Explorer\ResourceVersion.cs" />

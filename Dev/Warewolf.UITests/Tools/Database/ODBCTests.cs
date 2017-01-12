@@ -29,6 +29,15 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.SmallView.Exists, "ODBC database connector tool small view does not exist after collapsing large view with a double click.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void Click_ODBCTool_LargeView_NewSourceButton_UITest()
+        {
+            UIMap.Click_ODBCTool_LargeView_NewSourceButton();
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

@@ -165,9 +165,6 @@
   <data name="ServerNameLabel" xml:space="preserve">
     <value>Server Name:</value>
   </data>
-  <data name="MenuDialogDatabaseLabel" xml:space="preserve">
-    <value>Database</value>
-  </data>
   <data name="MenuDialogDebugLabel" xml:space="preserve">
     <value>Debug</value>
   </data>
@@ -176,9 +173,6 @@
   </data>
   <data name="MenuDialogDeployLabel" xml:space="preserve">
     <value>Deploy</value>
-  </data>
-  <data name="MenuDialogDLLLabel" xml:space="preserve">
-    <value>DLL</value>
   </data>
   <data name="MenuDialogLockLabel" xml:space="preserve">
     <value>Lock Menu</value>
@@ -203,9 +197,6 @@
   </data>
   <data name="MenuDialogUnLockLabel" xml:space="preserve">
     <value>Unlock Menu</value>
-  </data>
-  <data name="MenuDialogWebLabel" xml:space="preserve">
-    <value>Web</value>
   </data>
   <data name="EmailAddressLabel" xml:space="preserve">
     <value>Email Address</value>
@@ -256,8 +247,20 @@ The more information you can provide us with, the faster we can track the issue 
   <data name="ToolboxPopupDescription" xml:space="preserve">
     <value>To use a tool, drag it onto the design surface.</value>
   </data>
-  <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
-    <value>New Database Source</value>
+  <data name="SqlServerSourceNewHeaderLabel" xml:space="preserve">
+    <value>New Microsoft SQL Server Source</value>
+  </data>
+  <data name="MySqlSourceNewHeaderLabel" xml:space="preserve">
+    <value>New MySQL Source</value>
+  </data>
+  <data name="PostgreSqlSourceNewHeaderLabel" xml:space="preserve">
+    <value>New PostgreSQL Source</value>
+  </data>
+  <data name="OracleSourceNewHeaderLabel" xml:space="preserve">
+    <value>New Oracle Source</value>
+  </data>
+  <data name="OdbcSourceNewHeaderLabel" xml:space="preserve">
+    <value>New ODBC Source</value>
   </data>
   <data name="ServiceTestResourceDeletedMessage" xml:space="preserve">
     <value>The resource for these tests does not exist. The window will be closed when you click OK.</value>
@@ -525,5 +528,8 @@ Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="NoReturnedDataExecuteSuccess" xml:space="preserve">
     <value>No data returned.   </value>
+  </data>
+  <data name="SqlServerSourceServerNewHeaderLabel" xml:space="preserve">
+    <value>New Sql Server Source</value>
   </data>
 </root>

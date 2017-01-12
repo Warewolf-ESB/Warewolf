@@ -262,8 +262,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var lsto = new List<IServiceOutputMapping>();
             vm.OutputArea.Outputs = lsto;
             Assert.AreEqual(lsto, vm.OutputArea.Outputs);
-            //vm.TestResults = "bob";
-            //Assert.AreEqual("bob", vm.TestResults);
             vm.TestResultsAvailable = true;
             Assert.IsTrue(vm.TestResultsAvailable);
             vm.OkSelected = true;
@@ -272,8 +270,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(vm.IsTestResultsEmptyRows);
             vm.IsTesting = true;
             Assert.IsTrue(vm.IsTesting);
-            //var b = new DatabaseService() { Headers = new List<NameValue>() { new NameValue("a", "b") } };
-            //vm.Model = b;
             Assert.IsNotNull(vm.Model);
         }
     }

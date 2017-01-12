@@ -156,7 +156,7 @@
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeParser.cs" />
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
-    <Compile Include="Core\DbSourceDefinition.cs" />
+    <Compile Include="Core\Database\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />
@@ -229,6 +229,7 @@
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
+    <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
@@ -258,8 +259,8 @@
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageComPluginSourceModel.cs" />
     <Compile Include="IManageComPluginSourceViewModel.cs" />
+    <Compile Include="IManageDatabaseSourceModel.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
-    <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageRabbitMQSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
     <Compile Include="IManageExchangeSourceViewModel.cs" />

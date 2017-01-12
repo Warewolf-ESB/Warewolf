@@ -48,10 +48,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -196,176 +192,8 @@
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <!--  DB  -->
-            <Button Grid.Row="7"
-                    Grid.Column="1"
-                    Width="{Binding ButtonWidth}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding NewDatabaseSourceCommand}"
-                    Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuDatabaseToolTip}">
-                <DockPanel Width="{Binding ButtonWidth}"
-                           Height="35"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           Background="Transparent">
-                    <Image Name="ImageDbSourceCreate"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-Db-MenuCreate}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Name="ImageDbSourceCreateMouseOver"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-Db-MenuCreate-MouseOver}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <TextBlock Padding="15,8,0,5"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Text="{Binding Path=DatabaseLabel}" />
-                </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuNewDatabaseConnectorHelp}" />
-                </i:Interaction.Behaviors>
-            </Button>
-
-            <!--  PLUGIN  -->
-            <Button Grid.Row="8"
-                    Grid.Column="1"
-                    Width="{Binding ButtonWidth}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding NewPluginSourceCommand}"
-                    Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuPluginToolTip}">
-                <DockPanel Width="{Binding ButtonWidth}"
-                           Height="35"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           Background="Transparent">
-                    <Image Name="ImagePluginSourceCreate"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-Dll-MenuCreate}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Name="ImagePluginSourceCreateMouseOver"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-Dll-MenuCreate-MouseOver}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <TextBlock Padding="15,8,0,5"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Text="{Binding Path=DLLLabel}" />
-                </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuNewPluginConnectorHelp}" />
-                </i:Interaction.Behaviors>
-            </Button>
-
-            <!--  WEB  -->
-            <Button Grid.Row="9"
-                    Grid.Column="1"
-                    Width="{Binding ButtonWidth}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding NewWebSourceCommand}"
-                    Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuWebServiceToolTip}">
-                <DockPanel Width="{Binding ButtonWidth}"
-                           Height="35"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           Background="Transparent">
-                    <Image Name="ImageWebServiceCreate"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-WebService-MenuCreate}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Name="ImageWebServiceCreateMouseOver"
-                           Width="20"
-                           Height="20"
-                           Margin="7.5,7.5,7.5,7.5"
-                           Source="{StaticResource Explorer-WebService-MenuCreate-MouseOver}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <TextBlock Padding="16,8,0,5"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Text="{Binding Path=WebLabel}" />
-                </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuNewWebConnectorHelp}" />
-                </i:Interaction.Behaviors>
-            </Button>
-
-            <Separator Grid.Row="10"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       Margin="0,5,0,5"
-                       Style="{StaticResource MenuSeparator}" />
-
             <!--  TASK  -->
-            <Button Grid.Row="11"
+            <Button Grid.Row="7"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -396,7 +224,7 @@
             </Button>
 
             <!--  DEBUG  -->
-            <Button Grid.Row="12"
+            <Button Grid.Row="8"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -426,14 +254,14 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="13"
+            <Separator Grid.Row="9"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
             <!--  SETTINGS  -->
-            <Button Grid.Row="14"
+            <Button Grid.Row="10"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -463,14 +291,14 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="15"
+            <Separator Grid.Row="11"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
             <!--  HELP  -->
-            <Button Grid.Row="16"
+            <Button Grid.Row="12"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -501,7 +329,7 @@
             </Button>
 
             <Button x:Name="VersionButton"
-                    Grid.Row="17"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -538,13 +366,13 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Separator Grid.Row="18"
+            <Separator Grid.Row="14"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <Button Grid.Row="19"
+            <Button Grid.Row="15"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
@@ -582,7 +410,7 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Image Grid.Row="20"
+            <Image Grid.Row="16"
                    Grid.Column="0"
                    Grid.ColumnSpan="3"
                    Width="15"
