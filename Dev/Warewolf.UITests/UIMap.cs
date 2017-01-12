@@ -8510,7 +8510,8 @@ namespace Warewolf.UITests
         public void ThenIsChildOf(string child, string parent)
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(parent));
-            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
+            if(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem))
+                Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
         }
 
         [Given(@"""(.*)"" is child of localhost")]
