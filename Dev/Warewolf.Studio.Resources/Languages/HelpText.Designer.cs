@@ -2126,11 +2126,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PluginSourceConfigFileButtonHelp.
+        /// </summary>
+        public static string PluginSourceConfigFileButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceConfigFileButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceConfigFileHelp.
+        /// </summary>
+        public static string PluginSourceConfigFileHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceConfigFileHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceDllFullNameButtonHelp.
+        /// </summary>
+        public static string PluginSourceDllFullNameButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceDllFullNameButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;	or	The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;.
         /// </summary>
         public static string PluginSourceDllFullNameHelp {
             get {
                 return ResourceManager.GetString("PluginSourceDllFullNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceGacAssemblyNameButtonHelp.
+        /// </summary>
+        public static string PluginSourceGacAssemblyNameButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceGacAssemblyNameButtonHelp", resourceCulture);
             }
         }
         
