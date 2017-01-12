@@ -11,6 +11,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -109,13 +110,16 @@ namespace Dev2.Runtime.ESB.Execution
             {
 
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                var testRunResult = new TestRunResult
+                var testRunResult = new ServiceTestModelTO
                 {
-                    TestName = DataObject.TestName,
-                    RunTestResult = RunResult.TestInvalid
+                    Result = new TestRunResult
+                    {
+                        TestName = DataObject.TestName,
+                        RunTestResult = RunResult.TestResourceDeleted,
+                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}"
+                    }
                 };
                 Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}");
-                testRunResult.Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}";
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
