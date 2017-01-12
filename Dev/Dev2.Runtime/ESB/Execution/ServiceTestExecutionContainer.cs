@@ -560,10 +560,12 @@ namespace Dev2.Runtime.ESB.Execution
                     failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
                 }
             }
-            
-            
 
-            failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
+
+            if (serviceTestSteps != null)
+            {
+                failureMessage.AppendLine(string.Join("", serviceTestSteps.Where(step => !string.IsNullOrEmpty(step.Result?.Message)).Select(step => step.Result?.Message)));
+            }
             return failureMessage;
         }
 

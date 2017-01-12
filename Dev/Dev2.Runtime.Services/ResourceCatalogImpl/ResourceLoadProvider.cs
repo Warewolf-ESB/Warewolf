@@ -153,6 +153,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var workspaceResources = GetResources(workspaceID);
             var resources = workspaceResources.FindAll(r => r.ResourceType == sourceType.ToString());
+            if (sourceType == enSourceType.MySqlDatabase || sourceType == enSourceType.Oracle || sourceType == enSourceType.PostgreSQL || sourceType == enSourceType.SqlDatabase || sourceType==enSourceType.ODBC)
+            {
+                var oldResources = workspaceResources.FindAll(r => r.ResourceType.ToUpper() == "DbSource".ToUpper());
+                foreach (var oldResource in oldResources)
+                {
+                    if (!resources.Exists(resource => resource.ResourceID == oldResource.ResourceID))
+                    {
+                        resources.Add(oldResource);
+                    }
+                }
+            }
             Dictionary<enSourceType, Func<IEnumerable>> commands = new Dictionary<enSourceType, Func<IEnumerable>>
             {
                 { enSourceType.Dev2Server, ()=>BuildSourceList<Connection>(resources) },
@@ -161,6 +172,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 { enSourceType.MySqlDatabase, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.PostgreSQL, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.Oracle, ()=>BuildSourceList<DbSource>(resources) },
+                { enSourceType.ODBC, ()=>BuildSourceList<DbSource>(resources) },
                 { enSourceType.PluginSource, ()=>BuildSourceList<PluginSource>(resources) },
                 { enSourceType.WebSource, ()=>BuildSourceList<WebSource>(resources) },
                 { enSourceType.OauthSource, ()=>BuildSourceList<DropBoxSource>(resources) },
