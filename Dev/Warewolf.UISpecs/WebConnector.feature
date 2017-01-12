@@ -7,7 +7,7 @@ Feature: WebConnector
 Scenario: Create and Execute New Web GET Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Click New Web Source Ribbon Button
+	And I Click New Web Source Explorer Context Menu Button
 	And I Type The Testing Site into Web GET Source Wizard Address Textbox
 	And I Click New Web Source Test Connection Button
 	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"

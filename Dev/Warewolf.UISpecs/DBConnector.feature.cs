@@ -32,13 +32,7 @@ namespace Warewolf.UISpecs
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DBConnector", "\tIn order to connect to databases\r\n\tAs a Warewolf Studio user\r\n\tI want to perform" +
                     " a composition of recorded actions", ProgrammingLanguage.CSharp, new string[] {
-                        "DBConnectorI",
-                        "Click",
-                        "New",
-                        "Database",
-                        "Source",
-                        "Ribbon",
-                        "Button"});
+                        "DBConnector"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,13 +72,7 @@ namespace Warewolf.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create and Execute New DB Connector With Variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DBConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnectorI")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Click")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("New")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ribbon")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Button")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnector")]
         public virtual void CreateAndExecuteNewDBConnectorWithVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Execute New DB Connector With Variables", ((string[])(null)));
@@ -149,13 +137,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create DB Source From Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DBConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnectorI")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Click")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("New")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ribbon")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Button")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBConnector")]
         public virtual void CreateDBSourceFromTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create DB Source From Tool", ((string[])(null)));
