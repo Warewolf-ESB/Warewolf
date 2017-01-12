@@ -1075,6 +1075,27 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
     <value>The full path or GAC name of the DLL you want to use</value>
   </data>
+  <data name="ManagePluginSourceConfigFileTooltip" xml:space="preserve">
+    <value>ManagePluginSourceConfigFileTooltip</value>
+  </data>
+  <data name="ManagePluginSourceGacAssemblyNameTooltip" xml:space="preserve">
+    <value>ManagePluginSourceGacAssemblyNameTooltip</value>
+  </data>
+  <data name="ManagePluginSourceGacAssemblyNameButtonTooltip" xml:space="preserve">
+    <value>ManagePluginSourceGacAssemblyNameButtonTooltip</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileDisabledTooltip" xml:space="preserve">
+    <value>ManagePluginSourceConfigFileDisabledTooltip</value>
+  </data>
+  <data name="ManagePluginSourceAssemblyNameButtonTooltip" xml:space="preserve">
+    <value>ManagePluginSourceAssemblyNameButtonTooltip</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileButtonTooltip" xml:space="preserve">
+    <value>ManagePluginSourceConfigFileButtonTooltip</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileButtonDisabledTooltip" xml:space="preserve">
+    <value>ManagePluginSourceConfigFileButtonDisabledTooltip</value>
+  </data>
   <data name="ManagePluginServiceSourcesTooltip" xml:space="preserve">
     <value>Select the plugin you want to use</value>
   </data>

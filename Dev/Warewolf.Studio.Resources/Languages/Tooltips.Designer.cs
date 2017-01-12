@@ -2168,6 +2168,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceAssemblyNameButtonTooltip.
+        /// </summary>
+        public static string ManagePluginSourceAssemblyNameButtonTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceAssemblyNameButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The full path or GAC name of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceAssemblyNameTooltip {
@@ -2186,11 +2195,65 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceConfigFileButtonDisabledTooltip.
+        /// </summary>
+        public static string ManagePluginSourceConfigFileButtonDisabledTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceConfigFileButtonDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceConfigFileButtonTooltip.
+        /// </summary>
+        public static string ManagePluginSourceConfigFileButtonTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceConfigFileButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceConfigFileDisabledTooltip.
+        /// </summary>
+        public static string ManagePluginSourceConfigFileDisabledTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceConfigFileDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceConfigFileTooltip.
+        /// </summary>
+        public static string ManagePluginSourceConfigFileTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceConfigFileTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter for the file you want or GAC entry.
         /// </summary>
         public static string ManagePluginSourceFilterTooltip {
             get {
                 return ResourceManager.GetString("ManagePluginSourceFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceGacAssemblyNameButtonTooltip.
+        /// </summary>
+        public static string ManagePluginSourceGacAssemblyNameButtonTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceGacAssemblyNameButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManagePluginSourceGacAssemblyNameTooltip.
+        /// </summary>
+        public static string ManagePluginSourceGacAssemblyNameTooltip {
+            get {
+                return ResourceManager.GetString("ManagePluginSourceGacAssemblyNameTooltip", resourceCulture);
             }
         }
         
