@@ -159,6 +159,8 @@
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
+    <Compile Include="PluginAction.cs" />
+    <Compile Include="PluginConstructor.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="SaveResult.cs" />

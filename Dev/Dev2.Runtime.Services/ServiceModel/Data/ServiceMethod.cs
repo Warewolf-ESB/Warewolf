@@ -32,8 +32,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
-        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters,
-            IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
         {
             Name = name;
             SourceCode = sourceCode;
