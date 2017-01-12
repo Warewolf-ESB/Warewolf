@@ -106,47 +106,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
-        {
-            var effectedResources = FindAffectedResources(new List<Guid> { resourceId }, resourceType, equalityComparer, fetchXaml);
-
-            return effectedResources;
-        }
-
-        private List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
-        {
-            CommunicationController comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            var resourceIds = resourceId.Select(a => a.ToString() + ",").Aggregate((a, b) => a + b);
-            resourceIds = resourceIds.EndsWith(",") ? resourceIds.Substring(0, resourceIds.Length - 1) : resourceIds;
-
-            comsController.AddPayloadArgument("GuidCsv", resourceIds);
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), resourceType));
-
-            var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-            var effectedResources = new List<IResourceModel>();
-
-            if (toReloadResources != null)
-            {
-                foreach (var serializableResource in toReloadResources)
-                {
-                    IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
-                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
-
-                    if (resourceToUpdate != null)
-                    {
-                        resourceToUpdate.Update(resource);
-                        effectedResources.Add(resourceToUpdate);
-                    }
-                    else
-                    {
-                        effectedResources.Add(resource);
-                        _resourceModels.Add(resource);
-                    }
-                }
-            }
-            return effectedResources;
-        }
-
         private void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
@@ -257,7 +216,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var result = _resourceModels.Find(func.Invoke);
 
-                if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
+                if (result != null && (result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0 || fetchPayload))
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
                     if (msg != null && !msg.HasError)

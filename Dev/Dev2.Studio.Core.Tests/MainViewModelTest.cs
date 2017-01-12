@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -160,7 +159,6 @@ namespace Dev2.Core.Tests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
 
@@ -220,7 +218,6 @@ namespace Dev2.Core.Tests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
 
             var envConn = new Mock<IEnvironmentConnection>();
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
@@ -238,7 +235,6 @@ namespace Dev2.Core.Tests
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 
-            resourceRepo.Verify(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true), Times.Never());
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
 
             Assert.AreEqual(1, viewModel.Items.Count); // 1 extra for the help tab!
@@ -272,7 +268,6 @@ namespace Dev2.Core.Tests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var envConn = new Mock<IEnvironmentConnection>();
@@ -2990,11 +2985,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
-            {
-                Thread.Sleep(100);
-                return new List<IResourceModel>();
-            });
+            
             environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
             resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
 
@@ -3030,11 +3021,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
-            {
-                Thread.Sleep(100);
-                return new List<IResourceModel>();
-            });
+            
             environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
             resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
 
