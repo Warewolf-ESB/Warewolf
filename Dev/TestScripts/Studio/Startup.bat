@@ -81,7 +81,7 @@ set /a LoopCounter=0
 :MainLoopBody
 IF EXIST "%ServerBinDirectory%\ServerStarted" goto StartStudio
 set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 60 echo Timed out waiting for the Warewolf server to start. &exit /b
+IF %LoopCounter% EQU 300 echo Timed out waiting for the Warewolf server to start. &exit /b
 @echo Waiting 10 more seconds for %ServerBinDirectory%\ServerStarted file to appear...
 waitfor ServerStart /t 10 2>NUL
 goto MainLoopBody
@@ -114,7 +114,7 @@ IF EXIST %windir%\nircmd.exe (
 	)
 )
 IF NOT "%1"=="" (
-	waitfor StudioStart /t 120 2>NUL
+	waitfor StudioStart /t 300 2>NUL
 ) else (
 	waitfor StudioStart /t 60 2>NUL
 )

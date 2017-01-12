@@ -14,16 +14,6 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        public void MergeFolders_InFileredExplorer_UITest()
-        {
-            UIMap.Filter_Explorer("DragAndDropMergeFolder");
-            UIMap.Drag_Explorer_First_Item_Onto_Second_Item();
-            UIMap.Filter_Explorer("DragAndDropMergeResource1");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
-        }
-
-        [TestMethod]
-        [TestCategory("Explorer")]
         public void Create_Resource_InFolderUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
@@ -45,6 +35,16 @@ namespace Warewolf.UITests
             UIMap.Create_New_Folder_Using_Shortcut();
             UIMap.Filter_Explorer("New Folder");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void MergeFolders_InFileredExplorer_UITest()
+        {
+            UIMap.Filter_Explorer("DragAndDropMergeFolder");
+            UIMap.Drag_Explorer_First_Item_Onto_Second_Item();
+            UIMap.Filter_Explorer("DragAndDropMergeResource1");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         }
 
         [TestMethod]
