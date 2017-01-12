@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.Database;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -203,19 +203,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        public void TestIsEmptyServerNameNonEmpty()
-        {
-            /*   //arrange
-               _targetAsyncWorker.ServerName = new ComputerName() { Name = "someName" };
-
-               //act
-               var value = _targetAsyncWorker.IsEmpty;
-
-               //assert
-               Assert.IsFalse(value);*/
-        }
-
-        [TestMethod]
         public void TestIsEmptyServerNameNonEmptyToString()
         {
             //arrange
@@ -226,79 +213,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual("someName", _targetAsyncWorker.ServerName.ToString());
-        }
-
-        [TestMethod]
-        public void TestIsEmptyAuthenticationTypeNonWindows()
-        {
-            /*  //arrange
-              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-              _targetAsyncWorker.AuthenticationType= AuthenticationType.Public;
-
-               //act
-               var value = _targetAsyncWorker.IsEmpty;
-
-              //assert
-              Assert.IsFalse(value);*/
-        }
-
-        [TestMethod]
-        public void TestIsEmptyUserNameNonEmpty()
-        {
-            /*  //arrange
-              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-              _targetAsyncWorker.UserName = "SomeUserName";
-
-              //act
-              var value = _targetAsyncWorker.IsEmpty;
-
-              //assert
-              Assert.IsFalse(value);*/
-        }
-
-        [TestMethod]
-        public void TestIsEmptyPasswordNonEmpty()
-        {
-            /*  //arrange
-              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-              _targetAsyncWorker.UserName = "";
-              _targetAsyncWorker.Password = "somePassword";
-
-              //act
-              var value = _targetAsyncWorker.IsEmpty;
-
-              //assert
-              Assert.IsFalse(value);*/
-        }
-
-        [TestMethod]
-        public void TestIsEmpty()
-        {
-            /*  //arrange
-              _targetAsyncWorker.ServerName = new ComputerName() { Name = "" };
-              _targetAsyncWorker.AuthenticationType = AuthenticationType.Windows;
-              _targetAsyncWorker.UserName = "";
-              _targetAsyncWorker.Password = "";
-
-              //act
-              var value = _targetAsyncWorker.IsEmpty;
-
-              //assert
-              Assert.IsTrue(value);*/
-        }
-
-        [TestMethod]
-        public void TestDBSource()
-        {
-            //arrange
-            var expectedValueMock = new Mock<IDbSource>();
-
-            //act
-
-            //assert
-            //Assert.AreSame(expectedValueMock.Object, actualValue);
         }
 
         [TestMethod]
@@ -491,7 +405,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedValue = new List<ComputerName>();
-            //_targetAsyncWorker.ServerType = new NameValue("someName", enSourceType.Dev2Server.ToString());
             _changedPropertiesAsyncWorker.Clear();
 
             //act
@@ -994,7 +907,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
             var expectedType = enSourceType.SqlDatabase;
-            //_targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1292,7 +1204,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(dbSourceServerName, _targetAsyncWorker.EmptyServerName);
             Assert.AreEqual(expectedPassword, _targetAsyncWorker.Password);
             Assert.AreEqual(expectedPath, _targetAsyncWorker.Path);
-            //Assert.AreSame(expectedServerType, _targetAsyncWorker.ServerType);
             Assert.AreEqual(expectedDatabaseName, _targetAsyncWorker.DatabaseName);
             Assert.IsTrue(_changedPropertiesAsyncWorker.Contains("DatabaseNames"));
         }
