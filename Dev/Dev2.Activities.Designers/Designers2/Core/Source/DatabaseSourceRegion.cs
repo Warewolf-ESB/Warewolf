@@ -38,8 +38,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.CreateNewSource(type));
+            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource, type), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
             IsEnabled = true;

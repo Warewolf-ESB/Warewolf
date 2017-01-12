@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestNewDatabaseSourceCommand()
+        public void TestNewSqlServerSourceCommand()
         {
             //arrange
             _target.ResourceType = "DbSource";
@@ -139,13 +139,85 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.NewDatabaseSourceCommand.Execute(null);
-            Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
+            _target.NewSqlServerSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewSqlServerSourceCommand.CanExecute(null));
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
-            _shellViewModelMock.Verify(it => it.NewDatabaseSource(_target.ResourcePath));
+            _shellViewModelMock.Verify(it => it.NewSqlServerSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewMySqlSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DbSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewMySqlSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewMySqlSourceCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewMySqlSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewPostgreSqlSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DbSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewPostgreSqlSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewPostgreSqlSourceCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewPostgreSqlSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewOracleSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DbSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewOracleSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewOracleSourceCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewOracleSource(_target.ResourcePath));
+        }
+
+        [TestMethod]
+        public void TestNewOdbcSourceCommand()
+        {
+            //arrange
+            _target.ResourceType = "DbSource";
+            _target.ResourceId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+
+            //act
+            _target.NewOdbcSourceCommand.Execute(null);
+            Assert.IsTrue(_target.NewOdbcSourceCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.NewOdbcSource(_target.ResourcePath));
         }
 
         [TestMethod]
@@ -982,7 +1054,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
             var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
-            var canCreateNewDatabaseSourceCommand = _target.NewDatabaseSourceCommand.CanExecute(null);
+            var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
+            var canCreateNewMySqlSourceCommand = _target.NewMySqlSourceCommand.CanExecute(null);
+            var canCreateNewPostgreSqlSourceCommand = _target.NewPostgreSqlSourceCommand.CanExecute(null);
+            var canCreateNewOracleSourceCommand = _target.NewOracleSourceCommand.CanExecute(null);
+            var canCreateNewOdbcSourceCommand = _target.NewOdbcSourceCommand.CanExecute(null);
             var canCreateNewPluginSourceCommand = _target.NewPluginSourceCommand.CanExecute(null);
             var canCreateNewWebSourceSourceCommand = _target.NewWebSourceSourceCommand.CanExecute(null);
             var canCreateNewEmailSourceSourceCommand = _target.NewEmailSourceSourceCommand.CanExecute(null);
@@ -998,7 +1074,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(canCreateNewServiceCommand);
             Assert.IsTrue(canCreateNewServerCommand);
-            Assert.IsTrue(canCreateNewDatabaseSourceCommand);
+            Assert.IsTrue(canCreateNewSqlServerSourceCommand);
+            Assert.IsTrue(canCreateNewMySqlSourceCommand);
+            Assert.IsTrue(canCreateNewPostgreSqlSourceCommand);
+            Assert.IsTrue(canCreateNewOracleSourceCommand);
+            Assert.IsTrue(canCreateNewOdbcSourceCommand);
             Assert.IsTrue(canCreateNewPluginSourceCommand);
             Assert.IsTrue(canCreateNewWebSourceSourceCommand);
             Assert.IsTrue(canCreateNewEmailSourceSourceCommand);

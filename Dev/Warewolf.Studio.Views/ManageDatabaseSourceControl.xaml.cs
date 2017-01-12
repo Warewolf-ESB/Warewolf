@@ -37,7 +37,7 @@ namespace Warewolf.Studio.Views
             switch (controlName)
             {
                 case "Save":
-                    var viewModel = DataContext as ManageDatabaseSourceViewModel;
+                    var viewModel = DataContext as DatabaseSourceViewModelBase;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnectionButton.Command.CanExecute(null);
@@ -61,6 +61,11 @@ namespace Warewolf.Studio.Views
         {
             try
             {
+                var viewModelBase = DataContext as DatabaseSourceViewModelBase;
+                if(viewModelBase != null)
+                {
+                    viewModelBase.DatabaseName = databaseName;
+                }
                 DatabaseComboxBox.SelectedItem = databaseName;
             }
             catch (Exception)
@@ -85,7 +90,7 @@ namespace Warewolf.Studio.Views
         {
             try
             {
-                ServerTypeComboBox.SelectedItem = type;
+                //ServerTypeComboBox.SelectedItem = type;
             }
             catch (Exception)
             {
@@ -114,39 +119,39 @@ namespace Warewolf.Studio.Views
 
         public void PerformSave()
         {
-            var viewModel = DataContext as ManageDatabaseSourceViewModel;
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
             viewModel?.OkCommand.Execute(null);
         }
 
         public void EnterUserName(string userName)
         {
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
+            if(viewModel != null)
+            {
+                viewModel.UserName = userName;
+            }
             UserNameTextBox.Text = userName;
         }
 
         public void EnterPassword(string password)
         {
+            var viewModel = DataContext as DatabaseSourceViewModelBase;
+            if (viewModel != null)
+            {
+                viewModel.Password = password;
+            }
             PasswordTextBox.Password = password;
         }
 
         public string GetErrorMessage()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).TestMessage;
+            return ((DatabaseSourceViewModelBase)DataContext).TestMessage;
         }
 
 
         // ReSharper disable once InconsistentNaming
         private void XamComboEditor_Loaded(object sender, RoutedEventArgs e)
         {
-            //SpecializedTextBox txt = Utilities.GetDescendantFromType(sender as DependencyObject, typeof(SpecializedTextBox), false) as SpecializedTextBox;
-            //if (txt != null)
-            //{
-            //    txt.SelectAll();
-            //    txt.Focus();
-            //    var selectedItem = DatabaseComboxBox.SelectedItem;
-            //    if (selectedItem != null) 
-            //        txt.Text = selectedItem.ToString();
-            //    DatabaseComboxBox.Style = Application.Current.TryFindResource("XamComboEditorStyle") as Style;
-            //}
         }
 
         public void VerifyServerExistsintComboBox(string serverName)
@@ -158,11 +163,6 @@ namespace Warewolf.Studio.Views
         {
 
             return new List<string>();
-        }
-
-        public string GetSelectedDbOption()
-        {
-            return ServerTypeComboBox.SelectedItem.ToString();
         }
 
         public void Test()
@@ -182,11 +182,11 @@ namespace Warewolf.Studio.Views
 
         public string GetHeader()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).HeaderText;
+            return ((DatabaseSourceViewModelBase)DataContext).HeaderText;
         }
         public string GetTabHeader()
         {
-            return ((ManageDatabaseSourceViewModel)DataContext).Header;
+            return ((DatabaseSourceViewModelBase)DataContext).Header;
         }
         public void CancelTest()
         {
@@ -197,6 +197,8 @@ namespace Warewolf.Studio.Views
         {
             WindowsRadioButton.Focus();
         }
+
+      
     }
 
     public class NullToVisibilityConverter : IValueConverter

@@ -118,13 +118,13 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <param name="sourceId"></param>
         /// <param name="destinationPath"></param>
         /// <param name="resourcePath"></param>
-        public async Task MoveItem(Guid sourceId, string destinationPath, string resourcePath)
+        public async Task<IExplorerRepositoryResult> MoveItem(Guid sourceId, string destinationPath, string resourcePath)
         {
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
             controller.AddPayloadArgument("itemToMove", sourceId.ToString());
             controller.AddPayloadArgument("newPath", destinationPath);
             controller.AddPayloadArgument("itemToBeRenamedPath", resourcePath);
-            await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
+            return await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
         }
 
         #endregion

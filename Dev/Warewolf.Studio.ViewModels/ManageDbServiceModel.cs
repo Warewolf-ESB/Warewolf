@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 
@@ -51,14 +52,48 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.FetchDbActions(source);
         }
 
-        public void CreateNewSource()
+        public void CreateNewSource(enSourceType type)
         {
-            _shell.NewDatabaseSource(string.Empty);
+            switch (type)
+            {
+                case enSourceType.SqlDatabase:
+                    _shell.NewSqlServerSource(string.Empty);
+                    break;
+                case enSourceType.MySqlDatabase:
+                    _shell.NewMySqlSource(string.Empty);
+                    break;
+                case enSourceType.PostgreSQL:
+                    _shell.NewPostgreSqlSource(string.Empty);
+                    break;
+                case enSourceType.Oracle:
+                    _shell.NewOracleSource(string.Empty);
+                    break;
+                case enSourceType.ODBC:
+                    _shell.NewOdbcSource(string.Empty);
+                    break;
+            }
         }
 
-        public void EditSource(IDbSource selectedSource)
+        public void EditSource(IDbSource selectedSource, enSourceType type)
         {
-            _shell.EditResource(selectedSource);
+            switch (type)
+            {
+                    case enSourceType.SqlDatabase:
+                    _shell.EditSqlServerResource(selectedSource);
+                    break;
+                    case enSourceType.MySqlDatabase:
+                    _shell.EditMySqlResource(selectedSource);
+                    break;
+                    case enSourceType.PostgreSQL:
+                    _shell.EditPostgreSqlResource(selectedSource);
+                    break;
+                    case enSourceType.Oracle:
+                    _shell.EditOracleResource(selectedSource);
+                    break;
+                    case enSourceType.ODBC:
+                    _shell.EditOdbcResource(selectedSource);
+                    break;
+            }
         }
 
         public DataTable TestService(IDatabaseService inputValues)

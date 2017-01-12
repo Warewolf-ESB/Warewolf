@@ -501,13 +501,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            CustomContainer.Get<IShellViewModel>().NewDatabaseSource(string.Empty);
+            CustomContainer.Get<IShellViewModel>().NewSqlServerSource(string.Empty);
             RefreshDatabases();
         }
 
         IEnumerable<DbSource> GetDatabases()
         {
-            return _environmentModel.ResourceRepository.FindSourcesByType<DbSource>(_environmentModel, enSourceType.SqlDatabase);
+            var dbSources = _environmentModel.ResourceRepository.FindSourcesByType<DbSource>(_environmentModel, enSourceType.SqlDatabase);
+            return dbSources.Where(source => source.ResourceType== "SqlDatabase" || source.ServerType==enSourceType.SqlDatabase);
         }
 
         DbTableList GetDatabaseTables(DbSource dbSource)

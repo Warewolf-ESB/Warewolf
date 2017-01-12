@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities.Designers2.ODBC;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -14,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Common.Interfaces.Core;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Dev2.Common.Interfaces.ToolBase;
