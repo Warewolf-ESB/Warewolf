@@ -2038,6 +2038,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
+        /// <summary>
+        /// Processes the data list configuration load.
+        /// </summary>
+        public void UpdateDataList()
+        {
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+        }
+
+
         public static bool ValidatResourceModel(string dataList)
         {
             try
