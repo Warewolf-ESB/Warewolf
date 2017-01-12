@@ -46,6 +46,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 DllListingModels = new List<IDllListingModel> { AllDllListingModels[1] };
             }
+            foreach (var dllListingModel in DllListingModels.Where(model => model.ChildrenCount > 0))
+            {
+                dllListingModel.IsExpanded = true;
+            }
             _view = CustomContainer.GetInstancePerRequestType<IChooseDLLView>();
             _view.ShowView(this);
             return SelectedDll;

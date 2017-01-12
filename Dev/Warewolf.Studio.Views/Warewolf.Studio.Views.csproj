@@ -159,6 +159,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChooseDLLView.xaml.cs">
+      <DependentUpon>ChooseDLLView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -171,6 +174,9 @@
     </Compile>
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileChooserView.xaml.cs">
+      <DependentUpon>FileChooserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="FocusExtension.cs" />
     <Compile Include="HelpView.xaml.cs">
@@ -246,6 +252,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ChooseDLLView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CircularProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -255,6 +265,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DeployView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileChooserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

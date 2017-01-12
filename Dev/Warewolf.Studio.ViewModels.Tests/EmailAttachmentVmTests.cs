@@ -134,17 +134,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             var fileListingItemMock2 = new Mock<IFileListingModel>();
             fileListingItemMock2.SetupGet(it => it.FullName).Returns(fileListingItemFullName2);
             var expectedValue = fileListingItemFullName1 + ";" + fileListingItemFullName2;
-            _target.Drives = new List<FileListingModel>()
-                                 {
-                                     new FileListingModel(
-                                         _modelMock.Object,
-                                         fileListingItemMock1.Object,
-                                         () => { }) { IsChecked = true },
-                                     new FileListingModel(
-                                         _modelMock.Object,
-                                         fileListingItemMock2.Object,
-                                         () => { }) { IsChecked = true }
-                                 };
+            //_target.Drives = new List<FileListingModel>()
+            //                     {
+            //                         new FileListingModel(
+            //                             _modelMock.Object,
+            //                             fileListingItemMock1.Object,
+            //                             () => { }) { IsChecked = true },
+            //                         new FileListingModel(
+            //                             _modelMock.Object,
+            //                             fileListingItemMock2.Object,
+            //                             () => { }) { IsChecked = true }
+            //                     };
             _changedProperties.Clear();
 
             //act
@@ -190,17 +190,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             var fileListingItemFullName2 = "d2";
             var fileListingItemMock2 = new Mock<IFileListingModel>();
             fileListingItemMock2.SetupGet(it => it.FullName).Returns(fileListingItemFullName2);
-            _target.Drives = new List<FileListingModel>()
-                                 {
-                                     new FileListingModel(
-                                         _modelMock.Object,
-                                         fileListingItemMock1.Object,
-                                         () => { }) { IsChecked = true },
-                                     new FileListingModel(
-                                         _modelMock.Object,
-                                         fileListingItemMock2.Object,
-                                         () => { }) { IsChecked = true }
-                                 };
+            //_target.Drives = new List<FileListingModel>()
+            //                     {
+            //                         new FileListingModel(
+            //                             _modelMock.Object,
+            //                             fileListingItemMock1.Object,
+            //                             () => { }) { IsChecked = true },
+            //                         new FileListingModel(
+            //                             _modelMock.Object,
+            //                             fileListingItemMock2.Object,
+            //                             () => { }) { IsChecked = true }
+            //                     };
             _changedProperties.Clear();
 
             //act
