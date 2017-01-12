@@ -3,7 +3,8 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 
-namespace Dev2.Common.Interfaces.Core.Database
+// ReSharper disable once CheckNamespace
+namespace Dev2.Common.Interfaces.Core
 {
 
     public class DbSourceDefinition : IDbSource, IEquatable<DbSourceDefinition>
