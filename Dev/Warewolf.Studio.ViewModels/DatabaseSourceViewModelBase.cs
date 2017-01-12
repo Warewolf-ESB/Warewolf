@@ -570,6 +570,7 @@ namespace Warewolf.Studio.ViewModels
                 Item = toDbSource;
                 SetupHeaderTextFromExisting();
                 Reset();
+                TestPassed = true;
             }
             catch (Exception ex)
             {

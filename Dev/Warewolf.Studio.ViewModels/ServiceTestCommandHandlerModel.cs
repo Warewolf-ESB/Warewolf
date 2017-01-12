@@ -96,6 +96,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var clone = selectedTest.Clone();
             clone.TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber);
+            clone.OldTestName = clone.TestName;
             clone.Enabled = true;
             clone.IsTestSelected = true;
             clone.TestPending = true;
