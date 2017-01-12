@@ -807,6 +807,13 @@ Scenario: Duplicate test new test has name
 	When I click duplicate 
 	Then there are 2 tests
 	And Test name is "Test 1 1"
+	And save is enabled
+	When I save
+	Then Tab Header is "Workflow 1 - Tests"
+	When I reload tests
+	And I close the test builder
+	When the test builder is open with "Workflow 1"
+	Then there are 2 tests
 
 @TestFramework
 Scenario: Run Selected Test Shows Stop Option
