@@ -18,7 +18,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -52,43 +52,43 @@ namespace Warewolf.Studio.ViewModels
             DllChooser = new DLLChooser(updateManager);
             HeaderText = Resources.Languages.Core.PluginSourceNewHeaderLabel;
             Header = Resources.Languages.Core.PluginSourceNewHeaderLabel;
-            //OkCommand = new DelegateCommand(o => Save(), o => CanSave());
+            OkCommand = new DelegateCommand(o => Save(), o => CanSave());
             FileSystemAssemblyName = string.Empty;
             ConfigFilePath = string.Empty;
             GACAssemblyName = string.Empty;
-            //ChooseFileSystemDLLCommand = new DelegateCommand(o =>
-            //{
-            //    var dll = DllChooser.GetFileSystemDLL();
-            //    if (dll != null)
-            //    {
-            //        FileSystemAssemblyName = dll.FullName;
-            //    }
-            //});
-            //ChooseGACDLLCommand = new DelegateCommand(o =>
-            //{
-            //    var dll = DllChooser.GetGacDLL();
-            //    if (dll != null)
-            //    {
-            //        GACAssemblyName = dll.FullName;
-            //    }
-            //});
+            ChooseFileSystemDLLCommand = new DelegateCommand(o =>
+            {
+                var dll = DllChooser.GetFileSystemDLL();
+                if (dll != null)
+                {
+                    FileSystemAssemblyName = dll.FullName;
+                }
+            });
+            ChooseGACDLLCommand = new DelegateCommand(o =>
+            {
+                var dll = DllChooser.GetGacDLL();
+                if (dll != null)
+                {
+                    GACAssemblyName = dll.FullName;
+                }
+            });
 
-            //ChooseConfigFileCommand = new DelegateCommand(o =>
-            //{
-            //    var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
-            //    fileChooser.ShowView(false);
-            //    var vm = fileChooser.DataContext as FileChooser;
-            //    if (vm != null && vm.Result == MessageBoxResult.OK)
-            //    {
-            //        var selectedFiles = vm.GetAttachments();
-            //        if (selectedFiles != null && selectedFiles.Count > 0)
-            //        {
-            //            ConfigFilePath = selectedFiles[0];
-            //        }
-            //    }
-            //});
+            ChooseConfigFileCommand = new DelegateCommand(o =>
+            {
+                var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
+                fileChooser.ShowView(false);
+                var vm = fileChooser.DataContext as FileChooser;
+                if (vm != null && vm.Result == MessageBoxResult.OK)
+                {
+                    var selectedFiles = vm.GetAttachments();
+                    if (selectedFiles != null && selectedFiles.Count > 0)
+                    {
+                        ConfigFilePath = selectedFiles[0];
+                    }
+                }
+            });
 
-            //CancelCommand = new DelegateCommand(o => CloseAction.Invoke());
+            CancelCommand = new DelegateCommand(o => CloseAction.Invoke());
 
             _warewolfserverName = updateManager.ServerName;
         }
