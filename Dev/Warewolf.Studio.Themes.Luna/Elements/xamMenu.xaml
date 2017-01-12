@@ -409,10 +409,30 @@
         <Setter Property="Width" Value="15"/>
         <Setter Property="Source" Value="{StaticResource ApisJsonIcon}"/>
     </Style>
-    <Style TargetType="Image" x:Key="NewDataBaseSourceIcon">
+    <Style TargetType="Image" x:Key="NewSqlServerSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource MicrosoftSQLSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewMySqlSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource DatabaseSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewPostgreSqlSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource PostgreSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewOracleSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource DatabaseSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewOdbcSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource OdbcSource}"/>
     </Style>
     <Style TargetType="Image" x:Key="NewServiceIcon">
         <Setter Property="Height" Value="12"/>

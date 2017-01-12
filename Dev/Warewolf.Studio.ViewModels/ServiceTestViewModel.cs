@@ -268,6 +268,7 @@ namespace Warewolf.Studio.ViewModels
                     var serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
                     var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count>0);
                     var debugStateActivityTypeName = debugState.ActivityTypeName;
+                    // ReSharper disable once PossibleNullReferenceException
                     if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
                     {
                         AddOutputs(outputs, serviceTestStep);
@@ -1518,8 +1519,7 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber("Test");
             var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
             AddAndSelectTest(testModel);
-            var isDirty = IsDirty;
-            SetDisplayName(isDirty);
+            
         }
         private bool _canAddFromDebug;
         private bool _isLoading;
@@ -1573,6 +1573,8 @@ namespace Warewolf.Studio.ViewModels
                 _tests.Add(testModel);
             }
             SelectedServiceTest = testModel;
+            var isDirty = IsDirty;
+            SetDisplayName(isDirty);
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local

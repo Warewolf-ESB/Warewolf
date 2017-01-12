@@ -8,6 +8,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -71,8 +72,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public async Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination)
         {
-            await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath);
-            return true;
+            var res = await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath);
+            if (res.Status == ExecStatus.Success)
+            {
+                return true;
+            }
+            return false;
         }
 
         public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)

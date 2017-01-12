@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -121,7 +120,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var oldPath = resource.GetSavePath();
-            var newPath = Regex.Replace(oldPath, oldCategory, newCategory, RegexOptions.IgnoreCase);
+            var newPath = oldPath.Replace(oldCategory, newCategory);// Regex.Replace(oldPath, oldCategory, newCategory, RegexOptions.IgnoreCase);
             if (string.IsNullOrEmpty(oldPath))
             {
                 newPath = newCategory;

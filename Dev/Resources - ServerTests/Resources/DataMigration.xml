@@ -1,5 +1,5 @@
 
-<Service ID="99331c23-385b-4da7-abeb-c429f25735c1" Version="1.0" ServerID="d53bbcc5-4794-4dfa-b096-3aa815692e66" Name="DataMigration" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5896.25256">
+<Service ID="99331c23-385b-4da7-abeb-c429f25735c1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMigration" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.6212.23827">
   <DisplayName>DataMigration</DisplayName>
   <Category>DataMigration</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

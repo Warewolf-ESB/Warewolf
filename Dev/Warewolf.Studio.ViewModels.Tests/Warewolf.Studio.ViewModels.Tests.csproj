@@ -139,8 +139,12 @@
     <Compile Include="Help\HelpWindowViewModelTests.cs" />
     <Compile Include="ManageComPluginSourceModelTests.cs" />
     <Compile Include="ManageComPluginSourceViewModelTests.cs" />
-    <Compile Include="ManageDatabaseSourceModelTests.cs" />
-    <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
+    <Compile Include="DatabaseSourceViewModelBaseTests.cs" />
+    <Compile Include="ManageOdbcSourceViewModelTests.cs" />
+    <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />
+    <Compile Include="ManageMySqlSourceViewModelTests.cs" />
+    <Compile Include="ManageOracleSourceViewModelTests.cs" />
+    <Compile Include="ManageSqlServerSourceViewModelTests.cs" />
     <Compile Include="ManageEmailSourceModelTests.cs" />
     <Compile Include="ManageExchangeViewModelTests.cs" />
     <Compile Include="ManageRabbitMQSourceViewModelTests.cs" />

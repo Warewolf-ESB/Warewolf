@@ -1,8 +1,0 @@
-
-<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAABySm5/Xz8aT/BGhgTLttREAAAAAASAAACgAAAAEAAAAF0QEmgbIDtYuVyUc674flwQAQAApAELWQiQqhZ5Uw5CbwyQZs1czeww7/FbTOjrJCg1109iKalweyC1jAAwAq6MCpU+TmG0KhkJGlBncWR8pQJhqrTpyQ+Rpnkbm6Y8+VVGH6kveogr/5nj4BkUJnzgYiFR6/I+uLDcWnsoRCUmMXpSNmXLBqF/aqFvLCeiDkj51DiiRq1TAN7f/B7uc+6Ep3v1CYWyFFjr8dbhVI/9szeWjMxuegUit3jbjNSGGDsikAUJ8hHifa7WeRtZZFKMaXp2Aq7lnhciAQWrgG3xQb+mf6VWkG6XJYWawhHG3Mm1/IH89PA1pmOoycabsohgDqsTUBm5QANzWtu0LSLmaLiVgNTuPZ1Dx3pDFlvRDto+3rQUAAAAkYE4btPBUhsbSjcaP5uaA3ZQDY8=" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5862.23067">
-  <DisplayName>WeatherFranceCities</DisplayName>
-  <Category>Acceptance Testing Resources\WeatherFranceCities</Category>
-  <AuthorRoles>
-  </AuthorRoles>
-  <TypeOf>EmailSource</TypeOf>
-</Source>

@@ -70,6 +70,11 @@ namespace Dev2.Controller
 
     public class CommunicationController : ICommunicationController
     {
+        public CommunicationController()
+        {
+            ServicePayload = new EsbExecuteRequest();
+        }
+
         public string ServiceName { get; set; }
 
         public EsbExecuteRequest ServicePayload { get; private set; }

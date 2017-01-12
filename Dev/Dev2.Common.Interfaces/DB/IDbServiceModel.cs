@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces.DB
@@ -19,8 +20,8 @@ namespace Dev2.Common.Interfaces.DB
     {
         ObservableCollection<IDbSource> RetrieveSources();
         ICollection<IDbAction> GetActions(IDbSource source);
-        void CreateNewSource();
-        void EditSource(IDbSource selectedSource);
+        void CreateNewSource(enSourceType type);
+        void EditSource(IDbSource selectedSource, enSourceType type);
         DataTable TestService(IDatabaseService inputValues);
 
         IStudioUpdateManager UpdateRepository { get; }

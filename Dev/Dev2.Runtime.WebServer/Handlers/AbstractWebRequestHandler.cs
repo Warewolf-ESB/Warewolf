@@ -388,20 +388,22 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         if (!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
                         {
-
-                            if (dataObject.ReturnType == EmitionTypes.JSON)
+                            if (resource?.DataList != null)
                             {
-                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                            }
-                            else if (dataObject.ReturnType == EmitionTypes.XML)
-                            {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                            }
-                            else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
-                            {
-                                formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
+                                if (dataObject.ReturnType == EmitionTypes.JSON)
+                                {
+                                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                                    executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                                }
+                                else if (dataObject.ReturnType == EmitionTypes.XML)
+                                {
+                                    executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                                }
+                                else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                                {
+                                    formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+                                    executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
+                                }
                             }
                         }
                         else

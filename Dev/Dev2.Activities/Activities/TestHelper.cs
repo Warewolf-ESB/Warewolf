@@ -29,7 +29,6 @@ namespace Dev2.Activities
                 {
                     RunTestResult = RunResult.None
                 };
-                output.Result = testResult;
                 return new List<TestRunResult> { testResult };
             }
             if(string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))

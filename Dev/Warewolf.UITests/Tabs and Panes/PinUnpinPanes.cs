@@ -17,7 +17,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.UnpinnedTab), "Unpinned pane still exists after being dragged onto the central dock indicator.");
-            Playback.Wait(500);
+            Playback.Wait(1000);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
         }
 
@@ -56,7 +56,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDBSourceWizardTab()
         {
-            UIMap.Click_New_Database_Source_Ribbon_Button();
+            UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab);
         }
 
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
-            UIMap.Click_NewPluginSource_Ribbon_Button();
+            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab);
         }
 
@@ -72,7 +72,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinWebSourceWizardTab()
         {
-            UIMap.Click_New_Web_Source_Ribbon_Button();
+            UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
         }
@@ -121,6 +121,15 @@ namespace Warewolf.UITests.Tabs
             UIMap.Debug_Unpinned_Workflow_With_F6();
             Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
             Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void DragAssignToolInUnpinnedWorkflowTabUITest()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
         }
 
         [TestMethod]

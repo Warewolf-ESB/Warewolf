@@ -42,9 +42,6 @@ namespace Warewolf.Studio.ViewModels
             _viewModel = mainViewModel;
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
-            NewDatabaseSourceCommand = _viewModel.NewDatabaseSourceCommand;
-            NewPluginSourceCommand = _viewModel.NewPluginSourceCommand;
-            NewWebSourceCommand = _viewModel.NewWebSourceCommand;
             DeployCommand = _viewModel.DeployCommand;
             SaveCommand = _viewModel.SaveCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
@@ -101,9 +98,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand SupportCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public ICommand NewServiceCommand { get; set; }
-        public ICommand NewDatabaseSourceCommand { get; set; }
-        public ICommand NewPluginSourceCommand { get; set; }
-        public ICommand NewWebSourceCommand { get; set; }
         public ICommand SaveCommand
         {
             get
@@ -150,9 +144,6 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => NewLabel);
             OnPropertyChanged(() => SaveLabel);
             OnPropertyChanged(() => DeployLabel);
-            OnPropertyChanged(() => DatabaseLabel);
-            OnPropertyChanged(() => DLLLabel);
-            OnPropertyChanged(() => WebLabel);
             OnPropertyChanged(() => TaskLabel);
             OnPropertyChanged(() => DebugLabel);
             OnPropertyChanged(() => SettingsLabel);
@@ -284,33 +275,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (ButtonWidth == 125)
                     return Resources.Languages.Core.MenuDialogDeployLabel;
-                return string.Empty;
-            }
-        }
-        public string DatabaseLabel
-        {
-            get
-            {
-                if (ButtonWidth == 125)
-                    return Resources.Languages.Core.MenuDialogDatabaseLabel;
-                return string.Empty;
-            }
-        }
-        public string DLLLabel
-        {
-            get
-            {
-                if (ButtonWidth == 125)
-                    return Resources.Languages.Core.MenuDialogDLLLabel;
-                return string.Empty;
-            }
-        }
-        public string WebLabel
-        {
-            get
-            {
-                if (ButtonWidth == 125)
-                    return Resources.Languages.Core.MenuDialogWebLabel;
                 return string.Empty;
             }
         }
