@@ -11,7 +11,6 @@ namespace Warewolf.UITests.Workflow
     public class Default_LayoutTests
     {
         [TestMethod]
-        [Ignore]
         public void Workflow_Default_Layout()
         {
             Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
@@ -33,7 +32,15 @@ namespace Warewolf.UITests.Workflow
         
         static void ExecuteCommand(string fileName)
         {
-            Process.Start(fileName);
+            try
+            {
+                Process.Start(fileName);
+            }
+            catch(Exception)
+            {
+                Assert.Fail(fileName + "did not Start Correctly.");
+            }
+            
         }
 
         #region Additional test attributes
