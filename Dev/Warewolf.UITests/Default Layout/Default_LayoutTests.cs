@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Workflow
     public class Default_LayoutTests
     {
         [TestMethod]
+        [Ignore]
         public void Workflow_Default_Layout()
         {
             Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
