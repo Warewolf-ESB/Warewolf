@@ -388,7 +388,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         if (!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
                         {
-                            if (resource != null && resource.DataList == null)
+                            if (resource?.DataList != null)
                             {
                                 if (dataObject.ReturnType == EmitionTypes.JSON)
                                 {
