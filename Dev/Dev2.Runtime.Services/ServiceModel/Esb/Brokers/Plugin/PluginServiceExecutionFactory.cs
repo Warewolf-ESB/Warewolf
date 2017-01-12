@@ -64,6 +64,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 return runtime.Value.ListMethods(assemblyLocation, assemblyName, fullName);
             }           
+        } 
+        
+        /// <summary>
+        /// Gets the Constructors.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public static ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName)
+        {
+            using (var runtime = CreateInvokeAppDomain())
+            {
+                return runtime.Value.ListConstructors(assemblyLocation, assemblyName, fullName);
+            }           
         }
 
         public static NamespaceList GetNamespaces(PluginSource pluginSource)

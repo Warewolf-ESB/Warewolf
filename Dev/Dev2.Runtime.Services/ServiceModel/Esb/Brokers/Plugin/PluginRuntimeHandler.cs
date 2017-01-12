@@ -263,6 +263,45 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             return serviceMethodList;
         }
+        
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public ServiceConstructorList ListConstructors(string assemblyLocation, string assemblyName, string fullName)
+        {
+            Assembly assembly;
+            var serviceMethodList = new ServiceConstructorList();
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            {
+                var type = assembly.GetType(fullName);
+                var constructors = type.GetConstructors();
+
+                constructors.ToList().ForEach(info =>
+                {
+                    var serviceConstructor = new ServiceConstructor();
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceConstructor.Parameters.Add(
+                            new ConstructorParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = !parameterInfo.IsOptional,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName,
+                                ShortTypeName = parameterInfo.ParameterType.FullName
+
+                            }));
+                    serviceMethodList.Add(serviceConstructor);
+                });
+            }
+
+            return serviceMethodList;
+        }
 
         /// <summary>
         /// Fetches the name space list object.

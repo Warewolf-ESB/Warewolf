@@ -22,10 +22,9 @@ namespace Dev2.Runtime.ServiceModel
     public interface IPluginServices
     {
         RecordsetList Test(string args, out string serializedResult);
-
         NamespaceList Namespaces(PluginSource args, Guid workspaceId, Guid dataListId);
-
         ServiceMethodList Methods(PluginService args, Guid workspaceId, Guid dataListId);
+        ServiceConstructorList Constructors(PluginService args, Guid workspaceId, Guid dataListId);
     }
 
     public class PluginServices : Services, IPluginServices
@@ -130,6 +129,24 @@ namespace Dev2.Runtime.ServiceModel
                 return result;
             }
             catch(Exception ex)
+            {
+                RaiseError(ex);
+            }
+            return result;
+        }
+
+        public ServiceConstructorList Constructors(PluginService service, Guid workspaceId, Guid dataListId)
+        {
+            var result = new ServiceConstructorList();
+            try
+            {
+                // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
+
+                var broker = new PluginBroker();
+                result = broker.GetConstructors(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+                return result;
+            }
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }

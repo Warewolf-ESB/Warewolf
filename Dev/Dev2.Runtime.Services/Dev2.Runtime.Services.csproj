@@ -215,6 +215,7 @@
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginConstructors.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDuplicates.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
@@ -371,9 +372,12 @@
     <Compile Include="Security\SSLCertificateBuilder.cs" />
     <Compile Include="ServiceModel\ComPluginServices.cs" />
     <Compile Include="ServiceModel\Data\ComPluginService.cs" />
+    <Compile Include="ServiceModel\Data\ConstructorParameter.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
+    <Compile Include="ServiceModel\Data\ServiceConstructor.cs" />
+    <Compile Include="ServiceModel\Data\ServiceConstructorList.cs" />
     <Compile Include="ServiceModel\Data\WcfProxyService.cs" />
     <Compile Include="ServiceModel\Data\WcfService.cs" />
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
