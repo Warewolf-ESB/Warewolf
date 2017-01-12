@@ -1973,7 +1973,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.Spinner);
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
         }
 
         public void Click_Scheduler_Ribbon_Button()
@@ -2956,7 +2955,7 @@ namespace Warewolf.UITests
         [Given(@"I Click UserButton OnSharepointSource")]
         [When(@"I Click UserButton OnSharepointSource")]
         [Then(@"I Click UserButton OnSharepointSource")]
-        public void WhenIClickUserButtonOnSharepointSource()
+        public void IClickUserButtonOnSharepointSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
@@ -2969,6 +2968,8 @@ namespace Warewolf.UITests
         public void IClickUserButtonOnDatabaseSource()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Exists);
         }
 
         [Given(@"I Enter TestUser Username And Password on Database source")]
@@ -3349,6 +3350,14 @@ namespace Warewolf.UITests
         public void Click_Close_Critical_Error_Dialog()
         {
             Mouse.Click(CriticalErrorWindow.CloseButton, new Point(9, 11));
+        }
+
+        [Given(@"I Click Close RabbitMQ Source Wizard Tab Button")]
+        [When(@"I Click Close RabbitMQ Source Wizard Tab Button")]
+        [Then(@"I Click Close RabbitMQ Source Wizard Tab Button")]
+        public void Click_Close_RabbitMQ_Source_Wizard_Tab_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.CloseTabButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close DB Source Wizard Tab Button")]
@@ -4383,7 +4392,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.TestConnectionButton, new Point(51, 8));
             Playback.Wait(3000);
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
         }
 
         [When(@"I Click Service Picker Dialog First Service In Explorer")]
@@ -5643,7 +5651,7 @@ namespace Warewolf.UITests
         [When(@"I Enter Sharepoint ServerSource User Credentials")]
         public void Enter_Sharepoint_ServerSource_User_Credentials()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Text = "Bernartdt@dvtdev.onmicrosoft.com";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Text = "IntegrationTester";
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox, new Point(89, 1));
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox, "YN/mQM5J9PSwtnVGttwUbqV2NkA27Xtb2Cs5ppSS77kjZgxPPM79nWlqEFRqmwY4KvuSBKnsLDU6spVwV" +
                                                                                                                                                                                        "rcWKXwSuKb7vBXD", true);
@@ -8847,6 +8855,97 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New MySQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        public void Click_UserButton_On_ServerSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+        }
+
+        public void Enter_TextIntoAddress_On_ServerSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = "SANDBOX-1";
+        }
+
+        public void Enter_RunAsUser_On_ServerSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UsernameTextBox.Text = "IntegrationTester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
+        }
+
+        public void Click_UserButton_On_WebServiceSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+        }
+
+        public void Enter_TextIntoAddress_On_WebServiceSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD/IntegrationTestSite";
+        }
+
+        public void Enter_RunAsUser_On_WebServiceSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Text = "IntegrationTester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
+        }
+
+        public void Enter_DefaultQuery_On_WebServiceSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "/ GetCountries.ashx ? extension = json & prefix = a";
+        }
+
+        public void Enter_Text_On_RabbitMQSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.HostTextBoxEdit.Text = "rsaklfsvrgendev";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit.Text = "5672";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.UserNameTextBoxEdit.Text = "test";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PasswordTextBoxEdit.Text = "test";
+        }
+
+        public void Click_RabbitMQSource_TestConnectionButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.TestConnectionButton);            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.ItemImage.Exists);
+        }
+
+        public void Enter_TextIntoAddress_In_SharepointServiceSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrsharep";
+        }
+
+        public void Enter_TextIntoAddress_On_WCFServiceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Text = "test";
+        }
+
+        public void Click_WCFServiceSource_TestConnectionButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton);
+        }
+
+        public void Click_Close_WCFServiceSource_WizardTabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.CloseTabButton);
+        }
+
+        public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "irrelevant";
+        }
+
+        public void Click_OAuthSource_AuthoriseButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton);
+        }
+        public void Click_OAuthSource_CloseTabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.CloseTabButton);
         }
     }
 }

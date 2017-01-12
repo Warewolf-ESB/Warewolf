@@ -11,7 +11,19 @@ namespace Warewolf.UITests.WebSource
         public void WebSource_OpenWebSourceTabUITests()
         {
             UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "Anonymous Radio button is not enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "User Radio button is not enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "Default Query Textbox is not enabled");
+            UIMap.Click_UserButton_On_WebServiceSourceTab();
+            UIMap.Enter_TextIntoAddress_On_WebServiceSourceTab();
+            UIMap.Enter_RunAsUser_On_WebServiceSourceTab();
+            UIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            UIMap.Click_New_Web_Source_Test_Connection_Button();
+            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes

@@ -13,6 +13,11 @@ namespace Warewolf.UITests
         public void WcfSource_CreateSourceUITests()
         {
             UIMap.Select_NewWcfSource_FromExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
+            UIMap.Click_WCFServiceSource_TestConnectionButton();
+            UIMap.Click_Close_WCFServiceSource_WizardTabButton();
         }
 
         #region Additional test attributes
