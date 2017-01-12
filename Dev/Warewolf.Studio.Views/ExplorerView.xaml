@@ -209,14 +209,54 @@
                                     <Image Style="{StaticResource NewServerSourceIcon}"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="NewDataBaseSource"
+                            <MenuItem Name="NewSqlServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewDatabaseSourceCommand}"
-                                                  Header="New Database Source"
+                                                  Command="{Binding NewSqlServerSourceCommand}"
+                                                  Header="New SQL Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewDataBaseSourceTooltip}">
+                                                  ToolTip="{Binding NewSqlServerSourceTooltip}">
                                 <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
+                                    <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewMySqlSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewMySqlSourceCommand}"
+                                                  Header="New MySQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewMySqlSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewMySqlSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewPostgreSqlSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewPostgreSqlSourceCommand}"
+                                                  Header="New PostgreSQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewPostgreSqlSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewOracleSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOracleSourceCommand}"
+                                                  Header="New Oracle Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOracleSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewOracleSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewOdbcSource"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOdbcSourceCommand}"
+                                                  Header="New ODBC Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOdbcSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewOdbcSourceIcon}"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Name="NewWebSource"
@@ -638,14 +678,54 @@
                                     <Image Style="{StaticResource NewServerSourceIcon}"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="NewDataBaseSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewDatabaseSourceCommand}"
-									  Header="New Database Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewDataBaseSourceTooltip}">
+                            <MenuItem Name="NewSqlServerSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewSqlServerSourceCommand}"
+                                                  Header="New SQL Server Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewSqlServerSourceTooltip}">
                                 <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
+                                    <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewMySqlSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewMySqlSourceCommand}"
+                                                  Header="New MySQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewMySqlSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewMySqlSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewPostgreSqlSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewPostgreSqlSourceCommand}"
+                                                  Header="New PostgreSQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewPostgreSqlSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewOracleSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOracleSourceCommand}"
+                                                  Header="New Oracle Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOracleSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewOracleSourceIcon}"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="NewOdbcSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOdbcSourceCommand}"
+                                                  Header="New ODBC Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOdbcSourceTooltip}">
+                                <MenuItem.Icon>
+                                    <Image Style="{StaticResource NewOdbcSourceIcon}"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Name="NewWebSourceItem"

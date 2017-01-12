@@ -30,9 +30,6 @@ namespace Dev2.Common.Interfaces.Studio
         string NewLabel { get; }
         string SaveLabel { get; }
         string DeployLabel { get; }
-        string DatabaseLabel { get; }
-        string DLLLabel { get; }
-        string WebLabel { get; }
         string TaskLabel { get; }
         string DebugLabel { get; }
         string SettingsLabel { get; }
@@ -46,9 +43,6 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand SupportCommand { get; }
         bool IsProcessing { get; set; }
         ICommand StartPageCommand { get; }
-        ICommand NewDatabaseSourceCommand { get; set; }
-        ICommand NewPluginSourceCommand { get; set; }
-        ICommand NewWebSourceCommand { get; set; }
 
         void Lock();
     }

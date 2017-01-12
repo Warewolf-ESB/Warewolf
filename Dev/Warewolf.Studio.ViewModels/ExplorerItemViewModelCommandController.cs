@@ -125,10 +125,30 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewWcfSource(resourcePath);
         }
-        public void NewDatabaseSourceCommand(string resourcePath, IServer server)
+        public void NewSqlServerSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewDatabaseSource(resourcePath);
+            _shellViewModel.NewSqlServerSource(resourcePath);
+        }
+        public void NewMySqlSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewMySqlSource(resourcePath);
+        }
+        public void NewPostgreSqlSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewPostgreSqlSource(resourcePath);
+        }
+        public void NewOracleSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewOracleSource(resourcePath);
+        }
+        public void NewOdbcSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewOdbcSource(resourcePath);
         }
 
         public void NewServerSourceCommand(string resourcePath, IServer server)

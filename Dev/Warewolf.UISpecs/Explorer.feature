@@ -21,7 +21,7 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	And I Try Close Workflow
 	
 	
-Scenario: Opening and Editing workflow from Explorer Remote
+Scenario: Opening and Editing Workflow from Explorer Remote
 	Given The Warewolf Studio is running
 	And I Try DisConnect To Remote Server
 	When I Select RemoteConnectionIntegration From Explorer
