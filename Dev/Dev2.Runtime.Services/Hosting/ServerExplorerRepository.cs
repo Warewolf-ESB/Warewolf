@@ -490,14 +490,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return;
             }
-            if (!string.IsNullOrWhiteSpace(itemToRename.ResourcePath))
-            {
-                itemToRename.ResourcePath = itemToRename.ResourcePath.Replace(oldPath, newPath);
-            }
-            else
-            {
-                itemToRename.ResourcePath = newPath;
-            }
+            itemToRename.ResourcePath = !string.IsNullOrWhiteSpace(itemToRename.ResourcePath) ? itemToRename.ResourcePath.Replace(oldPath, newPath) : newPath;
             if (itemToRename.IsFolder || itemToRename.ResourceType == "Folder")
             {
                 
