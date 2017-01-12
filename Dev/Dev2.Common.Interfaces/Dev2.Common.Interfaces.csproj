@@ -223,6 +223,7 @@
     <Compile Include="IAdminManager.cs" />
     <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
+    <Compile Include="IChooseDLLView.cs" />
     <Compile Include="IComPluginService.cs" />
     <Compile Include="IComPluginServiceModel.cs" />
     <Compile Include="IComPluginSource.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
+    <Compile Include="IDLLChooser.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
@@ -249,6 +251,9 @@
     <Compile Include="IExplorerUpdateManager.cs" />
     <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
+    <Compile Include="IFileChooser.cs" />
+    <Compile Include="IFileChooserModel.cs" />
+    <Compile Include="IFileChooserView.cs" />
     <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFileResource.cs" />
     <Compile Include="IFrameworkRepository.cs" />
