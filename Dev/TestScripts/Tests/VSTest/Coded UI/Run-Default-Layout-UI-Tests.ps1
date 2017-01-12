@@ -40,7 +40,6 @@ $TestSettingsFile = "$PSScriptRoot\DefaultLayoutUITests.testsettings"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Default Layout UI Tests.</Description>
-  <Description>Run Default Layout UI Tests.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>

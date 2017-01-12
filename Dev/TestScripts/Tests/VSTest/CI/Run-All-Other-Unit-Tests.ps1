@@ -30,14 +30,14 @@ if ($TestList.StartsWith(",")) {
 
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Tests ) {
+foreach ($file in Get-ChildItem $SolutionDir\Warewolf.Tests -Filter Warewolf.*.Tests.dll ) {
 	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll") {
-		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
 }
-foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Tests ) {
+foreach ($file in Get-ChildItem $SolutionDir\Warewolf.Tests -Filter Dev2.*.Tests ) {
 	if ($file.Name -ne "Dev2.Activities.Designers.Tests.dll" -and $file.Name -ne "Dev2.Activities.Tests.dll") {
-		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
 }
 
