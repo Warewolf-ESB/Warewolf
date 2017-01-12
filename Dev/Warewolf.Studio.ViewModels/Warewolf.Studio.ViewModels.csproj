@@ -140,7 +140,9 @@
     <Compile Include="DeploySourceExplorerViewModel.cs" />
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
+    <Compile Include="DLLChooser.cs" />
     <Compile Include="DummyServiceTest.cs" />
+    <Compile Include="FileChooser.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="ManageMySqlSourceViewModel.cs" />
     <Compile Include="ManageOdbcSourceViewModel.cs" />
