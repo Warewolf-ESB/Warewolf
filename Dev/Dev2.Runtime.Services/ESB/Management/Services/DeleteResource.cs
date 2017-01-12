@@ -97,7 +97,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (theWorkspace.ID == GlobalConstants.ServerWorkspaceID)
                 {
                     MyTestCatalog.DeleteAllTests(resourceId);
-                    MyTestCatalog.Load();}
+                    MyTestCatalog.Load();
+                }
                 
                 var result = new ExecuteMessage { HasError = false };
                 result.SetMessage(msg.Message);
