@@ -29,8 +29,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _closeAction = closeAction;
             Attachments = new List<string>();
-            //Drives = model.FetchDrives().Select(a => new FileListingModel(model, a, () => OnPropertyChanged("DriveName"), !allowMultipleSelection)).ToList();
-            Drives = model.FetchDrives().Select(a => new FileListingModel(null, a, () => OnPropertyChanged("DriveName"))).ToList();
+            Drives = model.FetchDrives().Select(a => new FileListingModel(model, a, () => OnPropertyChanged("DriveName"), !allowMultipleSelection)).ToList();
             CancelCommand = new DelegateCommand(o => Cancel());
             SaveCommand = new DelegateCommand(o => Save());
             AllowMultipleSelection = allowMultipleSelection;
