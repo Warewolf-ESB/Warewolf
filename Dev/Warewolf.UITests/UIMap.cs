@@ -2727,6 +2727,7 @@ namespace Warewolf.UITests
 
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
+            MainStudioWindow.UnpinnedTab.DrawHighlight();
             Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
             Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
