@@ -29,29 +29,52 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
+$TestSettingsFile = "$PSScriptRoot\DefaultLayoutUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding=`"UTF-8`"?>
+<?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
 "@ + [guid]::NewGuid() + @"
 `"
-  name="Tools Specs"
-  enableDefaultDataCollectors="false"
+  name=`"DefaultLayoutUITests`"
+  enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run Tool Specs.</Description>
-  <Deployment enabled="false" />
+  <Description>Run Default Layout UI Tests.</Description>
+  <Deployment enabled=`"false`" />
+  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"180000`" />
+    <Timeouts testTimeout=`"300000`" />
   </Execution>
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\Warewolf.UITests.dll"
+}
+if (Test-Path "$SolutionDir\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$SolutionDir\..\Warewolf.UITests.dll"
+}
+if (!(Test-Path $TestAssemblyPath)) {
+	Write-Host Cannot find Warewolf.UITests.dll at $SolutionDir\Warewolf.UISpecs\bin\Debug or $SolutionDir
+	exit 1
+}
+
 # Create full VSTest argument string.
-$FullArgsList = " `"" + $SolutionDir + "\Warewolf.Tests\Warewolf.ToolsSpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+if ($TestList -eq "") {
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Default Layout`""
+} else {
+	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
