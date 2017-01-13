@@ -26,8 +26,6 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Click EnableDisable Test 4, dirty "true"
 	And I Delete Test "4"
 	And I Click MessageBox Yes
-	And I Click Close Tests Tab
-	And I Try Click MessageBox No
 
 Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
 	Given The Warewolf Studio is running

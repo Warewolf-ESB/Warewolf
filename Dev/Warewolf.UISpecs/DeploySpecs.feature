@@ -8,7 +8,6 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	And I Select Deploy FromExplorerContextMenu
 	And I Select "Hello World" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
-	And I Click Close Deploy Tab Button
 	
 Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	Given The Warewolf Studio is running
@@ -49,7 +48,6 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 Then Deploy Button is enabled  "true"	
 	 When I Click Deploy Tab Destination Server Connect Button
 	 Then Deploy Button is enabled  "false"
-	 And I Click Close Deploy Tab Button
 
 Scenario: Filtering and clearing filter on source side
 	Given The Warewolf Studio is running
