@@ -42,7 +42,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             UIMap.Update_Test_Name("Blank Input");
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Save_Tets_With_Shortcut();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
             UIMap.Click_MessageBox_OK();
         }

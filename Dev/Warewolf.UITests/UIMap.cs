@@ -1559,6 +1559,12 @@ namespace Warewolf.UITests
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestNameTextbox.Text = "Dice_Test";
         }
 
+        public void Save_Tets_With_Shortcut()
+        {
+            var testsTabPage = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestNameTextbox;
+            Keyboard.SendKeys(testsTabPage, "S", (ModifierKeys.Control));
+        }
+
         [Given(@"I Delete Test ""(.*)""")]
         [When(@"I Delete Test ""(.*)""")]
         [Then(@"I Delete Test ""(.*)""")]
@@ -6727,10 +6733,9 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{F6}", ModifierKeys.None);
         }
 
-        [Given(@"I Press F6")]
-        [When(@"I Press F6")]
-        [Given(@"I Press F6")]
-        [Then(@"I Press F6")]
+        [Given(@"I Press F6 On Unpinned Tab")]
+        [When(@"I Press F6 On Unpinned Tab")]
+        [Given(@"I Press F6 On Unpinned Tab")]
         public void Press_F6_On_UnPinnedTab()
         {
             Keyboard.SendKeys(MainStudioWindow.UnpinnedTab, "{F6}", ModifierKeys.None);
@@ -8004,8 +8009,17 @@ namespace Warewolf.UITests
         public void Click_Create_Test_From_Debug()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
+
+        [Then(@"Test Tab Is Open")]
+        [Given(@"Test Tab Is Open")]
+        [When(@"Test Tab Is Open")]
+        public void Test_Tab_Is_Open()
+        {
+           Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
+        }
+
+
 
         public void Click_MockRadioButton_On_AssignValue_TestStep()
         {
