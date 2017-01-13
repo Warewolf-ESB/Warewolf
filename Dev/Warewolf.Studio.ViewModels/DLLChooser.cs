@@ -85,18 +85,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
-        {
-            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if (dllListingModel != null)
-            {
-                dllListingModel.IsExpanded = true;
-            }
-            return dllListingModel;
-        }
-
-
         public ICommand ClearSearchTextCommand { get; set; }
         public bool IsLoading
         {
