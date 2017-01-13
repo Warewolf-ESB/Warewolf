@@ -737,7 +737,6 @@ namespace Warewolf.UITests
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
             Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
-            Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         [Given(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
@@ -767,8 +766,7 @@ namespace Warewolf.UITests
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
-            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
-            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;            
         }
 
         [Given(@"same name error message is shown")]
@@ -836,7 +834,7 @@ namespace Warewolf.UITests
         [Given(@"I Double Click Resource On The Save Dialog")]
         [When(@"I Double Click Resource On The Save Dialog")]
         [Then(@"I Double Click Resource On The Save Dialog")]
-        public void ThenIDoubleClickResourceOnTheSaveDialog()
+        public void DoubleClickResourceOnTheSaveDialog()
         {
             Mouse.DoubleClick(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem);
         }
@@ -5152,6 +5150,17 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [Given(@"I Make Workflow Saveable")]
+        [When(@"I Make Workflow Saveable")]
+        [Then(@"I Make Workflow Saveable")]
+        public void Make_Workflow_Saveable_By_Dragging_Start()
+        {            
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+        }
+
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
         public void Drag_Toolbox_MySql_Database_Onto_DesignSurface()
         {
@@ -7082,7 +7091,7 @@ namespace Warewolf.UITests
         [Given(@"I Rename Item using Shortcut")]
         [When(@"I Rename Item using Shortcut")]
         [Then(@"I Rename Item using Shortcut")]
-        public void ThenIRenameItemUsingShortcut()
+        public void RenameItemUsingShortcut()
         {
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(77, 9));
             Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, "{F2}");
@@ -8215,6 +8224,9 @@ namespace Warewolf.UITests
             Keyboard.SendKeys("D", (ModifierKeys.Control));
         }
 
+        [Given(@"I Save Workflow Using Shortcut")]
+        [When(@"I Save Workflow Using Shortcut")]
+        [Then(@"I Save Workflow Using Shortcut")]
         public void Save_Workflow_Using_Shortcut()
         {
             #region Variable Declarations
@@ -8392,7 +8404,7 @@ namespace Warewolf.UITests
         [Given(@"I Enter New Folder Name as ""(.*)""")]
         [When(@"I Enter New Folder Name as ""(.*)""")]
         [Then(@"I Enter New Folder Name as ""(.*)""")]
-        public void ThenIEnterNewFolderNameAs(string name)
+        public void EnterNewFolderNameAs(string name)
         {
             #region Variable Declarations
             WpfEdit newFolderEdit = this.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit;
@@ -8507,17 +8519,16 @@ namespace Warewolf.UITests
         [Given(@"""(.*)"" is child of ""(.*)""")]
         [When(@"""(.*)"" is child of ""(.*)""")]
         [Then(@"""(.*)"" is child of ""(.*)""")]
-        public void ThenIsChildOf(string child, string parent)
+        public void FolderIsChildOfParentFolder(string child, string parent)
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(parent));
-            if(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem))
-                Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
+            Assert.AreEqual(child, SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.UIItemEdit.Text);
         }
 
         [Given(@"""(.*)"" is child of localhost")]
         [When(@"""(.*)"" is child of localhost")]
         [Then(@"""(.*)"" is child of localhost")]
-        public void ThenIsChildOfLocalhost(string child)
+        public void ResourceIsChildOfLocalhost(string child)
         {
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Exists);
             Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(child));
@@ -8573,6 +8584,8 @@ namespace Warewolf.UITests
             Assert.IsFalse(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.TryGetClickablePoint(out point));
         }
 
+        [Given(@"Folder Is Removed From Explorer")]
+        [When(@"Folder Is Removed From Explorer")]
         [Then(@"Folder Is Removed From Explorer")]
         public void ThenFolderIsRemovedFromExplorer()
         {

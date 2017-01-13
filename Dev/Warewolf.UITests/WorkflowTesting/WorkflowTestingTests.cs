@@ -22,7 +22,6 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
-            UIMap.Click_Close_Tests_Tab();
         }
 
         [TestMethod]
@@ -46,8 +45,6 @@ namespace Warewolf.UITests
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
             UIMap.Click_MessageBox_OK();
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -59,8 +56,6 @@ namespace Warewolf.UITests
             UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
             UIMap.Click_MessageBox_OK();
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -73,7 +68,6 @@ namespace Warewolf.UITests
             UIMap.Select_User_From_RunTestAs();
             UIMap.Enter_RunAsUser_Username_And_Password();
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
-            UIMap.Click_Close_Tests_Tab();
         }
 
         [TestMethod]
@@ -86,7 +80,6 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
-            UIMap.Click_Close_Tests_Tab();
         }
 
         [TestMethod]
@@ -98,7 +91,6 @@ namespace Warewolf.UITests
             UIMap.Select_First_Test();
             UIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
-            UIMap.Click_Close_Tests_Tab();
         }
         
         #region Additional test attributes
