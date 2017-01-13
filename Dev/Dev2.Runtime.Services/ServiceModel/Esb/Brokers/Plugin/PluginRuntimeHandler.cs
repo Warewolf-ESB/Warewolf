@@ -29,10 +29,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
        
-        public string CreateInstance(PluginInvokeArgs setupInfo, Assembly loadedAssembly)
+        public string CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
+            Assembly loadedAssembly;
+            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
+            if (!tryLoadAssembly)
+                throw new Exception(setupInfo.AssemblyName + "Not found");
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -84,21 +87,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var instance = objectToRun.DeserializeToObject(type);
-            foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
+            if(setupInfo.MethodsToRun != null)
             {
-                if(dev2MethodInfo.Parameters != null)
+                foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
                 {
-                    var typeList = BuildTypeList(dev2MethodInfo.Parameters);
-                    var valuedTypeList = new List<object>();
-                    foreach (var methodParameter in dev2MethodInfo.Parameters)
+                    if(dev2MethodInfo.Parameters != null)
                     {
-                        valuedTypeList = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName);
+                        var typeList = BuildTypeList(dev2MethodInfo.Parameters);
+                        var valuedTypeList = new List<object>();
+                        foreach (var methodParameter in dev2MethodInfo.Parameters)
+                        {
+                            valuedTypeList = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName);
+                        }
+
+                        var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
+
+                        var invoke = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                        dev2MethodInfo.MethodResult = invoke.SerializeToJsonString();
                     }
-
-                    var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
-
-                    var invoke = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-                    dev2MethodInfo.MethodResult = invoke.SerializeToJsonString();
                 }
             }
         }
