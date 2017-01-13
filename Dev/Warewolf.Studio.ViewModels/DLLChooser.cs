@@ -46,9 +46,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 DllListingModels = new List<IDllListingModel> { AllDllListingModels[1] };
             }
-            foreach (var dllListingModel in DllListingModels.Where(model => model.ChildrenCount > 0))
+            if (DllListingModels != null)
             {
-                dllListingModel.IsExpanded = true;
+                foreach (var dllListingModel in DllListingModels.Where(model => model.ChildrenCount > 0))
+                {
+                    dllListingModel.IsExpanded = true;
+                }
             }
             _view = CustomContainer.GetInstancePerRequestType<IChooseDLLView>();
             _view.ShowView(this);
@@ -81,18 +84,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DllListingModels);
             }
         }
-
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
-        {
-            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if (dllListingModel != null)
-            {
-                dllListingModel.IsExpanded = true;
-            }
-            return dllListingModel;
-        }
-
 
         public ICommand ClearSearchTextCommand { get; set; }
         public bool IsLoading

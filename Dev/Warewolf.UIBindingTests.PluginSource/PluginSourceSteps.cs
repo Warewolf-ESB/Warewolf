@@ -53,10 +53,11 @@ namespace Warewolf.UIBindingTests.PluginSource
         static IList<IFileListing> BuildBaseListing()
         {
             var listing = new List<IFileListing>();
-            var fileSystemListing = new DllListing{FullName = "",IsDirectory = true,Name = "File System"};
-            _dllListingForGac = new DllListing {
-                FullName = "GAC:AuditPolicyGPManagedStubs, Version=6.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a.dll", 
-                IsDirectory = false, 
+            var fileSystemListing = new DllListing { FullName = "", IsDirectory = true, Name = "File System" };
+            _dllListingForGac = new DllListing
+            {
+                FullName = "GAC:AuditPolicyGPManagedStubs, Version=6.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+                IsDirectory = false,
                 Name = "AuditPolicyGPManagedStubs.Interop, Version=6.1.0.0"
             };
             var gacListing = new DllListing
@@ -68,8 +69,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                 {
                     _dllListingForGac,
                     new DllListing {
-                        FullName = "GAC:vjslib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", 
-                        IsDirectory = false, 
+                        FullName = "GAC:vjslib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+                        IsDirectory = false,
                         Name = "vjslib, Version=2.0.0.0"
                     }
                 }
@@ -83,24 +84,26 @@ namespace Warewolf.UIBindingTests.PluginSource
                 {
                     _dllListingForGac,
                     new DllListing {
-                        FullName = "GAC:BDATunePIA, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35.dll", 
-                        IsDirectory = false, 
+                        FullName = "GAC:BDATunePIA, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35.dll",
+                        IsDirectory = false,
                         Name = "BDATunePIA, Version=6.1.0.0"
                     }
                 }
             };
             _dllListingForFile = new DllListing
             {
-                FullName = "C:\\Development\\Dev\\Binaries\\MS Fakes\\Microsoft.QualityTools.Testing.Fakes.dll", 
-                IsDirectory = false, 
+                FullName = "C:\\Development\\Dev\\Binaries\\MS Fakes\\Microsoft.QualityTools.Testing.Fakes.dll",
+                IsDirectory = false,
                 Name = "Microsoft.QualityTools.Testing.Fakes.dll"
             };
             var cDrive = new DllListing
             {
-                FullName = "C:\\", IsDirectory = true, Name = "C:\\",
+                FullName = "C:\\",
+                IsDirectory = true,
+                Name = "C:\\",
                 Children = new List<IFileListing>
                 {
-                    new DllListing { 
+                    new DllListing {
                         FullName = "C:\\Development", IsDirectory = true, Name = "Development" ,
                         Children = new List<IFileListing>
                         {
@@ -134,8 +137,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     }
                 }
             };
-            var dDrive = new DllListing{FullName = "D:\\",IsDirectory = true,Name = "D:\\"};
-            fileSystemListing.Children = new List<IFileListing>{cDrive,dDrive};
+            var dDrive = new DllListing { FullName = "D:\\", IsDirectory = true, Name = "D:\\" };
+            fileSystemListing.Children = new List<IFileListing> { cDrive, dDrive };
             listing.Add(fileSystemListing);
             listing.Add(gacListing);
             listing.Add(gacFilterListing);
@@ -157,7 +160,7 @@ namespace Warewolf.UIBindingTests.PluginSource
         {
             var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(sourceControl);
-            Assert.IsNotNull(sourceControl.DataContext); 
+            Assert.IsNotNull(sourceControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -184,105 +187,80 @@ namespace Warewolf.UIBindingTests.PluginSource
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
 
-        [Given(@"I click ""(.*)""")]
-        [When(@"I click ""(.*)""")]
-        [Then(@"I click ""(.*)""")]
-        public void ThenIClick(string itemName)
+        [Then(@"ConfigFile textbox is ""(.*)""")]
+        public void ThenConfigFileTextboxIs(string enabledString)
         {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var dllListingModel = sourceControl.SelectItem(itemName);
-            Assert.IsNotNull(dllListingModel);
             var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            Assert.AreEqual(dllListingModel,viewModel.SelectedDll);
-            Assert.IsTrue(viewModel.SelectedDll.IsExpanded);
-        }
-
-        [Then(@"local drive ""(.*)"" is visible")]
-        public void ThenLocalDriveIsVisible(string itemName)
-        {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var isItemVisible = sourceControl.IsItemVisible(itemName);
-            Assert.IsTrue(isItemVisible);
-        }
-
-        [When(@"I click")]
-        public void WhenIClick(Table table)
-        {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            foreach(var row in table.Rows)
+            switch (enabledString)
             {
-                var dllListingModel = sourceControl.SelectItem(row["Clicks"]);
-                Assert.IsNotNull(dllListingModel);
+                case "Enabled":
+                    Assert.IsTrue(viewModel.CanSelectConfigFiles);
+                    break;
+                case "Disabled":
+                    Assert.IsFalse(viewModel.CanSelectConfigFiles);
+                    break;
             }
         }
 
-        [Given(@"Assembly value is ""(.*)""")]
-        [When(@"Assembly value is ""(.*)""")]
-        [Then(@"Assembly value is ""(.*)""")]
-        public void ThenAssemblyValueIs(string assemblyName)
+        [Then(@"ConfigFileButton button is ""(.*)""")]
+        public void ThenConfigFileButtonButtonIs(string enabledString)
         {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var assemblyNameOnControl = sourceControl.GetAssemblyName();
-            var isSameAsControl = assemblyName.Equals(assemblyNameOnControl, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(isSameAsControl);
             var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            var assemblyNameOnViewModel = viewModel.SelectedDll.FullName;
-            var isSameAsViewModel = assemblyName.Equals(assemblyNameOnViewModel, StringComparison.OrdinalIgnoreCase);
+            switch (enabledString)
+            {
+                case "Enabled":
+                    Assert.IsTrue(viewModel.CanSelectConfigFiles);
+                    break;
+                case "Disabled":
+                    Assert.IsFalse(viewModel.CanSelectConfigFiles);
+                    break;
+            }
+        }
+
+        [Then(@"I type ""(.*)"" in ""(.*)""")]
+        [When(@"I type ""(.*)"" in ""(.*)""")]
+        public void ThenITypeIn(string input, string controlName)
+        {
+            string assemblyNameOnViewModel = null;
+            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
+            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            switch (controlName)
+            {
+                case "AssemblyName":
+                    viewModel.FileSystemAssemblyName = input;
+                    assemblyNameOnViewModel = viewModel.FileSystemAssemblyName;
+                    break;
+                case "ConfigFile":
+                    viewModel.ConfigFilePath = input;
+                    assemblyNameOnViewModel = viewModel.ConfigFilePath;
+                    break;
+                case "GacAssemblyName":
+                    viewModel.GACAssemblyName = input;
+                    assemblyNameOnViewModel = viewModel.GACAssemblyName;
+                    break;
+            }
+
+            sourceControl.SetTextBoxValue(controlName, input);
+            var isSameAsViewModel = input.Equals(assemblyNameOnViewModel, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isSameAsViewModel);
         }
 
-        [When(@"I change Assembly to ""(.*)""")]
-        public void WhenIChangeAssemblyTo(string assemblyName)
+        [Then(@"""(.*)"" value is ""(.*)""")]
+        public void ThenValueIs(string controlName, string assemblyName)
         {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            sourceControl.SetAssemblyName(assemblyName);
             var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            //var assemblyNameOnViewModel = viewModel.AssemblyName;
-            //var isSameAsViewModel = assemblyName.Equals(assemblyNameOnViewModel, StringComparison.OrdinalIgnoreCase);
-            //Assert.IsTrue(isSameAsViewModel);
-        }
-
-        [Given(@"file is selected")]
-        public void GivenFileIsSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I select ""(.*)"" as AssemblyName")]
-        public void WhenISelectAsAssemblyName(string assemblyName)
-        {
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            managePluginSourceControl.SetAssemblyName(assemblyName);
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            Assert.AreEqual(managePluginSourceControl, viewModel);
-        }
-
-        [When(@"I refresh the filter")]
-        public void WhenIRefreshTheFilter()
-        {
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            //managePluginSourceControl.ExecuteRefresh();
-        }
-
-        [When(@"""(.*)"" is selected")]
-        public void WhenIsSelected(string assemblyName)
-        {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var dllListingModel = sourceControl.SelectItem(assemblyName);
-            Assert.IsNotNull(dllListingModel);
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            Assert.AreEqual(dllListingModel, viewModel.SelectedDll);
-            Assert.IsTrue(viewModel.SelectedDll.IsExpanded);
-        }
-
-        [When(@"I save the source")]
-        public void WhenISaveTheSource()
-        {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
-            mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            manageWebserviceSourceControl.PerformSave();
-
+            switch (controlName)
+            {
+                case "AssemblyName":
+                    Assert.AreEqual(assemblyName, viewModel.FileSystemAssemblyName);
+                    break;
+                case "ConfigFile":
+                    Assert.AreEqual(assemblyName, viewModel.ConfigFilePath);
+                    break;
+                case "GacAssemblyName":
+                    Assert.AreEqual(assemblyName, viewModel.GACAssemblyName);
+                    break;
+            }
         }
 
         [Then(@"the save dialog is opened")]
@@ -302,35 +280,6 @@ namespace Warewolf.UIBindingTests.PluginSource
             manageWebserviceSourceControl.PerformSave();
 
         }
-        [Given(@"local drive ""(.*)"" is visible in File window")]
-        public void GivenLocalDriveIsVisibleInFileWindow(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"local drive ""(.*)"" is visible in ""(.*)"" window")]
-        public void GivenLocalDriveIsVisibleInWindow(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"GAC is selected")]
-        public void GivenGACIsSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"file is not selected")]
-        public void GivenFileIsNotSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Assembly is ""(.*)""")]
-        public void GivenAssemblyIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [Given(@"I open ""(.*)"" plugin source")]
         public void GivenIOpenPluginSource(string name)
@@ -343,110 +292,26 @@ namespace Warewolf.UIBindingTests.PluginSource
                 SelectedDll = name.Equals("Test", StringComparison.OrdinalIgnoreCase) ? _dllListingForGac : _dllListingForFile,
             };
 
+            pluginSrc.GACAssemblyName = _dllListingForGac.FullName;
+            pluginSrc.FileSystemAssemblyName = _dllListingForFile.FullName;
+
             var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             var mockStudioUpdateManager = FeatureContext.Current.Get<Mock<IManagePluginSourceModel>>("updateManager").Object;
             var mockEventAggregator = FeatureContext.Current.Get<Mock<IEventAggregator>>("eventAggregator").Object;
             var mockSynchronousAsyncWorker = FeatureContext.Current.Get<Mock<SynchronousAsyncWorker>>("synchronousAsyncWorker").Object;
-            
+
             try
             {
-                //var managePluginSourceViewModel = new ManagePluginSourceViewModel(mockStudioUpdateManager, mockEventAggregator, pluginSrc, new SynchronousAsyncWorker(),a => { 
-                //    try
-                //    {
-                //        a.Invoke(); 
-                //    }
-                //    catch
-                //    {
-                //        // ignored
-                //    }
-                //});
+                var managePluginSourceViewModel = new ManagePluginSourceViewModel(mockStudioUpdateManager, mockEventAggregator, pluginSrc, new SynchronousAsyncWorker());
 
-                //managePluginSourceControl.DataContext = managePluginSourceViewModel;
-                //ScenarioContext.Current.Remove("viewModel");
-                //ScenarioContext.Current.Add("viewModel", managePluginSourceViewModel);
+                managePluginSourceControl.DataContext = managePluginSourceViewModel;
+                ScenarioContext.Current.Remove("viewModel");
+                ScenarioContext.Current.Add("viewModel", managePluginSourceViewModel);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 // ignored
             }
-        }
-
-        [Given(@"GAC is not selected")]
-        public void GivenGACIsNotSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I open ""(.*)""")]
-        [Then(@"I open ""(.*)""")]
-        [Given(@"I open ""(.*)""")]
-        public void WhenIOpen(string itemNameToOpen)
-        {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            sourceControl.OpenItem(itemNameToOpen);
-        }
-
-        [When(@"GAC is not selected")]
-        public void WhenGACIsNotSelected()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"GAC tree is collapsed")]
-        public void WhenGACTreeIsCollapsed()
-        {
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            var isExpanded = viewModel.SelectedDll.IsExpanded;
-            Assert.IsFalse(isExpanded);
-        }
-
-        [When(@"GAC only has one option in the tree")]
-        public void WhenGACOnlyHasOneOptionInTheTree()
-        {
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            //managePluginSourceControl.FilterItems();
-        }
-
-        [When(@"Assembly is ""(.*)""")]
-        [Then(@"Assembly is ""(.*)""")]
-        public void WhenAssemblyIs(string assembly)
-        {
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            Assert.AreEqual(assembly, managePluginSourceControl.GetAssemblyName());
-        }
-
-        [When(@"I filter for ""(.*)""")]
-        public void WhenIFilterFor(string assemblyName)
-        {
-            var expectedVisibility = String.Equals(assemblyName, "BDATunePIA", StringComparison.InvariantCultureIgnoreCase);
-            Assert.IsTrue(expectedVisibility);
-        }
-
-        [When(@"filter is disabled")]
-        public void WhenFilterIsDisabled()
-        {
-            
-        }
-
-        [When(@"GAC is ""(.*)""")]
-        public void WhenGACIs(string isLoading)
-        {
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            //managePluginSourceControl.ExecuteRefresh();
-        }
-
-        [When(@"I filter new for ""(.*)""")]
-        public void WhenIFilterNewFor(string assemblyName)
-        {
-            var expectedVisibility = String.Equals(assemblyName, "vjslib", StringComparison.InvariantCultureIgnoreCase);
-            Assert.IsTrue(expectedVisibility);
-        }
-
-        [When(@"I ""(.*)"" the filter")]
-        public void WhenITheFilter(string p0)
-        {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            //manageWebserviceSourceControl.ClearFilter();
         }
 
         [When(@"I save Plugin source")]
@@ -456,25 +321,6 @@ namespace Warewolf.UIBindingTests.PluginSource
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
             var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             managePluginSourceControl.PerformSave();
-        }
-
-        [When(@"I Search for ""(.*)""")]
-        public void WhenISearchFor(string assemblyName)
-        {
-            var expectedVisibility = String.Equals(assemblyName, "AuditPolicyGPMan", StringComparison.InvariantCultureIgnoreCase);
-            Assert.IsTrue(expectedVisibility);
-        }
-
-        [Then(@"files in ""(.*)"" is opened")]
-        public void ThenFilesInIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"GAC is not selected")]        
-        public void ThenGACIsNotSelected()
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [AfterScenario("PluginSource")]
@@ -488,11 +334,11 @@ namespace Warewolf.UIBindingTests.PluginSource
             var mockViewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>(Utils.ViewModelNameKey);
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            //var viewModel = new ManagePluginSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockViewModel.DispatcherAction);
+            var viewModel = new ManagePluginSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            //managePluginSourceControl.DataContext = viewModel;
+            managePluginSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");
-            //FeatureContext.Current.Add("viewModel", viewModel);
+            FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Remove("externalProcessExecutor");
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
