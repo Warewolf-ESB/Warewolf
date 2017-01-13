@@ -113,6 +113,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+            _messages = new List<string>();
             try
             {
                 RabbitSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);

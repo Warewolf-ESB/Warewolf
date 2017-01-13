@@ -113,13 +113,18 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
-            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-
-            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
-            //var environmentModel = EnvironmentRepository.Instance.Source;
-            //environmentModel.Connect();
-            //((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
+            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);            
         }
+
+        [When(@"I reload tests")]
+        public void WhenIReloadTests()
+        {
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
+            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+        }
+
 
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
@@ -1044,6 +1049,8 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.Save();
         }
 
+        [Given(@"I close the test builder")]
+        [When(@"I close the test builder")]
         [Then(@"I close the test builder")]
         public void ThenICloseTheTestBuilder()
         {
