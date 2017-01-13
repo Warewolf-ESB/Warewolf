@@ -215,7 +215,6 @@ Scenario: Move Folder To FolderToRename From Save Dialog
 	Then I Click Save Ribbon Button to Open Save Dialog
 	And I Filter Save Dialog Explorer with "FolderTo"
 	And I Move FolderToMove into FolderToRename
-	And I Try Click Message Box OK
 	And I Filter Save Dialog Explorer with "FolderToMove"
 	Then "FolderToMove" is child of "FolderToRename"
 	And I Click SaveDialog CancelButton
