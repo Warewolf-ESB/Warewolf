@@ -83,7 +83,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.And("I Click NewPluginSource Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select NewPluginSource FromExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("I Type \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Numerics.dll\" into" +
                     " Plugin Source Wizard Assembly Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
