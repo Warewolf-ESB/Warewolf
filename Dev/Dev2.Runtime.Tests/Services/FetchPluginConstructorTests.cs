@@ -230,5 +230,46 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(expectedName2, constructorName2);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenHasError_ShouldReturnErrorState()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var assembly = type.Assembly;
+            NamespaceItem namespaceItem = new NamespaceItem()
+            {
+                AssemblyLocation = assembly.Location,
+                AssemblyName = assembly.FullName,
+                FullName = type.FullName,
+
+            };
+            
+
+            var pluginSourceDefinition = new PluginSourceDefinition();
+            var serializeToJson = pluginSourceDefinition.SerializeToJsonStringBuilder();
+            var nameSpace = namespaceItem.SerializeToJsonStringBuilder();
+            var resourceCat = new Mock<IResourceCatalog>();
+            resourceCat.Setup(catalog => catalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Throws(new Exception("error"));
+            var FetchPluginConstructors = new FetchPluginConstructors(resourceCat.Object);
+
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var mock = new Mock<IWorkspace>();
+            var stringBuilder = FetchPluginConstructors.Execute(new Dictionary<string, StringBuilder>()
+            {
+                { "source", serializeToJson },
+                { "namespace", nameSpace },
+
+            },
+                mock.Object);
+            //---------------Test Result -----------------------
+            var executeMessage = stringBuilder.DeserializeToObject<ExecuteMessage>();
+            Assert.IsTrue(executeMessage.HasError);
+            Assert.AreEqual("error", executeMessage.Message.ToString());
+        }
+
     }
 }

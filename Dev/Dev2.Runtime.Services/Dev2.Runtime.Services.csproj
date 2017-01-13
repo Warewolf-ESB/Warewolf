@@ -394,7 +394,9 @@
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.partial.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.partial.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />

@@ -428,7 +428,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
-            var resourceId = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+            var resourceId = ResourceID?.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
             if(resourceId == Guid.Empty || dataObject.ExecutingUser == null)
             {
                 return;
@@ -436,7 +436,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
             if(!isAuthorized)
             {
-                var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
+                var message = $"User: {dataObject.ExecutingUser.Identity.Name} does not have Execute Permission to resource {ServiceName}.";
                 tmpErrors.AddError(message);
                 dataObject.Environment.AddError(message);
                 throw new InvalidCredentialException(message);
@@ -474,8 +474,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            dataObject.EnvironmentID = EnvironmentID==null || EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
-            dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
+            dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.RemoteServiceType = Type.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 

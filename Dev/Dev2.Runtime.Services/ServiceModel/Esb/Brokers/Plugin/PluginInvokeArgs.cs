@@ -26,9 +26,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public string AssemblyName { get; set; }
         public string Fullname { get; set; }
         public string Method { get; set; }
+        public List<Dev2MethodInfo> MethodsToRun { get; set; } 
         public IPluginConstructor PluginConstructor { get; set; }
-        public List<MethodParameter> Parameters { get; set; }
         public IOutputFormatter OutputFormatter { get; set; }
-
+        public List<MethodParameter> Parameters { get; set; }
     }
+
+    /// <summary>
+    /// Args to pass into the plugin ;)
+    /// </summary>
+    [Serializable]
+    public class Dev2MethodInfo
+    {
+        public string Method { get; set; }
+        public List<MethodParameter> Parameters { get; set; }
+        public string MethodResult { get; set; }
+    }
+
 }

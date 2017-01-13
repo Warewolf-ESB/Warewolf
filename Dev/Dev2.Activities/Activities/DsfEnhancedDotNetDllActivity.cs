@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -14,20 +15,19 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
-    public class DsfDotNetDllActivity : DsfMethodBasedActivity
+    [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
+    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity
     {
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
-
+        public IPluginConstructor Constructor { get; set; }
+        ICollection<IServiceInput> ConstructorInputs { get; set; }
+        public string ExistingObject { get; set; }
         public IOutputDescription OutputDescription { get; set; }
 
-        public DsfDotNetDllActivity()
+        public DsfEnhancedDotNetDllActivity()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
@@ -48,24 +48,46 @@ namespace Dev2.Activities
                 return;
             }
 
-                
-            ExecuteService(update, out errors, Method, Namespace, dataObject);
+
+            ExecuteService(update, out errors, Constructor, Method, Namespace, dataObject);
         }
 
-        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
             errors = new ErrorResultTO();
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
-            var methodParameters = Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
+            var constructorParameters = ConstructorInputs.Select(p=>new ConstructorParameter()
+            {
+                Name = p.Name,
+                TypeName = p.TypeName,
+                Value = p.Value,
+                IsRequired = p.RequiredField,
+                EmptyToNull = p.EmptyIsNull
+            });
+            var methodParameters = Inputs.Select(a => new MethodParameter
+            {
+                EmptyToNull = a.EmptyIsNull
+                ,
+                IsRequired = a.RequiredField
+                ,
+                Name = a.Name
+                ,
+                Value = a.Value
+                ,
+                TypeName = a.TypeName
+            }).ToList();
+            BuildParameterIterators(update, constructorParameters.Cast<MethodParameter>().ToList(), itrCollection, itrs, dataObject);
             BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
+         
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
-                //Method = method.Method,
-                //Parameters = methodParameters
+                PluginConstructor = constructor,
+                Method = method.Method,
+                Parameters = methodParameters
             };
 
             try
@@ -87,7 +109,7 @@ namespace Dev2.Activities
                             : injectVal;
 
                         pos++;
-                    }                    
+                    }
                     if (!IsObject)
                     {
                         int i = 0;
@@ -101,7 +123,7 @@ namespace Dev2.Activities
                     }
                     var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
                     ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject,false);
+                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
                 }
             }
             catch (Exception e)

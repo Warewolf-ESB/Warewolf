@@ -14,21 +14,20 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
+
+
         public ServiceConstructor(string name, IEnumerable<ConstructorParameter> parameters, IOutputDescription outputDescription)
         {
             Name = name;
             OutputDescription = outputDescription;
             Parameters = new List<ConstructorParameter>();
-            OutParameters = new List<ConstructorParameter>();
             if (parameters != null)
             {
                 Parameters.AddRange(parameters);
             }
-
+            
         }
-
-        [DataMember]
-        public List<ConstructorParameter> OutParameters { get; set; }
+        
         [DataMember]
         public string Name { get; set; }
         [DataMember]

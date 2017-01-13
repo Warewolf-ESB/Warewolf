@@ -1,0 +1,113 @@
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Activities;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Data.TO;
+using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using TestingDotnetDllCascading;
+
+// ReSharper disable InconsistentNaming
+
+namespace Dev2.Tests.Activities.ActivityTests
+{
+    [TestClass]
+    public class DsfEnhancedDotNetDllActivityTests
+    {
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Constructor_GivenIsNew_ShouldHaveCorrectValues()
+        {
+            //---------------Set up test pack-------------------
+            var activity = new DsfEnhancedDotNetDllActivity();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNoNamespace_ShouldAddError()
+        {
+            //---------------Set up test pack-------------------
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, err.FetchErrors().Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNoMethod_ShouldAddError()
+        {
+            //---------------Set up test pack-------------------
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            activity.Namespace = new NamespaceItem();
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, err.FetchErrors().Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNoMethodNameSpace_ShouldPassThough()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            activity.Namespace = new NamespaceItem()
+            {
+                FullName = type.Namespace,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Method = new PluginAction()
+            {
+                Inputs = new List<IServiceInput>(),
+            };
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, err.FetchErrors().Count);
+        }
+    }
+
+    internal class DsfEnhancedDotNetDllActivityMock : DsfEnhancedDotNetDllActivity
+    {
+        // ReSharper disable once RedundantAssignment
+        public void ExecuteMock(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
+        {
+            base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out errors, 0);
+        }
+    }
+}
