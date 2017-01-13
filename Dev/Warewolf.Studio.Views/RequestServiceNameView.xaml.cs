@@ -104,7 +104,7 @@ namespace Warewolf.Studio.Views
                 var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
                 requestServiceNameViewModel?.CancelCommand.Execute(this);
             }
-            else if (e.Key == Key.Delete)
+            else if (e.Key == Key.Delete && !ExplorerView.SearchTextBox.IsFocused)
             {
                 var explorerItemViewModelSelected = environmentViewModel?.Children.Flatten(model => model.Children)
                 .FirstOrDefault(model => model.IsSelected);
