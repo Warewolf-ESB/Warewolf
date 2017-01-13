@@ -13,11 +13,11 @@ namespace Warewolf.UITests.Workflow
         [TestCategory("Tabs and Panes")]
         public void Unsaved_Workflow_Name_Counter()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
             UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1Text.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
         }
