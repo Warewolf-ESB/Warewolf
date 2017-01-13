@@ -479,19 +479,19 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
 
 
-        //[TestMethod]
-        //[Owner("Nkosinathi Sangweni")]
-        //[TestCategory("PluginRuntimeHandler_CreateInstance")]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void PluginRuntimeHandler_CreateInstance_WhenNullParameters_ExpectException()
-        //{
-        //    //------------Setup for test--------------------------
-        //    //------------Execute Test---------------------------
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        isolated.Value.CreateInstance(null, null);
-        //    }
-        //}
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PluginRuntimeHandler_CreateInstance_WhenNullParameters_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                isolated.Value.CreateInstance(null);
+            }
+        }
 
         //[TestMethod]
         //[Owner("Nkosinathi Sangweni")]
@@ -518,7 +518,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         //            AssemblyName = type.Assembly.FullName,
         //            Fullname = type.FullName,
 
-        //        }, type.Assembly);
+                });
 
         //        var deserializeToObject = instance.DeserializeToObject<Human>();
         //        Assert.IsNotNull(deserializeToObject);
@@ -549,8 +549,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         //            AssemblyName = type.Assembly.FullName,
         //            Fullname = type.FullName,
 
-        //        };
-        //        var instance = isolated.Value.CreateInstance(pluginInvokeArgs, type.Assembly);
+                };
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs, type.Assembly);
 
         //        var deserializeToObject = instance.DeserializeToObject<Human>();
         //        Assert.IsNotNull(deserializeToObject);
