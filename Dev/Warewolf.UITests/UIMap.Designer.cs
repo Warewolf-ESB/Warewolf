@@ -240,6 +240,7 @@ namespace Warewolf.UITests
             #region Search Criteria
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -966,6 +967,18 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemAsExcelFilesDB;
             }
         }
+        
+        public Dev2TestingDBCustom Dev2TestingDBCustom
+        {
+            get
+            {
+                if ((this.mDev2TestingDBCustom == null))
+                {
+                    this.mDev2TestingDBCustom = new Dev2TestingDBCustom(this);
+                }
+                return this.mDev2TestingDBCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1068,6 +1081,8 @@ namespace Warewolf.UITests
         private ComboboxListItemAsHRDB mComboboxListItemAsHRDB;
         
         private ComboboxListItemAsExcelFilesDB mComboboxListItemAsExcelFilesDB;
+        
+        private Dev2TestingDBCustom mDev2TestingDBCustom;
         #endregion
     }
     
@@ -101009,6 +101024,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Dev2TestingDBCustom : WpfCustom
+    {
+        
+        public Dev2TestingDBCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Dev2TestingDB";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIDev2TestingDBText
+        {
+            get
+            {
+                if ((this.mUIDev2TestingDBText == null))
+                {
+                    this.mUIDev2TestingDBText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIDev2TestingDBText.SearchProperties[WpfText.PropertyNames.Name] = "Dev2TestingDB";
+                    this.mUIDev2TestingDBText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDev2TestingDBText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIDev2TestingDBText;
         #endregion
     }
     
