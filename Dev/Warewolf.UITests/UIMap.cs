@@ -498,7 +498,7 @@ namespace Warewolf.UITests
             var serverSourceWizardTabCloseButtonExists = true;
             while (workflowTabCloseButtonExists || settingsTabCloseButtonExists || serverSourceWizardTabCloseButtonExists)
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkflowTabCloseButton))
                 {
                     TryCloseWorkflowTab();
                 }
@@ -506,7 +506,7 @@ namespace Warewolf.UITests
                 {
                     workflowTabCloseButtonExists = false;
                 }
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.SettingsTabCloseButton))
                 {
                     TryCloseSettingsTab();
                 }
@@ -514,7 +514,7 @@ namespace Warewolf.UITests
                 {
                     settingsTabCloseButtonExists = false;
                 }
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.TabCloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.ServerSourceTabCloseButton))
                 {
                     TryCloseServerSourceWizardTab();
                 }
@@ -532,7 +532,7 @@ namespace Warewolf.UITests
             {
                 try
                 {
-                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkflowTabCloseButton))
                     {
                         TryCloseWorkflowTab();
                     }
@@ -557,7 +557,7 @@ namespace Warewolf.UITests
         {
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkflowTabCloseButton))
                 {
                     Click_Close_Workflow_Tab_Button();
                 }
@@ -577,7 +577,7 @@ namespace Warewolf.UITests
             var TimeBefore = System.DateTime.Now;
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TestsTabCloseButton))
                 {
                     Click_Close_Tests_Tab();
                 }
@@ -625,7 +625,7 @@ namespace Warewolf.UITests
         {
             try
             {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.TabCloseButton))
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.ServerSourceTabCloseButton))
                 {
                     Click_Close_Server_Source_Wizard_Tab_Button();
                 }
@@ -1014,7 +1014,7 @@ namespace Warewolf.UITests
 
         public void TryCloseNewDotNetPluginSourceWizardTab()
         {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton))
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.DotNetPluginSourceCloseButton))
             {
                 Click_Close_Plugin_Source_Wizard_Tab_Button();
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
@@ -1026,7 +1026,7 @@ namespace Warewolf.UITests
 
         public void TryCloseNewWebSourceWizardTab()
         {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.CloseButton))
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WebSourceTabCloseButton))
             {
                 Click_Close_Web_Source_Wizard_Tab_Button();
                 if (ControlExistsNow(MessageBoxWindow.NoButton))
@@ -1152,22 +1152,22 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
 
-        [Given(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        [Then(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
-        {
-            if (!File.Exists(text))
-            {
-                text = text.Replace("Framework64", "Framework");
-                if (!File.Exists(text))
-                {
-                    throw new Exception("No suitable DLL could be found for this test to use.");
-                }
-            }
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        }
+        //[Given(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        //[When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        //[Then(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        //public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
+        //{
+        //    if (!File.Exists(text))
+        //    {
+        //        text = text.Replace("Framework64", "Framework");
+        //        if (!File.Exists(text))
+        //        {
+        //            throw new Exception("No suitable DLL could be found for this test to use.");
+        //        }
+        //    }
+        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
+        //    Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        //}
 
         public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
         {
@@ -3062,16 +3062,16 @@ namespace Warewolf.UITests
             Assert.AreEqual("Dice1", FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
-        public void Add_Dotnet_Dll_Source(string sourceName)
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.FilterTextbox.Text = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.ExpansionIndicatorCheckbox, new Point(30, 4));
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.FirstTreeItem);
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-            Save_With_Ribbon_Button_And_Dialog(sourceName);
-            Click_Close_DotNetDll_Tab();
-        }
+        //public void Add_Dotnet_Dll_Source(string sourceName)
+        //{
+        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
+        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.FilterTextbox.Text = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64";
+        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.ExpansionIndicatorCheckbox, new Point(30, 4));
+        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.FirstTreeItem);
+        //    Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+        //    Save_With_Ribbon_Button_And_Dialog(sourceName);
+        //    Click_Close_DotNetDll_Tab();
+        //}
 
         public void Enter_Dice_Roll_Values()
         {
@@ -3369,7 +3369,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close DB Source Wizard Tab Button")]
         public void Click_Close_DB_Source_Wizard_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.CloseButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.DBSourceTabCloseButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close Dependecy Tab")]
@@ -3377,7 +3377,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Dependecy Tab")]
         public void Click_Close_Dependecy_Tab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton, new Point(13, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.DependencyGraphTabCloseButton, new Point(13, 10));
         }
 
         [Given(@"I Click Close Deploy Tab Button")]
@@ -3385,8 +3385,8 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Deploy Tab Button")]
         public void Click_Close_Deploy_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton.Exists, "DeployTab close tab button does not exist.");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.TabCloseButton, new Point(16, 6));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.DeployTabCloseButton.Exists, "DeployTab close tab button does not exist.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.DeployTabCloseButton, new Point(16, 6));
         }
 
         [Given(@"I Click Close DotNetDll Tab")]
@@ -3394,7 +3394,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close DotNetDll Tab")]
         public void Click_Close_DotNetDll_Tab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.DotNetPluginSourceCloseButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close EmailSource Tab")]
@@ -3426,7 +3426,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Plugin Source Wizard Tab Button")]
         public void Click_Close_Plugin_Source_Wizard_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.CloseButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.DotNetPluginSourceCloseButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close Server Source Wizard Tab Button")]
@@ -3434,7 +3434,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Server Source Wizard Tab Button")]
         public void Click_Close_Server_Source_Wizard_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.TabCloseButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.ServerSourceTabCloseButton, new Point(5, 5));
         }
 
         [Given(@"I Click Close Settings Tab Button")]
@@ -3442,8 +3442,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Settings Tab Button")]
         public void Click_Close_Settings_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton.Exists, "Settings close tab button does not exist.");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton, new Point(16, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.SettingsTabCloseButton, new Point(16, 6));
         }
 
         [Given(@"I Click Close SharepointSource Tab Button")]
@@ -3476,7 +3475,7 @@ namespace Warewolf.UITests
         [Given(@"I Click Close Tests Tab")]
         public void Click_Close_Tests_Tab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.CloseTestTabButton, new Point(11, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.TestsTabCloseButton, new Point(11, 5));
         }
 
         [Given(@"I Click Close Web Source Wizard Tab Button")]
@@ -3484,7 +3483,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Web Source Wizard Tab Button")]
         public void Click_Close_Web_Source_Wizard_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.CloseButton, new Point(9, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WebSourceTabCloseButton, new Point(9, 6));
         }
 
         [Given(@"I Click Close Workflow Tab Button")]
@@ -3492,8 +3491,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Workflow Tab Button")]
         public void Click_Close_Workflow_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton.Exists, "Close tab button does not exist");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton, new Point(5, 5));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkflowTabCloseButton, new Point(5, 5));
         }
 
         [Given(@"I Click ConfigureSetting From Menu")]
@@ -4101,10 +4099,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(67, 9));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewDotNetPluginSource);
-            Playback.Wait(1000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.Exists, "Select assembly tree does not exist in new plugin source wizard tab.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyNameTextbox.Exists, "Assembly textbox does not exist in new plugin source wizard tab.");
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ContentDockManager.RefreshButton.Spinner);
         }
 
         [Given(@"I Click NewSource Button FromODBC Tool")]
@@ -8869,6 +8863,47 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New MySQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        public void Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyDirectoryButton);
+            Assert.IsTrue(ChooseDLLWindow.Exists, "Choose DLL Window did not open after clicking Assembly Diretory Button");
+        }
+
+        public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
+        {
+            //Assert.IsTrue(ChooseDLLWindow.FilterTextBox.Text.Equals(null));
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(37, 14));
+            ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
+            Playback.Wait(2500);
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(71, 34));
+            Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
+            Mouse.Click(ChooseDLLWindow.SelectButton);
+        }
+
+        public void Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ConfigFileDirectoryButton);
+            Assert.IsTrue(SelectFilesWindow.Exists, "Select Files Window did not open after clicking Assembly Diretory Button");
+        }
+
+        public void Enter_ConfigFile_In_SelectFilesWindow()
+        {
+            Mouse.Click(SelectFilesWindow.DrivesDataTree.CTreeItem);
+            SelectFilesWindow.FileNameComboBox.TextEdit.Text = @"C:\swapfile.sys";
+            Mouse.Click(SelectFilesWindow.FileNameComboBox.swapfilesysListItem , new Point(64, 12));
+            Mouse.Click(SelectFilesWindow.SelectButton);
+        }
+
+
+        public void Select_GACAssemblyFile_From_ChooseDLLWindow()
+        {
+            ChooseDLLWindow.FilterTextBox.Text = "Build";
+            Playback.Wait(2500);
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(71, 34));
+            Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
+            Mouse.Click(ChooseDLLWindow.SelectButton);
         }
     }
 }
