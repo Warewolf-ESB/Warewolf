@@ -1,0 +1,38 @@
+﻿<core:ActivityDesigner x:Class="Dev2.Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:local="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
+                       xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+                       d:DataContext="{d:DesignInstance local:DotNetDllEnhancedViewModel}"
+                       x:TypeArguments="local:DotNetDllEnhancedViewModel"
+                       Style="{DynamicResource ContentViewStyle}"
+                       mc:Ignorable="d">
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+            <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
+
+            <Style x:Key="ContentViewStyle"
+                   BasedOn="{StaticResource ActivityDesignerStyle}"
+                   TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
+                        <Setter Property="Content" Value="{DynamicResource Large}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </sap:ActivityDesigner.Resources>
+
+    <sap:ActivityDesigner.Icon>
+        <Binding Source="{StaticResource DotNetDllIcon}" />
+    </sap:ActivityDesigner.Icon>
+</core:ActivityDesigner>

@@ -16,7 +16,6 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
@@ -489,7 +488,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                isolated.Value.CreateInstance(null, null);
+                isolated.Value.CreateInstance(null);
             }
         }
 
@@ -518,7 +517,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     AssemblyName = type.Assembly.FullName,
                     Fullname = type.FullName,
 
-                }, type.Assembly);
+                });
 
                 var deserializeToObject = instance.DeserializeToObject<Human>();
                 Assert.IsNotNull(deserializeToObject);
@@ -550,7 +549,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     Fullname = type.FullName,
 
                 };
-                var instance = isolated.Value.CreateInstance(pluginInvokeArgs, type.Assembly);
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
 
                 var deserializeToObject = instance.DeserializeToObject<Human>();
                 Assert.IsNotNull(deserializeToObject);
