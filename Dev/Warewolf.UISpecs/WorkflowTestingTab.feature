@@ -21,7 +21,6 @@ Scenario: Unsaved Tests Contain a Star in their Name
 	Then The "1st" Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
 	Then The "1st" Added Test "Has No" Unsaved Star
-	And I Click Close Tests Tab
 
 Scenario: Run Passing Tests
 	When I Click New Workflow Ribbon Button
@@ -44,4 +43,3 @@ Scenario: Run Passing Tests
 	Then The First Test "Is" Invalid
 	When I Click First Test Delete Button
 	And I Click MessageBox Yes
-	And I Click Close Tests Tab

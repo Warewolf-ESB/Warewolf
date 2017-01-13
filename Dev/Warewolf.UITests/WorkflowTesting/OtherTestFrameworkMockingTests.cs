@@ -25,7 +25,6 @@ namespace Warewolf.UITests
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
             UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         #region Additional test attributes

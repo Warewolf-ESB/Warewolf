@@ -33,9 +33,7 @@ namespace Warewolf.UITests
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Press_F6();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);           
         }
         
         [TestMethod]
@@ -58,10 +56,7 @@ namespace Warewolf.UITests
             UIMap.Press_F6();            
             UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
-            UIMap.Click_Close_Workflow_Tab_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);           
         }
 
         [TestMethod]
@@ -101,9 +96,6 @@ namespace Warewolf.UITests
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
 
