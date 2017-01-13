@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
+using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
 
@@ -45,7 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, err.FetchErrors().Count);
         }
@@ -65,7 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, err.FetchErrors().Count);
         }
@@ -91,14 +94,63 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Inputs = new List<IServiceInput>(),
             };
+            activity.Constructor = new PluginConstructor()
+            {
+                Inputs = new List<IServiceInput>(),
+            };
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
-            activity.ExecuteMock(esbChannel.Object, mock.Object, String.Empty, String.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, err.FetchErrors().Count);
+            Assert.AreEqual(0, err.FetchErrors().Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenValidArgs_ShouldReturnValidData()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem()
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Method = new PluginAction()
+            {
+                Inputs = new List<IServiceInput>(),
+                Method = "ToString"
+            };
+            activity.Constructor = new PluginConstructor()
+            {
+                Inputs = new List<IServiceInput>(),
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>()
+            {
+                new Dev2MethodInfo()
+                {
+                    Method = "ToString",
+                    Parameters = new List<MethodParameter>(),
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
         }
     }
 

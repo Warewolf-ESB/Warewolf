@@ -23,7 +23,8 @@ namespace Dev2.Activities
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
-        ICollection<IServiceInput> ConstructorInputs { get; set; }
+        public ICollection<IServiceInput> ConstructorInputs { get; set; }
+        public List<Dev2MethodInfo> MethodsToRun { get; set; }
         public string ExistingObject { get; set; }
         public IOutputDescription OutputDescription { get; set; }
 
@@ -31,6 +32,10 @@ namespace Dev2.Activities
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
+            ConstructorInputs = new List<IServiceInput>();
+            Inputs = new List<IServiceInput>();
+            ExistingObject = string.Empty;
+            MethodsToRun = new List<Dev2MethodInfo>();
         }
 
 
@@ -57,7 +62,9 @@ namespace Dev2.Activities
             errors = new ErrorResultTO();
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
-            var constructorParameters = ConstructorInputs.Select(p=>new ConstructorParameter()
+            var warewolfEvalResult = dataObject.Environment.Eval(ExistingObject, update);
+            var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            var constructorParameters = ConstructorInputs.Select(p => new ConstructorParameter()
             {
                 Name = p.Name,
                 TypeName = p.TypeName,
@@ -77,9 +84,9 @@ namespace Dev2.Activities
                 ,
                 TypeName = a.TypeName
             }).ToList();
-            BuildParameterIterators(update, constructorParameters.Cast<MethodParameter>().ToList(), itrCollection, itrs, dataObject);
-            BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
-         
+            var parameters = constructorParameters as ConstructorParameter[] ?? constructorParameters.ToArray();
+            BuildParameterIterators(update, parameters.Cast<MethodParameter>().ToList(), itrCollection, itrs, dataObject);
+
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
@@ -87,48 +94,75 @@ namespace Dev2.Activities
                 Fullname = namespaceItem.FullName,
                 PluginConstructor = constructor,
                 Method = method.Method,
-                Parameters = methodParameters
+                Parameters = methodParameters,
+                MethodsToRun = MethodsToRun
             };
 
             try
             {
-                while (itrCollection.HasMoreData())
+                if (itrCollection.HasMoreData())
                 {
-                    int pos = 0;
-                    foreach (var itr in itrs)
+                    while (itrCollection.HasMoreData())
                     {
-                        string injectVal = itrCollection.FetchNextValue(itr);
-                        var param = methodParameters.ToList()[pos];
-
-
-                        param.Value = param.EmptyToNull &&
-                                      (injectVal == null ||
-                                       string.Compare(injectVal, string.Empty,
-                                           StringComparison.InvariantCultureIgnoreCase) == 0)
-                            ? null
-                            : injectVal;
-
-                        pos++;
-                    }
-                    if (!IsObject)
-                    {
-                        int i = 0;
-                        foreach (var serviceOutputMapping in Outputs)
+                        int pos = 0;
+                        foreach (var itr in itrs)
                         {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
-                            i++;
+                            string injectVal = itrCollection.FetchNextValue(itr);
+                            var param = parameters.ToList()[pos];
+
+
+                            param.Value = param.EmptyToNull &&
+                                          (injectVal == null ||
+                                           string.Compare(injectVal, string.Empty,
+                                               StringComparison.InvariantCultureIgnoreCase) == 0)
+                                ? null
+                                : injectVal;
+
+                            pos++;
                         }
-                        var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                        args.OutputFormatter = outputFormatter;
+                        CreateOutputFormater(args);
+                        var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
+                        ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                        ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
                     }
-                    var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
+                }
+                else
+                {
+                    CreateOutputFormater(args);
+                    if (string.IsNullOrEmpty(existingObject))
+                    {
+                        existingObject= PluginServiceExecutionFactory.CreateInstance(args);
+                    }
+                    var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
                     ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
                     ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
                 }
+
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
+            }
+        }
+
+        private void CreateOutputFormater(PluginInvokeArgs args)
+        {
+            if(!IsObject)
+            {
+                int i = 0;
+                if(Outputs != null)
+                {
+                    foreach(var serviceOutputMapping in Outputs)
+                    {
+                        OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                        i++;
+                    }
+                }
+                if(OutputDescription != null)
+                {
+                    var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+                    args.OutputFormatter = outputFormatter;
+                }
             }
         }
 
