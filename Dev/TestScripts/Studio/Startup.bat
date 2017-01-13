@@ -114,7 +114,7 @@ IF EXIST %windir%\nircmd.exe (
 	)
 )
 IF NOT "%1"=="" (
-	waitfor StudioStart /t 300 2>NUL
+	waitfor StudioStart /t 600 2>NUL
 ) else (
 	waitfor StudioStart /t 60 2>NUL
 )
