@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
@@ -79,7 +80,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 foreach(var wid in _resourceCatalog.WorkspaceResources.Keys)
                 {
-                    DeleteFromWorkspace(wid, resourceID, type, deleteVersions);                    
+                    var result = DeleteFromWorkspace(wid, resourceID, type, deleteVersions);                    
+                    if(wid==GlobalConstants.ServerWorkspaceID && result.Status != ExecStatus.Success)
+                    {
+                        return result;
+                    }
                 }
                 return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
             }
