@@ -39,7 +39,6 @@ using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.MySqlDatabase;
-using Dev2.Activities.Designers2.Net_DLL;
 using Dev2.Activities.Designers2.ODBC;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
@@ -96,6 +95,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+using Dev2.Activities.Designers2.Net_Dll_Enhanced;
 using Dev2.Activities.Scripting;
 
 // ReSharper disable RedundantNameQualifier
@@ -161,7 +161,8 @@ namespace Dev2.Studio.ActivityDesigners
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
                 {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
-                { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
+                { typeof(DsfDotNetDllActivity), typeof(Activities.Designers2.Net_DLL.DotNetDllDesigner) },
+                { typeof(DotNetDllEnhancedViewModel), typeof(Dev2.Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
