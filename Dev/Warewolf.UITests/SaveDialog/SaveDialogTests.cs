@@ -70,7 +70,7 @@ namespace Warewolf.UITests.SaveDialog
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithEmptySpace()
         {
-            UIMap.I_Enter_Invalid_Service_Name_Into_SaveDialog("Test ");
+            UIMap.I_Enter_Invalid_Service_Name_With_Whitespace_Into_SaveDialog("Test ");
             Assert.IsFalse(UIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
