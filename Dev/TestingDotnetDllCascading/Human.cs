@@ -2,6 +2,21 @@
 
 namespace TestingDotnetDllCascading
 {
+    public sealed class SealedClass
+    {
+        public override string ToString()
+        {
+            return "ToStringOnsealed";
+        }
+    }
+    public static class StaticClass
+    {
+        public static string ToStringOnStatic()
+        {
+            return "ToStringOnStatic";
+        }
+    }
+
     [Serializable]
     public class Human
     {
@@ -27,7 +42,7 @@ namespace TestingDotnetDllCascading
 
         public Human(string name, string surname, Food food)
         {
-            
+
             Name = name;
             SurName = surname;
             PersonFood = food;

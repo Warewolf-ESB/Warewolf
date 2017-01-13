@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -32,7 +33,6 @@ namespace Dev2.Activities
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
-            ConstructorInputs = new List<IServiceInput>();
             Inputs = new List<IServiceInput>();
             ExistingObject = string.Empty;
             MethodsToRun = new List<Dev2MethodInfo>();
@@ -52,6 +52,11 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
+            if (Constructor == null)
+            {
+                Constructor = new PluginConstructor();
+                ConstructorInputs = new List<IServiceInput>();
+            }
 
 
             ExecuteService(update, out errors, Constructor, Method, Namespace, dataObject);
@@ -64,6 +69,7 @@ namespace Dev2.Activities
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
             var warewolfEvalResult = dataObject.Environment.Eval(ExistingObject, update);
             var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            var pluginExecutionDto = new PluginExecutionDto(existingObject);
             var constructorParameters = ConstructorInputs.Select(p => new ConstructorParameter()
             {
                 Name = p.Name,
@@ -121,7 +127,7 @@ namespace Dev2.Activities
                             pos++;
                         }
                         CreateOutputFormater(args);
-                        var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
+                        var result = PluginServiceExecutionFactory.InvokePlugin(args, pluginExecutionDto).ToString();
                         ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
                         ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
                     }
@@ -131,9 +137,9 @@ namespace Dev2.Activities
                     CreateOutputFormater(args);
                     if (string.IsNullOrEmpty(existingObject))
                     {
-                        existingObject= PluginServiceExecutionFactory.CreateInstance(args);
+                        pluginExecutionDto = PluginServiceExecutionFactory.CreateInstance(args);
                     }
-                    var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
+                    var result = PluginServiceExecutionFactory.InvokePlugin(args, pluginExecutionDto).ToString();
                     ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
                     ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
                 }
@@ -147,18 +153,18 @@ namespace Dev2.Activities
 
         private void CreateOutputFormater(PluginInvokeArgs args)
         {
-            if(!IsObject)
+            if (!IsObject)
             {
                 int i = 0;
-                if(Outputs != null)
+                if (Outputs != null)
                 {
-                    foreach(var serviceOutputMapping in Outputs)
+                    foreach (var serviceOutputMapping in Outputs)
                     {
                         OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
                         i++;
                     }
                 }
-                if(OutputDescription != null)
+                if (OutputDescription != null)
                 {
                     var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                     args.OutputFormatter = outputFormatter;
