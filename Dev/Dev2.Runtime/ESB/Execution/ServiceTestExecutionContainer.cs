@@ -115,11 +115,11 @@ namespace Dev2.Runtime.ESB.Execution
                     Result = new TestRunResult
                     {
                         TestName = DataObject.TestName,
-                        RunTestResult = RunResult.TestResourceDeleted,
-                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}"
+                        RunTestResult = RunResult.TestInvalid,
+                        Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
                     }
                 };
-                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}");
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.");
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
