@@ -14,6 +14,7 @@ namespace Warewolf.UITests.Workflow
         public void Unsaved_Workflow_Name_Counter()
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
             UIMap.Click_Close_Workflow_Tab_Button();
