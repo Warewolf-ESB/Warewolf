@@ -19,13 +19,12 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists);
             UIMap.Press_F6();            
             UIMap.Click_Create_Test_From_Debug();
-
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
             UIMap.Click_MockRadioButton_On_TestStep();
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
             UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         #region Additional test attributes

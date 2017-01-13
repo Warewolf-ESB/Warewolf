@@ -111,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = Path,
                 Name = ResourceName,
                 DbName = DatabaseName,
-                Id = (Guid)DbSource?.Id
+                Id = DbSource.Id
             };
         }
 
