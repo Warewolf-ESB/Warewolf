@@ -28,8 +28,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-       
-        public string CreateInstance(PluginInvokeArgs setupInfo)
+
+        public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
             Assembly loadedAssembly;
@@ -39,6 +39,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
+            if (type.IsAbstract)
+            {
+                return new PluginExecutionDto(string.Empty) { IsStatic = true };
+            }
             if (setupInfo.PluginConstructor.Inputs != null)
             {
                 foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
@@ -58,10 +62,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             var serializeToJsonString = instance.SerializeToJsonString();
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
-            return serializeToJsonString;
+            return new PluginExecutionDto(serializeToJsonString);
         }
 
-        public object Run(string jsonObject, PluginInvokeArgs args)
+        public object Run(PluginExecutionDto jsonObject, PluginInvokeArgs args)
         {
             try
             {
@@ -69,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
                 if (!tryLoadAssembly)
                     throw new Exception(args.AssemblyName + "Not found");
-                ExecutePlugin(jsonObject, args, loadedAssembly);
+                ExecutePlugin(jsonObject, ref args, loadedAssembly);
                 return jsonObject;
             }
             catch (Exception e)
@@ -79,19 +83,49 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private void ExecutePlugin(string objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
+        private void ExecutePlugin(PluginExecutionDto objectToRun, ref PluginInvokeArgs setupInfo, Assembly loadedAssembly)
         {
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
 
             var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var instance = objectToRun.DeserializeToObject(type);
-            if(setupInfo.MethodsToRun != null)
+            if (objectToRun.IsStatic)
+            {
+                RunMethods(setupInfo, type, null, InvokeMethodsAction);
+                return;
+            }
+            var instance = objectToRun.ObjectString.DeserializeToObject(type);
+            RunMethods(setupInfo, type, instance, InvokeMethodsAction);
+        }
+
+        private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
+        {
+            if (instance != null)
+            {
+                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+            }
+            if (valuedTypeList.Count == 0)
+            {
+                var result = methodToRun.Invoke(null, null);
+                return result;
+            }
+            else
+            {
+                var result = methodToRun.Invoke(null, BindingFlags.Static | BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+
+            }
+        }
+
+        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction)
+        {
+            if (setupInfo.MethodsToRun != null)
             {
                 foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
                 {
-                    if(dev2MethodInfo.Parameters != null)
+                    if (dev2MethodInfo.Parameters != null)
                     {
                         var typeList = BuildTypeList(dev2MethodInfo.Parameters);
                         var valuedTypeList = new List<object>();
@@ -102,8 +136,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                         var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
 
-                        var invoke = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-                        dev2MethodInfo.MethodResult = invoke.SerializeToJsonString();
+                        var methodsAction = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                        dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString();
                     }
                 }
             }

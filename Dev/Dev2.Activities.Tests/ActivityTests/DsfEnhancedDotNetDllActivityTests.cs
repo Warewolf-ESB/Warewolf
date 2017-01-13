@@ -110,6 +110,42 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenNoConstructor_ShouldCreateEmptyConstructor()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            activity.Namespace = new NamespaceItem()
+            {
+                FullName = type.Namespace,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Method = new PluginAction()
+            {
+                Inputs = new List<IServiceInput>(),
+            };
+         
+            //---------------Assert Precondition----------------
+            Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
+            Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            Assert.IsNull(activity.Constructor);
+            Assert.IsNull(activity.ConstructorInputs);
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(activity.Constructor);
+            Assert.IsNotNull(activity.ConstructorInputs);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenValidArgs_ShouldReturnValidData()
         {
             //---------------Set up test pack-------------------

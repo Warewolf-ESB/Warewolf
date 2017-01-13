@@ -8,6 +8,10 @@ namespace Dev2.Common
     [Serializable]
     public class PluginConstructor : IPluginConstructor
     {
+        public PluginConstructor()
+        {
+            Inputs = new List<IServiceInput>();
+        }
         #region Implementation of IConstructor
 
         public IList<IServiceInput> Inputs { get; set; }

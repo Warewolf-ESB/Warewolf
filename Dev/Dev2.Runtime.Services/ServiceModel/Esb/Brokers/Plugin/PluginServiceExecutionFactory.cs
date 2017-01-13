@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        public static object InvokePlugin(PluginInvokeArgs args, string existingObject)
+        public static object InvokePlugin(PluginInvokeArgs args, PluginExecutionDto existingObject)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         #endregion
 
-        public static string CreateInstance(PluginInvokeArgs args)
+        public static PluginExecutionDto  CreateInstance(PluginInvokeArgs args)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
