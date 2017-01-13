@@ -118,20 +118,11 @@ namespace Warewolf.UITests.Tabs
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            UIMap.Debug_Unpinned_Workflow_With_F6();
+            UIMap.Press_F6_On_UnPinnedTab();
             Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
             Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
         }
-
-        [TestMethod]
-        [TestCategory("Tabs and Panes")]
-        public void DragAssignToolInUnpinnedWorkflowTabUITest()
-        {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
-        }
-
+        
         [TestMethod]
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowTabAddVariableUITest()
@@ -141,7 +132,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             const string Variable1Name = "SomeVariable";
             UIMap.Enter_Variable_Into_Assign_Row1_On_Unpinned_Tab("[[" + Variable1Name + "]]");
-            Assert.AreEqual("[[" + Variable1Name + "]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists, "Scalar variable list not found.");
         }
 
         #region Additional test attributes
