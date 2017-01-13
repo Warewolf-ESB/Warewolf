@@ -90,7 +90,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
+                PluginInvokeArgs args = new PluginInvokeArgs
+                {
+                    AssemblyLocation = source.AssemblyLocation
+                    , AssemblyName = "Foo"
+                    , Fullname = svc.Namespace
+                    //, Method = svc.Method.Name, Parameters = svc.Method.Parameters
+                };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
                 var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
                 //------------Assert Results-------------------------

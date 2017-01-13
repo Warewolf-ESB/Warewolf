@@ -6,8 +6,7 @@ namespace Dev2.Common.Interfaces
     public interface IConstructor
     {
         IList<IServiceInput> Inputs { get; set; }
-        string ReturnType { get; set; }
-        IList<INameValue> Variables { get; set; }
+        string ReturnObject { get; set; }
         string ConstructorName { get; set; }
         string GetIdentifier();
     }

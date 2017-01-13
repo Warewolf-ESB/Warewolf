@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -16,6 +17,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -27,7 +29,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         // BUG 9500 - 2013.05.31 - TWR : added
         public string Namespace { get; set; }
         public string SerializedResult { get; set; }
-
+        public ServiceConstructor Constructor { get; set; }
+        public List<Dev2MethodInfo> MethodsToRun { get; set; }
         #region CTOR
 
         public PluginService()
@@ -36,7 +39,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = "PluginService";
             Source = new PluginSource();
             Recordsets = new RecordsetList();
-            Method = new ServiceMethod();
+            MethodsToRun = new List<Dev2MethodInfo>();
+            Constructor = new ServiceConstructor();
         }
 
         public PluginService(XElement xml)

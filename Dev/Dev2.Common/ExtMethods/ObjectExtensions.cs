@@ -69,6 +69,13 @@ namespace Dev2.Common.ExtMethods
             var serialize = Deserialize<T>(objectToSerialize);
             return serialize;
         }
+
+        public static object DeserializeToObject(this string objectToSerialize, Type type) 
+        {
+            var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, type, DeSerializerSettings);
+            return deserializeObject;
+        }
+
         public static T DeserializeToObject<T>(this StringBuilder objectToSerialize) 
         {
             var serialize = Deserialize<T>(objectToSerialize);

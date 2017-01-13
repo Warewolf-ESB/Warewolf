@@ -48,19 +48,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
-            PluginInvokeArgs args = new PluginInvokeArgs
+            /*PluginInvokeArgs args = new PluginInvokeArgs
             {
                 AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
                 AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,
-                Method = pluginService.Method.Name,
+                //Method = pluginService.Method.Name,
                 Fullname = pluginService.Namespace,
-                Parameters = pluginService.Method.Parameters
+                //Parameters = pluginService.Method.Parameters
             };
 
             string serializedResult;
             var pluginResult = PluginServiceExecutionFactory.TestPlugin(args, out serializedResult);
             pluginService.SerializedResult = serializedResult;
-            return pluginResult;
+            return pluginResult;*/
+            return null;
         }
 
         #endregion

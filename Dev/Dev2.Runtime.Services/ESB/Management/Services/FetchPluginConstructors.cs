@@ -76,11 +76,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                             TypeName = x.TypeName,
                             Value = x.Value,
                         } as IServiceInput).ToList(),
-                    Variables = a.Parameters.Select(x => new NameValue
-                    {
-                        Name = x.Name + " (" + x.TypeName + ")",
-                        Value = ""
-                    } as INameValue).ToList(),
                 } as IPluginConstructor).ToList();
                 var executeMessage = new ExecuteMessage { HasError = false, Message = constructors.SerializeToJsonStringBuilder() };
                 return executeMessage.SerializeToJsonStringBuilder();
