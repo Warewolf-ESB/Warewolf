@@ -413,7 +413,7 @@ namespace Warewolf.UITests
                 TryClearExplorerFilter();
             }
         }
-        
+
         [When(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
@@ -422,7 +422,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             Click_Explorer_RemoteServer_Connect_Button();
         }
-        
+
         [When(@"I Try Connect To Remote Server")]
         public void TryConnectToRemoteServer()
         {
@@ -648,7 +648,7 @@ namespace Warewolf.UITests
                 return control.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
-        
+
         public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
         {
             control.WaitForControlCondition((uicontrol) =>
@@ -677,7 +677,7 @@ namespace Warewolf.UITests
         }
 
         public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
-        {            
+        {
             WaitForControlNotVisible(control, searchTimeout);
         }
 
@@ -728,7 +728,7 @@ namespace Warewolf.UITests
             Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
             Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-        
+
         [Given(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
         [When(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
         [Then(@"I Enter Invalid Service Name Into Save Dialog As ""(.*)""")]
@@ -739,7 +739,7 @@ namespace Warewolf.UITests
             Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
             Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-        
+
         [Given(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         [When(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
         [Then(@"I Enter Invalid Service Name Into Duplicate Dialog As ""(.*)""")]
@@ -774,7 +774,7 @@ namespace Warewolf.UITests
         [Given(@"same name error message is shown")]
         public void GivenSameNameErrorMessageIsShown()
         {
-            Assert.AreEqual("An item with this name already exists in this folder.",SaveDialogWindow.ErrorLabel.DisplayText);
+            Assert.AreEqual("An item with this name already exists in this folder.", SaveDialogWindow.ErrorLabel.DisplayText);
         }
 
         public void Enter_Service_Name_Into_Save_Dialog(string ServiceName, bool duplicate = false, bool invalid = false, bool nameHasWhiteSpace = false, SaveOrDuplicate saveOrDuplicate = SaveOrDuplicate.Save)
@@ -898,7 +898,7 @@ namespace Warewolf.UITests
         {
             SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
             Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
-        }        
+        }
         public void Select_First_Service_From_Service_Picker_Dialog(string ServiceName)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
@@ -924,7 +924,7 @@ namespace Warewolf.UITests
                 Click_Explorer_Refresh_Button();
             }
         }
-        
+
         public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
         {
             Click_Explorer_Remote_Server_Dropdown_List();
@@ -1009,7 +1009,7 @@ namespace Warewolf.UITests
         [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
         {
-            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));            
+            Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
         }
 
         public void TryCloseNewDotNetPluginSourceWizardTab()
@@ -1047,7 +1047,7 @@ namespace Warewolf.UITests
         public void Click_New_Workflow_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
 
         [When(@"I Select Test Source From GET Web Large View Source Combobox")]
@@ -1126,7 +1126,7 @@ namespace Warewolf.UITests
             flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(commentToolboxItem, new Point(16, 25));
             Mouse.StopDragging(flowchart, switchRightAutoConnector);
-            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");            
+            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
         }
         public void Enter_Text_Into_Debug_Input_Row1_Value_Textbox(string text)
         {
@@ -1430,9 +1430,9 @@ namespace Warewolf.UITests
         [When(@"I Click Deploy button")]
         public void ThenIClickDeployButton()
         {
-            
+
             Click_Deploy_Tab_Deploy_Button();
-            
+
         }
 
 
@@ -1984,7 +1984,7 @@ namespace Warewolf.UITests
 
         public void Try_Click_Delete_Scheduler_Button()
         {
-            if(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton))
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton))
             {
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton.DrawHighlight();
                 Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(4, 12));
@@ -2079,7 +2079,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
-        
+
         [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
         public void RefreshExplorerWithpoutWaitingForSpinner()
         {
@@ -2621,7 +2621,7 @@ namespace Warewolf.UITests
                     break;
             }
         }
-        
+
         [When(@"I Enter variable text as ""(.*)"" into assign row 1 on unpinned tab")]
         public void Enter_Variable_Into_Assign_Row1_On_Unpinned_Tab(string VariableText)
         {
@@ -3523,7 +3523,7 @@ namespace Warewolf.UITests
         [When(@"I Click Connect Control InExplorer")]
         [Then(@"I Click Connect Control InExplorer")]
         public void Click_Connect_Control_InExplorer()
-        {            
+        {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
         }
 
@@ -3626,7 +3626,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
-        
+
         [Given(@"I Click Deploy Tab Destination Server Combobox")]
         [When(@"I Click Deploy Tab Destination Server Combobox")]
         [Then(@"I Click Deploy Tab Destination Server Combobox")]
@@ -3635,7 +3635,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
-        
+
         [When(@"I Click Deploy Tab Destination Server Connect Button")]
         [Given(@"I Click Deploy Tab Destination Server Connect Button")]
         [Then(@"I Click Deploy Tab Destination Server Connect Button")]
@@ -3653,7 +3653,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
         }
-        
+
         [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
         [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
@@ -3784,7 +3784,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Explorer Filter Clear Button")]
         public void Click_Explorer_Filter_Clear_Button()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));            
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
         }
 
         [When(@"I Click Explorer Localhost First Item")]
@@ -3803,7 +3803,7 @@ namespace Warewolf.UITests
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
-        
+
         [Given(@"I Click Explorer Connect Remote Server Button")]
         [When(@"I Click Explorer Connect Remote Server Button")]
         [Then(@"I Click Explorer Connect Remote Server Button")]
@@ -4070,7 +4070,7 @@ namespace Warewolf.UITests
         [Then(@"I Click MessageBox Yes")]
         public void Click_MessageBox_Yes()
         {
-            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));            
+            Mouse.Click(MessageBoxWindow.YesButton, new Point(32, 5));
         }
 
         [Given(@"I Click Minimize TopRibbon Button")]
@@ -4499,7 +4499,7 @@ namespace Warewolf.UITests
         public void Click_Switch_Dialog_Done_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
         }
 
         [When(@"I Click System Information Tool Done Button")]
@@ -4735,7 +4735,7 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(90, 10));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
-        }        
+        }
 
         [When(@"I Drag Explorer Localhost Second Items First Sub Item Onto Workflow Design Surface")]
         public void Drag_Explorer_Localhost_Second_Item_Onto_Workflow_Design_Surface()
@@ -4747,7 +4747,7 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
-        
+
 
         [Given(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
         [When(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
@@ -6162,8 +6162,13 @@ namespace Warewolf.UITests
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
+        }
+
+        [When(@"I Open Explorer First Item With Double Click")]
+        public void Open_Explorer_First_Item_With_Double_Click()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Left, ModifierKeys.None, new Point(40, 9));
         }
 
         [Given(@"I Right Click On The Folder Count")]
@@ -6906,7 +6911,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject, MouseButtons.Right, ModifierKeys.None, new Point(156, 11));
 
         }
-        
+
         [Given(@"I RightClick CaseConvert OnDesignSurface")]
         [When(@"I RightClick CaseConvert OnDesignSurface")]
         [Then(@"I RightClick CaseConvert OnDesignSurface")]
@@ -7101,7 +7106,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(77, 9));
             Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, "F", (ModifierKeys.Control | ModifierKeys.Shift));
-        } 
+        }
 
 
         [When(@"I RightClick FindIndex OnDesignSurface")]
@@ -7946,7 +7951,7 @@ namespace Warewolf.UITests
         [When(@"I Make Workflow Savable")]
         public void Make_Workflow_Savable()
         {
-            Drag_Toolbox_Comment_Onto_DesignSurface();
+            Drag_Start_Node();
         }
 
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
@@ -7972,8 +7977,8 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 7));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
-        }        
-        
+        }
+
         [Given(@"I Double Click Localhost Server")]
         [When(@"I Double Click Localhost Server")]
         [Then(@"I Double Click Localhost Server")]
@@ -8123,7 +8128,7 @@ namespace Warewolf.UITests
             else
                 return TestResultEnum.Pass;
         }
-        
+
         [When(@"I Click Test Tab")]
         [Then(@"I Click Test Tab")]
         [Given(@"I Click Test Tab")]
@@ -8193,7 +8198,7 @@ namespace Warewolf.UITests
 
             Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
         }
-        
+
         public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
         {
             #region Variable Declarations
@@ -8562,7 +8567,7 @@ namespace Warewolf.UITests
         public void ResourceExistsInWindowsDirectory(string serviceName, string path)
         {
             Filter_Explorer(serviceName);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
         }
 
 
@@ -8694,7 +8699,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Duplicate.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.DeployItem.Exists);
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem.Exists);
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);            
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);
         }
 
         [Given(@"Filtered Item Exists")]
@@ -8787,7 +8792,7 @@ namespace Warewolf.UITests
         [Then(@"I Enter Text Into Database Server Tab")]
         public void Enter_Text_Into_DatabaseServer_Tab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";           
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
         }
 
         [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]
@@ -8815,7 +8820,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox, new Point(1469, 10));
             Mouse.Click(MainStudioWindow.ComboboxListItemAsmysqlDB);
-            Assert.AreEqual("mysql",MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIMysqlText.DisplayText);
+            Assert.AreEqual("mysql", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.UIDatabaseComboxBoxCustom.UIMysqlText.DisplayText);
         }
 
         [When(@"I Select postgres From DB Source Wizard Database Combobox")]
@@ -8874,6 +8879,26 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New MySQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        [When(@"I Run All Hello World Tests")]
+        public void WhenIRunAllHelloWorldTests()
+        {
+            Filter_Explorer("Hello World");
+            Click_Run_All_Tests_From_Explorer_First_Localhost_Item_Context_Menu();
+        }
+
+        public void Click_Run_All_Tests_From_Explorer_First_Localhost_Item_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.RunAllTestsMenuItem, new Point(82, 16));
+        }
+
+        [When(@"I Drag Start Node")]
+        public void Drag_Start_Node()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, new Point(186, 30));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, 1400, 968);
         }
     }
 }
