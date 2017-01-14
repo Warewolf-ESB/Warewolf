@@ -7961,7 +7961,7 @@ namespace Warewolf.UITests
         [When(@"I Make Workflow Savable")]
         public void Make_Workflow_Savable()
         {
-            Drag_Start_Node();
+            Drag_Toolbox_Comment_Onto_DesignSurface();
         }
 
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
