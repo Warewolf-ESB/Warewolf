@@ -48,9 +48,6 @@ namespace Warewolf.UITests.Tools
             UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
             UIMap.Click_SqlBulkInsert_Done_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Errors.Exists);
-            UIMap.Select_DatabaseAndTable_From_BulkInsert_Tool();
-            Point newPoint;
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
             UIMap.Click_SqlBulkInsert_Done_Button();
         }
 

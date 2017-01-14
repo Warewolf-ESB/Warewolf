@@ -143,7 +143,7 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
-            UIMap.Make_Workflow_Saveable_By_Dragging_Start();
+            UIMap.Make_Workflow_Savable_By_Dragging_Start();
             UIMap.Save_Workflow_Using_Shortcut();
         }
 
