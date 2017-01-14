@@ -23,7 +23,6 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
             UIMap.Make_Workflow_Savable_By_Dragging_Start();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"), "Unsaved workflow tab name does not contain *");
         }
 
         [TestMethod]
