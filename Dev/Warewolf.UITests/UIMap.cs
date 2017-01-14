@@ -6165,8 +6165,13 @@ namespace Warewolf.UITests
         public void Open_Explorer_First_Item_With_Context_Menu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 9));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
+        }
+
+        [When(@"I Open Explorer First Item With Double Click")]
+        public void Open_Explorer_First_Item_With_Double_Click()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Left, ModifierKeys.None, new Point(40, 9));
         }
 
         [Given(@"I Right Click On The Folder Count")]
@@ -7956,7 +7961,7 @@ namespace Warewolf.UITests
         [When(@"I Make Workflow Savable")]
         public void Make_Workflow_Savable()
         {
-            Drag_Toolbox_Comment_Onto_DesignSurface();
+            Drag_Start_Node();
         }
 
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
@@ -8898,6 +8903,26 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.Exists, "New MySQL DB source wizard tab does not exist after openning it from the SQL Server db connector tool.");
+        }
+
+        [When(@"I Run All Hello World Tests")]
+        public void WhenIRunAllHelloWorldTests()
+        {
+            Filter_Explorer("Hello World");
+            Click_Run_All_Tests_From_Explorer_First_Localhost_Item_Context_Menu();
+        }
+
+        public void Click_Run_All_Tests_From_Explorer_First_Localhost_Item_Context_Menu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.RunAllTestsMenuItem, new Point(82, 16));
+        }
+
+        [When(@"I Drag Start Node")]
+        public void Drag_Start_Node()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, new Point(186, 30));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, 1400, 968);
         }
     }
 }
