@@ -11,16 +11,20 @@ namespace Warewolf.UITests.Workflow
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void Unsaved_Workflow_Name_Counter()
+        public void Workflow_Name_Counter()
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
-            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
-            UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Create_New_Workflow_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1Text.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved2Text.Exists, "Second new workflow tab is not Unsaved 2");
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void Unsaved_Workflow_Name_Asterisk()
+        {
+            UIMap.Create_New_Workflow_Using_Shortcut();
+            UIMap.Make_Workflow_Savable();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1TextWithAsterisk.Exists, "Unsaved workflow tab is not Unsaved 1 *");
         }
 
         [TestMethod]
