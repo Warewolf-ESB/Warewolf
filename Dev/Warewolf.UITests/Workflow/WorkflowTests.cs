@@ -14,7 +14,6 @@ namespace Warewolf.UITests.Workflow
         public void Workflow_Name_Counter()
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
-            UIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved2Text.Exists, "Second new workflow tab is not Unsaved 2");
         }
 
@@ -23,8 +22,8 @@ namespace Warewolf.UITests.Workflow
         public void Unsaved_Workflow_Name_Asterisk()
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
-            UIMap.Make_Workflow_Savable();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1TextWithAsterisk.Exists, "Unsaved workflow tab is not Unsaved 1 *");
+            UIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"), "Unsaved workflow tab name does not contain *");
         }
 
         [TestMethod]
