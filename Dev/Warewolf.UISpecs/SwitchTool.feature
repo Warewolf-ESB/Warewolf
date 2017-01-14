@@ -13,4 +13,3 @@ Scenario: Switch Case Arm Autoconnectors
 	And I Click Switch Dialog Done Button
 	And I Then Drag Toolbox Comment Onto Switch Right Arm On DesignSurface
 	Then The Case Dialog Must Be Open
-	And I Click Close Workflow Tab

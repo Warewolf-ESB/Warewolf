@@ -327,10 +327,6 @@
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
-      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
-      <Name>Dev2.Runtime</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
       <Name>Dev2.Scheduler</Name>
