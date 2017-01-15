@@ -9,6 +9,7 @@ namespace Warewolf.UITests.PostgreSQLSource
         const string SourceName = "CodedUITestMyPostgreSQLSource";
 
         [TestMethod]
+        [TestCategory("Database Tools")]
         // ReSharper disable once InconsistentNaming
         public void PostgreSQLSource_CreateSourceUITests()
         {
