@@ -56,6 +56,17 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
+        {
+            UIMap.Filter_Explorer(HelloWorld);
+            UIMap.Click_Explorer_Localhost_First_Item();
+            UIMap.Open_Deploy_Using_Shortcut();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+            UIMap.Click_Close_Deploy_Tab_Button();
+        }
+        [TestMethod]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
         {
             UIMap.Filter_Explorer(Folder);
@@ -76,17 +87,6 @@ namespace Warewolf.UITests.Workflow
             UIMap.Click_Close_Deploy_Tab_Button();
         }
 
-        [TestMethod]
-        public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
-        {
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.Click_Explorer_Localhost_First_Item();
-            UIMap.Open_Deploy_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
-            UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
-            UIMap.Click_Close_Deploy_Tab_Button();
-        }
 
         #region Additional test attributes
 
