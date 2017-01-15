@@ -164,7 +164,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new PluginServices();
             var result = services.Methods(service, workspaceID, Guid.Empty);
 
-            Assert.AreEqual(8, result.Count);
+            Assert.AreEqual(9, result.Count);
         }
 
         #endregion
