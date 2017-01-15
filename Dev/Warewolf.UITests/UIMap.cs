@@ -766,7 +766,7 @@ namespace Warewolf.UITests
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
-            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;            
+            SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
         }
 
         [Given(@"same name error message is shown")]
@@ -4547,9 +4547,19 @@ namespace Warewolf.UITests
         [When(@"I Click Variable IsInput")]
         public void Click_Variable_IsInput()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Exists, "Input Checkbox does not exist.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Enabled, "Input Checkbox is disabled.");
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
+        }
+
+        [When(@"I Click VariableList Scalar Row1 IsInputCheckbox")]
+        public void Click_VariableList_Scalar_Row1_IsInputCheckbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
+        }
+
+        [When(@"I Click VariableList Scalar Row2 IsInputCheckbox")]
+        public void Click_VariableList_Scalar_Row2_IsInputCheckbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.InputCheckbox.Checked = true;
         }
 
         [When(@"I Click VariableList Recordset Row1 IsInputCheckbox")]
@@ -4562,12 +4572,6 @@ namespace Warewolf.UITests
         public void Click_VariableList_Scalar_Row1_Delete_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image, new Point(5, 8));
-        }
-
-        [When(@"I Click VariableList Scalar Row1 IsInputCheckbox")]
-        public void Click_VariableList_Scalar_Row1_IsInputCheckbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
         }
 
         [When(@"I Click View Api From Context Menu")]
@@ -4745,7 +4749,7 @@ namespace Warewolf.UITests
         [Then(@"I Drag Explorer Remote GenericResource Onto Workflow Design Surface")]
         public void Drag_Explorer_Remote_workflow1_Onto_Workflow_Design_Surface()
         {
-            if(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text != "GenericResource")
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text != "GenericResource")
                 Click_Explorer_Refresh_Button();
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text == "GenericResource", "Explorer first remote server first item is not Generic Resource.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
@@ -8025,7 +8029,7 @@ namespace Warewolf.UITests
         [When(@"Test Tab Is Open")]
         public void Test_Tab_Is_Open()
         {
-           Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist.");
         }
 
         [Then(@"Hello World Workflow Tab Is Open")]
