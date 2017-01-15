@@ -9,6 +9,7 @@ namespace Warewolf.UITests.ODBCSource
         const string SourceName = "CodedUITestODBCSource";
 
         [TestMethod]
+        [TestCategory("Database Tools")]
         // ReSharper disable once InconsistentNaming
         public void ODBCSource_CreateSourceUITests()
         {
