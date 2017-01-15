@@ -95,7 +95,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     AssemblyLocation = source.AssemblyLocation
                     , AssemblyName = "Foo"
                     , Fullname = svc.Namespace
-                    //, Method = svc.Method.Name, Parameters = svc.Method.Parameters
+                    , Method = svc.Method.Name
+                    , Parameters = svc.Method.Parameters
                 };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
                 var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
