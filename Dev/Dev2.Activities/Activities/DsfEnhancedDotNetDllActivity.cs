@@ -36,6 +36,7 @@ namespace Dev2.Activities
             Inputs = new List<IServiceInput>();
             ExistingObject = string.Empty;
             MethodsToRun = new List<Dev2MethodInfo>();
+            ConstructorInputs = new List<IServiceInput>();
         }
 
 
