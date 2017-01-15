@@ -31,7 +31,8 @@ Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
 	Given The Warewolf Studio is running
 	When I Run All Hello World Tests
 	And I Open Explorer First Item With Double Click
-	And I Enter "Hello There World" in the Assign message tool
+	Then Hello World Workflow Tab Is Open
+	When I Enter "Hello There World" in the Assign message tool
 	And I Click Save Ribbon Button Without Expecting a Dialog
 	And I Open Explorer First Item Tests With Context Menu
 	Then The First Test "Is" Invalid
