@@ -6,8 +6,6 @@ namespace Warewolf.UITests.ODBCSource
     [CodedUITest]
     public class ODBCSourceTests
     {
-        const string SourceName = "CodedUITestODBCSource";
-
         [TestMethod]
         [TestCategory("Database Tools")]
         // ReSharper disable once InconsistentNaming
@@ -15,7 +13,7 @@ namespace Warewolf.UITests.ODBCSource
         {
             UIMap.Select_NewODBCSource_FromExplorerContextMenu();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox();
             UIMap.Save_With_Ribbon_Button_And_Dialog("TestODBCDBSource");

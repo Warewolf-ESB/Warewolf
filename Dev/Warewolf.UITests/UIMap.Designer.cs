@@ -12835,19 +12835,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfText UIUnsaved2Text
+        public WpfText UIHelloWorldText
         {
             get
             {
-                if ((this.mUIUnsaved2Text == null))
+                if ((this.mUIHelloWorldText == null))
                 {
-                    this.mUIUnsaved2Text = new WpfText(this);
+                    this.mUIHelloWorldText = new WpfText(this);
                     #region Search Criteria
-                    this.mUIUnsaved2Text.SearchProperties[WpfText.PropertyNames.Name] = "Unsaved 2";
-                    this.mUIUnsaved2Text.WindowTitles.Add("Warewolf");
+                    this.mUIHelloWorldText.SearchProperties[WpfText.PropertyNames.Name] = "Hello World";
+                    this.mUIHelloWorldText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUIUnsaved2Text;
+                return this.mUIHelloWorldText;
             }
         }
         #endregion
@@ -12867,7 +12867,7 @@ namespace Warewolf.UITests
         
         private WpfText mUIUnsaved1TextWithAsterisk;
         
-        private WpfText mUIUnsaved2Text;
+        private WpfText mUIHelloWorldText;
         #endregion
     }
     

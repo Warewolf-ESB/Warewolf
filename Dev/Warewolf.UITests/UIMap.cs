@@ -8025,10 +8025,15 @@ namespace Warewolf.UITests
         [When(@"Test Tab Is Open")]
         public void Test_Tab_Is_Open()
         {
-           Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist after clicking Create Test from debug button");
+           Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.Exists, "Test tab does not exist.");
         }
 
-
+        [Then(@"Hello World Workflow Tab Is Open")]
+        [Given(@"Hello World Workflow Tab Is Open")]
+        public void Hello_World_Workflow_Tab_Is_Open()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIHelloWorldText.Exists, "Hello World workflow tab does not exist.");
+        }
 
         public void Click_MockRadioButton_On_AssignValue_TestStep()
         {
