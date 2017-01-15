@@ -556,7 +556,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
                 var run = isolated.Value.Run(instance, pluginInvokeArgs);
                 Assert.IsNotNull(run);
-                StringAssert.Contains(run.ToString(),"Default");
+                StringAssert.Contains(((PluginExecutionDto)run).ObjectString,"Default");
             }
         }
 

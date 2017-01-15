@@ -133,8 +133,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
-            Assert.IsNull(activity.Constructor);
-            Assert.IsNull(activity.ConstructorInputs);
+            Assert.IsNotNull(activity.Constructor);
+            Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
             
@@ -182,6 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
+            Assert.AreEqual(string.Empty, activity.ExistingObject);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
