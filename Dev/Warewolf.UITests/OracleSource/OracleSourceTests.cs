@@ -9,6 +9,7 @@ namespace Warewolf.UITests.OracleSource
         const string SourceName = "CodedUITestOracleSource";
 
         [TestMethod]
+        [TestCategory("Database Tools")]
         // ReSharper disable once InconsistentNaming
         public void OracleSource_CreateSourceUITests()
         {
