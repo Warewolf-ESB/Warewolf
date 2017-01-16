@@ -14,12 +14,12 @@ namespace Warewolf.UITests.Workflow
         public void Unsaved_Workflow_Name_Counter()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.Exists, "Workflow tab did not Open");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.TabDescription.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_New_Workflow_Ribbon_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not Open");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved1Text.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.Exists, "Workflow tab did not Open");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.UIUnsaved1Text.DisplayText.Contains("Unsaved"), "Workflow tab does not have UNSAVED star");
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Click_LocalHost_Once();
             UIMap.Create_New_Workflow_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.Exists);
         }
 
         [TestMethod]
@@ -58,9 +58,9 @@ namespace Warewolf.UITests.Workflow
             UIMap.Filter_Explorer(Folder);
             UIMap.Click_Explorer_Localhost_First_Item();
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
         }
 
         [TestMethod]
@@ -68,8 +68,8 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Click_LocalHost_Once();
             UIMap.Open_Deploy_Using_Shortcut();
-            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployWizardTab);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployWizardTab.Exists);
             UIMap.Click_Close_Deploy_Tab_Button();
         }
 
@@ -79,9 +79,9 @@ namespace Warewolf.UITests.Workflow
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Click_Explorer_Localhost_First_Item();
             UIMap.Open_Deploy_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployWizardTab.Exists);
             UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployWizardTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
             UIMap.Click_Close_Deploy_Tab_Button();
         }
 

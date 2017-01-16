@@ -36,7 +36,7 @@ namespace Warewolf.UITests
         public void Open_UI_Map_Designer_To_Flowchart()
         {
             #region Variable Declarations
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
@@ -211,6 +211,18 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
+                {
+                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
+                }
+                return this.mUIWarewolfDEV2DYLANDELWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -241,6 +253,8 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -9990,15 +10004,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public WorkflowTab WorkflowTab
+        public WorkflowWizardTab WorkflowWizardTab
         {
             get
             {
-                if ((this.mWorkflowTab == null))
+                if ((this.mWorkflowWizardTab == null))
                 {
-                    this.mWorkflowTab = new WorkflowTab(this);
+                    this.mWorkflowWizardTab = new WorkflowWizardTab(this);
                 }
-                return this.mWorkflowTab;
+                return this.mWorkflowWizardTab;
             }
         }
         
@@ -10042,15 +10056,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public DependencyGraphTab DependencyGraphTab
+        public DependencyGraphWizardTab DependencyGraphWizardTab
         {
             get
             {
-                if ((this.mDependencyGraphTab == null))
+                if ((this.mDependencyGraphWizardTab == null))
                 {
-                    this.mDependencyGraphTab = new DependencyGraphTab(this);
+                    this.mDependencyGraphWizardTab = new DependencyGraphWizardTab(this);
                 }
-                return this.mDependencyGraphTab;
+                return this.mDependencyGraphWizardTab;
             }
         }
         
@@ -10078,67 +10092,67 @@ namespace Warewolf.UITests
             }
         }
         
-        public TestsTabPage TestsTabPage
+        public TestsWizardTab TestsWizardTab
         {
             get
             {
-                if ((this.mTestsTabPage == null))
+                if ((this.mTestsWizardTab == null))
                 {
-                    this.mTestsTabPage = new TestsTabPage(this);
+                    this.mTestsWizardTab = new TestsWizardTab(this);
                 }
-                return this.mTestsTabPage;
+                return this.mTestsWizardTab;
             }
         }
         
-        public SchedulerTab SchedulerTab
+        public SchedulerWizardTab SchedulerWizardTab
         {
             get
             {
-                if ((this.mSchedulerTab == null))
+                if ((this.mSchedulerWizardTab == null))
                 {
-                    this.mSchedulerTab = new SchedulerTab(this);
+                    this.mSchedulerWizardTab = new SchedulerWizardTab(this);
                 }
-                return this.mSchedulerTab;
+                return this.mSchedulerWizardTab;
             }
         }
         
-        public SharepointServerSourceTab SharepointServerSourceTab
+        public SharepointServerSourceWizardTab SharepointServerSourceWizardTab
         {
             get
             {
-                if ((this.mSharepointServerSourceTab == null))
+                if ((this.mSharepointServerSourceWizardTab == null))
                 {
-                    this.mSharepointServerSourceTab = new SharepointServerSourceTab(this);
+                    this.mSharepointServerSourceWizardTab = new SharepointServerSourceWizardTab(this);
                 }
-                return this.mSharepointServerSourceTab;
+                return this.mSharepointServerSourceWizardTab;
             }
         }
         
-        public WpfTabPage HelpTab
+        public WpfTabPage HelpWizardTab
         {
             get
             {
-                if ((this.mHelpTab == null))
+                if ((this.mHelpWizardTab == null))
                 {
-                    this.mHelpTab = new WpfTabPage(this);
+                    this.mHelpWizardTab = new WpfTabPage(this);
                     #region Search Criteria
-                    this.mHelpTab.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
-                    this.mHelpTab.WindowTitles.Add("Warewolf");
+                    this.mHelpWizardTab.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
+                    this.mHelpWizardTab.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mHelpTab;
+                return this.mHelpWizardTab;
             }
         }
         
-        public DeployTab DeployTab
+        public DeployWizardTab DeployWizardTab
         {
             get
             {
-                if ((this.mDeployTab == null))
+                if ((this.mDeployWizardTab == null))
                 {
-                    this.mDeployTab = new DeployTab(this);
+                    this.mDeployWizardTab = new DeployWizardTab(this);
                 }
-                return this.mDeployTab;
+                return this.mDeployWizardTab;
             }
         }
         
@@ -10154,51 +10168,63 @@ namespace Warewolf.UITests
             }
         }
         
-        public SettingsTab SettingsTab
+        public SettingsWizardTab SettingsWizardTab
         {
             get
             {
-                if ((this.mSettingsTab == null))
+                if ((this.mSettingsWizardTab == null))
                 {
-                    this.mSettingsTab = new SettingsTab(this);
+                    this.mSettingsWizardTab = new SettingsWizardTab(this);
                 }
-                return this.mSettingsTab;
+                return this.mSettingsWizardTab;
             }
         }
         
-        public RabbitMqSourceTabPage RabbitMqSourceTabPage
+        public RabbitMqSourceWizardTab RabbitMqSourceWizardTab
         {
             get
             {
-                if ((this.mRabbitMqSourceTabPage == null))
+                if ((this.mRabbitMqSourceWizardTab == null))
                 {
-                    this.mRabbitMqSourceTabPage = new RabbitMqSourceTabPage(this);
+                    this.mRabbitMqSourceWizardTab = new RabbitMqSourceWizardTab(this);
                 }
-                return this.mRabbitMqSourceTabPage;
+                return this.mRabbitMqSourceWizardTab;
             }
         }
         
-        public EmailSourceTabPage EmailSourceTabPage
+        public EmailSourceWizardTab EmailSourceWizardTab
         {
             get
             {
-                if ((this.mEmailSourceTabPage == null))
+                if ((this.mEmailSourceWizardTab == null))
                 {
-                    this.mEmailSourceTabPage = new EmailSourceTabPage(this);
+                    this.mEmailSourceWizardTab = new EmailSourceWizardTab(this);
                 }
-                return this.mEmailSourceTabPage;
+                return this.mEmailSourceWizardTab;
             }
         }
         
-        public ExchangeSourceTabPage ExchangeSourceTabPage
+        public ExchangeSourceWizardTab ExchangeSourceWizardTab
         {
             get
             {
-                if ((this.mExchangeSourceTabPage == null))
+                if ((this.mExchangeSourceWizardTab == null))
                 {
-                    this.mExchangeSourceTabPage = new ExchangeSourceTabPage(this);
+                    this.mExchangeSourceWizardTab = new ExchangeSourceWizardTab(this);
                 }
-                return this.mExchangeSourceTabPage;
+                return this.mExchangeSourceWizardTab;
+            }
+        }
+        
+        public COMPlugInSourceWizardTab COMPlugInSourceWizardTab
+        {
+            get
+            {
+                if ((this.mCOMPlugInSourceWizardTab == null))
+                {
+                    this.mCOMPlugInSourceWizardTab = new COMPlugInSourceWizardTab(this);
+                }
+                return this.mCOMPlugInSourceWizardTab;
             }
         }
         #endregion
@@ -10206,7 +10232,7 @@ namespace Warewolf.UITests
         #region Fields
         private StartPage mStartPage;
         
-        private WorkflowTab mWorkflowTab;
+        private WorkflowWizardTab mWorkflowWizardTab;
         
         private DBSourceWizardTab mDBSourceWizardTab;
         
@@ -10214,31 +10240,33 @@ namespace Warewolf.UITests
         
         private WpfButton mNavigatorButton;
         
-        private DependencyGraphTab mDependencyGraphTab;
+        private DependencyGraphWizardTab mDependencyGraphWizardTab;
         
         private DotNetPluginSourceWizardTab mDotNetPluginSourceWizardTab;
         
         private WebSourceWizardTab mWebSourceWizardTab;
         
-        private TestsTabPage mTestsTabPage;
+        private TestsWizardTab mTestsWizardTab;
         
-        private SchedulerTab mSchedulerTab;
+        private SchedulerWizardTab mSchedulerWizardTab;
         
-        private SharepointServerSourceTab mSharepointServerSourceTab;
+        private SharepointServerSourceWizardTab mSharepointServerSourceWizardTab;
         
-        private WpfTabPage mHelpTab;
+        private WpfTabPage mHelpWizardTab;
         
-        private DeployTab mDeployTab;
+        private DeployWizardTab mDeployWizardTab;
         
         private ServerSourceWizardTab mServerSourceWizardTab;
         
-        private SettingsTab mSettingsTab;
+        private SettingsWizardTab mSettingsWizardTab;
         
-        private RabbitMqSourceTabPage mRabbitMqSourceTabPage;
+        private RabbitMqSourceWizardTab mRabbitMqSourceWizardTab;
         
-        private EmailSourceTabPage mEmailSourceTabPage;
+        private EmailSourceWizardTab mEmailSourceWizardTab;
         
-        private ExchangeSourceTabPage mExchangeSourceTabPage;
+        private ExchangeSourceWizardTab mExchangeSourceWizardTab;
+        
+        private COMPlugInSourceWizardTab mCOMPlugInSourceWizardTab;
         #endregion
     }
     
@@ -12747,10 +12775,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkflowTab : WpfTabPage
+    public class WorkflowWizardTab : WpfTabPage
     {
         
-        public WorkflowTab(UITestControl searchLimitContainer) : 
+        public WorkflowWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -71959,10 +71987,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DependencyGraphTab : WpfTabPage
+    public class DependencyGraphWizardTab : WpfTabPage
     {
         
-        public DependencyGraphTab(UITestControl searchLimitContainer) : 
+        public DependencyGraphWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -72851,10 +72879,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestsTabPage : WpfTabPage
+    public class TestsWizardTab : WpfTabPage
     {
         
-        public TestsTabPage(UITestControl searchLimitContainer) : 
+        public TestsWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -79739,10 +79767,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SchedulerTab : WpfTabPage
+    public class SchedulerWizardTab : WpfTabPage
     {
         
-        public SchedulerTab(UITestControl searchLimitContainer) : 
+        public SchedulerWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -80601,10 +80629,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SharepointServerSourceTab : WpfTabPage
+    public class SharepointServerSourceWizardTab : WpfTabPage
     {
         
-        public SharepointServerSourceTab(UITestControl searchLimitContainer) : 
+        public SharepointServerSourceWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -80793,10 +80821,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DeployTab : WpfTabPage
+    public class DeployWizardTab : WpfTabPage
     {
         
-        public DeployTab(UITestControl searchLimitContainer) : 
+        public DeployWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82463,10 +82491,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SettingsTab : WpfTabPage
+    public class SettingsWizardTab : WpfTabPage
     {
         
-        public SettingsTab(UITestControl searchLimitContainer) : 
+        public SettingsWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84617,10 +84645,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RabbitMqSourceTabPage : WpfTabPage
+    public class RabbitMqSourceWizardTab : WpfTabPage
     {
         
-        public RabbitMqSourceTabPage(UITestControl searchLimitContainer) : 
+        public RabbitMqSourceWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84777,10 +84805,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class EmailSourceTabPage : WpfTabPage
+    public class EmailSourceWizardTab : WpfTabPage
     {
         
-        public EmailSourceTabPage(UITestControl searchLimitContainer) : 
+        public EmailSourceWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85095,10 +85123,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExchangeSourceTabPage : WpfTabPage
+    public class ExchangeSourceWizardTab : WpfTabPage
     {
         
-        public ExchangeSourceTabPage(UITestControl searchLimitContainer) : 
+        public ExchangeSourceWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85356,6 +85384,42 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class COMPlugInSourceWizardTab : WpfTabPage
+    {
+        
+        public COMPlugInSourceWizardTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IComPluginSource]";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CloseTabButton
+        {
+            get
+            {
+                if ((this.mCloseTabButton == null))
+                {
+                    this.mCloseTabButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseTabButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseTabButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCloseTabButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCloseTabButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Help1 : WpfCustom
     {
         
@@ -85478,13 +85542,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public TestsTabPage1 TestsTabPage
+        public TestsTabPage TestsTabPage
         {
             get
             {
                 if ((this.mTestsTabPage == null))
                 {
-                    this.mTestsTabPage = new TestsTabPage1(this);
+                    this.mTestsTabPage = new TestsTabPage(this);
                 }
                 return this.mTestsTabPage;
             }
@@ -85492,15 +85556,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private TestsTabPage1 mTestsTabPage;
+        private TestsTabPage mTestsTabPage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TestsTabPage1 : WpfTabPage
+    public class TestsTabPage : WpfTabPage
     {
         
-        public TestsTabPage1(UITestControl searchLimitContainer) : 
+        public TestsTabPage(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -107018,6 +107082,75 @@ namespace Warewolf.UITests
         private WpfEdit mTextEdit;
         
         private WpfListItem mswapfilesysListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2DYLANDELWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
+                    #region Search Criteria
+                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
 }

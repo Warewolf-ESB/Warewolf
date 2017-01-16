@@ -13,6 +13,7 @@ namespace Warewolf.UITests
         public void COMPluginSource_CreateSourceUITests()
         {
             UIMap.Select_NewCOMPluginSource_FromExplorerContextMenu();
+            
         }
 
         #region Additional test attributes

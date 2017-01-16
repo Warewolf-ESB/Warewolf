@@ -21,7 +21,7 @@ namespace Warewolf.UITests
             UIMap.Save_With_Ribbon_Button_And_Dialog("AssignWorkflow");
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsWizardTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists);
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
         }
 
@@ -33,7 +33,7 @@ namespace Warewolf.UITests
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Press_F6();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_MessageBox_No();
         }
@@ -44,7 +44,7 @@ namespace Warewolf.UITests
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Warewolf.UITests
             UIMap.Press_F6();            
             UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsWizardTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
             UIMap.Click_Close_Tests_Tab();
             UIMap.Click_MessageBox_No();
             UIMap.Click_Close_Workflow_Tab_Button();
@@ -81,7 +81,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
             UIMap.Click_MessageBox_OK();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsWizardTab.WorkSurfaceContext.ServiceTestView.Exists);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace Warewolf.UITests
             UIMap.Click_New_Workflow_Tab();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsWizardTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
             UIMap.Click_Close_Tests_Tab();
             UIMap.Click_MessageBox_No();
             UIMap.Click_Close_Workflow_Tab_Button();
