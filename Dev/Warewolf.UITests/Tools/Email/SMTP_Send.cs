@@ -22,7 +22,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Open_SMTP_Email_Tool_Large_View();
             UIMap.Click_SelectFilesButton_On_SMTPEmailTool_LargeView();
             UIMap.Select_Attachments_From_SelectFilesWindow();
-            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView.AttachmentsTextComboBox.TextEdit.Text));
+            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView.AttachmentsTextComboBox.TextEdit.Text));
         }
 
         #region Additional test attributes
