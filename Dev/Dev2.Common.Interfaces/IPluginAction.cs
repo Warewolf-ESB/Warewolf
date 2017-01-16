@@ -11,7 +11,7 @@ namespace Dev2.Common.Interfaces
         IList<IServiceInput> Inputs { get; set; }
         Type ReturnType { get; set; }
         IList<INameValue> Variables { get; set; }
-
+        string Dev2ReturnType { get; set; }
         string GetIdentifier();
     }
 }
