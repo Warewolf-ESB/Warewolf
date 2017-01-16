@@ -169,13 +169,10 @@ namespace Dev2.DataList.Contract
 
             try
             {
-                if (node.Attributes != null)
+                XmlAttribute attribute = node.Attributes?[DescAttribute];
+                if (attribute != null)
                 {
-                    XmlAttribute attribute = node.Attributes[DescAttribute];
-                    if (attribute != null)
-                    {
-                        result = attribute.Value;
-                    }
+                    result = attribute.Value;
                 }
             }
             catch (Exception ex)

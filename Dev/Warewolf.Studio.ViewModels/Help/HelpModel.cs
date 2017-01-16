@@ -20,10 +20,7 @@ namespace Warewolf.Studio.Models.Help
 
         private void FireOnHelpReceived(IHelpDescriptor obj)
         {
-            if(OnHelpTextReceived != null)
-            {
-                OnHelpTextReceived(this, obj);
-            }
+            OnHelpTextReceived?.Invoke(this, obj);
         }
 
         public event HelpTextReceived OnHelpTextReceived;

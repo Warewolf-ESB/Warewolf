@@ -67,10 +67,7 @@ namespace Dev2.Common
                 }
                 finally
                 {
-                    if (impersonationContext != null)
-                    {
-                        impersonationContext.Undo();
-                    }
+                    impersonationContext?.Undo();
                 }
             }
         }

@@ -190,7 +190,7 @@ namespace Dev2.DynamicServices
             IEnumerable<XElement> tmp = xe.Descendants(elementName);
             XElement targetElement = tmp.FirstOrDefault();
 
-            return targetElement != null ? targetElement.Value : string.Empty;
+            return targetElement?.Value ?? string.Empty;
         }
 
         #endregion Constructor

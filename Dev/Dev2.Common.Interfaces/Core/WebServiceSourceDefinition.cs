@@ -76,11 +76,11 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = HostName != null ? HostName.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                var hashCode = HostName?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
-                hashCode = (hashCode * 397) ^ (DefaultQuery != null ? DefaultQuery.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DefaultQuery?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

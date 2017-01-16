@@ -9,11 +9,7 @@ namespace Dev2.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols)
         {
-            if(cols == null)
-            {
-                return false;
-            }
-            return cols[0] != null;
+            return cols?[0] != null;
         }
 
         public Enum HandlesType()

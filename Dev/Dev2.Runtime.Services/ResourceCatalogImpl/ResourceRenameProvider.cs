@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 Dev2Logger.Error(err);
                 return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
             }
-            return ResourceCatalogResultBuilder.CreateSuccessResult($"{"Renamed Resource"} '{resourceID}' to '{newName}'");
+            return ResourceCatalogResultBuilder.CreateSuccessResult($"Renamed Resource \'{resourceID}\' to \'{newName}\'");
         }
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory)
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             catch (Exception err)
             {
                 Dev2Logger.Error("Rename Category error", err);
-                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
+                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
             }
         }
 
@@ -106,15 +106,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     }
                 }
 
-                var failureResult = ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
-                var successResult = ResourceCatalogResultBuilder.CreateSuccessResult($"<CompilerMessage>{"Updated Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
+                var failureResult = ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
+                var successResult = ResourceCatalogResultBuilder.CreateSuccessResult($"<CompilerMessage>Updated Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
 
                 return hasError ? failureResult : successResult;
             }
             catch (Exception err)
             {
                 Dev2Logger.Error("Rename Category error", err);
-                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
+                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
             }
         }
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
