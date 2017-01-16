@@ -47,10 +47,10 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
+                var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SelectedDll != null ? SelectedDll.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SelectedDll?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Path?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

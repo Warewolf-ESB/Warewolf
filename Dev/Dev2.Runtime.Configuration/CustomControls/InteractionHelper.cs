@@ -131,10 +131,7 @@ namespace System.Windows.Controls
         /// </remarks>
         private void UpdateVisualState(bool useTransitions)
         {
-            if(_updateVisualState != null)
-            {
-                _updateVisualState.UpdateVisualState(useTransitions);
-            }
+            _updateVisualState?.UpdateVisualState(useTransitions);
         }
 
         /// <summary>

@@ -683,13 +683,10 @@ namespace Dev2.Studio.ViewModels
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
-            if (environmentModel != null)
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            if (contextualResourceModel != null)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                if (contextualResourceModel != null)
-                {
-                    _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
-                }
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
         }
 

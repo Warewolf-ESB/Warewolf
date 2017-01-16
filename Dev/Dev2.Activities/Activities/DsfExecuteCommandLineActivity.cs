@@ -160,10 +160,7 @@ namespace Dev2.Activities
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
-                                if(dataObject.Environment != null)
-                                {
-                                    dataObject.Environment.Assign(region, readValue, update == 0 ? counter : update);
-                                }
+                                dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
                             }
                             counter++;
                             errorReader.Close();
@@ -455,13 +452,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == CommandResult);
+            if(itemUpdate != null)
             {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CommandResult);
-                if(itemUpdate != null)
-                {
-                    CommandResult = itemUpdate.Item2;
-                }
+                CommandResult = itemUpdate.Item2;
             }
         }
 

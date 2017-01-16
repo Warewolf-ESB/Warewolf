@@ -65,7 +65,7 @@ namespace Dev2.Runtime.WebServer
         {
             try
             {
-                if(Request != null && Request.InputStream != null)
+                if(Request?.InputStream != null)
                 {
                     Request.InputStream.Close();
                     Request.InputStream.Dispose();
