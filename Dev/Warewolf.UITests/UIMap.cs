@@ -8889,9 +8889,7 @@ namespace Warewolf.UITests
 
         public void Enter_ConfigFile_In_SelectFilesWindow()
         {
-            Mouse.Click(SelectFilesWindow.DrivesDataTree.CTreeItem);
-            SelectFilesWindow.FileNameComboBox.TextEdit.Text = @"C:\swapfile.sys";
-            Mouse.Click(SelectFilesWindow.FileNameComboBox.swapfilesysListItem , new Point(64, 12));
+            Mouse.Click(SelectFilesWindow.DrivesDataTree.CTreeItem.swapfile);
             Mouse.Click(SelectFilesWindow.SelectButton);
         }
 
@@ -8921,6 +8919,20 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.Exists, "New DotNet Plugin source wizard tab does not exist after clicking new source from DotNet DLL Tool");
+        }
+
+        public void Select_Attachments_From_SelectFilesWindow()
+        {
+            SelectFilesWindow.DrivesDataTree.CTreeItem.bootmgrFile.Checkbox.Checked = true;
+            SelectFilesWindow.DrivesDataTree.CTreeItem.BOOTNXTFile.Checkbox.Checked = true;
+            Assert.IsNotNull(SelectFilesWindow.FileNameTextBox.Text, "Files Name is empty even after selecting Files..");
+            Mouse.Click(SelectFilesWindow.SelectButton);
+        }
+
+        public void Click_SelectFilesButton_On_SMTPEmailTool_LargeView()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeView.SelectFilesButton);
+            Assert.IsTrue(SelectFilesWindow.Exists);
         }
     }
 }

@@ -43,19 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfTree uIExplorerTreeTree = this.UIWarewolfDEV2DYLANDELWindow.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIExplorerTreeTree;
-            #endregion
-
-            // Click 'ExplorerTree' tree
-            Mouse.Click(uIExplorerTreeTree, new Point(112, 19));
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -224,18 +211,6 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
-        
-        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
-                {
-                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
-                }
-                return this.mUIWarewolfDEV2DYLANDELWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -266,8 +241,6 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        
-        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -45757,18 +45730,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfCustom LargeView
+        public LargeView23 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mLargeView.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mLargeView = new LargeView23(this);
                 }
                 return this.mLargeView;
             }
@@ -45776,7 +45744,94 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfCustom mLargeView;
+        private LargeView23 mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView23 : WpfCustom
+    {
+        
+        public LargeView23(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public AttachmentsTextComboBox AttachmentsTextComboBox
+        {
+            get
+            {
+                if ((this.mAttachmentsTextComboBox == null))
+                {
+                    this.mAttachmentsTextComboBox = new AttachmentsTextComboBox(this);
+                }
+                return this.mAttachmentsTextComboBox;
+            }
+        }
+        
+        public WpfButton SelectFilesButton
+        {
+            get
+            {
+                if ((this.mSelectFilesButton == null))
+                {
+                    this.mSelectFilesButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSelectFilesButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__ChooseAttachmentsBtn_AutoID";
+                    this.mSelectFilesButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mSelectFilesButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private AttachmentsTextComboBox mAttachmentsTextComboBox;
+        
+        private WpfButton mSelectFilesButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AttachmentsTextComboBox : WpfComboBox
+    {
+        
+        public AttachmentsTextComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AttachmentsTxt_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextEdit
+        {
+            get
+            {
+                if ((this.mTextEdit == null))
+                {
+                    this.mTextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextEdit.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mTextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextEdit;
         #endregion
     }
     
@@ -59041,13 +59096,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView23 LargeView
+        public LargeView24 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView23(this);
+                    this.mLargeView = new LargeView24(this);
                 }
                 return this.mLargeView;
             }
@@ -59113,7 +59168,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView16 mSmallView;
         
-        private LargeView23 mLargeView;
+        private LargeView24 mLargeView;
         
         private DoneButton mDoneButton;
         
@@ -60078,10 +60133,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView23 : WpfCustom
+    public class LargeView24 : WpfCustom
     {
         
-        public LargeView23(UITestControl searchLimitContainer) : 
+        public LargeView24(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -61404,13 +61459,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView24 LargeView
+        public LargeView25 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView24(this);
+                    this.mLargeView = new LargeView25(this);
                 }
                 return this.mLargeView;
             }
@@ -61453,7 +61508,7 @@ namespace Warewolf.UITests
         #region Fields
         private WpfEdit mResponseTextbox;
         
-        private LargeView24 mLargeView;
+        private LargeView25 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -61462,10 +61517,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView24 : WpfCustom
+    public class LargeView25 : WpfCustom
     {
         
-        public LargeView24(UITestControl searchLimitContainer) : 
+        public LargeView25(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -62079,13 +62134,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public LargeView25 LargeView
+        public LargeView26 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView25(this);
+                    this.mLargeView = new LargeView26(this);
                 }
                 return this.mLargeView;
             }
@@ -62126,7 +62181,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private LargeView25 mLargeView;
+        private LargeView26 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -62135,10 +62190,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView25 : WpfCustom
+    public class LargeView26 : WpfCustom
     {
         
-        public LargeView25(UITestControl searchLimitContainer) : 
+        public LargeView26(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -62718,13 +62773,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView26 LargeView
+        public LargeView27 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView26(this);
+                    this.mLargeView = new LargeView27(this);
                 }
                 return this.mLargeView;
             }
@@ -62750,7 +62805,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView17 mSmallView;
         
-        private LargeView26 mLargeView;
+        private LargeView27 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -62876,10 +62931,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView26 : WpfCustom
+    public class LargeView27 : WpfCustom
     {
         
-        public LargeView26(UITestControl searchLimitContainer) : 
+        public LargeView27(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -63290,13 +63345,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView27 LargeView
+        public LargeView28 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView27(this);
+                    this.mLargeView = new LargeView28(this);
                 }
                 return this.mLargeView;
             }
@@ -63322,7 +63377,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView18 mSmallView;
         
-        private LargeView27 mLargeView;
+        private LargeView28 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -63448,10 +63503,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView27 : WpfCustom
+    public class LargeView28 : WpfCustom
     {
         
-        public LargeView27(UITestControl searchLimitContainer) : 
+        public LargeView28(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -63862,13 +63917,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView28 LargeView
+        public LargeView29 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView28(this);
+                    this.mLargeView = new LargeView29(this);
                 }
                 return this.mLargeView;
             }
@@ -63894,7 +63949,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView19 mSmallView;
         
-        private LargeView28 mLargeView;
+        private LargeView29 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -64020,10 +64075,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView28 : WpfCustom
+    public class LargeView29 : WpfCustom
     {
         
-        public LargeView28(UITestControl searchLimitContainer) : 
+        public LargeView29(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -64434,13 +64489,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView29 LargeView
+        public LargeView30 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView29(this);
+                    this.mLargeView = new LargeView30(this);
                 }
                 return this.mLargeView;
             }
@@ -64466,7 +64521,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView20 mSmallView;
         
-        private LargeView29 mLargeView;
+        private LargeView30 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
@@ -64644,10 +64699,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView29 : WpfCustom
+    public class LargeView30 : WpfCustom
     {
         
-        public LargeView29(UITestControl searchLimitContainer) : 
+        public LargeView30(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -65105,13 +65160,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public LargeView30 LargeView
+        public LargeView31 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView30(this);
+                    this.mLargeView = new LargeView31(this);
                 }
                 return this.mLargeView;
             }
@@ -65152,7 +65207,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private LargeView30 mLargeView;
+        private LargeView31 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -65161,10 +65216,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView30 : WpfCustom
+    public class LargeView31 : WpfCustom
     {
         
-        public LargeView30(UITestControl searchLimitContainer) : 
+        public LargeView31(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -65610,13 +65665,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView31 LargeView
+        public LargeView32 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView31(this);
+                    this.mLargeView = new LargeView32(this);
                 }
                 return this.mLargeView;
             }
@@ -65642,17 +65697,17 @@ namespace Warewolf.UITests
         #region Fields
         private WpfCustom mSmallView;
         
-        private LargeView31 mLargeView;
+        private LargeView32 mLargeView;
         
         private WpfButton mDoneButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView31 : WpfCustom
+    public class LargeView32 : WpfCustom
     {
         
-        public LargeView31(UITestControl searchLimitContainer) : 
+        public LargeView32(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93507,13 +93562,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView32 LargeView
+        public LargeView33 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView32(this);
+                    this.mLargeView = new LargeView33(this);
                 }
                 return this.mLargeView;
             }
@@ -93579,7 +93634,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView21 mSmallView;
         
-        private LargeView32 mLargeView;
+        private LargeView33 mLargeView;
         
         private DoneButton1 mDoneButton;
         
@@ -94544,10 +94599,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView32 : WpfCustom
+    public class LargeView33 : WpfCustom
     {
         
-        public LargeView32(UITestControl searchLimitContainer) : 
+        public LargeView33(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -102468,13 +102523,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView33 LargeView
+        public LargeView34 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView33(this);
+                    this.mLargeView = new LargeView34(this);
                 }
                 return this.mLargeView;
             }
@@ -103096,7 +103151,7 @@ namespace Warewolf.UITests
         
         private OnErrorGroup62 mOnErrorGroup;
         
-        private LargeView33 mLargeView;
+        private LargeView34 mLargeView;
         
         private WpfListItem mComboboxListItemAsStartsWith;
         
@@ -103313,10 +103368,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView33 : WpfCustom
+    public class LargeView34 : WpfCustom
     {
         
-        public LargeView33(UITestControl searchLimitContainer) : 
+        public LargeView34(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -104824,13 +104879,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public LargeView34 LargeView
+        public LargeView35 LargeView
         {
             get
             {
                 if ((this.mLargeView == null))
                 {
-                    this.mLargeView = new LargeView34(this);
+                    this.mLargeView = new LargeView35(this);
                 }
                 return this.mLargeView;
             }
@@ -104889,7 +104944,7 @@ namespace Warewolf.UITests
         #region Fields
         private SmallView22 mSmallView;
         
-        private LargeView34 mLargeView;
+        private LargeView35 mLargeView;
         
         private WpfButton mDoneButton;
         
@@ -105852,10 +105907,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class LargeView34 : WpfCustom
+    public class LargeView35 : WpfCustom
     {
         
-        public LargeView34(UITestControl searchLimitContainer) : 
+        public LargeView35(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -107123,18 +107178,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public FileNameComboBox5 FileNameComboBox
-        {
-            get
-            {
-                if ((this.mFileNameComboBox == null))
-                {
-                    this.mFileNameComboBox = new FileNameComboBox5(this);
-                }
-                return this.mFileNameComboBox;
-            }
-        }
-        
         public WpfButton SelectButton
         {
             get
@@ -107166,16 +107209,32 @@ namespace Warewolf.UITests
                 return this.mCancelButton;
             }
         }
+        
+        public WpfEdit FileNameTextBox
+        {
+            get
+            {
+                if ((this.mFileNameTextBox == null))
+                {
+                    this.mFileNameTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFileNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DriveNameTextBox";
+                    this.mFileNameTextBox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mFileNameTextBox;
+            }
+        }
         #endregion
         
         #region Fields
         private DrivesDataTree mDrivesDataTree;
         
-        private FileNameComboBox5 mFileNameComboBox;
-        
         private WpfButton mSelectButton;
         
         private WpfButton mCancelButton;
+        
+        private WpfEdit mFileNameTextBox;
         #endregion
     }
     
@@ -107193,16 +107252,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem CTreeItem
+        public CTreeItem CTreeItem
         {
             get
             {
                 if ((this.mCTreeItem == null))
                 {
-                    this.mCTreeItem = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mCTreeItem.WindowTitles.Add("Select File(s)");
-                    #endregion
+                    this.mCTreeItem = new CTreeItem(this);
                 }
                 return this.mCTreeItem;
             }
@@ -107210,163 +107266,147 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfTreeItem mCTreeItem;
+        private CTreeItem mCTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox5 : WpfComboBox
+    public class CTreeItem : WpfTreeItem
     {
         
-        public FileNameComboBox5(UITestControl searchLimitContainer) : 
+        public CTreeItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "DriveNameIntellisenseTextBox";
             this.WindowTitles.Add("Select File(s)");
             #endregion
         }
         
         #region Properties
-        public WpfEdit TextEdit
+        public bootmgrFile bootmgrFile
         {
             get
             {
-                if ((this.mTextEdit == null))
+                if ((this.mbootmgrFile == null))
                 {
-                    this.mTextEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mTextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mTextEdit.WindowTitles.Add("Select File(s)");
-                    #endregion
+                    this.mbootmgrFile = new bootmgrFile(this);
                 }
-                return this.mTextEdit;
+                return this.mbootmgrFile;
             }
         }
         
-        public WpfListItem swapfilesysListItem
+        public BOOTNXTFile BOOTNXTFile
         {
             get
             {
-                if ((this.mswapfilesysListItem == null))
+                if ((this.mBOOTNXTFile == null))
                 {
-                    this.mswapfilesysListItem = new WpfListItem(this);
+                    this.mBOOTNXTFile = new BOOTNXTFile(this);
+                }
+                return this.mBOOTNXTFile;
+            }
+        }
+        
+        public WpfTreeItem swapfile
+        {
+            get
+            {
+                if ((this.mswapfile == null))
+                {
+                    this.mswapfile = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mswapfilesysListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "C:\\swapfile.sys";
-                    this.mswapfilesysListItem.WindowTitles.Add("Select File(s)");
+                    this.mswapfile.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "17";
+                    this.mswapfile.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mswapfile.WindowTitles.Add("Select File(s)");
                     #endregion
                 }
-                return this.mswapfilesysListItem;
+                return this.mswapfile;
             }
         }
         #endregion
         
         #region Fields
-        private WpfEdit mTextEdit;
+        private bootmgrFile mbootmgrFile;
         
-        private WpfListItem mswapfilesysListItem;
+        private BOOTNXTFile mBOOTNXTFile;
+        
+        private WpfTreeItem mswapfile;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    public class bootmgrFile : WpfTreeItem
     {
         
-        public UIWarewolfDEV2DYLANDELWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+        public bootmgrFile(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "13";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Select File(s)");
             #endregion
         }
         
         #region Properties
-        public UIContentDockManagerCustom UIContentDockManagerCustom
+        public WpfCheckBox Checkbox
         {
             get
             {
-                if ((this.mUIContentDockManagerCustom == null))
+                if ((this.mCheckbox == null))
                 {
-                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
+                    this.mCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxbootmgr_AutoID";
+                    this.mCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckbox.WindowTitles.Add("Select File(s)");
+                    #endregion
                 }
-                return this.mUIContentDockManagerCustom;
+                return this.mCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private UIContentDockManagerCustom mUIContentDockManagerCustom;
+        private WpfCheckBox mCheckbox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIContentDockManagerCustom : WpfCustom
+    public class BOOTNXTFile : WpfTreeItem
     {
         
-        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
+        public BOOTNXTFile(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "14";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Select File(s)");
             #endregion
         }
         
         #region Properties
-        public WpfTree UIExplorerTreeTree
+        public WpfCheckBox Checkbox
         {
             get
             {
-                if ((this.mUIExplorerTreeTree == null))
+                if ((this.mCheckbox == null))
                 {
-                    this.mUIExplorerTreeTree = new WpfTree(this);
+                    this.mCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIExplorerTreeTree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-                    this.mUIExplorerTreeTree.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxBOOTNXT_AutoID";
+                    this.mCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckbox.WindowTitles.Add("Select File(s)");
                     #endregion
                 }
-                return this.mUIExplorerTreeTree;
+                return this.mCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTree mUIExplorerTreeTree;
+        private WpfCheckBox mCheckbox;
         #endregion
     }
 }
