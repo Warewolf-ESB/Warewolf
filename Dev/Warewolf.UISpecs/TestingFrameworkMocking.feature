@@ -26,13 +26,3 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Click EnableDisable Test 4, dirty "true"
 	And I Delete Test "4"
 	And I Click MessageBox Yes
-
-Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
-	Given The Warewolf Studio is running
-	When I Run All Hello World Tests
-	And I Open Explorer First Item With Double Click
-	Then Hello World Workflow Tab Is Open
-	When I Enter "Hello There World" in the Assign message tool
-	And I Click Save Ribbon Button Without Expecting a Dialog
-	And I Open Explorer First Item Tests With Context Menu
-	Then The First Test "Is" Invalid
