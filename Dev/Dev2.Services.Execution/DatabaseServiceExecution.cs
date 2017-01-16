@@ -264,7 +264,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("Sql Error:", ex);
-                errors.AddError($"{"Sql Error: "}{ex.Message}");
+                errors.AddError($"Sql Error: {ex.Message}");
             }
         }
 
