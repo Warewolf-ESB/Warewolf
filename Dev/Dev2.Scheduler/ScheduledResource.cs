@@ -279,10 +279,7 @@ namespace Dev2.Scheduler
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion INotifyPropertyChanged
@@ -342,9 +339,12 @@ namespace Dev2.Scheduler
                 {
                     return false;
                 }
-                if (otherTrigger.Trigger.Repetition == null && otherTrigger.Trigger.Repetition != null)
+                if (otherTrigger.Trigger.Repetition == null)
                 {
-                    return false;
+                    if (otherTrigger.Trigger.Repetition != null)
+                    {
+                        return false;
+                    }
                 }
                 if (otherTrigger.Trigger.Repetition != null && otherTrigger.Trigger.Repetition == null)
                 {

@@ -93,10 +93,7 @@ namespace Warewolf.UIBindingTests.Variables
                             item.DisplayName = variableName;
                             item.IsUsed = isUsed;
                             item.ColumnIODirection = ioDirection;
-                            if (existingRecordSet != null)
-                            {
-                                existingRecordSet.Children.Add(item);
-                            }
+                            existingRecordSet?.Children.Add(item);
                         }
                     }
                 }

@@ -93,7 +93,7 @@ namespace Dev2.Security
                 ResourceId = resourceModel.ID.ToString();
                 IsVersionResource = resourceModel.IsVersionResource;
             }
-            AuthorizationService = environment == null ? null : environment.AuthorizationService;
+            AuthorizationService = environment?.AuthorizationService;
         }
 
         public void Execute(object parameter)
