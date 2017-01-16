@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             _source.SomethingChanged += SourceOnSomethingChanged;
             IsEnabled = false;
             SetupHeaders(modelItem);
-            if (source != null && source.SelectedSource != null)
+            if (source?.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null)
+            if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;

@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             IsEnabled = true;
             _modelItem = modelItem;
             CommandText = _modelItem.GetProperty<string>("CommandText") ?? "";
-            IsActionEnabled = _source != null && _source.SelectedSource != null;
+            IsActionEnabled = _source?.SelectedSource != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Errors.Clear();
                 IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
-                if (_source != null && _source.SelectedSource != null)
+                if (_source?.SelectedSource != null)
                 {
                     CommandText = String.Empty;
                     IsActionEnabled = true;

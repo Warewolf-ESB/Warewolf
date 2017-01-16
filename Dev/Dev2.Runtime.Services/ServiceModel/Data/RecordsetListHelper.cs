@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList = null, string defaultFieldName = "")
         {
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            if(outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {
                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
             }

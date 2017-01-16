@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void UpdateBasedOnSource()
         {
-            if (_source != null && _source.SelectedSource != null)
+            if (_source?.SelectedSource != null)
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
 

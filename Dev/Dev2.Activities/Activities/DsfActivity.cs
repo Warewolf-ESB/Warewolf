@@ -428,7 +428,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
-            var resourceId = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+            var resourceId = ResourceID?.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
             if(resourceId == Guid.Empty || dataObject.ExecutingUser == null)
             {
                 return;
@@ -474,7 +474,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            dataObject.EnvironmentID = EnvironmentID==null || EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
             dataObject.RemoteServiceType = Type.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
