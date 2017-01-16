@@ -43,33 +43,30 @@ namespace Dev2
                     if(prop.Value != null && prop.Value.Type == JTokenType.Object)
                     {
                         var val = prop.Value as JObject;
-                        if(val != null)
+                        var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                        if(jProperty != null)
                         {
-                            var jProperty = val.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
-                            if(jProperty != null)
+                            var propValue = jProperty.Value;
+                            enDev2ColumnArgumentDirection ioDirection;
+                            if(Enum.TryParse(propValue.ToString(), true, out ioDirection))
                             {
-                                var propValue = jProperty.Value;
-                                enDev2ColumnArgumentDirection ioDirection;
-                                if(Enum.TryParse(propValue.ToString(), true, out ioDirection))
+                                if(ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection)
                                 {
-                                    if(ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection)
+                                    var objName = prop.Name;
+                                    var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
+                                    if(isJson != null && isJson.Value.ToString() == "True")
                                     {
-                                        var objName = prop.Name;
-                                        var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
-                                        if(isJson != null && isJson.Value.ToString() == "True")
+                                        AddObjectsToOutput(environment, objName, outputObj);
+                                    }
+                                    else
+                                    {
+                                        if(prop.Value.Count() > 3)
                                         {
-                                            AddObjectsToOutput(environment, objName, outputObj);
+                                            AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
                                         }
                                         else
                                         {
-                                            if(prop.Value.Count() > 3)
-                                            {
-                                                AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
-                                            }
-                                            else
-                                            {
-                                                AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
-                                            }
+                                            AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
                                         }
                                     }
                                 }
@@ -95,20 +92,17 @@ namespace Dev2
         private static void AddScalarsToOutput(JProperty prop, IExecutionEnvironment environment, string objName, JObject outputObj, enDev2ColumnArgumentDirection requestIODirection)
         {
             var v = prop.Value as JObject;
-            if(v != null)
+            var ioDire = v?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+            if(ioDire != null)
             {
-                var ioDire = v.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
-                if(ioDire != null)
+                enDev2ColumnArgumentDirection x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
+                if(x == enDev2ColumnArgumentDirection.Both || x == requestIODirection)
                 {
-                    enDev2ColumnArgumentDirection x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
-                    if(x == enDev2ColumnArgumentDirection.Both || x == requestIODirection)
+                    var warewolfEvalResult = environment.Eval("[[" + objName + "]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    if(warewolfEvalResult != null)
                     {
-                        var warewolfEvalResult = environment.Eval("[[" + objName + "]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if(warewolfEvalResult != null)
-                        {
-                            var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
-                            outputObj.Add(objName, eval);
-                        }
+                        var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
+                        outputObj.Add(objName, eval);
                     }
                 }
             }
@@ -128,34 +122,30 @@ namespace Dev2
                     {
                         var jObjForArray = new JObject();
                         var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
-                        if(recCol != null)
+                        if(recCol == null)
                         {
                             var io = recCol.Children().FirstOrDefault() as JObject;
-                            if(io != null)
+                            var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
+                            if(p != null)
                             {
-                                var p = io.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
-                                if(p != null)
+                                enDev2ColumnArgumentDirection direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
+                                if(direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
                                 {
-                                    enDev2ColumnArgumentDirection direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
-                                    if(direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
+                                    int i = 0;
+                                    foreach(var warewolfAtom in dataItem.Value)
                                     {
-                                        int i = 0;
-                                        foreach(var warewolfAtom in dataItem.Value)
+                                        jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
+                                        if(newArray.Count < i + 1 || newArray.Count == 0)
                                         {
-                                            jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
-                                            if(newArray.Count < i + 1 || newArray.Count == 0)
-                                            {
-                                                newArray.Add(jObjForArray);
-                                            }
-                                            else
-                                            {
-                                                var jToken = newArray[i] as JObject;
-                                                if(jToken != null)
-                                                    jToken.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
-                                            }
-                                            jObjForArray = new JObject();
-                                            i++;
+                                            newArray.Add(jObjForArray);
                                         }
+                                        else
+                                        {
+                                            var jToken = newArray[i] as JObject;
+                                            jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
+                                        }
+                                        jObjForArray = new JObject();
+                                        i++;
                                     }
                                 }
                             }

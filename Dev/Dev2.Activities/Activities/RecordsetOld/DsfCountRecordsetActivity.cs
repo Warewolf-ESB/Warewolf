@@ -187,15 +187,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
+            if(itemUpdate != null)
             {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
-                if(itemUpdate != null)
-                {
-                    CountNumber = itemUpdate.Item2;
-                }
+                CountNumber = itemUpdate.Item2;
             }
-
         }
 
 

@@ -65,12 +65,9 @@ namespace Dev2.Studio.ViewModels.Administration
             get
             {
                 return _okClicked ?? (_okClicked = new RelayCommand(p =>
-                    {
-                        if(OnOkClick != null)
-                        {
-                            OnOkClick(this, null);
-                        }
-                    }, p => true));
+                {
+                    OnOkClick?.Invoke(this, null);
+                }, p => true));
             }
         }
 

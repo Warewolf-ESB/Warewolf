@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
@@ -56,8 +55,6 @@ namespace Warewolf.UITests.Tools
             Point newPoint;
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
             UIMap.Click_SqlBulkInsert_Done_Button();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -65,8 +62,6 @@ namespace Warewolf.UITests.Tools
         public void SQLBulkInsertTool_OpenQVIUITest()
         {
             UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes

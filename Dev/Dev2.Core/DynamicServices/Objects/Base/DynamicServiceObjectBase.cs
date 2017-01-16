@@ -70,12 +70,7 @@ namespace Dev2.DynamicServices.Objects.Base
         {
             get
             {
-                if (CompilerErrors == null)
-                {
-                    return false;
-                }
-
-                return CompilerErrors.Count <= 0;
+                return CompilerErrors?.Count <= 0;
             }
         }
 

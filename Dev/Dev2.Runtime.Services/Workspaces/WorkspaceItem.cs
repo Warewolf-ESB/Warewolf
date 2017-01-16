@@ -241,7 +241,7 @@ namespace Dev2.Workspaces
         static string GetAttributeValue(XElement x, string name)
         {
             var attr = x.Attribute(name);
-            return attr == null ? string.Empty : attr.Value;
+            return attr?.Value ?? string.Empty;
         }
 
         #endregion
