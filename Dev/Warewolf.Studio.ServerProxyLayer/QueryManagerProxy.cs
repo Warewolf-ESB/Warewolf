@@ -566,7 +566,8 @@ namespace Warewolf.Studio.ServerProxyLayer
                     var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
                     pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor()
                     {
-                        ConstructorName = objectItemModel.Name
+                        ConstructorName = objectItemModel.Name,
+                        IsExistingObject = true
                     }));
                 }
             }

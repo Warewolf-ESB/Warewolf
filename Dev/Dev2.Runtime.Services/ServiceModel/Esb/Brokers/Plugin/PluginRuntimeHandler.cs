@@ -92,7 +92,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             if (objectToRun.IsStatic)
             {
