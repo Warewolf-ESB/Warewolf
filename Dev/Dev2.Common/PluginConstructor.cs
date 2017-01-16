@@ -24,5 +24,11 @@ namespace Dev2.Common
         }
 
         #endregion
+
+        #region Implementation of IPluginConstructor
+
+        public bool IsExistingObject { get; set; }
+
+        #endregion
     }
 }

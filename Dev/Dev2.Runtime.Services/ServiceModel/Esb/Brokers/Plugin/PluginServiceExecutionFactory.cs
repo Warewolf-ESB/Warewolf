@@ -27,11 +27,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        public static object InvokePlugin(PluginExecutionDto existingObject)
+        public static PluginExecutionDto InvokePlugin(PluginExecutionDto dto)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Run(existingObject);
+                return runtime.Value.Run(dto);
             }
         }
 
