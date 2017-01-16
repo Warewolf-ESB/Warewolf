@@ -1593,31 +1593,21 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(FileChooserMessage message)
         {
-            var emailAttachmentView = new ManageEmailAttachmentView();
-
-
+            var fileChooserView = new FileChooserView();
+            var selectedFiles = message.SelectedFiles ?? new List<string>();
             if (!string.IsNullOrEmpty(message.Filter))
             {
-                var selectedFiles = message.SelectedFiles ?? new List<string>();
-                emailAttachmentView.ShowView(selectedFiles.ToList(), message.Filter);
-                var emailAttachmentVm = emailAttachmentView.DataContext as EmailAttachmentVm;
-                if (emailAttachmentVm != null && emailAttachmentVm.Result == MessageBoxResult.OK)
-                {
-                    message.SelectedFiles = emailAttachmentVm.GetAttachments();
-                }
+                fileChooserView.ShowView(selectedFiles.ToList(), message.Filter);
             }
             else
             {
-                var selectedFiles = message.SelectedFiles ?? new List<string>();
-                emailAttachmentView.ShowView(selectedFiles.ToList());
-                var emailAttachmentVm = emailAttachmentView.DataContext as EmailAttachmentVm;
-                if (emailAttachmentVm != null && emailAttachmentVm.Result == MessageBoxResult.OK)
-                {
-                    message.SelectedFiles = emailAttachmentVm.GetAttachments();
-                }
+                fileChooserView.ShowView(selectedFiles.ToList());
             }
-
+            var fileChooser = fileChooserView.DataContext as FileChooser;
+            if (fileChooser != null && fileChooser.Result == MessageBoxResult.OK)
+            {
+                message.SelectedFiles = fileChooser.GetAttachments();
+            }
         }
-
     }
 }

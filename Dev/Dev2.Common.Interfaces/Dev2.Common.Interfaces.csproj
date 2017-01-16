@@ -236,9 +236,6 @@
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
-    <Compile Include="IEmailAttachmentModel.cs" />
-    <Compile Include="IEmailAttachmentView.cs" />
-    <Compile Include="IEmailAttachmentVm.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
