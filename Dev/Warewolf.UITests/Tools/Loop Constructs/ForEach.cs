@@ -36,9 +36,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_Decision_Onto_Foreach_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop switch onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
 
         [TestMethod]
@@ -47,9 +45,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.Drag_Toolbox_ASwitch_Onto_Foreach_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop switch onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
 
         [TestMethod]

@@ -23,13 +23,7 @@ namespace Warewolf.UITests.Tools
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
         }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
-        }
+        
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
