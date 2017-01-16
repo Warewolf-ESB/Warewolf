@@ -15,8 +15,10 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedMember.Global
 
@@ -197,6 +199,61 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                             }));
                     serviceMethodList.Add(serviceConstructor);
+                });
+            }
+
+            return serviceMethodList;
+        }
+
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
+        {
+            Assembly assembly;
+            var serviceMethodList = new ServiceMethodList();
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            {
+                var type = assembly.GetType(fullName);
+                var methodInfos = type.GetMethods();
+                methodInfos.ToList().ForEach(info =>
+                {
+                    var serviceMethod = new ServiceMethod
+                    {
+                        Name = info.Name
+                    };
+                    if (info.ReturnType.IsPrimitive)
+                    {
+                        var properties = info.ReturnType.GetProperties()
+                            .Where(propertyInfo => propertyInfo.CanWrite)
+                            .ToList();
+                        var jObject = new JObject();
+                        foreach(var property in properties)
+                        {
+                            jObject.Add(property.Name,"");
+                        }
+                        serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                    }
+                    else
+                    {
+                        serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                    }
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceMethod.Parameters.Add(
+                            new MethodParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                            }));
+                    serviceMethodList.Add(serviceMethod);
                 });
             }
 
