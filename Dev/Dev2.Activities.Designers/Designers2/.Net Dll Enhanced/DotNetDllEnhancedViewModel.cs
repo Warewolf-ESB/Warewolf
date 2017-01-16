@@ -214,7 +214,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                    WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
         }
@@ -305,10 +305,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -329,10 +326,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             foreach (var toolRegion in Regions)
                             {
-                                if (toolRegion.Errors != null)
-                                {
-                                    toolRegion.Errors.Clear();
-                                }
+                                toolRegion.Errors?.Clear();
                             }
                         }
                     }
@@ -347,10 +341,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             foreach (var toolRegion in Regions)
                             {
-                                if (toolRegion.Errors != null)
-                                {
-                                    toolRegion.Errors.Clear();
-                                }
+                                toolRegion.Errors?.Clear();
                             }
                         }
                     }
@@ -372,10 +363,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             foreach (var toolRegion in Regions)
                             {
-                                if (toolRegion.Errors != null)
-                                {
-                                    toolRegion.Errors.Clear();
-                                }
+                                toolRegion.Errors?.Clear();
                             }
                         }
                     }
