@@ -160,8 +160,6 @@
     <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
-    <Compile Include="EmailAttachmentModel.cs" />
-    <Compile Include="EmailAttachmentVm.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />

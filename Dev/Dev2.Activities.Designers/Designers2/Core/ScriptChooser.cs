@@ -1,3 +1,4 @@
+using System.Linq;
 using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.Core
@@ -8,27 +9,27 @@ namespace Dev2.Activities.Designers2.Core
 
         public FileChooserMessage ChooseScriptSources(string includeFile)
         {
-            const string Separator = @";";
+            const string separator = @";";
             var chooserMessage = new FileChooserMessage();
             
             if (includeFile == null)
             {
                 includeFile = "";
             }
-            chooserMessage.SelectedFiles = includeFile.Split(Separator.ToCharArray());
+            chooserMessage.SelectedFiles = includeFile.Split(separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
                 {
-                    if (chooserMessage.SelectedFiles != null)
+                    if (chooserMessage.SelectedFiles == null || !chooserMessage.SelectedFiles.Any())
                     {
-                        if (string.IsNullOrEmpty(includeFile))
+                        includeFile = "";
+                    }
+                    else
+                    {
+                        if (chooserMessage.SelectedFiles != null)
                         {
-                            includeFile = string.Join(Separator, chooserMessage.SelectedFiles);
-                        }
-                        else
-                        {
-                            includeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
+                            includeFile = string.Join(separator, chooserMessage.SelectedFiles);
                         }
                     }
                 }
