@@ -41,8 +41,6 @@ namespace Warewolf.UITests.Workflow
             UIMap.Save_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.SaveDialogWindow.Exists);
             UIMap.Click_SaveDialog_CancelButton();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
         [TestMethod]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
