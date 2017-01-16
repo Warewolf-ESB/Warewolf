@@ -21,7 +21,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class Connection : Resource, IResourceSource
+    public class Connection : Resource, IResourceSource, IConnection
     {
         public const int DefaultWebServerPort = 3142;
 

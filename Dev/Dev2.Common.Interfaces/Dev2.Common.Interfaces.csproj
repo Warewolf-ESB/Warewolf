@@ -228,6 +228,7 @@
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="IConnection.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
