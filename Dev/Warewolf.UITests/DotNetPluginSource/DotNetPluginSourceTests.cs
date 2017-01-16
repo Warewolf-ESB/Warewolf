@@ -43,7 +43,7 @@ namespace Warewolf.UITests
             UIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
             UIMap.Enter_ConfigFile_In_SelectFilesWindow();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
-            UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source (Assembly)");
+            UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source Assembly");
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -66,7 +66,7 @@ namespace Warewolf.UITests
             UIMap.Select_GACAssemblyFile_From_ChooseDLLWindow();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled.");
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox did not clear text.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source (GAC Assembly)");
+            UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source GAC Assembly");
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
