@@ -42,6 +42,7 @@ using Warewolf.Resource.Errors;
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable CheckNamespace
 // ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedParameter.Global
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
