@@ -41,6 +41,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);
         }
 
+        public ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
+        {
+            return PluginServiceExecutionFactory.GetMethodsWithReturns(assemblyLocation, assemblyName, fullName);
+        }
+
         public ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName)
         {
             return PluginServiceExecutionFactory.GetConstructors(assemblyLocation, assemblyName, fullName); 

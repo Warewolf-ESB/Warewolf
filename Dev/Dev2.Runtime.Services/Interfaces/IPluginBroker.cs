@@ -9,6 +9,7 @@ namespace Dev2.Runtime.Interfaces
     {
         NamespaceList GetNamespaces(T pluginSource);
         ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName);
+        ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName);
         ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName);
         IOutputDescription TestPlugin(TS pluginService);
     }

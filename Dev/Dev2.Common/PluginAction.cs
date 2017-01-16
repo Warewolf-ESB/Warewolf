@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
         IList<IServiceInput> _inputs;
         Type _returnType;
         IList<INameValue> _variables;
-
+        
         #region Implementation of IPluginAction
 
         public string FullName
@@ -70,6 +70,7 @@ namespace Dev2.Common.Interfaces
                 _variables = value;
             }
         }
+        public string Dev2ReturnType { get; set; }
 
         public string GetIdentifier()
         {

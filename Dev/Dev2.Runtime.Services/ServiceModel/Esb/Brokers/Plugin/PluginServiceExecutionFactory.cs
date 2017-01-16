@@ -60,5 +60,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 return runtime.Value.CreateInstance(args);
             }
         }
+
+        /// <summary>
+        /// Gets the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public static ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
+        {
+            using (var runtime = CreateInvokeAppDomain())
+            {
+                return runtime.Value.ListMethodsWithReturns(assemblyLocation, assemblyName, fullName);
+            }
+        }
     }
 }
