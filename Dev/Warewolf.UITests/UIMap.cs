@@ -469,6 +469,13 @@ namespace Warewolf.UITests
             }
         }
 
+        
+        public void Close_And_Lock_Side_Menu_Bar()
+        {
+            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer);
+            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+        }
 
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
