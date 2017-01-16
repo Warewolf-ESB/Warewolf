@@ -195,6 +195,7 @@
     <Compile Include="DB\IServiceOutputMapping.cs" />
     <Compile Include="DB\ISourceBase.cs" />
     <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeployResult.cs" />
     <Compile Include="Deploy\IDeploySourceExplorerViewModel.cs" />
     <Compile Include="Deploy\IDeployStatsViewer.cs" />
     <Compile Include="Deploy\IDeployViewModel.cs" />
