@@ -514,18 +514,24 @@ namespace Warewolf.Studio.ServerProxyLayer
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchPluginActions");
 
+            var pluginActions = GetPluginActions(source, ns, comsController, serializer);
+            return pluginActions;
+        }
+
+        private IList<IPluginAction> GetPluginActions(IPluginSource source, INamespaceItem ns, ICommunicationController comsController, Dev2JsonSerializer serializer)
+        {
             comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
             comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
-            if (result == null || result.HasError)
+            if(result == null || result.HasError)
             {
-                if (!Connection.IsConnected)
+                if(!Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
                     return new List<IPluginAction>();
                 }
-                if (result != null)
+                if(result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
@@ -533,6 +539,14 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
 
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
+        }
+
+        public IList<IPluginAction> PluginActionsWithReturns(IPluginSource source, INamespaceItem ns)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginActionsWithReturnsTypes");
+            var pluginActions = GetPluginActions(source, ns, comsController, serializer);
+            return pluginActions;
         }
 
         public IList<IPluginConstructor> PluginConstructors(IPluginSource source, INamespaceItem ns)
@@ -559,9 +573,9 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             var pluginConstructors = serializer.Deserialize<List<IPluginConstructor>>(result.Message.ToString());
 
-            if(DataListSingleton.ActiveDataList != null)
+            if (DataListSingleton.ActiveDataList != null)
             {
-                if(DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
                 {
                     var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
                     pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor()
