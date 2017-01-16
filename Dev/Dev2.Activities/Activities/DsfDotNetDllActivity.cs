@@ -62,8 +62,8 @@ namespace Dev2.Activities
                 AssemblyLocation = Namespace.AssemblyLocation,
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
-                //Method = method.Method,
-                //Parameters = methodParameters
+                Method = method.Method,
+                Parameters = methodParameters
             };
 
             try
