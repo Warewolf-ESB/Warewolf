@@ -63,14 +63,6 @@ namespace Dev2.Activities
             var warewolfEvalResult = dataObject.Environment.Eval(ExistingObject, update);
             var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
             var pluginExecutionDto = new PluginExecutionDto(existingObject);
-            var constructorParameters = ConstructorInputs.Select(p => new ConstructorParameter()
-            {
-                Name = p.Name,
-                TypeName = p.TypeName,
-                Value = p.Value,
-                IsRequired = p.RequiredField,
-                EmptyToNull = p.EmptyIsNull
-            });
             constructor.Inputs = ConstructorInputs?.ToList() ?? new List<IServiceInput>();
             var args = new PluginInvokeArgs
             {

@@ -34,6 +34,7 @@ namespace Dev2.Common.Interfaces
         IList<IPluginSource> FetchPluginSources();
         IList<IComPluginSource> FetchComPluginSources();
         IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns);
+        IList<IPluginConstructor> PluginConstructors(IPluginSource source, INamespaceItem ns);
         IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns);
         List<IFileListing> GetDllListings(IFileListing listing);
         List<IFileListing> GetComDllListings(IFileListing listing);

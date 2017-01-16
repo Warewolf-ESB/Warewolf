@@ -14,8 +14,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
-
-
         public ServiceConstructor(string name, IEnumerable<ConstructorParameter> parameters, IOutputDescription outputDescription)
         {
             Name = name;
@@ -33,5 +31,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         [DataMember]
         public List<ConstructorParameter> Parameters { get; set; }
         public IOutputDescription OutputDescription { get; set; }
+        [DataMember]
+        public bool IsExistingObject { get; set; }
     }
 }

@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Explorer;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
 
@@ -100,7 +101,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Loads the Tree.
         /// </summary>
         /// <returns></returns>
-        public async Task<IExplorerItem> Load(bool reloadCatalogue=false)
+        public async Task<IExplorerItem> Load(bool reloadCatalogue = false)
         {
             if (!Connection.IsConnected)
             {
@@ -110,7 +111,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
-            comsController.AddPayloadArgument("ReloadResourceCatalogue",reloadCatalogue.ToString());
+            comsController.AddPayloadArgument("ReloadResourceCatalogue", reloadCatalogue.ToString());
             var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
@@ -534,6 +535,45 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
 
+        public IList<IPluginConstructor> PluginConstructors(IPluginSource source, INamespaceItem ns)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginConstructors");
+
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<IPluginConstructor>();
+                }
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            var pluginConstructors = serializer.Deserialize<List<IPluginConstructor>>(result.Message.ToString());
+
+            if(DataListSingleton.ActiveDataList != null)
+            {
+                if(DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                {
+                    var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
+                    pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor()
+                    {
+                        ConstructorName = objectItemModel.Name
+                    }));
+                }
+            }
+
+            return pluginConstructors;
+        }
+
         public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -635,7 +675,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         public Task<List<string>> LoadDuplicates()
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDuplicates");
-            var result = comsController.ExecuteCompressedCommandAsync<List<string>>(Connection, GlobalConstants.ServerWorkspaceID);     
+            var result = comsController.ExecuteCompressedCommandAsync<List<string>>(Connection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
     }
