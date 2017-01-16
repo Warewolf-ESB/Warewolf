@@ -535,7 +535,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         static string GetTableName(DbTable table)
         {
-            return table == null ? null : table.FullName;
+            return table?.FullName;
         }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

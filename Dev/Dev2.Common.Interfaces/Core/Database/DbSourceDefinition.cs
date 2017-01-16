@@ -81,12 +81,12 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = ServerName != null ? ServerName.GetHashCode() : 0;
+                var hashCode = ServerName?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (int)Type;
-                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
-                hashCode = (hashCode * 397) ^ (DbName != null ? DbName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DbName?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

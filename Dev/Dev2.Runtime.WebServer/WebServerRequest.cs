@@ -63,12 +63,12 @@ namespace Dev2.Runtime.WebServer
 
         void InitializeContentLength()
         {
-            ContentLength = (int)(_request.Content.Headers.ContentLength.HasValue ? _request.Content.Headers.ContentLength.Value : 0L);
+            ContentLength = (int)(_request.Content.Headers.ContentLength ?? 0L);
         }
 
         void InitializeContentType()
         {
-            ContentType = _request.Content.Headers.ContentType == null ? null : _request.Content.Headers.ContentType.MediaType;
+            ContentType = _request.Content.Headers.ContentType?.MediaType;
         }
 
         void InitializeQueryString()

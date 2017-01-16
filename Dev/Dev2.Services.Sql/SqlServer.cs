@@ -31,7 +31,7 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
-        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
+        public string ConnectionString => _connection?.ConnectionString;
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
         {
@@ -374,7 +374,7 @@ namespace Dev2.Services.Sql
                 }
                 SqlDbType sqlType;
                 Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);
-                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int) row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
                 if (parameterName.ToLower() == "@return_value")

@@ -294,7 +294,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 else
                 {
                     var value = indexedPathSegmentTreeNode.CurrentValue as XAttribute;
-                    results[path].Add(value != null ? value.Value : indexedPathSegmentTreeNode.CurrentValue.ToString());
+                    results[path].Add(value?.Value ?? indexedPathSegmentTreeNode.CurrentValue.ToString());
                 }
             }
         }

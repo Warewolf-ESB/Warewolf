@@ -96,7 +96,7 @@ namespace Warewolf.Core
         {
             unchecked
             {
-                return ((Inputs != null ? Inputs.GetHashCode() : 0) * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return ((Inputs?.GetHashCode() ?? 0) * 397) ^ (Name?.GetHashCode() ?? 0);
             }
         }
 
