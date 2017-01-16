@@ -185,9 +185,6 @@
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageEmailAttachmentView.xaml.cs">
-      <DependentUpon>ManageEmailAttachmentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ManageExchangeSourceControl.xaml.cs">
       <DependentUpon>ManageExchangeSourceControl.xaml</DependentUpon>
     </Compile>
@@ -281,10 +278,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ManageDatabaseSourceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageEmailAttachmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
