@@ -67,7 +67,7 @@ namespace Dev2.Common.Interfaces
             unchecked
             {
                 // ReSharper disable NonReadonlyFieldInGetHashCode
-                return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ (_value != null ? _value.GetHashCode() : 0);
+                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);
                 // ReSharper restore NonReadonlyFieldInGetHashCode
             }
         }

@@ -96,7 +96,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public bool CanExecute(object parameter)
         {
             // ReSharper disable SimplifyConditionalTernaryExpression
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute?.Invoke((T)parameter) ?? true;
             // ReSharper restore SimplifyConditionalTernaryExpression
         }
 

@@ -69,15 +69,15 @@ namespace Dev2.Common
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Image != null ? Image.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (HumanUrl != null ? HumanUrl.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (BaseUrl != null ? BaseUrl.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Version != null ? Version.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Tags != null ? Tags.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Properties != null ? Properties.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Contact != null ? Contact.GetHashCode() : 0);
+                var hashCode = Name?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (Description?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Image?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (HumanUrl?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (BaseUrl?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Version?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Tags?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Properties?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Contact?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

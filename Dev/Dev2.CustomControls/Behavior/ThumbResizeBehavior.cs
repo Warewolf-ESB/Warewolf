@@ -99,10 +99,10 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             // Check for legacy usage - adorner framework MUST always use ContentElement - DO NOT REMOVE!!!
-            double minWidth = ContentElement == null ? TargetElement.MinWidth : ContentElement.MinWidth;
-            double maxWidth = ContentElement == null ? TargetElement.MaxWidth : ContentElement.MaxWidth;
-            double minHeight = ContentElement == null ? TargetElement.MinHeight : ContentElement.MinHeight;
-            double maxHeight = ContentElement == null ? TargetElement.MaxHeight : ContentElement.MaxHeight;
+            double minWidth = ContentElement?.MinWidth ?? TargetElement.MinWidth;
+            double maxWidth = ContentElement?.MaxWidth ?? TargetElement.MaxWidth;
+            double minHeight = ContentElement?.MinHeight ?? TargetElement.MinHeight;
+            double maxHeight = ContentElement?.MaxHeight ?? TargetElement.MaxHeight;
 
             if (TargetElement.Height + e.VerticalChange > 0)
             {

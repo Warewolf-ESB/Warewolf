@@ -442,13 +442,13 @@ namespace Dev2.Common.Common
         public static string ElementSafe(this XElement elem, string name)
         {
             XElement child = elem.Element(name);
-            return child == null ? string.Empty : child.Value;
+            return child?.Value ?? string.Empty;
         }
 
         public static string ElementStringSafe(this XElement elem, string name)
         {
             XElement child = elem.Element(name);
-            return child == null ? string.Empty : child.ToString();
+            return child?.ToString() ?? string.Empty;
         }
         /// <summary>
         /// https://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs,cfaa9abd8b214ecb

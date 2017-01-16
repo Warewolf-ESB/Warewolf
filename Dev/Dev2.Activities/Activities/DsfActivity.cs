@@ -475,7 +475,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
 
             dataObject.EnvironmentID = EnvironmentID==null || EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
-            dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
+            dataObject.RemoteServiceType = Type.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 

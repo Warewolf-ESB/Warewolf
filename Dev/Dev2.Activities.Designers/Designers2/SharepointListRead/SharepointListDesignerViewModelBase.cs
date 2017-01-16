@@ -348,7 +348,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         static string GetListName(SharepointListTo table)
         {
-            return table == null ? null : table.FullName;
+            return table?.FullName;
         }
 
         protected void OnSharepointServerChanged()

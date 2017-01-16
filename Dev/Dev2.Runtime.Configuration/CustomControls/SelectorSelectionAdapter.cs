@@ -124,7 +124,7 @@ namespace System.Windows.Controls
         {
             get
             {
-                return SelectorControl == null ? null : SelectorControl.SelectedItem;
+                return SelectorControl?.SelectedItem;
             }
 
             set
@@ -155,7 +155,7 @@ namespace System.Windows.Controls
         {
             get
             {
-                return SelectorControl == null ? null : SelectorControl.ItemsSource;
+                return SelectorControl?.ItemsSource;
             }
             set
             {
