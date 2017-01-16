@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
-        public void Shortcut_Control_D_Opens_DeployTab()
+        public void Shortcut_Control_D_Opens_DeployWizardTab()
         {
             UIMap.Click_LocalHost_Once();
             UIMap.Open_Deploy_Using_Shortcut();
@@ -74,7 +74,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
-        public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
+        public void Shortcut_Control_D_Opens_DeployWizardTabWith_Resource_Selected()
         {
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Click_Explorer_Localhost_First_Item();

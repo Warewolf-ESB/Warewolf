@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Tabs
     {
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinNewWorkflowTabByDraggingOnly()
+        public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab);
@@ -38,7 +38,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinSettingsTab()
+        public void UnpinAndRepinSettingsWizardTab()
         {
             UIMap.Click_Settings_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsWizardTab);
@@ -79,7 +79,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinDeployTab()
+        public void UnpinAndRepinDeployWizardTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployWizardTab);
@@ -87,7 +87,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinDependencyGraphTab()
+        public void UnpinAndRepinDependencyGraphWizardTab()
         {
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphWizardTab);
@@ -95,7 +95,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinTestsTabPage()
+        public void UnpinAndRepinTestsWizardTab()
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
@@ -104,7 +104,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinSchedulerTab()
+        public void UnpinAndRepinSchedulerWizardTab()
         {
             UIMap.Click_Scheduler_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerWizardTab);
@@ -112,7 +112,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
+        public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
@@ -125,7 +125,7 @@ namespace Warewolf.UITests.Tabs
         
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void AssignToolInUnpinnedWorkflowTabAddVariableUITest()
+        public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();

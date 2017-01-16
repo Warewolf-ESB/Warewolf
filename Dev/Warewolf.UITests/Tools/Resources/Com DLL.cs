@@ -25,6 +25,16 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.SmallView.Exists, "Com DLL tool small view does not exist after double clicking tool large view.");
         }
 
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void Click_ComDLLTool_LargeView_NewSourceButton_UITests()
+        {
+            UIMap.Click_COMDLLPluginTool_LargeView_NewSourceButton();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceWizardTab.WorkSurfaceContext.SearchTextBox.Enabled);
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceWizardTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceWizardTab.WorkSurfaceContext.DataTree.Enabled);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceWizardTab.WorkSurfaceContext.RefreshButton.Enabled);
+        }
         #region Additional test attributes
 
         [TestInitialize]
