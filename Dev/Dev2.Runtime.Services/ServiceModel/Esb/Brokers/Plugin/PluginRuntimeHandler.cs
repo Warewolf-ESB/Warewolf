@@ -15,7 +15,6 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
