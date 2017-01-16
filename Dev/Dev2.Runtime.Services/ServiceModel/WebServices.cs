@@ -110,10 +110,7 @@ namespace Dev2.Runtime.ServiceModel
 
                     if(!jsonMapTask.IsCompleted)
                     {
-                        if(jsonMapTaskThread != null)
-                        {
-                            jsonMapTaskThread.Abort();
-                        }
+                        jsonMapTaskThread?.Abort();
 
                         service.Recordsets = preTestRsData;
                         service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
@@ -233,10 +230,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (!jsonMapTask.IsCompleted)
                 {
-                    if (jsonMapTaskThread != null)
-                    {
-                        jsonMapTaskThread.Abort();
-                    }
+                    jsonMapTaskThread?.Abort();
 
                     service.Recordsets = preTestRsData;
                     service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;

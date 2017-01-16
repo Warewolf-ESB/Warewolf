@@ -76,7 +76,7 @@ namespace Dev2.Data
         /// </returns>
         public override int GetHashCode()
         {
-            return Name != null ? Name.GetHashCode() : 0;
+            return Name?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(Scalar left, Scalar right)
@@ -118,7 +118,7 @@ namespace Dev2.Data
 
             public int GetHashCode(IScalar obj)
             {
-                return obj.Name != null ? obj.Name.GetHashCode() : 0;
+                return obj.Name?.GetHashCode() ?? 0;
             }
         }
 

@@ -106,10 +106,7 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
                     var modelItemCollection = modelProperty.Collection;
                     foreach(var dto in items)
                     {
-                        if(modelItemCollection != null)
-                        {
-                            modelItemCollection.Add(dto);
-                        }
+                        modelItemCollection?.Add(dto);
                     }
                 }
             }

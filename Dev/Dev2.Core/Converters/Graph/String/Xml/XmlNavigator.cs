@@ -294,7 +294,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 else
                 {
                     var value = indexedPathSegmentTreeNode.CurrentValue as XAttribute;
-                    results[path].Add(value != null ? value.Value : indexedPathSegmentTreeNode.CurrentValue.ToString());
+                    results[path].Add(value?.Value ?? indexedPathSegmentTreeNode.CurrentValue.ToString());
                 }
             }
         }
@@ -464,18 +464,15 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     }
                     if (pathSegment != null && pathSegment.IsAttribute)
                     {
-                        if (currentElement != null)
+                        XAttribute attribute = currentElement?.Attribute(pathSegment.ActualSegment);
+
+                        if (attribute != null)
                         {
-                            XAttribute attribute = currentElement.Attribute(pathSegment.ActualSegment);
+                            currentElement = null;
 
-                            if (attribute != null)
+                            if (lastSegment)
                             {
-                                currentElement = null;
-
-                                if (lastSegment)
-                                {
-                                    returnData.Add(attribute.Value);
-                                }
+                                returnData.Add(attribute.Value);
                             }
                         }
                     }

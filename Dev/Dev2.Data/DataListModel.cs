@@ -77,15 +77,12 @@ namespace Dev2.Data
                     foreach (XmlNode c in children)
                     {
                         var hasCorrectIoDirection = true;
-                        if (c.Attributes != null)
+                        var columnIoDirectionAttribute = c.Attributes?["ColumnIODirection"];
+                        if (columnIoDirectionAttribute != null)
                         {
-                            var columnIoDirectionAttribute = c.Attributes["ColumnIODirection"];
-                            if (columnIoDirectionAttribute != null)
-                            {
-                                var columnIoDirectionValue = columnIoDirectionAttribute.Value;
-                                var hasCorrectIoDirectionFromAttribute = columnIoDirectionValue == enDev2ColumnArgumentDirection.Output.ToString() || columnIoDirectionValue == enDev2ColumnArgumentDirection.Both.ToString();
-                                hasCorrectIoDirection = hasCorrectIoDirectionFromAttribute;
-                            }
+                            var columnIoDirectionValue = columnIoDirectionAttribute.Value;
+                            var hasCorrectIoDirectionFromAttribute = columnIoDirectionValue == enDev2ColumnArgumentDirection.Output.ToString() || columnIoDirectionValue == enDev2ColumnArgumentDirection.Both.ToString();
+                            hasCorrectIoDirection = hasCorrectIoDirectionFromAttribute;
                         }
 
                         if (DataListUtil.IsSystemTag(c.Name) && !hasCorrectIoDirection)
@@ -170,13 +167,10 @@ namespace Dev2.Data
                         if (c.HasChildNodes)
                         {
                             var jsonAttribute = false;
-                            if (c.Attributes != null)
+                            var xmlAttribute = c.Attributes?["IsJson"];
+                            if (xmlAttribute != null)
                             {
-                                var xmlAttribute = c.Attributes["IsJson"];
-                                if (xmlAttribute != null)
-                                {
-                                    bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                                }
+                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
                             }
                             if (jsonAttribute)
                             {

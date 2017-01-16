@@ -37,10 +37,7 @@ namespace Warewolf.Studio.Views
             get
             {
                 var be = Status.GetBindingExpression(TextBlock.TextProperty);
-                if(be != null)
-                {
-                    be.UpdateTarget();
-                }
+                be?.UpdateTarget();
                 return Status.Text;
             }
             set

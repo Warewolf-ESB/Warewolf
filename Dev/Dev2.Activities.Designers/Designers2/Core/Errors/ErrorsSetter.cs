@@ -80,7 +80,7 @@ namespace Dev2.Activities.Designers2.Core.Errors
 
         void UpdateErrors()
         {
-            if(Target != null && Source != null && Source.Errors != null && !string.IsNullOrEmpty(SourcePropertyName))
+            if(Target != null && Source?.Errors != null && !string.IsNullOrEmpty(SourcePropertyName))
             {
                 Source.Validate(SourcePropertyName, "");
                 List<IActionableErrorInfo> errors;

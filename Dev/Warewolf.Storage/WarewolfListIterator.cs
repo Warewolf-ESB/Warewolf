@@ -26,7 +26,7 @@ namespace Warewolf.Storage
         public string FetchNextValue(int position)
         {
             var warewolfEvalResult = _variablesToIterateOn[position];
-            return warewolfEvalResult != null ? warewolfEvalResult.GetNextValue() : null;
+            return warewolfEvalResult?.GetNextValue();
         }
 
 

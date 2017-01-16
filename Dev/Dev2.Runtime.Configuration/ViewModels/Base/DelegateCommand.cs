@@ -69,10 +69,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         protected virtual void OnCanExecuteChanged()
         {
             var handler = CanExecuteChanged;
-            if(handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

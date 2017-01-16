@@ -82,9 +82,9 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = Server != null ? Server.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                var hashCode = Server?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
                 return hashCode;
             }
