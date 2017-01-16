@@ -55,9 +55,9 @@ namespace Dev2.Common.Interfaces
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (Children != null ? Children.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
+                var hashCode = Name?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (Children?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (FullName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();
                 return hashCode;
             }

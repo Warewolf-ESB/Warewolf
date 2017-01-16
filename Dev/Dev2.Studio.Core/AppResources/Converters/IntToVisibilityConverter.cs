@@ -21,13 +21,10 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var isVisible = false;
-            if(value is int)
+            var count = value as int?;
+            if(count > 0)
             {
-                var count = (int)value;
-                if(count > 0)
-                {
-                    isVisible = true;
-                }
+                isVisible = true;
             }
 
             var negate = false;

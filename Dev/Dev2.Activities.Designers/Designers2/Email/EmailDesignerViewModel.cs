@@ -365,10 +365,7 @@ namespace Dev2.Activities.Designers2.Email
                 {
                     EmailSources.Add(source);
                 }
-                if(continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
             });
         }
 

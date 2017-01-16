@@ -93,10 +93,7 @@ namespace Dev2.Activities.Designers.Tests
         static void OnGloabalBuild(BuildArgs args)
         {
             var handler = GloabalBuild;
-            if(handler != null)
-            {
-                handler(null, args);
-            }
+            handler?.Invoke(null, args);
         }
 
         public void DoSomething()
@@ -111,10 +108,7 @@ namespace Dev2.Activities.Designers.Tests
         protected virtual void OnDobuilding(BuildArgs args)
         {
             var handler = Dobuilding;
-            if(handler != null)
-            {
-                handler(this, args);
-            }
+            handler?.Invoke(this, args);
         }
     }
 

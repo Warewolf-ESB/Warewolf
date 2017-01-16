@@ -60,10 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
                 MessageBox.Show("A value is required", "Error", MessageBoxButton.OK);
                 return false;
             }
-            if(GotValueEvent != null)
-            {
-                GotValueEvent(txtDataElementName.Text);
-            }
+            GotValueEvent?.Invoke(txtDataElementName.Text);
             return true;
         }
 

@@ -229,10 +229,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
                 var modelItemCollection = modelProperty.Collection;
                 foreach(var dto in items)
                 {
-                    if(modelItemCollection != null)
-                    {
-                        modelItemCollection.Add(dto);
-                    }
+                    modelItemCollection?.Add(dto);
                 }
             }
             return modelItem;

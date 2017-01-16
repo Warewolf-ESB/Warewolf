@@ -69,17 +69,17 @@ namespace Dev2.Common
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Image != null ? Image.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Tags != null ? Tags.GetHashCode() : 0);
+                var hashCode = Name?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (Description?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Image?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Url?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Tags?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ Created.GetHashCode();
                 hashCode = (hashCode * 397) ^ Modified.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SpecificationVersion != null ? SpecificationVersion.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Apis != null ? Apis.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Include != null ? Include.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Maintainers != null ? Maintainers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SpecificationVersion?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Apis?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Include?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Maintainers?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

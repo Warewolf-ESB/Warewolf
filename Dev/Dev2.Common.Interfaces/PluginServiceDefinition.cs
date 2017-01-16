@@ -100,11 +100,11 @@ namespace Dev2.Common.Interfaces
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
+                var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Action != null ? Action.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Source?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Path?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Action?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

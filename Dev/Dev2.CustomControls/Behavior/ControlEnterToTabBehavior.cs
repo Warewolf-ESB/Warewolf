@@ -63,10 +63,7 @@ namespace Dev2.CustomControls.Behavior
                 {
                     DependencyObject scope = FocusManager.GetFocusScope(AssociatedObject);
                     var focusedObject = FocusManager.GetFocusedElement(scope) as FrameworkElement;
-                    if (focusedObject != null)
-                    {
-                        focusedObject.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                    }
+                    focusedObject?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                     count++;
                 }
                 e.Handled = true;

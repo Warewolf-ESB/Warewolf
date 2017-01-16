@@ -183,26 +183,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             var sb = new StringBuilder();
 
             var resource = ResourceCatalog.GetResource(workspaceId, resourceGuid);
-            if (resource != null)
+            var dependencies = resource?.Dependencies;
+            if (dependencies != null)
             {
-                var dependencies = resource.Dependencies;
-                if (dependencies != null)
+                sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
+                // ReSharper disable ImplicitlyCapturedClosure
+                dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
+                // ReSharper restore ImplicitlyCapturedClosure
+                sb.Append("</node>");
+                seenResource.Add(resourceGuid);
+                dependencies.ToList().ForEach(c =>
                 {
-                    sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
-                    // ReSharper disable ImplicitlyCapturedClosure
-                    dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-                    // ReSharper restore ImplicitlyCapturedClosure
-                    sb.Append("</node>");
-                    seenResource.Add(resourceGuid);
-                    dependencies.ToList().ForEach(c =>
+                    if (!seenResource.Contains(c.ResourceID))
                     {
-                        if (!seenResource.Contains(c.ResourceID))
-                        {
-                            var findDependenciesRecursive = FindDependenciesRecursive(c.ResourceID, workspaceId, seenResource);
-                            sb.Append(findDependenciesRecursive);
-                        }
-                    });
-                }
+                        var findDependenciesRecursive = FindDependenciesRecursive(c.ResourceID, workspaceId, seenResource);
+                        sb.Append(findDependenciesRecursive);
+                    }
+                });
             }
             return sb;
         }
