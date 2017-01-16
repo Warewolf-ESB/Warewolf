@@ -179,13 +179,10 @@ namespace Dev2.DataList
                         if (!DataListUtil.IsSystemTag(c.Name))
                         {
                             var jsonAttribute = false;
-                            if (c.Attributes != null)
+                            var xmlAttribute = c.Attributes?["IsJson"];
+                            if (xmlAttribute != null)
                             {
-                                var xmlAttribute = c.Attributes["IsJson"];
-                                if (xmlAttribute != null)
-                                {
-                                    bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                                }
+                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
                             }
                             if (jsonAttribute)
                             {

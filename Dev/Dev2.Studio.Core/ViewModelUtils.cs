@@ -70,18 +70,12 @@ namespace Dev2
                 if (typeOfCommand == typeof(DelegateCommand))
                 {
                     var command = commandForCanExecuteChange as DelegateCommand;
-                    if (command != null)
-                    {
-                        command.RaiseCanExecuteChanged();
-                    }
+                    command?.RaiseCanExecuteChanged();
                 }
                 if (typeOfCommand == typeof(AuthorizeCommand))
                 {
                     var command = commandForCanExecuteChange as AuthorizeCommand;
-                    if (command != null)
-                    {
-                        command.RaiseCanExecuteChanged();
-                    }
+                    command?.RaiseCanExecuteChanged();
                 }
             }
         }

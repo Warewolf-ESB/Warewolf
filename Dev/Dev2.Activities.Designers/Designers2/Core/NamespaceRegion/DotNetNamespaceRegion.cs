@@ -163,10 +163,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnSomethingChanged(this);
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if (delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
+                delegateCommand?.RaiseCanExecuteChanged();
 
                 _selectedNamespace = value;
                 OnPropertyChanged();

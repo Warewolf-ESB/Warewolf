@@ -41,12 +41,7 @@ namespace Dev2.Runtime.WebServer
         {
             get
             {
-                if (TheIPEndPoint != null)
-                {
-                    return TheIPEndPoint.Address;
-                }
-
-                return null;
+                return TheIPEndPoint?.Address;
             }
         }
 

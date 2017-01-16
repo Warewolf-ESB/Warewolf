@@ -317,10 +317,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion
@@ -341,10 +338,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }
@@ -359,10 +353,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }
@@ -384,10 +375,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             {
                                 foreach (var toolRegion in Regions)
                                 {
-                                    if (toolRegion.Errors != null)
-                                    {
-                                        toolRegion.Errors.Clear();
-                                    }
+                                    toolRegion.Errors?.Clear();
                                 }
                             }
                         }

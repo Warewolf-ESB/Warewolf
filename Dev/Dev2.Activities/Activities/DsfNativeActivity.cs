@@ -223,10 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
-                if (dataObject.Environment != null)
-                {
-                    dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
-                }
+                dataObject.Environment?.AddError(errorResultTO.MakeDataListReady());
             }
             finally
             {

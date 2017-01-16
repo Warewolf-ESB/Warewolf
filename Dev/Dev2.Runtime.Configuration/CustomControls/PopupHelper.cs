@@ -276,10 +276,7 @@ namespace System.Windows.Controls
         private void OnClosed(EventArgs e)
         {
             EventHandler handler = Closed;
-            if(handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
 
         /// <summary>
@@ -409,10 +406,7 @@ namespace System.Windows.Controls
         private void OnFocusChanged(EventArgs e)
         {
             EventHandler handler = FocusChanged;
-            if(handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
 
         /// <summary>
@@ -422,10 +416,7 @@ namespace System.Windows.Controls
         private void OnUpdateVisualStates(EventArgs e)
         {
             EventHandler handler = UpdateVisualStates;
-            if(handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
 
         /// <summary>

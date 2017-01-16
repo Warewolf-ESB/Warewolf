@@ -185,10 +185,7 @@ namespace Dev2.MathOperations
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected void OnItemAdded()
         {
-            if (ItemAdded != null)
-            {
-                ItemAdded(this, new EventArgs());
-            }
+            ItemAdded?.Invoke(this, new EventArgs());
         }
 
         #region Implementation of IDisposable

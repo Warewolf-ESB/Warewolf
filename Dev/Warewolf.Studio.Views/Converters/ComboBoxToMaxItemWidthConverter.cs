@@ -51,9 +51,8 @@ namespace Warewolf.Studio.Views.Converters
                     break;
                 }
                 ComboEditorItem cbItem = first;
-                if (cbItem != null)
-                    if (cbItem.ComboEditor.ActualWidth > maxWidth)
-                        maxWidth = cbItem.ComboEditor.ActualWidth;
+                if (cbItem?.ComboEditor.ActualWidth > maxWidth)
+                    maxWidth = cbItem.ComboEditor.ActualWidth;
             }
             return maxWidth;
         }

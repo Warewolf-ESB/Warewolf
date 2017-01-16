@@ -151,9 +151,9 @@ namespace Dev2.Settings
             set
             {
                 _currentEnvironment = value;
-                if(CurrentEnvironment.IsConnected &&_currentEnvironment.AuthorizationService != null  )
+                if(CurrentEnvironment.IsConnected  )
                 {
-                    _currentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null);
+                    _currentEnvironment.AuthorizationService?.IsAuthorized(AuthorizationContext.Administrator, null);
                 }
             }
         }

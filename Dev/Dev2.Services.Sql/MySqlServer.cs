@@ -112,7 +112,7 @@ namespace Dev2.Services.Sql
 
             finally
             {
-                if (reader != null) reader.Close();
+                reader?.Close();
             }
 
             return result;
@@ -343,47 +343,44 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                if(row != null)
+                var bytes = row?[0] as byte[];
+                if(bytes != null)
                 {
-                    var bytes = row[0] as byte[];
-                    if(bytes != null)
+                    var parameterName = Encoding.Default.GetString(bytes);
+                    parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
+                    var parameternames = parameterName.Split(',');
+                    foreach(var parameter in parameternames)
                     {
-                        var parameterName = Encoding.Default.GetString(bytes);
-                        parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
-                        var parameternames = parameterName.Split(',');
-                        foreach(var parameter in parameternames)
+                        bool isout = false;
+                        const ParameterDirection direction = ParameterDirection.Input;
+                        if(parameter.Contains("OUT "))
+                            isout = true;
+                        if (parameter.Contains("INOUT"))
+                            isout = false;
+                        var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
+                        if (!String.IsNullOrEmpty(parameterName))
                         {
-                            bool isout = false;
-                            const ParameterDirection direction = ParameterDirection.Input;
-                            if(parameter.Contains("OUT "))
-                                isout = true;
-                            if (parameter.Contains("INOUT"))
-                                isout = false;
-                            var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
-                            if (!String.IsNullOrEmpty(parameterName))
+                            var split = parameterx.Split(' ');
+
+                            MySqlDbType sqlType;
+                            Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
+
+                            var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
+                            if (!isout)
                             {
-                                var split = parameterx.Split(' ');
-
-                                MySqlDbType sqlType;
-                                Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
-
-                                var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
-                                if (!isout)
-                                {
-                                    command.Parameters.Add(sqlParameter);
-                                    parameters.Add(sqlParameter);
-                                }
-                                else
-                                {
-                                    sqlParameter.Direction = ParameterDirection.Output; 
-                                    outParams.Add(sqlParameter);
-                                    sqlParameter.Value = "@a";
-                                    command.Parameters.Add(sqlParameter);
-                                }
-                                if (parameterName.ToLower() == "@return_value")
-                                {
-                                }                       
+                                command.Parameters.Add(sqlParameter);
+                                parameters.Add(sqlParameter);
                             }
+                            else
+                            {
+                                sqlParameter.Direction = ParameterDirection.Output; 
+                                outParams.Add(sqlParameter);
+                                sqlParameter.Value = "@a";
+                                command.Parameters.Add(sqlParameter);
+                            }
+                            if (parameterName.ToLower() == "@return_value")
+                            {
+                            }                       
                         }
                     }
                 }
@@ -445,15 +442,9 @@ namespace Dev2.Services.Sql
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_transaction != null)
-                    {
-                        _transaction.Dispose();
-                    }
+                    _transaction?.Dispose();
 
-                    if (_command != null)
-                    {
-                        _command.Dispose();
-                    }
+                    _command?.Dispose();
 
                     if (_connection != null)
                     {
