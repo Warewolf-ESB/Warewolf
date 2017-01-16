@@ -469,6 +469,13 @@ namespace Warewolf.UITests
             }
         }
 
+        
+        public void Close_And_Lock_Side_Menu_Bar()
+        {
+            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer);
+            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+        }
 
         public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
         {
@@ -5168,11 +5175,11 @@ namespace Warewolf.UITests
         [Then(@"I Make Workflow Saveable")]
         public void Make_Workflow_Savable_By_Dragging_Start()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node does not Exist");
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savble was unsucessful.");
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
