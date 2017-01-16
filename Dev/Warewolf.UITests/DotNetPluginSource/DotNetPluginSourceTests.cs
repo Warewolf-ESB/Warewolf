@@ -51,16 +51,6 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("DotNetPluginSource")]
-        public void SelectGACAssemblyDLL()
-        {
-            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
-            UIMap.Select_GACAssemblyFile_From_ChooseDLLWindow();
-            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.GACAssemblyComboBox.TextEdit.Text));
-        }
-
-        [TestMethod]
-        [TestCategory("DotNetPluginSource")]
         public void SelectGACClearsDLLAssembly()
         {
             string filePath = @"C:\UITestAssembly.dll";
@@ -73,15 +63,13 @@ namespace Warewolf.UITests
             UIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
             UIMap.Select_GACAssemblyFile_From_ChooseDLLWindow();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ConfigFileComboBox.Enabled);
-            Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled.");
+            Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox did not clear text.");
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
         }
-
-
 
         #region Additional test attributes
 
