@@ -364,7 +364,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ScenarioID = ScenarioID
             };
             var result = SimulationRepository.Instance.Get(key);
-            if (result != null && result.Value != null)
+            if (result?.Value != null)
             {
 
                 var dataObject = context.GetExtension<IDSFDataObject>();

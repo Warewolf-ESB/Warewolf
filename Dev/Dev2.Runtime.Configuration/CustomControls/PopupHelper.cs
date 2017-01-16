@@ -287,7 +287,7 @@ namespace System.Windows.Controls
         private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             // Delayed closing of the popup until now
-            if(e != null && e.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
+            if(e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
             {
                 if(Popup != null)
                 {

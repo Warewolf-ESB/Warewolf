@@ -2261,7 +2261,7 @@ namespace Dev2.Activities.Specs.Composition
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
-            if (resourceModel == null || resourceModel.Environment == null)
+            if (resourceModel?.Environment == null)
             {
                 return;
             }

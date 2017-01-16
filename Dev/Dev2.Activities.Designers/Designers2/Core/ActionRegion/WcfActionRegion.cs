@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Errors.Clear();
                 IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
-                if (_source != null && _source.SelectedSource != null)
+                if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
                     SelectedAction = null;
@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public bool CanRefresh()
         {
             IsActionEnabled = _source.SelectedSource != null;
-            return _source != null && _source.SelectedSource != null;
+            return _source?.SelectedSource != null;
         }
 
         public IWcfAction SelectedAction

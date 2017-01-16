@@ -139,7 +139,7 @@ namespace Dev2.Common.Common
 
         public static bool IsNullOrEmpty(this StringBuilder sb)
         {
-            return sb == null || string.IsNullOrEmpty(sb.ToString());
+            return string.IsNullOrEmpty(sb?.ToString());
         }
 
         public static StringBuilder ToStringBuilder(this string str)
@@ -426,7 +426,7 @@ namespace Dev2.Common.Common
         public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)
         {
             XAttribute attr = elem.Attribute(name);
-            if (attr == null || string.IsNullOrEmpty(attr.Value))
+            if (string.IsNullOrEmpty(attr?.Value))
             {
                 return returnsNull ? null : string.Empty;
             }
