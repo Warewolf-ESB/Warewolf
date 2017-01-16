@@ -29,7 +29,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_Cancel();
             Point newPoint;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint));
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_OK();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
         }
 
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_OK();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists
                 , "Hello World work flow does not exist after selecting OK from Service Picker");
             UIMap.Delete_HelloWorld_With_Context_Menu();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();

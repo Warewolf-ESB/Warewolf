@@ -14,7 +14,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
             UIMap.Click_Base_Convert_Large_View_Done_Button();
             UIMap.Press_F6();
-            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowWizardTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Click_Debug_Output_BaseConvert_Cell();
             UIMap.Open_Base_Conversion_Tool_Qvi_Large_View();
         }
