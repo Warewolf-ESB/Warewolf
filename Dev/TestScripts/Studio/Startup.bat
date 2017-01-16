@@ -88,7 +88,7 @@ goto MainLoopBody
 
 :StartStudio
 REM Try Delete Workspace Layout
-IF EXIST "%LocalAppData%\Warewolf\UserInterfaceLayouts\DefaultWorkspaceLayout.xml" DEL "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
+IF EXIST "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml" DEL "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 REM Init paths to Warewolf studio under test
 IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
 IF EXIST "%~dp0..\..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET StudioBinDirectory=%~dp0..\..\..\Dev2.Studio\bin\Debug
