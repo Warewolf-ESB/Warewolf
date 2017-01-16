@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -83,18 +81,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
-            activity.Namespace = new NamespaceItem()
+            mock.SetupGet(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
             {
-                FullName = type.Namespace,
+                FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.Method = new PluginAction()
-            {
-                Inputs = new List<IServiceInput>(),
-            };
-            activity.Constructor = new PluginConstructor()
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IServiceInput>(),
             };
@@ -118,22 +114,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
-            activity.Namespace = new NamespaceItem()
+            mock.SetupGet(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
             {
-                FullName = type.Namespace,
+                FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.Method = new PluginAction()
-            {
-                Inputs = new List<IServiceInput>(),
-            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
          
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
-            Assert.IsNotNull(activity.Constructor);
+            Assert.IsNull(activity.Constructor);
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
@@ -155,25 +149,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            activity.Namespace = new NamespaceItem()
+            activity.Namespace = new NamespaceItem
             {
                 FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.Method = new PluginAction()
-            {
-                Inputs = new List<IServiceInput>(),
-                Method = "ToString"
-            };
-            activity.Constructor = new PluginConstructor()
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IServiceInput>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>()
+            activity.MethodsToRun = new List<Dev2MethodInfo>
             {
-                new Dev2MethodInfo()
+                new Dev2MethodInfo
                 {
                     Method = "ToString",
                     Parameters = new List<MethodParameter>(),

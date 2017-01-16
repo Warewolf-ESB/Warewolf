@@ -62,19 +62,23 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             var serializeToJsonString = instance.SerializeToJsonString();
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
-            return new PluginExecutionDto(serializeToJsonString);
+            return new PluginExecutionDto(serializeToJsonString)
+            {
+                Args = setupInfo
+            };
         }
 
-        public object Run(PluginExecutionDto jsonObject, PluginInvokeArgs args)
+        public PluginExecutionDto Run(PluginExecutionDto dto)
         {
             try
             {
+                var args = dto.Args;
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
                 if (!tryLoadAssembly)
                     throw new Exception(args.AssemblyName + "Not found");
-                ExecutePlugin(jsonObject, ref args, loadedAssembly);
-                return jsonObject;
+                ExecutePlugin(dto, args, loadedAssembly);
+                return dto;
             }
             catch (Exception e)
             {
@@ -83,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private void ExecutePlugin(PluginExecutionDto objectToRun, ref PluginInvokeArgs setupInfo, Assembly loadedAssembly)
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
         {
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
