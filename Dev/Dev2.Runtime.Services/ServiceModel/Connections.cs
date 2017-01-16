@@ -32,7 +32,7 @@ using Microsoft.AspNet.SignalR.Client;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
 {
-    public class Connections : ExceptionManager
+    public class Connections : ExceptionManager, IConnections
     {
 
         #region Fields
