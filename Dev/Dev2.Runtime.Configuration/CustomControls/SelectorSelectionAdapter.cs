@@ -172,14 +172,8 @@ namespace System.Windows.Controls
         /// </summary>
         private void ResetScrollViewer()
         {
-            if(SelectorControl != null)
-            {
-                ScrollViewer sv = SelectorControl.GetLogicalChildrenBreadthFirst().OfType<ScrollViewer>().FirstOrDefault();
-                if(sv != null)
-                {
-                    sv.ScrollToTop();
-                }
-            }
+            ScrollViewer sv = SelectorControl?.GetLogicalChildrenBreadthFirst().OfType<ScrollViewer>().FirstOrDefault();
+            sv?.ScrollToTop();
         }
 
         /// <summary>
@@ -205,10 +199,7 @@ namespace System.Windows.Controls
             }
 
             SelectionChangedEventHandler handler = SelectionChanged;
-            if(handler != null)
-            {
-                handler(sender, e);
-            }
+            handler?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -305,10 +296,7 @@ namespace System.Windows.Controls
         private void OnCommit(object sender, RoutedEventArgs e)
         {
             RoutedEventHandler handler = Commit;
-            if(handler != null)
-            {
-                handler(sender, e);
-            }
+            handler?.Invoke(sender, e);
 
             AfterAdapterAction();
         }
@@ -331,10 +319,7 @@ namespace System.Windows.Controls
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             RoutedEventHandler handler = Cancel;
-            if(handler != null)
-            {
-                handler(sender, e);
-            }
+            handler?.Invoke(sender, e);
 
             AfterAdapterAction();
         }

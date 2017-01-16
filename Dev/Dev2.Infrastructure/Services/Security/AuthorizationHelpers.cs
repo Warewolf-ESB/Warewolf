@@ -94,10 +94,7 @@ namespace Dev2.Services.Security
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}
-            if(resource != null)
-            {
-                resource = resource.Replace('/', '\\');
-            }
+            resource = resource?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resource))
             {
                 return true;

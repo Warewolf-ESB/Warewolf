@@ -19,10 +19,7 @@ namespace Dev2.Studio.Diagnostics
         public void ShowPopup(Exception ex, ErrorSeverity severity)
         {
             var exceptionViewModel = CreateExceptionViewModel(ex, severity);
-            if(exceptionViewModel != null)
-            {
-                exceptionViewModel.Show();
-            }
+            exceptionViewModel?.Show();
         }
 
         protected abstract IExceptionViewModel CreateExceptionViewModel(Exception exception, ErrorSeverity severity);

@@ -29,10 +29,7 @@ namespace Dev2.Activities.SqlBulkInsert
         /// </summary>
         public void Dispose()
         {
-            if(_sbc != null)
-            {
-                _sbc.Close();
-            }
+            _sbc?.Close();
         }
 
         public bool WriteToServer(DataTable dt)

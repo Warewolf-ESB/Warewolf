@@ -380,10 +380,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     Databases.Add(database);
                 }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
             });
         }
 
@@ -393,10 +390,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             if (!IsDatabaseSelected)
             {
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
                 return;
             }
 
@@ -419,10 +413,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     Tables.Add(table);
                 }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
             });
         }
 
@@ -434,10 +425,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     ModelItemCollection.Clear();
                 }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
                 return;
             }
 
@@ -464,16 +452,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     var mapping1 = mapping;
                     var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping1.OutputColumn.ColumnName);
-                    if (oldColumn != null)
+                    if (oldColumn?.InputColumn != null)
                     {
-                        if (oldColumn.InputColumn != null)
-                        {
-                            var inputcolumn = oldColumn.InputColumn;
-                            inputcolumn = inputcolumn.Replace("[", "");
-                            inputcolumn = inputcolumn.Replace("]", "");
-                            inputcolumn = inputcolumn.Replace(" ", "");
-                            mapping.InputColumn = string.Format("[[{0}]]", inputcolumn);
-                        }
+                        var inputcolumn = oldColumn.InputColumn;
+                        inputcolumn = inputcolumn.Replace("[", "");
+                        inputcolumn = inputcolumn.Replace("]", "");
+                        inputcolumn = inputcolumn.Replace(" ", "");
+                        mapping.InputColumn = string.Format("[[{0}]]", inputcolumn);
                     }
                     if (string.IsNullOrEmpty(mapping.InputColumn))
                     {
@@ -482,10 +467,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                     ModelItemCollection.Add(mapping);
                 }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
+                continueWith?.Invoke();
             });
         }
 
@@ -736,10 +718,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)

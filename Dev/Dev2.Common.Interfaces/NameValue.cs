@@ -202,10 +202,7 @@ namespace Dev2.Common.Interfaces
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
                 _name = value;
-                if (_update != null)
-                {
-                    _update(_name);
-                }
+                _update?.Invoke(_name);
             }
         }
 
@@ -224,10 +221,7 @@ namespace Dev2.Common.Interfaces
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
                 _value = value;
-                if (_update != null)
-                {
-                    _update(_value);
-                }
+                _update?.Invoke(_value);
             }
         }
         public ICommand RemoveRowCommand { get; set; }

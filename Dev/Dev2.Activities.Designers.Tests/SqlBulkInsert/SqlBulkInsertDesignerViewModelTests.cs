@@ -1153,7 +1153,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, IEventAggregator eventAggregator, IResourceModel resourceModel, bool configureFindSingle = false, string columnListErrors = "")
         {
-            var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());
+            var sourceDefs = sources?.Select(s => s.Key.ToXml().ToString());
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.Connection.WorkspaceID).Returns(Guid.NewGuid());

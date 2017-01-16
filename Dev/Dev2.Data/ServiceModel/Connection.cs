@@ -94,20 +94,17 @@ namespace Dev2.Data.ServiceModel
         {
             var result = Address;
 
-            if(result != null)
+            if(result?.IndexOf("dsf", StringComparison.Ordinal) < 0)
             {
-                if(result.IndexOf("dsf", StringComparison.Ordinal) < 0)
+                if(result.EndsWith("/"))
                 {
-                    if(result.EndsWith("/"))
-                    {
-                        result += "dsf";
-                    }
-                    else
-                    {
-                        result += "/dsf";
-                    }
-
+                    result += "dsf";
                 }
+                else
+                {
+                    result += "/dsf";
+                }
+
             }
 
             return result;

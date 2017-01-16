@@ -32,8 +32,7 @@ namespace Dev2.Studio.Dock
 
             IInputElement inputElement = element as IInputElement;
 
-            if(null != inputElement)
-                inputElement.RaiseEvent(e);
+            inputElement?.RaiseEvent(e);
         }
         #endregion //RaiseEvent
 
