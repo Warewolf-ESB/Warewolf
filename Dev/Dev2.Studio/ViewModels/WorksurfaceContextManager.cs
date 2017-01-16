@@ -713,7 +713,8 @@ namespace Dev2.Studio.ViewModels
                 AddWorkSurfaceContext(resourceModel);
                 return;
             }
-
+            var environmentModel = resourceModel.Environment;
+            resourceModel.WorkflowXaml = environmentModel.ResourceRepository.FetchResourceDefinition(environmentModel, GlobalConstants.ServerWorkspaceID, resourceModel.ID, true).Message;
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
