@@ -398,6 +398,7 @@
     <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceViewModel.cs" />
     <Compile Include="ToolBase\ExchangeEmail\IExchangeSource.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
+    <Compile Include="ToolBase\IConstructorRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IGenerateInputArea.cs" />
     <Compile Include="ToolBase\IGenerateOutputArea.cs" />

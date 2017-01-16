@@ -8,6 +8,7 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
     {
         ISourceToolRegion<IPluginSource> SourceRegion { get; set; }
         INamespaceToolRegion<INamespaceItem> NamespaceRegion { get; set; }
+        IConstructorRegion<IPluginConstructor> ConstructorRegion { get; set; }
         IActionToolRegion<IPluginAction> ActionRegion { get; set; }
         IDotNetInputRegion InputArea { get; set; }
         IOutputsToolRegion OutputsRegion { get; set; }
