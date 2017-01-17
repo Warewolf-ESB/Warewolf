@@ -127,8 +127,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = false;
             if (_action?.SelectedConstructor != null)
             {
-
-                Inputs = _action.SelectedConstructor.Inputs;
+                Inputs = _action.SelectedConstructor.Inputs.Select(constructorParameter => new ServiceInput(constructorParameter.Name, constructorParameter.Value)).Cast<IServiceInput>().ToList();
                 _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;

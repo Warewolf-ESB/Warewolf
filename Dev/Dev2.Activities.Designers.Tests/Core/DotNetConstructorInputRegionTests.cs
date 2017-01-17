@@ -12,12 +12,12 @@ using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Core.Tests;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -26,7 +26,7 @@ using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Core;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
@@ -309,10 +309,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             return new PluginConstructor()
             {
                 ConstructorName = ".ctor ",
-                Inputs = new List<IServiceInput>
+                Inputs = new List<IConstructorParameter>
                 {
-                    new ServiceInput("name",""),
-                    new ServiceInput("surname",""),
+                    new ConstructorParameter(),
                 },
             };
         }
@@ -322,10 +321,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             return new PluginConstructor()
             {
                 ConstructorName = ".ctor",
-                Inputs = new List<IServiceInput>
+                Inputs = new List<IConstructorParameter>
                 {
-                    new ServiceInput("name (Int32)",""),
-                    new ServiceInput("surname (Double)",""),
+                    new ConstructorParameter(),
                 },
             };
         }
