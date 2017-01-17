@@ -19,6 +19,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.Enabled);
             UIMap.Select_AssemblyFile_From_COMPluginDataTree();
             UIMap.Save_With_Ribbon_Button_And_Dialog("COM Plugin Source");
+            UIMap.Click_COMPluginSource_CloseTabButton();
         }
 
         #region Additional test attributes
