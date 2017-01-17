@@ -22,7 +22,6 @@ namespace Dev2.Activities
     {
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
-        public ICollection<IServiceInput> ConstructorInputs { get; set; }
         public List<Dev2MethodInfo> MethodsToRun { get; set; }
         public IOutputDescription OutputDescription { get; set; }
 
@@ -31,7 +30,7 @@ namespace Dev2.Activities
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
             MethodsToRun = new List<Dev2MethodInfo>();
-            ConstructorInputs = new List<IServiceInput>();
+            Inputs = new List<IServiceInput>();
         }
 
 
@@ -47,7 +46,6 @@ namespace Dev2.Activities
             if (Constructor == null)
             {
                 Constructor = new PluginConstructor();
-                ConstructorInputs = new List<IServiceInput>();
             }
 
 
@@ -69,7 +67,7 @@ namespace Dev2.Activities
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
             }
            
-            constructor.Inputs = ConstructorInputs?.ToList() ?? new List<IServiceInput>();
+            constructor.Inputs = Inputs?.ToList() ?? new List<IServiceInput>();
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,

@@ -15,9 +15,11 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ServiceStack.Common.Extensions;
 
 // ReSharper disable UnusedMember.Global
 
@@ -33,6 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             Assembly loadedAssembly;
             var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
             if (!tryLoadAssembly)
@@ -61,7 +64,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 instance = Activator.CreateInstance(type);
             }
-            var serializeToJsonString = instance.SerializeToJsonString();
+            var serializeToJsonString = serializer.Serialize(instance);
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
@@ -87,19 +90,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 throw;
             }
         }
-
+        
         private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
         {
+            
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var knownBinder = new KnownTypesBinder();
+            loadedAssembly.ExportedTypes.ForEach(t=>knownBinder.KnownTypes.Add(t));
             if (objectToRun.IsStatic)
             {
                 RunMethods(setupInfo, type, null, InvokeMethodsAction);
                 return;
             }
-            var instance = objectToRun.ObjectString.DeserializeToObject(type);
+            var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
             RunMethods(setupInfo, type, instance, InvokeMethodsAction);
         }
 
@@ -141,7 +147,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
 
                         var methodsAction = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
-                        dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString();
+                        var knownBinder = new KnownTypesBinder();
+                        knownBinder.KnownTypes.Add(type);
+                        dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString(knownBinder);
                     }
                 }
             }

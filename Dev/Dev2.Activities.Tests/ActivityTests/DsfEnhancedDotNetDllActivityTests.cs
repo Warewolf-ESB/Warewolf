@@ -12,7 +12,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
 
@@ -131,14 +130,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
             Assert.AreEqual("DotNet DLL", activity.DisplayName);
             Assert.IsNull(activity.Constructor);
-            Assert.IsNotNull(activity.ConstructorInputs);
+            Assert.IsNotNull(activity.Inputs);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
 
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.IsNotNull(activity.Constructor);
-            Assert.IsNotNull(activity.ConstructorInputs);
+            Assert.IsNotNull(activity.Inputs);
         }
 
         [TestMethod]
@@ -189,7 +188,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
-            var serializeToJsonString = human.SerializeToJsonString();
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var serializeToJsonString = human.SerializeToJsonString(knownBinder);
             var activity = new DsfEnhancedDotNetDllActivityMock();
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();

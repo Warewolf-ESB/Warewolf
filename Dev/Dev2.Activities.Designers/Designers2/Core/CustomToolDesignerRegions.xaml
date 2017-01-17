@@ -395,6 +395,7 @@
             <Control Template="{StaticResource NewDotNetConstructorGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
+    
     <ControlTemplate x:Key="NewInputsGrid">
         <Grid>
             <Grid.ColumnDefinitions>
