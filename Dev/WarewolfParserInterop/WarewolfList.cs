@@ -122,10 +122,7 @@ namespace WarewolfParserInterop
 
       public void ResetCurrentEnumerator()
       {
-          if (_currentEnumerator != null)
-          {
-              _currentEnumerator.Reset();
-          }
+          _currentEnumerator?.Reset();
       }
 
       [SuppressMessage("ReSharper", "UnusedMember.Global")]

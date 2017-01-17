@@ -245,16 +245,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
 
             var datalistInputs = GetDataListInputs();
-            if(datalistInputs != null)
+            datalistInputs?.ToList().ForEach(i =>
             {
-                datalistInputs.ToList().ForEach(i =>
-                    {
-                        if(!ServiceInputOptions.Contains(i.Name))
-                        {
-                            ServiceInputOptions.Add(i.Name);
-                        }
-                    });
-            }
+                if(!ServiceInputOptions.Contains(i.Name))
+                {
+                    ServiceInputOptions.Add(i.Name);
+                }
+            });
 
             if(ServiceInputOptions.Contains(LoggingSettings.ServiceInput))
             {

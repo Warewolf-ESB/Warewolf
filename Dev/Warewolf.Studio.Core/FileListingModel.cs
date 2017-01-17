@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +21,7 @@ namespace Warewolf.Studio.Core
 {
     public class FileListingModel : BindableBase, IFileListingModel,IEquatable<FileListingModel>
     {
-        private readonly IEmailAttachmentModel _model;
+        private readonly IFileChooserModel _model;
         private bool _isExpanded;
         private bool _isVisible;
         private readonly IFileListing _file;
@@ -23,30 +33,38 @@ namespace Warewolf.Studio.Core
         bool _isExpanderVisible;
         bool _isChecked;
         Action _selectedAction;
+        private bool _useIsSelected;
 
-        public FileListingModel(IEmailAttachmentModel model, IFileListing file,Action selected)
+        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected = false)
         {
             _model = model;
             _selectedAction = selected;
+            UseIsSelected = useIsSelected;
             if (file != null)
             {
                 Name = file.Name;
                 FullName = file.FullName;
                 if (file.Children != null && file.Children.Count > 0)
                 {
-                    Children =
-                        new AsyncObservableCollection<IFileListingModel>(
-                            file.Children.Select(input => new FileListingModel(_model, input,selected)));
+                    Children = new AsyncObservableCollection<IFileListingModel>(
+                            file.Children.Select(input => new FileListingModel(_model, input, selected, useIsSelected)));
                 }
                 IsDirectory = file.IsDirectory;
                 IsExpanderVisible = IsDirectory;
                 IsVisible = true;
                 _file = file;
-
             }
         }
 
-
+        private bool UseIsSelected
+        {
+            get { return _useIsSelected; }
+            set
+            {
+                _useIsSelected = value;
+                OnPropertyChanged(() => UseIsSelected);
+            }
+        }
 
         public int TotalChildrenCount { get; set; }
 
@@ -58,7 +76,7 @@ namespace Warewolf.Studio.Core
             {
                 if (_children != null)
                 {
-                    return String.IsNullOrEmpty(_filter)
+                    return string.IsNullOrEmpty(_filter)
                         ? _children
                         : new AsyncObservableCollection<IFileListingModel>(_children.Where(a =>
                         {
@@ -97,6 +115,7 @@ namespace Warewolf.Studio.Core
                 return 0;
             }
         }
+
         public int CurrentProgress
         {
             get { return _currentProgress; }
@@ -122,20 +141,17 @@ namespace Warewolf.Studio.Core
 
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get { return _isSelected; }
             set
             {
                 _isSelected = value;
                 if (_isSelected)
                 {
                     IsExpanded = true;
-             
                 }
-                
+
                 OnPropertyChanged(() => IsSelected);
+                _selectedAction();
             }
         }
 
@@ -149,11 +165,11 @@ namespace Warewolf.Studio.Core
                 if (_isExpanded && _model != null && (Children == null || Children.Count == 0))
                 {
                     var dllListings = _model.FetchFiles(_file);
-                    if(dllListings != null)
+                    if (dllListings != null)
                     {
                         Children =
                             new AsyncObservableCollection<IFileListingModel>(
-                                dllListings.Select(input => new FileListingModel(_model, input,_selectedAction))
+                                dllListings.Select(input => new FileListingModel(_model, input, _selectedAction,UseIsSelected))
                                     .ToList());
                     }
                     IsExpanderVisible = Children != null && Children.Count > 0;
@@ -194,7 +210,8 @@ namespace Warewolf.Studio.Core
         public bool Equals(FileListingModel other)
         {
             // ReSharper disable once PossibleNullReferenceException
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
+            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) &&
+                   IsDirectory == other.IsDirectory;
         }
 
 
@@ -232,8 +249,8 @@ namespace Warewolf.Studio.Core
         {
             unchecked
             {
-                var hashCode = Name != null ? Name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
+                var hashCode = Name?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (FullName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();
                 return hashCode;
             }
@@ -252,27 +269,27 @@ namespace Warewolf.Studio.Core
         #endregion
 
         public List<string> FilterSelected(List<string> acc)
-        {   if(IsChecked)
-                    acc.Add(FullName);
-            if(Children!=null)
+        {
+            var canAdd = UseIsSelected ? IsSelected : IsChecked;
+            if (canAdd)
+                acc.Add(FullName);
+            if (Children != null)
             {
-                foreach(var dllListingModel in Children)
+                foreach (var dllListingModel in Children)
                 {
-
                     dllListingModel.FilterSelected(acc);
                 }
             }
             return acc;
         }
 
-        public bool IsChecked { get
+        public bool IsChecked
         {
-            return _isChecked;
-        }
+            get { return _isChecked; }
             set
             {
                 _isChecked = value;
-                OnPropertyChanged(()=>IsChecked);
+                OnPropertyChanged(() => IsChecked);
                 _selectedAction();
             }
         }

@@ -148,7 +148,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             {
                 Exception = dropboxFailureResult.GetException();
             }
-            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
+            var executionError = Exception.InnerException?.Message ?? Exception.Message;
             if (executionError.Contains("not_file"))
             {
                 executionError = ErrorResource.DropBoxFilePathMissing;

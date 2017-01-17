@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Configuration
                 return string.Empty;
             }
             var attr = elem.Attribute(name);
-            return attr == null ? string.Empty : attr.Value;
+            return attr?.Value ?? string.Empty;
         }
     }
 }

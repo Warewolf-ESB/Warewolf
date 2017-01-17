@@ -60,10 +60,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// </summary>
         protected virtual void OnDispose()
         {
-            if(_validationController != null)
-            {
-                _validationController.Dispose();
-            }
+            _validationController?.Dispose();
         }
 
 

@@ -29,12 +29,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
         {
             IList<IServiceCompileRule> rules = FindAll();
 
-            if(rules != null)
-            {
-                return rules.Where(c => c.HandlesType() == typeOf);
-            }
-
-            return null;
+            return rules?.Where(c => c.HandlesType() == typeOf);
         }
 
     }

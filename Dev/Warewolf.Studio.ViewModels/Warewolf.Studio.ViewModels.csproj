@@ -140,7 +140,10 @@
     <Compile Include="DeploySourceExplorerViewModel.cs" />
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
+    <Compile Include="DLLChooser.cs" />
     <Compile Include="DummyServiceTest.cs" />
+    <Compile Include="FileChooser.cs" />
+    <Compile Include="FileChooserModel.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="ManageMySqlSourceViewModel.cs" />
     <Compile Include="ManageOdbcSourceViewModel.cs" />
@@ -157,8 +160,6 @@
     <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
-    <Compile Include="EmailAttachmentModel.cs" />
-    <Compile Include="EmailAttachmentVm.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />

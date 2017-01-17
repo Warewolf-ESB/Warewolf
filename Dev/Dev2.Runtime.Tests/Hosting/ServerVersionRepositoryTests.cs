@@ -582,7 +582,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         string CreateFileName(Guid versionId, int version)
         {
-            return $"{versionId}_{version}_{DateTime.Now.Ticks}_{"bob"}";
+            return $"{versionId}_{version}_{DateTime.Now.Ticks}_bob";
 
         }
 

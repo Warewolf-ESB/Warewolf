@@ -28,8 +28,6 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.Resize_Decision_LargeTool();
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
             UIMap.Click_Decision_Dialog_Cancel_Button();
-            UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
