@@ -51,7 +51,7 @@ namespace Dev2.Studio.Core
 
         abstract protected void Initialize(TContent value);
 
-        public int Depth => _parent == null ? 0 : _parent.Depth + 1;
+        public int Depth => _parent?.Depth + 1 ?? 0;
 
         public ObservableCollection<IDebugTreeViewItemViewModel> Children => _children;
 

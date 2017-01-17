@@ -130,10 +130,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             List<IDebugState> debugStates;
             TryGetValue("debugStates", out debugStates);
-            if (debugStates != null)
-            {
-                debugStates.Clear();
-            }
+            debugStates?.Clear();
         }
 
         [Given(@"Debug events are reset")]
@@ -541,10 +538,7 @@ namespace Dev2.Activities.Specs.Composition
                     var service = new WebService(xml);
                     var source = service.Source as WebSource;
                     updatedActivity.Headers = new List<INameValue>();
-                    if (service.Headers != null)
-                    {
-                        service.Headers.AddRange(service.Headers);
-                    }
+                    service.Headers?.AddRange(service.Headers);
                     updatedActivity.OutputDescription = service.OutputDescription;
                     updatedActivity.QueryString = service.RequestUrl;
                     updatedActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
@@ -775,10 +769,7 @@ namespace Dev2.Activities.Specs.Composition
                                          string.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
                                    select elements).SingleOrDefault();
 
-                    if (element != null)
-                    {
-                        element.SetAttributeValue("Value", toVariable);
-                    }
+                    element?.SetAttributeValue("Value", toVariable);
 
                     outputSb.Append(element);
                 }
@@ -2270,7 +2261,7 @@ namespace Dev2.Activities.Specs.Composition
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
-            if (resourceModel == null || resourceModel.Environment == null)
+            if (resourceModel?.Environment == null)
             {
                 return;
             }
@@ -2344,7 +2335,7 @@ namespace Dev2.Activities.Specs.Composition
 
             for (var i = 0; i < count; i++)
             {
-                repository.Save(resourceModel);
+                //repository.Save(resourceModel);
                 repository.SaveToServer(resourceModel);
             }
 

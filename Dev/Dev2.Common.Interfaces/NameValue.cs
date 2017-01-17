@@ -67,7 +67,7 @@ namespace Dev2.Common.Interfaces
             unchecked
             {
                 // ReSharper disable NonReadonlyFieldInGetHashCode
-                return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ (_value != null ? _value.GetHashCode() : 0);
+                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);
                 // ReSharper restore NonReadonlyFieldInGetHashCode
             }
         }
@@ -202,10 +202,7 @@ namespace Dev2.Common.Interfaces
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
                 _name = value;
-                if (_update != null)
-                {
-                    _update(_name);
-                }
+                _update?.Invoke(_name);
             }
         }
 
@@ -224,10 +221,7 @@ namespace Dev2.Common.Interfaces
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
                 _value = value;
-                if (_update != null)
-                {
-                    _update(_value);
-                }
+                _update?.Invoke(_value);
             }
         }
         public ICommand RemoveRowCommand { get; set; }

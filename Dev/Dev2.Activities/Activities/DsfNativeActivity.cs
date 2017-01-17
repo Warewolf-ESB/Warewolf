@@ -223,10 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
-                if (dataObject.Environment != null)
-                {
-                    dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
-                }
+                dataObject.Environment?.AddError(errorResultTO.MakeDataListReady());
             }
             finally
             {
@@ -367,7 +364,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ScenarioID = ScenarioID
             };
             var result = SimulationRepository.Instance.Get(key);
-            if (result != null && result.Value != null)
+            if (result?.Value != null)
             {
 
                 var dataObject = context.GetExtension<IDSFDataObject>();

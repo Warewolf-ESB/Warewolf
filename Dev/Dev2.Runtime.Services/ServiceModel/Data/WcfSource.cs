@@ -128,7 +128,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             get
             {
                 var stringBuilder = base.DataList;
-                return stringBuilder != null ? stringBuilder.ToString() : null;
+                return stringBuilder?.ToString();
             }
             set
             {

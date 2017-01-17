@@ -466,7 +466,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AppKey = AppKey,
                     AccessToken = AccessToken,
-                    ResourceID = _oAuthSource == null ? Guid.NewGuid() : _oAuthSource.ResourceID
+                    ResourceID = _oAuthSource?.ResourceID ?? Guid.NewGuid()
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock

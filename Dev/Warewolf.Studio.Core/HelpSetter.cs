@@ -39,10 +39,7 @@ namespace Warewolf.Studio.Core
 
         void OnGotFocus(object sender, RoutedEventArgs args)
         {
-            if(DataContext != null)
-            {
-                DataContext.UpdateHelpDescriptor(Text);
-            }
+            DataContext?.UpdateHelpDescriptor(Text);
         }
     }
 }

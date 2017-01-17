@@ -28,7 +28,7 @@ namespace Dev2.Services.Security
             var field = value.GetType().GetField(value.ToString());
             var attribute = Attribute.GetCustomAttribute(field, typeof(ReasonAttribute)) as ReasonAttribute;
 
-            return attribute == null || String.IsNullOrEmpty(attribute.Reason) ? null : attribute.Reason;
+            return String.IsNullOrEmpty(attribute?.Reason) ? null : attribute.Reason;
         }
 
         public static bool IsContributor(this Permissions permissions)
@@ -94,10 +94,7 @@ namespace Dev2.Services.Security
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}
-            if(resource != null)
-            {
-                resource = resource.Replace('/', '\\');
-            }
+            resource = resource?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resource))
             {
                 return true;

@@ -1027,6 +1027,18 @@
   <data name="PluginSourceClearSearchHelp" xml:space="preserve">
     <value>Clears the Search Filter</value>
   </data>
+  <data name="PluginSourceDllFullNameButtonHelp" xml:space="preserve">
+    <value>PluginSourceDllFullNameButtonHelp</value>
+  </data>
+  <data name="PluginSourceConfigFileHelp" xml:space="preserve">
+    <value>PluginSourceConfigFileHelp</value>
+  </data>
+  <data name="PluginSourceConfigFileButtonHelp" xml:space="preserve">
+    <value>PluginSourceConfigFileButtonHelp</value>
+  </data>
+  <data name="PluginSourceGacAssemblyNameButtonHelp" xml:space="preserve">
+    <value>PluginSourceGacAssemblyNameButtonHelp</value>
+  </data>
   <data name="PluginSourceDllFullNameHelp" xml:space="preserve">
     <value>The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;	or	The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;</value>
   </data>
@@ -1070,7 +1082,7 @@
     <value>This is the actual content you want to add in the Queue	When the Consumer consumes the message, this content will	be returned as the response.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpPrefetch" xml:space="preserve">
-    <value>Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
     <value>Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
@@ -1621,7 +1633,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Select the Wcf Source you want to use from previously setup sources.</value>
   </data>
   <data name="WcfSourceHostNameHelp" xml:space="preserve">
-    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
+    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Discover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
   </data>
   <data name="WebInputDefaultValueHelp" xml:space="preserve">
     <value>The test data you want to use to execute this action with.</value>
@@ -1742,234 +1754,234 @@ A test must be ignored/disabled before it can be deleted.</value>
 To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Javascript" xml:space="preserve">
-    <value>Tool_Javascript</value>
+    <value>Use the Script tool to execute JavaScript code.</value>
   </data>
   <data name="Tool_WebMethod_Put" xml:space="preserve">
-    <value>Tool_WebMethod_Put</value>
+    <value>Use the HTTP Web PUT tool to execute a web PUT request. You can specify headers and other relevant data.</value>
   </data>
   <data name="Tool_WebMethod_Post" xml:space="preserve">
-    <value>Tool_WebMethod_Post</value>
+    <value>Use the HTTP Web POST tool to execute a web POST request. You can specify headers and other relevant data.</value>
   </data>
   <data name="Tool_WebMethod_Get" xml:space="preserve">
-    <value>Tool_WebMethod_Get</value>
+    <value>Use the HTTP Web GET tool to execute a web GET request. You can specify headers and other relevant data.</value>
   </data>
   <data name="Tool_WebMethod_Delete" xml:space="preserve">
-    <value>Tool_WebMethod_Delete</value>
+    <value>Use the HTTP Web DELETE tool to execute a web DELETE request. You can specify headers and other relevant data.</value>
   </data>
   <data name="Tool_Utility_Xpath" xml:space="preserve">
-    <value>Tool_Utility_Xpath</value>
+    <value>Query XML data using XPath 2.0 syntax and then use the results in other parts of your workflow.</value>
   </data>
   <data name="Tool_Utility_Web_Request" xml:space="preserve">
-    <value>Tool_Utility_Web_Request</value>
+    <value>Use the Web Request tool to execute a URL and return the server response.</value>
   </data>
   <data name="Tool_Utility_Sys_Info" xml:space="preserve">
-    <value>Tool_Utility_Sys_Info</value>
+    <value>Use the System Information tool to get local information specific to the machine that is running the workflow.</value>
   </data>
   <data name="Tool_Utility_Random" xml:space="preserve">
-    <value>Tool_Utility_Random</value>
+    <value>Use the Random tool to generate random numbers, letters, both or GUIDs.</value>
   </data>
   <data name="Tool_Utility_Rabbit_MQ_Publish" xml:space="preserve">
-    <value>Tool_Utility_Rabbit_MQ_Publish</value>
+    <value>Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ queue. The queue will be created if it does not exist.</value>
   </data>
   <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
-    <value>Tool_Utility_Rabbit_MQ_Consume</value>
+    <value>Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s queue.</value>
   </data>
   <data name="Tool_Utility_Format_Number" xml:space="preserve">
-    <value>Tool_Utility_Format_Number</value>
+    <value>Use the format number tool for rounding and showing decimals.</value>
   </data>
   <data name="Tool_Utility_Date_Time" xml:space="preserve">
-    <value>Tool_Utility_Date_Time</value>
+    <value>Use the Date and Time tool to change a date’s format and add or subtract a piece of time.</value>
   </data>
   <data name="Tool_Utility_Date_Time_Diff" xml:space="preserve">
-    <value>Tool_Utility_Date_Time_Diff</value>
+    <value>Use the Date and Time Difference tool to calculate the difference in time of two date times.</value>
   </data>
   <data name="Tool_Utility_Create_JSON" xml:space="preserve">
-    <value>Tool_Utility_Create_JSON</value>
+    <value>Use the Create JSON tool to create JSON data.</value>
   </data>
   <data name="Tool_Utility_Comment" xml:space="preserve">
-    <value>Tool_Utility_Comment</value>
+    <value>Use the Comment tool to leave notes and information within your workflow.</value>
   </data>
   <data name="Tool_Utility_Calculate" xml:space="preserve">
-    <value>Tool_Utility_Calculate</value>
+    <value>Use the Calculate tool to apply Excel like functions and mathematical procedures.</value>
   </data>
   <data name="Tool_Utility_Aggregate_Calculate" xml:space="preserve">
-    <value>Tool_Utility_Aggregate_Calculate</value>
+    <value>To perform a calculation, put the calculation in here in BODMAS format. To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.</value>
   </data>
   <data name="Tool_SharePoint_Upload_File" xml:space="preserve">
-    <value>Tool_SharePoint_Upload_File</value>
+    <value>Use the SharePoint Upload File tool to send files to your SharePoint server. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Update_List_Item" xml:space="preserve">
-    <value>Tool_SharePoint_Update_List_Item</value>
+    <value>Use the SharePoint Update List Item tool to update an entry on a SharePoint list. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Read_List_Item" xml:space="preserve">
-    <value>Tool_SharePoint_Read_List_Item</value>
+    <value>Use the SharePoint Read List Item tool to Read the values off a SharePoint list. Also works with SharePoint online.</value>
   </data>
   <data name="Tool_SharePoint_Read_Folder" xml:space="preserve">
-    <value>Tool_SharePoint_Read_Folder</value>
+    <value>Use the SharePoint Read Folder tool to list the files in a SharePoint directory. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Move_File" xml:space="preserve">
-    <value>Tool_SharePoint_Move_File</value>
+    <value>Use the SharePoint Move File tool to move files on a SharePoint server. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Download_File" xml:space="preserve">
-    <value>Tool_SharePoint_Download_File</value>
+    <value>Use the SharePoint Download File tool to retreive a file from a SharePoint server. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Delete_List_Item" xml:space="preserve">
-    <value>Tool_SharePoint_Delete_List_Item</value>
+    <value>Use the SharePoint Delete List Item tool to delete an entry from a SharePoint list. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Delete_File" xml:space="preserve">
-    <value>Tool_SharePoint_Delete_File</value>
+    <value>Use the SharePoint Delete File tool to remove a file from a SharePoint server. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Create_List_Item" xml:space="preserve">
-    <value>Tool_SharePoint_Create_List_Item</value>
+    <value>Use the SharePoint Create List Item tool to add an entry to a SharePoint list. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_SharePoint_Copy_File" xml:space="preserve">
-    <value>Tool_SharePoint_Copy_File</value>
+    <value>Use the SharePoint Copy File tool to copy a file from a  SharePoint server. Also works with SharePoint Online.</value>
   </data>
   <data name="Tool_Scripting_Script" xml:space="preserve">
-    <value>Tool_Scripting_Script</value>
+    <value>Use the Script tool to execute JavaScript, Ruby or Python code.</value>
   </data>
   <data name="Tool_Scripting_CMD_Script" xml:space="preserve">
-    <value>Tool_Scripting_CMD_Script</value>
+    <value>Use the CMD tool to execute command line commands like a batch file.</value>
   </data>
   <data name="Tool_Resources_WCF" xml:space="preserve">
-    <value>Tool_Resources_WCF</value>
+    <value>Use the WCF tool, to execute any pre-existing WCF services you may have access to. If your service returns any data you will be able to map this data into Warewolf variables, to use later in your flow.</value>
   </data>
   <data name="Tool_Resources_Service" xml:space="preserve">
-    <value>Tool_Resources_Service</value>
+    <value>Use the Service tool to execute another Warewolf service. Or, drag and drop directly from the Explorer.</value>
   </data>
   <data name="Tool_Resources_Dot_net_DLL" xml:space="preserve">
-    <value>Tool_Resources_Dot_net_DLL</value>
+    <value>Use the DotNet DLL tool to connect to, and execute any, DotNet DLL from inside your flow-based service.</value>
   </data>
   <data name="Tool_Resources_Com_DLL" xml:space="preserve">
-    <value>Tool_Resources_Com_DLL</value>
+    <value>Use the COM tool to connect to, and execute any, COM DLL from inside your flow-based service.</value>
   </data>
   <data name="Tool_Recordset_Unique_Records" xml:space="preserve">
-    <value>Tool_Recordset_Unique_Records</value>
+    <value>Use the Unique Records tool to return all unique records in a recordset.</value>
   </data>
   <data name="Tool_Recordset_Sort" xml:space="preserve">
-    <value>Tool_Recordset_Sort</value>
+    <value>Use the Sort Records tool to order records either forwards or backwards.</value>
   </data>
   <data name="Tool_Recordset_Length" xml:space="preserve">
-    <value>Tool_Recordset_Length</value>
+    <value>Use the Records Length tool to get the length of the recordset.</value>
   </data>
   <data name="Tool_Recordset_Find_Records" xml:space="preserve">
-    <value>Tool_Recordset_Find_Records</value>
+    <value>Use the Find Records tool to return indexes of records that match a given criteria.</value>
   </data>
   <data name="Tool_Recordset_Delete" xml:space="preserve">
-    <value>Tool_Recordset_Delete</value>
+    <value>Use the Delete Records tool to remove records from a recordset.</value>
   </data>
   <data name="Tool_Recordset_Count" xml:space="preserve">
-    <value>Tool_Recordset_Count</value>
+    <value>Use the Count Records tool to return the number of records in a recordset.</value>
   </data>
   <data name="Tool_LoopConstruct_Select_and_Apply" xml:space="preserve">
-    <value>Tool_LoopConstruct_Select_and_Apply</value>
+    <value>Use the Select &amp; Apply tool to update Recordset and Object data without having to map the data out first. You can perform any number of updates or combinations of updates by using it in conjunction with the sequence tool.</value>
   </data>
   <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
-    <value>Tool_LoopConstruct_For_Each</value>
+    <value>Use the For Each tool to run something a few times. Very handy for processing recordset or specific records.</value>
   </data>
   <data name="Tool_Flow_Switch" xml:space="preserve">
-    <value>Tool_Flow_Switch</value>
+    <value>Use the Switch tool when you need to take a different action depending on the value of a variable. Just drag another flow arm to add another possibility.</value>
   </data>
   <data name="Tool_Flow_Sequence" xml:space="preserve">
-    <value>Tool_Flow_Sequence</value>
+    <value>Use the sequence tool to group steps into a single step in a workflow.</value>
   </data>
   <data name="Tool_Flow_Decision" xml:space="preserve">
-    <value>Tool_Flow_Decision</value>
+    <value>Use the Decision flow tool to check if something is True or False and execute different branches based on that decision.</value>
   </data>
   <data name="Tool_File_Zip" xml:space="preserve">
-    <value>Tool_File_Zip</value>
+    <value>Use the Zip tool to compress a folder or a file into a Zip archive. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Write_File" xml:space="preserve">
-    <value>Tool_File_Write_File</value>
+    <value>Use the Write File tool to put the contents of a variable into a physical file on a disk. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Unzip" xml:space="preserve">
-    <value>Tool_File_Unzip</value>
+    <value>Use the Unzip tool to decompress a Zip file into a folder. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Rename" xml:space="preserve">
-    <value>Tool_File_Rename</value>
+    <value>Use the Rename tool to rename a file or folder. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Read_Folder" xml:space="preserve">
-    <value>Tool_File_Read_Folder</value>
+    <value>Use the Read Folder tool to read the list of files in a folder into a variable. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Read_File" xml:space="preserve">
-    <value>Tool_File_Read_File</value>
+    <value>Use the Read File tool to put the contents of a file into a variable. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Move" xml:space="preserve">
-    <value>Tool_File_Move</value>
+    <value>Use the Move tool to move folders or files from one location to another. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Delete" xml:space="preserve">
-    <value>Tool_File_Delete</value>
+    <value>Use the Delete tool to delete a file or a folder. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Create" xml:space="preserve">
-    <value>Tool_File_Create</value>
+    <value>Use the Create tool to create folders or files. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_File_Copy" xml:space="preserve">
-    <value>Tool_File_Copy</value>
+    <value>Use the Copy tool to make a copy of a file or folder. (File System, UNC, FTP, FTPS, SFTP)</value>
   </data>
   <data name="Tool_Email_SMTP_Send" xml:space="preserve">
-    <value>Tool_Email_SMTP_Send</value>
+    <value>Use the SMTP send tool to send an email from a SMTP server e.g. Gmail</value>
   </data>
   <data name="Tool_Email_Exchange_Send" xml:space="preserve">
-    <value>Tool_Email_Exchange_Send</value>
+    <value>Use the exchange send tool to email from an Exchange email account.</value>
   </data>
   <data name="Tool_Dropbox_Upload" xml:space="preserve">
-    <value>Tool_Dropbox_Upload</value>
+    <value>Use the Dropbox Upload tool to upload from your system to your Dropbox online account.</value>
   </data>
   <data name="Tool_Dropbox_List_Contents" xml:space="preserve">
-    <value>Tool_Dropbox_List_Contents</value>
+    <value>Use the Dropbox List Contents tool to read the file, folder or file and folder information of a folder and or subfolders in your Dropbox online account.</value>
   </data>
   <data name="Tool_Dropbox_Download" xml:space="preserve">
-    <value>Tool_Dropbox_Download</value>
+    <value>Use the Dropbox Download tool to pull files and folders down from your Dropbox online account onto your system.</value>
   </data>
   <data name="Tool_Dropbox_Delete" xml:space="preserve">
-    <value>Tool_Dropbox_Delete</value>
+    <value>Use the Dropbox Delete tool to remove files or folders from your Dropbox online account.</value>
   </data>
   <data name="Tool_Database_SQL_Server" xml:space="preserve">
-    <value>Tool_Database_SQL_Server</value>
+    <value>Use the SQL tool to execute against any SQL Database. This tool will expose the stored procedures etc. that are already setup on the database. It allows you to map Warewolf data into, execute then map Warewolf data out of them.</value>
   </data>
   <data name="Tool_Database_SQL_Bulk_Insert" xml:space="preserve">
-    <value>Tool_Database_SQL_Bulk_Insert</value>
+    <value>Use the Bulk Insert tool to move more than one record at a time into Microsoft SQL Server. This tool exposes the built-in functionality options and is highly performant when used exclusively with the Recordset data going in.</value>
   </data>
   <data name="Tool_Database_PostgreSQL" xml:space="preserve">
-    <value>Tool_Database_PostgreSQL</value>
+    <value>Use the PostgreSQL tool to execute against any PostgreSQL database. This tool will expose the stored procedures etc. that are already setup on the database and allow you to map Warewolf data into, execute and then map Warewolf data out of them.</value>
   </data>
   <data name="Tool_Database_Oracle" xml:space="preserve">
-    <value>Tool_Database_Oracle</value>
+    <value>Use the Oracle tool to execute against any Oracle database. This tool will expose the stored procedures etc. that are already setup on the database and allow you to map Warewolf data into, execute and then map Warewolf data out of them.</value>
   </data>
   <data name="Tool_Database_ODBC" xml:space="preserve">
-    <value>Tool_Database_ODBC</value>
+    <value>Use the ODBC tool to execute against any ODBC Data Source. This tool will execute your commands against the ODBC on your computer. It allows you to map Warewolf data into, execute then map Warewolf data out of them.</value>
   </data>
   <data name="Tool_Database_MySQL" xml:space="preserve">
-    <value>Tool_Database_MySQL</value>
+    <value>Use the MySQL tool to execute against any MySQL Database. This tool will expose the stored procedures etc. that are already set up on the database. It allows you to map Warewolf data into, execute and then map the Warewolf data out of them.</value>
   </data>
   <data name="Tool_Data_Replace" xml:space="preserve">
-    <value>Tool_Data_Replace</value>
+    <value>Use the Replace tool to find and replace information in a variable / recordset. And return the count of how many were replaced.</value>
   </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
-    <value>Tool_Data_Find_Index</value>
+    <value>Use the Find Index tool to find the numeric index of one or more occurrences of something in that variable.</value>
   </data>
   <data name="Tool_Data_Data_Split" xml:space="preserve">
-    <value>Tool_Data_Data_Split</value>
+    <value>Use the Data Split to break up a variable into multiple variables based on some character or index, a new line or a tab etc.</value>
   </data>
   <data name="Tool_Data_Data_Merge" xml:space="preserve">
-    <value>Tool_Data_Data_Merge</value>
+    <value>Use the Data Merge to join recordset data together. Very handy for making flat files.</value>
   </data>
   <data name="Tool_Data_Case_Convert" xml:space="preserve">
-    <value>Tool_Data_Case_Convert</value>
+    <value>Use the Case Conversion tool to convert or change the case of text.</value>
   </data>
   <data name="Tool_Data_Base_Convert" xml:space="preserve">
-    <value>Tool_Data_Base_Convert</value>
+    <value>Use the Base Conversion tool to convert data From Text, Base64, Hex and Binary to Text, Base64, Hex and Binary.</value>
   </data>
   <data name="Tool_Data_Assign" xml:space="preserve">
-    <value>Tool_Data_Assign</value>
+    <value>Use the Assign tool to set the value of a variable.</value>
   </data>
   <data name="Tool_Data_Assign_Object" xml:space="preserve">
-    <value>Tool_Data_Assign_Object</value>
+    <value>Use the Assign Object tool to manipulate Object data. You can use the Assign Object tool inside a Select &amp; Apply tool for more fine-grained control of the manipulation.</value>
   </data>
   <data name="Tool_Ruby" xml:space="preserve">
-    <value>Tool_Ruby</value>
+    <value>Use the Script tool to execute Ruby code.</value>
   </data>
   <data name="Tool_Python" xml:space="preserve">
-    <value>Tool_Python</value>
+    <value>Use the Script tool to execute Python code.</value>
   </data>
 </root>

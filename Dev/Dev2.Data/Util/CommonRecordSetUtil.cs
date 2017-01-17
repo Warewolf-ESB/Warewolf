@@ -27,7 +27,7 @@ namespace Dev2.Data.Util
             var blankIndex = fullRecSetName.IndexOf(EmptyBrackets, StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace(EmptyBrackets, $"({"*"})");
+                return fullRecSetName.Replace(EmptyBrackets, "(*)");
             }
             return fullRecSetName;
         }
@@ -37,7 +37,7 @@ namespace Dev2.Data.Util
             var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace("().", $"({"*"}).");
+                return fullRecSetName.Replace("().", "(*).");
             }
             return fullRecSetName;
         }

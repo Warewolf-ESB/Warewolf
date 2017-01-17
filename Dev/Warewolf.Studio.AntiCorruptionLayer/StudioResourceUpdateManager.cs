@@ -202,5 +202,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
         }
+
+        #region Implementation of IStudioUpdateManager
+
+        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        {
+            UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
+        }
+
+        #endregion
     }
 }

@@ -1,29 +1,27 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
-
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core;
-#pragma warning disable 4014
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class EmailAttachmentVmTests
+    public class FileChooserTests
     {
         #region Fields
 
         private List<string> _attachments;
-        private Mock<IEmailAttachmentModel> _modelMock;
+        private Mock<IFileChooserModel> _modelMock;
         private Mock<IFileListing> _fileListingItemMock;
         private bool _closeActionExecuted;
         private string _fileListingItemName;
 
         private List<string> _changedProperties;
-        private EmailAttachmentVm _target;
+        private FileChooser _target;
 
         #endregion Fields
 
@@ -32,7 +30,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _modelMock  = new Mock<IEmailAttachmentModel>();
+            _modelMock = new Mock<IFileChooserModel>();
             _fileListingItemName = "someFileListing";
             _fileListingItemMock = new Mock<IFileListing>();
             _fileListingItemMock.SetupGet(it => it.Name).Returns(_fileListingItemName);
@@ -41,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _closeActionExecuted = false;
 
             _changedProperties = new List<string>();
-            _target = new EmailAttachmentVm(_attachments, _modelMock.Object, () => _closeActionExecuted = true);
+            _target = new FileChooser(_attachments, _modelMock.Object, () => _closeActionExecuted = true, true);
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
         }
 
@@ -53,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCancelCommandCanExecute()
         {
             //act
-            var result = _target.CancelCommand.CanExecute();
+            var result = _target.CancelCommand.CanExecute(null);
 
             //assert
             Assert.IsTrue(result);
@@ -63,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCancelCommandExecute()
         {
             //act
-            _target.CancelCommand.Execute();
+            _target.CancelCommand.Execute(null);
 
             //assert
             Assert.AreEqual(MessageBoxResult.Cancel, _target.Result);
@@ -74,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveCommandCanExecute()
         {
             //act
-            var result = _target.SaveCommand.CanExecute();
+            var result = _target.SaveCommand.CanExecute(null);
 
             //assert
             Assert.IsTrue(result);
@@ -84,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveCommandExecute()
         {
             //act
-            _target.SaveCommand.Execute();
+            _target.SaveCommand.Execute(null);
 
             //assert
             Assert.AreEqual(MessageBoxResult.OK, _target.Result);
@@ -107,6 +105,27 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, value);
+        }
+
+
+        [TestMethod]
+        public void TestAllowMultipleSelection()
+        {
+            //act
+            _target.AllowMultipleSelection = true;
+
+            //assert
+            Assert.IsTrue(_target.AllowMultipleSelection);
+        }
+
+        [TestMethod]
+        public void TestSelectedDriveName()
+        {
+            //act
+            _target.SelectedDriveName = _fileListingItemName;
+
+            //assert
+            Assert.AreEqual(_fileListingItemName, _target.SelectedDriveName);
         }
 
         [TestMethod]
@@ -235,8 +254,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectAttachment(name, model);
 
             //assert
-            fileListingMock.VerifySet(it=>it.IsExpanded = true);
-            fileChildListingMock.VerifySet(it=>it.IsExpanded = true);
+            fileListingMock.VerifySet(it => it.IsExpanded = true);
+            fileChildListingMock.VerifySet(it => it.IsExpanded = true);
             fileGrandChildListingMock.VerifySet(it => it.IsChecked = true);
         }
 

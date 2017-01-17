@@ -165,23 +165,20 @@ namespace Warewolf.Storage
             if (result.IsWarewolfRecordSetResult)
             {
                 var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (recSetResult != null)
+                var recSetData = recSetResult?.Item;
+                if (recSetData != null)
                 {
-                    var recSetData = recSetResult.Item;
-                    if (recSetData != null)
+                    var data = recSetData.Data.ToArray();
+                    var listOfData = new List<string>();
+                    foreach (var keyValuePair in data)
                     {
-                        var data = recSetData.Data.ToArray();
-                        var listOfData = new List<string>();
-                        foreach (var keyValuePair in data)
+                        if(keyValuePair.Key== "WarewolfPositionColumn")
                         {
-                            if(keyValuePair.Key== "WarewolfPositionColumn")
-                            {
-                                continue;
-                            }
-                            listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
+                            continue;
                         }
-                        return listOfData;
+                        listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
                     }
+                    return listOfData;
                 }
             }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
@@ -260,23 +257,20 @@ namespace Warewolf.Storage
             if (result.IsWarewolfRecordSetResult)
             {
                 var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (recSetResult != null)
+                var recSetData = recSetResult?.Item;
+                if (recSetData != null)
                 {
-                    var recSetData = recSetResult.Item;
-                    if (recSetData != null)
+                    var data = recSetData.Data.ToArray();
+                    var listOfData = new List<string>();
+                    foreach (var keyValuePair in data)
                     {
-                        var data = recSetData.Data.ToArray();
-                        var listOfData = new List<string>();
-                        foreach (var keyValuePair in data)
+                        if (keyValuePair.Key == "WarewolfPositionColumn")
                         {
-                            if (keyValuePair.Key == "WarewolfPositionColumn")
-                            {
-                                continue;
-                            }
-                            listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
+                            continue;
                         }
-                        return string.Join(",",listOfData);
+                        listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
                     }
+                    return string.Join(",",listOfData);
                 }
             }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
@@ -382,23 +376,20 @@ namespace Warewolf.Storage
             if (result.IsWarewolfRecordSetResult)
             {
                 var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (recSetResult != null)
+                var recSetData = recSetResult?.Item;
+                if (recSetData != null)
                 {
-                    var recSetData = recSetResult.Item;
-                    if (recSetData != null)
+                    var data = recSetData.Data.ToArray();
+                    var listOfData = new List<DataStorage.WarewolfAtom>();
+                    foreach(var keyValuePair in data)
                     {
-                        var data = recSetData.Data.ToArray();
-                        var listOfData = new List<DataStorage.WarewolfAtom>();
-                        foreach(var keyValuePair in data)
+                        if (keyValuePair.Key == "WarewolfPositionColumn")
                         {
-                            if (keyValuePair.Key == "WarewolfPositionColumn")
-                            {
-                                continue;
-                            }
-                            listOfData.AddRange(keyValuePair.Value.ToList());
+                            continue;
                         }
-                        return listOfData;
+                        listOfData.AddRange(keyValuePair.Value.ToList());
                     }
+                    return listOfData;
                 }
             }
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
@@ -73,33 +74,50 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             try
             {
-                var @lock = Common.GetWorkspaceLock(workspaceID);
-                lock (@lock)
+                if (workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
-                    if (resourceID == Guid.Empty || string.IsNullOrEmpty(type))
-                    {
-                        throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
-                    }
-
-                    var workspaceResources = _resourceCatalog.GetResources(workspaceID);
-                    var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
-
-                    var commands = GetDeleteCommands(workspaceID, resourceID, type, deleteVersions, resources, workspaceResources);
-                    if (commands.ContainsKey(resources.Count))
-                    {
-                        var resourceCatalogResult = commands[resources.Count];
-                        return resourceCatalogResult;
-                    }
-                    return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceID}'.</Result>");
+                    return DeleteFromWorkspace(workspaceID, resourceID, type, deleteVersions);
                 }
+                foreach(var wid in _resourceCatalog.WorkspaceResources.Keys)
+                {
+                    var result = DeleteFromWorkspace(wid, resourceID, type, deleteVersions);                    
+                    if(wid==GlobalConstants.ServerWorkspaceID && result.Status != ExecStatus.Success)
+                    {
+                        return result;
+                    }
+                }
+                return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
             }
             catch (Exception err)
             {
                 Dev2Logger.Error("Delete Error", err);
                 throw;
             }
+        
         }
 
+        private ResourceCatalogResult DeleteFromWorkspace(Guid workspaceID, Guid resourceID, string type, bool deleteVersions)
+        {
+            var @lock = Common.GetWorkspaceLock(workspaceID);
+            lock(@lock)
+            {
+                if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+                {
+                    throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
+                }
+
+                var workspaceResources = _resourceCatalog.GetResources(workspaceID);
+                var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
+
+                var commands = GetDeleteCommands(workspaceID, resourceID, type, deleteVersions, resources, workspaceResources);
+                if(commands.ContainsKey(resources.Count))
+                {
+                    var resourceCatalogResult = commands[resources.Count];
+                    return resourceCatalogResult;
+                }
+                return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceID}'.</Result>");
+            }
+        }
 
         #endregion
 

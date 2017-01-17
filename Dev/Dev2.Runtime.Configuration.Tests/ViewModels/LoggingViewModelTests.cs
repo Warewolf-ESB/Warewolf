@@ -171,10 +171,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         private static ILoggingSettings GetSettingsObject(IEnumerable<IWorkflowDescriptor> workflows = null)
         {
             var settings = new LoggingSettings("InvalidUri");
-            if(workflows != null)
-            {
-                workflows.ToList().ForEach(wf => settings.Workflows.Add(wf));
-            }
+            workflows?.ToList().ForEach(wf => settings.Workflows.Add(wf));
             return settings;
         }
 

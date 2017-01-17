@@ -43,3 +43,12 @@ Scenario: Run Passing Tests
 	Then The First Test "Is" Invalid
 	When I Click First Test Delete Button
 	And I Click MessageBox Yes
+
+Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
+	Given The Warewolf Studio is running
+	When I Run All Hello World Tests
+	And I Open Explorer First Item With Double Click
+	And I Click VariableList Scalar Row2 IsInputCheckbox
+	And I Click Save Ribbon Button Without Expecting a Dialog
+	And I Open Explorer First Item Tests With Context Menu
+	Then The First Test "Is" Invalid

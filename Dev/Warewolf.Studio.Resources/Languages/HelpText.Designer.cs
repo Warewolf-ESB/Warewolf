@@ -2126,11 +2126,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PluginSourceConfigFileButtonHelp.
+        /// </summary>
+        public static string PluginSourceConfigFileButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceConfigFileButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceConfigFileHelp.
+        /// </summary>
+        public static string PluginSourceConfigFileHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceConfigFileHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceDllFullNameButtonHelp.
+        /// </summary>
+        public static string PluginSourceDllFullNameButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceDllFullNameButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;	or	The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;.
         /// </summary>
         public static string PluginSourceDllFullNameHelp {
             get {
                 return ResourceManager.GetString("PluginSourceDllFullNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PluginSourceGacAssemblyNameButtonHelp.
+        /// </summary>
+        public static string PluginSourceGacAssemblyNameButtonHelp {
+            get {
+                return ResourceManager.GetString("PluginSourceGacAssemblyNameButtonHelp", resourceCulture);
             }
         }
         
@@ -2252,7 +2288,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {
@@ -3732,7 +3768,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Assign.
+        ///   Looks up a localized string similar to Use the Assign tool to set the value of a variable..
         /// </summary>
         public static string Tool_Data_Assign {
             get {
@@ -3741,7 +3777,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Assign_Object.
+        ///   Looks up a localized string similar to Use the Assign Object tool to manipulate Object data. You can use the Assign Object tool inside a Select &amp; Apply tool for more fine-grained control of the manipulation..
         /// </summary>
         public static string Tool_Data_Assign_Object {
             get {
@@ -3750,7 +3786,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Base_Convert.
+        ///   Looks up a localized string similar to Use the Base Conversion tool to convert data From Text, Base64, Hex and Binary to Text, Base64, Hex and Binary..
         /// </summary>
         public static string Tool_Data_Base_Convert {
             get {
@@ -3759,7 +3795,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Case_Convert.
+        ///   Looks up a localized string similar to Use the Case Conversion tool to convert or change the case of text..
         /// </summary>
         public static string Tool_Data_Case_Convert {
             get {
@@ -3768,7 +3804,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Data_Merge.
+        ///   Looks up a localized string similar to Use the Data Merge to join recordset data together. Very handy for making flat files..
         /// </summary>
         public static string Tool_Data_Data_Merge {
             get {
@@ -3777,7 +3813,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Data_Split.
+        ///   Looks up a localized string similar to Use the Data Split to break up a variable into multiple variables based on some character or index, a new line or a tab etc..
         /// </summary>
         public static string Tool_Data_Data_Split {
             get {
@@ -3786,7 +3822,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Find_Index.
+        ///   Looks up a localized string similar to Use the Find Index tool to find the numeric index of one or more occurrences of something in that variable..
         /// </summary>
         public static string Tool_Data_Find_Index {
             get {
@@ -3795,7 +3831,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Replace.
+        ///   Looks up a localized string similar to Use the Replace tool to find and replace information in a variable / recordset. And return the count of how many were replaced..
         /// </summary>
         public static string Tool_Data_Replace {
             get {
@@ -3804,7 +3840,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_MySQL.
+        ///   Looks up a localized string similar to Use the MySQL tool to execute against any MySQL Database. This tool will expose the stored procedures etc. that are already set up on the database. It allows you to map Warewolf data into, execute and then map the Warewolf data out of them..
         /// </summary>
         public static string Tool_Database_MySQL {
             get {
@@ -3813,7 +3849,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_ODBC.
+        ///   Looks up a localized string similar to Use the ODBC tool to execute against any ODBC Data Source. This tool will execute your commands against the ODBC on your computer. It allows you to map Warewolf data into, execute then map Warewolf data out of them..
         /// </summary>
         public static string Tool_Database_ODBC {
             get {
@@ -3822,7 +3858,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_Oracle.
+        ///   Looks up a localized string similar to Use the Oracle tool to execute against any Oracle database. This tool will expose the stored procedures etc. that are already setup on the database and allow you to map Warewolf data into, execute and then map Warewolf data out of them..
         /// </summary>
         public static string Tool_Database_Oracle {
             get {
@@ -3831,7 +3867,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_PostgreSQL.
+        ///   Looks up a localized string similar to Use the PostgreSQL tool to execute against any PostgreSQL database. This tool will expose the stored procedures etc. that are already setup on the database and allow you to map Warewolf data into, execute and then map Warewolf data out of them..
         /// </summary>
         public static string Tool_Database_PostgreSQL {
             get {
@@ -3840,7 +3876,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_SQL_Bulk_Insert.
+        ///   Looks up a localized string similar to Use the Bulk Insert tool to move more than one record at a time into Microsoft SQL Server. This tool exposes the built-in functionality options and is highly performant when used exclusively with the Recordset data going in..
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert {
             get {
@@ -3849,7 +3885,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_SQL_Server.
+        ///   Looks up a localized string similar to Use the SQL tool to execute against any SQL Database. This tool will expose the stored procedures etc. that are already setup on the database. It allows you to map Warewolf data into, execute then map Warewolf data out of them..
         /// </summary>
         public static string Tool_Database_SQL_Server {
             get {
@@ -3858,7 +3894,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Delete.
+        ///   Looks up a localized string similar to Use the Dropbox Delete tool to remove files or folders from your Dropbox online account..
         /// </summary>
         public static string Tool_Dropbox_Delete {
             get {
@@ -3867,7 +3903,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Download.
+        ///   Looks up a localized string similar to Use the Dropbox Download tool to pull files and folders down from your Dropbox online account onto your system..
         /// </summary>
         public static string Tool_Dropbox_Download {
             get {
@@ -3876,7 +3912,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_List_Contents.
+        ///   Looks up a localized string similar to Use the Dropbox List Contents tool to read the file, folder or file and folder information of a folder and or subfolders in your Dropbox online account..
         /// </summary>
         public static string Tool_Dropbox_List_Contents {
             get {
@@ -3885,7 +3921,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Upload.
+        ///   Looks up a localized string similar to Use the Dropbox Upload tool to upload from your system to your Dropbox online account..
         /// </summary>
         public static string Tool_Dropbox_Upload {
             get {
@@ -3894,7 +3930,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Email_Exchange_Send.
+        ///   Looks up a localized string similar to Use the exchange send tool to email from an Exchange email account..
         /// </summary>
         public static string Tool_Email_Exchange_Send {
             get {
@@ -3903,7 +3939,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Email_SMTP_Send.
+        ///   Looks up a localized string similar to Use the SMTP send tool to send an email from a SMTP server e.g. Gmail.
         /// </summary>
         public static string Tool_Email_SMTP_Send {
             get {
@@ -3912,7 +3948,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Copy.
+        ///   Looks up a localized string similar to Use the Copy tool to make a copy of a file or folder. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Copy {
             get {
@@ -3921,7 +3957,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Create.
+        ///   Looks up a localized string similar to Use the Create tool to create folders or files. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Create {
             get {
@@ -3930,7 +3966,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Delete.
+        ///   Looks up a localized string similar to Use the Delete tool to delete a file or a folder. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Delete {
             get {
@@ -3939,7 +3975,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Move.
+        ///   Looks up a localized string similar to Use the Move tool to move folders or files from one location to another. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Move {
             get {
@@ -3948,7 +3984,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Read_File.
+        ///   Looks up a localized string similar to Use the Read File tool to put the contents of a file into a variable. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Read_File {
             get {
@@ -3957,7 +3993,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Read_Folder.
+        ///   Looks up a localized string similar to Use the Read Folder tool to read the list of files in a folder into a variable. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Read_Folder {
             get {
@@ -3966,7 +4002,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Rename.
+        ///   Looks up a localized string similar to Use the Rename tool to rename a file or folder. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Rename {
             get {
@@ -3975,7 +4011,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Unzip.
+        ///   Looks up a localized string similar to Use the Unzip tool to decompress a Zip file into a folder. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Unzip {
             get {
@@ -3984,7 +4020,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Write_File.
+        ///   Looks up a localized string similar to Use the Write File tool to put the contents of a variable into a physical file on a disk. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Write_File {
             get {
@@ -3993,7 +4029,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Zip.
+        ///   Looks up a localized string similar to Use the Zip tool to compress a folder or a file into a Zip archive. (File System, UNC, FTP, FTPS, SFTP).
         /// </summary>
         public static string Tool_File_Zip {
             get {
@@ -4002,7 +4038,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Decision.
+        ///   Looks up a localized string similar to Use the Decision flow tool to check if something is True or False and execute different branches based on that decision..
         /// </summary>
         public static string Tool_Flow_Decision {
             get {
@@ -4011,7 +4047,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Sequence.
+        ///   Looks up a localized string similar to Use the sequence tool to group steps into a single step in a workflow..
         /// </summary>
         public static string Tool_Flow_Sequence {
             get {
@@ -4020,7 +4056,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Switch.
+        ///   Looks up a localized string similar to Use the Switch tool when you need to take a different action depending on the value of a variable. Just drag another flow arm to add another possibility..
         /// </summary>
         public static string Tool_Flow_Switch {
             get {
@@ -4029,7 +4065,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Javascript.
+        ///   Looks up a localized string similar to Use the Script tool to execute JavaScript code..
         /// </summary>
         public static string Tool_Javascript {
             get {
@@ -4038,7 +4074,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_LoopConstruct_For_Each.
+        ///   Looks up a localized string similar to Use the For Each tool to run something a few times. Very handy for processing recordset or specific records..
         /// </summary>
         public static string Tool_LoopConstruct_For_Each {
             get {
@@ -4047,7 +4083,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_LoopConstruct_Select_and_Apply.
+        ///   Looks up a localized string similar to Use the Select &amp; Apply tool to update Recordset and Object data without having to map the data out first. You can perform any number of updates or combinations of updates by using it in conjunction with the sequence tool..
         /// </summary>
         public static string Tool_LoopConstruct_Select_and_Apply {
             get {
@@ -4056,7 +4092,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Python.
+        ///   Looks up a localized string similar to Use the Script tool to execute Python code..
         /// </summary>
         public static string Tool_Python {
             get {
@@ -4065,7 +4101,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Count.
+        ///   Looks up a localized string similar to Use the Count Records tool to return the number of records in a recordset..
         /// </summary>
         public static string Tool_Recordset_Count {
             get {
@@ -4074,7 +4110,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Delete.
+        ///   Looks up a localized string similar to Use the Delete Records tool to remove records from a recordset..
         /// </summary>
         public static string Tool_Recordset_Delete {
             get {
@@ -4083,7 +4119,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Find_Records.
+        ///   Looks up a localized string similar to Use the Find Records tool to return indexes of records that match a given criteria..
         /// </summary>
         public static string Tool_Recordset_Find_Records {
             get {
@@ -4092,7 +4128,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Length.
+        ///   Looks up a localized string similar to Use the Records Length tool to get the length of the recordset..
         /// </summary>
         public static string Tool_Recordset_Length {
             get {
@@ -4101,7 +4137,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Sort.
+        ///   Looks up a localized string similar to Use the Sort Records tool to order records either forwards or backwards..
         /// </summary>
         public static string Tool_Recordset_Sort {
             get {
@@ -4110,7 +4146,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Unique_Records.
+        ///   Looks up a localized string similar to Use the Unique Records tool to return all unique records in a recordset..
         /// </summary>
         public static string Tool_Recordset_Unique_Records {
             get {
@@ -4119,7 +4155,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Com_DLL.
+        ///   Looks up a localized string similar to Use the COM tool to connect to, and execute any, COM DLL from inside your flow-based service..
         /// </summary>
         public static string Tool_Resources_Com_DLL {
             get {
@@ -4128,7 +4164,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Dot_net_DLL.
+        ///   Looks up a localized string similar to Use the DotNet DLL tool to connect to, and execute any, DotNet DLL from inside your flow-based service..
         /// </summary>
         public static string Tool_Resources_Dot_net_DLL {
             get {
@@ -4137,7 +4173,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Service.
+        ///   Looks up a localized string similar to Use the Service tool to execute another Warewolf service. Or, drag and drop directly from the Explorer..
         /// </summary>
         public static string Tool_Resources_Service {
             get {
@@ -4146,7 +4182,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_WCF.
+        ///   Looks up a localized string similar to Use the WCF tool, to execute any pre-existing WCF services you may have access to. If your service returns any data you will be able to map this data into Warewolf variables, to use later in your flow..
         /// </summary>
         public static string Tool_Resources_WCF {
             get {
@@ -4155,7 +4191,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Ruby.
+        ///   Looks up a localized string similar to Use the Script tool to execute Ruby code..
         /// </summary>
         public static string Tool_Ruby {
             get {
@@ -4164,7 +4200,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Scripting_CMD_Script.
+        ///   Looks up a localized string similar to Use the CMD tool to execute command line commands like a batch file..
         /// </summary>
         public static string Tool_Scripting_CMD_Script {
             get {
@@ -4173,7 +4209,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Scripting_Script.
+        ///   Looks up a localized string similar to Use the Script tool to execute JavaScript, Ruby or Python code..
         /// </summary>
         public static string Tool_Scripting_Script {
             get {
@@ -4182,7 +4218,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Copy_File.
+        ///   Looks up a localized string similar to Use the SharePoint Copy File tool to copy a file from a  SharePoint server. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Copy_File {
             get {
@@ -4191,7 +4227,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Create_List_Item.
+        ///   Looks up a localized string similar to Use the SharePoint Create List Item tool to add an entry to a SharePoint list. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Create_List_Item {
             get {
@@ -4200,7 +4236,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Delete_File.
+        ///   Looks up a localized string similar to Use the SharePoint Delete File tool to remove a file from a SharePoint server. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Delete_File {
             get {
@@ -4209,7 +4245,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Delete_List_Item.
+        ///   Looks up a localized string similar to Use the SharePoint Delete List Item tool to delete an entry from a SharePoint list. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Delete_List_Item {
             get {
@@ -4218,7 +4254,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Download_File.
+        ///   Looks up a localized string similar to Use the SharePoint Download File tool to retreive a file from a SharePoint server. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Download_File {
             get {
@@ -4227,7 +4263,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Move_File.
+        ///   Looks up a localized string similar to Use the SharePoint Move File tool to move files on a SharePoint server. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Move_File {
             get {
@@ -4236,7 +4272,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Read_Folder.
+        ///   Looks up a localized string similar to Use the SharePoint Read Folder tool to list the files in a SharePoint directory. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Read_Folder {
             get {
@@ -4245,7 +4281,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Read_List_Item.
+        ///   Looks up a localized string similar to Use the SharePoint Read List Item tool to Read the values off a SharePoint list. Also works with SharePoint online..
         /// </summary>
         public static string Tool_SharePoint_Read_List_Item {
             get {
@@ -4254,7 +4290,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Update_List_Item.
+        ///   Looks up a localized string similar to Use the SharePoint Update List Item tool to update an entry on a SharePoint list. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Update_List_Item {
             get {
@@ -4263,7 +4299,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Upload_File.
+        ///   Looks up a localized string similar to Use the SharePoint Upload File tool to send files to your SharePoint server. Also works with SharePoint Online..
         /// </summary>
         public static string Tool_SharePoint_Upload_File {
             get {
@@ -4272,7 +4308,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Aggregate_Calculate.
+        ///   Looks up a localized string similar to To perform a calculation, put the calculation in here in BODMAS format. To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset..
         /// </summary>
         public static string Tool_Utility_Aggregate_Calculate {
             get {
@@ -4281,7 +4317,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Calculate.
+        ///   Looks up a localized string similar to Use the Calculate tool to apply Excel like functions and mathematical procedures..
         /// </summary>
         public static string Tool_Utility_Calculate {
             get {
@@ -4290,7 +4326,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Comment.
+        ///   Looks up a localized string similar to Use the Comment tool to leave notes and information within your workflow..
         /// </summary>
         public static string Tool_Utility_Comment {
             get {
@@ -4299,7 +4335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Create_JSON.
+        ///   Looks up a localized string similar to Use the Create JSON tool to create JSON data..
         /// </summary>
         public static string Tool_Utility_Create_JSON {
             get {
@@ -4308,7 +4344,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Date_Time.
+        ///   Looks up a localized string similar to Use the Date and Time tool to change a date’s format and add or subtract a piece of time..
         /// </summary>
         public static string Tool_Utility_Date_Time {
             get {
@@ -4317,7 +4353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Date_Time_Diff.
+        ///   Looks up a localized string similar to Use the Date and Time Difference tool to calculate the difference in time of two date times..
         /// </summary>
         public static string Tool_Utility_Date_Time_Diff {
             get {
@@ -4326,7 +4362,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Format_Number.
+        ///   Looks up a localized string similar to Use the format number tool for rounding and showing decimals..
         /// </summary>
         public static string Tool_Utility_Format_Number {
             get {
@@ -4335,7 +4371,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Consume.
+        ///   Looks up a localized string similar to Use the Rabbit MQ Consume tool to read messages off a Rabbit MQ server’s queue..
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Consume {
             get {
@@ -4344,7 +4380,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Publish.
+        ///   Looks up a localized string similar to Use the Rabbit MQ Publish tool to publish messages to a Rabbit MQ queue. The queue will be created if it does not exist..
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Publish {
             get {
@@ -4353,7 +4389,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Random.
+        ///   Looks up a localized string similar to Use the Random tool to generate random numbers, letters, both or GUIDs..
         /// </summary>
         public static string Tool_Utility_Random {
             get {
@@ -4362,7 +4398,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Sys_Info.
+        ///   Looks up a localized string similar to Use the System Information tool to get local information specific to the machine that is running the workflow..
         /// </summary>
         public static string Tool_Utility_Sys_Info {
             get {
@@ -4371,7 +4407,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Web_Request.
+        ///   Looks up a localized string similar to Use the Web Request tool to execute a URL and return the server response..
         /// </summary>
         public static string Tool_Utility_Web_Request {
             get {
@@ -4380,7 +4416,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Xpath.
+        ///   Looks up a localized string similar to Query XML data using XPath 2.0 syntax and then use the results in other parts of your workflow..
         /// </summary>
         public static string Tool_Utility_Xpath {
             get {
@@ -4389,7 +4425,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Delete.
+        ///   Looks up a localized string similar to Use the HTTP Web DELETE tool to execute a web DELETE request. You can specify headers and other relevant data..
         /// </summary>
         public static string Tool_WebMethod_Delete {
             get {
@@ -4398,7 +4434,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Get.
+        ///   Looks up a localized string similar to Use the HTTP Web GET tool to execute a web GET request. You can specify headers and other relevant data..
         /// </summary>
         public static string Tool_WebMethod_Get {
             get {
@@ -4407,7 +4443,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Post.
+        ///   Looks up a localized string similar to Use the HTTP Web POST tool to execute a web POST request. You can specify headers and other relevant data..
         /// </summary>
         public static string Tool_WebMethod_Post {
             get {
@@ -4416,7 +4452,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Put.
+        ///   Looks up a localized string similar to Use the HTTP Web PUT tool to execute a web PUT request. You can specify headers and other relevant data..
         /// </summary>
         public static string Tool_WebMethod_Put {
             get {
@@ -4588,7 +4624,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
+        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Discover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
         /// </summary>
         public static string WcfSourceHostNameHelp {
             get {
