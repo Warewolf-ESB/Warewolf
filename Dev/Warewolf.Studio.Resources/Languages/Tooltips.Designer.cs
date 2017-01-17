@@ -2168,7 +2168,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceAssemblyNameButtonTooltip.
+        ///   Looks up a localized string similar to Select the full path of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceAssemblyNameButtonTooltip {
             get {
@@ -2177,7 +2177,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path or GAC name of the DLL you want to use.
+        ///   Looks up a localized string similar to The full path of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceAssemblyNameTooltip {
             get {
@@ -2195,7 +2195,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceConfigFileButtonDisabledTooltip.
+        ///   Looks up a localized string similar to You cannot select a Config file without an Assemble selected.
         /// </summary>
         public static string ManagePluginSourceConfigFileButtonDisabledTooltip {
             get {
@@ -2204,7 +2204,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceConfigFileButtonTooltip.
+        ///   Looks up a localized string similar to Select the full path of the Config file you want to use.
         /// </summary>
         public static string ManagePluginSourceConfigFileButtonTooltip {
             get {
@@ -2213,7 +2213,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceConfigFileDisabledTooltip.
+        ///   Looks up a localized string similar to You cannot select a Config file without an Assembly selected.
         /// </summary>
         public static string ManagePluginSourceConfigFileDisabledTooltip {
             get {
@@ -2222,7 +2222,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceConfigFileTooltip.
+        ///   Looks up a localized string similar to The full path of the Config file you want to use.
         /// </summary>
         public static string ManagePluginSourceConfigFileTooltip {
             get {
@@ -2240,7 +2240,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceGacAssemblyNameButtonTooltip.
+        ///   Looks up a localized string similar to Select the GAC name of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceGacAssemblyNameButtonTooltip {
             get {
@@ -2249,7 +2249,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManagePluginSourceGacAssemblyNameTooltip.
+        ///   Looks up a localized string similar to The GAC name of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceGacAssemblyNameTooltip {
             get {
