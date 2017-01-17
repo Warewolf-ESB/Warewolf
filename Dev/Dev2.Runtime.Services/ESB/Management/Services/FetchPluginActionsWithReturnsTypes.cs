@@ -12,6 +12,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -23,6 +24,17 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchPluginActionsWithReturnsTypes : IEsbManagementEndpoint
     {
+        private IResourceCatalog _catalog;
+
+        public FetchPluginActionsWithReturnsTypes(IResourceCatalog catalog)
+        {
+            _catalog = catalog;
+        }
+
+        public FetchPluginActionsWithReturnsTypes()
+        {
+            
+        }
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;
@@ -47,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
                 // ReSharper disable MaximumChainedReferences
                 PluginServices services = new PluginServices();
-                var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
+                var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 //src.AssemblyName = ns.FullName;
                 if (ns != null)
                 {
@@ -59,10 +71,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                         FullName = ns.FullName,
                         Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.TypeName } as IServiceInput).ToList(),
                         Method = a.Name,
-                        Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
+                        Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                         Dev2ReturnType = a.Dev2ReturnType
                     } as IPluginAction).ToList();
-                    return serializer.SerializeToBuilder(new ExecuteMessage()
+                    return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
                         Message = serializer.SerializeToBuilder(methods)
@@ -71,7 +83,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable once RedundantIfElseBlock
                 else
                 {
-                    return serializer.SerializeToBuilder(new ExecuteMessage()
+                    return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
                         Message = serializer.SerializeToBuilder(new List<IPluginAction>())
@@ -104,6 +116,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findServices;
         }
 
-        public ResourceCatalog Resources => ResourceCatalog.Instance;
+        public IResourceCatalog Resources => _catalog ?? ResourceCatalog.Instance;
     }
 }
