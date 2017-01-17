@@ -13,6 +13,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -70,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             var serialezedSource = jsonSerializer.SerializeToBuilder(sourceDefinition);
             var values = new Dictionary<string, StringBuilder>
             {
-                { "source", new StringBuilder(serialezedSource.ToString()) },
+                { "source", serialezedSource },
                 { "namespace", new StringBuilder("") }
             };
             var workspace = new Mock<IWorkspace>();
@@ -117,8 +118,8 @@ namespace Dev2.Tests.Runtime.Services
             var serialezedNamespace = jsonSerializer.SerializeToBuilder(namespaceItem);
             var values = new Dictionary<string, StringBuilder>
             {
-                { "source", new StringBuilder(serialezedSource.ToString()) },
-                { "namespace", new StringBuilder(serialezedNamespace.ToString()) }
+                { "source", serialezedSource },
+                { "namespace", serialezedNamespace }
             };
             var workspace = new Mock<IWorkspace>();
             var execute = fetchPluginActionsWithReturnsTypes.Execute(values, workspace.Object);

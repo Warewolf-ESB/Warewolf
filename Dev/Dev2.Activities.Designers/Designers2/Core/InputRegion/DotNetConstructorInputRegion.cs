@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
@@ -19,12 +18,12 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    public class DotNetConstructorInputRegion : IDotNetInputRegion
+    public class DotNetConstructorInputRegion : IDotNetConstructorInputRegion
     {
         private readonly ModelItem _modelItem;
         private readonly IConstructorRegion<IPluginConstructor> _action;
         bool _isEnabled;
-        private ICollection<IServiceInput> _inputs;
+        private ICollection<IConstructorParameter> _inputs;
         private bool _isInputsEmptyRows;
         private readonly IActionInputDatatalistMapper _datatalistMapper;
 
@@ -41,10 +40,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
-            var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
-            Inputs = new ObservableCollection<IServiceInput>();
-            var inputs = new ObservableCollection<IServiceInput>();
+            var inputsFromModel = _modelItem.GetProperty<List<IConstructorParameter>>("ConstructorInputs");
+            var serviceInputs = inputsFromModel ?? new List<IConstructorParameter>();
+            Inputs = new ObservableCollection<IConstructorParameter>();
+            var inputs = new ObservableCollection<IConstructorParameter>();
             inputs.CollectionChanged += InputsCollectionChanged;
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
@@ -79,7 +78,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Inputs", Inputs.ToList());
+            _modelItem.SetProperty("ConstructorInputs", Inputs.ToList());
         }
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
@@ -123,12 +122,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void UpdateOnActionSelection()
         {
-            Inputs = new List<IServiceInput>();
+            Inputs = new List<IConstructorParameter>();
             IsEnabled = false;
             if (_action?.SelectedConstructor != null)
             {
-                Inputs = _action.SelectedConstructor.Inputs.Select(constructorParameter => new ServiceInput(constructorParameter.Name, constructorParameter.Value)).Cast<IServiceInput>().ToList();
-                _datatalistMapper.MapInputsToDatalist(Inputs);
+                Inputs = _action.SelectedConstructor.Inputs;
+                var serviceInputs = Inputs.Select(p => new ServiceInput(p.Name,p.Value));
+                _datatalistMapper.MapInputsToDatalist(serviceInputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
@@ -169,11 +169,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         public IToolRegion CloneRegion()
         {
             
-            var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
-            {
-                EmptyIsNull = a.EmptyIsNull, TypeName = a.TypeName 
-            }));
-            return new DotNetInputRegionClone
+            //var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
+            //{
+            //    EmptyIsNull = a.EmptyToNull, TypeName = a.TypeName 
+            //}));
+            var inputs2 = Inputs.ToArray().Clone() as List<IConstructorParameter>;
+            
+            return new DotNetConstructorInputRegionClone
             {
                 Inputs = inputs2,
                 IsEnabled = IsEnabled
@@ -182,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetInputRegionClone;
+            var region = toRestore as DotNetConstructorInputRegionClone;
             if (region != null)
             {
                 Inputs.Clear();
@@ -224,7 +226,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         #region Implementation of IDotNetInputRegion
 
-        public ICollection<IServiceInput> Inputs
+        public ICollection<IConstructorParameter> Inputs
         {
             get
             {
@@ -235,7 +237,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 if (value != null)
                 {
                     _inputs = value;
-                    _modelItem.SetProperty("Inputs", value.ToList());
+                    _modelItem.SetProperty("ConstructorInputs", value.ToList());
                     OnPropertyChanged();
                 }
                 else
