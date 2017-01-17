@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FetchPluginActionsWithReturnsTypes : IEsbManagementEndpoint
     {
-        private IResourceCatalog _catalog;
+        private readonly IResourceCatalog _catalog;
 
         public FetchPluginActionsWithReturnsTypes(IResourceCatalog catalog)
         {

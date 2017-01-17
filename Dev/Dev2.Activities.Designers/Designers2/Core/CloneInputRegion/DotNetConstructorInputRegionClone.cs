@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Annotations;
-using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core.CloneInputRegion
@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }
-        public IList<IServiceInput> Inputs { get; set; }
+        public IList<IConstructorParameter> Inputs { get; set; }
         public IToolRegion CloneRegion()
         {
             return this;

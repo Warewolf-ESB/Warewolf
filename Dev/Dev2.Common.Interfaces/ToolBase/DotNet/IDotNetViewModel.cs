@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces.ToolBase.DotNet
 {
+
     public interface IDotNetViewModel
     {
         ISourceToolRegion<IPluginSource> SourceRegion { get; set; }
@@ -18,9 +19,28 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         void SetDisplayName(string displayName);
     }
 
+    public interface IDotNetEnhancedViewModel
+    {
+        ISourceToolRegion<IPluginSource> SourceRegion { get; set; }
+        INamespaceToolRegion<INamespaceItem> NamespaceRegion { get; set; }
+        IConstructorRegion<IPluginConstructor> ConstructorRegion { get; set; }
+        IActionToolRegion<IPluginAction> ActionRegion { get; set; }
+        IDotNetConstructorInputRegion InputArea { get; set; }
+        IOutputsToolRegion OutputsRegion { get; set; }
+        bool GenerateOutputsVisible { get; set; }
+        IPluginService ToModel();
+        void ErrorMessage(Exception exception, bool hasError);
+        void SetDisplayName(string displayName);
+    }
+
     public interface IDotNetInputRegion : IToolRegion
     {
         ICollection<IServiceInput> Inputs { get; set; }
+    }
+
+    public interface IDotNetConstructorInputRegion : IToolRegion
+    {
+        ICollection<IConstructorParameter> Inputs { get; set; }
     }
 
 
