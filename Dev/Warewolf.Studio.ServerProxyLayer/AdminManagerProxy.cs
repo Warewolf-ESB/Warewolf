@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -31,6 +32,13 @@ namespace Warewolf.Studio.ServerProxyLayer
             var controller = CommunicationControllerFactory.CreateController("GetMinSupportedVersion");
             var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
             return version;
+        }
+
+        public Dictionary<string,string> GetServerInformation()
+        {
+            var controller = CommunicationControllerFactory.CreateController("GetServerInformation");
+            var information = controller.ExecuteCommand<Dictionary<string, string>>(Connection, Guid.Empty);
+            return information;
         }
     }
 }

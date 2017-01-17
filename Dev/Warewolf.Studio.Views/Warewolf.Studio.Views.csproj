@@ -159,6 +159,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChooseDLLView.xaml.cs">
+      <DependentUpon>ChooseDLLView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -172,15 +175,15 @@
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileChooserView.xaml.cs">
+      <DependentUpon>FileChooserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FocusExtension.cs" />
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageEmailAttachmentView.xaml.cs">
-      <DependentUpon>ManageEmailAttachmentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ManageExchangeSourceControl.xaml.cs">
       <DependentUpon>ManageExchangeSourceControl.xaml</DependentUpon>
@@ -246,6 +249,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ChooseDLLView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CircularProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -258,6 +265,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FileChooserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HelpView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -267,10 +278,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ManageDatabaseSourceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageEmailAttachmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,7 +9,12 @@ namespace Dev2.Common.Interfaces.Core
         public bool Equals(IPluginSource other)
         {
             // ReSharper disable once PossibleNullReferenceException
-            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Path, other.Path);
+            return string.Equals(Name, other.Name) &&
+                Id.Equals(other.Id) &&
+                string.Equals(Path, other.Path) &&
+                string.Equals(ConfigFilePath, other.ConfigFilePath) &&
+                string.Equals(FileSystemAssemblyName, other.FileSystemAssemblyName) &&
+                string.Equals(GACAssemblyName, other.GACAssemblyName);
         }
 
 
@@ -22,15 +27,15 @@ namespace Dev2.Common.Interfaces.Core
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -49,8 +54,10 @@ namespace Dev2.Common.Interfaces.Core
             {
                 var hashCode = Name?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SelectedDll?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Path?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ConfigFilePath?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (FileSystemAssemblyName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (GACAssemblyName?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }
@@ -73,6 +80,9 @@ namespace Dev2.Common.Interfaces.Core
         public Guid Id { get; set; }
         public IFileListing SelectedDll { get; set; }
         public string Path { get; set; }
+        public string ConfigFilePath { get; set; }
+        public string FileSystemAssemblyName { get; set; }
+        public string GACAssemblyName { get; set; }
 
         #endregion
     }
