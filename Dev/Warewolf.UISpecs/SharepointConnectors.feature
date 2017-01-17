@@ -13,5 +13,3 @@ Scenario: Create Sharepoint Source From Tool
 	And I Click UserButton OnSharepointSource
 	And I Enter Sharepoint ServerSource User Credentials
 	And I Click Sharepoint Server Source TestConnection
-	And I Click Close Sharepoint Server Source Tab
-	And I Click Close Workflow Tab

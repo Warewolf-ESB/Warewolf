@@ -78,12 +78,12 @@ namespace Dev2.Studio.Core.Models
                     case "Value":
                         if(ShowEndValue)
                         {
-                            error = ValidateStringCannotBeNull(columnName, Value == null ? string.Empty : Value.ToString());
+                            error = ValidateStringCannotBeNull(columnName, Value?.ToString() ?? string.Empty);
                         }
                         break;
 
                     case "EndValue":
-                        error = ValidateStringCannotBeNull(columnName, EndValue == null ? string.Empty : EndValue.ToString());
+                        error = ValidateStringCannotBeNull(columnName, EndValue?.ToString() ?? string.Empty);
                         break;
 
                     default:

@@ -42,8 +42,7 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Explorer")]
         public void Explorer_Server_ContextMenuItems_UITest()
-        {            
-            UIMap.RefreshExplorerWithpoutWaitingForSpinner();
+        {
             UIMap.RightClick_Localhost();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "Sources Context menu item does not exist on explorer context menu for workflows.");
         }

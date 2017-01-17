@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.Network
     {
         public static void Send(IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
         {
-            if (resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
+            if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;
             }

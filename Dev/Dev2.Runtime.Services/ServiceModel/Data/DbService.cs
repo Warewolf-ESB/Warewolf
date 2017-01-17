@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override XElement ToXml()
         {
-            var actionName = Recordset == null || Recordset.Name == null ? string.Empty : Recordset.Name;
+            var actionName = Recordset?.Name == null ? string.Empty : Recordset.Name;
             var result = CreateXml(enActionType.InvokeStoredProc, actionName, Source, new RecordsetList { Recordset });
             return result;
         }

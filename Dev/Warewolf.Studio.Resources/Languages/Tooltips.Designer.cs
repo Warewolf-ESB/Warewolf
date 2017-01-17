@@ -4442,7 +4442,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Assign.
+        ///   Looks up a localized string similar to Tags: declare setup variable set.
         /// </summary>
         public static string Tool_Data_Assign {
             get {
@@ -4451,7 +4451,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Assign_Object.
+        ///   Looks up a localized string similar to Tags: json array declare setup variable set.
         /// </summary>
         public static string Tool_Data_Assign_Object {
             get {
@@ -4460,7 +4460,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Base_Convert.
+        ///   Looks up a localized string similar to Tags: text binary base 64 base64 hex.
         /// </summary>
         public static string Tool_Data_Base_Convert {
             get {
@@ -4469,7 +4469,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Case_Convert.
+        ///   Looks up a localized string similar to Tags: upper lower title camel sentence.
         /// </summary>
         public static string Tool_Data_Case_Convert {
             get {
@@ -4478,7 +4478,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Data_Merge.
+        ///   Looks up a localized string similar to Tags: csv join concatenate seperated value index chars new line tab.
         /// </summary>
         public static string Tool_Data_Data_Merge {
             get {
@@ -4487,7 +4487,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Data_Split.
+        ///   Looks up a localized string similar to Tags: csv file seperated value index chars new line tab.
         /// </summary>
         public static string Tool_Data_Data_Split {
             get {
@@ -4496,7 +4496,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Find_Index.
+        ///   Looks up a localized string similar to Tags: search string position.
         /// </summary>
         public static string Tool_Data_Find_Index {
             get {
@@ -4505,7 +4505,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Data_Replace.
+        ///   Looks up a localized string similar to Tags: find.
         /// </summary>
         public static string Tool_Data_Replace {
             get {
@@ -4514,7 +4514,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_MySQL.
+        ///   Looks up a localized string similar to Tags: stored procedure function data source.
         /// </summary>
         public static string Tool_Database_MySQL {
             get {
@@ -4523,7 +4523,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_ODBC.
+        ///   Looks up a localized string similar to Tags: source.
         /// </summary>
         public static string Tool_Database_ODBC {
             get {
@@ -4532,7 +4532,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_Oracle.
+        ///   Looks up a localized string similar to Tags: stored procedure function data source.
         /// </summary>
         public static string Tool_Database_Oracle {
             get {
@@ -4541,7 +4541,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_PostgreSQL.
+        ///   Looks up a localized string similar to Tags: stored procedure function data source connector.
         /// </summary>
         public static string Tool_Database_PostgreSQL {
             get {
@@ -4550,7 +4550,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_SQL_Bulk_Insert.
+        ///   Looks up a localized string similar to Tags: source microsoft.
         /// </summary>
         public static string Tool_Database_SQL_Bulk_Insert {
             get {
@@ -4559,7 +4559,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Database_SQL_Server.
+        ///   Looks up a localized string similar to Tags: stored procedure function data source microsoft.
         /// </summary>
         public static string Tool_Database_SQL_Server {
             get {
@@ -4568,7 +4568,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Delete.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Dropbox_Delete {
             get {
@@ -4577,7 +4577,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Download.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Dropbox_Download {
             get {
@@ -4586,7 +4586,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_List_Contents.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Dropbox_List_Contents {
             get {
@@ -4595,7 +4595,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Dropbox_Upload.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Dropbox_Upload {
             get {
@@ -4604,7 +4604,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Email_Exchange_Send.
+        ///   Looks up a localized string similar to Tags: source.
         /// </summary>
         public static string Tool_Email_Exchange_Send {
             get {
@@ -4613,7 +4613,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Email_SMTP_Send.
+        ///   Looks up a localized string similar to Tags: source.
         /// </summary>
         public static string Tool_Email_SMTP_Send {
             get {
@@ -4622,7 +4622,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Copy.
+        ///   Looks up a localized string similar to Tags: duplicate directory folder.
         /// </summary>
         public static string Tool_File_Copy {
             get {
@@ -4631,7 +4631,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Create.
+        ///   Looks up a localized string similar to Tags: new directory folder.
         /// </summary>
         public static string Tool_File_Create {
             get {
@@ -4640,7 +4640,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Delete.
+        ///   Looks up a localized string similar to Tags: remove directory folder.
         /// </summary>
         public static string Tool_File_Delete {
             get {
@@ -4649,7 +4649,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Move.
+        ///   Looks up a localized string similar to Tags: directory folder.
         /// </summary>
         public static string Tool_File_Move {
             get {
@@ -4658,7 +4658,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Read_File.
+        ///   Looks up a localized string similar to Tags: open get content data.
         /// </summary>
         public static string Tool_File_Read_File {
             get {
@@ -4667,7 +4667,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Read_Folder.
+        ///   Looks up a localized string similar to Tags: directory.
         /// </summary>
         public static string Tool_File_Read_Folder {
             get {
@@ -4676,7 +4676,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Rename.
+        ///   Looks up a localized string similar to Tags: directory folder.
         /// </summary>
         public static string Tool_File_Rename {
             get {
@@ -4685,7 +4685,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Unzip.
+        ///   Looks up a localized string similar to Tags: directory folder.
         /// </summary>
         public static string Tool_File_Unzip {
             get {
@@ -4694,7 +4694,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Write_File.
+        ///   Looks up a localized string similar to Tags: append overwrite content data set.
         /// </summary>
         public static string Tool_File_Write_File {
             get {
@@ -4703,7 +4703,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_File_Zip.
+        ///   Looks up a localized string similar to Tags: archive directory folder.
         /// </summary>
         public static string Tool_File_Zip {
             get {
@@ -4712,7 +4712,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Decision.
+        ///   Looks up a localized string similar to Tags: assert is match true false.
         /// </summary>
         public static string Tool_Flow_Decision {
             get {
@@ -4721,7 +4721,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Sequence.
+        ///   Looks up a localized string similar to Tags: consolidate cleanup group nest.
         /// </summary>
         public static string Tool_Flow_Sequence {
             get {
@@ -4730,7 +4730,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Flow_Switch.
+        ///   Looks up a localized string similar to Tags: match branch case.
         /// </summary>
         public static string Tool_Flow_Switch {
             get {
@@ -4739,7 +4739,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Javascript.
+        ///   Looks up a localized string similar to Tags: javascript script JSON JS.
         /// </summary>
         public static string Tool_Javascript {
             get {
@@ -4748,7 +4748,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_LoopConstruct_For_Each.
+        ///   Looks up a localized string similar to Tags: repeat while.
         /// </summary>
         public static string Tool_LoopConstruct_For_Each {
             get {
@@ -4757,7 +4757,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_LoopConstruct_Select_and_Apply.
+        ///   Looks up a localized string similar to Tags: repeat update function.
         /// </summary>
         public static string Tool_LoopConstruct_Select_and_Apply {
             get {
@@ -4766,7 +4766,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Python.
+        ///   Looks up a localized string similar to Tags: python script.
         /// </summary>
         public static string Tool_Python {
             get {
@@ -4775,7 +4775,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Count.
+        ///   Looks up a localized string similar to Tags: total.
         /// </summary>
         public static string Tool_Recordset_Count {
             get {
@@ -4784,7 +4784,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Delete.
+        ///   Looks up a localized string similar to Tags: remove.
         /// </summary>
         public static string Tool_Recordset_Delete {
             get {
@@ -4793,7 +4793,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Find_Records.
+        ///   Looks up a localized string similar to Tags: search.
         /// </summary>
         public static string Tool_Recordset_Find_Records {
             get {
@@ -4802,7 +4802,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Length.
+        ///   Looks up a localized string similar to Tags: max index.
         /// </summary>
         public static string Tool_Recordset_Length {
             get {
@@ -4811,7 +4811,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Sort.
+        ///   Looks up a localized string similar to Tags: order by.
         /// </summary>
         public static string Tool_Recordset_Sort {
             get {
@@ -4820,7 +4820,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Recordset_Unique_Records.
+        ///   Looks up a localized string similar to Tags: distinct.
         /// </summary>
         public static string Tool_Recordset_Unique_Records {
             get {
@@ -4829,7 +4829,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Com_DLL.
+        ///   Looks up a localized string similar to Tags: source connector header.
         /// </summary>
         public static string Tool_Resources_Com_DLL {
             get {
@@ -4838,7 +4838,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Dot_net_DLL.
+        ///   Looks up a localized string similar to Tags: source connector header.
         /// </summary>
         public static string Tool_Resources_Dot_net_DLL {
             get {
@@ -4847,7 +4847,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_Service.
+        ///   Looks up a localized string similar to Tags: source connector header.
         /// </summary>
         public static string Tool_Resources_Service {
             get {
@@ -4856,7 +4856,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Resources_WCF.
+        ///   Looks up a localized string similar to Tags: source connector header.
         /// </summary>
         public static string Tool_Resources_WCF {
             get {
@@ -4865,7 +4865,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Ruby.
+        ///   Looks up a localized string similar to Tags: ruby script.
         /// </summary>
         public static string Tool_Ruby {
             get {
@@ -4874,7 +4874,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Scripting_CMD_Script.
+        ///   Looks up a localized string similar to Tags: command line shell.
         /// </summary>
         public static string Tool_Scripting_CMD_Script {
             get {
@@ -4883,7 +4883,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Scripting_Script.
+        ///   Looks up a localized string similar to Tags: javascript python ruby.
         /// </summary>
         public static string Tool_Scripting_Script {
             get {
@@ -4892,7 +4892,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Copy_File.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Copy_File {
             get {
@@ -4901,7 +4901,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Create_List_Item.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Create_List_Item {
             get {
@@ -4910,7 +4910,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Delete_File.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Delete_File {
             get {
@@ -4919,7 +4919,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Delete_List_Item.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Delete_List_Item {
             get {
@@ -4928,7 +4928,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Download_File.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Download_File {
             get {
@@ -4937,7 +4937,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Move_File.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Move_File {
             get {
@@ -4946,7 +4946,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Read_Folder.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Read_Folder {
             get {
@@ -4955,7 +4955,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Read_List_Item.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Read_List_Item {
             get {
@@ -4964,7 +4964,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Update_List_Item.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Update_List_Item {
             get {
@@ -4973,7 +4973,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_SharePoint_Upload_File.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_SharePoint_Upload_File {
             get {
@@ -4982,7 +4982,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Aggregate_Calculate.
+        ///   Looks up a localized string similar to Tags: function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv math.
         /// </summary>
         public static string Tool_Utility_Aggregate_Calculate {
             get {
@@ -4991,7 +4991,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Calculate.
+        ///   Looks up a localized string similar to Tags: add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum.
         /// </summary>
         public static string Tool_Utility_Calculate {
             get {
@@ -5000,7 +5000,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Comment.
+        ///   Looks up a localized string similar to Tags: note.
         /// </summary>
         public static string Tool_Utility_Comment {
             get {
@@ -5009,7 +5009,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Create_JSON.
+        ///   Looks up a localized string similar to Tags: object.
         /// </summary>
         public static string Tool_Utility_Create_JSON {
             get {
@@ -5018,7 +5018,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Date_Time.
+        ///   Looks up a localized string similar to Tags: year month week day hour second split format add subtract.
         /// </summary>
         public static string Tool_Utility_Date_Time {
             get {
@@ -5027,7 +5027,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Date_Time_Diff.
+        ///   Looks up a localized string similar to Tags: year month week day hour second split format compare datepart part.
         /// </summary>
         public static string Tool_Utility_Date_Time_Diff {
             get {
@@ -5036,7 +5036,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Format_Number.
+        ///   Looks up a localized string similar to Tags: decimal round.
         /// </summary>
         public static string Tool_Utility_Format_Number {
             get {
@@ -5045,7 +5045,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Consume.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Consume {
             get {
@@ -5054,7 +5054,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Rabbit_MQ_Publish.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_Utility_Rabbit_MQ_Publish {
             get {
@@ -5063,7 +5063,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Random.
+        ///   Looks up a localized string similar to Tags: guid generate .
         /// </summary>
         public static string Tool_Utility_Random {
             get {
@@ -5072,7 +5072,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Sys_Info.
+        ///   Looks up a localized string similar to Tags: date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system virtual ip.
         /// </summary>
         public static string Tool_Utility_Sys_Info {
             get {
@@ -5081,7 +5081,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Web_Request.
+        ///   Looks up a localized string similar to Tags: header page content html.
         /// </summary>
         public static string Tool_Utility_Web_Request {
             get {
@@ -5090,7 +5090,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_Utility_Xpath.
+        ///   Looks up a localized string similar to Tags: xml.
         /// </summary>
         public static string Tool_Utility_Xpath {
             get {
@@ -5099,7 +5099,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Delete.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_WebMethod_Delete {
             get {
@@ -5108,7 +5108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Get.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_WebMethod_Get {
             get {
@@ -5117,7 +5117,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Post.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_WebMethod_Post {
             get {
@@ -5126,7 +5126,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool_WebMethod_Put.
+        ///   Looks up a localized string similar to Tags: source connector.
         /// </summary>
         public static string Tool_WebMethod_Put {
             get {

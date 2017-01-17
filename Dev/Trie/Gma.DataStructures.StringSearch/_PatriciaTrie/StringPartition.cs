@@ -20,12 +20,12 @@ namespace Gma.DataStructures.StringSearch
         private readonly int m_StartIndex;
 
         public StringPartition(string origin)
-            : this(origin, 0, origin==null ? 0 : origin.Length)
+            : this(origin, 0, origin?.Length ?? 0)
         {
         }
 
         public StringPartition(string origin, int startIndex)
-            : this(origin, startIndex, origin == null ? 0 : origin.Length - startIndex)
+            : this(origin, startIndex, origin?.Length - startIndex ?? 0)
         {
         }
 
@@ -78,7 +78,7 @@ namespace Gma.DataStructures.StringSearch
         {
             unchecked
             {
-                int hashCode = (m_Origin != null ? m_Origin.GetHashCode() : 0);
+                int hashCode = m_Origin?.GetHashCode() ?? 0;
                 hashCode = (hashCode*397) ^ m_PartitionLength;
                 hashCode = (hashCode*397) ^ m_StartIndex;
                 return hashCode;

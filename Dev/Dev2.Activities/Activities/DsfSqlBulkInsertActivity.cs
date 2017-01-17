@@ -236,10 +236,7 @@ namespace Dev2.Activities
                         AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, ""));
                     }
                 }
-                if (dataTableToInsert != null)
-                {
-                    dataTableToInsert.Dispose();
-                }
+                dataTableToInsert?.Dispose();
             }
         }
 
@@ -306,10 +303,7 @@ namespace Dev2.Activities
                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(resultString, Result, ""));
                 }
                 allErrors.MergeErrors(errorResultTo);
-                if (dataTableToInsert != null)
-                {
-                    dataTableToInsert.Dispose();
-                }
+                dataTableToInsert?.Dispose();
             }
         }
 
@@ -602,16 +596,12 @@ namespace Dev2.Activities
 
         List<Type> GETTypesFromMappingTypes()
         {
-            if (InputMappings == null) return null;
-
-            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
+            return InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
         }
 
         List<string> GetNamesFromMappings()
         {
-            if (InputMappings == null) return null;
-
-            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
+            return InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
         }
         DataTable BuildDataTableToInsertMySql()
         {
@@ -699,13 +689,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
+            if(itemUpdate != null)
             {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
-                {
-                    Result = itemUpdate.Item2;
-                }
+                Result = itemUpdate.Item2;
             }
         }
 

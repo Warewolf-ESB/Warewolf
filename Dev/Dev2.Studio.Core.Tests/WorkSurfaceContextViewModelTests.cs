@@ -1036,22 +1036,10 @@ namespace Dev2.Core.Tests
 
         public void Deactivate(bool close)
         {
-            if(Activated != null)
-            {
-                Activated(this, null);
-            }
-            if(AttemptingDeactivation != null)
-            {
-                AttemptingDeactivation(null, null);
-            }
-            if(Deactivated != null)
-            {
-                Deactivated(null, null);
-            }
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(null, null);
-            }
+            Activated?.Invoke(this, null);
+            AttemptingDeactivation?.Invoke(null, null);
+            Deactivated?.Invoke(null, null);
+            PropertyChanged?.Invoke(null, null);
         }
 
         public event EventHandler<DeactivationEventArgs> AttemptingDeactivation;

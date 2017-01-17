@@ -329,18 +329,12 @@ namespace Dev2.Studio.Core
 
         void RaiseItemAdded()
         {
-            if (ItemAdded != null)
-            {
-                ItemAdded(this, new EventArgs());
-            }
+            ItemAdded?.Invoke(this, new EventArgs());
         }
 
         void RaiseItemEdited(IEnvironmentModel environment, bool isConnected)
         {
-            if (ItemEdited != null)
-            {
-                ItemEdited(this, new EnvironmentEditedArgs(environment, isConnected));
-            }
+            ItemEdited?.Invoke(this, new EnvironmentEditedArgs(environment, isConnected));
         }
 
         #endregion

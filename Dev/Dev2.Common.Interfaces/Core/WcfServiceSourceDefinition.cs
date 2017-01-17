@@ -82,8 +82,8 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = EndpointUrl != null ? EndpointUrl.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (EndpointUrl != null ? EndpointUrl.GetHashCode() : 0);
+                var hashCode = EndpointUrl?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (EndpointUrl?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

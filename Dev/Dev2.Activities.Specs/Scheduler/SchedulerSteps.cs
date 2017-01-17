@@ -355,10 +355,7 @@ namespace Dev2.Activities.Specs.Scheduler
         public static void CleanupAfterTestScheduler()
         {
             var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
-            if (vm != null)
-            {
-                vm.DeleteCommand.Execute(vm.SelectedTask);
-            }
+            vm?.DeleteCommand.Execute(vm.SelectedTask);
         }
     }
 }
