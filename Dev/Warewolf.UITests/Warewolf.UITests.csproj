@@ -73,6 +73,7 @@
     <Compile Include="ServerSource\ServerSourceTests.cs" />
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="SQLServerSource\SQLServerSourceTests.cs" />
+    <Compile Include="Tools\Email\Exchange_Send.cs" />
     <Compile Include="WcfSource\WcfSourceTests.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="Tools\Sharepoint\Move File.cs" />
     <Compile Include="Tools\Sharepoint\Update List Item.cs" />
     <Compile Include="Tools\Sharepoint\Upload File.cs" />
-    <Compile Include="Tools\Sharepoint\Update File.cs" />
     <Compile Include="Explorer\DragAndDrop.cs" />
     <Compile Include="Tools\Database\ODBCTests.cs" />
     <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
