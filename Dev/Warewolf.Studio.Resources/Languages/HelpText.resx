@@ -1621,7 +1621,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Select the Wcf Source you want to use from previously setup sources.</value>
   </data>
   <data name="WcfSourceHostNameHelp" xml:space="preserve">
-    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
+    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Discover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
   </data>
   <data name="WebInputDefaultValueHelp" xml:space="preserve">
     <value>The test data you want to use to execute this action with.</value>
@@ -1784,7 +1784,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Use the Date and Time Difference tool to calculate the difference in time of two date times.</value>
   </data>
   <data name="Tool_Utility_Create_JSON" xml:space="preserve">
-    <value>Use the Create Json tool to create Json data.</value>
+    <value>Use the Create JSON tool to create JSON data.</value>
   </data>
   <data name="Tool_Utility_Comment" xml:space="preserve">
     <value>Use the Comment tool to leave notes and information within your workflow.</value>
