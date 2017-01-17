@@ -2777,7 +2777,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.ResourceName = message.ResourceName;
             resourceModel.DisplayName = message.ResourceName;
             resourceModel.Category = message.ResourceCategory;
-            resourceModel.WorkflowXaml = ServiceDefinition.Replace(unsavedName, message.ResourceName);
+            resourceModel.WorkflowXaml = ServiceDefinition?.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
