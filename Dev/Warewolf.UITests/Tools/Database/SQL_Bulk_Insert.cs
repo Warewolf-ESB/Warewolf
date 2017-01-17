@@ -56,6 +56,8 @@ namespace Warewolf.UITests.Tools
             Point newPoint;
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.TryGetClickablePoint(out newPoint));
             UIMap.Click_SqlBulkInsert_Done_Button();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -63,6 +65,23 @@ namespace Warewolf.UITests.Tools
         public void SQLBulkInsertTool_OpenQVIUITest()
         {
             UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void Click_SQLBulkInsertTool_LargeView_NewSource_UITests()
+        {
+            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Click_NewSource_From_SqlBulkInsertTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "SQL Server Address combobox is disabled new Sql Server Source wizard tab");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
