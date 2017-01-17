@@ -86,11 +86,11 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         {
             get
             {
-                return _modelItem.GetProperty<IPluginConstructor>("Method");
+                return _modelItem.GetProperty<IPluginConstructor>("Constructor");
             }
             set
             {
-                _modelItem.SetProperty("Method", value);
+                _modelItem.SetProperty("Constructor", value);
             }
         }
 
@@ -215,7 +215,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged();
             }
         }
-        public ICommand RefreshConstructorsCommand { get; }
+        public ICommand RefreshConstructorsCommand { get; set; }
 
         public bool IsConstructorEnabled
         {
