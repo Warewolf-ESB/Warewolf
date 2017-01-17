@@ -169,7 +169,7 @@ namespace Warewolf.Studio.Core
                     {
                         Children =
                             new AsyncObservableCollection<IFileListingModel>(
-                                dllListings.Select(input => new FileListingModel(_model, input, _selectedAction))
+                                dllListings.Select(input => new FileListingModel(_model, input, _selectedAction,UseIsSelected))
                                     .ToList());
                     }
                     IsExpanderVisible = Children != null && Children.Count > 0;
