@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Infragistics.Controls.Menus;
 
-namespace Warewolf.Studio.Views
+namespace Warewolf.Studio.CustomControls
 {
     /// <summary>
     /// Returns the exact length of the requred menu node based on its tree position
