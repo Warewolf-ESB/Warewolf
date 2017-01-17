@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = a as PluginSource;
                 if (res != null)
                 {
-                    return new PluginSourceDefinition
+                    var pluginSourceDefinition = new PluginSourceDefinition
                     {
                         Id = res.ResourceID,
                         Name = res.ResourceName,
@@ -54,8 +54,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                             Name = res.AssemblyName,
                             FullName = res.AssemblyLocation,
                             Children = new IFileListing[0],
-                        }
+                        },
+                        ConfigFilePath = res.ConfigFilePath
                     };
+                    if (!string.IsNullOrEmpty(res.AssemblyLocation) && res.AssemblyLocation.EndsWith(".dll"))
+                    {
+                        pluginSourceDefinition.FileSystemAssemblyName = res.AssemblyLocation;
+                        pluginSourceDefinition.GACAssemblyName = string.Empty;
+                    }
+                    else if (!string.IsNullOrEmpty(res.AssemblyLocation) && res.AssemblyLocation.StartsWith("GAC:"))
+                    {
+                        pluginSourceDefinition.GACAssemblyName = res.AssemblyLocation;
+                        pluginSourceDefinition.FileSystemAssemblyName = string.Empty;
+                    }
+                    return pluginSourceDefinition;
                 }
                 return null;
             }).ToList();
