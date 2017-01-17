@@ -638,7 +638,7 @@ namespace Dev2.Core.Tests
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
             mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.Save(It.IsAny<IResourceModel>()), Times.Once());
+            mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
         }
 
 
@@ -1036,22 +1036,10 @@ namespace Dev2.Core.Tests
 
         public void Deactivate(bool close)
         {
-            if(Activated != null)
-            {
-                Activated(this, null);
-            }
-            if(AttemptingDeactivation != null)
-            {
-                AttemptingDeactivation(null, null);
-            }
-            if(Deactivated != null)
-            {
-                Deactivated(null, null);
-            }
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(null, null);
-            }
+            Activated?.Invoke(this, null);
+            AttemptingDeactivation?.Invoke(null, null);
+            Deactivated?.Invoke(null, null);
+            PropertyChanged?.Invoke(null, null);
         }
 
         public event EventHandler<DeactivationEventArgs> AttemptingDeactivation;

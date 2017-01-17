@@ -206,18 +206,12 @@ namespace Dev2.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            if(CollectionChanged != null)
-            {
-                CollectionChanged(this, args);
-            }
+            CollectionChanged?.Invoke(this, args);
         }
 
         protected virtual void OnPropertyChanged(string name)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         protected virtual bool RemoveEntry(TKey key)

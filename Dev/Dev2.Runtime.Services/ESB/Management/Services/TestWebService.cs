@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 IWebService src = serializer.Deserialize<IWebService>(resourceDefinition);
                 // ReSharper disable MaximumChainedReferences
-                var parameters = src.Inputs == null ? new List<MethodParameter>() : src.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
+                var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 // ReSharper restore MaximumChainedReferences
                 var requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();
                 var requestHeader = string.Join(";", requestHeaders).TrimEnd(':',';');

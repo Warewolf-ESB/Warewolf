@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Data;
+
 namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceCatalog :
@@ -11,6 +16,6 @@ namespace Dev2.Runtime.Interfaces
         , IResourceDuplicateProvider
 
     {
-       
+        ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; }
     }
 }

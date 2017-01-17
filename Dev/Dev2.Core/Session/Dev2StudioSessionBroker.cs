@@ -96,7 +96,7 @@ namespace Dev2.Session
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
 
-            if (tmp != null) tmp.CleanUp();
+            tmp?.CleanUp();
             return to;
         }
 

@@ -31,7 +31,6 @@ namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceRepository : IDisposable
     {
-        List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);

@@ -134,7 +134,7 @@ namespace Dev2.Settings
 
         void CreateEnvironmentFromServer(IServer server)
         {
-            if (server != null && server.UpdateRepository != null)
+            if (server?.UpdateRepository != null)
             {
                 //server.UpdateRepository.ItemSaved += Refresh;
             }
@@ -151,9 +151,9 @@ namespace Dev2.Settings
             set
             {
                 _currentEnvironment = value;
-                if(CurrentEnvironment.IsConnected &&_currentEnvironment.AuthorizationService != null  )
+                if(CurrentEnvironment.IsConnected  )
                 {
-                    _currentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null);
+                    _currentEnvironment.AuthorizationService?.IsAuthorized(AuthorizationContext.Administrator, null);
                 }
             }
         }
@@ -352,7 +352,7 @@ namespace Dev2.Settings
             switch(propertyName)
             {
                 case "ShowLogging":
-                    if (Settings == null || Settings.Logging == null)
+                    if (Settings?.Logging == null)
                     {
                         ShowLogging = false;
                         ShowSecurity = true;

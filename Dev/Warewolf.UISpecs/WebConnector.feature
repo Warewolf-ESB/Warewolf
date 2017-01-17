@@ -7,7 +7,7 @@ Feature: WebConnector
 Scenario: Create and Execute New Web GET Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Click New Web Source Ribbon Button
+	And I Click New Web Source Explorer Context Menu Button
 	And I Type The Testing Site into Web GET Source Wizard Address Textbox
 	And I Click New Web Source Test Connection Button
 	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"
@@ -20,8 +20,6 @@ Scenario: Create and Execute New Web GET Connector
 	And I Click GET Web Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
-	And I Click Close Workflow Tab
-	And I Try Click MessageBox No
 	
 Scenario: Create and Execute New Web POST Connector
 	Given The Warewolf Studio is running
@@ -32,8 +30,6 @@ Scenario: Create and Execute New Web POST Connector
 	And I Click POST Web Large View Test Inputs Button
 	And I Click POST Web Large View Test Inputs Done Button
 	And I Click POST Web Large View Done Button
-	And I Click Close Workflow Tab
-	And I Try Click MessageBox No
 	
 Scenario: Create and Execute New Web PUT Connector
 	Given The Warewolf Studio is running
@@ -44,8 +40,6 @@ Scenario: Create and Execute New Web PUT Connector
 	And I Click PUT Web Large View Test Inputs Button
 	And I Click PUT Web Large View Test Inputs Done Button
 	And I Click PUT Web Large View Done Button
-	And I Click Close Workflow Tab
-	And I Try Click MessageBox No
 	
 Scenario: Create and Execute New Web DELETE Connector
 	Given The Warewolf Studio is running
@@ -56,22 +50,18 @@ Scenario: Create and Execute New Web DELETE Connector
 	And I Click DELETE Web Large View Test Inputs Button
 	And I Click DELETE Web Large View Test Inputs Done Button
 	And I Click DELETE Web Large View Done Button
-	And I Click Close Workflow Tab
-	And I Try Click MessageBox No
 
-Scenario: Right click adorner control with error
-	Given The Warewolf Studio is running
-	When I Filter the Explorer with "BrokenDeleteWeb" 
-	And I DoubleClick Explorer Localhost First Item
-	And I Open DeleteWeb Tool Large View
-	And I Select Test Source From DELETE Web Large View Source Combobox
-	And I Click DELETE Web Large View Generate Outputs
-	And I Click DELETE Web Large View Test Inputs Button
-	Then There is an error
-	And I RightClick Ardoner Hyperlink
-	And There is an error
-	And I Click Close Workflow Tab
-	And I Try Click MessageBox No
+#Scenario: Right click adorner control with error
+#	Given The Warewolf Studio is running
+#	When I Filter the Explorer with "BrokenDeleteWeb" 
+#	And I DoubleClick Explorer Localhost First Item
+#	And I Open DeleteWeb Tool Large View
+#	And I Select Test Source From DELETE Web Large View Source Combobox
+#	And I Click DELETE Web Large View Generate Outputs
+#	And I Click DELETE Web Large View Test Inputs Button
+#	Then There is an error
+#	And I RightClick Ardoner Hyperlink
+#	And There is an error
 
 
 

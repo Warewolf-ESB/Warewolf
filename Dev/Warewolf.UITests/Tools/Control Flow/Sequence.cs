@@ -28,9 +28,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.Open_Sequence_Large_tool_View();
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop switch onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
 
         [TestMethod]
@@ -40,9 +38,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.Open_Sequence_Large_tool_View();
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop decision onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
         
 
@@ -59,9 +55,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_SmallTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop switch onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
 
         [TestMethod]
@@ -70,9 +64,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_SmallTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            Assert.AreEqual("Drop not allowed", UIMap.MessageBoxWindow.DropnotallowedText.DisplayText
-                , "Error message is not about being unable to drop decision onto the Sequence tool");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
         }
         
 

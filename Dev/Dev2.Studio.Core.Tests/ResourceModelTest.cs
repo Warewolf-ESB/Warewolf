@@ -473,7 +473,7 @@ namespace Dev2.Core.Tests
             var serviceDefinition = model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(serviceDefinition==null||string.IsNullOrEmpty(serviceDefinition.ToString()));
+            Assert.IsTrue(string.IsNullOrEmpty(serviceDefinition?.ToString()));
         }
 
         [TestMethod]

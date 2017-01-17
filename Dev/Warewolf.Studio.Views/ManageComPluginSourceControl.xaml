@@ -110,6 +110,7 @@
                     </Button>
                     <views:CircularProgressBar Grid.Row="0"
                                                Grid.Column="1"
+                                               Margin="{StaticResource ControlBorderTop}"
                                                Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
                                                Width="25"
                                                Height="25"
@@ -129,7 +130,8 @@
                 </Grid>
 
                 <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
-                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}">
+                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                          Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverterNegative}}">
                         <ig:XamDataTree x:Name="ExplorerTree" 
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
@@ -178,6 +180,12 @@
                             </ig:XamDataTree.GlobalNodeLayouts>
                         </ig:XamDataTree>
                     </Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <views:CircularProgressBar Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
+                                                   Width="75"
+                                                   Height="75"
+                                                   Padding="2.5" />
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.ColumnDefinitions>

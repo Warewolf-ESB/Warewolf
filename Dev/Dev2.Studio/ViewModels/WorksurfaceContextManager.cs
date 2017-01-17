@@ -26,7 +26,6 @@ using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
@@ -708,18 +707,14 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            if (resourceModel.WorkflowXaml == null)
-            {
-                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
-            }
-
             if (resourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
             {
                 _mainViewModel.PersistTabs();
                 AddWorkSurfaceContext(resourceModel);
                 return;
             }
-
+            var environmentModel = resourceModel.Environment;
+            resourceModel.WorkflowXaml = environmentModel.ResourceRepository.FetchResourceDefinition(environmentModel, GlobalConstants.ServerWorkspaceID, resourceModel.ID, true).Message;
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
@@ -896,8 +891,19 @@ namespace Dev2.Studio.ViewModels
                 SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
                 Path = resourceModel.GetSavePath(),
-                Name = db.ResourceName
+                Name = db.ResourceName,
+                ConfigFilePath = db.ConfigFilePath
             };
+            if (db.AssemblyLocation.EndsWith(".dll"))
+            {
+                def.FileSystemAssemblyName = db.AssemblyLocation;
+                def.GACAssemblyName = string.Empty;
+            }
+            else if (db.AssemblyLocation.StartsWith("GAC:"))
+            {
+                def.GACAssemblyName = db.AssemblyLocation;
+                def.FileSystemAssemblyName = string.Empty;
+            }
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;

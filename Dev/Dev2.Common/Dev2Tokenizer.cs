@@ -75,13 +75,10 @@ namespace Dev2.Common
         {
             bool result = false;
 
-            if (_ops != null)
+            // are all the ops token based?!
+            if (_ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count)
             {
-                // are all the ops token based?!
-                if (_ops.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count)
-                {
-                    result = true;
-                }
+                result = true;
             }
 
             return result;

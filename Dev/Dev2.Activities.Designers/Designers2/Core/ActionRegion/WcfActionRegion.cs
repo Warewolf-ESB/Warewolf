@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Errors.Clear();
                 IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
-                if (_source != null && _source.SelectedSource != null)
+                if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
                     SelectedAction = null;
@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public bool CanRefresh()
         {
             IsActionEnabled = _source.SelectedSource != null;
-            return _source != null && _source.SelectedSource != null;
+            return _source?.SelectedSource != null;
         }
 
         public IWcfAction SelectedAction
@@ -172,10 +172,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnSomethingChanged(this);
             }
             var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-            if (delegateCommand != null)
-            {
-                delegateCommand.RaiseCanExecuteChanged();
-            }
+            delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedAction = value;
         }
@@ -267,7 +264,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = IsEnabled,
                 SelectedAction = SelectedAction == null ? null : new WcfAction()
                 {
-                    Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
                     FullName = SelectedAction.FullName,
                     Method = SelectedAction.Method
                 }

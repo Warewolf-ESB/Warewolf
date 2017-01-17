@@ -90,63 +90,68 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
-              
+
                 Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
-                try
-                {
-                   
-                    var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-                    if (!result.IsNullOrEmpty())
-                    {
-                        var tempResource = new Resource(result.ToXElement());
-                        var resource = tempResource;
-
-                        if (resource.ResourceType == @"DbSource")
-                        {
-                            res.Message.Append(result);
-                        }
-                        else
-                        {
-                            DoWorkflowServiceMessage(result, res);
-                        }
-                    }
-                }
-                catch(ServiceNotAuthorizedException ex)
-                {
-                    res.Message = ex.Message.ToStringBuilder();
-                    res.HasError = true;
-                    return serializer.SerializeToBuilder(res);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e);
-                }
-            
-                if (!res.Message.IsNullOrEmpty())
-                {
-                    Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
-                    res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
-                }
-                if (prepairForDeployment)
-                {
-                    try
-                    {
-                        res.Message = DecryptAllPasswords(res.Message);
-                    }
-                    catch(CryptographicException e)
-                    {
-                        Dev2Logger.Error(@"Encryption had issues.",e);
-                    }
-                }
-
-            
-                return serializer.SerializeToBuilder(res);
+                return GetResourceDefinition(theWorkspace, serializer, res, prepairForDeployment, resourceId);
             }
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
                 throw;
             }
+        }
+
+        public StringBuilder GetResourceDefinition(IWorkspace theWorkspace, Dev2JsonSerializer serializer, ExecuteMessage res, bool prepairForDeployment, Guid resourceId)
+        {
+            try
+            {
+
+                var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
+                if (!result.IsNullOrEmpty())
+                {
+                    var tempResource = new Resource(result.ToXElement());
+                    var resource = tempResource;
+
+                    if (resource.ResourceType == @"DbSource")
+                    {
+                        res.Message.Append(result);
+                    }
+                    else
+                    {
+                        DoWorkflowServiceMessage(result, res);
+                    }
+                }
+            }
+            catch (ServiceNotAuthorizedException ex)
+            {
+                res.Message = ex.Message.ToStringBuilder();
+                res.HasError = true;
+                return serializer.SerializeToBuilder(res);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e);
+            }
+
+            if (!res.Message.IsNullOrEmpty())
+            {
+                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+            }
+            if (prepairForDeployment)
+            {
+                try
+                {
+                    res.Message = DecryptAllPasswords(res.Message);
+                }
+                catch (CryptographicException e)
+                {
+                    Dev2Logger.Error(@"Encryption had issues.", e);
+                }
+            }
+
+
+            return serializer.SerializeToBuilder(res);
         }
 
         private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
@@ -197,7 +202,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
+        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
             Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
                                                                {

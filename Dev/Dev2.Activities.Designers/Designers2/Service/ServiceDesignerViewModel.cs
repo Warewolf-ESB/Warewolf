@@ -126,40 +126,63 @@ namespace Dev2.Activities.Designers2.Service
             }
 
             ValidationMemoManager.InitializeValidationService(_environment);
-            if (!InitializeResourceModel(_environment))
+            IsLoading = true;
+            _worker.Start(() => InitializeResourceModel(_environment), b =>
+              {
+                  if (b)
+                  {
+                      UpdateDesignerAfterResourceLoad(environmentRepository);
+                  }
+              });
+
+            ViewComplexObjectsCommand = new RelayCommand(item =>
             {
-                return;
-            }
+                ViewJsonObjects(item as IComplexObjectItemModel);
+            }, CanViewComplexObjects);
+        }
+
+        private void UpdateDesignerAfterResourceLoad(IEnvironmentRepository environmentRepository)
+        {
+            
             if (!IsDeleted)
             {
                 MappingManager.InitializeMappings();
                 ValidationMemoManager.InitializeLastValidationMemo(_environment);
-                if (IsItemDragged.Instance.IsDragged)
+                if(IsItemDragged.Instance.IsDragged)
                 {
                     Expand();
                     IsItemDragged.Instance.IsDragged = false;
                 }
             }
             var environmentModel = environmentRepository.Get(EnvironmentID);
-            if (environmentModel?.Connection?.WebServerUri != null)
+            if(environmentModel?.Connection?.WebServerUri != null)
             {
                 var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());
                 var host = servUri.Host;
-                if (!host.Equals(FriendlySourceName, StringComparison.InvariantCultureIgnoreCase))
+                if(!host.Equals(FriendlySourceName, StringComparison.InvariantCultureIgnoreCase))
                     FriendlySourceName = host;
             }
 
             InitializeProperties();
-            if (_environment != null)
+            if(_environment != null)
             {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
+            IsLoading = false;
+        }
 
-            ViewComplexObjectsCommand = new RelayCommand(item =>
+        public bool IsLoading
+        {
+            get
             {
-                ViewJsonObjects(item as IComplexObjectItemModel);
-            }, CanViewComplexObjects);
+                return _isLoading;
+            }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged("IsLoading");
+            }
         }
 
         private static bool CanViewComplexObjects(Object itemx)
@@ -251,7 +274,18 @@ namespace Dev2.Activities.Designers2.Service
 
         public ICommand DoneCompletedCommand { get; private set; }
 
-        public List<KeyValuePair<string, string>> Properties { get; private set; }
+        public List<KeyValuePair<string, string>> Properties
+        {
+            get
+            {
+                return _properties;
+            }
+            private set
+            {
+                _properties = value;
+                OnPropertyChanged("Properties");
+            }
+        }
 
         public IContextualResourceModel ResourceModel { get; set; }
 
@@ -416,6 +450,8 @@ namespace Dev2.Activities.Designers2.Service
         readonly IEnvironmentModel _environment;
         bool _runWorkflowAsync;
         private readonly IAsyncWorker _worker;
+        private bool _isLoading;
+        private List<KeyValuePair<string, string>> _properties;
 
         public override void Validate()
         {
@@ -465,9 +501,8 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     return true;
                 }
-
-                if (!InitializeResourceModelSync(environmentModel))
-                    return false;
+                var init = InitializeResourceModelFromRemoteServer(environmentModel);
+                return init;
 
             }
             return true;
@@ -494,18 +529,20 @@ namespace Dev2.Activities.Designers2.Service
 
         public IContextualResourceModel NewModel { get; set; }
 
-        private bool InitializeResourceModelSync(IEnvironmentModel environmentModel)
+        private bool InitializeResourceModelFromRemoteServer(IEnvironmentModel environmentModel)
         {
             var resourceId = ResourceID;
             if (!environmentModel.IsConnected)
             {
                 environmentModel.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError);
-                return true;
             }
-            if (resourceId != Guid.Empty)
+            if (environmentModel.IsConnected)
             {
-                ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                if (resourceId != Guid.Empty)
+                {
+                    ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
+                }
             }
             if (!CheckSourceMissing())
             {
@@ -552,17 +589,18 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeProperties()
         {
-            Properties = new List<KeyValuePair<string, string>>();
+            _properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", FriendlySourceName);
             AddProperty("Type :", Type);
             AddProperty("Procedure :", ActionName);
+            Properties = _properties;
         }
 
         void AddProperty(string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
+                _properties.Add(new KeyValuePair<string, string>(key, value));
             }
         }
 

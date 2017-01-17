@@ -230,7 +230,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                    WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
         }
@@ -324,10 +324,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

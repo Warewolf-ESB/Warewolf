@@ -74,12 +74,7 @@ namespace Dev2.Studio.Core
         {
             get
             {
-                if(WebActivityObject is ModelItem)
-                {
-                    return (WebActivityObject as ModelItem).ItemType;
-                }
-
-                return null;
+                return (WebActivityObject as ModelItem)?.ItemType;
             }
         }
 

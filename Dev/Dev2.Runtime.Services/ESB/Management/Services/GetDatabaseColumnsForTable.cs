@@ -202,7 +202,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             dbColumn.SqlDataType = sqlDataType;
                         }
 
-                        var columnLength = row["ColumnSize"] is int ? (int)row["ColumnSize"] : -1;
+                        var columnLength = row["ColumnSize"] as int? ?? -1;
                         dbColumn.MaxLength = columnLength;
                         dbColumns.Items.Add(dbColumn);
                     }

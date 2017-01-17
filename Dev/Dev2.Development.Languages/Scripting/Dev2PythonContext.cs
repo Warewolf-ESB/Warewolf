@@ -60,7 +60,7 @@ namespace Dev2.Development.Languages.Scripting
 
         private void AddScriptToContext(ScriptEngine pyEng, ScriptScope scope)
         {
-            if(_sources != null && _sources.GetFileScriptSources() != null)
+            if(_sources?.GetFileScriptSources() != null)
                 foreach(var fileScriptSource in _sources.GetFileScriptSources())
                     pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
         }

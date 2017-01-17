@@ -21,7 +21,6 @@ Scenario: Unsaved Tests Contain a Star in their Name
 	Then The "1st" Added Test "Has" Unsaved Star
 	When I Click Save Ribbon Button Without Expecting a Dialog
 	Then The "1st" Added Test "Has No" Unsaved Star
-	And I Click Close Tests Tab
 
 Scenario: Run Passing Tests
 	When I Click New Workflow Ribbon Button
@@ -44,4 +43,12 @@ Scenario: Run Passing Tests
 	Then The First Test "Is" Invalid
 	When I Click First Test Delete Button
 	And I Click MessageBox Yes
-	And I Click Close Tests Tab
+
+Scenario: Run Test Then Edit The Workflow Sets The Test To Invalid
+	Given The Warewolf Studio is running
+	When I Run All Hello World Tests
+	And I Open Explorer First Item With Double Click
+	And I Click VariableList Scalar Row2 IsInputCheckbox
+	And I Click Save Ribbon Button Without Expecting a Dialog
+	And I Open Explorer First Item Tests With Context Menu
+	Then The First Test "Is" Invalid
