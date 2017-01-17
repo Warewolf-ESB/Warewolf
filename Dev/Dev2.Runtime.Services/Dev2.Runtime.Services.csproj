@@ -206,6 +206,7 @@
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteTest.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
+    <Compile Include="ESB\Management\Services\DirectDeploy.cs" />
     <Compile Include="ESB\Management\Services\DuplicateFolderService.cs" />
     <Compile Include="ESB\Management\Services\DuplicateResourceService.cs" />
     <Compile Include="ESB\Management\Services\FetchComPluginActions.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetFiles.cs" />
+    <Compile Include="ESB\Management\Services\GetServerIformation.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
@@ -393,6 +395,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\IConnections.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />

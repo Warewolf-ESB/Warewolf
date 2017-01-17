@@ -471,8 +471,10 @@ namespace Dev2.Activities.Specs.TestFramework
                 return;
             }
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
-            var loadContextualResourceModel = EnvironmentRepository.Instance.Source.ResourceRepository.LoadContextualResourceModel(resourceId);
-
+            var sourceResourceRepository = EnvironmentRepository.Instance.Source.ResourceRepository;
+            var loadContextualResourceModel = sourceResourceRepository.LoadContextualResourceModel(resourceId);
+            var msg = sourceResourceRepository.FetchResourceDefinition(loadContextualResourceModel.Environment, GlobalConstants.ServerWorkspaceID, resourceId, false);
+            loadContextualResourceModel.WorkflowXaml = msg.Message;
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
@@ -1613,8 +1615,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var env = EnvironmentRepository.Instance.Source;
             env.ForceLoadResources();
-            var res = env.ResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
-            var contextualResource = env.ResourceRepository.LoadContextualResourceModel(res.ID);
+            var sourceResourceRepository = env.ResourceRepository;
+            var res = sourceResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
+            var contextualResource = sourceResourceRepository.LoadContextualResourceModel(res.ID);
+            var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment, GlobalConstants.ServerWorkspaceID, res.ID, false);
+            contextualResource.WorkflowXaml = msg.Message;
             helloGuid = res.ID;
             var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             Assert.IsNotNull(serviceTestVm);

@@ -1082,7 +1082,7 @@
     <value>This is the actual content you want to add in the Queue	When the Consumer consumes the message, this content will	be returned as the response.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpPrefetch" xml:space="preserve">
-    <value>Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
     <value>Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
@@ -1633,7 +1633,7 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>Select the Wcf Source you want to use from previously setup sources.</value>
   </data>
   <data name="WcfSourceHostNameHelp" xml:space="preserve">
-    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
+    <value>The Wcf service endpoint url to connect to your web service.	&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border="1" id="smtptable"&gt;	&lt;tr align="center"&gt;&lt;th&gt;Auto Discover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
   </data>
   <data name="WebInputDefaultValueHelp" xml:space="preserve">
     <value>The test data you want to use to execute this action with.</value>
@@ -1796,7 +1796,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Use the Date and Time Difference tool to calculate the difference in time of two date times.</value>
   </data>
   <data name="Tool_Utility_Create_JSON" xml:space="preserve">
-    <value>Use the Create Json tool to create Json data.</value>
+    <value>Use the Create JSON tool to create JSON data.</value>
   </data>
   <data name="Tool_Utility_Comment" xml:space="preserve">
     <value>Use the Comment tool to leave notes and information within your workflow.</value>

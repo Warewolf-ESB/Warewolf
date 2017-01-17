@@ -44,7 +44,7 @@ namespace Warewolf.UITests
             UIMap.Update_Test_Name("Blank Input");
             UIMap.Save_Tets_With_Shortcut();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Duplicate_Test_Name_MessageBox_Ok();
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Warewolf.UITests
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
         }
 
         [TestMethod]
