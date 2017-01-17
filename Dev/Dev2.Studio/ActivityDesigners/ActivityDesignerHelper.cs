@@ -95,7 +95,6 @@ using System.Windows;
 using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
-using Dev2.Activities.Designers2.Net_Dll_Enhanced;
 using Dev2.Activities.Scripting;
 
 // ReSharper disable RedundantNameQualifier
