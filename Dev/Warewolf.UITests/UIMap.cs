@@ -1157,23 +1157,21 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
-
-        //[Given(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //[When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //[Then(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
-        //{
-        //    if (!File.Exists(text))
-        //    {
-        //        text = text.Replace("Framework64", "Framework");
-        //        if (!File.Exists(text))
-        //        {
-        //            throw new Exception("No suitable DLL could be found for this test to use.");
-        //        }
-        //    }
-        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
-        //    Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        //}
+        
+        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
+        {
+            if (!File.Exists(text))
+            {
+                text = text.Replace("Framework64", "Framework");
+                if (!File.Exists(text))
+                {
+                    throw new Exception("No suitable DLL could be found for this test to use.");
+                }
+            }
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        }
 
         public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
         {
