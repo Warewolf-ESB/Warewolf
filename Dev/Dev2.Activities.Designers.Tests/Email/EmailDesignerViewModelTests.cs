@@ -359,19 +359,44 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_AddsFilesToAttachments()
         {
-            Verify_ChooseAttachments(new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" });
+            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
+            //------------Setup for test--------------------------
+            var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
+
+            var expectedFiles = new List<string>();
+            expectedFiles.AddRange(existingFiles);
+            if (selectedFiles != null)
+            {
+                expectedFiles.AddRange(selectedFiles);
+            }
+
+            var emailSources = CreateEmailSources(2);
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Attachments", string.Join(";", expectedFiles));
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
+            {
+                ((FileChooserMessage)m).SelectedFiles = expectedFiles;
+            });
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.ChooseAttachmentsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
+            var attachments = modelItem.GetProperty<string>("Attachments");
+            Assert.AreEqual(string.Join(";", expectedFiles), attachments);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
-        public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNull_DoesAddNotFilesToAttachments()
+        public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_SelectedNewFilesToAttachments()
         {
-            Verify_ChooseAttachments(null);
-        }
-
-        void Verify_ChooseAttachments(List<string> selectedFiles)
-        {
+            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
             //------------Setup for test--------------------------
             var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
 
@@ -390,6 +415,36 @@ namespace Dev2.Activities.Designers.Tests.Email
             eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
             {
                 ((FileChooserMessage)m).SelectedFiles = selectedFiles;
+            });
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.ChooseAttachmentsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
+            var attachments = modelItem.GetProperty<string>("Attachments");
+            Assert.AreEqual(string.Join(";", selectedFiles), attachments);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
+        public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNull_DoesAddNotFilesToAttachments()
+        {
+            //------------Setup for test--------------------------
+            var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
+
+            var expectedFiles = new List<string>();
+            var emailSources = CreateEmailSources(2);
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Attachments", string.Join(";", existingFiles));
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
+            {
+                ((FileChooserMessage)m).SelectedFiles = null;
             });
 
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);

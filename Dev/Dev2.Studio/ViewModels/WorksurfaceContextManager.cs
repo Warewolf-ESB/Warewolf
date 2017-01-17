@@ -891,8 +891,19 @@ namespace Dev2.Studio.ViewModels
                 SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false },
                 Id = db.ResourceID,
                 Path = resourceModel.GetSavePath(),
-                Name = db.ResourceName
+                Name = db.ResourceName,
+                ConfigFilePath = db.ConfigFilePath
             };
+            if (db.AssemblyLocation.EndsWith(".dll"))
+            {
+                def.FileSystemAssemblyName = db.AssemblyLocation;
+                def.GACAssemblyName = string.Empty;
+            }
+            else if (db.AssemblyLocation.StartsWith("GAC:"))
+            {
+                def.GACAssemblyName = db.AssemblyLocation;
+                def.FileSystemAssemblyName = string.Empty;
+            }
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;

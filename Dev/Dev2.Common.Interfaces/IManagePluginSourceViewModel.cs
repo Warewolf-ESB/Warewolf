@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Common.Interfaces
 {
     public interface IManagePluginSourceViewModel
     {
-        List<IDllListingModel> DllListings { get; set; }
         IDllListingModel SelectedDll { get; set; }
         string ResourceName { get; set; }
         ICommand OkCommand { get; set; }
-        bool IsLoading { get; set; }
-        string SearchTerm { get; set; }
-        ICommand ClearSearchTextCommand { get; }
-        ICommand RefreshCommand { get; set; }
-        IDllListingModel GacItem { get; }
+        string FileSystemAssemblyName { get; set; }
+        string ConfigFilePath { get; set; }
+        string GACAssemblyName { get; set; }
+        ICommand ChooseGACDLLCommand { get; set; }
+        ICommand ChooseFileSystemDLLCommand { get; set; }
+        ICommand ChooseConfigFileCommand { get; set; }
+        bool CanSelectConfigFiles { get; set; }
     }
 }

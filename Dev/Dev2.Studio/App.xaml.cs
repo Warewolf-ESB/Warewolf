@@ -211,6 +211,8 @@ namespace Dev2.Studio
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
+            CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
+            CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
             
             

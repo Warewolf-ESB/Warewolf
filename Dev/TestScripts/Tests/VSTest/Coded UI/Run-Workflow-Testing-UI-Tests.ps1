@@ -33,7 +33,9 @@ $TestSettingsFile = "$PSScriptRoot\WorkflowTestingUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
   name=`"WorkflowTestingUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -73,6 +75,9 @@ if (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
 }
 if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
+}
+if (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir

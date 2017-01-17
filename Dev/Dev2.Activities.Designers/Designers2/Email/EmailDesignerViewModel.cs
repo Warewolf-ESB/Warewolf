@@ -376,22 +376,21 @@ namespace Dev2.Activities.Designers2.Email
 
         void ChooseAttachments()
         {
-
-            const string Separator = @";";
-            var message = new FileChooserMessage { SelectedFiles = Attachments.Split(Separator.ToCharArray()) };
+            const string separator = @";";
+            var message = new FileChooserMessage { SelectedFiles = Attachments.Split(separator.ToCharArray()) };
             message.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
                 {
-                    if (message.SelectedFiles != null)
+                    if (message.SelectedFiles == null || !message.SelectedFiles.Any())
                     {
-                        if(string.IsNullOrEmpty(Attachments))
+                        Attachments = "";
+                    }
+                    else
+                    {
+                        if (message.SelectedFiles != null)
                         {
-                            Attachments = string.Join(Separator, message.SelectedFiles);
-                        }
-                        else
-                        {
-                            Attachments +=Separator+string.Join(Separator, message.SelectedFiles);
+                            Attachments = string.Join(separator, message.SelectedFiles);
                         }
                     }
                 }
