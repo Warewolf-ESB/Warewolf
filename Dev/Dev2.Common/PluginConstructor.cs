@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common
 {
@@ -10,11 +9,11 @@ namespace Dev2.Common
     {
         public PluginConstructor()
         {
-            Inputs = new List<IServiceInput>();
+            Inputs = new List<IConstructorParameter>();
         }
         #region Implementation of IConstructor
 
-        public IList<IServiceInput> Inputs { get; set; }
+        public IList<IConstructorParameter> Inputs { get; set; }
         public string ReturnObject { get; set; }
         public string ConstructorName { get; set; }
 
