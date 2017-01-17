@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private ISourceToolRegion<IPluginSource> _sourceRegion;
         private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
         private IConstructorRegion<IPluginConstructor> _constructorRegion;
-        private IActionToolRegion<IPluginAction> _actionRegion;
+        private IMethodToolRegion<IPluginAction> _methodRegion;
 
         private IErrorInfo _worstDesignError;
 
@@ -230,7 +230,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
             AddProperty("Type :", Type);
             AddProperty("Constructor :", ConstructorRegion.SelectedConstructor == null ? "" : ConstructorRegion.SelectedConstructor.ConstructorName);
-            //AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.FullName);
         }
 
         void AddProperty(string key, string value)
@@ -245,7 +244,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         public void TestProcedure()
         {
-            if (ActionRegion.SelectedAction != null)
+            if (MethodRegion.SelectedMethod != null)
             {
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
@@ -284,6 +283,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         bool _generateOutputsVisible;
         private ServiceInputBuilder _builder;
+        private List<IMethodToolRegion<IPluginAction>> _methodsToRunList;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -387,7 +387,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ConstructorRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+                MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
                 {
                     SourceChangedAction = () =>
                     {
@@ -401,13 +401,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         }
                     }
                 };
-                ActionRegion.ErrorsHandler += (sender, list) =>
+                MethodRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
-                regions.Add(ActionRegion);
+                regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
@@ -425,17 +425,31 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 regions.Add(ErrorRegion);
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
-                ConstructorRegion.Dependants.Add(ActionRegion);
-                ActionRegion.Dependants.Add(InputArea);
-                ActionRegion.Dependants.Add(OutputsRegion);
-                //NamespaceRegion.Dependants.Add(ActionRegion);
-                //ActionRegion.Dependants.Add(InputArea);
-                //ActionRegion.Dependants.Add(OutputsRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
+                MethodRegion.Dependants.Add(InputArea);
+                MethodRegion.Dependants.Add(OutputsRegion);
+                
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
+
+            MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
+
+            MethodsToRunList.Add(MethodRegion);
             return regions;
+        }
+
+        public List<IMethodToolRegion<IPluginAction>> MethodsToRunList
+        {
+            get
+            {
+                return _methodsToRunList;
+            }
+            set
+            {
+                _methodsToRunList = value;
+                OnPropertyChanged();
+            }
         }
 
         public ErrorRegion ErrorRegion { get; private set; }
@@ -456,15 +470,15 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 OnPropertyChanged();
             }
         }
-        public IActionToolRegion<IPluginAction> ActionRegion
+        public IMethodToolRegion<IPluginAction> MethodRegion
         {
             get
             {
-                return _actionRegion;
+                return _methodRegion;
             }
             set
             {
-                _actionRegion = value;
+                _methodRegion = value;
                 OnPropertyChanged();
             }
         }
@@ -548,7 +562,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             var pluginServiceDefinition = new PluginServiceDefinition
             {
                 Source = SourceRegion.SelectedSource,
-                Action = ActionRegion.SelectedAction,
+                Action = MethodRegion.SelectedMethod,
                 Inputs = new List<IServiceInput>()
             };
             var dt = new List<IServiceInput>();

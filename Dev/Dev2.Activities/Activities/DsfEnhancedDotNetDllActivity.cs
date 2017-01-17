@@ -65,6 +65,7 @@ namespace Dev2.Activities
             foreach (var parameter in constructor.Inputs)
             {
                 var paramIterator = dataObject.Environment.Eval(parameter.Value, update);
+                var evalJContainer = dataObject.Environment.EvalJContainer(parameter.Value);
                 var resultToString = ExecutionEnvironment.WarewolfEvalResultToString(paramIterator);
                 parameter.Value = resultToString;
             }

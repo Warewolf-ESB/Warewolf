@@ -15,6 +15,17 @@ namespace Dev2.Common.Interfaces.ToolBase
         double LabelWidth { get; set; }
     }
 
+    public interface IMethodToolRegion<T> : IToolRegion
+    {
+        T SelectedMethod { get; set; }
+        ICollection<T> MethodsToRun { get; set; }
+        ICommand RefreshActionsCommand { get; }
+        bool IsActionEnabled { get; set; }
+        bool IsRefreshing { get; set; }
+        event SomethingChanged SomethingChanged;
+        double LabelWidth { get; set; }
+    }
+
     public interface IODBCActionToolRegion<T> : IActionToolRegion<T>
     {
         string CommandText { get; set; }

@@ -208,6 +208,46 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NewDotNetMethodGrid">
+        <Grid x:Name="MethodsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="ActionsComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding MethodsToRun}"
+                              DisplayMemberPath="Method" 
+                              IsEnabled="{Binding IsMethodEnabled}"
+                              ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding SelectedMethod}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="ActionRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=RefreshActionsCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="22"
+                                                        Height="22"
+                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetConstructorGrid">
         <Grid x:Name="ConstructorsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
@@ -837,12 +877,12 @@
             <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
             <ig:XamDataTree Grid.Row="1" 
 							x:Name="MethodsDataTree"
-							ItemsSource="{Binding MethodsList}"
+							ItemsSource="{Binding MethodsToRunList}"
 							NodeStyle="{StaticResource ServiceTestXamDataTreeNodeControlStyle}">
                 <ig:XamDataTree.GlobalNodeLayouts>
-                    <ig:NodeLayout Key="MethodClass"
-									DisplayMemberPath="SelectedMethod"
-									TargetTypeName="IMethod"
+                    <ig:NodeLayout Key="DotNetMethodRegion"
+									DisplayMemberPath="MethodRegion"
+									TargetTypeName="IMethodToolRegion"
                                     AutomationProperties.AutomationId="{Binding StringFormat=UI_Node{0}_AutoID, Path=Node.Data.StepDescription}">
                         <ig:NodeLayout.ItemTemplate>
                             <DataTemplate>
@@ -861,19 +901,11 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Expander x:Name="MethodExpander" 
-											Visibility="{Binding Path=Node.Data.IsMethodExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
-											Header="{Binding Path=Node.Data}" 
-											IsExpanded="{Binding Path=Node.Data.IsMethodExpanded}" 
+											Visibility="Visible" 
+                                              Header="Bob"
 											Style="{StaticResource ServiceTestTestStepExpander}" 
-                                            AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
-                                        <Expander.HeaderTemplate>
-                                            <DataTemplate>
-                                                <DockPanel LastChildFill="False" >
-                                                    <Control Template="{StaticResource NewDotNetActionGrid}"/>
-                                                </DockPanel>
-                                            </DataTemplate>
-                                        </Expander.HeaderTemplate>
-                                        <Control Template="{StaticResource DotNetInputOutputGrid}"/>
+                                            AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.Method}">
+                                        <!--                                        <Control Template="{StaticResource DotNetInputOutputGrid}"/>-->
                                     </Expander>
                                 </Grid>
                             </DataTemplate>
@@ -881,17 +913,10 @@
                     </ig:NodeLayout>
                 </ig:XamDataTree.GlobalNodeLayouts>
             </ig:XamDataTree>
-            <TextBlock Grid.Row="1" Text="None" 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Margin="0,0,0,-5"
-                        Style="{StaticResource MenuTextBlockStyle}"
-                        Visibility="{Binding MethodInputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
-
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="NewDotNetInputsGrid">
+    <ControlTemplate x:Key="NewDotNetConstructorInputsGrid">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
