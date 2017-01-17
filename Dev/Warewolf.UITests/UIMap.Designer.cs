@@ -1038,6 +1038,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public ComboboxListItemAsDropboxServerType ComboboxListItemAsDropboxServerType
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsDropboxServerType == null))
+                {
+                    this.mComboboxListItemAsDropboxServerType = new ComboboxListItemAsDropboxServerType(this);
+                }
+                return this.mComboboxListItemAsDropboxServerType;
+            }
+        }
+        
         public Dev2TestingDBCustom Dev2TestingDBCustom
         {
             get
@@ -1151,6 +1163,8 @@ namespace Warewolf.UITests
         private ComboboxListItemAsHRDB mComboboxListItemAsHRDB;
         
         private ComboboxListItemAsExcelFilesDB mComboboxListItemAsExcelFilesDB;
+        
+        private ComboboxListItemAsDropboxServerType mComboboxListItemAsDropboxServerType;
         
         private Dev2TestingDBCustom mDev2TestingDBCustom;
         #endregion
@@ -10184,6 +10198,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public WCFServiceSourceTab WCFServiceSourceTab
+        {
+            get
+            {
+                if ((this.mWCFServiceSourceTab == null))
+                {
+                    this.mWCFServiceSourceTab = new WCFServiceSourceTab(this);
+                }
+                return this.mWCFServiceSourceTab;
+            }
+        }
+        
         public ServerSourceTab ServerSourceTab
         {
             get
@@ -10255,6 +10281,18 @@ namespace Warewolf.UITests
                 return this.mCOMPlugInSourceTab;
             }
         }
+        
+        public OAuthSourceWizardTab OAuthSourceWizardTab
+        {
+            get
+            {
+                if ((this.mOAuthSourceWizardTab == null))
+                {
+                    this.mOAuthSourceWizardTab = new OAuthSourceWizardTab(this);
+                }
+                return this.mOAuthSourceWizardTab;
+            }
+        }
         #endregion
         
         #region Fields
@@ -10284,6 +10322,8 @@ namespace Warewolf.UITests
         
         private DeployTab mDeployTab;
         
+        private WCFServiceSourceTab mWCFServiceSourceTab;
+        
         private ServerSourceTab mServerSourceTab;
         
         private SettingsTab mSettingsTab;
@@ -10295,6 +10335,8 @@ namespace Warewolf.UITests
         private ExchangeSourceTab mExchangeSourceTab;
         
         private COMPlugInSourceTab mCOMPlugInSourceTab;
+        
+        private OAuthSourceWizardTab mOAuthSourceWizardTab;
         #endregion
     }
     
@@ -73013,6 +73055,102 @@ namespace Warewolf.UITests
                 return this.mSpinner;
             }
         }
+        
+        public WpfRadioButton UserRadioButton
+        {
+            get
+            {
+                if ((this.mUserRadioButton == null))
+                {
+                    this.mUserRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUserRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UserRadioButton";
+                    this.mUserRadioButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUserRadioButton;
+            }
+        }
+        
+        public WpfEdit UserNameTextBox
+        {
+            get
+            {
+                if ((this.mUserNameTextBox == null))
+                {
+                    this.mUserNameTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUserNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UserNameTextBox";
+                    this.mUserNameTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUserNameTextBox;
+            }
+        }
+        
+        public WpfEdit PasswordTextBox
+        {
+            get
+            {
+                if ((this.mPasswordTextBox == null))
+                {
+                    this.mPasswordTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mPasswordTextBox;
+            }
+        }
+        
+        public WpfEdit DefaultQueryTextBox
+        {
+            get
+            {
+                if ((this.mDefaultQueryTextBox == null))
+                {
+                    this.mDefaultQueryTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDefaultQueryTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DefaultQueryTextBox";
+                    this.mDefaultQueryTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mDefaultQueryTextBox;
+            }
+        }
+        
+        public WpfButton CancelTestButton
+        {
+            get
+            {
+                if ((this.mCancelTestButton == null))
+                {
+                    this.mCancelTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "CancelButton";
+                    this.mCancelTestButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCancelTestButton;
+            }
+        }
+        
+        public WpfRadioButton AnonymousRadioButton
+        {
+            get
+            {
+                if ((this.mAnonymousRadioButton == null))
+                {
+                    this.mAnonymousRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mAnonymousRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "AnonymousRadioButton";
+                    this.mAnonymousRadioButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mAnonymousRadioButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -73021,6 +73159,18 @@ namespace Warewolf.UITests
         private WpfButton mTestConnectionButton;
         
         private WpfCustom mSpinner;
+        
+        private WpfRadioButton mUserRadioButton;
+        
+        private WpfEdit mUserNameTextBox;
+        
+        private WpfEdit mPasswordTextBox;
+        
+        private WpfEdit mDefaultQueryTextBox;
+        
+        private WpfButton mCancelTestButton;
+        
+        private WpfRadioButton mAnonymousRadioButton;
         #endregion
     }
     
@@ -80951,6 +81101,38 @@ namespace Warewolf.UITests
                 return this.mUserNameTextBox;
             }
         }
+        
+        public WpfRadioButton WindowsRadioButton
+        {
+            get
+            {
+                if ((this.mWindowsRadioButton == null))
+                {
+                    this.mWindowsRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mWindowsRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "WindowsRadioButton";
+                    this.mWindowsRadioButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mWindowsRadioButton;
+            }
+        }
+        
+        public WpfButton CancelTestButton
+        {
+            get
+            {
+                if ((this.mCancelTestButton == null))
+                {
+                    this.mCancelTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "CancelButton";
+                    this.mCancelTestButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCancelTestButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -80963,6 +81145,10 @@ namespace Warewolf.UITests
         private WpfEdit mServerNameEdit;
         
         private WpfEdit mUserNameTextBox;
+        
+        private WpfRadioButton mWindowsRadioButton;
+        
+        private WpfButton mCancelTestButton;
         #endregion
     }
     
@@ -82077,6 +82263,111 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WCFServiceSourceTab : WpfTabPage
+    {
+        
+        public WCFServiceSourceTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IWcfServerSource]";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CloseTabButton
+        {
+            get
+            {
+                if ((this.mCloseTabButton == null))
+                {
+                    this.mCloseTabButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseTabButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseTabButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCloseTabButton;
+            }
+        }
+        
+        public WorkSurfaceContext9 WorkSurfaceContext
+        {
+            get
+            {
+                if ((this.mWorkSurfaceContext == null))
+                {
+                    this.mWorkSurfaceContext = new WorkSurfaceContext9(this);
+                }
+                return this.mWorkSurfaceContext;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCloseTabButton;
+        
+        private WorkSurfaceContext9 mWorkSurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorkSurfaceContext9 : WpfCustom
+    {
+        
+        public WorkSurfaceContext9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit WCFEndpointURLEdit
+        {
+            get
+            {
+                if ((this.mWCFEndpointURLEdit == null))
+                {
+                    this.mWCFEndpointURLEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mWCFEndpointURLEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "EndpointUrlTxtBox";
+                    this.mWCFEndpointURLEdit.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mWCFEndpointURLEdit;
+            }
+        }
+        
+        public WpfButton TestConnectionButton
+        {
+            get
+            {
+                if ((this.mTestConnectionButton == null))
+                {
+                    this.mTestConnectionButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestConnectionButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestSendCommand";
+                    this.mTestConnectionButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mTestConnectionButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mWCFEndpointURLEdit;
+        
+        private WpfButton mTestConnectionButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerSourceTab : WpfTabPage
     {
         
@@ -82090,13 +82381,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorkSurfaceContext9 WorkSurfaceContext
+        public WorkSurfaceContext10 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext9(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext10(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -82203,7 +82494,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorkSurfaceContext9 mWorkSurfaceContext;
+        private WorkSurfaceContext10 mWorkSurfaceContext;
         
         private WpfButton mCloseButton;
         
@@ -82220,10 +82511,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext9 : WpfCustom
+    public class WorkSurfaceContext10 : WpfCustom
     {
         
-        public WorkSurfaceContext9(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -82321,6 +82612,38 @@ namespace Warewolf.UITests
                 return this.mWindowsRadioButton;
             }
         }
+        
+        public WpfEdit PasswordTextBox
+        {
+            get
+            {
+                if ((this.mPasswordTextBox == null))
+                {
+                    this.mPasswordTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPasswordTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "PasswordTextBox";
+                    this.mPasswordTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mPasswordTextBox;
+            }
+        }
+        
+        public WpfEdit UsernameTextBox
+        {
+            get
+            {
+                if ((this.mUsernameTextBox == null))
+                {
+                    this.mUsernameTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUsernameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UsernameTextBox";
+                    this.mUsernameTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUsernameTextBox;
+            }
+        }
         #endregion
         
         #region Fields
@@ -82335,6 +82658,10 @@ namespace Warewolf.UITests
         private WpfRadioButton mUserRadioButton;
         
         private WpfRadioButton mWindowsRadioButton;
+        
+        private WpfEdit mPasswordTextBox;
+        
+        private WpfEdit mUsernameTextBox;
         #endregion
     }
     
@@ -82650,13 +82977,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorksurfaceContext10 WorksurfaceContext
+        public WorksurfaceContext11 WorksurfaceContext
         {
             get
             {
                 if ((this.mWorksurfaceContext == null))
                 {
-                    this.mWorksurfaceContext = new WorksurfaceContext10(this);
+                    this.mWorksurfaceContext = new WorksurfaceContext11(this);
                 }
                 return this.mWorksurfaceContext;
             }
@@ -82680,17 +83007,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorksurfaceContext10 mWorksurfaceContext;
+        private WorksurfaceContext11 mWorksurfaceContext;
         
         private WpfButton mCloseButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorksurfaceContext10 : WpfCustom
+    public class WorksurfaceContext11 : WpfCustom
     {
         
-        public WorksurfaceContext10(UITestControl searchLimitContainer) : 
+        public WorksurfaceContext11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -84816,10 +85143,28 @@ namespace Warewolf.UITests
                 return this.mRabbitMQSourceCustom;
             }
         }
+        
+        public WpfButton CloseTabButton
+        {
+            get
+            {
+                if ((this.mCloseTabButton == null))
+                {
+                    this.mCloseTabButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseTabButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseTabButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCloseTabButton;
+            }
+        }
         #endregion
         
         #region Fields
         private RabbitMQSourceCustom mRabbitMQSourceCustom;
+        
+        private WpfButton mCloseTabButton;
         #endregion
     }
     
@@ -84933,6 +85278,22 @@ namespace Warewolf.UITests
                 return this.mTestConnectionButton;
             }
         }
+        
+        public WpfImage ItemImage
+        {
+            get
+            {
+                if ((this.mItemImage == null))
+                {
+                    this.mItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mItemImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mItemImage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemImage;
+            }
+        }
         #endregion
         
         #region Fields
@@ -84947,6 +85308,8 @@ namespace Warewolf.UITests
         private WpfEdit mVirtualHostTextBoxEdit;
         
         private WpfButton mTestConnectionButton;
+        
+        private WpfImage mItemImage;
         #endregion
     }
     
@@ -85559,13 +85922,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WorkSurfaceContext11 WorkSurfaceContext
+        public WorkSurfaceContext12 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext11(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext12(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -85575,15 +85938,15 @@ namespace Warewolf.UITests
         #region Fields
         private WpfButton mCloseTabButton;
         
-        private WorkSurfaceContext11 mWorkSurfaceContext;
+        private WorkSurfaceContext12 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext11 : WpfCustom
+    public class WorkSurfaceContext12 : WpfCustom
     {
         
-        public WorkSurfaceContext11(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -85732,6 +86095,162 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mFilterText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OAuthSourceWizardTab : WpfTabPage
+    {
+        
+        public OAuthSourceWizardTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IOAuthSource]";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton CloseTabButton
+        {
+            get
+            {
+                if ((this.mCloseTabButton == null))
+                {
+                    this.mCloseTabButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseTabButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseTabButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCloseTabButton;
+            }
+        }
+        
+        public WorkSurfaceContext13 WorkSurfaceContext
+        {
+            get
+            {
+                if ((this.mWorkSurfaceContext == null))
+                {
+                    this.mWorkSurfaceContext = new WorkSurfaceContext13(this);
+                }
+                return this.mWorkSurfaceContext;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCloseTabButton;
+        
+        private WorkSurfaceContext13 mWorkSurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorkSurfaceContext13 : WpfCustom
+    {
+        
+        public WorkSurfaceContext13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton AuthoriseButton
+        {
+            get
+            {
+                if ((this.mAuthoriseButton == null))
+                {
+                    this.mAuthoriseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mAuthoriseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "AuthoriseButton";
+                    this.mAuthoriseButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mAuthoriseButton;
+            }
+        }
+        
+        public ServerTypeComboBox ServerTypeComboBox
+        {
+            get
+            {
+                if ((this.mServerTypeComboBox == null))
+                {
+                    this.mServerTypeComboBox = new ServerTypeComboBox(this);
+                }
+                return this.mServerTypeComboBox;
+            }
+        }
+        
+        public WpfEdit OAuthKeyTextBox
+        {
+            get
+            {
+                if ((this.mOAuthKeyTextBox == null))
+                {
+                    this.mOAuthKeyTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mOAuthKeyTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "OAuthKeyTextBox";
+                    this.mOAuthKeyTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mOAuthKeyTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mAuthoriseButton;
+        
+        private ServerTypeComboBox mServerTypeComboBox;
+        
+        private WpfEdit mOAuthKeyTextBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServerTypeComboBox : WpfCustom
+    {
+        
+        public ServerTypeComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ServerTypeComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ToggleButton
+        {
+            get
+            {
+                if ((this.mToggleButton == null))
+                {
+                    this.mToggleButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mToggleButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mToggleButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mToggleButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mToggleButton;
         #endregion
     }
     
@@ -85921,13 +86440,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WorkSurfaceContext12 WorkSurfaceContext
+        public WorkSurfaceContext14 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext12(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext14(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -85939,15 +86458,15 @@ namespace Warewolf.UITests
         
         private WpfButton mCloseTestTabButton;
         
-        private WorkSurfaceContext12 mWorkSurfaceContext;
+        private WorkSurfaceContext14 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext12 : WpfCustom
+    public class WorkSurfaceContext14 : WpfCustom
     {
         
-        public WorkSurfaceContext12(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93249,13 +93768,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorkSurfaceContext13 WorkSurfaceContext
+        public WorkSurfaceContext15 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext13(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext15(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -93263,15 +93782,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorkSurfaceContext13 mWorkSurfaceContext;
+        private WorkSurfaceContext15 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext13 : WpfCustom
+    public class WorkSurfaceContext15 : WpfCustom
     {
         
-        public WorkSurfaceContext13(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext15(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -101369,6 +101888,43 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsDropboxServerType : WpfCustom
+    {
+        
+        public ComboboxListItemAsDropboxServerType(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Dropbox";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIDropboxText
+        {
+            get
+            {
+                if ((this.mUIDropboxText == null))
+                {
+                    this.mUIDropboxText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIDropboxText.SearchProperties[WpfText.PropertyNames.Name] = "Dropbox";
+                    this.mUIDropboxText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIDropboxText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIDropboxText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Dev2TestingDBCustom : WpfCustom
     {
         
@@ -104718,13 +105274,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WorkSurfaceContext14 WorkSurfaceContext
+        public WorkSurfaceContext16 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext14(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext16(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -104732,15 +105288,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WorkSurfaceContext14 mWorkSurfaceContext;
+        private WorkSurfaceContext16 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext14 : WpfCustom
+    public class WorkSurfaceContext16 : WpfCustom
     {
         
-        public WorkSurfaceContext14(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext16(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

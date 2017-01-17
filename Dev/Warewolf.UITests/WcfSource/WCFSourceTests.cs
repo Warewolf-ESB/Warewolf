@@ -17,7 +17,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
             UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
             UIMap.Click_WCFServiceSource_TestConnectionButton();
-            UIMap.Click_Close_WCFServiceSource_WizardTabButton();
+            UIMap.Click_Close_WCFServiceSource_TabButton();
         }
 
         #region Additional test attributes

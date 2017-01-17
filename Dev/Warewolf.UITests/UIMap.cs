@@ -267,22 +267,6 @@ namespace Warewolf.UITests
             Mouse.Click(DecisionOrSwitchDialog.DoneButton);
         }
 
-        [When(@"I Click Close Workflow Tab")]
-        [Then(@"I Click Close Workflow Tab")]
-        public void ThenIClickCloseWorkflowWizardTab()
-        {
-            Click_Close_Workflow_Tab_Button();
-            Click_MessageBox_No();
-        }
-
-        [Given(@"I Click Close Workflow Tab Without Confirmation")]
-        [When(@"I Click Close Workflow Tab Without Confirmation")]
-        [Then(@"I Click Close Workflow Tab Without Confirmation")]
-        public void ThenIClickCloseWorkflowWizardTabWithoutConfirmation()
-        {
-            Click_Close_Workflow_Tab_Button();
-        }
-
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
@@ -1016,19 +1000,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
         }
-
-        public void TryCloseNewDotNetPluginSourceWizardTab()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton))
-            {
-                Click_Close_Plugin_Source_Wizard_Tab_Button();
-                if (ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-        }
-
         public void TryCloseNewWebSourceWizardTab()
         {
             if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.CloseButton))
@@ -2970,14 +2941,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
         }
 
-        [Given(@"I Click Close Sharepoint Server Source Tab")]
-        [When(@"I Click Close Sharepoint Server Source Tab")]
-        [Then(@"I Click Close Sharepoint Server Source Tab")]
-        public void WhenIClickCloseSharepointServerSourceWizardTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.CloseButton);
-        }
-
         [Given(@"I Click UserButton OnSharepointSource")]
         [When(@"I Click UserButton OnSharepointSource")]
         [Then(@"I Click UserButton OnSharepointSource")]
@@ -2993,9 +2956,9 @@ namespace Warewolf.UITests
         [Then(@"I Click UserButton On Database Source")]
         public void IClickUserButtonOnDatabaseSource()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserRadioButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Exists);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Exists);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
         }
 
         [Given(@"I Enter TestUser Username And Password on Database source")]
@@ -3370,6 +3333,47 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
+        [Then(@"I Click Close Clean Workflow Tab")]
+        [When(@"I Click Close Clean Workflow Tab")]
+        [Given(@"I Click Close Clean Workflow Tab")]
+        public void ThenIClickCloseCleanWorkflowWizardTab()
+        {
+            Click_Close_Workflow_Tab_Button();
+        }
+
+        [Given(@"I Click Close Sharepoint Server Source Tab")]
+        [When(@"I Click Close Sharepoint Server Source Tab")]
+        [Then(@"I Click Close Sharepoint Server Source Tab")]
+        public void WhenIClickCloseSharepointServerSourceWizardTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.CloseButton);
+        }
+
+        [Given(@"I Click Close WCFService Source Tab Button")]
+        [When(@"I Click Close WCFService Source Tab Button")]
+        [Then(@"I Click Close WCFService Source Tab Button")]
+
+        public void Click_Close_WCFServiceSource_TabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.CloseTabButton);
+        }
+
+        [Given(@"I Click Close OAuthSource Source Tab Button")]
+        [When(@"I Click Close OAuthSource Source Tab Button")]
+        [Then(@"I Click Close OAuthSource Source Tab Button")]
+        public void Click_OAuthSource_CloseTabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.CloseTabButton);
+        }
+
+        [Given(@"I Click Close COMPlugin Source Tab Button")]
+        [When(@"I Click Close COMPlugin Source Tab Button")]
+        [Then(@"I Click Close COMPlugin Source Tab Button")]
+        public void Click_COMPluginSource_CloseTabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+        }
+
         [Given(@"I Click Close Critical Error Dialog")]
         [When(@"I Click Close Critical Error Dialog")]
         [Then(@"I Click Close Critical Error Dialog")]
@@ -3378,12 +3382,12 @@ namespace Warewolf.UITests
             Mouse.Click(CriticalErrorWindow.CloseButton, new Point(9, 11));
         }
 
-        [Given(@"I Click Close RabbitMQ Source Wizard Tab Button")]
-        [When(@"I Click Close RabbitMQ Source Wizard Tab Button")]
-        [Then(@"I Click Close RabbitMQ Source Wizard Tab Button")]
-        public void Click_Close_RabbitMQ_Source_Wizard_Tab_Button()
+        [Given(@"I Click Close RabbitMQ Source Tab Button")]
+        [When(@"I Click Close RabbitMQ Source Tab Button")]
+        [Then(@"I Click Close RabbitMQ Source Tab Button")]
+        public void Click_Close_RabbitMQ_Source_Tab_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.CloseTabButton, new Point(13, 4));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.CloseTabButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close DB Source Wizard Tab Button")]
@@ -3411,10 +3415,10 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
         }
 
-        [Given(@"I Click Close DotNetDll Tab")]
-        [When(@"I Click Close DotNetDll Tab")]
-        [Then(@"I Click Close DotNetDll Tab")]
-        public void Click_Close_DotNetDll_Tab()
+        [Given(@"I Click Close DotNetPlugin Source Tab")]
+        [When(@"I Click Close DotNetPlugin Source Tab")]
+        [Then(@"I Click Close DotNetPlugin Source Tab")]
+        public void Click_Close_DotNetPlugin_Source_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton, new Point(13, 4));
         }
@@ -3441,14 +3445,6 @@ namespace Warewolf.UITests
         public void Click_Close_FullScreen()
         {
             Mouse.Click(MainStudioWindow.ExitFullScreenF11Text.ExitFullScreenF11Hyperlink, new Point(64, 5));
-        }
-
-        [Given(@"I Click Close Plugin Source Wizard Tab Button")]
-        [When(@"I Click Close Plugin Source Wizard Tab Button")]
-        [Then(@"I Click Close Plugin Source Wizard Tab Button")]
-        public void Click_Close_Plugin_Source_Wizard_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close Server Source Wizard Tab Button")]
@@ -8188,14 +8184,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists);
         }
 
-        [Then(@"I Click Close Clean Workflow Tab")]
-        [When(@"I Click Close Clean Workflow Tab")]
-        [Given(@"I Click Close Clean Workflow Tab")]
-        public void ThenIClickCloseCleanWorkflowWizardTab()
-        {
-            Click_Close_Workflow_Tab_Button();
-        }
-
         [Then(@"I click Run ""(.*)""th test expecting ""(.*)""")]
         [When(@"I click Run ""(.*)""th test expecting ""(.*)""")]
         [Given(@"I click Run ""(.*)""th test expecting ""(.*)""")]
@@ -9066,59 +9054,59 @@ namespace Warewolf.UITests
 
         public void Click_UserButton_On_ServerSourceTab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UserRadioButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
         }
 
         public void Enter_TextIntoAddress_On_ServerSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox.Text = "SANDBOX-1";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text = "SANDBOX-1";
         }
 
         public void Enter_RunAsUser_On_ServerSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.UsernameTextBox.Text = "IntegrationTester";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text = "IntegrationTester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
         }
 
         public void Click_UserButton_On_WebServiceSourceTab()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserRadioButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserRadioButton);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
         }
 
         public void Enter_TextIntoAddress_On_WebServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD/IntegrationTestSite";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD/IntegrationTestSite";
         }
 
         public void Enter_RunAsUser_On_WebServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.UserNameTextBox.Text = "IntegrationTester";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "IntegrationTester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
         }
 
         public void Enter_DefaultQuery_On_WebServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "/ GetCountries.ashx ? extension = json & prefix = a";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "/ GetCountries.ashx ? extension = json & prefix = a";
         }
 
         public void Enter_Text_On_RabbitMQSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.HostTextBoxEdit.Text = "rsaklfsvrgendev";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PortTextBoxEdit.Text = "5672";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.UserNameTextBoxEdit.Text = "test";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.PasswordTextBoxEdit.Text = "test";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Text = "rsaklfsvrgendev";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Text = "5672";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.UserNameTextBoxEdit.Text = "test";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Text = "test";
         }
 
         public void Click_RabbitMQSource_TestConnectionButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.TestConnectionButton);            
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTabPage.RabbitMQSourceCustom.ItemImage.Exists);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton);            
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.ItemImage.Exists);
         }
 
         public void Enter_TextIntoAddress_In_SharepointServiceSourceTab()
@@ -9136,11 +9124,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton);
         }
 
-        public void Click_Close_WCFServiceSource_WizardTabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.CloseTabButton);
-        }
-
         public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "irrelevant";
@@ -9149,10 +9132,6 @@ namespace Warewolf.UITests
         public void Click_OAuthSource_AuthoriseButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton);
-        }
-        public void Click_OAuthSource_CloseTabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.CloseTabButton);
         }
     }
 }

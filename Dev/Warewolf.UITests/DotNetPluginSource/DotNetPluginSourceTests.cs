@@ -20,6 +20,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Combobox Button is enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton.Enabled, "GAC Assembly Combobox Button is not enabled");
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         [TestMethod]
@@ -48,6 +49,7 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         [TestMethod]
@@ -71,6 +73,7 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         #region Additional test attributes
