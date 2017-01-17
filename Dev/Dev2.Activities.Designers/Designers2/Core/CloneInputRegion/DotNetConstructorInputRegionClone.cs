@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,7 +8,7 @@ using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core.CloneInputRegion
 {
-    public class DotNetInputRegionClone : IToolRegion
+    public class DotNetConstructorInputRegionClone : IToolRegion
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
