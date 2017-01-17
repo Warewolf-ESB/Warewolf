@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -19,13 +18,14 @@ namespace Dev2.Activities
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public List<Dev2MethodInfo> MethodsToRun { get; set; }
+        public List<IConstructorParameter> ConstructorInputs { get; set; }
 
         public DsfEnhancedDotNetDllActivity()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
             MethodsToRun = new List<Dev2MethodInfo>();
-            Inputs = new List<IServiceInput>();
+            ConstructorInputs = new List<IConstructorParameter>();
         }
 
 

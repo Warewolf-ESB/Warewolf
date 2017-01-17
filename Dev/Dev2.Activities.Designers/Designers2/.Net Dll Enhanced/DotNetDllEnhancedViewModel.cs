@@ -23,10 +23,10 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
-    public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetViewModel
+    public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetEnhancedViewModel
     {
         private IOutputsToolRegion _outputsRegion;
-        private IDotNetInputRegion _inputArea;
+        private IDotNetConstructorInputRegion _inputArea;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
         private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
         private IConstructorRegion<IPluginConstructor> _constructorRegion;
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            InitialiseViewModel(new ManagePluginServiceInputViewModel(this, Model));
+            InitialiseViewModel(new ManageEnhancedPluginServiceInputViewModel(this));
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManagePluginServiceInputViewModel manageServiceInputViewModel)
+        private void InitialiseViewModel(IManageEnhancedPluginServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -240,7 +240,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageEnhancedPluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
         {
@@ -484,7 +484,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 OnPropertyChanged();
             }
         }
-        public IDotNetInputRegion InputArea
+        public IDotNetConstructorInputRegion InputArea
         {
             get
             {
