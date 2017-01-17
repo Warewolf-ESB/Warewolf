@@ -33,8 +33,7 @@ namespace Warewolf.UITests
         {
             UIMap.Try_Click_Create_New_Tests();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
-            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
-            UIMap.Click_MessageBox_OK();
+            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
             UIMap.Click_Close_Tests_Tab();
             UIMap.Click_Close_Workflow_Tab_Button();
         }

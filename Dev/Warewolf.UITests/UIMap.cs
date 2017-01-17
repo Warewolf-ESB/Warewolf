@@ -74,7 +74,7 @@ namespace Warewolf.UITests
             {
                 if (ControlExistsNow(MessageBoxWindow.OKButton))
                 {
-                    Click_MessageBox_OK();
+                    Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
                 }
             }
             catch (Exception e)
@@ -4053,6 +4053,53 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
+
+        public void Duplicate_Test_Name_MessageBox_Ok()
+        {
+            Assert.IsTrue(MessageBoxWindow.DuplicateTestNameText.Exists, "Duplicate test name message box does not appear on the surface.");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+
+        [Then(@"I Click Save Before Continuing MessageBox OK")]
+        public void Click_Save_Before_Continuing_MessageBox_OK()
+        {            
+            Assert.IsTrue(MessageBoxWindow.SaveBeforeAddingNewTestText.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+        
+        public void Click_Drop_Not_Allowed_MessageBox_OK()
+        {
+            Assert.IsTrue(MessageBoxWindow.DropnotallowedText.Exists, "The Shown dialog is not Drop Not 'Allowed MessageBox'");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+        public void Click_DeleteAnyway_MessageBox_OK()
+        {
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+
+        [Then(@"I Click Deploy version conflicts MessageBox OK")]
+        [When(@"I Click Deploy version conflicts MessageBox OK")]
+        public void ClickDeployVersionConflictsMessageBoxOK()
+        {
+            Assert.IsTrue(MessageBoxWindow.DeployVersionConflicText.Exists, "Deploy Version Conflicts MessageBox does not Exist");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+        [Then(@"I Click Deploy conflicts MessageBox OK")]
+        [When(@"I Click Deploy conflicts MessageBox OK")]
+        public void ClickDeployConflictsMessageBoxOK()
+        {
+            Assert.IsTrue(MessageBoxWindow.DeployConflictsText.Exists, "Deploy Conflicts MessageBox does not Exist");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+
+        [Then(@"I Click Deploy Successful MessageBox OK")]
+        [When(@"I Click Deploy Successful MessageBox OK")]
+        public void ClickDeploySuccessfulMessageBoxOK()
+        {
+            Assert.IsTrue(MessageBoxWindow.ResourcesDeployedSucText.Exists, "Deploy Successful MessageBox does not Exist");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
+        }
+
 
         [Given(@"I Click MessageBox DeleteAnyway")]
         [When(@"I Click MessageBox DeleteAnyway")]

@@ -121,7 +121,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.And("Message box window appears", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.And("I Click MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Save Before Continuing MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
  testRunner.And("Test tab is open", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
