@@ -211,15 +211,11 @@ namespace Dev2.Common
         {
             
                 var levelElement = eventLogElement.Element("level");
-                if(levelElement != null)
-                {
-                    var levelElementValueAttrib = levelElement.Attribute("value");
-                    if(levelElementValueAttrib != null)
-                    {
-                        levelElementValueAttrib.Value = eventLogLevel;
-                    }
-                }
-            
+            var levelElementValueAttrib = levelElement?.Attribute("value");
+            if(levelElementValueAttrib != null)
+            {
+                levelElementValueAttrib.Value = eventLogLevel;
+            }
         }
 
         private static void SetEventLogLogLevel(string eventLogLevel, XElement eventLogElement)

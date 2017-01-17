@@ -57,7 +57,7 @@ namespace Dev2.Services
 
         public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
         {
-            var events = filter == null ? _events : (_events != null ? _events.Where(filter) : null);
+            var events = filter == null ? _events : _events?.Where(filter);
             if(events != null)
             {
                 var subscription = events.Subscribe(onNext);

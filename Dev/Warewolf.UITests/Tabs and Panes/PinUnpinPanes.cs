@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Tabs
     {
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinNewWorkflowTabByDraggingOnly()
+        public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
@@ -38,7 +38,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinSettingsTab()
+        public void UnpinAndRepinSettingsWizardTab()
         {
             UIMap.Click_Settings_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
@@ -49,7 +49,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinServerSourceWizardTab()
         {
             UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinDBSourceWizardTab()
         {
             UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
             UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceWizardTab);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
         }
 
         [TestMethod]
@@ -73,13 +73,13 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinWebSourceWizardTab()
         {
             UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinDeployTab()
+        public void UnpinAndRepinDeployWizardTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
@@ -87,7 +87,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinDependencyGraphTab()
+        public void UnpinAndRepinDependencyGraphWizardTab()
         {
             UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
@@ -95,16 +95,16 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinTestsTabPage()
+        public void UnpinAndRepinTestsWizardTab()
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTabPage);
+            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
         }
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinSchedulerTab()
+        public void UnpinAndRepinSchedulerWizardTab()
         {
             UIMap.Click_Scheduler_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
@@ -112,36 +112,27 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void AssignToolInUnpinnedWorkflowTabDebugOutputUITest()
+        public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            UIMap.Debug_Unpinned_Workflow_With_F6();
+            UIMap.Press_F6_On_UnPinnedTab();
             Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
             Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
         }
-
+        
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void DragAssignToolInUnpinnedWorkflowTabUITest()
-        {
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            UIMap.Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface();
-        }
-
-        [TestMethod]
-        [TestCategory("Tabs and Panes")]
-        public void AssignToolInUnpinnedWorkflowTabAddVariableUITest()
+        public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             const string Variable1Name = "SomeVariable";
             UIMap.Enter_Variable_Into_Assign_Row1_On_Unpinned_Tab("[[" + Variable1Name + "]]");
-            Assert.AreEqual("[[" + Variable1Name + "]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists, "Scalar variable list not found.");
         }
 
         #region Additional test attributes

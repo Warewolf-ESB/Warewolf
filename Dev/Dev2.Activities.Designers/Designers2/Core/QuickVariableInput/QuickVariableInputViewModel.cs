@@ -240,10 +240,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             set
             {
                 SetValue(CanAddProperty, value);
-                if(AddCommand != null)
-                {
-                    AddCommand.RaiseCanExecuteChanged();
-                }
+                AddCommand?.RaiseCanExecuteChanged();
             }
         }
 

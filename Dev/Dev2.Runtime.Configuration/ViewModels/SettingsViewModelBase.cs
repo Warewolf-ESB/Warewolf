@@ -28,10 +28,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         protected void OnUnderlyingObjectChanged()
         {
-            if(UnderlyingObjectChanged != null)
-            {
-                UnderlyingObjectChanged();
-            }
+            UnderlyingObjectChanged?.Invoke();
         }
 
         #endregion events

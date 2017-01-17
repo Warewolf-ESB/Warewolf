@@ -9,10 +9,13 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
+using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Core.Popup;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -236,6 +239,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 ErrorMessage = "";
 
+                var serverInformation = Source.SelectedServer.GetServerInformation();
+                var supportsDirectServerDeploy = false;
+                if (serverInformation != null)
+                {
+                    supportsDirectServerDeploy = serverInformation.ContainsKey("SupportsDirectServerDeploy") && bool.Parse(serverInformation["SupportsDirectServerDeploy"]);
+                }
                 CheckVersionConflict();
                 if (!IsDeploying)
                     return;
@@ -265,9 +274,32 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var selectedItems = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
                     var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
-
+                    
+                    var destinationEnvironmentId = Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID;
+                    var sourceEnv = Source.Environments.First();
+                    var sourceEnvServer = sourceEnv.Server;
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
-                    _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders, Destination.DeployTests);
+                    if (supportsDirectServerDeploy)
+                    {
+                        var destEnv = Destination.ConnectControlViewModel.SelectedConnection as Server;
+                        if (destEnv != null)
+                        {
+                            var destConnection = new Connection
+                            {
+                                Address = destEnv.EnvironmentConnection.AppServerUri.ToString(),
+                                AuthenticationType = destEnv.EnvironmentConnection.AuthenticationType,
+                                UserName = destEnv.EnvironmentConnection.UserName,
+                                Password = destEnv.EnvironmentConnection.Password,
+
+                            };
+                            sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
+                        }
+                    }
+                    else
+                    {
+                        
+                        _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
+                    }
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
@@ -286,6 +318,24 @@ namespace Warewolf.Studio.ViewModels
             }
             IsDeploying = false;
 
+        }
+
+        private void DisplayServerData(string data)
+        {
+            
+            _shell.ShowPopup(new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                DefaultResult = MessageBoxResult.OK,
+                Description = data,
+                DontShowAgainKey = "true",
+                Header = "Info",
+                Image = MessageBoxImage.Information,
+                IsDependenciesButtonVisible = false,
+                IsError =false,
+                IsInfo =false,
+                IsQuestion = false
+            });
         }
 
         void CheckResourceNameConflict()

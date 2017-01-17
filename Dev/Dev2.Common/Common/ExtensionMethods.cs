@@ -139,7 +139,7 @@ namespace Dev2.Common.Common
 
         public static bool IsNullOrEmpty(this StringBuilder sb)
         {
-            return sb == null || string.IsNullOrEmpty(sb.ToString());
+            return string.IsNullOrEmpty(sb?.ToString());
         }
 
         public static StringBuilder ToStringBuilder(this string str)
@@ -426,7 +426,7 @@ namespace Dev2.Common.Common
         public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)
         {
             XAttribute attr = elem.Attribute(name);
-            if (attr == null || string.IsNullOrEmpty(attr.Value))
+            if (string.IsNullOrEmpty(attr?.Value))
             {
                 return returnsNull ? null : string.Empty;
             }
@@ -442,13 +442,13 @@ namespace Dev2.Common.Common
         public static string ElementSafe(this XElement elem, string name)
         {
             XElement child = elem.Element(name);
-            return child == null ? string.Empty : child.Value;
+            return child?.Value ?? string.Empty;
         }
 
         public static string ElementStringSafe(this XElement elem, string name)
         {
             XElement child = elem.Element(name);
-            return child == null ? string.Empty : child.ToString();
+            return child?.ToString() ?? string.Empty;
         }
         /// <summary>
         /// https://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs,cfaa9abd8b214ecb

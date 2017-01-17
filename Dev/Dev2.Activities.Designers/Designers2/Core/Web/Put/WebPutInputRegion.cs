@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             _source.SomethingChanged += SourceOnSomethingChanged;
             IsEnabled = false;
             SetupHeaders(modelItem);
-            if (source != null && source.SelectedSource != null)
+            if (source?.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null)
+            if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
@@ -141,10 +141,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

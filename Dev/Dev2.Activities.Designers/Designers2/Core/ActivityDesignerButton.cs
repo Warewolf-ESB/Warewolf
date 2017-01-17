@@ -73,10 +73,7 @@ namespace Dev2.Activities.Designers2.Core
 
             if(IsValid)
             {
-                if(CustomCommand != null)
-                {
-                    CustomCommand.Execute(null);
-                }
+                CustomCommand?.Execute(null);
 
                 if(IsClosedAfter)
                 {
@@ -84,10 +81,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
 
-            if(PostCommand != null)
-            {
-                PostCommand.Execute(null);
-            }
+            PostCommand?.Execute(null);
         }
 
         void DoValidate()

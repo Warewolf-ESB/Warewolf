@@ -1,4 +1,4 @@
-﻿@DBConnectorI Click New Database Source Ribbon Button
+﻿@DBConnector
 Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user

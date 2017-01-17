@@ -163,10 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void OnPropertyChanged(string PropertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         #endregion INotifyPropertyChnaged

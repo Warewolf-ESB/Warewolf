@@ -39,7 +39,7 @@ namespace Warewolf.Studio.CustomControls
         {
             var dp = d as DataPresenterBase;
 
-            if (dp != null && dp.DefaultFieldLayout != null)
+            if (dp?.DefaultFieldLayout != null)
             {
                 dp.DefaultFieldLayout.RecordFilters.Clear();
                 dp.DefaultFieldLayout.Settings.RecordFiltersLogicalOperator = LogicalOperator.Or;

@@ -38,7 +38,6 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -1240,214 +1239,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion
 
         #region ReloadResource Tests
-
-        ///// <summary>
-        ///// Create resource with source type
-        ///// </summary>
-        [TestMethod]
-        public void ReloadResourcesWhereNothingLoadedExpectNonEmptyList()
-        {
-            //------------Setup for test--------------------------
-            AppSettings.LocalHost = "http://localhost:3142/";
-
-
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid });
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-
-            int cnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(() =>
-            {
-                if (cnt == 0)
-                {
-                    cnt = 1;
-                    return new StringBuilder(JsonConvert.SerializeObject(msg));
-                }
-
-                return resourceObj;
-            });
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, reloadedResources.Count);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ResourceRepository_UpdateResourceRepositoryForDeploy")]
-        public void ResourceRepository_UpdateResourceRepositoryForDeploy_FolderDoesNotExist_ExpectAddFolderAndResource()
-        {
-            //------------Setup for test--------------------------
-
-            AppSettings.LocalHost = "http://localhost:3142/";
-
-
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, cat: "bpb\\TestWorkflowService");
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-
-            int cnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(() =>
-            {
-                if (cnt == 0)
-                {
-                    cnt = 1;
-                    return new StringBuilder(JsonConvert.SerializeObject(msg));
-                }
-
-                return resourceObj;
-            });
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, reloadedResources.Count);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ResourceRepository_UpdateResourceRepositoryForDeploy")]
-        public void ResourceRepository_UpdateResourceRepositoryForDeploy_OnRoot_ExpectNoAddOfFolder()
-        {
-            //------------Setup for test--------------------------
-
-            AppSettings.LocalHost = "http://localhost:3142/";
-
-
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, cat: "TestWorkflowService");
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-
-            int cnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(() =>
-            {
-                if (cnt == 0)
-                {
-                    cnt = 1;
-                    return new StringBuilder(JsonConvert.SerializeObject(msg));
-                }
-
-                return resourceObj;
-            });
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, reloadedResources.Count);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ResourceRepository_UpdateResourceRepositoryForDeploy")]
-        public void ResourceRepository_UpdateResourceRepositoryForDeploy_FolderDoesNotExist_Nested_ExpectAddFolderAndResource()
-        {
-            //------------Setup for test--------------------------
-
-            AppSettings.LocalHost = "http://localhost:3142/";
-
-
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, cat: "bob\\dave\\dora");
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-
-            int cnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(() =>
-            {
-                if (cnt == 0)
-                {
-                    cnt = 1;
-                    return new StringBuilder(JsonConvert.SerializeObject(msg));
-                }
-
-                return resourceObj;
-            });
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, reloadedResources.Count);
-        }
-
-        [TestMethod]
-        public void ResourceRepositoryReloadResourcesWithValidArgsExpectedSetsProperties()
-        {
-            //------------Setup for test--------------------------
-            Setup();
-            var conn = SetupConnection();
-
-            List<ErrorInfo> errors = new List<ErrorInfo>
-                {
-                    new ErrorInfo
-                        {
-                            ErrorType = ErrorType.Critical,
-                            Message = "MappingChange",
-                            StackTrace = "SomethingWentWrong",
-                            FixType = FixType.None
-                        }
-                };
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "WorkflowService", errors);
-
-            var msg = new ExecuteMessage { HasError = false };
-
-
-            int cnt = 0;
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(
-
-                () =>
-                {
-                    if (cnt == 0)
-                    {
-                        cnt = 1;
-                        return new StringBuilder(JsonConvert.SerializeObject(msg));
-                    }
-
-                    return resourceObj;
-                }
-            );
-
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, reloadedResources.Count);
-            var resources = _repo.All().ToList();
-            var actual = (IContextualResourceModel)resources[0];
-            Assert.AreEqual(_resourceGuid, actual.ID);
-            Assert.AreEqual(true, actual.IsValid);
-
-            Assert.IsNotNull(actual.Errors);
-            Assert.AreEqual(1, actual.Errors.Count);
-            var error = actual.Errors[0];
-            Assert.AreEqual(ErrorType.Critical, error.ErrorType);
-            Assert.AreEqual(FixType.None, error.FixType);
-            Assert.AreEqual("MappingChange", error.Message);
-            Assert.AreEqual("SomethingWentWrong", error.StackTrace);
-        }
-
+        
         [TestMethod]
         public void ResourceRepositoryLoadWorkspaceWithValidArgsExpectedSetsProperties()
         {
@@ -2214,7 +2006,6 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
@@ -2253,7 +2044,6 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
 
             var theModel = new ResourceModel(srcModel.Object) { ID = theID, ResourceName = "some resource" };
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
@@ -2288,7 +2078,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
             srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
 
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
             targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
 
             Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
@@ -2300,7 +2089,6 @@ namespace BusinessDesignStudio.Unit.Tests
             List<IResourceModel> reloadResources = new List<IResourceModel> { reloadedResource.Object };
 
 
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Returns(reloadResources);
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 

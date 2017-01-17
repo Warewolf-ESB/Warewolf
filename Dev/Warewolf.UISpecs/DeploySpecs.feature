@@ -8,7 +8,6 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	And I Select Deploy FromExplorerContextMenu
 	And I Select "Hello World" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
-	And I Click Close Deploy Tab Button
 	
 Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	Given The Warewolf Studio is running
@@ -20,9 +19,9 @@ Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	And I Wait For Explorer First Remote Server Spinner	
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Deploy button	
-	And I Click MessageBox OK
-	And I Click MessageBox OK
-	And I Click MessageBox OK
+	And I Click Deploy version conflicts MessageBox OK
+	And I Click Deploy conflicts MessageBox OK
+	And I Click Deploy Successful MessageBox OK
 	And I Click Deploy Tab Destination Server Connect Button
     
 
@@ -35,9 +34,9 @@ Scenario: Deploy From RemoteConnection
     And Resources is visible on the tree
 	And I Select "Hello World" from the source tab 
 	And I Click Deploy button	
-    And I Click MessageBox OK
-    And I Click MessageBox OK
-    And I Click MessageBox OK
+    And I Click Deploy version conflicts MessageBox OK
+	And I Click Deploy conflicts MessageBox OK
+	And I Click Deploy Successful MessageBox OK
 
 
 Scenario: Deploy button is enabling when selecting resource in source side
@@ -49,7 +48,6 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 Then Deploy Button is enabled  "true"	
 	 When I Click Deploy Tab Destination Server Connect Button
 	 Then Deploy Button is enabled  "false"
-	 And I Click Close Deploy Tab Button
 
 Scenario: Filtering and clearing filter on source side
 	Given The Warewolf Studio is running
@@ -67,11 +65,10 @@ Scenario: Deploying with filter enabled
 	 And I filter for "Hello World" on the source filter
 	 And Resources is visible on the tree
 	 And I Select "Hello World" from the source tab 
-	 And I Click Deploy button	
-	 And I Click Deploy button	
-	 And I Click MessageBox OK
-	 And I Click MessageBox OK
-	 And I Click MessageBox OK
+	 And I Click Deploy button
+	 And I Click Deploy version conflicts MessageBox OK
+	 And I Click Deploy conflicts MessageBox OK
+	 And I Click Deploy Successful MessageBox OK
 	 And I Click Deploy Tab Destination Server Connect Button
 
 Scenario: Deploy is enabled when I change server after validation thrown

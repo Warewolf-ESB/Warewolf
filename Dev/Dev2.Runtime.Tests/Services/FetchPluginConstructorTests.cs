@@ -158,8 +158,8 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, count);
             var serviceInput = pluginConstructor.Inputs[0];
             var name = serviceInput.Name;
-            var emptyIsNull = serviceInput.EmptyIsNull;
-            var requiredField = serviceInput.RequiredField;
+            var emptyIsNull = serviceInput.EmptyToNull;
+            var requiredField = serviceInput.IsRequired;
             var value = serviceInput.Value;
             var typeName = serviceInput.TypeName;
             Assert.AreEqual("name", name);

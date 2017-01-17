@@ -29,10 +29,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var proxy = factory.CreateProxy(contract.Name);
 
-            var parameters = src.Method.Parameters == null
-                ? new List<MethodParameter>()
-                : src.Method.Parameters.Select(a => new MethodParameter { Name = a.Name, Value = a.Value, TypeName = a.TypeName })
-                    .ToList();
+            var parameters = src.Method.Parameters?.Select(a => new MethodParameter { Name = a.Name, Value = a.Value, TypeName = a.TypeName })
+                                 .ToList() ?? new List<MethodParameter>();
             var paramObjects =
                 parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, Type.GetType(methodParameter.TypeName))).ToArray();
 
@@ -66,18 +64,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var proxy = factory.CreateProxy(contract.Name);
 
-            var parameters = action.Inputs == null
-                ? new List<MethodParameter>()
-                : action.Inputs.Select(
-                    a =>
-                        new MethodParameter
-                        {
-                            EmptyToNull = a.EmptyIsNull,
-                            IsRequired = a.RequiredField,
-                            Name = a.Name,
-                            Value = a.Value,
-                            TypeName = a.TypeName
-                        }).ToList();
+            var parameters = action.Inputs?.Select(
+                                 a =>
+                                     new MethodParameter
+                                     {
+                                         EmptyToNull = a.EmptyIsNull,
+                                         IsRequired = a.RequiredField,
+                                         Name = a.Name,
+                                         Value = a.Value,
+                                         TypeName = a.TypeName
+                                     }).ToList() ?? new List<MethodParameter>();
             var paramObjects =
                 parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, Type.GetType(methodParameter.TypeName))).ToArray();
 

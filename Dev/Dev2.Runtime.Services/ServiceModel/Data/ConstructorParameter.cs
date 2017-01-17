@@ -1,4 +1,5 @@
 using System;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -6,7 +7,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     /// A Method Parameter
     /// </summary>
     [Serializable]
-    public class ConstructorParameter : MethodParameter
+    public class ConstructorParameter : MethodParameter, IConstructorParameter
     {
         public string ShortTypeName { get; set; }
     }

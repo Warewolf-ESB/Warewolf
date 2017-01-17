@@ -59,15 +59,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if(oldItem != null)
+            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
+            if(dto != null && dto.CanRemove())
             {
-                var dto = oldItem.GetCurrentValue() as TDev2TOFn;
-                if(dto != null && dto.CanRemove())
-                {
-                    // old row is blank so remove
-                    var index = Collection.IndexOf(dto) + 1;
-                    RemoveDto(dto, index);
-                }
+                // old row is blank so remove
+                var index = Collection.IndexOf(dto) + 1;
+                RemoveDto(dto, index);
             }
             if(newItem != null)
             {
@@ -259,17 +256,11 @@ namespace Dev2.Activities.Designers2.Core
                 var idx = indexNumber - 1;
                 if(idx >= Collection.Count)
                 {
-                    if(Collection != null)
-                    {
-                        Collection.Add(dto);
-                    }
+                    Collection?.Add(dto);
                 }
                 else
                 {
-                    if(Collection != null)
-                    {
-                        Collection.Insert(idx, dto);
-                    }
+                    Collection?.Insert(idx, dto);
                 }
             }
            UpdateDto(dto);
