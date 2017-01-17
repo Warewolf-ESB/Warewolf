@@ -2081,6 +2081,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh the available constructors..
+        /// </summary>
+        public static string PluginServiceRefreshConstructorHelp {
+            get {
+                return ResourceManager.GetString("PluginServiceRefreshConstructorHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh the available actions..
         /// </summary>
         public static string PluginServiceRefreshHelp {
@@ -2095,6 +2104,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceSelectActionHelp {
             get {
                 return ResourceManager.GetString("PluginServiceSelectActionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the constructor in the DLL you want to execute. You can provide a namespace filter above if you want..
+        /// </summary>
+        public static string PluginServiceSelectConstructorHelp {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectConstructorHelp", resourceCulture);
             }
         }
         

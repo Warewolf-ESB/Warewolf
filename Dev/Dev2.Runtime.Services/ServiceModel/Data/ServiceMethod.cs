@@ -63,6 +63,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string Name { get; set; }
 
         [DataMember]
+        public string Dev2ReturnType { get; set; }
+
+        [DataMember]
         public List<MethodParameter> Parameters { get; set; }
 
         [DataMember]

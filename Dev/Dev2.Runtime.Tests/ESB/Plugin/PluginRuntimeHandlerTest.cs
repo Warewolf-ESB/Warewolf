@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
@@ -22,9 +23,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using TestingDotnetDllCascading;
-using Warewolf.Core;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
 {
@@ -35,8 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PluginRuntimeHandlerTest
     {
-
-
+        
         #region FetchNamespaceListObject
 
         [TestMethod]
@@ -247,238 +245,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
         #endregion
-
-        //#region Run
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginRuntimeHandler_Run")]
-        public void PluginRuntimeHandler_Run_WhenValidLocation_ExpectResult()
-        {
-            //------------Setup for test--------------------------
-            var svc = CreatePluginService();
-            var source = CreatePluginSource(typeof(DummyClassForPluginTest));
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = source.AssemblyName, Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                var result = isolated.Value.Run(args);
-                var castResult = JsonConvert.DeserializeObject<DummyClassForPluginTest>(result.ToString());
-                //------------Assert Results-------------------------
-                if (castResult != null)
-                {
-                    StringAssert.Contains(castResult.Name, "test data");
-                }
-                else
-                {
-                    Assert.Fail("Failed Conversion for Assert");
-                }
-            }
-
-
-        }
-        //uses Human as the class under test
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_Run")]
-        public void PluginRuntimeHandler_Run_WhenDefaultConstructor_ExpectResult()
-        {
-            /*   public Human()
-             {
-                 Name = "Default";
-                 PersonFood = new Food()
-                 {
-                     FoodName = "DefaultFood"
-                 };
-             }*/
-            //------------Setup for test--------------------------
-            var type = typeof(Human);
-            var svc = CreatePluginService(new ServiceMethod() { Name = "ToString" }, type, new ServiceConstructor
-            {
-                Name = ".ctor",
-            });
-            var source = CreatePluginSource(type);
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                PluginInvokeArgs args = new PluginInvokeArgs
-                {
-                    AssemblyLocation = source.AssemblyLocation
-                    ,
-                    AssemblyName = source.AssemblyName
-                    ,
-                    Fullname = svc.Namespace
-                    ,
-                    Method = svc.Method.Name
-                    ,
-                    Parameters = svc.Method.Parameters,
-                    PluginConstructor = new PluginConstructor
-                    {
-                        ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>()
-                    },
-                };
-                foreach (var constructorParameter in svc.Constructor.Parameters)
-                {
-                    args.PluginConstructor.Inputs.Add(new ServiceInput(constructorParameter.Name, constructorParameter.Value));
-                }
-
-
-                var result = isolated.Value.Run(args);
-                //------------Assert Results-------------------------
-                if (result != null)
-                {
-                    StringAssert.Contains(result.ToString(), "Default");
-                    StringAssert.Contains(result.ToString(), "DefaultFood");
-                }
-                else
-                {
-                    Assert.Fail("Failed Conversion for Assert");
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_Run")]
-        public void PluginRuntimeHandler_Run_WhenOptionalConstructor_ExpectResult()
-        {
-            /*  
-                public Human(string name)
-            {
-                Name = name;
-                PersonFood = new Food()
-                {
-                    FoodName = "DefaultFood"
-                };
-            }
-             */
-            //------------Setup for test--------------------------
-            var type = typeof(Human);
-            var svc = CreatePluginService(new ServiceMethod() { Name = "ToString" }, type, new ServiceConstructor
-            {
-                Name = ".ctor",
-                Parameters = new List<ConstructorParameter>()
-                    {
-                        new ConstructorParameter()
-                        {
-                            Name = "name",
-                            TypeName = typeof(string).AssemblyQualifiedName,
-                            Value = "Micky",
-
-                        }
-                    }
-            });
-            var source = CreatePluginSource(type);
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                PluginInvokeArgs args = new PluginInvokeArgs
-                {
-                    AssemblyLocation = source.AssemblyLocation
-                    ,
-                    AssemblyName = source.AssemblyName
-                    ,
-                    Fullname = svc.Namespace
-                    ,
-                    Method = svc.Method.Name
-                    ,
-                    Parameters = svc.Method.Parameters,
-                    PluginConstructor = new PluginConstructor
-                    {
-                        ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>()
-                    },
-                };
-                foreach (var constructorParameter in svc.Constructor.Parameters)
-                {
-                    args.PluginConstructor.Inputs.Add(new ServiceInput(constructorParameter.Name, constructorParameter.Value));
-                }
-
-
-                var result = isolated.Value.Run(args);
-                //------------Assert Results-------------------------
-                if (result != null)
-                {
-                    StringAssert.Contains(result.ToString(), "Default");
-                    StringAssert.Contains(result.ToString(), "Micky");
-                }
-                else
-                {
-                    Assert.Fail("Failed Conversion for Assert");
-                }
-            }
-        }
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_Run")]
-        //[ExpectedException(typeof(NullReferenceException))]
-        //public void PluginRuntimeHandler_Run_WhenNullLocation_ExpectException()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var svc = CreatePluginService();
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = null, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-        //        isolated.Value.Run(args);
-        //    }
-        //}
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_Run")]
-        //[ExpectedException(typeof(NullReferenceException))]
-        //public void PluginRuntimeHandler_Run_WhenInvalidNamespace_ExpectException()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var svc = CreatePluginService();
-        //    var source = CreatePluginSource(typeof(DummyClassForPluginTest));
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = "foo.bar", Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-        //        isolated.Value.Run(args);
-        //    }
-        //}
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_Run")]
-        //public void PluginRuntimeHandler_Run_WhenInvalidMethod_ExpectException()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var svc = CreatePluginService();
-        //    var source = CreatePluginSource(typeof(DummyClassForPluginTest));
-        //    //------------Execute Test---------------------------
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-        //        var run = isolated.Value.Run(args);
-        //        Assert.IsNotNull(run);
-        //    }
-        //}
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_Run")]
-        //[ExpectedException(typeof(NullReferenceException))]
-        //public void PluginRuntimeHandler_Run_WhenNullParameters_ExpectException()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var svc = CreatePluginService();
-        //    var source = CreatePluginSource(typeof(DummyClassForPluginTest));
-        //    //------------Execute Test---------------------------
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = null };
-        //        isolated.Value.Run(args);
-        //    }
-        //}
-
-        //#endregion
-
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
@@ -493,73 +260,169 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        //[TestMethod]
-        //[Owner("Nkosinathi Sangweni")]
-        //[TestCategory("PluginRuntimeHandler_CreateInstance")]
-        //public void PluginRuntimeHandler_CreateInstance_WhenHuman_ExpectHumanStringObject()
-        //{
-        //    ------------Setup for test--------------------------
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_CreateInstance_WhenHuman_ExpectHumanStringObject()
+        {
+            //------------Setup for test--------------------------
 
-        //    var type = typeof(Human);
-        //    var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
-        //    ------------Execute Test-------------------------- -
-        //    using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        var instance = isolated.Value.CreateInstance(new PluginInvokeArgs
-        //        {
-        //            MethodsToRun = svc.MethodsToRun,
-        //            PluginConstructor = new PluginConstructor
-        //            {
-        //                ConstructorName = svc.Constructor.Name,
-        //                Inputs = new List<IServiceInput>(),
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var instance = isolated.Value.CreateInstance(new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IServiceInput>(),
 
-        //            },
-        //            AssemblyLocation = type.Assembly.Location,
-        //            AssemblyName = type.Assembly.FullName,
-        //            Fullname = type.FullName,
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
 
                 });
 
-        //        var deserializeToObject = instance.DeserializeToObject<Human>();
-        //        Assert.IsNotNull(deserializeToObject);
-        //    }
-        //}
+                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                Assert.IsNotNull(deserializeToObject);
+            }
+        }
 
-        //[TestMethod]
-        //[Owner("Nkosinathi Sangweni")]
-        //[TestCategory("PluginRuntimeHandler_CreateInstance")]
-        //public void PluginRuntimeHandler_Run_WhenObjectStringIsNotNull_ExpectRunsCorrectly()
-        //{
-        //    //------------Setup for test--------------------------
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_Run_WhenObjectStringIsNotNull_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
 
-        //    var type = typeof(Human);
-        //    var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
-        //    //------------Execute Test---------------------------
-        //    using (var isolated = new Isolated<PluginRuntimeHandler>())
-        //    {
-        //        var pluginInvokeArgs = new PluginInvokeArgs
-        //        {
-        //            MethodsToRun = svc.MethodsToRun,
-        //            PluginConstructor = new PluginConstructor
-        //            {
-        //                ConstructorName = svc.Constructor.Name,
-        //                Inputs = new List<IServiceInput>(),
-        //            },
-        //            AssemblyLocation = type.Assembly.Location,
-        //            AssemblyName = type.Assembly.FullName,
-        //            Fullname = type.FullName,
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var pluginInvokeArgs = new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IServiceInput>(),
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
 
                 };
-                var instance = isolated.Value.CreateInstance(pluginInvokeArgs, type.Assembly);
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
 
-        //        var deserializeToObject = instance.DeserializeToObject<Human>();
-        //        Assert.IsNotNull(deserializeToObject);
+                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                Assert.IsNotNull(deserializeToObject);
+                instance.Args = pluginInvokeArgs;
+                var run = isolated.Value.Run(instance);
+                Assert.IsNotNull(run);
+                StringAssert.Contains(run.ObjectString,"Default");
+            }
+        }
 
-        //        var run = isolated.Value.Run(instance, pluginInvokeArgs);
-        //        Assert.IsNotNull(run);
-        //        StringAssert.Contains(run.ToString(),"Default");
-        //    }
-        //}
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_Run_WhenClassIsStatic_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(StaticClass);
+            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var pluginInvokeArgs = new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IServiceInput>(),
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                };
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
+                Assert.IsTrue(string.IsNullOrEmpty(instance.ObjectString));
+                Assert.IsTrue(instance.IsStatic);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_Run_WhenClassIsStatic_ExpectRunsMethodsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(StaticClass);
+            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToStringOnStatic", Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var pluginInvokeArgs = new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IServiceInput>(),
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                };
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
+                instance.Args = pluginInvokeArgs;
+                var run = isolated.Value.Run(instance);
+                Assert.IsTrue(string.IsNullOrEmpty(instance.ObjectString));
+                Assert.IsTrue(instance.IsStatic);
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_Run_WhenClassIsSealed_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(SealedClass);
+            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var pluginInvokeArgs = new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IServiceInput>(),
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                };
+                var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
+                Assert.IsTrue(!string.IsNullOrEmpty(instance.ObjectString));
+                Assert.IsFalse(instance.IsStatic);
+            }
+        }
 
         #region Helper Methods
 

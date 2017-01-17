@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -8,7 +9,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
@@ -17,25 +17,21 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
+    //[ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
     public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity
     {
-        public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public ICollection<IServiceInput> ConstructorInputs { get; set; }
         public List<Dev2MethodInfo> MethodsToRun { get; set; }
-        public string ExistingObject { get; set; }
         public IOutputDescription OutputDescription { get; set; }
 
         public DsfEnhancedDotNetDllActivity()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
-            ConstructorInputs = new List<IServiceInput>();
-            Inputs = new List<IServiceInput>();
-            ExistingObject = string.Empty;
             MethodsToRun = new List<Dev2MethodInfo>();
+            ConstructorInputs = new List<IServiceInput>();
         }
 
 
@@ -47,97 +43,59 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
-            if (Method == null)
+
+            if (Constructor == null)
             {
-                errors.AddError(ErrorResource.NoMethodSelected);
-                return;
+                Constructor = new PluginConstructor();
+                ConstructorInputs = new List<IServiceInput>();
             }
 
 
-            ExecuteService(update, out errors, Constructor, Method, Namespace, dataObject);
+            ExecuteService(update, out errors, Constructor, Namespace, dataObject);
         }
 
-        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
             errors = new ErrorResultTO();
-            var itrs = new List<IWarewolfIterator>(5);
-            IWarewolfListIterator itrCollection = new WarewolfListIterator();
-            var warewolfEvalResult = dataObject.Environment.Eval(ExistingObject, update);
-            var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
-            var constructorParameters = ConstructorInputs.Select(p => new ConstructorParameter()
+            PluginExecutionDto pluginExecutionDto;
+            if (Constructor.IsExistingObject)
             {
-                Name = p.Name,
-                TypeName = p.TypeName,
-                Value = p.Value,
-                IsRequired = p.RequiredField,
-                EmptyToNull = p.EmptyIsNull
-            });
-            var methodParameters = Inputs.Select(a => new MethodParameter
+                var warewolfEvalResult = dataObject.Environment.Eval(Constructor.ConstructorName, update);
+                var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+                 pluginExecutionDto = new PluginExecutionDto(existingObject);
+            }
+            else
             {
-                EmptyToNull = a.EmptyIsNull
-                ,
-                IsRequired = a.RequiredField
-                ,
-                Name = a.Name
-                ,
-                Value = a.Value
-                ,
-                TypeName = a.TypeName
-            }).ToList();
-            var parameters = constructorParameters as ConstructorParameter[] ?? constructorParameters.ToArray();
-            BuildParameterIterators(update, parameters.Cast<MethodParameter>().ToList(), itrCollection, itrs, dataObject);
-
+                pluginExecutionDto = new PluginExecutionDto(string.Empty);
+            }
+           
+            constructor.Inputs = ConstructorInputs?.ToList() ?? new List<IServiceInput>();
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 PluginConstructor = constructor,
-                Method = method.Method,
-                Parameters = methodParameters,
                 MethodsToRun = MethodsToRun
             };
 
+            pluginExecutionDto.Args = args;
             try
             {
-                if (itrCollection.HasMoreData())
+                CreateOutputFormater(args);
+                if (!Constructor.IsExistingObject)
                 {
-                    while (itrCollection.HasMoreData())
-                    {
-                        int pos = 0;
-                        foreach (var itr in itrs)
-                        {
-                            string injectVal = itrCollection.FetchNextValue(itr);
-                            var param = parameters.ToList()[pos];
-
-
-                            param.Value = param.EmptyToNull &&
-                                          (injectVal == null ||
-                                           string.Compare(injectVal, string.Empty,
-                                               StringComparison.InvariantCultureIgnoreCase) == 0)
-                                ? null
-                                : injectVal;
-
-                            pos++;
-                        }
-                        CreateOutputFormater(args);
-                        var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
-                        ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                        ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
-                    }
+                    pluginExecutionDto = PluginServiceExecutionFactory.CreateInstance(args);
                 }
-                else
+                
+                var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
+                MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
+                ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                foreach(var dev2MethodInfo in MethodsToRun)
                 {
-                    CreateOutputFormater(args);
-                    if (string.IsNullOrEmpty(existingObject))
-                    {
-                        existingObject= PluginServiceExecutionFactory.CreateInstance(args);
-                    }
-                    var result = PluginServiceExecutionFactory.InvokePlugin(args, existingObject).ToString();
-                    ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
+                    var methodResult = dev2MethodInfo.MethodResult;
+                    ResponseManager.PushResponseIntoEnvironment(methodResult, update, dataObject, false);
                 }
-
             }
             catch (Exception e)
             {
@@ -147,18 +105,18 @@ namespace Dev2.Activities
 
         private void CreateOutputFormater(PluginInvokeArgs args)
         {
-            if(!IsObject)
+            if (!IsObject)
             {
                 int i = 0;
-                if(Outputs != null)
+                if (Outputs != null)
                 {
-                    foreach(var serviceOutputMapping in Outputs)
+                    foreach (var serviceOutputMapping in Outputs)
                     {
                         OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
                         i++;
                     }
                 }
-                if(OutputDescription != null)
+                if (OutputDescription != null)
                 {
                     var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                     args.OutputFormatter = outputFormatter;

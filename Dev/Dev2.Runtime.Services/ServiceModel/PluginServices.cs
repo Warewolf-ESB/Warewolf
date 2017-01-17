@@ -134,6 +134,24 @@ namespace Dev2.Runtime.ServiceModel
             }
             return result;
         }
+        // POST: Service/PluginServices/MethodsWithReturns
+        public ServiceMethodList MethodsWithReturns(PluginService service, Guid workspaceId, Guid dataListId)
+        {
+            var result = new ServiceMethodList();
+            try
+            {
+                // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
+              
+                var broker = new PluginBroker();
+                result = broker.GetMethodsWithReturns(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+            }
+            return result;
+        }
 
         public ServiceConstructorList Constructors(PluginService service, Guid workspaceId, Guid dataListId)
         {

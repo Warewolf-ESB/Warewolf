@@ -41,6 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             Recordsets = new RecordsetList();
             MethodsToRun = new List<Dev2MethodInfo>();
             Constructor = new ServiceConstructor();
+            Method = new ServiceMethod();
         }
 
         public PluginService(XElement xml)

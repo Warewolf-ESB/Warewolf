@@ -2802,6 +2802,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select constructor to execute..
+        /// </summary>
+        public static string PluginServiceSelectConstructorToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectConstructorToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a namespace to help find the correct action..
         /// </summary>
         public static string PluginServiceSelectNamespaceToolTip {

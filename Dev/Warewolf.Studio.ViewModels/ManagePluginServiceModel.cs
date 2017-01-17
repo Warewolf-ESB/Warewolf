@@ -53,6 +53,16 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.PluginActions(source, ns).Where(a => a.Method != "GetType").ToList();
         }
 
+        public ICollection<IPluginAction> GetActionsWithReturns(IPluginSource source, INamespaceItem ns)
+        {
+            return _queryProxy.PluginActionsWithReturns(source, ns).Where(a => a.Method != "GetType").ToList();
+        }
+
+        public ICollection<IPluginConstructor> GetConstructors(IPluginSource source, INamespaceItem ns)
+        {
+            return _queryProxy.PluginConstructors(source, ns).ToList();
+        }
+
         public ICollection<INamespaceItem> GetNameSpaces(IPluginSource source)
         {
             return _queryProxy.FetchNamespaces(source);

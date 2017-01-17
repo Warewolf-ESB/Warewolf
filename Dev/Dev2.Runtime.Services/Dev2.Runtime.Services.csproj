@@ -215,6 +215,7 @@
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginActionsWithReturnsTypes.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginConstructors.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDuplicates.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
@@ -392,6 +393,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\AssemblyLoader.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginExecutionDto.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.partial.cs" />

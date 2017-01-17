@@ -207,6 +207,46 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NewDotNetConstructorGrid">
+        <Grid x:Name="ConstructorsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ConstructorRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ConstructorLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="ConstructorsComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding ConstructorRegion.Constructors}"
+                              DisplayMemberPath="Method" 
+                              IsEnabled="{Binding ConstructorRegion.IsActionEnabled}"
+                              ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding ActionRegion.SelectedConstructor}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="ConstructorRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=ConstructorRegion.RefreshConstructorsCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=ConstructorRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshConstructorHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="22"
+                                                        Height="22"
+                                                        Visibility="{Binding Path=ConstructorRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NewNamespaceGrid">
         <Grid x:Name="ActionsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
@@ -352,7 +392,7 @@
 
             <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
 
-            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
+            <Control Template="{StaticResource NewDotNetConstructorGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewInputsGrid">
