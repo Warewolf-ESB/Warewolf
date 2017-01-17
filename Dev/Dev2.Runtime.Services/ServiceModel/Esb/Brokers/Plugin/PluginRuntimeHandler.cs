@@ -225,21 +225,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         Name = info.Name
                     };
-                    if (info.ReturnType.IsPrimitive)
+                    if (info.ReturnType.IsPrimitive || info.ReturnType == typeof(decimal) || info.ReturnType == typeof(string))
                     {
-                        var properties = info.ReturnType.GetProperties()
-                            .Where(propertyInfo => propertyInfo.CanWrite)
-                            .ToList();
-                        var jObject = new JObject();
-                        foreach(var property in properties)
-                        {
-                            jObject.Add(property.Name,"");
-                        }
-                        serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                        serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
                     }
                     else
                     {
-                        serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                        var properties = info.ReturnType.GetProperties()
+                         .Where(propertyInfo => propertyInfo.CanWrite)
+                         .ToList();
+                        var jObject = new JObject();
+                        foreach (var property in properties)
+                        {
+                            jObject.Add(property.Name, "");
+                        }
+                        serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>
