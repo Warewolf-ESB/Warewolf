@@ -76,7 +76,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
-        public void Shortcut_Control_D_Opens_DeployTab()
+        public void Shortcut_Control_D_Opens_DeployWizardTab()
         {
             UIMap.Click_LocalHost_Once();
             UIMap.Open_Deploy_Using_Shortcut();

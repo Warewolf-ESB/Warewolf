@@ -6,12 +6,11 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-             xmlns:views="clr-namespace:Warewolf.Studio.Views"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+             xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=interfaces:IManagePluginSourceViewModel, IsDesignTimeCreatable=False}">
@@ -21,8 +20,6 @@
             <ResourceDictionary.MergedDictionaries>
               <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <views:NotConverter x:Key="NotConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -40,153 +37,142 @@
             </Grid.Width>
             <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" 
+                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                             Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
                     <TextBlock x:Name="HeaderTextBlock" Margin="5" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
                 </StackPanel>
-                <Grid  Grid.Row="1"
-                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                       Margin="0,-1,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="29"/>
-                    </Grid.RowDefinitions>
-                    <customControls:SearchTextBox Grid.Row="0" 
-                                                  Margin="{StaticResource ControlBorderTopRight}"
-                                                  Grid.Column="0"
-                                                  x:Name="SearchTextBox" 
-                                                  Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}"
-                                                  Style="{StaticResource SearchTextboxStyle}"
-                                                  LabelText="Filter"
-                                                  ToolTip="{x:Static languages:Tooltips.ManagePluginSourceFilterTooltip}"
-                                                  ClearSearchCommand="{Binding ClearSearchTextCommand}"
-                                                  ClearSearchToolTip="{x:Static languages:Tooltips.ManagePluginSourceClearSearchTooltip}"
-                                                  HorizontalAlignment="Stretch" >
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceClearSearchHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </customControls:SearchTextBox>
-                    <Button x:Name="RefreshButton" Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="0,3,0,-1"
-                            Command="{Binding RefreshCommand}"
-                            ToolTip="{x:Static languages:Tooltips.ManagePluginSourceRefreshTooltip}"
-                            Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
-                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
-                                        FontSize="16" 
-                                        Icon="Refresh" 
-                                        VerticalAlignment="Center" 
-                                        HorizontalAlignment="Center"/>
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceRefreshCommandHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </Button>
-                    <views:CircularProgressBar Grid.Row="0"
-                                               Grid.Column="1"
-                                               Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
-                                               Width="25"
-                                               Height="25"
-                                               Padding="2.5" />
-                </Grid>
-                <Grid Grid.Row="2" DataContext="{Binding GacItem}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <ProgressBar HorizontalAlignment="Stretch"
-                                 Orientation="Horizontal"
-                                 Minimum="0" IsVisibleChanged="UIElement_OnIsVisibleChanged"
-                                 Margin="{StaticResource ControlBorderTop}"
-                                 Value="{Binding Path=CurrentProgress, Mode=TwoWay}"
-                                 Maximum="100"
-                                 Visibility="{Binding Path=ProgressVisibility, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"></ProgressBar>
-                </Grid>
 
-                <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
-                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}">
-                        <ig:XamDataTree x:Name="ExplorerTree" 
-                                        ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
-                                        ItemsSource="{Binding DllListings}"
-                                        IsSelectedMemberPath="IsSelected"
-                                        DisplayMemberPath="Name"
-                                        IsExpandedMemberPath="IsExpanded"
-                                        EnsureNodeExpansion="True"
-                                        Loaded="ExplorerTree_OnLoaded"
-                                        PreviewKeyDown="ExplorerTree_OnPreviewKeyDown"
-                                        NodeLineVisibility="Hidden" >
-                            <ig:XamDataTree.EditingSettings>
-                                <ig:TreeEditingSettings AllowDeletion="False"
-                                        AllowEditing="False"
-                                        IsEnterKeyEditingEnabled="False"
-                                        IsF2EditingEnabled="False"
-                                        IsMouseActionEditingEnabled="None"
-                                        IsOnNodeActiveEditingEnabled="False"/>
-                            </ig:XamDataTree.EditingSettings>
-                            <ig:XamDataTree.GlobalNodeLayouts>
-                                <ig:NodeLayout Key="Children"
-                                               DisplayMemberPath="Name"
-                                               IsExpandedMemberPath="IsExpanded"
-                                               IsSelectedMemberPath="IsSelected"
-                                               Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <ig:NodeLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
+                <TextBlock Text="Assembly" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}"/>
+                <ui:IntellisenseTextBox x:Name="AssemblyNameTextBox"
+                                        Grid.Column="1" 
+                                        Grid.Row="1"
+                                        DefaultText="Assembly"
+                                        AllowUserInsertLine="False"
+                                        FilterType="All"
+                                        WrapInBrackets="False"
+                                        MaxHeight="25"
+                                        Margin="{StaticResource ControlBorderTopRight}"
+                                        ToolTip="{x:Static languages:Tooltips.ManagePluginSourceAssemblyNameTooltip}"
+                                        Style="{StaticResource AutoCompleteBoxStyle}"
+                                        Text="{Binding FileSystemAssemblyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ui:IntellisenseTextBox.IntellisenseProvider>
+                        <interfaceImplementors:CompositeIntellisenseProvider>
+                            <provider:FileSystemIntellisenseProvider />
+                        </interfaceImplementors:CompositeIntellisenseProvider>
+                    </ui:IntellisenseTextBox.IntellisenseProvider>
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceDllFullNameHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+                <Button x:Name="AssemblyNameButton" 
+                        Grid.Row="1" 
+                        Grid.Column="2" 
+                        Margin="{StaticResource ControlBorderTop}" 
+                        ToolTip="{x:Static languages:Tooltips.ManagePluginSourceAssemblyNameButtonTooltip}"
+                        Command="{Binding ChooseFileSystemDLLCommand}"
+                        Content="...">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceDllFullNameButtonHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
 
-                                                <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
-                                                <TextBlock x:Name="ResourceNameTextBlock"
-                                                           MinWidth="5"
-                                                           Height="20"
-                                                           Focusable="True"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Stretch"
-                                                           Text="{Binding Path=Data.Name}">
-                                                </TextBlock>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ig:NodeLayout.ItemTemplate>
-                                </ig:NodeLayout>
-                            </ig:XamDataTree.GlobalNodeLayouts>
-                        </ig:XamDataTree>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Assembly"/>
-                    <TextBox x:Name="AssemblyNameTextBox" 
-                             Grid.Column="1" 
-                             ToolTip="{x:Static languages:Tooltips.ManagePluginSourceAssemblyNameTooltip}"
-                             Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceDllFullNameHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                </Grid>
+                <TextBlock Text="Config File" Grid.Column="0" Grid.Row="2" Margin="10,3,0,0"/>
+                <ui:IntellisenseTextBox x:Name="ConfigFileTextbox"
+                                        Grid.Column="1" 
+                                        Grid.Row="2"
+                                        DefaultText="Config File"
+                                        AllowUserInsertLine="False"
+                                        FilterType="All"
+                                        WrapInBrackets="False"
+                                        MaxHeight="25"
+                                        Margin="10,3,3,0"
+                                        IsEnabled="{Binding CanSelectConfigFiles}"
+                                        ToolTipService.ShowOnDisabled="True"
+                                        Text="{Binding ConfigFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ui:IntellisenseTextBox.IntellisenseProvider>
+                        <interfaceImplementors:CompositeIntellisenseProvider>
+                            <provider:FileSystemIntellisenseProvider />
+                        </interfaceImplementors:CompositeIntellisenseProvider>
+                    </ui:IntellisenseTextBox.IntellisenseProvider>
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceConfigFileHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                    <ui:IntellisenseTextBox.Style>
+                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource AutoCompleteBoxStyle}">
+                            <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ManagePluginSourceConfigFileTooltip}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False" >
+                                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ManagePluginSourceConfigFileDisabledTooltip}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:IntellisenseTextBox.Style>
+                </ui:IntellisenseTextBox>
+                <Button x:Name="ConfigFileButton" 
+                        Grid.Row="2" 
+                        Grid.Column="2" 
+                        IsEnabled="{Binding CanSelectConfigFiles}"
+                        Margin="{StaticResource ControlBorderTop}" 
+                        ToolTipService.ShowOnDisabled="True"
+                        Command="{Binding ChooseConfigFileCommand}"
+                        Content="...">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceConfigFileButtonHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+                            <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ManagePluginSourceConfigFileButtonTooltip}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False" >
+                                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.ManagePluginSourceConfigFileButtonDisabledTooltip}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+
+                <TextBlock Text="GAC Assembly" Grid.Column="0" Grid.Row="3"  Margin="{StaticResource ControlBorderTop}"/>
+                <ui:IntellisenseTextBox x:Name="GacAssemblyNameTextBox"
+                                        Grid.Column="1" 
+                                        Grid.Row="3"
+                                        DefaultText="GAC Assembly"
+                                        AllowUserInsertLine="False"
+                                        FilterType="All"
+                                        WrapInBrackets="False"
+                                        MaxHeight="25"
+                                        IsEnabled="False"
+                                        Margin="{StaticResource ControlBorderTopRight}"
+                                        ToolTipService.ShowOnDisabled="True"
+                                        ToolTip="{x:Static languages:Tooltips.ManagePluginSourceGacAssemblyNameTooltip}"
+                                        Style="{StaticResource AutoCompleteBoxStyle}"
+                                        Text="{Binding GACAssemblyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                </ui:IntellisenseTextBox>
+                <Button x:Name="GacAssemblyNameButton" 
+                        Grid.Row="3" 
+                        Grid.Column="2" 
+                        Margin="{StaticResource ControlBorderTop}" 
+                        ToolTip="{x:Static languages:Tooltips.ManagePluginSourceGacAssemblyNameButtonTooltip}"
+                        Command="{Binding ChooseGACDLLCommand}"
+                        Content="...">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginSourceGacAssemblyNameButtonHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
             </Grid>
         </Grid>
     </ScrollViewer>

@@ -50,10 +50,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new PluginSource
                 {
                     ResourceID = src.Id,
-                    AssemblyName = src.SelectedDll.Name,
-                    AssemblyLocation = src.SelectedDll.FullName,
+                    ConfigFilePath = src.ConfigFilePath,
                     ResourceName = src.Name
                 };
+                if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
+                {
+                    res.AssemblyLocation = src.FileSystemAssemblyName;
+                }
+                else if (!string.IsNullOrEmpty(src.GACAssemblyName))
+                {
+                    res.AssemblyLocation = src.GACAssemblyName;
+                }
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);
                 msg.HasError = false;

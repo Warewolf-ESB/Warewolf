@@ -11,7 +11,7 @@ namespace Warewolf.UITests.WebSource
         public void WebSource_OpenWebSourceTabUITests()
         {
             UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceWizardTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
         #region Additional test attributes
