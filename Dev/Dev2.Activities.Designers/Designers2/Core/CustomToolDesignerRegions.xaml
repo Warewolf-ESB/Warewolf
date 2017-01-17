@@ -215,7 +215,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ConstructorLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <TextBlock x:Name="ConstructorLabel" Text="Constructor" Margin="{StaticResource ControlBorderRight}" />
             <ComboBox x:Name="ConstructorsComboBox"
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
