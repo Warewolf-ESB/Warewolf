@@ -2,10 +2,9 @@
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IEmailAttachmentModel
+    public interface IFileChooserModel
     {
-
         IList<IFileListing> FetchFiles(IFileListing file);
-         IList<IFileListing> FetchDrives();
+        IList<IFileListing> FetchDrives();
     }
 }

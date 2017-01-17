@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Errors.Clear();
                 IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
-                if (_source != null && _source.SelectedSource != null)
+                if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
                     SelectedAction = null;
@@ -117,10 +117,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void CallErrorsEventHandler()
         {
-            if (ErrorsHandler != null)
-            {
-                ErrorsHandler(this, new List<string>(Errors));
-            }
+            ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
         string ProcedureName

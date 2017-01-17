@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 Action = WorkspaceItemAction.Edit,
                                 IsWorkflowSaved = true,
                                 ServiceType = serviceType.ToString()
-                            }, false);
+                            });
 
                     }
                     else
@@ -117,7 +117,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 ServiceName = resourceID,
                                 IsWorkflowSaved = true,
                                 ServiceType = serviceType.ToString()
-                            }, false);
+                            });
                     }
                     //
                     // Reload resources

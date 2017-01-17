@@ -46,17 +46,14 @@ namespace Dev2.Activities.Designers2.CreateJSON
         protected override void DoCustomAction(string propertyName)
         {
             if (propertyName == "SourceName")
-            {                     
-                if (CurrentModelItem != null)
+            {
+                var dto = CurrentModelItem?.GetCurrentValue() as JsonMappingTo;
+                if (dto != null)
                 {
-                    var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
-                    if (dto != null)
+                    var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
+                    if (String.IsNullOrEmpty(dto.DestinationName))
                     {
-                        var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
-                        if (String.IsNullOrEmpty(dto.DestinationName))
-                        {
-                            CurrentModelItem.SetProperty("DestinationName", destinationWithName);
-                        }
+                        CurrentModelItem.SetProperty("DestinationName", destinationWithName);
                     }
                 }
             }
@@ -65,10 +62,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         #endregion

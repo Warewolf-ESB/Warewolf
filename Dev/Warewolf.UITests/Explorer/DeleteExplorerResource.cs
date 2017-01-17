@@ -53,7 +53,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
-            UIMap.Click_MessageBox_OK();
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnywayText.Exists, "Error Deleting Confirmation MessageBox does not exist");
+            UIMap.Click_DeleteAnyway_MessageBox_OK();
         }
 
         [TestMethod]

@@ -28,17 +28,18 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utils;
 using Dev2.Webs;
-using Dev2.Workspaces;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -61,7 +62,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private IContextualResourceModel _contextualResourceModel;
 
         private readonly IWindowManager _windowManager;
-        private readonly IWorkspaceItemRepository _workspaceItemRepository;
 
         private AuthorizeCommand _viewInBrowserCommand;
         private AuthorizeCommand _debugCommand;
@@ -182,7 +182,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel = workSurfaceViewModel;
 
             _windowManager = CustomContainer.Get<IWindowManager>();
-            _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if (model != null)
@@ -406,7 +405,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            // only try saving if I can debug and contribute, else I should just debug what I have
             if (resourceModel.UserPermissions.IsContributor())
             {
                 var succesfulSave = Save(resourceModel, true);
@@ -532,7 +530,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public bool Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            var saveResult = Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
+            var saveResult = Save(ContextualResourceModel, isLocalSave);
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
             if (!isLocalSave)
             {
@@ -563,7 +561,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
         {
             if (resource == null || !resource.UserPermissions.IsContributor())
             {
@@ -590,22 +588,16 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             BindToModel();
-
-            var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
-
-            // shutdown - just save to workspace
-            if (isStudioShutdown)
-            {
-                return true;
-            }
-
-            resource.Environment.ResourceRepository.Save(resource);
-            DisplaySaveResult(result, resource);
             if (!isLocalSave)
             {
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
+            }
+            else
+            {
+                ExecuteMessage saveResult = resource.Environment.ResourceRepository.Save(resource);
+                DisplaySaveResult(saveResult, resource);
             }
             return true;
         }

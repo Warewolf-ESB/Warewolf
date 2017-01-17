@@ -138,8 +138,8 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(viewModel.ServerPermissions);
             Assert.IsNotNull(viewModel.ResourcePermissions);
 
-            var serverPerms = securitySettingsTO == null ? new List<WindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => p.IsServer).ToList();
-            var resourcePerms = securitySettingsTO == null ? new List<WindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => !p.IsServer).ToList();
+            var serverPerms = securitySettingsTO?.WindowsGroupPermissions.Where(p => p.IsServer).ToList() ?? new List<WindowsGroupPermission>();
+            var resourcePerms = securitySettingsTO?.WindowsGroupPermissions.Where(p => !p.IsServer).ToList() ?? new List<WindowsGroupPermission>();
 
             // constructor adds an extra "new"  permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.ServerPermissions.Count);

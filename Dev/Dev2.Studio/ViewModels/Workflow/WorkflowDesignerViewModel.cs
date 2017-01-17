@@ -1091,7 +1091,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void AddSwitch(ModelItem mi)
         {
-            if (mi.Parent?.Parent != null && mi.Parent.Parent.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+            if (mi.Parent?.Parent?.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
             {
                 ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
                 if (activityExpression != null)
@@ -2038,6 +2038,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
+        /// <summary>
+        /// Processes the data list configuration load.
+        /// </summary>
+        public void UpdateDataList()
+        {
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+        }
+
+
         public static bool ValidatResourceModel(string dataList)
         {
             try
@@ -2061,7 +2070,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-            DoWorkspaceSave();
+            //DoWorkspaceSave();
+            UpdateDataList();
         }
 
         public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)

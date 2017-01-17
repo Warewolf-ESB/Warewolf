@@ -160,10 +160,7 @@ namespace Warewolf.Studio.CustomControls
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
 
             // layer could be null if control is no longer in the visual tree
-            if (layer != null)
-            {
-                layer.Add(new WatermarkAdorner(control, GetWatermark(control)));
-            }
+            layer?.Add(new WatermarkAdorner(control, GetWatermark(control)));
         }
 
         private static bool ShouldShowWatermark(Control c)
@@ -177,11 +174,7 @@ namespace Warewolf.Studio.CustomControls
                 var textBox = c as TextBox;
                 return textBox != null && textBox.Text == string.Empty;
             }
-            if (c is ItemsControl)
-            {
-                return (c as ItemsControl).Items.Count == 0;
-            }
-            return false;
+            return (c as ItemsControl)?.Items.Count == 0;
         }
 
         protected override void OnTextChanged(TextChangedEventArgs e)

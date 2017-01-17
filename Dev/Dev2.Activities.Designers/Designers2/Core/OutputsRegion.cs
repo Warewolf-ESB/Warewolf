@@ -246,13 +246,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (string.IsNullOrEmpty(_recordsetName))
                 {
-                    if(Outputs != null)
+                    var recSet = Outputs?.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
+                    if (recSet != null)
                     {
-                        var recSet = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
-                        if (recSet != null)
-                        {
-                            _recordsetName = recSet.RecordSetName;
-                        }
+                        _recordsetName = recSet.RecordSetName;
                     }
                 }
                 return _recordsetName;
@@ -389,10 +386,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

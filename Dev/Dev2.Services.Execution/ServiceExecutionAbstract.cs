@@ -357,9 +357,7 @@ namespace Dev2.Services.Execution
                 }
                 if (!HandlesOutputFormatting)
                 {
-                    var formattedPayload = formater != null
-                            ? formater.Format(result).ToString()
-                            : result;
+                    var formattedPayload = formater?.Format(result).ToString() ?? result;
                     PushXmlIntoEnvironment(formattedPayload, update);
                 }
                 else

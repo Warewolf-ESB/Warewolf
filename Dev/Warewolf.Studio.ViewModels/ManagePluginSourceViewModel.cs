@@ -9,10 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -22,9 +18,9 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.PubSubEvents;
-using Warewolf.Studio.Core;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -32,244 +28,169 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
     {
-        IDllListingModel _selectedDll;
         readonly IManagePluginSourceModel _updateManager;
         IPluginSource _pluginSource;
         string _resourceName;
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        List<IDllListingModel> _dllListings;
-        bool _isLoading;
-        string _searchTerm;
-        private IDllListingModel _gacItem;
-        string _assemblyName;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+        private IDllListingModel _selectedDll;
+        private string _gacAssemblyName;
+        private string _fileSystemAssemblyName;
+        private string _configFilePath;
+        private bool _canSelectConfigFiles;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : base("PluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
-            AsyncWorker = asyncWorker;
+            DllChooser = new DLLChooser(updateManager);
             HeaderText = Resources.Languages.Core.PluginSourceNewHeaderLabel;
             Header = Resources.Languages.Core.PluginSourceNewHeaderLabel;
-            OkCommand = new DelegateCommand(Save, CanSave);
-            CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
-            ClearSearchTextCommand = new DelegateCommand(() => SearchTerm = "");
-            RefreshCommand = new DelegateCommand(() => PerformLoadAll());
-            
-            _warewolfserverName = updateManager.ServerName;
-            if(Application.Current != null)
+            OkCommand = new DelegateCommand(o => Save(), o => CanSave());
+            FileSystemAssemblyName = string.Empty;
+            ConfigFilePath = string.Empty;
+            GACAssemblyName = string.Empty;
+            ChooseFileSystemDLLCommand = new DelegateCommand(o =>
             {
-                if(Application.Current.Dispatcher != null)
+                var dll = DllChooser.GetFileSystemDLL();
+                if (dll != null)
                 {
-                    DispatcherAction = Application.Current.Dispatcher.Invoke;
+                    FileSystemAssemblyName = dll.FullName;
                 }
-            }
-        }
-
-        public IAsyncWorker AsyncWorker { get; set; }
-
-        public ICommand RefreshCommand { get; set; }
-
-        public IDllListingModel GacItem
-        {
-            get { return _gacItem; }
-            set
+            });
+            ChooseGACDLLCommand = new DelegateCommand(o =>
             {
-                _gacItem = value;
-                OnPropertyChanged(() => GacItem);
-            }
-        }
-
-        public Action<Action> DispatcherAction { get; set; } 
-      
-        void PerformLoadAll(Action actionToPerform=null)
-        {
-        
-            AsyncWorker.Start(() =>
-            {
-                IsLoading = true;
-                var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
-
-                DispatcherAction.Invoke(() =>
+                var dll = DllChooser.GetGacDLL();
+                if (dll != null)
                 {
-                    DllListings = new List<IDllListingModel>(names);
-                    IsLoading = false;
-                    if (DllListings != null && DllListings.Count > 1)
+                    GACAssemblyName = dll.FullName;
+                }
+            });
+
+            ChooseConfigFileCommand = new DelegateCommand(o =>
+            {
+                var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
+                fileChooser.ShowView(false);
+                var vm = fileChooser.DataContext as FileChooser;
+                if (vm != null && vm.Result == MessageBoxResult.OK)
+                {
+                    var selectedFiles = vm.GetAttachments();
+                    if (selectedFiles != null && selectedFiles.Count > 0)
                     {
-                        GacItem = DllListings[1];
+                        ConfigFilePath = selectedFiles[0];
                     }
-                    actionToPerform?.Invoke();
-                });
-            }, () =>
-            {
-
-            }, exception =>
-            {
-                //if (exception.InnerException != null)
-                //{
-                //    exception = exception.InnerException;
-                //}
-                //TestMessage = exception.Message;
-            });            
-        }
-
-        public ICommand ClearSearchTextCommand { get; set; }
-
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(() => IsLoading);
-            }
-        }
-
-        public string SearchTerm
-        {
-            get
-            {
-                return _searchTerm;
-            }
-            set
-            {
-                if (!value.Equals(_searchTerm))
-                {
-                    _searchTerm = value;
-                    PerformSearch(_searchTerm);
-                    OnPropertyChanged(() => SearchTerm);
                 }
-            }
+            });
+
+            CancelCommand = new DelegateCommand(o => CloseAction.Invoke());
+
+            _warewolfserverName = updateManager.ServerName;
         }
 
-        void PerformSearch(string searchTerm)
-        {
-            if (DllListings != null)
-            {
-                foreach (var dllListingModel in DllListings)
-                {
-                    dllListingModel.Filter(searchTerm);
-                }
-                OnPropertyChanged(() => DllListings);
-            }
-        }
+        public ICommand ChooseGACDLLCommand { get; set; }
+        public ICommand ChooseFileSystemDLLCommand { get; set; }
+        public ICommand ChooseConfigFileCommand { get; set; }
 
         public ICommand CancelCommand { get; set; }
         public Action CloseAction { get; set; }
-        public List<IDllListingModel> DllListings
-        {
-            get
-            {
-                return _dllListings;
-            }
-            set
-            {
-                _dllListings = value;
-                OnPropertyChanged(() => DllListings);
-            }
-        }
 
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator,IAsyncWorker asyncWorker)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
-            PerformLoadAll();
             _requestServiceNameViewModel = requestServiceNameViewModel;
             Item = ToModel();
         }
 
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource, IAsyncWorker asyncWorker)
             : this(updateManager, aggregator, asyncWorker)
-        {
-            DispatcherAction = dispatcherAction;
-            VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
-            PerformLoadAll();
-            _requestServiceNameViewModel = requestServiceNameViewModel;
-            Item = ToModel();
-        }
-
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource,IAsyncWorker asyncWorker)
-            : this(updateManager, aggregator,asyncWorker)
         {
             VerifyArgument.IsNotNull("pluginSource", pluginSource);
             _pluginSource = pluginSource;
-            SetupHeaderTextFromExisting();
-            PerformLoadAll(() => FromModel(_pluginSource));
-            
             ToItem();
-        }
-
-        public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
-            : this(updateManager, aggregator, asyncWorker)
-        {
-            DispatcherAction = dispatcherAction;
-            VerifyArgument.IsNotNull("pluginSource", pluginSource);
-            _pluginSource = pluginSource;
+            FromModel(_pluginSource);
             SetupHeaderTextFromExisting();
-            PerformLoadAll(() => FromModel(_pluginSource));
-
-            ToItem();
         }
 
         public ManagePluginSourceViewModel() : base("PluginSource")
         {
-          
         }
 
         public override void FromModel(IPluginSource pluginSource)
         {
-            var fromDll = pluginSource.SelectedDll;
-            var selectedDll = fromDll;
-            if (selectedDll != null)
+            Name = _pluginSource.Name;
+            Path = _pluginSource.Path;
+            FileSystemAssemblyName = _pluginSource.FileSystemAssemblyName;
+            ConfigFilePath = _pluginSource.ConfigFilePath;
+            GACAssemblyName = _pluginSource.GACAssemblyName;
+        }
+
+        public string FileSystemAssemblyName
+        {
+            get
             {
-                if (selectedDll.FullName.StartsWith("GAC:"))
-                {
-                    var dllListingModel = DllListings.Find(model => model.Name == "GAC");
-                    dllListingModel.IsExpanded = true;
-                    var itemToSelect = dllListingModel.Children.FirstOrDefault(model => model.FullName == selectedDll.FullName);
-                    if (itemToSelect != null)
-                    {
-                        SelectedDll = itemToSelect;
-                        itemToSelect.IsSelected = true;
-                    }
-                }
-                else
-                {
-                    var dllListingModel = DllListings.Find(model => model.Name == "File System");
-                    dllListingModel.IsExpanded = true;
-                    var fileSystem = selectedDll.FullName.Split('\\');
-                    var dllListingModels = dllListingModel.Children;
-                    IDllListingModel itemToSelect = null;
-                    foreach(var dir in fileSystem)
-                    {
-                        var foundChild = ExpandChild(dir, dllListingModels);
-                        if(foundChild != null)
-                        {
-                            dllListingModels = foundChild.Children;
-                            itemToSelect = foundChild;
-                        }
-                    }
-                    if(itemToSelect != null)
-                    {
-                        SelectedDll = itemToSelect;
-                        SelectedDll.IsSelected = true;
-                    }
-                    
-                }
+                return _fileSystemAssemblyName;
             }
-                Name = _pluginSource.Name;
-                Path = _pluginSource.Path; 
+            set
+            {
+                _fileSystemAssemblyName = value;
+                CanSelectConfigFiles = !string.IsNullOrWhiteSpace(_fileSystemAssemblyName) && _fileSystemAssemblyName.EndsWith(".dll");
+                if (!string.IsNullOrEmpty(_fileSystemAssemblyName))
+                {
+                    GACAssemblyName = string.Empty;
+                }
+                OnPropertyChanged(() => FileSystemAssemblyName);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+            }
+        }
+
+        public string ConfigFilePath
+        {
+            get
+            {
+                return _configFilePath;
+            }
+            set
+            {
+                _configFilePath = value;
+                OnPropertyChanged(() => ConfigFilePath);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+            }
+        }
+
+        public bool CanSelectConfigFiles
+        {
+            get { return _canSelectConfigFiles; }
+            set
+            {
+                _canSelectConfigFiles = value;
+                OnPropertyChanged(() => CanSelectConfigFiles);
+            }
+        }
+
+        public string GACAssemblyName
+        {
+            get
+            {
+                return _gacAssemblyName;
+            }
+            set
+            {
+                _gacAssemblyName = value;
+                if (!string.IsNullOrEmpty(_gacAssemblyName))
+                {
+                    FileSystemAssemblyName = string.Empty;
+                    ConfigFilePath = string.Empty;
+                }
+                OnPropertyChanged(() => GACAssemblyName);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+            }
         }
 
         public override string Name
@@ -283,16 +204,6 @@ namespace Warewolf.Studio.ViewModels
                 ResourceName = value;
             }
         }
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        IDllListingModel ExpandChild(string dir, ObservableCollection<IDllListingModel> children)
-        {
-            var dllListingModel = children.FirstOrDefault(model => model.Name.StartsWith(dir));
-            if(dllListingModel != null)
-            {
-                dllListingModel.IsExpanded = true;
-            }
-            return dllListingModel;
-        }
 
         public IDllListingModel SelectedDll
         {
@@ -302,52 +213,8 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value == null) return;
                 _selectedDll = value;
-                OnPropertyChanged(() => SelectedDll);
-                if(SelectedDll != null)
-                {
-                    SelectedDll.IsExpanded = true;
-                    AssemblyName = SelectedDll.FullName;                    
-                }
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
-        }
-
-        public string AssemblyName
-        {
-            get
-            {
-                return _assemblyName;
-            }
-            set
-            {
-                _assemblyName = value;
-                if(!string.IsNullOrEmpty(_assemblyName))
-                {
-                    if(!_assemblyName.StartsWith("GAC"))
-                    //    SelectedDll = null;
-                    //else
-                        SelectDllFromUsingAssemblyName();
-                }
-                else
-                    SelectedDll = null;
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(()=>AssemblyName);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-            }
-        }
-
-        private void SelectDllFromUsingAssemblyName()
-        {
-            if(_selectedDll != null) return;
-            if (_assemblyName == null) return;
-            if(!_assemblyName.StartsWith("GAC"))
-                if(!File.Exists(_assemblyName)) return;
-            var dll = new FileInfo(_assemblyName);
-            if (dll.Extension != ".dll") return;
-            var fileListing = new FileListing { Name = dll.Name, FullName = dll.FullName };
-            _selectedDll = new DllListingModel(_updateManager, fileListing);
         }
 
         void SetupHeaderTextFromExisting()
@@ -367,7 +234,14 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && HasChanged &&(AssemblyName.EndsWith(".dll") || AssemblyName.StartsWith("GAC:"));
+            var canSave = HasChanged;
+            if (canSave)
+            {
+                canSave = (!string.IsNullOrEmpty(FileSystemAssemblyName) && FileSystemAssemblyName.EndsWith(".dll")) ||
+                          (!string.IsNullOrEmpty(GACAssemblyName) && GACAssemblyName.StartsWith("GAC:"));
+            }
+
+            return canSave;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -430,32 +304,39 @@ namespace Warewolf.Studio.ViewModels
         {
             Item = new PluginSourceDefinition
             {
-                Id = _pluginSource.Id, 
-                Name = _pluginSource.Name, 
-                Path = _pluginSource.Path, 
-                SelectedDll = SelectedDll
+                Id = _pluginSource.Id,
+                Name = _pluginSource.Name,
+                Path = _pluginSource.Path,
+                FileSystemAssemblyName = _pluginSource.FileSystemAssemblyName,
+                ConfigFilePath = _pluginSource.ConfigFilePath,
+                GACAssemblyName = _pluginSource.GACAssemblyName
             };
-            AssemblyName = _pluginSource.SelectedDll.FullName;
         }
 
         void Save(IPluginSource source)
         {
-            source.SelectedDll = new DllListing(_selectedDll);
+            source.GACAssemblyName = FileSystemAssemblyName;
+            source.ConfigFilePath = ConfigFilePath;
+            source.GACAssemblyName = GACAssemblyName;
             _updateManager.Save(source);
         }
 
         public sealed override IPluginSource ToModel()
         {
-            if(_pluginSource == null)
+            if (_pluginSource == null)
             {
                 return new PluginSourceDefinition
                 {
                     Name = ResourceName,
-                    SelectedDll = _selectedDll,
-                    Path = Path
+                    Path = Path,
+                    FileSystemAssemblyName = _fileSystemAssemblyName,
+                    ConfigFilePath = _configFilePath,
+                    GACAssemblyName = _gacAssemblyName
                 };
             }
-            _pluginSource.SelectedDll = _selectedDll;
+            _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
+            _pluginSource.ConfigFilePath = ConfigFilePath;
+            _pluginSource.GACAssemblyName = GACAssemblyName;
             return _pluginSource;
         }
 
@@ -463,10 +344,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if(_requestServiceNameViewModel != null)
+                if (_requestServiceNameViewModel != null)
                 {
                     _requestServiceNameViewModel.Wait();
-                    if (_requestServiceNameViewModel.Exception==null)
+                    if (_requestServiceNameViewModel.Exception == null)
                     {
                         return _requestServiceNameViewModel.Result;
                     }
@@ -478,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start();}
+            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
         }
 
         public ICommand OkCommand { get; set; }
@@ -493,6 +374,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
+        public DLLChooser DllChooser { get; }
 
         protected override void OnDispose()
         {
