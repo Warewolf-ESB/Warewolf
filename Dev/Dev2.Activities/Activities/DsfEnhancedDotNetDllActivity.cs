@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -63,18 +61,13 @@ namespace Dev2.Activities
             {
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
             }
-
-            var constructorParameters = Inputs?.Select(p =>
-                                        new ConstructorParameter
-                                        {
-                                            Name = p.Name,
-                                            Value = p.Value,
-                                            TypeName = p.TypeName,
-                                            EmptyToNull = p.EmptyIsNull,
-                                            IsRequired = p.RequiredField
-                                        }
-            as IConstructorParameter).ToList();
-            constructor.Inputs = constructorParameters;
+         
+            foreach (var parameter in constructor.Inputs)
+            {
+                var paramIterator = dataObject.Environment.Eval(parameter.Value, update);
+                var resultToString = ExecutionEnvironment.WarewolfEvalResultToString(paramIterator);
+                parameter.Value = resultToString;
+            }
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
