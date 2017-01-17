@@ -423,6 +423,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 //NamespaceRegion.Dependants.Add(ActionRegion);
                 //ActionRegion.Dependants.Add(InputArea);
                 //ActionRegion.Dependants.Add(OutputsRegion);
+                ConstructorRegion.Dependants.Add(InputArea);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
