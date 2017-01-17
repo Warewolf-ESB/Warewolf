@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ServerProxyLayer
@@ -418,6 +419,21 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
         }
+
+        #region Implementation of IUpdateManager
+
+        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
+            comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
+            comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironment));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+        }
+
+        #endregion
 
         #endregion Implementation of IUpdateManager
     }

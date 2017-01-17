@@ -2288,7 +2288,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {
@@ -4335,7 +4335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Create Json tool to create Json data..
+        ///   Looks up a localized string similar to Use the Create JSON tool to create JSON data..
         /// </summary>
         public static string Tool_Utility_Create_JSON {
             get {
@@ -4624,7 +4624,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
+        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Discover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
         /// </summary>
         public static string WcfSourceHostNameHelp {
             get {

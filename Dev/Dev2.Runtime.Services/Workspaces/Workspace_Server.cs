@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.Hosting;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Workspaces
 {
@@ -22,21 +23,14 @@ namespace Dev2.Workspaces
         /// Performs the <see cref="IWorkspaceItem.Action" /> on the specified workspace item.
         /// </summary>
         /// <param name="workspaceItem">The workspace item to be actioned.</param>
-        /// <param name="isLocalSave">if set to <c>true</c> [is local save].</param>
-        /// <param name="roles">The roles.</param>
         /// <exception cref="System.ArgumentNullException">workspaceItem</exception>
-        public void Update(IWorkspaceItem workspaceItem, bool isLocalSave, string roles = null)
+        public void Update(IWorkspaceItem workspaceItem)
         {
             if(workspaceItem == null)
             {
                 throw new ArgumentNullException("workspaceItem");
             }
-
-            if(roles == null)
-            {
-                roles = string.Empty;
-            }
-
+            
             switch(workspaceItem.Action)
             {
                 case WorkspaceItemAction.None:
@@ -47,11 +41,11 @@ namespace Dev2.Workspaces
                     //06.03.2013: Ashley Lewis - PBI 8720
                     if(workspaceItem.ServiceType != enDynamicServiceObjectType.Source.ToString())
                     {
-                        Copy(WorkspaceRepository.Instance.ServerWorkspace, this, workspaceItem, roles);
+                        Copy(WorkspaceRepository.Instance.ServerWorkspace, this, workspaceItem);
                     }
                     else
                     {
-                        Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
+                        Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem);
                     }
                     break;
 
@@ -65,7 +59,7 @@ namespace Dev2.Workspaces
 
         #region Copy
 
-        static void Copy(IWorkspace source, IWorkspace destination, IWorkspaceItem workspaceItem, string roles)
+        static void Copy(IWorkspace source, IWorkspace destination, IWorkspaceItem workspaceItem)
         {
             if(source.Equals(destination))
             {
@@ -108,7 +102,7 @@ namespace Dev2.Workspaces
 
             #endregion
 
-            ResourceCatalog.Instance.CopyResource(workspaceItem.ID, source.ID, destination.ID, roles);
+            ResourceCatalog.Instance.CopyResource(workspaceItem.ID, source.ID, destination.ID);
         }
 
         #endregion

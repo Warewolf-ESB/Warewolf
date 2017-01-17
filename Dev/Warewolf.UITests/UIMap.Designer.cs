@@ -43,6 +43,19 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText saveBeforeAddingNewTestText = this.MessageBoxWindow.SaveBeforeAddingNewTestText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Save before continuing' label equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.SaveBeforeAddingNewTestTextExists, saveBeforeAddingNewTestText.Exists);
+        }
+        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -53,6 +66,18 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -216,6 +241,8 @@ namespace Warewolf.UITests
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -256,6 +283,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Save before continuing' label equals 'True'
+        /// </summary>
+        public bool SaveBeforeAddingNewTestTextExists = true;
         #endregion
     }
     
@@ -101605,6 +101647,70 @@ namespace Warewolf.UITests
                 return this.mDeleteAnyway;
             }
         }
+        
+        public WpfText UIResourcesDeployedSucText
+        {
+            get
+            {
+                if ((this.mUIResourcesDeployedSucText == null))
+                {
+                    this.mUIResourcesDeployedSucText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIResourcesDeployedSucText.SearchProperties[WpfText.PropertyNames.Name] = "Resource(s) Deployed Successfully";
+                    this.mUIResourcesDeployedSucText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIResourcesDeployedSucText;
+            }
+        }
+        
+        public WpfText DeleteAnywayText
+        {
+            get
+            {
+                if ((this.mDeleteAnywayText == null))
+                {
+                    this.mDeleteAnywayText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDeleteAnywayText.SearchProperties[WpfText.PropertyNames.Name] = "Error Deleting - UITestDependencyOne";
+                    this.mDeleteAnywayText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDeleteAnywayText;
+            }
+        }
+        
+        public WpfText SaveBeforeAddingNewTestText
+        {
+            get
+            {
+                if ((this.mSaveBeforeAddingNewTestText == null))
+                {
+                    this.mSaveBeforeAddingNewTestText = new WpfText(this);
+                    #region Search Criteria
+                    this.mSaveBeforeAddingNewTestText.SearchProperties[WpfText.PropertyNames.Name] = "Save before continuing";
+                    this.mSaveBeforeAddingNewTestText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mSaveBeforeAddingNewTestText;
+            }
+        }
+        
+        public WpfText DuplicateTestNameText
+        {
+            get
+            {
+                if ((this.mDuplicateTestNameText == null))
+                {
+                    this.mDuplicateTestNameText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDuplicateTestNameText.SearchProperties[WpfText.PropertyNames.Name] = "Duplicate Test Name";
+                    this.mDuplicateTestNameText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mDuplicateTestNameText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -101637,6 +101743,14 @@ namespace Warewolf.UITests
         private WpfButton mShowDependencies;
         
         private WpfButton mDeleteAnyway;
+        
+        private WpfText mUIResourcesDeployedSucText;
+        
+        private WpfText mDeleteAnywayText;
+        
+        private WpfText mSaveBeforeAddingNewTestText;
+        
+        private WpfText mDuplicateTestNameText;
         #endregion
     }
     
