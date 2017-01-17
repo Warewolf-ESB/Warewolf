@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
         private Version _serverVersion;
+        private object _serverInformation;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
         {
@@ -60,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            UpdateItemForDeploy(environmentId);            
+            UpdateItemForDeploy(environmentId);
         }
 
         #region Overrides of ExplorerViewModel
@@ -73,6 +74,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
 
+
+                if (_serverInformation == null)
+                {
+                    _serverInformation = SelectedServer.GetServerInformation();
+                }
+
                 if (_serverVersion == null)
                 {
                     _serverVersion = Version.Parse(SelectedServer.GetServerVersion());
@@ -81,7 +88,7 @@ namespace Warewolf.Studio.ViewModels
 
             }
             CheckPreselectedItems(environmentID);
-            if(ConnectControlViewModel != null)
+            if (ConnectControlViewModel != null)
             {
                 ConnectControlViewModel.IsLoading = false;
             }
@@ -89,16 +96,16 @@ namespace Warewolf.Studio.ViewModels
 
         void CheckPreselectedItems(Guid environmentID)
         {
-            if(Preselected != null && Preselected.Any())
+            if (Preselected != null && Preselected.Any())
             {
                 var envId = Preselected.First().Server.EnvironmentID;
-                if(envId != environmentID)
+                if (envId != environmentID)
                 {
                     ConnectControlViewModel.SelectedConnection = ConnectControlViewModel.Servers.FirstOrDefault(a => a.EnvironmentID == envId);
-                    if(ConnectControlViewModel.SelectedConnection != null)
+                    if (ConnectControlViewModel.SelectedConnection != null)
                     {
                         var server = ConnectControlViewModel.SelectedConnection;
-                        if(server.Permissions == null)
+                        if (server.Permissions == null)
                         {
                             server.Permissions = new List<IWindowsGroupPermission>();
                         }
@@ -176,7 +183,7 @@ namespace Warewolf.Studio.ViewModels
                 return explorerTreeItems;
             }
             set
-            {             
+            {
                 foreach (var explorerTreeItem in value)
                 {
                     Select(explorerTreeItem);
@@ -194,7 +201,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public IEnumerable<IExplorerTreeItem> Preselected       
+        public IEnumerable<IExplorerTreeItem> Preselected
         {
             get
             {
@@ -203,8 +210,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _preselected = value;
-                if (_loaded &&_preselected!= null && _preselected.Any())
-                    CheckPreselectedItems( Preselected.First().Server.EnvironmentID);
+                if (_loaded && _preselected != null && _preselected.Any())
+                    CheckPreselectedItems(Preselected.First().Server.EnvironmentID);
             }
         }
 
@@ -213,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
             var explorerItemViewModels = SelectedEnvironment?.AsList();
             var item = explorerItemViewModels?.FirstOrDefault(a => a.ResourceId == explorerTreeItem.ResourceId);
             if (item != null)
-            {               
+            {
                 item.IsSelected = true;
             }
         }
