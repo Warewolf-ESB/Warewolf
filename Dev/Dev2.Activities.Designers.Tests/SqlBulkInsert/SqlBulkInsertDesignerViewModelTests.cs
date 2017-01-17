@@ -835,10 +835,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(viewModel.IsDatabaseSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A database must be selected.") == null);
-            Assert.AreEqual(viewModel.IsTableSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A table must be selected.") == null);
-            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch size must be a number greater than or equal to zero.") == null);
-            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout must be a number greater than or equal to zero.") == null);
+            Assert.AreEqual(viewModel.IsDatabaseSelected, viewModel.Errors?.FirstOrDefault(e => e.Message == "A database must be selected.") == null);
+            Assert.AreEqual(viewModel.IsTableSelected, viewModel.Errors?.FirstOrDefault(e => e.Message == "A table must be selected.") == null);
+            Assert.AreEqual(isBatchSizeValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Batch size must be a number greater than or equal to zero.") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Timeout must be a number greater than or equal to zero.") == null);
         }
 
         [TestMethod]
@@ -1004,10 +1004,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(isInputMappingsValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Input Mapping To Field '" + toField + "' Invalid region detected: A close ]] without a related open [[") == null);
-            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch Size Invalid region detected: A close ]] without a related open [[") == null);
-            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout Invalid region detected: A close ]] without a related open [[") == null);
-            Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isInputMappingsValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Input Mapping To Field '" + toField + "' Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isBatchSizeValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Batch Size Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Timeout Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isResultValid, viewModel.Errors?.FirstOrDefault(e => e.Message == "Result Invalid region detected: A close ]] without a related open [[") == null);
         }
 
         [TestMethod]
@@ -1153,7 +1153,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, IEventAggregator eventAggregator, IResourceModel resourceModel, bool configureFindSingle = false, string columnListErrors = "")
         {
-            var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());
+            var sourceDefs = sources?.Select(s => s.Key.ToXml().ToString());
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.Connection.WorkspaceID).Returns(Guid.NewGuid());

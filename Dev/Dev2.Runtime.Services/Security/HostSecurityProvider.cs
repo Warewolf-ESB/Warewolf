@@ -160,10 +160,7 @@ namespace Dev2.Runtime.Security
 
         void SetServerID(XmlDocument doc)
         {
-            if (doc.DocumentElement != null)
-            {
-                doc.DocumentElement.SetAttribute("ServerID", ServerID.ToString());
-            }
+            doc.DocumentElement?.SetAttribute("ServerID", ServerID.ToString());
         }
 
         #endregion

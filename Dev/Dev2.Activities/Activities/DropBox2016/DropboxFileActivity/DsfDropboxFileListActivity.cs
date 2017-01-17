@@ -131,7 +131,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             {
                 Exception = dropboxFailureResult.GetException();
             }
-            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
+            var executionError = Exception.InnerException?.Message ?? Exception.Message;
 
             throw new Exception(executionError);
         }

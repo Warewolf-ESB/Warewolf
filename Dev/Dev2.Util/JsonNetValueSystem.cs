@@ -47,11 +47,7 @@ namespace Dev2.Util
         public IEnumerable GetMembers(object value)
         {
             var jobject = value as JObject;
-            if (jobject == null)
-            {
-                return null;
-            }
-            return jobject.Properties().Select(property => property.Name);
+            return jobject?.Properties().Select(property => property.Name);
         }
 
         public bool IsObject(object value)

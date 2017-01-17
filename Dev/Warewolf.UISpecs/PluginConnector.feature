@@ -21,5 +21,3 @@ Scenario: Plugin Connector
 	And I Click DotNet DLL Large View Done Button
 	And I Click Debug Ribbon Button
 	And I Click DebugInput Debug Button
-	And I Click Close Workflow Tab Button
-	And I Click MessageBox No

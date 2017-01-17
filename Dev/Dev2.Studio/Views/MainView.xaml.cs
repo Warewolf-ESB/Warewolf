@@ -125,9 +125,7 @@ namespace Dev2.Studio.Views
         {
             var handle = new WinInterop.WindowInteropHelper(this).Handle;
             var handleSource = WinInterop.HwndSource.FromHwnd(handle);
-            if (handleSource == null)
-                return;
-            handleSource.AddHook(WindowProc);
+            handleSource?.AddHook(WindowProc);
         }
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

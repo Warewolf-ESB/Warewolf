@@ -83,9 +83,9 @@ namespace Warewolf.Core
         {
             unchecked
             {
-                var hashCode = FullyQualifiedName != null ? FullyQualifiedName.GetHashCode() : 0;
+                var hashCode = FullyQualifiedName?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (Version != null ? Version.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ContainingAssemblyPath != null ? ContainingAssemblyPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ContainingAssemblyPath?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }
@@ -131,9 +131,9 @@ namespace Warewolf.Core
             {
                 unchecked
                 {
-                    var hashCode = obj.FullyQualifiedName != null ? obj.FullyQualifiedName.GetHashCode() : 0;
+                    var hashCode = obj.FullyQualifiedName?.GetHashCode() ?? 0;
                     hashCode = (hashCode * 397) ^ (obj.Version != null ? obj.Version.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (obj.ContainingAssemblyPath != null ? obj.ContainingAssemblyPath.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (obj.ContainingAssemblyPath?.GetHashCode() ?? 0);
                     return hashCode;
                 }
             }

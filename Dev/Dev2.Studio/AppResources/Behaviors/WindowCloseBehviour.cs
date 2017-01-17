@@ -34,7 +34,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             WindowCloseBehviour windowCloseBehviour = d as WindowCloseBehviour;
 
-            if(windowCloseBehviour == null || windowCloseBehviour.AssociatedObject == null) return;
+            if(windowCloseBehviour?.AssociatedObject == null) return;
 
             bool value = Convert.ToBoolean(e.NewValue);
             if(value)

@@ -40,10 +40,7 @@ namespace Dev2.Providers.Errors
 
         public void Do()
         {
-            if(_do != null)
-            {
-                _do();
-            }
+            _do?.Invoke();
         }
     }
 }

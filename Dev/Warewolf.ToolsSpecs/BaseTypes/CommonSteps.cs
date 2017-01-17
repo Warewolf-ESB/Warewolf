@@ -607,7 +607,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     DsfForEachActivity foundCorrectParentForEach = null;
                     while (forEachParentActivity != null)
                     {
-                        if (forEachParentActivity.DataFunc != null && forEachParentActivity.DataFunc.Handler != null && forEachParentActivity.DataFunc.Handler.DisplayName == parentName)
+                        if (forEachParentActivity.DataFunc?.Handler != null && forEachParentActivity.DataFunc.Handler.DisplayName == parentName)
                         {
                             foundCorrectParentForEach = forEachParentActivity.DataFunc.Handler as DsfForEachActivity;
                             break;

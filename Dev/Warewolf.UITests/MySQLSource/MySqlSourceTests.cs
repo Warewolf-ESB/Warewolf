@@ -9,6 +9,7 @@ namespace Warewolf.UITests
         const string SourceName = "CodedUITestMySQLSource";
 
         [TestMethod]
+        [TestCategory("Database Tools")]
         // ReSharper disable once InconsistentNaming
         public void MySQLSource_CreateSourceUITests()
         {

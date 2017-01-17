@@ -135,20 +135,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             List<string> results = new List<string>();
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
-            
-            if(resource != null)
-            {
-                var dependencies = resource.Dependencies;
 
-                if(dependencies != null)
-                {
+            var dependencies = resource?.Dependencies;
+
+            if(dependencies != null)
+            {
 // ReSharper disable ImplicitlyCapturedClosure
-                    dependencies.ForEach(c =>
+                dependencies.ForEach(c =>
 // ReSharper restore ImplicitlyCapturedClosure
                     { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
-                    dependencies.ToList().ForEach(c =>
-                                                  { results.AddRange(c.ResourceID != Guid.Empty ? FetchRecursiveDependancies(c.ResourceID, workspaceId) : FetchRecursiveDependancies(workspaceId, c.ResourceName)); });
-                }
+                dependencies.ToList().ForEach(c =>
+                    { results.AddRange(c.ResourceID != Guid.Empty ? FetchRecursiveDependancies(c.ResourceID, workspaceId) : FetchRecursiveDependancies(workspaceId, c.ResourceName)); });
             }
             return results;
         }

@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             if(ReferenceEquals(obj, null)) return 0;
 
             //Get hash code for the Name field if it is not null.
-            int hashProductName = obj.ResourceName == null ? 0 : obj.ResourceName.GetHashCode();
+            int hashProductName = obj.ResourceName?.GetHashCode() ?? 0;
 
             //Get hash code for the Code field.
             return hashProductName;

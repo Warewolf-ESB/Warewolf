@@ -96,7 +96,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public bool CanExecute(object parameter)
         {
             // ReSharper disable SimplifyConditionalTernaryExpression
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute?.Invoke((T)parameter) ?? true;
             // ReSharper restore SimplifyConditionalTernaryExpression
         }
 
@@ -110,10 +110,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void RaiseCanExecuteChanged()
         {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion // ICommand Members
     }

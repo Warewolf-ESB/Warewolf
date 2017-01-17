@@ -123,10 +123,7 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
                 {
                     foreach(var dto in items)
                     {
-                        if(modelItemCollection != null)
-                        {
-                            modelItemCollection.Add(dto);
-                        }
+                        modelItemCollection?.Add(dto);
                     }
                 }
             }
