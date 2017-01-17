@@ -7,6 +7,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ConstructorRegion;
 using Dev2.Activities.Designers2.Core.Extensions;
+using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -406,8 +407,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 //    Errors = new List<IActionableErrorInfo>(errorInfos);
                 //};
                 //regions.Add(ActionRegion);
-                //InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
-                //regions.Add(InputArea);
+                InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
+                regions.Add(InputArea);
                 //OutputsRegion = new OutputsRegion(ModelItem, true);
                 //regions.Add(OutputsRegion);
                 //if (OutputsRegion.Outputs.Count > 0)

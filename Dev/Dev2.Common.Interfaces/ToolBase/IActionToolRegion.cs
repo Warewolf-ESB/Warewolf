@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.ToolBase
 {
-    public interface IActionToolRegion<T>:IToolRegion
+    public interface IActionToolRegion<T> : IToolRegion
     {
         T SelectedAction { get; set; }
         ICollection<T> Actions { get; set; }
