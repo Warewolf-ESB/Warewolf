@@ -220,11 +220,11 @@
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
                               ItemsSource="{Binding ConstructorRegion.Constructors}"
-                              DisplayMemberPath="Method" 
+                              DisplayMemberPath="ConstructorName" 
                               IsEnabled="{Binding ConstructorRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
                               IsEditable="False"
-                              SelectedItem="{Binding ActionRegion.SelectedConstructor}">
+                              SelectedItem="{Binding ConstructorRegion.SelectedConstructor}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

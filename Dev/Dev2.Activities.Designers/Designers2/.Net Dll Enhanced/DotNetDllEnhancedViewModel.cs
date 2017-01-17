@@ -322,7 +322,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -337,7 +340,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedNamespace = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -359,7 +365,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
