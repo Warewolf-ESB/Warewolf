@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedMember.Global
 
@@ -28,8 +29,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-       
-        public string CreateInstance(PluginInvokeArgs setupInfo)
+
+        public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
             Assembly loadedAssembly;
@@ -39,6 +40,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
+            if (type.IsAbstract)//IsStatic
+            {
+                return new PluginExecutionDto(string.Empty) { IsStatic = true };
+            }
             if (setupInfo.PluginConstructor.Inputs != null)
             {
                 foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
@@ -58,19 +63,23 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             var serializeToJsonString = instance.SerializeToJsonString();
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
-            return serializeToJsonString;
+            return new PluginExecutionDto(serializeToJsonString)
+            {
+                Args = setupInfo
+            };
         }
 
-        public object Run(string jsonObject, PluginInvokeArgs args)
+        public PluginExecutionDto Run(PluginExecutionDto dto)
         {
             try
             {
+                var args = dto.Args;
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
                 if (!tryLoadAssembly)
                     throw new Exception(args.AssemblyName + "Not found");
-                ExecutePlugin(jsonObject, args, loadedAssembly);
-                return jsonObject;
+                ExecutePlugin(dto, args, loadedAssembly);
+                return dto;
             }
             catch (Exception e)
             {
@@ -79,19 +88,48 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private void ExecutePlugin(string objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
         {
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-
             var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var instance = objectToRun.DeserializeToObject(type);
-            if(setupInfo.MethodsToRun != null)
+            if (objectToRun.IsStatic)
+            {
+                RunMethods(setupInfo, type, null, InvokeMethodsAction);
+                return;
+            }
+            var instance = objectToRun.ObjectString.DeserializeToObject(type);
+            RunMethods(setupInfo, type, instance, InvokeMethodsAction);
+        }
+
+        private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
+        {
+            if (instance != null)
+            {
+                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+            }
+            if (valuedTypeList.Count == 0)
+            {
+                var result = methodToRun.Invoke(null, null);
+                return result;
+            }
+            else
+            {
+                var result = methodToRun.Invoke(null, BindingFlags.Static | BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+
+            }
+        }
+
+        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction)
+        {
+            if (setupInfo.MethodsToRun != null)
             {
                 foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
                 {
-                    if(dev2MethodInfo.Parameters != null)
+                    if (dev2MethodInfo.Parameters != null)
                     {
                         var typeList = BuildTypeList(dev2MethodInfo.Parameters);
                         var valuedTypeList = new List<object>();
@@ -102,8 +140,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                         var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
 
-                        var invoke = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-                        dev2MethodInfo.MethodResult = invoke.SerializeToJsonString();
+                        var methodsAction = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                        dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString();
                     }
                 }
             }
@@ -160,6 +198,61 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                             }));
                     serviceMethodList.Add(serviceConstructor);
+                });
+            }
+
+            return serviceMethodList;
+        }
+
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
+        {
+            Assembly assembly;
+            var serviceMethodList = new ServiceMethodList();
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            {
+                var type = assembly.GetType(fullName);
+                var methodInfos = type.GetMethods();
+                methodInfos.ToList().ForEach(info =>
+                {
+                    var serviceMethod = new ServiceMethod
+                    {
+                        Name = info.Name
+                    };
+                    if (info.ReturnType.IsPrimitive)
+                    {
+                        var properties = info.ReturnType.GetProperties()
+                            .Where(propertyInfo => propertyInfo.CanWrite)
+                            .ToList();
+                        var jObject = new JObject();
+                        foreach(var property in properties)
+                        {
+                            jObject.Add(property.Name,"");
+                        }
+                        serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                    }
+                    else
+                    {
+                        serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                    }
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                        serviceMethod.Parameters.Add(
+                            new MethodParameter
+                            {
+                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                                EmptyToNull = false,
+                                IsRequired = true,
+                                Name = parameterInfo.Name,
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
+                            }));
+                    serviceMethodList.Add(serviceMethod);
                 });
             }
 

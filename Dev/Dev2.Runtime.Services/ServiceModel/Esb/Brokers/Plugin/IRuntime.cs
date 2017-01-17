@@ -17,8 +17,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public interface IRuntime
     {
-        string CreateInstance(PluginInvokeArgs constructor);
-        object Run(string jsonObject, PluginInvokeArgs args);
+        PluginExecutionDto CreateInstance(PluginInvokeArgs constructor);
+        PluginExecutionDto Run(PluginExecutionDto dto);
         object Run(PluginInvokeArgs setupInfo);
 
         IOutputDescription Test(PluginInvokeArgs setupInfo, out string serializedResult);

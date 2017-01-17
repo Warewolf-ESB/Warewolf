@@ -27,11 +27,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        public static object InvokePlugin(PluginInvokeArgs args, string existingObject)
+        public static PluginExecutionDto InvokePlugin(PluginExecutionDto dto)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Run(existingObject, args);
+                return runtime.Value.Run(dto);
             }
         }
 
@@ -53,11 +53,26 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         #endregion
 
-        public static string CreateInstance(PluginInvokeArgs args)
+        public static PluginExecutionDto  CreateInstance(PluginInvokeArgs args)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
                 return runtime.Value.CreateInstance(args);
+            }
+        }
+
+        /// <summary>
+        /// Gets the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public static ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
+        {
+            using (var runtime = CreateInvokeAppDomain())
+            {
+                return runtime.Value.ListMethodsWithReturns(assemblyLocation, assemblyName, fullName);
             }
         }
     }
