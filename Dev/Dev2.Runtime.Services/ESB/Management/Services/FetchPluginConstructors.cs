@@ -8,7 +8,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -18,7 +17,6 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
-using Warewolf.Core;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -67,15 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 List<IPluginConstructor> constructors = serviceConstructorList.Select(a => new PluginConstructor
                 {
                     ConstructorName =BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
-                    Inputs = a.Parameters.Select(x =>
-                        new ServiceInput(x.Name, x.DefaultValue ?? "")
-                        {
-                            Name = x.Name,
-                            EmptyIsNull = x.EmptyToNull,
-                            RequiredField = x.IsRequired,
-                            TypeName = x.TypeName,
-                            Value = x.Value,
-                        } as IServiceInput).ToList(),
+                    Inputs = a.Parameters.Cast<IConstructorParameter>().ToList(),
                 } as IPluginConstructor).ToList();
                 var executeMessage = new ExecuteMessage { HasError = false, Message = constructors.SerializeToJsonStringBuilder() };
                 return executeMessage.SerializeToJsonStringBuilder();

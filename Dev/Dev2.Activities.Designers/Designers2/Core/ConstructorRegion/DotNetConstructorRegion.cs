@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         {
             get
             {
-                return _constructors; 
+                return _constructors;
             }
             set
             {
@@ -221,11 +221,11 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         {
             get
             {
-                return _isConstructorEnabled; 
+                return _isConstructorEnabled;
             }
             set
             {
-                _isConstructorEnabled = value; 
+                _isConstructorEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -279,7 +279,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 IsEnabled = IsEnabled,
                 SelectedConstructor = SelectedConstructor == null ? null : new PluginConstructor
                 {
-                    Inputs = SelectedConstructor?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                    Inputs = SelectedConstructor.Inputs,
                     ConstructorName = SelectedConstructor.ConstructorName,
                     ReturnObject = SelectedConstructor.ReturnObject
                 }

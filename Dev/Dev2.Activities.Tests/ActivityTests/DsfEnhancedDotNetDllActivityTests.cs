@@ -3,7 +3,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
-                Inputs = new List<IServiceInput>(),
+                Inputs = new List<IConstructorParameter>(),
             };
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
-                Inputs = new List<IServiceInput>(),
+                Inputs = new List<IConstructorParameter>(),
             };
             activity.MethodsToRun = new List<Dev2MethodInfo>
             {

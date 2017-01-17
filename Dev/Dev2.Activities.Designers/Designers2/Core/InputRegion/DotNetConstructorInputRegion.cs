@@ -15,6 +15,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
+// ReSharper disable ExplicitCallerInfoArgument
+
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetConstructorInputRegion : IDotNetInputRegion
@@ -29,13 +31,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         // ReSharper disable once UnusedMember.Global
         public DotNetConstructorInputRegion()
         {
-            ToolRegionName = "DotNetInputRegion";
+            ToolRegionName = "DotNetConstructorInputRegion";
         }
 
         public DotNetConstructorInputRegion(ModelItem modelItem, IConstructorRegion<IPluginConstructor> action)
             : this(new ActionInputDatatalistMapper())
         {
-            ToolRegionName = "DotNetInputRegion";
+            ToolRegionName = "DotNetConstructorInputRegion";
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
@@ -125,8 +127,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = false;
             if (_action?.SelectedConstructor != null)
             {
-
-                Inputs = _action.SelectedConstructor.Inputs;
+                Inputs = _action.SelectedConstructor.Inputs.Select(constructorParameter => new ServiceInput(constructorParameter.Name, constructorParameter.Value)).Cast<IServiceInput>().ToList();
                 _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;

@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -278,7 +278,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     PluginConstructor = new PluginConstructor
                     {
                         ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>(),
+                        Inputs = new List<IConstructorParameter>(),
 
                     },
                     AssemblyLocation = type.Assembly.Location,
@@ -310,7 +310,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     PluginConstructor = new PluginConstructor
                     {
                         ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>(),
+                        Inputs = new List<IConstructorParameter>(),
                     },
                     AssemblyLocation = type.Assembly.Location,
                     AssemblyName = type.Assembly.FullName,
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     PluginConstructor = new PluginConstructor
                     {
                         ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>(),
+                        Inputs = new List<IConstructorParameter>(),
                     },
                     AssemblyLocation = type.Assembly.Location,
                     AssemblyName = type.Assembly.FullName,
@@ -377,7 +377,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     PluginConstructor = new PluginConstructor
                     {
                         ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>(),
+                        Inputs = new List<IConstructorParameter>(),
                     },
                     AssemblyLocation = type.Assembly.Location,
                     AssemblyName = type.Assembly.FullName,
@@ -411,7 +411,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     PluginConstructor = new PluginConstructor
                     {
                         ConstructorName = svc.Constructor.Name,
-                        Inputs = new List<IServiceInput>(),
+                        Inputs = new List<IConstructorParameter>(),
                     },
                     AssemblyLocation = type.Assembly.Location,
                     AssemblyName = type.Assembly.FullName,
