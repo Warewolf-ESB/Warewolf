@@ -108,6 +108,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="DeplyResult.cs" />
     <Compile Include="DuplicateResource.cs" />
     <Compile Include="ApisJson.cs" />
     <Compile Include="Common\DeleteHelper.cs" />

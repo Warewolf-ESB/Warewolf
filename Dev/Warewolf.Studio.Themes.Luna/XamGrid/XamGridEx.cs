@@ -37,10 +37,7 @@
 
         internal void OnContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
         {
-            if (ContextMenuOpening != null)
-            {
-                ContextMenuOpening(sender, e);
-            }
+            ContextMenuOpening?.Invoke(sender, e);
             ActiveItem = e.Cell.Row.Data;
         }
 

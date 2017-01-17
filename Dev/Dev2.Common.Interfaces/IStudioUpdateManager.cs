@@ -1,3 +1,4 @@
+using System;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
@@ -49,6 +50,8 @@ namespace Dev2.Common.Interfaces
         string TestConnection(IWcfServerSource wcfServerSource);
         event ServerSaved ServerSaved;
         void FireServerSaved();
+
+        void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }
 
     public delegate void ItemSaved(bool refresh);

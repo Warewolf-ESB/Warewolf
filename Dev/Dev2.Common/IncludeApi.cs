@@ -68,7 +68,7 @@ namespace Dev2.Common
         {
             unchecked
             {
-                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Url != null ? Url.GetHashCode() : 0);
+                return ((Name?.GetHashCode() ?? 0) * 397) ^ (Url?.GetHashCode() ?? 0);
             }
         }
 

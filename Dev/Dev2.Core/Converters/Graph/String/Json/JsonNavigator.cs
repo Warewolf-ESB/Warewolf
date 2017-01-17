@@ -354,14 +354,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             var jObject = data as JObject;
 
             JToken returnVal = null;
-            if (jObject != null)
-            {
-                JProperty property = jObject.Property(pathSegment.ActualSegment);
+            JProperty property = jObject?.Property(pathSegment.ActualSegment);
 
-                if (property != null)
-                {
-                    returnVal = property.Value;
-                }
+            if (property != null)
+            {
+                returnVal = property.Value;
             }
 
             return returnVal;
@@ -372,14 +369,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             var jObject = data as JObject;
 
             IEnumerable returnVal = null;
-            if (jObject != null)
-            {
-                JProperty property = jObject.Property(pathSegment.ActualSegment);
+            JProperty property = jObject?.Property(pathSegment.ActualSegment);
 
-                if (property != null && property.IsEnumerable())
-                {
-                    returnVal = property.Value as JArray;
-                }
+            if (property != null && property.IsEnumerable())
+            {
+                returnVal = property.Value as JArray;
             }
 
             var jArray = data as JArray;

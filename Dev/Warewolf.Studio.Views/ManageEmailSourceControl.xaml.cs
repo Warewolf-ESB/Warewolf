@@ -37,10 +37,7 @@ namespace Warewolf.Studio.Views
         public string GetHeaderText()
         {
             BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
 
@@ -80,10 +77,7 @@ namespace Warewolf.Studio.Views
         public void PerformSave()
         {
             var viewModel = DataContext as ManageEmailSourceViewModel;
-            if (viewModel != null)
-            {
-                viewModel.OkCommand.Execute(null);
-            }
+            viewModel?.OkCommand.Execute(null);
         }
 
         public void EnterHostName(string hostname)

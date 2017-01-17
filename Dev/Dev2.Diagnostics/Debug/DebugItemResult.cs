@@ -91,13 +91,13 @@ namespace Dev2.Diagnostics
             unchecked
             {
                 var hashCode = (int)Type;
-                hashCode = (hashCode * 397) ^ (Label != null ? Label.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Variable != null ? Variable.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Operator != null ? Operator.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (GroupName != null ? GroupName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Label?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Variable?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Operator?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (GroupName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ GroupIndex;
-                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (MoreLink != null ? MoreLink.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Value?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (MoreLink?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

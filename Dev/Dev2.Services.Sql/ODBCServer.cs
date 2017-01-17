@@ -73,7 +73,7 @@ namespace Dev2.Services.Sql
             }
             return commandType;
         }
-        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
+        public string ConnectionString => _connection?.ConnectionString;
 
         public bool IsConnected
         {
@@ -158,15 +158,9 @@ namespace Dev2.Services.Sql
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_transaction != null)
-                    {
-                        _transaction.Dispose();
-                    }
+                    _transaction?.Dispose();
 
-                    if (_command != null)
-                    {
-                        _command.Dispose();
-                    }
+                    _command?.Dispose();
 
                     if (_connection != null)
                     {

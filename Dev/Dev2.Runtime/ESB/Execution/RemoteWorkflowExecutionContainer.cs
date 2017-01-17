@@ -343,7 +343,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", $"ResourceType={"TypeWorkflowService"}&ResourceName={serviceName}&ResourceId={serviceId}", isDebugMode);
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", $"ResourceType=TypeWorkflowService&ResourceName={serviceName}&ResourceId={serviceId}", isDebugMode);
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();

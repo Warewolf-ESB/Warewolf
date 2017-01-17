@@ -50,6 +50,7 @@ namespace Dev2.Common.Interfaces
         Permissions GetPermissions(Guid resourceID);
 
         IList<IServer> GetAllServerConnections();
+        Dictionary<string, string> GetServerInformation();
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);

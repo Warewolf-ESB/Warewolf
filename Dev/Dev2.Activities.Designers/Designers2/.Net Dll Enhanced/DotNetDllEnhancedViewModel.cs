@@ -7,6 +7,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ConstructorRegion;
 using Dev2.Activities.Designers2.Core.Extensions;
+using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -322,7 +323,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -337,7 +341,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedNamespace = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -359,7 +366,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        if(OutputsRegion != null)
+                        {
+                            OutputsRegion.IsEnabled = false;
+                        }
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -397,8 +407,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 //    Errors = new List<IActionableErrorInfo>(errorInfos);
                 //};
                 //regions.Add(ActionRegion);
-                //InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
-                //regions.Add(InputArea);
+                InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
+                regions.Add(InputArea);
                 //OutputsRegion = new OutputsRegion(ModelItem, true);
                 //regions.Add(OutputsRegion);
                 //if (OutputsRegion.Outputs.Count > 0)
@@ -413,6 +423,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 //NamespaceRegion.Dependants.Add(ActionRegion);
                 //ActionRegion.Dependants.Add(InputArea);
                 //ActionRegion.Dependants.Add(OutputsRegion);
+                ConstructorRegion.Dependants.Add(InputArea);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;

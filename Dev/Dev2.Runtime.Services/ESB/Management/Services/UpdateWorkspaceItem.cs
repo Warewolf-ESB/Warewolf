@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        theWorkspace.Update(workspaceItem, isLocalSave);
+                        theWorkspace.Update(workspaceItem);
                         res.SetMessage("Workspace item updated " + DateTime.Now);
                     }
                 }

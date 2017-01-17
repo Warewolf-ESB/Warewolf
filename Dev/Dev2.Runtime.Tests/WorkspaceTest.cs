@@ -68,7 +68,7 @@ namespace Dev2.DynamicServices.Test
         {
             var workspaceID = Guid.NewGuid();
             var workspace = new Workspace(workspaceID);
-            workspace.Update(null, false);
+            workspace.Update(null);
         }
 
 

@@ -1,19 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Communication;
-using Dev2.Data;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services

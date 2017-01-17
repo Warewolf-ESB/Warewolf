@@ -32,15 +32,9 @@ namespace Dev2.Studio.Core
         {
             get
             {
-                if(_activeDataList != null)
+                if(_activeDataList?.Resource?.DataList != null)
                 {
-                    if(_activeDataList.Resource != null)
-                    {
-                        if(_activeDataList.Resource.DataList != null)
-                        {
-                            return _activeDataList.Resource.DataList;
-                        }
-                    }
+                    return _activeDataList.Resource.DataList;
                 }
 
                 return string.Empty;
