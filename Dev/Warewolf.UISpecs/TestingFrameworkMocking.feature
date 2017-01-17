@@ -20,7 +20,7 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Press F6
 	And I Click Create Test From Debug
 	And Message box window appears
-	And I Click MessageBox OK 
+	And I Click Save Before Continuing MessageBox OK 
 	And Test tab is open
 	And I Click Close Clean Workflow Tab
 	And I Click EnableDisable Test 4, dirty "true"
