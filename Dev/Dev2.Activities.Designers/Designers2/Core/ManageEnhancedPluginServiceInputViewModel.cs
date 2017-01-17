@@ -1,46 +1,25 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
-using Dev2.Communication;
-using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
-using Newtonsoft.Json;
-using Warewolf.Core;
-using Warewolf.Resource.Errors;
-
-// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManagePluginServiceInputViewModel : IManagePluginServiceInputViewModel
+    public class ManageEnhancedPluginServiceInputViewModel : IManageEnhancedPluginServiceInputViewModel
     {
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        IDotNetViewModel _viewmodel;
-        IPluginServiceModel _serverModel;
+        readonly IDotNetEnhancedViewModel _viewmodel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private string _testResults;
@@ -49,25 +28,22 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTesting;
         private IPluginService _model;
         private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
         private bool _outputCountExpandAllowed;
         private bool _inputCountExpandAllowed;
         private bool _testPassed;
         private bool _testFailed;
 
-        public ManagePluginServiceInputViewModel(IDotNetViewModel model, IPluginServiceModel serviceModel)
+        public ManageEnhancedPluginServiceInputViewModel(IDotNetEnhancedViewModel model)
         {
             PasteResponseAvailable = false;
             PasteResponseVisible = false;
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
-            TestCommand = new DelegateCommand(ExecuteTest);
             _generateOutputArea = new GenerateOutputsRegion();
             _generateInputArea = new GenerateInputsRegion();
             Errors = new List<string>();
             _viewmodel = model;
-            _serverModel = serviceModel;
         }
        
 
@@ -128,25 +104,25 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
-                _viewmodel.OutputsRegion.Outputs.Clear();
-                if (OutputArea != null)
-                {
-                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
-                    var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
-                    if (recSet != null)
-                    {
-                        _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
-                    }
-                }
-                else
-                {
-                    throw new Exception(ErrorResource.NoOutPuts);
-                }
-                _viewmodel.OutputsRegion.ObjectResult = TestResults;
-                _viewmodel.OutputsRegion.Description = Description;
-                _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
-                OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;
-                ResetOutputsView();
+                //_viewmodel.OutputsRegion.Outputs.Clear();
+                //if (OutputArea != null)
+                //{
+                //    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
+                //    var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
+                //    if (recSet != null)
+                //    {
+                //        _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
+                //    }
+                //}
+                //else
+                //{
+                //    throw new Exception(ErrorResource.NoOutPuts);
+                //}
+                //_viewmodel.OutputsRegion.ObjectResult = TestResults;
+                //_viewmodel.OutputsRegion.Description = Description;
+                //_viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                //OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;
+                //ResetOutputsView();
             }
             catch (Exception e)
             {
@@ -158,67 +134,7 @@ namespace Dev2.Activities.Designers2.Core
             OkSelected = true;
         }
 
-        public void ExecuteTest()
-        {
-            ViewErrors = new List<IActionableErrorInfo>();
-            Errors = new List<string>();
-            OutputArea.IsEnabled = true;
-            TestResults = null;
-            IsTesting = true;
-
-            try
-            {
-                var testResult = _serverModel.TestService(Model);
-                var serializer = new Dev2JsonSerializer();
-                var responseService = serializer.Deserialize<RecordsetListWrapper>(testResult);
-                if (responseService != null)
-                {
-                    if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
-                    {
-                        var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
-                        throw new Exception(errorMessage);
-                    }
-                    TestResults = responseService.SerializedResult;
-                    _recordsetList = responseService.RecordsetList;
-                    if (_recordsetList.Any(recordset => recordset.HasErrors))
-                    {
-                        var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
-                        throw new Exception(errorMessage);
-                    }
-                    Description = responseService.Description;
-                    // ReSharper disable MaximumChainedReferences
-                    var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
-                    {
-                        var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
-                        return serviceOutputMapping;
-                    }).Cast<IServiceOutputMapping>().ToList();
-                    // ReSharper restore MaximumChainedReferences
-                    _generateOutputArea.IsEnabled = true;
-                    _generateOutputArea.Outputs = outputMapping;
-                }
-                if(TestResults != null)
-                {
-                    TestResultsAvailable = TestResults != null;
-                    IsTesting = false;
-                    TestPassed = true;
-                    TestFailed = false;
-                }
-            }
-            catch (JsonSerializationException)
-            {
-                OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
-            }
-            catch (Exception e)
-            {
-                Errors.Add(e.Message);
-                IsTesting = false;
-                TestPassed = false;
-                TestFailed = true;
-                _generateOutputArea.IsEnabled = false;
-                _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
-                _viewmodel.ErrorMessage(e, true);
-            }
-        }
+      
 
         public bool IsGenerateInputsEmptyRows
         {
@@ -273,7 +189,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IManageServiceInputViewModel<IPluginService>
 
         public Action TestAction { get; set; }
-        public ICommand TestCommand { get; private set; }
+        public ICommand TestCommand { get; set; }
 
         public bool TestPassed
         {
@@ -354,7 +270,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IManageDatabaseInputViewModel
 
-        public ICollection<IServiceInput> Inputs { get; set; }
+        public ICollection<IConstructorParameter> Inputs { get; set; }
         public string TestResults
         {
             get
