@@ -32,7 +32,7 @@ using Microsoft.AspNet.SignalR.Client;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
 {
-    public class Connections : ExceptionManager
+    public class Connections : ExceptionManager, IConnections
     {
 
         #region Fields
@@ -131,24 +131,23 @@ namespace Dev2.Runtime.ServiceModel
 
             return result;
         }
-
-        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+        
+        public IHubProxy CreateHubProxy(Dev2.Data.ServiceModel.Connection connection)
         {
-            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
             var principle = Thread.CurrentPrincipal;
             var identity = principle.Identity as WindowsIdentity;
             WindowsImpersonationContext context = null;
 
             try
             {
-                if(identity != null && connection.AuthenticationType == AuthenticationType.Windows)
+                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context = identity.Impersonate();
                 }
 
-                using(var client = new WebClient())
+                using (var client = new WebClient())
                 {
-                    if(connection.AuthenticationType == AuthenticationType.Windows)
+                    if (connection.AuthenticationType == AuthenticationType.Windows)
                     {
                         client.UseDefaultCredentials = true;
                     }
@@ -157,7 +156,7 @@ namespace Dev2.Runtime.ServiceModel
                         client.UseDefaultCredentials = false;
 
                         //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                        if(connection.AuthenticationType == AuthenticationType.Public)
+                        if (connection.AuthenticationType == AuthenticationType.Public)
                         {
                             connection.UserName = GlobalConstants.PublicUsername;
                             connection.Password = string.Empty;
@@ -165,26 +164,32 @@ namespace Dev2.Runtime.ServiceModel
 
                         client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                     }
-                    
+
                     var hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
-                    hub.Error +=exception => {};
+                    hub.Error += exception => { };
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     var proxy = hub.CreateHubProxy("esb");
                     if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
                     {
                         throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
                     }
-                    CheckServerVersion(proxy);
-                    return "Success";
+                    return proxy;
                 }
             }
             finally
             {
-                if(context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context.Undo();
                 }
             }
+        }
+        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+        {
+            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
+            var proxy = CreateHubProxy(connection);
+            CheckServerVersion(proxy);
+            return "Success";
         }
 
         private static void CheckServerVersion(IHubProxy proxy)

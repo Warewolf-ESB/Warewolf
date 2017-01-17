@@ -195,6 +195,7 @@
     <Compile Include="DB\IServiceOutputMapping.cs" />
     <Compile Include="DB\ISourceBase.cs" />
     <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeployResult.cs" />
     <Compile Include="Deploy\IDeploySourceExplorerViewModel.cs" />
     <Compile Include="Deploy\IDeployStatsViewer.cs" />
     <Compile Include="Deploy\IDeployViewModel.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="IConnection.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
