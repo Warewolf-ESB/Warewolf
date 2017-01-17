@@ -266,6 +266,7 @@
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetMethodRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetConstructorInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetMethodInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\IScriptChooser.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />

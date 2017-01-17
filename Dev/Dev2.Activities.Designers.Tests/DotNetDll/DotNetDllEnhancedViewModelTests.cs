@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.FixErrorsCommand);
             Assert.IsNotNull(vm.SourceRegion);
             Assert.IsNotNull(vm.NamespaceRegion);
-            Assert.IsNotNull(vm.ActionRegion);
+            Assert.IsNotNull(vm.MethodRegion);
             Assert.IsNotNull(vm.InputArea);
             Assert.IsNotNull(vm.OutputsRegion);
             Assert.IsNotNull(vm.ErrorRegion);

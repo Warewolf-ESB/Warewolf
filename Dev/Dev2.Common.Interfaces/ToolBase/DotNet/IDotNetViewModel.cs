@@ -24,7 +24,7 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         ISourceToolRegion<IPluginSource> SourceRegion { get; set; }
         INamespaceToolRegion<INamespaceItem> NamespaceRegion { get; set; }
         IConstructorRegion<IPluginConstructor> ConstructorRegion { get; set; }
-        IActionToolRegion<IPluginAction> ActionRegion { get; set; }
+        IMethodToolRegion<IPluginAction> MethodRegion { get; set; }
         IDotNetConstructorInputRegion InputArea { get; set; }
         IOutputsToolRegion OutputsRegion { get; set; }
         bool GenerateOutputsVisible { get; set; }
