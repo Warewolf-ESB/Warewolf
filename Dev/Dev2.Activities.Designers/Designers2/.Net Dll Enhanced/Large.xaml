@@ -65,19 +65,22 @@
                     </RowDefinition.Style>
                 </RowDefinition>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
             <!-- ReSharper disable UnusedMember.Global -->
-            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
+            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewDotNetInputsGrid}"/>
 
             <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
 
+            <Control Grid.Row="3" Template="{StaticResource NewDotNetMethodListGrid}"/>
+            
             <Grid x:Name="ErrorGrid" 
-              Grid.Row="3"
-              Margin="{StaticResource ControlBorderTop}" 
-              Visibility="{Binding OnErrorVisible}">
+                  Grid.Row="4"
+                  Margin="{StaticResource ControlBorderTop}" 
+                  Visibility="{Binding OnErrorVisible}">
                 <errors:OnError />
             </Grid>
             <!-- ReSharper restore UnusedMember.Global -->
