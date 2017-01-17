@@ -682,9 +682,18 @@ namespace Dev2.Studio.ViewModels
         }
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
+            if(_lastOpenResourceID != Guid.Empty)
+            {
+                if(_lastOpenResourceID == resourceId && _lastOpenEnvironmentId==environmentId)
+                {
+                    return;
+                }
+            }
+            _lastOpenEnvironmentId = environmentId;
+            _lastOpenResourceID = resourceId;
             var environmentModel = EnvironmentRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-            if (contextualResourceModel != null)
+            if(contextualResourceModel != null)
             {
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
             }
@@ -807,6 +816,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
+            _lastOpenResourceID = Guid.Empty;
             var environmentModel = EnvironmentRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
@@ -1496,6 +1506,8 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         private IExplorerViewModel _explorerViewModel;
         private IWorksurfaceContextManager _worksurfaceContextManager;
+        private Guid _lastOpenResourceID;
+        private Guid _lastOpenEnvironmentId;
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
@@ -1590,31 +1602,21 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(FileChooserMessage message)
         {
-            var emailAttachmentView = new ManageEmailAttachmentView();
-
-
+            var fileChooserView = new FileChooserView();
+            var selectedFiles = message.SelectedFiles ?? new List<string>();
             if (!string.IsNullOrEmpty(message.Filter))
             {
-                var selectedFiles = message.SelectedFiles ?? new List<string>();
-                emailAttachmentView.ShowView(selectedFiles.ToList(), message.Filter);
-                var emailAttachmentVm = emailAttachmentView.DataContext as EmailAttachmentVm;
-                if (emailAttachmentVm != null && emailAttachmentVm.Result == MessageBoxResult.OK)
-                {
-                    message.SelectedFiles = emailAttachmentVm.GetAttachments();
-                }
+                fileChooserView.ShowView(selectedFiles.ToList(), message.Filter);
             }
             else
             {
-                var selectedFiles = message.SelectedFiles ?? new List<string>();
-                emailAttachmentView.ShowView(selectedFiles.ToList());
-                var emailAttachmentVm = emailAttachmentView.DataContext as EmailAttachmentVm;
-                if (emailAttachmentVm != null && emailAttachmentVm.Result == MessageBoxResult.OK)
-                {
-                    message.SelectedFiles = emailAttachmentVm.GetAttachments();
-                }
+                fileChooserView.ShowView(selectedFiles.ToList());
             }
-
+            var fileChooser = fileChooserView.DataContext as FileChooser;
+            if (fileChooser != null && fileChooser.Result == MessageBoxResult.OK)
+            {
+                message.SelectedFiles = fileChooser.GetAttachments();
+            }
         }
-
     }
 }

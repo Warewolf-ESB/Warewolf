@@ -27,6 +27,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly IEnvironmentModel _environmentModel;
         bool _hasloaded;
         string _version;
+        Dictionary<string, string> _serverInformation;
         private string _minversion;
         private List<IWindowsGroupPermission> _permissions;
 
@@ -78,6 +79,17 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         void ItemAdded(IExplorerItem obj)
         {
             ItemAddedEvent?.Invoke(obj);
+        }
+
+        public Dictionary<string,string> GetServerInformation()
+        {
+            if (!EnvironmentConnection.IsConnected)
+            {
+                EnvironmentConnection.Connect(Guid.Empty);
+            }
+            _serverInformation = ProxyLayer.AdminManagerProxy.GetServerInformation();
+
+            return _serverInformation;
         }
 
         public string GetServerVersion()

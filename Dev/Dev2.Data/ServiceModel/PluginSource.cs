@@ -35,6 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             AssemblyLocation = xml.AttributeSafe("AssemblyLocation");
             AssemblyName = xml.AttributeSafe("AssemblyName");
+            ConfigFilePath = xml.AttributeSafe("ConfigFilePath");
         }
 
         #endregion
@@ -54,6 +55,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             result.Add(
                 new XAttribute("AssemblyLocation", AssemblyLocation ?? string.Empty),
                 new XAttribute("AssemblyName", AssemblyName ?? string.Empty),
+                new XAttribute("ConfigFilePath", ConfigFilePath ?? string.Empty),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", enSourceType.PluginSource)
                 );
@@ -70,6 +72,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override bool IsServer => false;
         public override bool IsResourceVersion => false;
+        public string ConfigFilePath { get; set; }
 
         #endregion
     }

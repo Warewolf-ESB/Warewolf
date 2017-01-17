@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -12,35 +12,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ValueParameterNotUsed
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class EmailAttachmentVm : BindableBase, IEmailAttachmentVm
+    public class FileChooser : BindableBase, IFileChooser
     {
         readonly Action _closeAction;
+        private bool _allowMultipleSelection;
+        private string _selectedDriveName;
 
         public MessageBoxResult Result { get; private set; }
 
-        public EmailAttachmentVm(IList<string> attachments, IEmailAttachmentModel model, Action closeAction)
-            : this(model, closeAction)
+        public FileChooser(IList<string> attachments, IFileChooserModel model, Action closeAction, bool allowMultipleSelection)
+            : this(model, closeAction, allowMultipleSelection)
         {
             Attachments = attachments;
             Expand(attachments);
         }
 
-        EmailAttachmentVm(IEmailAttachmentModel model, Action closeAction)
+        FileChooser(IFileChooserModel model, Action closeAction, bool allowMultipleSelection)
         {
             _closeAction = closeAction;
             Attachments = new List<string>();
-            Drives = model.FetchDrives().Select(a => new FileListingModel(model, a, () => OnPropertyChanged("DriveName"))).ToList();
-            CancelCommand = new DelegateCommand(Cancel);
-            SaveCommand = new DelegateCommand(Save);
+            Drives = model.FetchDrives().Select(a => new FileListingModel(model, a, () => OnPropertyChanged("DriveName"), !allowMultipleSelection)).ToList();
+            CancelCommand = new DelegateCommand(o => Cancel());
+            SaveCommand = new DelegateCommand(o => Save());
+            AllowMultipleSelection = allowMultipleSelection;
         }
 
         public IList<FileListingModel> Drives { get; set; }
@@ -87,9 +89,9 @@ namespace Warewolf.Studio.ViewModels
             _closeAction();
         }
 
-        public DelegateCommand CancelCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
-        public DelegateCommand SaveCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public IList<string> Attachments { get; set; }
 
@@ -97,7 +99,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return String.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
+                if (!string.IsNullOrWhiteSpace(SelectedDriveName))
+                {
+                    return SelectedDriveName;
+                }
+                var driveName = String.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
+                return driveName;
             }
             set
             {
@@ -105,10 +112,38 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string SelectedDriveName
+        {
+            get { return _selectedDriveName; }
+            set
+            {
+                if (value != null)
+                {
+                    _selectedDriveName = value;
+                    OnPropertyChanged(() => SelectedDriveName);
+                    OnPropertyChanged(() => DriveName);
+                }
+            }
+        }
+
         public List<string> GetAttachments()
         {
-            return Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList();
+            if (!string.IsNullOrWhiteSpace(SelectedDriveName))
+            {
+                return new List<string> { SelectedDriveName };
+            }
+            var attachments = Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList();
+            return attachments;
+        }
+
+        public bool AllowMultipleSelection
+        {
+            get { return _allowMultipleSelection; }
+            set
+            {
+                _allowMultipleSelection = value;
+                OnPropertyChanged(() => AllowMultipleSelection);
+            }
         }
     }
-
 }

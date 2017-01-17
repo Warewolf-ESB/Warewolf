@@ -2335,7 +2335,7 @@ namespace Dev2.Activities.Specs.Composition
 
             for (var i = 0; i < count; i++)
             {
-                repository.Save(resourceModel);
+                //repository.Save(resourceModel);
                 repository.SaveToServer(resourceModel);
             }
 

@@ -6,6 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                MinWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
@@ -46,24 +47,35 @@
                               ItemTemplate="{StaticResource ErrorListTemplate}" />
             </ContentControl.ToolTip>
             <Grid>
-                <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Visibility="{Binding Path=IsLoading,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                    <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
                        Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverter}}"
                        Height="16"
                        Width="16"
                        Margin="0,0,4,4"
                        AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
-                <Button Command="{Binding Path=FixErrorsCommand}"
+                    <Button Command="{Binding Path=FixErrorsCommand}"
                         Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverterInverse}}"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         AutomationProperties.AutomationId="UI_FixErrors_AutoID">
-                    <Button.ToolTip>
-                        <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
-                    </Button.ToolTip>
-                    <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
+                        <Button.ToolTip>
+                            <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
+                        </Button.ToolTip>
+                        <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
                            Height="16"
                            Width="16"
                            AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
-                </Button>
+                    </Button>
+                </StackPanel>
+                
+                <customControls:CircularProgressBar Width="16" Grid.Row="1"
+                                       Height="16"
+                                       Margin="{StaticResource ControlBorderRight}" 
+                                       Visibility="{Binding Path=IsLoading,Converter={StaticResource BoolToVisibilityConverter}}" />
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="[UI_{0}_FixBtn_AutoID]">
                         <Binding Path="ModelItem.ServiceName" RelativeSource="{RelativeSource Self}" />
