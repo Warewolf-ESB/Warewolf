@@ -124,6 +124,7 @@ namespace Dev2
                         var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
                         if(recCol == null)
                         {
+                            // ReSharper disable once PossibleNullReferenceException
                             var io = recCol.Children().FirstOrDefault() as JObject;
                             var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
                             if(p != null)
