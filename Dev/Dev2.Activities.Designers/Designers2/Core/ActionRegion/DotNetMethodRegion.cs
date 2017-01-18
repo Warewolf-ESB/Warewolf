@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
                     SelectedMethod = MethodsToRun.FirstOrDefault(action => action.Method == Method.Method);
                 }
-                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                RefreshMethodsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
@@ -147,8 +147,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null;
+            var isActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            IsActionEnabled = isActionEnabled;
+            return isActionEnabled;
         }
 
         public IPluginAction SelectedMethod
@@ -195,7 +196,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 SourceChangedAction();
                 OnSomethingChanged(this);
             }
-            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+            var delegateCommand = RefreshMethodsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedMethod = value;
@@ -213,7 +214,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
-        public ICommand RefreshActionsCommand { get; set; }
+        public ICommand RefreshMethodsCommand { get; set; }
         public bool IsActionEnabled
         {
             get
