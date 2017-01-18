@@ -232,7 +232,7 @@
             </ComboBox>
             <Button x:Name="ActionRefreshButton" 
                             Grid.Column="2"
-                            Command="{Binding Path=RefreshActionsCommand, Mode=TwoWay}"
+                            Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
                             Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
