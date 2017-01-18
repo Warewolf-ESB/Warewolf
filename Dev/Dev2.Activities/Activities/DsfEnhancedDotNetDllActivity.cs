@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
@@ -9,6 +11,8 @@ using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -102,9 +106,42 @@ namespace Dev2.Activities
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
                 MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
+                foreach(var dev2MethodInfo in MethodsToRun)
+                {
+                    if (dev2MethodInfo.IsObject)
+                    {
+                        var arrayContainer = JsonConvert.DeserializeObject(dev2MethodInfo.MethodResult) as JContainer;
+                        dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, arrayContainer);
+                    }
+                    else
+                    {
+                        var jObj = dev2MethodInfo.MethodResult.DeserializeToObject();
+                        if (jObj.IsEnumerableOfPrimitives())
+                        {
+                            var values = jObj.Children().Select(token => token.ToString()).ToList();
+                            if (DataListUtil.IsValueScalar(dev2MethodInfo.OutputVariable))
+                            {
+                                var valueString = string.Join(",", values);
+                                dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, valueString, 0);
+                            }
+                            else
+                            {
+                                foreach(var value in values)
+                                {
+                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable,value,0);                                    
+                                }
+                            }
+                        }
+                        else if (jObj.IsPrimitive())
+                        {
+                            var value = jObj.ToString();
+                            dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                        }
+                    }
+                }
                 ObjectResult = result.ObjectString;
-                ResponseManager = new ResponseManager { Outputs = Outputs, IsObject = true, ObjectName = ObjectName };
-                ResponseManager.PushResponseIntoEnvironment(ObjectResult, update, dataObject, false);
+                var jContainer = JsonConvert.DeserializeObject(ObjectResult) as JContainer;
+                dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
             }
             catch (Exception e)
             {
