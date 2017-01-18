@@ -107205,29 +107205,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public DllTreeFirstItem DllTreeFirstItem
+        public CDrive CDrive
         {
             get
             {
-                if ((this.mDllTreeFirstItem == null))
+                if ((this.mCDrive == null))
                 {
-                    this.mDllTreeFirstItem = new DllTreeFirstItem(this);
+                    this.mCDrive = new CDrive(this);
                 }
-                return this.mDllTreeFirstItem;
+                return this.mCDrive;
             }
         }
         #endregion
         
         #region Fields
-        private DllTreeFirstItem mDllTreeFirstItem;
+        private CDrive mCDrive;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DllTreeFirstItem : WpfTreeItem
+    public class CDrive : WpfTreeItem
     {
         
-        public DllTreeFirstItem(UITestControl searchLimitContainer) : 
+        public CDrive(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -107253,10 +107253,49 @@ namespace Warewolf.UITests
                 return this.mDLLTreeCText;
             }
         }
+        
+        public WpfCheckBox Expander
+        {
+            get
+            {
+                if ((this.mExpander == null))
+                {
+                    this.mExpander = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mExpander.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ExpansionIndicator";
+                    this.mExpander.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpander.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mExpander;
+            }
+        }
+        
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mDLLTreeCText;
+        
+        private WpfCheckBox mExpander;
+        
+        private WpfTreeItem mFirstItem;
         #endregion
     }
     
