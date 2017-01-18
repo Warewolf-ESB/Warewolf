@@ -27,6 +27,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
     public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetEnhancedViewModel
     {
         private IOutputsToolRegion _outputsRegion;
+        private IOutputsToolRegion _methodOutputsRegion;
         private IDotNetConstructorInputRegion _inputArea;
         private IDotNetMethodInputRegion _methodInputRegion;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
@@ -328,6 +329,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         if(OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -346,6 +348,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         if(OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -371,6 +374,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         if(OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -392,7 +396,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        MethodOutputsRegion.IsEnabled = false;
+                        MethodOutputsRegion.IsObject = true;
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -420,10 +425,24 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
-
                 }
+                
                 MethodInputRegion = new DotNetMethodInputRegion(ModelItem, MethodRegion);
                 regions.Add(MethodInputRegion);
+                MethodOutputsRegion = new DotNetMethodOutputsRegion(ModelItem, true)
+                {
+                    IsObject = true,
+                    IsEnabled = false
+                };
+                regions.Add(MethodOutputsRegion);
+                if (MethodOutputsRegion.Outputs == null || MethodOutputsRegion.Outputs.Count == 0)
+                {
+                    MethodOutputsRegion.IsEnabled = false;
+                }
+                else if (MethodOutputsRegion.Outputs.Count > 0)
+                {
+                    MethodOutputsRegion.IsEnabled = true;
+                }
 
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -431,7 +450,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
-                MethodRegion.Dependants.Add(OutputsRegion);
+                MethodRegion.Dependants.Add(MethodOutputsRegion);
                 
             }
             regions.Add(ManageServiceInputViewModel);
@@ -543,6 +562,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             set
             {
                 _outputsRegion = value;
+                OnPropertyChanged();
+            }
+        }
+        public IOutputsToolRegion MethodOutputsRegion
+        {
+            get
+            {
+                return _methodOutputsRegion;
+            }
+            set
+            {
+                _methodOutputsRegion = value;
                 OnPropertyChanged();
             }
         }
