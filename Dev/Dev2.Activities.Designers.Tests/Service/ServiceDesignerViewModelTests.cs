@@ -477,7 +477,6 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            const string helloWorld = "Hello World1";
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
             resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
@@ -487,8 +486,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
-          
-            var envRepository = new Mock<IEnvironmentRepository>();
+              var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
             var envModel = new Mock<IEnvironmentModel>();
@@ -510,34 +508,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
-
-            try
-            {
-                // ReSharper disable once UnusedVariable
-                // ReSharper disable once ObjectCreationAsStatement
-                var serviceDesignerViewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object,new SynchronousAsyncWorker());
-                var value = serviceDesignerViewModel.ModelItem.GetProperty<string>("FriendlySourceName");
-                if (value != null)
-                {
-
-                    Assert.AreEqual("www.youtube.com", value);
-                }
-            }
-            catch(Exception)
-            {
-                //var fieldInfo = viewModel.GetType().GetField("FriendlySourceName", BindingFlags.Instance | BindingFlags.GetField);
-                // ReSharper disable once PossibleNullReferenceException
-                //var actual = fieldInfo.GetValue(viewModel);
-                var modelProperty = modelItem.Properties["FriendlySourceName"];
-                if(modelProperty != null)
-                {
-                    var value = modelProperty.Value;
-                    Assert.AreEqual(helloWorld, value);
-                }
-                //---------------Test Result -----------------------
-                ;
-            }
-          
+            var serviceDesignerViewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object,new SynchronousAsyncWorker());
+            var value = serviceDesignerViewModel.ModelItem.GetProperty<string>("FriendlySourceName");
+            Assert.IsNotNull(value);
+            Assert.AreEqual("helloworld.com", value);
           
         }
 
@@ -1152,6 +1126,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+            connection.Setup(conn => conn.WebServerUri).Returns(new Uri("http://www.youtube.com"));
 
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IEnvironmentModel>();
@@ -1368,7 +1343,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
            
             //------------Assert Results-------------------------
-            Assert.AreEqual("www.youtube.com", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
+            Assert.AreEqual("www.Dev2.com", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
 
         }
 
@@ -2243,7 +2218,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
-
+            connection.Setup(environmentConnection => environmentConnection.WebServerUri).Returns(new Uri("http://helloworld.com"));
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.Connection).Returns(connection.Object);

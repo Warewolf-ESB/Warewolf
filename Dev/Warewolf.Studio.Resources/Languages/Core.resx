@@ -435,7 +435,7 @@ The window will be reloaded when you click OK.</value>
     <value>http://community.warewolf.io/</value>
   </data>
   <data name="WarewolfCopyright" xml:space="preserve">
-    <value>Copyright © 2016 Warewolf, All rights reserved.</value>
+    <value>Copyright © 2017 Warewolf, All rights reserved.</value>
   </data>
   <data name="StandardBodyParagraphClosing" xml:space="preserve">
     <value>&lt;/div&gt;	&lt;/body&gt;	&lt;/html&gt;</value>
