@@ -866,7 +866,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="NewDotNetMethodListGrid">
-        <Grid>
+        <Grid x:Name="MethodListGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -884,15 +884,16 @@
                             <Expander x:Name="MethodExpander" 
                                       Header="{Binding .}" 
                                       HorizontalAlignment="Stretch"
+                                      Width="{Binding ElementName=MethodListGrid, Path=ActualWidth}"
                                       IsExpanded="{Binding Path=IsMethodExpanded}" 
                                       Style="{StaticResource DotNetDllExpander}" 
                                       AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
                                 <Expander.HeaderTemplate>
                                     <DataTemplate>
-                                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}"/>
+                                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
                                     </DataTemplate>
                                 </Expander.HeaderTemplate>
-                                <Control Template="{StaticResource DotNetInputOutputGrid}"/>
+                                <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
                             </Expander>
                         </WrapPanel>
                     </ItemsPanelTemplate>
