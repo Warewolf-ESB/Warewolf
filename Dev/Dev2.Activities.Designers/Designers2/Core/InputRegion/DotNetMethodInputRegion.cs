@@ -17,10 +17,10 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    public class DotNetMethodInputRegion : IDotNetInputRegion
+    public class DotNetMethodInputRegion : IDotNetMethodInputRegion
     {
         private readonly ModelItem _modelItem;
-        private readonly IActionToolRegion<IPluginAction> _action;
+        private readonly IMethodToolRegion<IPluginAction> _action;
         bool _isEnabled;
         private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             ToolRegionName = "DotNetInputRegion";
         }
 
-        public DotNetMethodInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
+        public DotNetMethodInputRegion(ModelItem modelItem, IMethodToolRegion<IPluginAction> action)
             : this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DotNetInputRegion";
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             Inputs = inputs;
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
-            IsEnabled = action?.SelectedAction != null;
+            IsEnabled = action?.SelectedMethod != null;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -123,10 +123,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         {
             Inputs = new List<IServiceInput>();
             IsEnabled = false;
-            if (_action?.SelectedAction != null)
+            if (_action?.SelectedMethod != null)
             {
 
-                Inputs = _action.SelectedAction.Inputs;
+                Inputs = _action.SelectedMethod.Inputs;
                 _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
