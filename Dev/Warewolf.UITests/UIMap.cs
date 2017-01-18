@@ -8920,7 +8920,22 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton);
             Assert.IsTrue(ChooseDLLWindow.Exists, "Choose DLL Window did not open after clicking Assembly Diretory Button");
         }
+        [When(@"I Expand The First Node in the Choose DLL Dialog Tree")]
+        public void Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree()
+        {
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.Expander, new Point(17, 6));
+        }
+        [When(@"I Select First C Drive Item in the Choose DLL Dialog Tree")]
+        public void Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree()
+        {
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(83, 9));
+        }
 
+        [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
+        public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
+        {
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
+        }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
             Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
