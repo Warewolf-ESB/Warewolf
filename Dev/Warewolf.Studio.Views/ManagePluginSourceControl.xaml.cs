@@ -127,11 +127,13 @@ namespace Warewolf.Studio.Views
             {
                 if (string.IsNullOrWhiteSpace(intellisenseTextBox.Text))
                 {
-                    intellisenseTextBox.Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
+                    if (Application.Current != null)
+                        intellisenseTextBox.Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
                 }
                 else
                 {
-                    intellisenseTextBox.Style = Application.Current.TryFindResource("DisabledAutoCompleteBoxStyle") as Style;
+                    if (Application.Current != null)
+                        intellisenseTextBox.Style = Application.Current.TryFindResource("DisabledAutoCompleteBoxStyle") as Style;
                 }
             }
         }
