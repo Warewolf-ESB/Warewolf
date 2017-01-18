@@ -31,6 +31,7 @@ namespace Warewolf.UITests.DebugInputWindow
         {
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Hello World workflow does not exist");
             UIMap.Click_Debug_Ribbon_Button();
             UIMap.Check_Debug_Input_Dialog_Remember_Inputs_Checkbox();
             UIMap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
