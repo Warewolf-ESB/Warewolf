@@ -453,7 +453,7 @@ namespace Warewolf.UITests
             }
         }
 
-        
+
         public void Close_And_Lock_Side_Menu_Bar()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
@@ -1129,22 +1129,20 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
 
-        //[Given(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //[When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //[Then(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        //public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
-        //{
-        //    if (!File.Exists(text))
-        //    {
-        //        text = text.Replace("Framework64", "Framework");
-        //        if (!File.Exists(text))
-        //        {
-        //            throw new Exception("No suitable DLL could be found for this test to use.");
-        //        }
-        //    }
-        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyNameTextbox.Text = text;
-        //    Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        //}
+        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
+        {
+            if (!File.Exists(text))
+            {
+                text = text.Replace("Framework64", "Framework");
+                if (!File.Exists(text))
+                {
+                    throw new Exception("No suitable DLL could be found for this test to use.");
+                }
+            }
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = text;
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        }
 
         public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
         {
@@ -4050,11 +4048,11 @@ namespace Warewolf.UITests
 
         [Then(@"I Click Save Before Continuing MessageBox OK")]
         public void Click_Save_Before_Continuing_MessageBox_OK()
-        {            
+        {
             Assert.IsTrue(MessageBoxWindow.SaveBeforeAddingNewTestText.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
-        
+
         public void Click_Drop_Not_Allowed_MessageBox_OK()
         {
             Assert.IsTrue(MessageBoxWindow.DropnotallowedText.Exists, "The Shown dialog is not Drop Not 'Allowed MessageBox'");
@@ -8925,10 +8923,9 @@ namespace Warewolf.UITests
 
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(37, 14));
+            Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
-            Playback.Wait(2500);
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(71, 34));
+            Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree();
             Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -8948,8 +8945,7 @@ namespace Warewolf.UITests
         public void Select_GACAssemblyFile_From_ChooseDLLWindow()
         {
             ChooseDLLWindow.FilterTextBox.Text = "Build";
-            Playback.Wait(2500);
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(71, 34));
+            Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree();
             Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -8957,7 +8953,7 @@ namespace Warewolf.UITests
         public void Select_AssemblyFile_From_COMPluginDataTree()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = "Microsoft";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree, new Point(112, 19));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[0], new Point(112, 19));
             Assert.IsFalse(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text));
         }
 
@@ -8966,7 +8962,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.NewSourceButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists, "New COM Plugin source wizard tab does not exist after clicking new source from COM DLL Tool");
         }
-        
+
         public void Click_DotNetPluginTool_LargeView_NewSourceButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourceButton);
