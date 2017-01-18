@@ -210,21 +210,34 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
 
                 }
-
-                // ensure service gets set ;)
                 if (dataObject.ServiceName == null)
                 {
                     dataObject.ServiceName = serviceName;
                 }
                 IResource resource = null;
-                if (!string.IsNullOrEmpty(dataObject.ServiceName))
+                Guid resourceID;
+                if (Guid.TryParse(serviceName, out resourceID))
                 {
-                    resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                    resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID,resourceID);
                     if (resource != null)
                     {
+                        dataObject.ServiceName = resource.ResourceName;
                         dataObject.ResourceID = resource.ResourceID;
                         dataObject.SourceResourceID = resource.ResourceID;
 
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(dataObject.ServiceName))
+                    {
+                        resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                        if (resource != null)
+                        {
+                            dataObject.ResourceID = resource.ResourceID;
+                            dataObject.SourceResourceID = resource.ResourceID;
+
+                        }
                     }
                 }
                 if (IsRunAllTestsRequest(webRequest, serviceName))
