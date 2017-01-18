@@ -25,7 +25,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void SQLBulkInsertToolLargeViewUITest()
         {
-            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Open_SQLBulkInsertTool_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.Exists, "Database combobox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.ItemButton.Exists, "ItemButton does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Exists, "TableNameComboBox does not exist on SQL bulk insert large view.");
@@ -49,7 +49,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView_UITest()
         {
-            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Open_SQLBulkInsertTool_LargeView();
             UIMap.Click_SqlBulkInsert_Done_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Errors.Exists);
             UIMap.Select_DatabaseAndTable_From_BulkInsert_Tool();
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void SQLBulkInsertTool_OpenQVIUITest()
         {
-            UIMap.Open_SQL_Bulk_Insert_Tool_Qvi_Large_View();
+            UIMap.Open_SQLBulkInsertToolQvi_LargeView();
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Click_MessageBox_No();
         }
@@ -73,7 +73,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void Click_SQLBulkInsertTool_LargeView_NewSource_UITests()
         {
-            UIMap.Open_SQL_Bulk_Insert_Tool_Large_View();
+            UIMap.Open_SQLBulkInsertTool_LargeView();
             UIMap.Click_NewSource_From_SqlBulkInsertTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "SQL Server Address combobox is disabled new Sql Server Source wizard tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
