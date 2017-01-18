@@ -449,6 +449,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
+                ConstructorRegion.Dependants.Add(OutputsRegion);
+                MethodRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
                 MethodRegion.Dependants.Add(MethodOutputsRegion);
                 
