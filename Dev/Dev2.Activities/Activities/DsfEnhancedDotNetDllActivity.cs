@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -18,14 +20,14 @@ namespace Dev2.Activities
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public List<Dev2MethodInfo> MethodsToRun { get; set; }
-        public List<IConstructorParameter> ConstructorInputs { get; set; }
+        public List<IServiceInput> ConstructorInputs { get; set; }
 
         public DsfEnhancedDotNetDllActivity()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
             MethodsToRun = new List<Dev2MethodInfo>();
-            ConstructorInputs = new List<IConstructorParameter>();
+            ConstructorInputs = new List<IServiceInput>();
         }
 
 
@@ -61,14 +63,22 @@ namespace Dev2.Activities
             {
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
             }
-         
-            foreach (var parameter in constructor.Inputs)
+            constructor.Inputs = new List<IConstructorParameter>();
+            foreach (var parameter in ConstructorInputs)
             {
                 var paramIterator = dataObject.Environment.Eval(parameter.Value, update);
-                var evalJContainer = dataObject.Environment.EvalJContainer(parameter.Value);
                 var resultToString = ExecutionEnvironment.WarewolfEvalResultToString(paramIterator);
+                constructor.Inputs.Add(new ConstructorParameter()
+                {
+                    TypeName = parameter.TypeName,
+                    Name = parameter.Name,
+                    Value = resultToString,
+                    EmptyToNull = parameter.EmptyIsNull,
+                    IsRequired = parameter.RequiredField
+                });
                 parameter.Value = resultToString;
             }
+
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
@@ -88,7 +98,7 @@ namespace Dev2.Activities
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
                 MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
-               
+
             }
             catch (Exception e)
             {

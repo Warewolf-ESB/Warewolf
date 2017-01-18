@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
@@ -23,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly ModelItem _modelItem;
         private readonly IConstructorRegion<IPluginConstructor> _action;
         bool _isEnabled;
-        private ICollection<IConstructorParameter> _inputs;
+        private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
         private readonly IActionInputDatatalistMapper _datatalistMapper;
 
@@ -40,10 +41,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            var inputsFromModel = _modelItem.GetProperty<List<IConstructorParameter>>("ConstructorInputs");
-            var serviceInputs = inputsFromModel ?? new List<IConstructorParameter>();
-            Inputs = new ObservableCollection<IConstructorParameter>();
-            var inputs = new ObservableCollection<IConstructorParameter>();
+            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("ConstructorInputs");
+            var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
+            Inputs = new ObservableCollection<IServiceInput>();
+            var inputs = new ObservableCollection<IServiceInput>();
             inputs.CollectionChanged += InputsCollectionChanged;
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
@@ -122,12 +123,17 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void UpdateOnActionSelection()
         {
-            Inputs = new List<IConstructorParameter>();
+            Inputs = new List<IServiceInput>();
             IsEnabled = false;
             if (_action?.SelectedConstructor != null)
             {
-                Inputs = _action.SelectedConstructor.Inputs;
-                var serviceInputs = Inputs.Select(p => new ServiceInput(p.Name,p.Value));
+                Inputs = _action.SelectedConstructor.Inputs.Select(parameter => new ServiceInput(parameter.Name, parameter.Value)
+                {
+                    EmptyIsNull = parameter.EmptyToNull,
+                    RequiredField = parameter.IsRequired,
+                    TypeName = parameter.TypeName
+                } as IServiceInput).ToList();
+                var serviceInputs = Inputs.Select(p => new ServiceInput(p.Name, p.Value));
                 _datatalistMapper.MapInputsToDatalist(serviceInputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
@@ -168,13 +174,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-            
+
             //var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
             //{
             //    EmptyIsNull = a.EmptyToNull, TypeName = a.TypeName 
             //}));
-            var inputs2 = Inputs.ToArray().Clone() as List<IConstructorParameter>;
-            
+            var inputs2 = Inputs.ToArray().Clone() as List<IServiceInput>;
+
             return new DotNetConstructorInputRegionClone
             {
                 Inputs = inputs2,
@@ -226,7 +232,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         #region Implementation of IDotNetInputRegion
 
-        public ICollection<IConstructorParameter> Inputs
+        public ICollection<IServiceInput> Inputs
         {
             get
             {
