@@ -71,5 +71,7 @@ namespace Dev2.Studio.Core.Interfaces
         void DeleteResourceTest(Guid resourceId, string testName);
         List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId);
         IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName);
+
+        Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
     }
 }
