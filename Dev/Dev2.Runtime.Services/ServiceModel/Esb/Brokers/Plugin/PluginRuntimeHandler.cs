@@ -203,7 +203,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var constructors = type.GetConstructors();
-                var propertiesJObject = GetPropertiesJObject(type);
                 constructors.ToList().ForEach(info =>
                 {
                     var serviceConstructor = new ServiceConstructor();
@@ -220,7 +219,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                                 ShortTypeName = parameterInfo.ParameterType.FullName
 
                             }));
-                    serviceConstructor.ReturnObjectJson = propertiesJObject.ToString(Formatting.None);
                     serviceMethodList.Add(serviceConstructor);
                 });
             }
@@ -288,6 +286,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 jObject.Add(property.Name, "");
             }
             return jObject;
+        }
+
+        /// <summary>
+        /// Fetches the name space list object.
+        /// </summary>
+        /// <param name="pluginSource">The plugin source.</param>
+        /// <returns></returns>
+        public NamespaceList FetchNamespaceListObjectWithJsonObjects(PluginSource pluginSource)
+        {
+            var interrogatePlugin = ReadNamespacesWithJsonObjects(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
+            var namespacelist = new NamespaceList();
+            namespacelist.AddRange(interrogatePlugin);
+            return namespacelist;
         }
     }
 }

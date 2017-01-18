@@ -346,6 +346,30 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
         }
+
+        public ICollection<INamespaceItem> FetchNamespacesWithJsonRetunrs(IPluginSource source)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginNameSpaces");
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            comsController.AddPayloadArgument("fetchJson", new StringBuilder(true.ToString()));
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (payload == null || payload.HasError)
+            {
+                if (!Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return new List<INamespaceItem>();
+                }
+                if (payload != null)
+                {
+                    throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
+        }
         public ICollection<INamespaceItem> FetchNamespaces(IComPluginSource source)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -56,9 +57,13 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if (_source.SelectedSource != null)
+                    if (_source.SelectedSource != null && !IsNewPluginNamespace)
                     {
                         Namespaces = model.GetNameSpaces(_source.SelectedSource);
+                    }
+                    if (IsNewPluginNamespace)
+                    {
+                        Namespaces = model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
                     }
                     IsRefreshing = false;
                 }, CanRefresh);
@@ -71,6 +76,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 Errors.Add(e.Message);
             }
         }
+
+        public bool IsNewPluginNamespace { get; set; }
         INamespaceItem Namespace
         {
             get
@@ -94,12 +101,12 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
-
+        public bool I { get; set; }
         public string NamespaceDisplayText
         {
             get
             {
-                if(ToolRegionName.ToUpper().Contains("DOTNET"))
+                if (ToolRegionName.ToUpper().Contains("DOTNET"))
                 {
                     return "Namespace/Class";
                 }
@@ -134,9 +141,17 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void UpdateBasedOnSource()
         {
-            if (_source?.SelectedSource != null)
+            if (_source?.SelectedSource != null && !IsNewPluginNamespace)
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+
+
+                IsNamespaceEnabled = true;
+                IsEnabled = true;
+            }
+            if (_source?.SelectedSource != null && IsNewPluginNamespace)
+            {
+                Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
 
 
                 IsNamespaceEnabled = true;
@@ -161,6 +176,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 SetSelectedNamespace(value);
                 SourceChangedNamespace();
                 OnSomethingChanged(this);
+                SetObjectName();
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
@@ -169,6 +185,24 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
+
+        public void SetObjectName()
+        {
+            if (IsNewPluginNamespace)
+            {
+                var outputsToolRegion = Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                if(outputsToolRegion != null)
+                {
+                    if(SelectedNamespace != null)
+                    {
+                        outputsToolRegion.ObjectResult = SelectedNamespace.JsonObject;
+                        var objectName = "@" + SelectedNamespace.FullName.Split('.').LastOrDefault();
+                        outputsToolRegion.ObjectName = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    }
+                }
+            }
+        }
+
         public ICollection<INamespaceItem> Namespaces
         {
             get

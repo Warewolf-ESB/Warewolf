@@ -30,7 +30,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<ConstructorParameter> Parameters { get; set; }
         [DataMember]
         public bool IsExistingObject { get; set; }
-        [DataMember]
-        public string ReturnObjectJson { get; set; }
     }
 }

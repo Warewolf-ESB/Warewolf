@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
 // ReSharper disable UnusedMember.Global
 
@@ -208,6 +209,39 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
+        /// Lists the namespaces.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns></returns>
+        private IEnumerable<KeyValuePair<string, string>> ListNamespacesWIthReturnTypes(string assemblyLocation, string assemblyName)
+        {
+            try
+            {
+                Assembly loadedAssembly;
+                var namespaces = new List<KeyValuePair<string, string>>();
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                {
+                    // ensure we flush out the rubbish that GAC brings ;)
+                    var types = loadedAssembly.GetTypes();
+                    var keyValuePairs = types.Select(t => new KeyValuePair<string, string>(t.FullName, GetPropertiesJObject(t).ToString(Formatting.None)))
+                        .Distinct()
+                        .Where(q => q.Value.IndexOf("`", StringComparison.Ordinal) < 0
+                                    && q.Value.IndexOf("+", StringComparison.Ordinal) < 0
+                                    && q.Value.IndexOf("<", StringComparison.Ordinal) < 0
+                                    && !q.Value.StartsWith("_")).ToList();
+                    namespaces.AddRange(keyValuePairs);
+                }
+                return namespaces;
+            }
+            catch (BadImageFormatException e)
+            {
+                Dev2Logger.Error(e);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Lists the methods.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
@@ -277,7 +311,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return namespacelist;
         }
 
-
         /// <summary>
         /// Adjusts the plugin result.
         /// </summary>
@@ -318,6 +351,41 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         AssemblyName = assemblyName,
                         FullName = fullName
                     }));
+
+                return result;
+            }
+            // ReSharper disable once RedundantCatchClause
+            catch (BadImageFormatException)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Reads the namespaces.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns></returns>
+        private IEnumerable<NamespaceItem> ReadNamespacesWithJsonObjects(string assemblyLocation, string assemblyName)
+        {
+            try
+            {
+                var result = new List<NamespaceItem>();
+                var list = ListNamespacesWIthReturnTypes(assemblyLocation, assemblyName);
+
+
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var keyVale in list)
+                {
+                    result.Add(new NamespaceItem
+                    {
+                        AssemblyLocation = assemblyLocation,
+                        AssemblyName = assemblyName,
+                        FullName = keyVale.Key,
+                        JsonObject = keyVale.Value
+                    });
+                }
 
                 return result;
             }

@@ -68,6 +68,11 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.FetchNamespaces(source);
         }
 
+        public ICollection<INamespaceItem> GetNameSpacesWithJsonRetunrs(IPluginSource source)
+        {
+            return _queryProxy.FetchNamespacesWithJsonRetunrs(source);
+        }
+
         public void CreateNewSource()
         {
             _shell.NewPluginSource(string.Empty);
