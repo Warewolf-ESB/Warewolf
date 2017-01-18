@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IPluginConstructor _selectedConstructor;
-        private IPluginServiceModel _model;
+        private readonly IPluginServiceModel _model;
         private ICollection<IPluginConstructor> _constructors;
         private bool _isConstructorEnabled;
         private bool _isRefreshing;

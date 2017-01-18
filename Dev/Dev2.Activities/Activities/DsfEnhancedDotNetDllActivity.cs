@@ -9,6 +9,7 @@ using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -29,6 +30,7 @@ namespace Dev2.Activities
             DisplayName = "DotNet DLL";
             MethodsToRun = new List<Dev2MethodInfo>();
             ConstructorInputs = new List<IServiceInput>();
+            Outputs = new List<IServiceOutputMapping>();
         }
 
 
@@ -100,14 +102,16 @@ namespace Dev2.Activities
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
                 MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
-
+                
+                ResponseManager = new ResponseManager { Outputs = Outputs, IsObject = true, ObjectName = ObjectName };
+                ResponseManager.PushResponseIntoEnvironment(result.ObjectString, update, dataObject, false);
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
             }
         }
-
+        public IResponseManager ResponseManager { get; set; }
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
