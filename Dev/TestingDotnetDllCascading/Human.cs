@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TestingDotnetDllCascading
 {
@@ -46,6 +47,19 @@ namespace TestingDotnetDllCascading
             Name = name;
             SurName = surname;
             PersonFood = food;
+        }
+
+
+        public List<Food> FavouriteFoods()
+        {
+            var foods = new List<Food> { new Food { FoodName = "Pizza" }, new Food { FoodName = "Burger" }, new Food { FoodName = "Chicken" } };
+            return foods;
+        }
+
+        public List<int> PhoneNumbers()
+        {
+            var numbers = new List<int> { 1284561478, 228561478, 215561475 };
+            return numbers;
         }
 
         #region Overrides of Object
