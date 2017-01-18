@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.ConstructorRegion
@@ -165,37 +166,6 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                     if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
                         StorePreviousValues(_selectedConstructor.GetIdentifier());
                     OnSomethingChanged(this);
-                }
-                if (Dependants != null)
-                {
-                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
-                    if (region != null)
-                    {
-                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                        region.RecordsetName = string.Empty;
-                        region.IsObject = true;
-                        if (_selectedConstructor != null)
-                        {
-                            var namesPace = Dependants.SingleOrDefault(a => a is INamespaceToolRegion<INamespaceItem>) as INamespaceToolRegion<INamespaceItem>;
-                            if (namesPace != null)
-                            {
-                                var objectName = string.IsNullOrEmpty(region.ObjectName)
-                                    ? namesPace.SelectedNamespace?.FullName.Split('.').LastOrDefault()
-                                    : region.ObjectName;
-                                if (objectName == null)
-                                {
-                                    region.ObjectName = string.Empty;
-                                }
-                                else
-                                {
-                                    var cleanObjectName = objectName.StartsWith("@") ? objectName : string.Concat("@", objectName);
-                                    region.ObjectName = cleanObjectName;
-                                }
-                            }
-                            region.ObjectResult = _selectedConstructor.ReturnObject;
-                        }
-                    }
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();

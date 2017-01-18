@@ -102,8 +102,9 @@ namespace Dev2.Activities
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
                 MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
+                
                 ObjectResult = result.ObjectString;
-                ResponseManager = new ResponseManager { Outputs = Outputs, IsObject = true, ObjectName = ObjectName };
+                ResponseManager = new ResponseManager {IsObject = true, ObjectName = ObjectName };
                 ResponseManager.PushResponseIntoEnvironment(ObjectResult, update, dataObject, false);
             }
             catch (Exception e)

@@ -36,6 +36,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
         }
 
+        public NamespaceList GetNamespacesWithJsonObjects(PluginSource pluginSource)
+        {
+            try
+            {
+                return PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(pluginSource);
+            }
+            // ReSharper disable once RedundantCatchClause
+            catch (BadImageFormatException)
+            {
+                throw;
+            }
+        }
+
         public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
         {
             return PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);

@@ -357,7 +357,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                                 toolRegion.Errors?.Clear();
                             }
                         }
-                    }
+                    },
+                    IsNewPluginNamespace = true
                 };
                 NamespaceRegion.SomethingChanged += (sender, args) =>
                 {
@@ -366,26 +367,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
                     var namespaceItem = sender as DotNetNamespaceRegion;
-                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
-                    if (namespaceItem != null)
-                    {
-                        if (outputsToolRegion != null)
-                        {
-                            var objectName = string.IsNullOrEmpty(outputsToolRegion.ObjectName)
-                                            ? namespaceItem.SelectedNamespace?.FullName.Split('.').LastOrDefault()
-                                            : outputsToolRegion.ObjectName;
-                            if (objectName == null)
-                            {
-                                outputsToolRegion.ObjectName = string.Empty;
-                            }
-                            else
-                            {
-                                var cleanObjectName = objectName.StartsWith("@") ? objectName : string.Concat("@", objectName);
-                                outputsToolRegion.ObjectName = cleanObjectName;
-                            }
-
-                        }
-                    }
+                    namespaceItem?.SetObjectName();
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
@@ -407,19 +389,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         }
                     },
                 };
-                ConstructorRegion.SomethingChanged += (sender, args) =>
-                {
-                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
-                    if (outputsToolRegion != null)
-                    {
-                        var dotNetConstructorRegion = sender as DotNetConstructorRegion;
-                        if (dotNetConstructorRegion != null)
-                        {
-                            var returnObject = dotNetConstructorRegion.SelectedConstructor?.ReturnObject;
-                            outputsToolRegion.ObjectResult = returnObject;
-                        }
-                    }
-                };
+
                 ConstructorRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
@@ -461,7 +431,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     OutputsRegion.IsEnabled = true;
                 }
-                
+
                 MethodInputRegion = new DotNetMethodInputRegion(ModelItem, MethodRegion);
                 regions.Add(MethodInputRegion);
                 MethodOutputsRegion = new DotNetMethodOutputsRegion(ModelItem, true)
@@ -490,7 +460,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 MethodRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
                 MethodRegion.Dependants.Add(MethodOutputsRegion);
-                
+
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;

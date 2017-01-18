@@ -111,6 +111,31 @@ namespace Dev2.Runtime.ServiceModel
             }
             return result;
         }
+        
+        // POST: Service/PluginServices/Namespaces
+        public virtual NamespaceList NamespacesWithJsonObjects(PluginSource pluginSource, Guid workspaceId, Guid dataListId)
+        {
+            var result = new NamespaceList();
+            try
+            {
+
+                if (pluginSource != null)
+                {
+                    var broker = new PluginBroker();
+                    return broker.GetNamespacesWithJsonObjects(pluginSource);
+                }
+            }
+            catch (BadImageFormatException e)
+            {
+                RaiseError(e);
+                throw;
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+            }
+            return result;
+        }
 
         #endregion
 

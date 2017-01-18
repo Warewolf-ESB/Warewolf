@@ -40,6 +40,7 @@ namespace Dev2.Common.Interfaces
         List<IFileListing> GetDllListings(IFileListing listing);
         List<IFileListing> GetComDllListings(IFileListing listing);
         ICollection<INamespaceItem> FetchNamespaces(IPluginSource source);
+        ICollection<INamespaceItem> FetchNamespacesWithJsonRetunrs(IPluginSource source);
         ICollection<INamespaceItem> FetchNamespaces(IComPluginSource source);
         IList<IFileListing> FetchFiles();
         IList<IFileListing> FetchFiles(IFileListing file);

@@ -75,5 +75,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 return runtime.Value.ListMethodsWithReturns(assemblyLocation, assemblyName, fullName);
             }
         }
+
+        public static NamespaceList GetNamespacesWithJsonObjects(PluginSource pluginSource)
+        {
+            using (var runtime = CreateInvokeAppDomain())
+            {
+                return runtime.Value.FetchNamespaceListObjectWithJsonObjects(pluginSource);
+            }
+        }
     }
 }

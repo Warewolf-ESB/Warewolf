@@ -61,6 +61,9 @@ namespace TestingDotnetDllCascading
             return $"Name:{Name}, Surname:{SurName}, FoodName:{PersonFood.FoodName}";
         }
 
+
+        //Add list of strings
+        //add a list of objects
         #endregion
 
         public Food PersonFood { get; set; }

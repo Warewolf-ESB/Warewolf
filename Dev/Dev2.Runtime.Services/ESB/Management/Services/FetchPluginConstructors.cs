@@ -66,7 +66,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     ConstructorName = BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
                     Inputs = a.Parameters.Cast<IConstructorParameter>().ToList(),
-                    ReturnObject = a.ReturnObjectJson
                 } as IPluginConstructor).ToList();
                 var executeMessage = new ExecuteMessage { HasError = false, Message = constructors.SerializeToJsonStringBuilder() };
                 return executeMessage.SerializeToJsonStringBuilder();
