@@ -220,7 +220,7 @@
             <ComboBox x:Name="ActionsComboBox"
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding MethodRegion.MethodsToRun}"
+                              ItemsSource="{Binding MethodsToRun}"
                               DisplayMemberPath="Method" 
                               IsEnabled="{Binding IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
@@ -582,7 +582,7 @@
             <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs" />
             <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                     Grid.Row="1"
-                                    ItemsSource="{Binding MethodInputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding MethodInputRegion.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingDataGridStyle}"
                                     Height="Auto"
                                     Margin="{StaticResource ControlBorderTop}">
@@ -860,8 +860,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Control Grid.Row="0" Template="{StaticResource DotNetMethodsInputGrid}"/>
-            <Control Grid.Row="1" Template="{StaticResource DotNetMethodsOutputGrid}"/>
+            <Control Grid.Row="0" DataContext="{Binding MethodInputRegion}" Template="{StaticResource DotNetMethodsInputGrid}"/>
+            <Control Grid.Row="1" Template="{StaticResource DotNetMethodsOutputGrid}" Visibility="{Binding IsMethodOutputsVisible}"/>
         </Grid>
     </ControlTemplate>
 
@@ -877,11 +877,10 @@
             <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
             <Expander x:Name="MethodExpander" 
                       Grid.Row="1"
-						Visibility="{Binding Path=IsMethodExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
-						Header="{Binding .}" 
-						IsExpanded="{Binding Path=IsMethodExpanded}" 
-						Style="{StaticResource DotNetDllExpander}" 
-                        AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
+                      Header="{Binding .}" 
+                      IsExpanded="{Binding Path=IsMethodExpanded}" 
+                      Style="{StaticResource DotNetDllExpander}" 
+                      AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
                 <Expander.HeaderTemplate>
                     <DataTemplate>
                         <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}"/>

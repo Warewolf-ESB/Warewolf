@@ -10,7 +10,7 @@
                                MinWidth="350"
                                Width="350"
                                MinHeight="455"
-                               Height="455"
+                               Height="Auto"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
                                d:DesignHeight="300"

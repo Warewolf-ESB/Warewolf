@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
     {
         private IOutputsToolRegion _outputsRegion;
         private IDotNetConstructorInputRegion _inputArea;
+        private IDotNetMethodInputRegion _methodInputRegion;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
         private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
         private IConstructorRegion<IPluginConstructor> _constructorRegion;
@@ -421,12 +422,15 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     OutputsRegion.IsEnabled = true;
 
                 }
+                MethodInputRegion = new DotNetMethodInputRegion(ModelItem, MethodRegion);
+                regions.Add(MethodInputRegion);
+
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
-                MethodRegion.Dependants.Add(InputArea);
+                MethodRegion.Dependants.Add(MethodInputRegion);
                 MethodRegion.Dependants.Add(OutputsRegion);
                 
             }
@@ -515,6 +519,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             set
             {
                 _inputArea = value;
+                OnPropertyChanged();
+            }
+        }
+        public IDotNetMethodInputRegion MethodInputRegion
+        {
+            get
+            {
+                return _methodInputRegion;
+            }
+            set
+            {
+                _methodInputRegion = value;
                 OnPropertyChanged();
             }
         }
