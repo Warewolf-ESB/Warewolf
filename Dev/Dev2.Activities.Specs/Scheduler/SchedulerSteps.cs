@@ -103,6 +103,7 @@ namespace Dev2.Activities.Specs.Scheduler
             scheduler.SelectedTask.UserName = _scenarioContext["UserName"].ToString();
             scheduler.SelectedTask.Password = _scenarioContext["Password"].ToString();
             scheduler.SelectedTask.WorkflowName = _scenarioContext["WorkFlow"].ToString();
+            scheduler.SelectedTask.ResourceId = new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1");
             scheduler.SelectedTask.NumberOfHistoryToKeep = (int)_scenarioContext["HistoryCount"];
             scheduler.SelectedTask.Status = (SchedulerStatus)_scenarioContext["TaskStatus"];
             scheduler.Errors.ClearErrors();

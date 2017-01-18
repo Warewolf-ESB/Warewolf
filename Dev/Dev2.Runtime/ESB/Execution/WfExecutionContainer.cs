@@ -126,12 +126,14 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
+                DataObject.Environment.AddError(errorMessage);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex);
-                to.AddError(ex.Message);
+                DataObject.Environment.AddError(ex.Message);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
             }
             return result;
