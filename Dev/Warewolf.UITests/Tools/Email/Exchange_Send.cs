@@ -24,7 +24,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Tools")]
         public void ExchangeSendTool_LargeViewUITest()
         {
-            UIMap.Open_Exchange_Send_Tool_Large_View();
+            UIMap.Open_ExchangeSendTool_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.SourcesComboBox.Enabled);
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.ItemButton.Enabled);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.NewSourceButton.Enabled);
@@ -44,7 +44,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {
-            UIMap.Open_Exchange_Send_Tool_Large_View();
+            UIMap.Open_ExchangeSendTool_LargeView();
             UIMap.Click_SelectFilesButton_On_ExchangeEmailTool_LargeView();
             UIMap.Select_Attachments_From_SelectFilesWindow();
             Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text));

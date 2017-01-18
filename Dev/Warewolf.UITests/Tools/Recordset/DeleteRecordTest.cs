@@ -10,7 +10,7 @@ namespace Warewolf.UITests
         [TestCategory("Recordset Tools")]
         public void DeleteRecord_OpenLargeViewUITest()
         {            
-            UIMap.Open_DeleteRecords_Large_View();
+            UIMap.Open_DeleteRecords_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "Error group does not exist after opening Delete Record large view");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord.LargeViewContentCustom.ResultComboBox.Exists, "Result combobox does not exist after opening Delete Record large view");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord.LargeViewContentCustom.RecordsetComboBox.Exists, "Recordset combobox does not exist after opening Delete Record large view");

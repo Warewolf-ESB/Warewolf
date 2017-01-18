@@ -74,6 +74,7 @@
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="SQLServerSource\SQLServerSourceTests.cs" />
     <Compile Include="Tools\Email\Exchange_Send.cs" />
+    <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
     <Compile Include="WcfSource\WcfSourceTests.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
