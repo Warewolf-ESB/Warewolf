@@ -405,7 +405,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            if (resourceModel.UserPermissions.IsContributor())
+            if (!resourceModel.IsWorkflowSaved)
             {
                 var succesfulSave = Save(resourceModel, true);
                 if (!succesfulSave)
@@ -471,10 +471,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
-            var successfuleSave = Save(ContextualResourceModel, true);
-            if (!successfuleSave)
+            if (!ContextualResourceModel.IsWorkflowSaved)
             {
-                return;
+                var successfuleSave = Save(ContextualResourceModel, true);
+                if (!successfuleSave)
+                {
+                    return;
+                }
             }
             ViewInBrowserInternal(ContextualResourceModel);
         }
@@ -494,11 +497,16 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
-                var successfuleSave = Save(ContextualResourceModel, true);
-                if (!successfuleSave)
+                var vm = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+                var workspaceSave = vm?.WorkspaceSave ?? false;
+                if(!ContextualResourceModel.IsWorkflowSaved && !workspaceSave)
                 {
-                    return;
-                }
+                    var successfuleSave = Save(ContextualResourceModel, true);
+                    if(!successfuleSave)
+                    {
+                        return;
+                    }
+                }                
             }
             else
             {
@@ -509,10 +517,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 SetDebugStatus(DebugStatus.Finished);
                 return;
             }
-
             var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
             inputDataViewModel.LoadWorkflowInputs();
             inputDataViewModel.Save();
+
         }
 
         public void BindToModel()

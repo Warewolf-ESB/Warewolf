@@ -2678,6 +2678,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _selectedItem = value;
             }
         }
+        public bool WorkspaceSave => _workspaceSave;
 
         #region Implementation of IHandle<EditActivityMessage>
 
