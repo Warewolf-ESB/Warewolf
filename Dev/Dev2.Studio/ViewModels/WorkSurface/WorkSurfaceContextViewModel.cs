@@ -606,6 +606,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
+                _workspaceSaved = true;
             }
             else
             {
