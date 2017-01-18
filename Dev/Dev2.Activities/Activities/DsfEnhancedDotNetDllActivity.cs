@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -55,7 +56,8 @@ namespace Dev2.Activities
             PluginExecutionDto pluginExecutionDto;
             if (Constructor.IsExistingObject)
             {
-                var warewolfEvalResult = dataObject.Environment.Eval(Constructor.ConstructorName, update);
+                var existingObj = DataListUtil.AddBracketsToValueIfNotExist(Constructor.ConstructorName);
+                var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
                 var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                 pluginExecutionDto = new PluginExecutionDto(existingObject);
             }
