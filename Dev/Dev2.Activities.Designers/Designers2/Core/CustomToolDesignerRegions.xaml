@@ -212,7 +212,7 @@
         <Grid x:Name="MethodsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding LabelWidth}"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -220,9 +220,9 @@
             <ComboBox x:Name="ActionsComboBox"
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding MethodsToRun}"
+                              ItemsSource="{Binding MethodRegion.MethodsToRun}"
                               DisplayMemberPath="Method" 
-                              IsEnabled="{Binding IsMethodEnabled}"
+                              IsEnabled="{Binding IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
                               IsEditable="False"
                               SelectedItem="{Binding SelectedMethod}">
@@ -875,44 +875,20 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
-            <ig:XamDataTree Grid.Row="1" 
-							x:Name="MethodsDataTree"
-							ItemsSource="{Binding MethodsToRunList}"
-							NodeStyle="{StaticResource ServiceTestXamDataTreeNodeControlStyle}">
-                <ig:XamDataTree.GlobalNodeLayouts>
-                    <ig:NodeLayout Key="DotNetMethodRegion"
-									DisplayMemberPath="MethodRegion"
-									TargetTypeName="IMethodToolRegion"
-                                    AutomationProperties.AutomationId="{Binding StringFormat=UI_Node{0}_AutoID, Path=Node.Data.StepDescription}">
-                        <ig:NodeLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.Width>
-                                        <MultiBinding Converter="{StaticResource DotNetActionsWidthConverter}">
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
-                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
-                                        </MultiBinding>
-                                    </Grid.Width>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Expander x:Name="MethodExpander" 
-											Visibility="Visible" 
-                                              Header="Bob"
-											Style="{StaticResource ServiceTestTestStepExpander}" 
-                                            AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.Method}">
-                                        <!--                                        <Control Template="{StaticResource DotNetInputOutputGrid}"/>-->
-                                    </Expander>
-                                </Grid>
-                            </DataTemplate>
-                        </ig:NodeLayout.ItemTemplate>
-                    </ig:NodeLayout>
-                </ig:XamDataTree.GlobalNodeLayouts>
-            </ig:XamDataTree>
+            <Expander x:Name="MethodExpander" 
+                      Grid.Row="1"
+						Visibility="{Binding Path=IsMethodExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
+						Header="{Binding .}" 
+						IsExpanded="{Binding Path=IsMethodExpanded}" 
+						Style="{StaticResource DotNetDllExpander}" 
+                        AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
+                <Expander.HeaderTemplate>
+                    <DataTemplate>
+                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}"/>
+                    </DataTemplate>
+                </Expander.HeaderTemplate>
+                <Control Template="{StaticResource DotNetInputOutputGrid}"/>
+            </Expander>
         </Grid>
     </ControlTemplate>
 
