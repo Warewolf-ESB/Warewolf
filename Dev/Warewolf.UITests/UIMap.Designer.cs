@@ -12861,6 +12861,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfText UIUnsaved2Text
+        {
+            get
+            {
+                if ((this.mUIUnsaved2Text == null))
+                {
+                    this.mUIUnsaved2Text = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIUnsaved2Text.SearchProperties[WpfText.PropertyNames.Name] = "Unsaved 2";
+                    this.mUIUnsaved2Text.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mUIUnsaved2Text;
+            }
+        }
+        
         public WpfText UIUnsaved1TextWithAsterisk
         {
             get
@@ -12906,6 +12922,8 @@ namespace Warewolf.UITests
         private WpfText mTabDescription;
         
         private WpfText mUIUnsaved1Text;
+        
+        private WpfText mUIUnsaved2Text;
         
         private WpfText mUIUnsaved1TextWithAsterisk;
         
