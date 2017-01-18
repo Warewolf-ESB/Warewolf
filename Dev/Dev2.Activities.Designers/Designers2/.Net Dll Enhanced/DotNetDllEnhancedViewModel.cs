@@ -474,14 +474,17 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
 
+            MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
             AddToMethodsList();
             return regions;
         }
 
         private void AddToMethodsList()
         {
-            MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
-
+            if (MethodsToRunList == null)
+            {
+                MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
+            }
             MethodsToRunList.Add(MethodRegion);
         }
 
