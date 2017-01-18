@@ -24,7 +24,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void SMTPSendTool_LargeViewUITest()
         {
-            UIMap.Open_SMTP_Send_Tool_Large_View();
+            UIMap.Open_SMTPSendTool_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.SourceComboBox.Enabled);
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.ItemButton.Enabled);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.FromAddressComboBox.Enabled);
@@ -48,7 +48,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void SMTPMultipleAttachmentsUITest()
         {
-            UIMap.Open_SMTP_Send_Tool_Large_View();
+            UIMap.Open_SMTPSendTool_LargeView();
             UIMap.Click_SelectFilesButton_On_SMTPEmailTool_LargeView();
             UIMap.Select_Attachments_From_SelectFilesWindow();
             Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text));
@@ -58,7 +58,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void NewSource_From_SMTPSendToolUITest()
         {
-            UIMap.Open_SMTP_Send_Tool_Large_View();
+            UIMap.Open_SMTPSendTool_LargeView();
             UIMap.Click_NewSource_From_SMTPSendTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
