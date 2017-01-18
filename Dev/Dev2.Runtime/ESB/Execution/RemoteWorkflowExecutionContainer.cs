@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString(), update);
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString());
             Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
 
             return Guid.Empty;
