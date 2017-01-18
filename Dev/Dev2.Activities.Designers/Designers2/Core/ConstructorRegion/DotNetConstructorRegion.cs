@@ -149,8 +149,9 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 
         public bool CanRefresh()
         {
-            IsConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null;
+            var isConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            IsConstructorEnabled = isConstructorEnabled;
+            return isConstructorEnabled;
         }
 
         public IPluginConstructor SelectedConstructor

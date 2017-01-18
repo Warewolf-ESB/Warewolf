@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common;
@@ -8,7 +7,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -17,7 +15,6 @@ using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
 
@@ -236,6 +233,144 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "FavouriteFoods"
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.Constructor = new PluginConstructor
+            {
+                Inputs = new List<IConstructorParameter>(),
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>
+            {
+                new Dev2MethodInfo
+                {
+                    Method = "FavouriteFoods",
+                    IsObject = true,
+                    Parameters = new List<MethodParameter>(),
+                    OutputVariable = "[[@Foods()]]"
+                }
+            };
+            //---------------Assert Precondition----------------
+            ErrorResultTO err;
+            var dsfDataObject = mock.Object;
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
+            var jContainer = dsfDataObject.Environment.EvalJContainer("[[@Foods()]]");
+            Assert.IsNotNull(jContainer);
+            var values = jContainer.Children().Select(token => token.ToString()).ToList();
+            Assert.IsNotNull(values);
+            StringAssert.Contains(values[0],"Pizza");
+            StringAssert.Contains(values[1],"Burger");
+            StringAssert.Contains(values[2],"Chicken");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void Execute_GivenValidArgs_ListType_ToRecordset_ShouldReturnValidData()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "PhoneNumbers"
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.Constructor = new PluginConstructor
+            {
+                Inputs = new List<IConstructorParameter>(),
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>
+            {
+                new Dev2MethodInfo
+                {
+                    Method = "PhoneNumbers",
+                    Parameters = new List<MethodParameter>(),
+                    IsObject = false,
+                    OutputVariable = "[[Food().Name]]"
+                }
+            };
+            //---------------Assert Precondition----------------
+            ErrorResultTO err;
+            var dsfDataObject = mock.Object;
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
+            var jContainer = dsfDataObject.Environment.EvalAsList("[[Food(*).Name]]",0).ToList();
+            Assert.IsNotNull(jContainer);
+            Assert.AreEqual("1284561478", jContainer[0].ToString());
+            Assert.AreEqual("228561478", jContainer[1].ToString());
+            Assert.AreEqual("215561475", jContainer[2].ToString());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void Execute_GivenValidArgs_ListType_ToScalar_ShouldReturnValidData()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "PhoneNumbers"
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.Constructor = new PluginConstructor
+            {
+                Inputs = new List<IConstructorParameter>(),
+            };
+            activity.MethodsToRun = new List<Dev2MethodInfo>
+            {
+                new Dev2MethodInfo
+                {
+                    Method = "PhoneNumbers",
+                    IsObject = false,
+                    Parameters = new List<MethodParameter>(),
+                    OutputVariable = "[[Foods]]"
+                }
+            };
+            //---------------Assert Precondition----------------
+            ErrorResultTO err;
+            var dsfDataObject = mock.Object;
+            activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
+            var jContainer = dsfDataObject.Environment.Eval("[[Foods]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(jContainer);
+            Assert.AreEqual("1284561478,228561478,215561475", jContainer.Item.ToString());
         }
 
         [TestMethod]
