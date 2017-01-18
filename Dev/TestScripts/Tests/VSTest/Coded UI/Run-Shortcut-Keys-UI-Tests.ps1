@@ -29,17 +29,17 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ShortcutKeysUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
 "@ + [guid]::NewGuid() + @"
 `"
-  name=`"OtherUITests`"
+  name=`"ShortcutKeysUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run All Other UI Tests.</Description>
+  <Description>Run Shortcut Keys UI Tests.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
@@ -49,20 +49,20 @@ $TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
 "@)
 
 # Find test assembly
-if (Test-Path "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
 if (Test-Path "$WorkingDir\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests.dll"
@@ -80,13 +80,13 @@ if (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if (!(Test-Path $TestAssemblyPath)) {
-	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
+	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UITests\bin\Debug or $WorkingDir
 	exit 1
 }
 
 # Create full VSTest argument string.
 if ($TestList -eq "") {
-	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)&(TestCategory!=Shortcut Keys)`""
+	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Shortcut Keys`""
 } else {
 	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
