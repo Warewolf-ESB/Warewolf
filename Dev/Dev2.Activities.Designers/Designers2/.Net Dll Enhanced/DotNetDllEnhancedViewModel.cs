@@ -397,27 +397,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ConstructorRegion);
-                MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
-                {
-                    SourceChangedAction = () =>
-                    {
-                        MethodOutputsRegion.IsEnabled = false;
-                        MethodOutputsRegion.IsObject = true;
-                        if (Regions != null)
-                        {
-                            foreach (var toolRegion in Regions)
-                            {
-                                toolRegion.Errors?.Clear();
-                            }
-                        }
-                    }
-                };
-                MethodRegion.ErrorsHandler += (sender, list) =>
-                {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
-                    UpdateDesignValidationErrors(errorInfos);
-                    Errors = new List<IActionableErrorInfo>(errorInfos);
-                };
+                CreateMethodRegion();
                 regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
                 regions.Add(InputArea);
@@ -454,10 +434,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
                 NamespaceRegion.Dependants.Add(OutputsRegion);
+                NamespaceRegion.Dependants.Add(MethodRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
                 ConstructorRegion.Dependants.Add(OutputsRegion);
-                ConstructorRegion.Dependants.Add(NamespaceRegion);
-                MethodRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
                 MethodRegion.Dependants.Add(MethodOutputsRegion);
 
@@ -466,9 +445,48 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             Regions = regions;
 
             MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
-
-            MethodsToRunList.Add(MethodRegion);
+            AddToMethodsList();
             return regions;
+        }
+
+        private void AddToMethodsList()
+        {
+            if (MethodsToRunList == null)
+            {
+                MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
+            }
+            MethodsToRunList.Add(MethodRegion);
+        }
+
+        private void CreateMethodRegion()
+        {
+            MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+            {
+                SourceChangedAction = () =>
+                {
+                    MethodOutputsRegion.IsEnabled = false;
+                    MethodOutputsRegion.IsObject = true;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            toolRegion.Errors?.Clear();
+                        }
+                    }
+                    CreateMethodRegion();
+                }
+            };
+            MethodRegion.ErrorsHandler += (sender, list) =>
+            {
+                List<ActionableErrorInfo> errorInfos =
+                    list.Select(
+                        error =>
+                            new ActionableErrorInfo(new ErrorInfo {ErrorType = ErrorType.Critical, Message = error}, () => { }))
+                        .ToList();
+                UpdateDesignValidationErrors(errorInfos);
+                Errors = new List<IActionableErrorInfo>(errorInfos);
+            };
+            AddToMethodsList();
         }
 
         public List<IMethodToolRegion<IPluginAction>> MethodsToRunList

@@ -41,6 +41,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public string Method { get; set; }
         public List<MethodParameter> Parameters { get; set; }
         public string MethodResult { get; set; }
+        public string OutputVariable { get; set; }
+        public bool IsObject { get; set; }
     }
 
 }

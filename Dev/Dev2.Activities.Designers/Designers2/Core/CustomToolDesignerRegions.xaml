@@ -232,7 +232,7 @@
             </ComboBox>
             <Button x:Name="ActionRefreshButton" 
                             Grid.Column="2"
-                            Command="{Binding Path=RefreshActionsCommand, Mode=TwoWay}"
+                            Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
                             Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
@@ -262,7 +262,7 @@
                               Margin="{StaticResource ControlBorderRight}"
                               ItemsSource="{Binding ConstructorRegion.Constructors}"
                               DisplayMemberPath="ConstructorName" 
-                              IsEnabled="{Binding ConstructorRegion.IsActionEnabled}"
+                              IsEnabled="{Binding ConstructorRegion.IsConstructorEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
                               IsEditable="False"
                               SelectedItem="{Binding ConstructorRegion.SelectedConstructor}">
@@ -866,7 +866,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="NewDotNetMethodListGrid">
-        <Grid>
+        <Grid x:Name="MethodListGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -875,19 +875,31 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
-            <Expander x:Name="MethodExpander" 
-                      Grid.Row="1"
-                      Header="{Binding .}" 
-                      IsExpanded="{Binding Path=IsMethodExpanded}" 
-                      Style="{StaticResource DotNetDllExpander}" 
-                      AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
-                <Expander.HeaderTemplate>
-                    <DataTemplate>
-                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}"/>
-                    </DataTemplate>
-                </Expander.HeaderTemplate>
-                <Control Template="{StaticResource DotNetInputOutputGrid}"/>
-            </Expander>
+            <ListBox x:Name="MethodListBox"
+                     Grid.Row="1"
+                     ItemsSource="{Binding MethodsToRunList}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <Expander x:Name="MethodExpander" 
+                                      Header="{Binding .}" 
+                                      HorizontalAlignment="Stretch"
+                                      Width="{Binding ElementName=MethodListGrid, Path=ActualWidth}"
+                                      IsExpanded="{Binding Path=IsMethodExpanded}" 
+                                      Style="{StaticResource DotNetDllExpander}" 
+                                      AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
+                                <Expander.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                                    </DataTemplate>
+                                </Expander.HeaderTemplate>
+                                <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                            </Expander>
+                        </WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            
         </Grid>
     </ControlTemplate>
 
@@ -1143,6 +1155,72 @@
                         <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
+            </Grid>
+            <!-- OBJECT NAME -->
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Object Name" />
+                <ui:IntellisenseTextBox Grid.Column="1" 
+                                        WrapInBrackets="True"
+                                        Padding="3"
+                                        FilterType="JsonObject"
+                                        Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                        AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                        ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="ObjectName"
+                                             SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="OutputsLabel" Text="Output to Object" HorizontalAlignment="Left" />
+                </Grid>
+
+                <!-- OBJECT RESULT -->
+                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <TextBox TextWrapping="Wrap" 
+                             x:Name="ResponseTextbox"
+                             IsReadOnly="True"
+                             Height="Auto" 
+                             MinHeight="60"
+                             AcceptsReturn="True" 
+                             Text="{Binding ObjectResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Top"
+                             SnapsToDevicePixels="True" 
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto" />
+                </Grid>
             </Grid>
             <!-- OBJECT NAME -->
             <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
