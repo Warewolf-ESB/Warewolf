@@ -262,7 +262,7 @@
                               Margin="{StaticResource ControlBorderRight}"
                               ItemsSource="{Binding ConstructorRegion.Constructors}"
                               DisplayMemberPath="ConstructorName" 
-                              IsEnabled="{Binding ConstructorRegion.IsActionEnabled}"
+                              IsEnabled="{Binding ConstructorRegion.IsConstructorEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
                               IsEditable="False"
                               SelectedItem="{Binding ConstructorRegion.SelectedConstructor}">
