@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         const string OutputDisplayName = " - Outputs";
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-        
+
         public DotNetDllEnhancedViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -325,9 +325,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -343,9 +344,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedNamespace = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
-                            OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsEnabled = true;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -362,15 +364,38 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         Errors =
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
+                    var namespaceItem = sender as DotNetNamespaceRegion;
+                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                    if (namespaceItem != null)
+                    {
+                        if (outputsToolRegion != null)
+                        {
+                            var objectName = string.IsNullOrEmpty(outputsToolRegion.ObjectName)
+                                            ? namespaceItem.SelectedNamespace?.FullName.Split('.').LastOrDefault()
+                                            : outputsToolRegion.ObjectName;
+                            if (objectName == null)
+                            {
+                                outputsToolRegion.ObjectName = string.Empty;
+                            }
+                            else
+                            {
+                                var cleanObjectName = objectName.StartsWith("@") ? objectName : string.Concat("@", objectName);
+                                outputsToolRegion.ObjectName = cleanObjectName;
+                            }
+
+                        }
+                    }
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
                 {
                     SourceChangedAction = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
-                            OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsEnabled = true;
+                            OutputsRegion.IsObject = true;
+
                         }
                         if (Regions != null)
                         {
@@ -378,6 +403,19 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             {
                                 toolRegion.Errors?.Clear();
                             }
+                        }
+                    },
+                };
+                ConstructorRegion.SomethingChanged += (sender, args) =>
+                {
+                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                    if (outputsToolRegion != null)
+                    {
+                        var dotNetConstructorRegion = sender as DotNetConstructorRegion;
+                        if (dotNetConstructorRegion != null)
+                        {
+                            var returnObject = dotNetConstructorRegion.SelectedConstructor?.ReturnObject;
+                            outputsToolRegion.ObjectResult = returnObject;
                         }
                     }
                 };
@@ -392,7 +430,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        OutputsRegion.IsEnabled = false;
+                        //OutputsRegion.IsEnabled = false;
                         if (Regions != null)
                         {
                             foreach (var toolRegion in Regions)
@@ -429,12 +467,14 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 regions.Add(ErrorRegion);
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
+                NamespaceRegion.Dependants.Add(OutputsRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
                 ConstructorRegion.Dependants.Add(OutputsRegion);
+                ConstructorRegion.Dependants.Add(NamespaceRegion);
                 MethodRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
-                MethodRegion.Dependants.Add(OutputsRegion);
-                
+                //MethodRegion.Dependants.Add(OutputsRegion);
+
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;

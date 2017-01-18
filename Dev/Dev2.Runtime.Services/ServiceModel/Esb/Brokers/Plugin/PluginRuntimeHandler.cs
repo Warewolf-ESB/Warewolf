@@ -15,7 +15,6 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -35,7 +34,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             Assembly loadedAssembly;
             var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
             if (!tryLoadAssembly)
@@ -80,7 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 instance = Activator.CreateInstance(type);
             }
-            var serializeToJsonString = serializer.Serialize(instance);
+            var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
             // ReSharper disable once PossibleNullReferenceException
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
@@ -205,7 +203,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var constructors = type.GetConstructors();
-
+                var propertiesJObject = GetPropertiesJObject(type);
                 constructors.ToList().ForEach(info =>
                 {
                     var serviceConstructor = new ServiceConstructor();
@@ -222,6 +220,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                                 ShortTypeName = parameterInfo.ParameterType.FullName
 
                             }));
+                    serviceConstructor.ReturnObjectJson = propertiesJObject.ToString(Formatting.None);
                     serviceMethodList.Add(serviceConstructor);
                 });
             }
@@ -250,22 +249,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         Name = info.Name
                     };
-                    if (info.ReturnType.IsPrimitive || info.ReturnType == typeof(decimal) || info.ReturnType == typeof(string))
+                    var returnType = info.ReturnType;
+                    if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
                         serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
                     }
                     else
                     {
-                        var properties = info.ReturnType.GetProperties()
-                         .Where(propertyInfo => propertyInfo.CanWrite)
-                         .ToList();
-                        var jObject = new JObject();
-                        foreach (var property in properties)
-                        {
-                            jObject.Add(property.Name, "");
-                        }
+                        var jObject = GetPropertiesJObject(returnType);
                         serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
-
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>
@@ -283,6 +275,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
 
             return serviceMethodList;
+        }
+
+        private static JObject GetPropertiesJObject(Type returnType)
+        {
+            var properties = returnType.GetProperties()
+                .Where(propertyInfo => propertyInfo.CanWrite)
+                .ToList();
+            var jObject = new JObject();
+            foreach(var property in properties)
+            {
+                jObject.Add(property.Name, "");
+            }
+            return jObject;
         }
     }
 }
