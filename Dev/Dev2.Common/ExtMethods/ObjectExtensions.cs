@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -106,6 +107,12 @@ namespace Dev2.Common.ExtMethods
         {
             DeSerializerSettings.Binder = binder;
             var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, type, DeSerializerSettings);
+            return deserializeObject;
+        }
+
+        public static JContainer DeserializeToObject(this string objectToSerialize) 
+        {
+            var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, DeSerializerSettings) as JContainer;
             return deserializeObject;
         }
 

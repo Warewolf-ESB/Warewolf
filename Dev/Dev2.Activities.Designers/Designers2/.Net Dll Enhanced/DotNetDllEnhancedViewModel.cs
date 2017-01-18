@@ -27,6 +27,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
     public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetEnhancedViewModel
     {
         private IOutputsToolRegion _outputsRegion;
+        private IOutputsToolRegion _methodOutputsRegion;
         private IDotNetConstructorInputRegion _inputArea;
         private IDotNetMethodInputRegion _methodInputRegion;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
@@ -41,7 +42,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         const string OutputDisplayName = " - Outputs";
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-        
+
         public DotNetDllEnhancedViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -325,9 +326,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -343,9 +345,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedNamespace = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
-                            OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsEnabled = true;
+                            OutputsRegion.IsObject = true;
                         }
                         if (Regions != null)
                         {
@@ -362,15 +365,38 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         Errors =
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
+                    var namespaceItem = sender as DotNetNamespaceRegion;
+                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                    if (namespaceItem != null)
+                    {
+                        if (outputsToolRegion != null)
+                        {
+                            var objectName = string.IsNullOrEmpty(outputsToolRegion.ObjectName)
+                                            ? namespaceItem.SelectedNamespace?.FullName.Split('.').LastOrDefault()
+                                            : outputsToolRegion.ObjectName;
+                            if (objectName == null)
+                            {
+                                outputsToolRegion.ObjectName = string.Empty;
+                            }
+                            else
+                            {
+                                var cleanObjectName = objectName.StartsWith("@") ? objectName : string.Concat("@", objectName);
+                                outputsToolRegion.ObjectName = cleanObjectName;
+                            }
+
+                        }
+                    }
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
                 {
                     SourceChangedAction = () =>
                     {
-                        if(OutputsRegion != null)
+                        if (OutputsRegion != null)
                         {
-                            OutputsRegion.IsEnabled = false;
+                            OutputsRegion.IsEnabled = true;
+                            OutputsRegion.IsObject = true;
+
                         }
                         if (Regions != null)
                         {
@@ -378,6 +404,19 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             {
                                 toolRegion.Errors?.Clear();
                             }
+                        }
+                    },
+                };
+                ConstructorRegion.SomethingChanged += (sender, args) =>
+                {
+                    var outputsToolRegion = args.Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                    if (outputsToolRegion != null)
+                    {
+                        var dotNetConstructorRegion = sender as DotNetConstructorRegion;
+                        if (dotNetConstructorRegion != null)
+                        {
+                            var returnObject = dotNetConstructorRegion.SelectedConstructor?.ReturnObject;
+                            outputsToolRegion.ObjectResult = returnObject;
                         }
                     }
                 };
@@ -388,26 +427,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ConstructorRegion);
-                MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
-                {
-                    SourceChangedAction = () =>
-                    {
-                        OutputsRegion.IsEnabled = false;
-                        if (Regions != null)
-                        {
-                            foreach (var toolRegion in Regions)
-                            {
-                                toolRegion.Errors?.Clear();
-                            }
-                        }
-                    }
-                };
-                MethodRegion.ErrorsHandler += (sender, list) =>
-                {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
-                    UpdateDesignValidationErrors(errorInfos);
-                    Errors = new List<IActionableErrorInfo>(errorInfos);
-                };
+                CreateMethodRegion();
                 regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
                 regions.Add(InputArea);
@@ -420,29 +440,80 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
-
                 }
+                
                 MethodInputRegion = new DotNetMethodInputRegion(ModelItem, MethodRegion);
                 regions.Add(MethodInputRegion);
+                MethodOutputsRegion = new DotNetMethodOutputsRegion(ModelItem, true)
+                {
+                    IsObject = true,
+                    IsEnabled = false
+                };
+                regions.Add(MethodOutputsRegion);
+                if (MethodOutputsRegion.Outputs == null || MethodOutputsRegion.Outputs.Count == 0)
+                {
+                    MethodOutputsRegion.IsEnabled = false;
+                }
+                else if (MethodOutputsRegion.Outputs.Count > 0)
+                {
+                    MethodOutputsRegion.IsEnabled = true;
+                }
 
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
+                NamespaceRegion.Dependants.Add(OutputsRegion);
+                NamespaceRegion.Dependants.Add(MethodRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
                 ConstructorRegion.Dependants.Add(OutputsRegion);
-                MethodRegion.Dependants.Add(InputArea);
                 MethodRegion.Dependants.Add(MethodInputRegion);
-                MethodRegion.Dependants.Add(OutputsRegion);
+                MethodRegion.Dependants.Add(MethodOutputsRegion);
                 
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
 
+            AddToMethodsList();
+            return regions;
+        }
+
+        private void AddToMethodsList()
+        {
             MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
 
             MethodsToRunList.Add(MethodRegion);
-            return regions;
+        }
+
+        private void CreateMethodRegion()
+        {
+            MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+            {
+                SourceChangedAction = () =>
+                {
+                    MethodOutputsRegion.IsEnabled = false;
+                    MethodOutputsRegion.IsObject = true;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            toolRegion.Errors?.Clear();
+                        }
+                    }
+                    CreateMethodRegion();
+                }
+            };
+            MethodRegion.ErrorsHandler += (sender, list) =>
+            {
+                List<ActionableErrorInfo> errorInfos =
+                    list.Select(
+                        error =>
+                            new ActionableErrorInfo(new ErrorInfo {ErrorType = ErrorType.Critical, Message = error}, () => { }))
+                        .ToList();
+                UpdateDesignValidationErrors(errorInfos);
+                Errors = new List<IActionableErrorInfo>(errorInfos);
+            };
+            AddToMethodsList();
         }
 
         public List<IMethodToolRegion<IPluginAction>> MethodsToRunList
@@ -545,6 +616,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             set
             {
                 _outputsRegion = value;
+                OnPropertyChanged();
+            }
+        }
+        public IOutputsToolRegion MethodOutputsRegion
+        {
+            get
+            {
+                return _methodOutputsRegion;
+            }
+            set
+            {
+                _methodOutputsRegion = value;
                 OnPropertyChanged();
             }
         }

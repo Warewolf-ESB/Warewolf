@@ -148,8 +148,9 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 
         public bool CanRefresh()
         {
-            IsConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null;
+            var isConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            IsConstructorEnabled = isConstructorEnabled;
+            return isConstructorEnabled;
         }
 
         public IPluginConstructor SelectedConstructor
@@ -164,6 +165,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 {
                     if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
                         StorePreviousValues(_selectedConstructor.GetIdentifier());
+                    OnSomethingChanged(this);
                 }
                 if (Dependants != null)
                 {
@@ -173,9 +175,27 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;
-                        region.ObjectResult = string.Empty;
-                        region.IsObject = false;
-                        region.ObjectName = string.Empty;
+                        region.IsObject = true;
+                        if (_selectedConstructor != null)
+                        {
+                            var namesPace = Dependants.SingleOrDefault(a => a is INamespaceToolRegion<INamespaceItem>) as INamespaceToolRegion<INamespaceItem>;
+                            if (namesPace != null)
+                            {
+                                var objectName = string.IsNullOrEmpty(region.ObjectName)
+                                    ? namesPace.SelectedNamespace?.FullName.Split('.').LastOrDefault()
+                                    : region.ObjectName;
+                                if (objectName == null)
+                                {
+                                    region.ObjectName = string.Empty;
+                                }
+                                else
+                                {
+                                    var cleanObjectName = objectName.StartsWith("@") ? objectName : string.Concat("@", objectName);
+                                    region.ObjectName = cleanObjectName;
+                                }
+                            }
+                            region.ObjectResult = _selectedConstructor.ReturnObject;
+                        }
                     }
                 }
                 RestoreIfPrevious(value);
@@ -194,6 +214,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             {
                 SetSelectedConstructor(value);
                 SourceChangedAction();
+
                 OnSomethingChanged(this);
             }
             var delegateCommand = RefreshConstructorsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
