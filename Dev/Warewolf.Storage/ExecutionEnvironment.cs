@@ -530,7 +530,16 @@ namespace Warewolf.Storage
                 return null;
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
             var nameExpression = jsonIdentifierExpression?.Item as LanguageAST.JsonIdentifierExpression.NameExpression;
-            return nameExpression != null ? _env.JsonObjects[nameExpression.Item.Name] : null;
+            if (nameExpression != null)
+            {
+                return _env.JsonObjects[nameExpression.Item.Name];
+            }
+            var arrayExpression = jsonIdentifierExpression?.Item as LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression;
+            if (arrayExpression != null)
+            {
+                return _env.JsonObjects[arrayExpression.Item.ObjectName];
+            }
+            return null;
         }
 
         public List<string> GetIndexes(string exp)

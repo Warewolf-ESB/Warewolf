@@ -64,8 +64,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var serviceConstructorList = services.Constructors(svc, Guid.Empty, Guid.Empty);
                 List<IPluginConstructor> constructors = serviceConstructorList.Select(a => new PluginConstructor
                 {
-                    ConstructorName =BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
+                    ConstructorName = BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
                     Inputs = a.Parameters.Cast<IConstructorParameter>().ToList(),
+                    ReturnObject = a.ReturnObjectJson
                 } as IPluginConstructor).ToList();
                 var executeMessage = new ExecuteMessage { HasError = false, Message = constructors.SerializeToJsonStringBuilder() };
                 return executeMessage.SerializeToJsonStringBuilder();
