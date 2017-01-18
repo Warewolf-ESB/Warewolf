@@ -30,23 +30,29 @@ namespace Warewolf.UITests
             var fileStream = File.Create(filePath);
             fileStream.Close();
 
-            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
-            UIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
-            Assert.IsTrue(UIMap.ChooseDLLWindow.FilterTextBox.Enabled, "Filter Combobox is not enabled.");
-            Assert.IsTrue(UIMap.ChooseDLLWindow.DLLDataTree.Enabled, "DLL Data Tree is not enabled.");
-            Assert.IsTrue(UIMap.ChooseDLLWindow.FilesTextBox.Enabled, "Files Textbox is not enabled.");
-            Assert.IsTrue(UIMap.ChooseDLLWindow.SelectButton.Enabled, "Select button is not enabled.");
-            Assert.IsTrue(UIMap.ChooseDLLWindow.CancelButton.Enabled, "Cancel button is not enabled.");
-            UIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File ComboBox is not enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Directory button is not enabled");
-            UIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
-            UIMap.Enter_ConfigFile_In_SelectFilesWindow();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
-            UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source Assembly");
-            if (File.Exists(filePath))
+            try
             {
-                File.Delete(filePath);
+                UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
+                UIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
+                Assert.IsTrue(UIMap.ChooseDLLWindow.FilterTextBox.Enabled, "Filter Combobox is not enabled.");
+                Assert.IsTrue(UIMap.ChooseDLLWindow.DLLDataTree.Enabled, "DLL Data Tree is not enabled.");
+                Assert.IsTrue(UIMap.ChooseDLLWindow.FilesTextBox.Enabled, "Files Textbox is not enabled.");
+                Assert.IsTrue(UIMap.ChooseDLLWindow.SelectButton.Enabled, "Select button is not enabled.");
+                Assert.IsTrue(UIMap.ChooseDLLWindow.CancelButton.Enabled, "Cancel button is not enabled.");
+                UIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
+                Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File ComboBox is not enabled");
+                Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Directory button is not enabled");
+                UIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
+                UIMap.Enter_ConfigFile_In_SelectFilesWindow();
+                Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
+                UIMap.Save_With_Ribbon_Button_And_Dialog("DotNet Plugin Source Assembly");
+            }
+            catch
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
             }
         }
 
