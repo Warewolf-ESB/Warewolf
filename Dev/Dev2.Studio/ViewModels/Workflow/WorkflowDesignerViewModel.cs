@@ -1965,6 +1965,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
+                    WorkflowChanged?.Invoke();
                     NotifyOfPropertyChange(() => DisplayName);
                     ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
                 }
@@ -2792,6 +2793,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             resourceModel.IsWorkflowSaved = true;
         }
+
+        #region Implementation of IWorkflowDesignerViewModel
+
+        public System.Action WorkflowChanged { get; set; }
+
+        #endregion
 
         #endregion
     }

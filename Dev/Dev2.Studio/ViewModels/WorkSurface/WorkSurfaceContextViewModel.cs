@@ -186,6 +186,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if (model != null)
             {
+                model.WorkflowChanged += UpdateForWorkflowChange;
                 _environmentModel = model.EnvironmentModel;
                 if (_environmentModel != null)
                 {
@@ -196,6 +197,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
+        }
+
+        private void UpdateForWorkflowChange()
+        {
+            _workspaceSaved = false;
         }
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList compileMessageList)
@@ -497,9 +503,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
-                var vm = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-                var workspaceSave = vm?.WorkspaceSave ?? false;
-                if(!ContextualResourceModel.IsWorkflowSaved && !workspaceSave)
+                if(!ContextualResourceModel.IsWorkflowSaved && !_workspaceSaved)
                 {
                     var successfuleSave = Save(ContextualResourceModel, true);
                     if(!successfuleSave)
@@ -530,6 +534,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         private bool _waitingforDialog;
+        private bool _workspaceSaved;
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
@@ -604,6 +609,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             else
             {
+                _workspaceSaved = true;
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.Save(resource);
                 DisplaySaveResult(saveResult, resource);
             }

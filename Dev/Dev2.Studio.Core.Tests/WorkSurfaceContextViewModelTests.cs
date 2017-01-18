@@ -1190,6 +1190,12 @@ namespace Dev2.Core.Tests
 
         public bool WorkspaceSave => _workspaceSave;
 
+        #region Implementation of IWorkflowDesignerViewModel
+
+        public System.Action WorkflowChanged { get; set; }
+
+        #endregion
+
         #endregion
     }
 }
