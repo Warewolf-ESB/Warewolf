@@ -582,7 +582,7 @@
             <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs" />
             <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                     Grid.Row="1"
-                                    ItemsSource="{Binding MethodInputRegion.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingDataGridStyle}"
                                     Height="Auto"
                                     Margin="{StaticResource ControlBorderTop}">
@@ -677,13 +677,13 @@
                         VerticalAlignment="Bottom"
                         Margin="0,0,0,-5"
                         Style="{StaticResource MenuTextBlockStyle}"
-                        Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="DotNetMethodsOutputGrid">
-        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch"  Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -861,7 +861,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Control Grid.Row="0" DataContext="{Binding MethodInputRegion}" Template="{StaticResource DotNetMethodsInputGrid}"/>
-            <Control Grid.Row="1" Template="{StaticResource DotNetMethodsOutputGrid}" Visibility="{Binding IsMethodOutputsVisible}"/>
+            <Control Grid.Row="1" DataContext="{Binding MethodOutputsRegion}" Template="{StaticResource DotNetMethodsOutputGrid}"/>
         </Grid>
     </ControlTemplate>
 
