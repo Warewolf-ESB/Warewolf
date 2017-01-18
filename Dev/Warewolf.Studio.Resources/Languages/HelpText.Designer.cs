@@ -2126,7 +2126,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PluginSourceConfigFileButtonHelp.
+        ///   Looks up a localized string similar to Select to get the full path to the Config file..
         /// </summary>
         public static string PluginSourceConfigFileButtonHelp {
             get {
@@ -2135,7 +2135,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PluginSourceConfigFileHelp.
+        ///   Looks up a localized string similar to The full path to the Config file..
         /// </summary>
         public static string PluginSourceConfigFileHelp {
             get {
@@ -2144,7 +2144,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PluginSourceDllFullNameButtonHelp.
+        ///   Looks up a localized string similar to Select to get the full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;.
         /// </summary>
         public static string PluginSourceDllFullNameButtonHelp {
             get {
@@ -2153,7 +2153,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;	or	The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;.
+        ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;.
         /// </summary>
         public static string PluginSourceDllFullNameHelp {
             get {
@@ -2162,7 +2162,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PluginSourceGacAssemblyNameButtonHelp.
+        ///   Looks up a localized string similar to Select to get the full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;.
         /// </summary>
         public static string PluginSourceGacAssemblyNameButtonHelp {
             get {

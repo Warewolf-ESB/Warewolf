@@ -43,19 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText saveBeforeAddingNewTestText = this.MessageBoxWindow.SaveBeforeAddingNewTestText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Save before continuing' label equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.SaveBeforeAddingNewTestTextExists, saveBeforeAddingNewTestText.Exists);
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -66,18 +53,6 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -241,8 +216,6 @@ namespace Warewolf.UITests
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -283,21 +256,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Save before continuing' label equals 'True'
-        /// </summary>
-        public bool SaveBeforeAddingNewTestTextExists = true;
         #endregion
     }
     
@@ -12903,6 +12861,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfText UIUnsaved2Text
+        {
+            get
+            {
+                if ((this.mUIUnsaved2Text == null))
+                {
+                    this.mUIUnsaved2Text = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIUnsaved2Text.SearchProperties[WpfText.PropertyNames.Name] = "Unsaved 2";
+                    this.mUIUnsaved2Text.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mUIUnsaved2Text;
+            }
+        }
+        
         public WpfText UIUnsaved1TextWithAsterisk
         {
             get
@@ -12948,6 +12922,8 @@ namespace Warewolf.UITests
         private WpfText mTabDescription;
         
         private WpfText mUIUnsaved1Text;
+        
+        private WpfText mUIUnsaved2Text;
         
         private WpfText mUIUnsaved1TextWithAsterisk;
         
@@ -30766,7 +30742,7 @@ namespace Warewolf.UITests
                 {
                     this.mTestingDb = new WpfListItem(this);
                     #region Search Criteria
-                    this.mTestingDb.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":""RSAKLFSVRGENDEV"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testuser"",""Password"":""test123"",""DataList"":"""",""ConnectionString"":""Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""ResourceType"":""SqlDatabase"",""ResourceName"":""TestingDb"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-01-12T08:28:31.4692206+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""VersionId"":""47f2ec5f-a20a-41de-bbea-5653cb87b60c""}}";
+                    this.mTestingDb.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "TestingDb", PropertyExpressionOperator.Contains));
                     this.mTestingDb.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -107247,29 +107223,29 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public DllTreeFirstItem DllTreeFirstItem
+        public CDrive CDrive
         {
             get
             {
-                if ((this.mDllTreeFirstItem == null))
+                if ((this.mCDrive == null))
                 {
-                    this.mDllTreeFirstItem = new DllTreeFirstItem(this);
+                    this.mCDrive = new CDrive(this);
                 }
-                return this.mDllTreeFirstItem;
+                return this.mCDrive;
             }
         }
         #endregion
         
         #region Fields
-        private DllTreeFirstItem mDllTreeFirstItem;
+        private CDrive mCDrive;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DllTreeFirstItem : WpfTreeItem
+    public class CDrive : WpfTreeItem
     {
         
-        public DllTreeFirstItem(UITestControl searchLimitContainer) : 
+        public CDrive(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -107295,10 +107271,49 @@ namespace Warewolf.UITests
                 return this.mDLLTreeCText;
             }
         }
+        
+        public WpfCheckBox Expander
+        {
+            get
+            {
+                if ((this.mExpander == null))
+                {
+                    this.mExpander = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mExpander.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ExpansionIndicator";
+                    this.mExpander.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mExpander.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mExpander;
+            }
+        }
+        
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mDLLTreeCText;
+        
+        private WpfCheckBox mExpander;
+        
+        private WpfTreeItem mFirstItem;
         #endregion
     }
     
