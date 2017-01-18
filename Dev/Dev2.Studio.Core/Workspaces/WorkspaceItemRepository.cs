@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -259,7 +260,7 @@ namespace Dev2.Workspaces
 
             WorkspaceItems.Remove(itemToRemove);
             Write();
-            resourceModel.Environment.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
+            resourceModel.Environment.ResourceRepository.DeleteResourceFromWorkspaceAsync(resourceModel);
         }
 
         public void ClearWorkspaceItems(IContextualResourceModel resourceModel)
