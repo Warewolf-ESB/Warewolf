@@ -107234,10 +107234,24 @@ namespace Warewolf.UITests
                 return this.mCDrive;
             }
         }
+        
+        public GAC GAC
+        {
+            get
+            {
+                if ((this.mGAC == null))
+                {
+                    this.mGAC = new GAC(this);
+                }
+                return this.mGAC;
+            }
+        }
         #endregion
         
         #region Fields
         private CDrive mCDrive;
+        
+        private GAC mGAC;
         #endregion
     }
     
@@ -107313,6 +107327,44 @@ namespace Warewolf.UITests
         
         private WpfCheckBox mExpander;
         
+        private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class GAC : WpfTreeItem
+    {
+        
+        public GAC(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "GAC";
+            this.WindowTitles.Add("Choose DLL");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
         private WpfTreeItem mFirstItem;
         #endregion
     }
