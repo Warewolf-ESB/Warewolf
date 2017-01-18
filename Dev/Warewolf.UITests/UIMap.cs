@@ -8972,7 +8972,7 @@ namespace Warewolf.UITests
         {
             Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
-            Select_First_Item_In_The_Choose_DLL_Dialog_Tree();
+            Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree();
             Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -8992,8 +8992,7 @@ namespace Warewolf.UITests
         public void Select_GACAssemblyFile_From_ChooseDLLWindow()
         {
             ChooseDLLWindow.FilterTextBox.Text = "Build";
-            Playback.Wait(2500);
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(71, 34));
+            Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree();
             Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -9001,7 +9000,7 @@ namespace Warewolf.UITests
         public void Select_AssemblyFile_From_COMPluginDataTree()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = "Microsoft";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree, new Point(112, 19));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[0], new Point(112, 19));
             Assert.IsFalse(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text));
         }
 
@@ -9058,10 +9057,16 @@ namespace Warewolf.UITests
             Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.Expander, new Point(17, 6));
         }
 
-        [When(@"I Select First Item in the Choose DLL Dialog Tree")]
-        public void Select_First_Item_In_The_Choose_DLL_Dialog_Tree()
+        [When(@"I Select First C Drive Item in the Choose DLL Dialog Tree")]
+        public void Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree()
         {
             Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(83, 9));
+        }
+
+        [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
+        public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
+        {
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
         }
     }
 }
