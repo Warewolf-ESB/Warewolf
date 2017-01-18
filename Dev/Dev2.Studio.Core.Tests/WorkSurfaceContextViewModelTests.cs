@@ -1014,6 +1014,8 @@ namespace Dev2.Core.Tests
 
     public class WorkSurfaceViewModelTest : IWorkSurfaceViewModel, IWorkflowDesignerViewModel
     {
+        private bool _workspaceSave;
+
         #region Implementation of IHaveDisplayName
 
         public string DisplayName { get; set; }
@@ -1172,6 +1174,7 @@ namespace Dev2.Core.Tests
             {
                 var ax = new Mock<IContextualResourceModel>();
                 var env = new Mock<IEnvironmentModel>();
+                _workspaceSave = true;
                 env.Setup(a => a.IsConnected).Returns(true);
                 ax.Setup(a => a.Environment).Returns(env.Object);
                 ax.Setup(a => a.UserPermissions).Returns(Permissions.Administrator);
@@ -1182,5 +1185,11 @@ namespace Dev2.Core.Tests
                 throw new NotImplementedException();
             }
         }
+
+        #region Implementation of IWorkflowDesignerViewModel
+
+        public bool WorkspaceSave => _workspaceSave;
+
+        #endregion
     }
 }
