@@ -40,7 +40,7 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
 
     public interface IDotNetConstructorInputRegion : IToolRegion
     {
-        ICollection<IConstructorParameter> Inputs { get; set; }
+        ICollection<IServiceInput> Inputs { get; set; }
     }
 
 

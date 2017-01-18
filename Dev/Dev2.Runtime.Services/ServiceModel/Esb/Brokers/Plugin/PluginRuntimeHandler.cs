@@ -55,16 +55,33 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
 
-            object instance;
+            object instance = new object();
             if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
             {
-                instance = Activator.CreateInstance(type, constructorArgs);
+                try
+                {
+                    instance = Activator.CreateInstance(type, constructorArgs);
+                }
+                catch (Exception)
+                {
+                    var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => Type.GetType(parameter.TypeName));
+                    if (types != null)
+                    {
+                        var constructorInfo = type.GetConstructor(types.ToArray());
+                        if (constructorInfo != null)
+                        {
+                            instance = constructorInfo.Invoke(constructorArgs.ToArray());
+                        }
+                    }
+                }
+
             }
             else
             {
                 instance = Activator.CreateInstance(type);
             }
             var serializeToJsonString = serializer.Serialize(instance);
+            // ReSharper disable once PossibleNullReferenceException
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
@@ -90,16 +107,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 throw;
             }
         }
-        
+
         private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
         {
-            
+
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
             VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var knownBinder = new KnownTypesBinder();
-            loadedAssembly.ExportedTypes.ForEach(t=>knownBinder.KnownTypes.Add(t));
+            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
             if (objectToRun.IsStatic)
             {
                 RunMethods(setupInfo, type, null, InvokeMethodsAction);
