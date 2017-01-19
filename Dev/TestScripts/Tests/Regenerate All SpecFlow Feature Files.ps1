@@ -12,10 +12,14 @@ if (-not $env:errorlevel -eq 0) {
 foreach ($ProjectDir in get-ChildItem "Dev\*Specs") {
     $FullPath = $ProjectDir.FullName
     $ProjectName = $ProjectDir.Name
-	Dev\packages\SpecFlow.2.1.0\tools\specflow.exe generateAll "$FullPath\$ProjectName.csproj" /force /verbose
+    if (Test-Path "$FullPath\$ProjectName.csproj") {
+	    Dev\packages\SpecFlow.2.1.0\tools\specflow.exe generateAll "$FullPath\$ProjectName.csproj" /force /verbose
+    }
 }
 foreach ($ProjectDir in get-ChildItem "Dev\Warewolf.UIBindingTests.*") {
     $FullPath = $ProjectDir.FullName
     $ProjectName = $ProjectDir.Name
-	Dev\packages\SpecFlow.2.1.0\tools\specflow.exe generateAll "$FullPath\$ProjectName.csproj" /force /verbose
+    if (Test-Path "$FullPath\$ProjectName.csproj") {
+	    Dev\packages\SpecFlow.2.1.0\tools\specflow.exe generateAll "$FullPath\$ProjectName.csproj" /force /verbose
+    }
 }
