@@ -725,7 +725,7 @@
         </Setter>
     </Style>
     <Style x:Key="DotNetDllExpander" TargetType="{x:Type Expander}">
-        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
         <Setter Property="Background" Value="{StaticResource WareWolfWhiteBrush}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>

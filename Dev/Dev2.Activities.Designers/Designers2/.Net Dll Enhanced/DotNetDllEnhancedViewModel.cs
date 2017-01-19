@@ -473,7 +473,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             toolRegion.Errors?.Clear();
                         }
                     }
-                    CreateMethodRegion();
+                    //CreateMethodRegion();
                 }
             };
             MethodRegion.ErrorsHandler += (sender, list) =>
