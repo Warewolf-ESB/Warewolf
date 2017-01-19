@@ -25,42 +25,42 @@ if ($Args.Count -gt 0) {
 if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " `"$PSScriptRoot\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll`" /logger:trx" + $TestList
+$FullArgsList = " `"$TestAssembliesPath\Warewolf.Studio.ViewModels.Tests.dll`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
