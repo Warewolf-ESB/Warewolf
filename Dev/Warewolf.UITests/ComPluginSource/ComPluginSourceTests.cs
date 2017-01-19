@@ -12,13 +12,14 @@ namespace Warewolf.UITests
         [TestCategory("COMPluginSource")]
         public void SelectComPluginSource()
         {
-            UIMap.Select_NewCOMPluginSource_FromExplorerContextMenu();
+            UIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Enabled);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Enabled);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.Enabled);
             UIMap.Select_AssemblyFile_From_COMPluginDataTree();
             UIMap.Save_With_Ribbon_Button_And_Dialog("COM Plugin Source");
+            UIMap.Click_COMPluginSource_CloseTabButton();
         }
 
         #region Additional test attributes
