@@ -29,15 +29,15 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ServerPermissionsSecurity.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ExampleWorkflowExecutionSpecs"
+  name="ServerPermissionsSecurity"
   enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
+  <Description>Run Server Permissions Security Specs.</Description>
   <Deployment enabled="false" />
   <Execution>
     <Timeouts testTimeout=`"180000`" />
@@ -47,13 +47,11 @@ $TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
 
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ServerPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ServerPermissionsSecurity`""
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ServerPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ServerPermissionsSecurity`""
 } else {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ServerPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ServerPermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
-# Start server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
