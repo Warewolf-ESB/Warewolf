@@ -9138,7 +9138,7 @@ namespace Warewolf.UITests
         public void Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton);
-            Assert.IsTrue(SelectFilesWindow.Exists, "Select Files Window did not open after clicking Assembly Diretory Button");
+            Assert.IsTrue(SelectFilesWindow.Exists, "Select Files Window did not open after clicking Assembly Directory Button");
         }
 
         public void Enter_ConfigFile_In_SelectFilesWindow()
