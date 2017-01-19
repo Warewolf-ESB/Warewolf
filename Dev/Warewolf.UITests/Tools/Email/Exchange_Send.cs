@@ -44,10 +44,26 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {
-            UIMap.Open_ExchangeSendTool_LargeView();
-            UIMap.Click_SelectFilesButton_On_ExchangeEmailTool_LargeView();
-            UIMap.Select_Attachments_From_SelectFilesWindow();
-            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text));
+            string folderName = @"c:\$$AttachmentsForEmail";
+            string filePath1 = @"C:\$$AttachmentsForEmail\attachment1.txt";
+            string filePath2 = @"C:\$$AttachmentsForEmail\attachment2.txt";
+            try
+            {
+                UIMap.CreateFolderForAttachments(folderName);
+                UIMap.CreateAttachmentsForTest(filePath1);
+                UIMap.CreateAttachmentsForTest(filePath2);
+                UIMap.Open_ExchangeSendTool_LargeView();
+                UIMap.Click_SelectFilesButton_On_ExchangeEmailTool_LargeView();
+                UIMap.Select_Attachments_From_SelectFilesWindow();
+                Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text));
+                UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
+            }
+            catch
+            {
+                UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
+            }
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
