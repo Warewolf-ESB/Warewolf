@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             if (type.IsAbstract)//IsStatic
             {
-                return new PluginExecutionDto(string.Empty) { IsStatic = true };
+                return new PluginExecutionDto(string.Empty) { IsStatic = true, Args = setupInfo };
             }
             if (setupInfo.PluginConstructor.Inputs != null)
             {

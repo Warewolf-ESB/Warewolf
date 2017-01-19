@@ -13,6 +13,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -74,8 +75,7 @@ namespace Dev2.Activities
             constructor.Inputs = new List<IConstructorParameter>();
             foreach (var parameter in ConstructorInputs)
             {
-                var paramIterator = dataObject.Environment.Eval(parameter.Value, update);
-                var resultToString = ExecutionEnvironment.WarewolfEvalResultToString(paramIterator);
+                var resultToString = GetEvaluatedResult(dataObject, parameter.Value);
                 constructor.Inputs.Add(new ConstructorParameter()
                 {
                     TypeName = parameter.TypeName,
@@ -84,7 +84,6 @@ namespace Dev2.Activities
                     EmptyToNull = parameter.EmptyIsNull,
                     IsRequired = parameter.RequiredField
                 });
-                parameter.Value = resultToString;
             }
 
             var args = new PluginInvokeArgs
@@ -93,21 +92,28 @@ namespace Dev2.Activities
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 PluginConstructor = constructor,
-                MethodsToRun = MethodsToRun.Select(action => new Dev2MethodInfo
+                MethodsToRun = MethodsToRun?.Select(action =>
                 {
-                    Method = action.Method,
-                    Parameters = action.Inputs.Select(p => new MethodParameter
+                    if (action != null)
                     {
-                        Name = p.Name,
-                        Value = p.Value,
-                        TypeName = p.TypeName,
-                        EmptyToNull = p.EmptyIsNull,
-                        IsRequired = p.RequiredField
-                    } as IMethodParameter).ToList(),
-                    IsObject = action.IsObject,
-                    MethodResult = action.MethodResult,
-                    OutputVariable = action.OutputVariable
-                } as IDev2MethodInfo).ToList()
+                        return new Dev2MethodInfo
+                        {
+                            Method = action.Method,
+                            Parameters = action.Inputs?.Select(p => new MethodParameter
+                            {
+                                Name = p.Name,
+                                Value = GetEvaluatedResult(dataObject, p.Value),
+                                TypeName = p.TypeName,
+                                EmptyToNull = p.EmptyIsNull,
+                                IsRequired = p.RequiredField
+                            } as IMethodParameter).ToList() ?? new List<IMethodParameter>(),
+                            IsObject = action.IsObject,
+                            MethodResult = action.MethodResult,
+                            OutputVariable = action.OutputVariable
+                        } as IDev2MethodInfo;
+                    }
+                    return new Dev2MethodInfo();
+                }).Where(info => !string.IsNullOrEmpty(info.Method)).ToList() ?? new List<IDev2MethodInfo>()
             };
 
             pluginExecutionDto.Args = args;
@@ -120,60 +126,70 @@ namespace Dev2.Activities
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
 
-                MethodsToRun = result.Args.MethodsToRun.Select(p => new PluginAction()
+                MethodsToRun = result.Args.MethodsToRun?.Select(p => new PluginAction()
                 {
                     Method = p.Method,
                     MethodResult = p.MethodResult,
                     IsObject = p.IsObject,
                     OutputVariable = p.OutputVariable,
-                    Inputs = p.Parameters.Select(q => new ServiceInput(q.Name, q.Value)
+                    Inputs = p.Parameters?.Select(q => new ServiceInput(q.Name, q.Value)
                     {
                         EmptyIsNull = q.EmptyToNull,
                         RequiredField = q.IsRequired,
                         TypeName = q.TypeName
 
-                    } as IServiceInput).ToList()
+                    } as IServiceInput).ToList() ?? new List<IServiceInput>()
 
-                } as IPluginAction).ToList();// assign return values returned from the seperate AppDomain
+                } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
                     if (dev2MethodInfo.IsObject)
                     {
-                        var jContainer = dev2MethodInfo.MethodResult.DeserializeToObject();
+
+                        var jContainer = dev2MethodInfo.MethodResult.DeserializeToObject() ??
+                            JToken.Parse(dev2MethodInfo.MethodResult) as JContainer;
                         dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
                     }
                     else
                     {
-                        var jObj = dev2MethodInfo.MethodResult.DeserializeToObject();
-                        if (jObj.IsEnumerableOfPrimitives())
+                        JToken jObj = JToken.Parse(dev2MethodInfo.MethodResult);
+                        if (jObj == null)
                         {
-                            var values = jObj.Children().Select(token => token.ToString()).ToList();
-                            if (DataListUtil.IsValueScalar(dev2MethodInfo.OutputVariable))
+                            jObj = dev2MethodInfo.MethodResult.DeserializeToObject();
+                        }
+
+                        if (jObj != null)
+                        {
+                            if (jObj.IsEnumerableOfPrimitives())
                             {
-                                var valueString = string.Join(",", values);
-                                dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, valueString, 0);
-                            }
-                            else
-                            {
-                                foreach (var value in values)
+                                var values = jObj.Children().Select(token => token.ToString()).ToList();
+                                if (DataListUtil.IsValueScalar(dev2MethodInfo.OutputVariable))
                                 {
-                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                                    var valueString = string.Join(",", values);
+                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, valueString, 0);
+                                }
+                                else
+                                {
+                                    foreach (var value in values)
+                                    {
+                                        dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                                    }
                                 }
                             }
-                        }
-                        else if (jObj.IsPrimitive())
-                        {
-                            var value = jObj.ToString();
-                            dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                            else if (jObj.IsPrimitive())
+                            {
+                                var value = jObj.ToString();
+                                dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                            }
                         }
                     }
                 }
                 ObjectResult = result.ObjectString;
 
-                if (!string.IsNullOrEmpty(ObjectName))
+                if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
                 {
-                    var jContainer = ObjectResult.DeserializeToObject();
-                    dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
+                    var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
+                    dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
                 }
 
             }
@@ -181,6 +197,12 @@ namespace Dev2.Activities
             {
                 errors.AddError(e.Message);
             }
+        }
+
+        private string GetEvaluatedResult(IDSFDataObject dataObject, string value)
+        {
+            var warewolfEvalResult = dataObject.Environment.Eval(value, 0);
+            return ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
         }
 
         #region Overrides of DsfActivity
@@ -195,6 +217,7 @@ namespace Dev2.Activities
                 DebugItem debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
                 AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
+                _debugOutputs.Add(debugItem);
             }
 
             if (MethodsToRun != null && MethodsToRun.Any())
@@ -221,11 +244,10 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            _debugInputs = base.GetDebugInputs(env, update);
+            base.GetDebugInputs(env, update);
             if (Constructor != null)
             {
                 DebugItem debugItem = new DebugItem();
-
                 AddDebugItem(new DebugItemStaticDataParams("", "Constructor"), debugItem);
                 AddDebugItem(new DebugItemStaticDataParams(Constructor.ConstructorName, ""), debugItem);
                 _debugInputs.Add(debugItem);
@@ -233,11 +255,13 @@ namespace Dev2.Activities
                 {
                     debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", "Constructor Inputs"), debugItem);
+                    _debugInputs.Add(debugItem);
                     foreach (var constructorInput in ConstructorInputs)
                     {
+                        debugItem = new DebugItem();
                         AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, update), debugItem);
+                        _debugInputs.Add(debugItem);
                     }
-                    _debugInputs.Add(debugItem);
                 }
             }
             if (MethodsToRun != null && MethodsToRun.Any())
@@ -252,11 +276,13 @@ namespace Dev2.Activities
                         _debugInputs.Add(debugItem);
                         debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
+                        _debugInputs.Add(debugItem);
                         foreach (var methodParameter in dev2MethodInfo.Inputs)
                         {
+                            debugItem = new DebugItem();
                             AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, update), debugItem);
+                            _debugInputs.Add(debugItem);
                         }
-                        _debugInputs.Add(debugItem);
                     }
                 }
             }
