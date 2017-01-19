@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -47,15 +43,50 @@ $TestSettingsFile = "$PSScriptRoot\NoConflictingPermissionsSecuritySpecs.testset
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (!(Test-Path $TestAssemblyPath)) {
+	Write-Host Cannot find Warewolf.SecuritySpecs.dll at $PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug or $PSScriptRoot
+	exit 1
+}
+
+# Create full VSTest argument string.
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=NoConflictingPermissionsSecurity`""
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=NoConflictingPermissionsSecurity`""
 } else {
 	# Create full VSTest argument string.
-	$FullArgsList = " `"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
-# Start server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
