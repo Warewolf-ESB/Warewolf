@@ -13,5 +13,8 @@ namespace Dev2.Common.Interfaces
         IList<INameValue> Variables { get; set; }
         string Dev2ReturnType { get; set; }
         string GetIdentifier();
+        string MethodResult { get; set; }
+        string OutputVariable { get; set; }
+        bool IsObject { get; set; }
     }
 }

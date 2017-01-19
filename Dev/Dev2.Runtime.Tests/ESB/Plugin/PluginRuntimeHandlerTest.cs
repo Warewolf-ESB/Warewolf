@@ -268,7 +268,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(Human);
-            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -292,6 +292,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
+      
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
@@ -300,7 +302,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(Human);
-            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -336,7 +338,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(StaticClass);
-            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -367,7 +369,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(StaticClass);
-            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToStringOnStatic", Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToStringOnStatic", Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -401,7 +403,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(SealedClass);
-            var svc = CreatePluginService(new List<Dev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<MethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -454,7 +456,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         private static PluginService CreatePluginService()
         {
-            return CreatePluginService(new List<Dev2MethodInfo>
+            return CreatePluginService(new List<IDev2MethodInfo>
             {
                 new Dev2MethodInfo
                 {
@@ -463,7 +465,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }, typeof(DummyClassForPluginTest));
         }
 
-        private static PluginService CreatePluginService(List<Dev2MethodInfo> method, Type type, ServiceConstructor constructor = null)
+        private static PluginService CreatePluginService(List<IDev2MethodInfo> method, Type type, ServiceConstructor constructor = null)
         {
             var source = CreatePluginSource(typeof(DummyClassForPluginTest));
             var service = new PluginService

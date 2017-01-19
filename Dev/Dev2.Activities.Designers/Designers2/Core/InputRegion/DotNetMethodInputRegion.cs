@@ -46,6 +46,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             inputs.CollectionChanged += InputsCollectionChanged;
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
+            IsInputsEmptyRows = Inputs.Count == 0;
             if (inputsFromModel == null)
                 UpdateOnActionSelection();
             IsEnabled = action?.SelectedMethod != null;

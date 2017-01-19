@@ -9,7 +9,7 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="470"
+                               
                                Height="Auto"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
@@ -49,38 +49,16 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition MinHeight="87" Height="*"/>
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                    <Setter Property="RowDefinition.MinHeight" Value="115"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
-                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
-                                    <Setter Property="RowDefinition.MinHeight" Value="115"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition MinHeight="50" Height="*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
-            <!-- ReSharper disable UnusedMember.Global -->
-            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewDotNetConstructorInputsGrid}"/>
-
-            <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewDotNetConstructorOutputsGrid}"/>
-
-            <Control Grid.Row="3" Template="{StaticResource NewDotNetMethodListGrid}"/>
+            <Control Grid.Row="1" Template="{StaticResource NewDotNetMethodListGrid}"/>
             
             <Grid x:Name="ErrorGrid" 
-                  Grid.Row="4"
+                  Grid.Row="2"
                   Margin="{StaticResource ControlBorderTop}" 
                   Visibility="{Binding OnErrorVisible}">
                 <errors:OnError />
