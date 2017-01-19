@@ -8,7 +8,7 @@ Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Select
 		Given The Warewolf Studio is running
 	And I Click New Workflow Ribbon Button
 	And I RightClick Explorer Localhost First Item
-	Then I Select NewWorkflow FromExplorerContextMenu
+	Then I Select NewWorkflow From Explorer Context Menu
 	And I Make Workflow Saveable
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then I Enter Service Name Into Save Dialog As "TestService"
@@ -35,7 +35,7 @@ Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "Created Another Folder"
 	And I RightClick Save Dialog Localhost
-	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Select New Folder From SaveDialog Context Menu
 	And I Enter New Folder Name as "Created Another Folder"
 	And I RightClick Save Dialog Localhost First Item
 	And Context Menu Has Two Items
@@ -47,12 +47,12 @@ Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Ex
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "I_Will_Delete_This_Folder"
 	And I RightClick Save Dialog Localhost
-	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Select New Folder From SaveDialog Context Menu
 	And I Name New Folder as "I_Will_Delete_This_Folder"
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "I_Will_Delete_This_Folder"
 	And I RightClick Explorer Localhost First Item
-	And I Select Delete FromExplorerContextMenu
+	And I Select Delete From Explorer Context Menu
 	And I Click MessageBox Yes
 	And Folder Is Removed From Explorer
 
@@ -63,7 +63,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Cre
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "New Folder"
 	And I RightClick Save Dialog Localhost
-	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Select New Folder From SaveDialog Context Menu
 	And I Hit Escape Key On The Keyboard
 	And I Filter the Explorer with "New Folder"
 	And Explorer Contain Item "New Folder"
@@ -75,7 +75,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "New Created Folder"
 	And I RightClick Save Dialog Localhost
-	And I Select New_Folder From SaveDialog ExplorerContextMenu
+	And I Select New Folder From SaveDialog Context Menu
 	And I Name New Folder as "New Created Folder"
 	And I Click SaveDialog CancelButton
 	And I Refresh Explorer
@@ -101,7 +101,7 @@ Scenario: Rename Resource From Save Dialog
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "ResourceToRename"
 	And I RightClick Save Dialog Localhost First Item
-	And I Select Rename From SaveDialog ExplorerContextMenu
+	And I Select Rename From SaveDialog Context Menu
 	And I Rename Save Dialog Explorer First Item To "ResourceRenamed"
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "ResourceRenamed"
@@ -114,7 +114,7 @@ Scenario: Delete Resource From Save Dialog
 	And I Save Workflow Using Shortcut
 	And I Filter Save Dialog Explorer with "ResourceToDelete"
 	And I RightClick Save Dialog Localhost First Item
-	And I Select Delete From SaveDialog ExplorerContextMenu
+	And I Select Delete From SaveDialog Context Menu
 	And I Click MessageBox Yes
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "ResourceToDelete"

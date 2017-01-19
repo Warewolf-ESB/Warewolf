@@ -4093,9 +4093,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWcfSource);
         }
 
-        [Given(@"I Click NewDotNetPluginSource Explorer Context Menu")]
-        [When(@"I Click NewDotNetPluginSource Explorer Context Menu")]
-        [Then(@"I Click NewDotNetPluginSource Explorer Context Menu")]
+        [Given(@"I Click New DotNetPluginSource Explorer Context Menu")]
+        [When(@"I Click New DotNetPluginSource Explorer Context Menu")]
+        [Then(@"I Click New DotNetPluginSource Explorer Context Menu")]
         public void Click_NewDotNetPluginSource_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(67, 9));
@@ -4190,6 +4190,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
+        [Given(@"I Open Explorer First Item Context Menu")]
+        [Then(@"I Open Explorer First Item Context Menu")]
         [When(@"I Open Explorer First Item Context Menu")]
         public void Open_ExplorerFirstItem_From_ExplorerContextMenu()
         {
