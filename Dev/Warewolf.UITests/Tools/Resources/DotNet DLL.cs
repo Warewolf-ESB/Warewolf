@@ -77,18 +77,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.Select_DotNet_DLL_Large_View_Constructor_With_One_Parameter_From_Constructor_Combobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1.Exists);
         }
-
-        //[TestMethod]
-        //[TestCategory("Resource Tools")]
-        //public void Selecting_Classname_Loads_Actions_UITests()
-        //{
-        //    UIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
-        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
-        //    UIMap.Select_DotNet_Dll_Classname();
-        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ConstructorsComboBoxComboBox.Enabled);
-        //    UIMap.Select_DotNet_Dll_Default_Costructor();
-        //}
-
+        
         #region Additional test attributes
 
         [TestInitialize]
