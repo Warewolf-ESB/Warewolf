@@ -29,7 +29,7 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void Click_DotNetDLLTool_LargeView_NewSourceButton_UITests()
         {
-            UIMap.Click_DotNetPluginTool_LargeView_NewSourceButton();
+            UIMap.Click_NewSourceButton_From_DotNetDLLPluginTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.Enabled, "Assembly Combobox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton.Enabled, "Assembly Combobox Button is not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled");

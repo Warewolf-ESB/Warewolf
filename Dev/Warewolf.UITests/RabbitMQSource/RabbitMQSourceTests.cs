@@ -12,7 +12,7 @@ namespace Warewolf.UITests.RabbitMQSource
         // ReSharper disable once InconsistentNaming
         public void RabbitMQSource_CreateSourceUITests()
         {
-            UIMap.Select_NewRabbitMQSource_FromExplorerContextMenu();
+            UIMap.Select_NewRabbitMQSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Enabled, "Host Textbox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Enabled, "Port Textbox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.UserNameTextBoxEdit.Enabled, "Username Textbox is not enabled");
