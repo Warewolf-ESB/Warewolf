@@ -29,7 +29,7 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void Click_ComDLLTool_LargeView_NewSourceButton_UITests()
         {
-            UIMap.Click_COMDLLPluginTool_LargeView_NewSourceButton();
+            UIMap.Click_NewSourceButton_From_COMDLLPluginTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Enabled);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Enabled);

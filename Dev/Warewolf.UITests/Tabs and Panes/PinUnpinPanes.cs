@@ -56,7 +56,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDBSourceWizardTab()
         {
-            UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
         }
 
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
-            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
         }
 
@@ -72,7 +72,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinWebSourceWizardTab()
         {
-            UIMap.Click_New_Web_Source_From_Explorer_Context_Menu();
+            UIMap.Click_NewWebSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
@@ -89,7 +89,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinDependencyGraphWizardTab()
         {
-            UIMap.Select_Show_Dependencies_In_Explorer_Context_Menu("Hello World");
+            UIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
         }
 
@@ -98,7 +98,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinTestsWizardTab()
         {
             UIMap.Filter_Explorer("Hello World");
-            UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
         }
 

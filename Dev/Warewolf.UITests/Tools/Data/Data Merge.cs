@@ -19,21 +19,21 @@ namespace Warewolf.UITests.Tools.Data
         [TestCategory("Data Tools")]
         public void DataMergeTool_OpenLargeViewUITest()
         {
-            UIMap.Open_Data_Merge_Large_View();
+            UIMap.Open_DataMerge_LargeView();
         }
 
         [TestMethod]
         [TestCategory("Data Tools")]
         public void DataMergeTool_OpenQVIUITest()
         {
-            UIMap.Open_Data_Merge_Tool_Qvi_Large_View();
+            UIMap.Open_DataMergeToolQvi_LargeView();
         }
 
         [TestMethod]
         [TestCategory("Data Tools")]
         public void DataMerge_ScrollingUITest()
         {
-            UIMap.Open_Data_Merge_Large_View();
+            UIMap.Open_DataMerge_LargeView();
             UIMap.Enter_Values_Into_Data_Merge_Tool_Large_View();
             UIMap.Close_Data_Merge_LargeView();
             UIMap.Scroll_Down_Then_Up_On_The_DataMerge_SmallView();

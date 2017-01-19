@@ -51,7 +51,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
-            UIMap.Show_Explorer_Second_Item_Tests_With_Context_Menu(xPath);
+            UIMap.Show_ExplorerSecondItemTests_With_ExplorerContextMenu(xPath);
             UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");

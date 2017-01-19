@@ -13,7 +13,7 @@ namespace Warewolf.UITests
         // ReSharper disable once InconsistentNaming
         public void SQLServerSource_CreateSourceUITests()
         {
-            UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "SQL Server Address combobox is disabled new Sql Server Source wizard tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
