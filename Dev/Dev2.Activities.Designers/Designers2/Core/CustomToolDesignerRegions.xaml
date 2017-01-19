@@ -15,6 +15,9 @@
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                    xmlns:inputRegion="clr-namespace:Dev2.Activities.Designers2.Core.InputRegion"
+                    xmlns:constructorRegion="clr-namespace:Dev2.Activities.Designers2.Core.ConstructorRegion"
+                    xmlns:netDllEnhanced="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -210,7 +213,7 @@
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetMethodGrid">
         <Grid x:Name="MethodsGrid" 
-                      Margin="{StaticResource ControlBorderTop}" >
+                      Margin="-3,0,0,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -248,11 +251,11 @@
                                                         Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetConstructorGrid">
+    <ControlTemplate x:Key="NewDotNetConstructorGrid" d:DataContext="{d:DesignInstance constructorRegion:DotNetConstructorRegion}">
         <Grid x:Name="ConstructorsGrid" 
-                      Margin="{StaticResource ControlBorderTop}" >
+                      Margin="-3,0,-1,0" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ConstructorRegion.LabelWidth}"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -260,20 +263,20 @@
             <ComboBox x:Name="ConstructorsComboBox"
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding ConstructorRegion.Constructors}"
+                              ItemsSource="{Binding Constructors}"
                               DisplayMemberPath="ConstructorName" 
-                              IsEnabled="{Binding ConstructorRegion.IsConstructorEnabled}"
+                              IsEnabled="{Binding IsConstructorEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
                               IsEditable="False"
-                              SelectedItem="{Binding ConstructorRegion.SelectedConstructor}">
+                              SelectedItem="{Binding SelectedConstructor}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
             <Button x:Name="ConstructorRefreshButton" 
                             Grid.Column="2"
-                            Command="{Binding Path=ConstructorRegion.RefreshConstructorsCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=ConstructorRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                            Command="{Binding Path=RefreshConstructorsCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshConstructorHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -285,7 +288,7 @@
                                                         Grid.Column="2"
                                                         Width="22"
                                                         Height="22"
-                                                        Visibility="{Binding Path=ConstructorRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewNamespaceGrid">
@@ -421,21 +424,7 @@
             <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Control Template="{StaticResource NewSelectionGrid}"/>
-
-            <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
-
-            <Control Template="{StaticResource NewDotNetConstructorGrid}" Grid.Row="2"/>
-        </Grid>
-    </ControlTemplate>
+    
     
     <ControlTemplate x:Key="NewInputsGrid">
         <Grid>
@@ -576,16 +565,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs" />
+            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs - None" 
+                       Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <controls:Dev2DataGrid x:Name="LargeDataGrid"
-                                    Grid.Row="1"
                                     ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingDataGridStyle}"
                                     Height="Auto"
-                                    Margin="{StaticResource ControlBorderTop}">
+                                    Margin="{StaticResource ControlBorderTop}"
+                                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                 <DataGrid.Columns>
@@ -672,12 +661,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </controls:Dev2DataGrid>
-            <TextBlock Grid.Row="1" Text="None" 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Margin="0,0,0,-5"
-                        Style="{StaticResource MenuTextBlockStyle}"
-                        Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </Grid>
     </ControlTemplate>
@@ -850,8 +833,8 @@
             </Grid>
         </Grid>
     </ControlTemplate>
-    
-    <ControlTemplate x:Key="DotNetInputOutputGrid">
+
+    <ControlTemplate x:Key="DotNetInputOutputGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -865,7 +848,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="NewDotNetMethodListGrid">
+    <ControlTemplate x:Key="NewDotNetMethodListGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
         <Grid x:Name="MethodListGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -903,50 +886,22 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="NewDotNetConstructorListGrid">
-        <Grid x:Name="MethodListGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
-
-            <Expander x:Name="MethodExpander" 
-                        Header="{Binding .}" 
-                        HorizontalAlignment="Stretch"
-                        Width="{Binding ElementName=MethodListGrid, Path=ActualWidth}"
-                        IsExpanded="{Binding Path=IsMethodExpanded}" 
-                        Style="{StaticResource DotNetDllExpander}" 
-                        AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
-                <Expander.HeaderTemplate>
-                    <DataTemplate>
-                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
-                    </DataTemplate>
-                </Expander.HeaderTemplate>
-                <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
-            </Expander>
-        </Grid>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="NewDotNetConstructorInputsGrid">
+    <ControlTemplate x:Key="NewDotNetConstructorInputsGrid" >
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs" />
+            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs - None" 
+                       Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <controls:Dev2DataGrid x:Name="LargeDataGrid"
-                                    Grid.Row="1"
                                     ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingDataGridStyle}"
                                     Height="Auto"
-                                    Margin="{StaticResource ControlBorderTop}">
+                                    Margin="{StaticResource ControlBorderTop}"
+                                   Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                 <DataGrid.Columns>
@@ -1033,12 +988,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </controls:Dev2DataGrid>
-            <TextBlock Grid.Row="1" Text="None" 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Margin="0,0,0,-5"
-                        Style="{StaticResource MenuTextBlockStyle}"
-                        Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </Grid>
     </ControlTemplate>
@@ -1212,7 +1161,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
+    <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" >
         <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -1227,19 +1176,19 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" HorizontalAlignment="Left" 
-                           Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <Grid Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                           Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Grid Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
                     <Button x:Name="ViewOutputsBtn" Width="Auto" Grid.Column="1" Content="View Outputs" 
-                            HorizontalAlignment="Right" Command="{Binding ViewObjectResult}"/>
+                            HorizontalAlignment="Right" Command="{Binding OutputsRegion.ViewObjectResult}"/>
                 </Grid>
             </Grid>
             <!-- OBJECT NAME -->
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -1249,7 +1198,7 @@
                                         WrapInBrackets="True"
                                         Padding="3"
                                         FilterType="JsonObject"
-                                        Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Text="{Binding OutputsRegion.ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                         AutomationProperties.AutomationId="UI_TextBox_AutoID"
@@ -1258,11 +1207,59 @@
                         <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ObjectName"
-                                             SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
+                                             SourcePropertyValue="{Binding OutputsRegion.ObjectName, UpdateSourceTrigger=PropertyChanged}"
                                              Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                     </i:Interaction.Behaviors>
                 </ui:IntellisenseTextBox>
             </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="NewDotNetConstructorListGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
+        <Grid x:Name="ConstructorListGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Expander x:Name="MethodExpander" 
+                        Header="{Binding .}" 
+                        HorizontalAlignment="Stretch"
+                        Width="{Binding ElementName=ConstructorListGrid, Path=ActualWidth}"
+                        IsExpanded="{Binding Path=IsConstructorExpanded}" 
+                        Style="{StaticResource DotNetDllExpander}" 
+                        AutomationProperties.AutomationId="{Binding StringFormat=UI_ConstructorExpander_{0}_AutoID, Path=ConstructorRegion.SelectedConstructor}">
+                <Expander.HeaderTemplate>
+                    <DataTemplate>
+                        <Control DataContext="{Binding ConstructorRegion}" Template="{StaticResource NewDotNetConstructorGrid}" />
+                    </DataTemplate>
+                </Expander.HeaderTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Control Template="{StaticResource NewDotNetConstructorInputsGrid}" />
+                    <Control Grid.Row="1" Template="{StaticResource NewDotNetConstructorOutputsGrid}" />
+                </Grid>
+            </Expander>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
+
+            <Control Template="{StaticResource NewDotNetConstructorListGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
 
