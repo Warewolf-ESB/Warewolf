@@ -50,39 +50,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
-                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition MinHeight="50" Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
-            <!-- ReSharper disable UnusedMember.Global -->
-            <Control x:Name="InputsControl" Grid.Row="1" 
-                     Template="{StaticResource NewDotNetConstructorInputsGrid}" 
-                     Visibility="{Binding IsMethodInputOutputVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-            <Control x:Name="OutputsControl" Grid.Row="2" 
-                     Template="{StaticResource NewDotNetConstructorOutputsGrid}" 
-                     Visibility="{Binding IsMethodInputOutputVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-            <Control Grid.Row="3" Template="{StaticResource NewDotNetMethodListGrid}"/>
+            <Control Grid.Row="1" Template="{StaticResource NewDotNetMethodListGrid}"/>
             
             <Grid x:Name="ErrorGrid" 
-                  Grid.Row="4"
+                  Grid.Row="2"
                   Margin="{StaticResource ControlBorderTop}" 
                   Visibility="{Binding OnErrorVisible}">
                 <errors:OnError />
