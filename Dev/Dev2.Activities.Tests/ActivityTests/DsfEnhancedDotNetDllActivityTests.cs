@@ -621,7 +621,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Execute Test ----------------------
             var debugInputs = activity.GetDebugInputs(executionEnv.Object,0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(2,debugInputs.Count);
+            Assert.AreEqual(3,debugInputs.Count);
             var constructorLabel = debugInputs[0].ResultsList[0].Label;
             var constructorValue = debugInputs[0].ResultsList[1].Value;
             Assert.AreEqual("Constructor", constructorLabel);
@@ -630,9 +630,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
             var constructorInput1Value = debugInputs[1].ResultsList[1].Value;
             var constructorInput1name = debugInputs[1].ResultsList[1].Label;
-            Assert.AreEqual("Inputs", constructorInputsLabel);
+            Assert.AreEqual("Constructor Inputs", constructorInputsLabel);
             Assert.AreEqual("name", constructorInput1name);
             Assert.AreEqual("John", constructorInput1Value);
+
+            var actionLabel = debugInputs[2].ResultsList[0].Label;
+            var actionValue = debugInputs[2].ResultsList[0].Value;
+            Assert.AreEqual("Action: ", actionLabel);
+            Assert.AreEqual("ToString", actionValue);
+
         }
     }
 

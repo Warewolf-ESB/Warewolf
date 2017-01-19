@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
 // ReSharper disable UnusedMember.Global
 
