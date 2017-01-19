@@ -9,7 +9,6 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
@@ -94,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
@@ -134,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor()
             {
                 IsExistingObject = true,
@@ -178,7 +177,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
 
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
@@ -212,17 +211,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -253,18 +252,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "FavouriteFoods"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "FavouriteFoods",
                     IsObject = true,
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     OutputVariable = "[[@Foods()]]"
                 }
             };
@@ -301,17 +299,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "PhoneNumbers"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "PhoneNumbers",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     IsObject = false,
                     OutputVariable = "[[Food().Name]]"
                 }
@@ -347,18 +344,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "PhoneNumbers"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "PhoneNumbers",
                     IsObject = false,
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     OutputVariable = "[[Foods]]"
                 }
             };
@@ -400,18 +396,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -465,18 +460,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -530,18 +524,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
 
@@ -602,18 +595,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
 

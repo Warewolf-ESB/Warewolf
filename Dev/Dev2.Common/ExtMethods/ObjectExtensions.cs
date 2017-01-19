@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -120,6 +122,32 @@ namespace Dev2.Common.ExtMethods
         {
             var serialize = Deserialize<T>(objectToSerialize);
             return serialize;
+        }
+
+        public static List<IDev2MethodInfo> ToDev2Methods(this IEnumerable<IPluginAction> actions, Func<IEnumerable<IServiceInput>,IEnumerable<IMethodParameter>> func )
+        {
+            var dev2MethodInfos = actions.Select(action => new Dev2MethodInfo
+            {
+                Method = action.Method,
+                Parameters = func.Invoke(action.Inputs).ToList(),
+                IsObject = action.IsObject,
+                MethodResult = action.MethodResult,
+                OutputVariable = action.OutputVariable
+            } as IDev2MethodInfo).ToList();
+            return dev2MethodInfos;
+        }
+
+        public static List<IPluginAction> ToPluginActions(this IEnumerable<IDev2MethodInfo> actions, Func<IEnumerable<IMethodParameter>,IEnumerable<IServiceInput>> func )
+        {
+            var pluginActions = actions.Select(action => new PluginAction()
+            {
+                Method = action.Method,
+                Inputs = func.Invoke(action.Parameters).ToList(),
+                IsObject = action.IsObject,
+                MethodResult = action.MethodResult,
+                OutputVariable = action.OutputVariable
+            } as IPluginAction).ToList();
+            return pluginActions;
         }
     }
 

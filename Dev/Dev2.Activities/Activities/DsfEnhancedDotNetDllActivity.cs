@@ -26,13 +26,13 @@ namespace Dev2.Activities
     {
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
-        public List<Dev2MethodInfo> MethodsToRun { get; set; }
+        public List<IPluginAction> MethodsToRun { get; set; }
         public List<IServiceInput> ConstructorInputs { get; set; }
         public DsfEnhancedDotNetDllActivity()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
-            MethodsToRun = new List<Dev2MethodInfo>();
+            MethodsToRun = new List<IPluginAction>();
             ConstructorInputs = new List<IServiceInput>();
             Outputs = new List<IServiceOutputMapping>();
             ObjectName = string.Empty;
@@ -95,7 +95,21 @@ namespace Dev2.Activities
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 PluginConstructor = constructor,
-                MethodsToRun = MethodsToRun
+                MethodsToRun = MethodsToRun.Select(action => new Dev2MethodInfo
+                {
+                    Method = action.Method,
+                    Parameters = action.Inputs.Select(p => new MethodParameter
+                    {
+                        Name = p.Name,
+                        Value = p.Value,
+                        TypeName = p.TypeName,
+                        EmptyToNull = p.EmptyIsNull,
+                        IsRequired = p.RequiredField
+                    } as IMethodParameter).ToList(),
+                    IsObject = action.IsObject,
+                    MethodResult = action.MethodResult,
+                    OutputVariable = action.OutputVariable
+                } as IDev2MethodInfo).ToList()
             };
 
             pluginExecutionDto.Args = args;
@@ -107,7 +121,21 @@ namespace Dev2.Activities
                 }
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
-                MethodsToRun = result.Args.MethodsToRun;// assign return values returned from the seperate AppDomain
+                MethodsToRun = result.Args.MethodsToRun.Select(p => new PluginAction()
+                {
+                    Method = p.Method,
+                    MethodResult = p.MethodResult,
+                    IsObject = p.IsObject,
+                    OutputVariable = p.OutputVariable,
+                    Inputs = p.Parameters.Select(q => new ServiceInput(q.Name, q.Value)
+                    {
+                        EmptyIsNull = q.EmptyToNull,
+                        RequiredField = q.IsRequired,
+                        TypeName = q.TypeName
+
+                    } as IServiceInput).ToList()
+
+                } as IPluginAction).ToList();// assign return values returned from the seperate AppDomain
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
                     if (dev2MethodInfo.IsObject)
@@ -191,11 +219,11 @@ namespace Dev2.Activities
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
                     _debugInputs.Add(debugItem);
-                    if (dev2MethodInfo.Parameters.Any())
+                    if (dev2MethodInfo.Inputs.Any())
                     {
                         debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
-                        foreach (var methodParameter in dev2MethodInfo.Parameters)
+                        foreach (var methodParameter in dev2MethodInfo.Inputs)
                         {
                             AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, update), debugItem);
                         }

@@ -14,10 +14,10 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string Namespace { get; set; }
         public string SerializedResult { get; set; }
         public ServiceConstructor Constructor { get; set; }
-        public List<Dev2MethodInfo> MethodsToRun { get; set; }
+        public List<IDev2MethodInfo> MethodsToRun { get; set; }
         #region CTOR
 
         public PluginService()
@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = "PluginService";
             Source = new PluginSource();
             Recordsets = new RecordsetList();
-            MethodsToRun = new List<Dev2MethodInfo>();
+            MethodsToRun = new List<IDev2MethodInfo>();
             Constructor = new ServiceConstructor();
             Method = new ServiceMethod();
         }
