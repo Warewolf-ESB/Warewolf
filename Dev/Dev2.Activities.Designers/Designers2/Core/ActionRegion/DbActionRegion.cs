@@ -9,7 +9,9 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 // ReSharper disable ExplicitCallerInfoArgument
@@ -36,13 +38,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
+        private IAsyncWorker _worker;
 
         public DbActionRegion()
         {
             ToolRegionName = "DbActionRegion";
         }
 
-        public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
+        public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source,IAsyncWorker worker)
         {
             try
             {
@@ -53,13 +56,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _modelItem = modelItem;
                 _model = model;
                 _source = source;
+                _worker = worker;
                 _source.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
                 IsEnabled = false;
                 if (_source.SelectedSource != null)
                 {
-                    Actions = model.GetActions(_source.SelectedSource);
+                    LoadActions(model);
                 }
                 if (!string.IsNullOrEmpty(ProcedureName))
                 {
@@ -67,15 +71,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                     SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);
                 }
-                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                RefreshActionsCommand = new DelegateCommand(o =>
                 {
-                    IsRefreshing = true;
                     if (_source.SelectedSource != null)
                     {
-                        Actions = model.RefreshActions(_source.SelectedSource);
+                        LoadActions(model);
                     }
-                    IsRefreshing = false;
-                }, CanRefresh);
+                }, o=>CanRefresh());
 
                 _modelItem = modelItem;
             }
@@ -83,6 +85,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Errors.Add(e.Message);
             }
+        }
+
+        private void LoadActions(IDbServiceModel model)
+        {
+            IsRefreshing = true;
+            _worker.Start(() => model.GetActions(_source.SelectedSource), delegate(ICollection<IDbAction> actions)
+            {
+                Actions = actions;
+                IsRefreshing = false;
+            });
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -94,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 // ReSharper disable once ExplicitCallerInfoArgument
                 if (_source?.SelectedSource != null)
                 {
-                    Actions = _model.GetActions(_source.SelectedSource);
+                    LoadActions(_model);
                     SelectedAction = null;
                     IsActionEnabled = true;
                     IsEnabled = true;

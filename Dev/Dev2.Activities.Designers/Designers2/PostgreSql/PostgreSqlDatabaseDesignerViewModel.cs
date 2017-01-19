@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Communication;
@@ -51,9 +52,10 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem)
+        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
             : base(modelItem)
         {
+            _worker = worker;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -163,10 +165,11 @@ namespace Dev2.Activities.Designers2.PostgreSql
             UpdateWorstError();
         }
 
-        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model)
+        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
             : base(modelItem)
         {
             Model = model;
+            _worker = worker;
             SetupCommonProperties();
         }
 
@@ -293,6 +296,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(PostgreSqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
+        private IAsyncWorker _worker;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -341,7 +345,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
                         }
                 };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion)
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker)
                 {
                     SourceChangedAction = () =>
                         {
