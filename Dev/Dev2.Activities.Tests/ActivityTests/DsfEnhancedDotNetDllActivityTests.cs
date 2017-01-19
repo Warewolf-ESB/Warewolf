@@ -9,7 +9,6 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
@@ -94,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
@@ -134,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor()
             {
                 IsExistingObject = true,
@@ -149,10 +148,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             env.Verify(environment => environment.EvalForJson("[[@name]]", It.IsAny<bool>()));
-            Assert.AreEqual(0,activity.MethodsToRun.Count);
+            Assert.AreEqual(0, activity.MethodsToRun.Count);
         }
 
-       
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -178,7 +177,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
 
             //---------------Assert Precondition----------------
             Assert.AreEqual("DotNet DLL Connector", activity.Type.Expression.ToString());
@@ -212,17 +211,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
+            activity.MethodsToRun = new List<IPluginAction>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -253,18 +252,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "FavouriteFoods"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "FavouriteFoods",
                     IsObject = true,
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     OutputVariable = "[[@Foods()]]"
                 }
             };
@@ -278,9 +276,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(jContainer);
             var values = jContainer.Children().Select(token => token.ToString()).ToList();
             Assert.IsNotNull(values);
-            StringAssert.Contains(values[0],"Pizza");
-            StringAssert.Contains(values[1],"Burger");
-            StringAssert.Contains(values[2],"Chicken");
+            StringAssert.Contains(values[0], "Pizza");
+            StringAssert.Contains(values[1], "Burger");
+            StringAssert.Contains(values[2], "Chicken");
         }
 
         [TestMethod]
@@ -301,17 +299,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "PhoneNumbers"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "PhoneNumbers",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     IsObject = false,
                     OutputVariable = "[[Food().Name]]"
                 }
@@ -322,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
-            var jContainer = dsfDataObject.Environment.EvalAsList("[[Food(*).Name]]",0).ToList();
+            var jContainer = dsfDataObject.Environment.EvalAsList("[[Food(*).Name]]", 0).ToList();
             Assert.IsNotNull(jContainer);
             Assert.AreEqual("1284561478", jContainer[0].ToString());
             Assert.AreEqual("228561478", jContainer[1].ToString());
@@ -347,18 +344,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "PhoneNumbers"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 Inputs = new List<IConstructorParameter>(),
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "PhoneNumbers",
                     IsObject = false,
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                     OutputVariable = "[[Foods]]"
                 }
             };
@@ -368,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ExecuteMock(esbChannel.Object, dsfDataObject, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
-            var jContainer = dsfDataObject.Environment.Eval("[[Foods]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            var jContainer = dsfDataObject.Environment.Eval("[[Foods]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             Assert.IsNotNull(jContainer);
             Assert.AreEqual("1284561478,228561478,215561475", jContainer.Item.ToString());
         }
@@ -400,18 +396,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -465,18 +460,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AssemblyName = type.Assembly.FullName,
                 MethodName = "ToString"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>();
             activity.Constructor = new PluginConstructor
             {
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
-            activity.MethodsToRun = new List<Dev2MethodInfo>
+            activity.MethodsToRun = new List<IPluginAction>
             {
-                new Dev2MethodInfo
+                new PluginAction()
                 {
                     Method = "ToString",
-                    Parameters = new List<MethodParameter>(),
+                    Inputs = new List<IServiceInput>(),
                 }
             };
             //---------------Assert Precondition----------------
@@ -489,6 +483,154 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
             Assert.AreEqual("\"Name:Micky, Surname:Mouse, FoodName:Lettuce\"", methodResult);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDebugInputs_GivenGivenhasConstructorWithInputs_ShouldShowInputs()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            var executionEnv = new Mock<IExecutionEnvironment>();
+            var humanString = DataListUtil.ConvertModelToJson(human).ToString();
+            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+               .Returns(newWarewolfAtomResult);
+            var johnResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(johnResult);
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
+            activity.ConstructorInputs = new List<IServiceInput>()
+            {
+                new ServiceInput("name","John")
+                {
+                    TypeName = typeof(string).FullName,
+                    RequiredField = true
+                }
+            };
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                IsExistingObject = true,
+                ConstructorName = "@Human"
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction()
+                {
+                    Method = "ToString",
+                    Inputs = new List<IServiceInput>(),
+                }
+            };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var debugInputs = activity.GetDebugInputs(executionEnv.Object,0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2,debugInputs.Count);
+            var constructorLabel = debugInputs[0].ResultsList[0].Label;
+            var constructorValue = debugInputs[0].ResultsList[1].Value;
+            Assert.AreEqual("Constructor", constructorLabel);
+            Assert.AreEqual("@Human", constructorValue);
+
+            var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
+            var constructorInput1Value = debugInputs[1].ResultsList[1].Value;
+            var constructorInput1name = debugInputs[1].ResultsList[1].Label;
+            Assert.AreEqual("Inputs", constructorInputsLabel);
+            Assert.AreEqual("name", constructorInput1name);
+            Assert.AreEqual("John", constructorInput1Value);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDebugInputs_GivenActions_ShouldActionsDebug()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            var executionEnv = new Mock<IExecutionEnvironment>();
+            var humanString = DataListUtil.ConvertModelToJson(human).ToString();
+            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+               .Returns(newWarewolfAtomResult);
+            var johnResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(johnResult);
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
+            activity.ConstructorInputs = new List<IServiceInput>()
+            {
+                new ServiceInput("name","John")
+                {
+                    TypeName = typeof(string).FullName,
+                    RequiredField = true
+                }
+            };
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                IsExistingObject = true,
+                ConstructorName = "@Human"
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction()
+                {
+                    Method = "ToString",
+                    Inputs = new List<IServiceInput>(),
+                }
+            };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var debugInputs = activity.GetDebugInputs(executionEnv.Object,0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(3,debugInputs.Count);
+            var constructorLabel = debugInputs[0].ResultsList[0].Label;
+            var constructorValue = debugInputs[0].ResultsList[1].Value;
+            Assert.AreEqual("Constructor", constructorLabel);
+            Assert.AreEqual("@Human", constructorValue);
+
+            var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
+            var constructorInput1Value = debugInputs[1].ResultsList[1].Value;
+            var constructorInput1name = debugInputs[1].ResultsList[1].Label;
+            Assert.AreEqual("Constructor Inputs", constructorInputsLabel);
+            Assert.AreEqual("name", constructorInput1name);
+            Assert.AreEqual("John", constructorInput1Value);
+
+            var actionLabel = debugInputs[2].ResultsList[0].Label;
+            var actionValue = debugInputs[2].ResultsList[0].Value;
+            Assert.AreEqual("Action: ", actionLabel);
+            Assert.AreEqual("ToString", actionValue);
+
         }
     }
 

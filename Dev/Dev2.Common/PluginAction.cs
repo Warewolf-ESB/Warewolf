@@ -78,6 +78,10 @@ namespace Dev2.Common.Interfaces
             return FullName + Method;
         }
 
+        public string MethodResult { get; set; }
+        public string OutputVariable { get; set; }
+        public bool IsObject { get; set; }
+
         #endregion
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -206,14 +207,21 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
+                var dev2MethodInfos = _modelItem.GetProperty<List<IPluginAction>>("MethodsToRun");
+                _methodsToRun = dev2MethodInfos;
                 return _methodsToRun;
             }
+
             set
             {
                 _methodsToRun = value;
+                _modelItem.SetProperty("MethodsToRun", value);
                 OnPropertyChanged();
             }
         }
+
+
+
         public ICommand RefreshMethodsCommand { get; set; }
         public bool IsActionEnabled
         {

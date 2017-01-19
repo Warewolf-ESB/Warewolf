@@ -175,10 +175,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var valuedTypeList = new List<object>();
             try
             {
-                var anonymousType = JsonConvert.DeserializeObject(value, Type.GetType(typeName));
+                var type = Type.GetType(typeName);
+                var anonymousType = JsonConvert.DeserializeObject(value, type);
                 if (anonymousType != null)
                 {
                     valuedTypeList.Add(anonymousType);
+                }
+                if (type != null && ((type.IsPrimitive && anonymousType == null) || type.FullName == typeof(string).FullName))
+                {
+                    valuedTypeList.Add(value);
                 }
             }
             catch (Exception)
@@ -281,7 +286,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 .Where(propertyInfo => propertyInfo.CanWrite)
                 .ToList();
             var jObject = new JObject();
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 jObject.Add(property.Name, "");
             }
