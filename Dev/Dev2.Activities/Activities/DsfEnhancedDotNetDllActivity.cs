@@ -176,6 +176,7 @@ namespace Dev2.Activities
                     var jContainer = JsonConvert.DeserializeObject(ObjectResult) as JContainer;
                     dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
                 }
+
             }
             catch (Exception e)
             {
@@ -185,12 +186,46 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
+        #region Overrides of DsfActivity
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        {
+            base.GetDebugOutputs(env, update);
+            if (!string.IsNullOrEmpty(ObjectName))
+            {
+                DebugItem debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
+                AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
+            }
+
+            if (MethodsToRun != null && MethodsToRun.Any())
+            {
+                foreach (var dev2MethodInfo in MethodsToRun)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
+                    if (!string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
+                    {
+                        debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
+                        AddDebugItem(new DebugEvalResult(dev2MethodInfo.MethodResult, "", env, update), debugItem);
+                        _debugOutputs.Add(debugItem);
+                    }
+                }
+            }
+
+            return _debugOutputs;
+        }
+
+        #endregion
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            base.GetDebugInputs(env, update);
+            _debugInputs = base.GetDebugInputs(env, update);
             if (Constructor != null)
             {
                 DebugItem debugItem = new DebugItem();
+
                 AddDebugItem(new DebugItemStaticDataParams("", "Constructor"), debugItem);
                 AddDebugItem(new DebugItemStaticDataParams(Constructor.ConstructorName, ""), debugItem);
                 _debugInputs.Add(debugItem);
@@ -204,23 +239,17 @@ namespace Dev2.Activities
                     }
                     _debugInputs.Add(debugItem);
                 }
-                if (!string.IsNullOrEmpty(ObjectName))
-                {
-                    debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
-                    AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
-                }
             }
-
             if (MethodsToRun != null && MethodsToRun.Any())
             {
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
-                    DebugItem debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
-                    _debugInputs.Add(debugItem);
+                   
                     if (dev2MethodInfo.Inputs.Any())
                     {
+                        DebugItem debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
+                        _debugInputs.Add(debugItem);
                         debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
                         foreach (var methodParameter in dev2MethodInfo.Inputs)
@@ -229,21 +258,14 @@ namespace Dev2.Activities
                         }
                         _debugInputs.Add(debugItem);
                     }
-                    if (!string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
-                    {
-                        debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
-                        AddDebugItem(new DebugEvalResult(dev2MethodInfo.MethodResult, "", env, update), debugItem);
-                        _debugInputs.Add(debugItem);
-                    }
                 }
             }
+
             return _debugInputs;
         }
 
         #endregion
 
-        public IResponseManager ResponseManager { get; set; }
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
