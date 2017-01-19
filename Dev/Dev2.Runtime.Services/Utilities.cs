@@ -20,7 +20,7 @@ namespace Dev2.Runtime
         #region GenerateString
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public static string GenerateString(this Random random, int length, string prefix = "", bool includeSpaces = false)
+        public static string GenerateString(this Random random, int length, string prefix = "")
         {
             var modulo = length / 3;
             var builder = new StringBuilder(prefix);
