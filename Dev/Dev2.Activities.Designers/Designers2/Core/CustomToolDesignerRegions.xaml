@@ -903,6 +903,34 @@
         </Grid>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="NewDotNetConstructorListGrid">
+        <Grid x:Name="MethodListGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
+
+            <Expander x:Name="MethodExpander" 
+                        Header="{Binding .}" 
+                        HorizontalAlignment="Stretch"
+                        Width="{Binding ElementName=MethodListGrid, Path=ActualWidth}"
+                        IsExpanded="{Binding Path=IsMethodExpanded}" 
+                        Style="{StaticResource DotNetDllExpander}" 
+                        AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
+                <Expander.HeaderTemplate>
+                    <DataTemplate>
+                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                    </DataTemplate>
+                </Expander.HeaderTemplate>
+                <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
+            </Expander>
+        </Grid>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="NewDotNetConstructorInputsGrid">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -1190,36 +1218,24 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid>
+                <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" HorizontalAlignment="Left" 
+                           Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Grid Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="OutputsLabel" Text="Output to Object" HorizontalAlignment="Left" />
-                </Grid>
-
-                <!-- OBJECT RESULT -->
-                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                    <TextBox TextWrapping="Wrap" 
-                             x:Name="ResponseTextbox"
-                             IsReadOnly="True"
-                             Height="Auto" 
-                             MinHeight="60"
-                             AcceptsReturn="True" 
-                             Text="{Binding ObjectResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             VerticalContentAlignment="Top"
-                             SnapsToDevicePixels="True" 
-                             VerticalScrollBarVisibility="Auto"
-                             HorizontalScrollBarVisibility="Auto" />
+                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                    <Button x:Name="ViewOutputsBtn" Width="Auto" Grid.Column="1" Content="View Outputs" 
+                            HorizontalAlignment="Right" Command="{Binding ViewObjectResult}"/>
                 </Grid>
             </Grid>
             <!-- OBJECT NAME -->
