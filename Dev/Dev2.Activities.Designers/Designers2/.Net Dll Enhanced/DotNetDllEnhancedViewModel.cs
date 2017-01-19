@@ -378,7 +378,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = true;
                             OutputsRegion.IsObject = true;
-
                         }
                         if (Regions != null)
                         {
@@ -400,6 +399,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 CreateMethodRegion();
                 regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
+                
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
                 {

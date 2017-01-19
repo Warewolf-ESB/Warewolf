@@ -14,7 +14,9 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Views;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -53,6 +55,7 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
+            IsOutputsEmptyRows = Outputs.Count == 0;
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
@@ -119,6 +122,8 @@ namespace Dev2.Activities.Designers2.Core
         private string _objectResult;
         private bool _isObjectOutputUsed;
         private IShellViewModel _shellViewModel;
+        private IJsonObjectsView _jsonObjectView;
+        private RelayCommand _viewObjectResult;
 
         #region Implementation of IToolRegion
 
@@ -282,6 +287,35 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }            
         }
+
+
+        public IJsonObjectsView JsonObjectsView
+        {
+            private get { return _jsonObjectView ?? (_jsonObjectView = new JsonObjectsView()); }
+            set { _jsonObjectView = value; }
+        }
+
+        public RelayCommand ViewObjectResult
+        {
+            get
+            {
+                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                {
+                    ViewJsonObjects();
+                }, CanRunCommand));
+            }
+        }
+
+        private bool CanRunCommand(object obj)
+        {
+            return true;
+        }
+
+        private void ViewJsonObjects()
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+        }
+
 
         public string ObjectName
         {
