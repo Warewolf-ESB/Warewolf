@@ -286,6 +286,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         bool _generateOutputsVisible;
         private ServiceInputBuilder _builder;
         private List<IMethodToolRegion<IPluginAction>> _methodsToRunList;
+        private bool _isMethodInputOutputVisible;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -319,6 +320,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         public override IList<IToolRegion> BuildRegions()
         {
+            IsMethodInputOutputVisible = false;
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
@@ -374,6 +376,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     SourceChangedAction = () =>
                     {
+                        
                         if (OutputsRegion != null)
                         {
                             OutputsRegion.IsEnabled = true;
@@ -386,6 +389,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             {
                                 toolRegion.Errors?.Clear();
                             }
+                        }
+                        if (ConstructorRegion.SelectedConstructor != null)
+                        {
+                            IsMethodInputOutputVisible = true;
                         }
                     },
                 };
@@ -447,6 +454,16 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
             AddToMethodsList();
             return regions;
+        }
+
+        public bool IsMethodInputOutputVisible
+        {
+            get { return _isMethodInputOutputVisible; }
+            set
+            {
+                _isMethodInputOutputVisible = value; 
+                OnPropertyChanged();
+            }
         }
 
         private void AddToMethodsList()
