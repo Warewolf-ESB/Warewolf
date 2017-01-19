@@ -176,7 +176,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 SetSelectedNamespace(value);
                 SourceChangedNamespace();
                 OnSomethingChanged(this);
-                SetObjectName();
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
@@ -186,7 +185,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
-        public void SetObjectName()
+      /*  public void SetObjectName()
         {
             if (IsNewPluginNamespace)
             {
@@ -201,7 +200,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                     }
                 }
             }
-        }
+        }*/
 
         public ICollection<INamespaceItem> Namespaces
         {

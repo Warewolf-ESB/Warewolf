@@ -366,8 +366,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         Errors =
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
-                    var namespaceItem = sender as DotNetNamespaceRegion;
-                    namespaceItem?.SetObjectName();
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
@@ -399,7 +397,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 CreateMethodRegion();
                 regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
-                
+
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
                 {
@@ -481,7 +479,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 List<ActionableErrorInfo> errorInfos =
                     list.Select(
                         error =>
-                            new ActionableErrorInfo(new ErrorInfo {ErrorType = ErrorType.Critical, Message = error}, () => { }))
+                            new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { }))
                         .ToList();
                 UpdateDesignValidationErrors(errorInfos);
                 Errors = new List<IActionableErrorInfo>(errorInfos);
