@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
-            var typeList = BuildTypeList(setupInfo.Parameters);
+            var typeList = BuildTypeList(setupInfo.Parameters, loadedAssembly);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
             foreach (var methodParameter in setupInfo.Parameters)
@@ -406,14 +406,26 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// Builds the type list.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
+        /// <param name="assembly"></param>
         /// <returns></returns>
-        private List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters)
+        private List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters, Assembly assembly)
         {
             var typeList = new List<Type>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var methodParameter in parameters)
             {
-                var type = DeriveType(methodParameter.TypeName);
+                Type type;
+                try
+                {
+                    type = assembly.GetType(methodParameter.TypeName) 
+                        ?? assembly.DefinedTypes?.FirstOrDefault(info => info.AssemblyQualifiedName != null && info.AssemblyQualifiedName.Equals(methodParameter.TypeName, StringComparison.InvariantCultureIgnoreCase))
+                        ?? Type.GetType(methodParameter.TypeName);
+                }
+                catch (Exception)
+                {
+                    type = Type.GetType(methodParameter.TypeName, true);
+                }
+
                 typeList.Add(type);
             }
             return typeList;
