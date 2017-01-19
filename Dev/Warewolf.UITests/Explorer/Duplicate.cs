@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         public void DuplicateResource_ThenAddsNewItemItem()
         {
             UIMap.Filter_Explorer("Hello World");
-            UIMap.Duplicate_FirstResource_FromContextMenu();
+            UIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
             UIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
@@ -22,7 +22,7 @@ namespace Warewolf.UITests
         public void DuplicateFolder_ThenAddsNewFolderItem()
         {
             UIMap.Filter_Explorer("Examples");
-            UIMap.Duplicate_FirstResource_FromContextMenu();
+            UIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
             UIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
