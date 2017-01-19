@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -45,12 +41,55 @@ $TestSettingsFile = "$PSScriptRoot\OverlappingUserGroupsPermissionsSecurity.test
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll"
+}
+if (!(Test-Path $TestAssemblyPath)) {
+	Write-Host Cannot find Warewolf.SecuritySpecs.dll at $PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug or $PSScriptRoot
+	exit 1
+}
+if (!(Test-Path $PSScriptRoot\TestResults)) {
+	New-Item -ItemType Directory $PSScriptRoot\TestResults
+}
+
+# Create full VSTest argument string.
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"OverlappingUserGroupsPermissionsSecurity`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:" + $PSScriptRoot + "\TestResults\ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"OverlappingUserGroupsPermissionsSecurity`""
 } else {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:" + $PSScriptRoot + "\TestResults\ResourcePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 
 # Write full command including full argument string.
