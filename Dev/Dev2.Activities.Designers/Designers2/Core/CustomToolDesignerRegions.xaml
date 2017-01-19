@@ -559,7 +559,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="DotNetMethodsInputGrid" d:DataContext="{d:DesignInstance inputRegion:DotNetMethodInputRegion}">
+    <ControlTemplate x:Key="DotNetMethodsInputGrid">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -833,8 +833,8 @@
             </Grid>
         </Grid>
     </ControlTemplate>
-    
-    <ControlTemplate x:Key="DotNetInputOutputGrid">
+
+    <ControlTemplate x:Key="DotNetInputOutputGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -1188,7 +1188,7 @@
                 </Grid>
             </Grid>
             <!-- OBJECT NAME -->
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
