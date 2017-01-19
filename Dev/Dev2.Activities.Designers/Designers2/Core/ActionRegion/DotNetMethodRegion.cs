@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -85,11 +84,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return _modelItem.GetProperty<IPluginAction>("Method");
+                return _modelItem.GetProperty<List<IPluginAction>>("MethodsToRun").FirstOrDefault();
             }
             set
             {
                 _modelItem.SetProperty("Method", value);
+                _modelItem.SetProperty("MethodsToRun", new List<IPluginAction>(new[] { value }));
             }
         }
 
@@ -157,7 +157,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return _selectedMethod;
+                var firstOrDefault = _modelItem.GetProperty<List<IPluginAction>>("MethodsToRun").FirstOrDefault();
+
+                return firstOrDefault ?? _selectedMethod;
             }
             set
             {
@@ -165,6 +167,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (!string.IsNullOrEmpty(_selectedMethod.Method))
                         StorePreviousValues(_selectedMethod.GetIdentifier());
+                    _modelItem.SetProperty("MethodsToRun", new List<IPluginAction>(new[] { value }));
+
                 }
                 if (Dependants != null)
                 {
@@ -207,15 +211,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                var dev2MethodInfos = _modelItem.GetProperty<List<IPluginAction>>("MethodsToRun");
-                _methodsToRun = dev2MethodInfos;
+
                 return _methodsToRun;
             }
 
             set
             {
                 _methodsToRun = value;
-                _modelItem.SetProperty("MethodsToRun", value);
                 OnPropertyChanged();
             }
         }

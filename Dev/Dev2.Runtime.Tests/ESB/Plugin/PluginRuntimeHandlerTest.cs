@@ -287,7 +287,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
                 });
 
-                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes)  });
                 Assert.IsNotNull(deserializeToObject);
             }
         }
@@ -321,7 +321,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 };
                 var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
 
-                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
                 Assert.IsNotNull(deserializeToObject);
                 instance.Args = pluginInvokeArgs;
                 var run = isolated.Value.Run(instance);

@@ -13,8 +13,6 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -121,6 +119,7 @@ namespace Dev2.Activities
                 }
 
                 var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
+
                 MethodsToRun = result.Args.MethodsToRun.Select(p => new PluginAction()
                 {
                     Method = p.Method,
@@ -140,8 +139,8 @@ namespace Dev2.Activities
                 {
                     if (dev2MethodInfo.IsObject)
                     {
-                        var arrayContainer = JsonConvert.DeserializeObject(dev2MethodInfo.MethodResult) as JContainer;
-                        dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, arrayContainer);
+                        var jContainer = dev2MethodInfo.MethodResult.DeserializeToObject();
+                        dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
                     }
                     else
                     {
@@ -173,7 +172,7 @@ namespace Dev2.Activities
 
                 if (!string.IsNullOrEmpty(ObjectName))
                 {
-                    var jContainer = JsonConvert.DeserializeObject(ObjectResult) as JContainer;
+                    var jContainer = ObjectResult.DeserializeToObject();
                     dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
                 }
 
@@ -204,6 +203,7 @@ namespace Dev2.Activities
                 {
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
+                    _debugOutputs.Add(debugItem);
                     if (!string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
                     {
                         debugItem = new DebugItem();
@@ -244,7 +244,7 @@ namespace Dev2.Activities
             {
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
-                   
+
                     if (dev2MethodInfo.Inputs.Any())
                     {
                         DebugItem debugItem = new DebugItem();
