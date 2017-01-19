@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         // ReSharper disable once InconsistentNaming
         public void WcfSource_CreateSourceUITests()
         {
-            UIMap.Select_NewWcfSource_FromExplorerContextMenu();
+            UIMap.Select_NewWcfSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
             UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
