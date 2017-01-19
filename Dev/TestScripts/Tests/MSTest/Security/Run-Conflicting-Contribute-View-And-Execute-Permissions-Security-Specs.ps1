@@ -29,12 +29,12 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\ConflictingContributeViewExecutePermissionsSecurity.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name="ConflictingPermissionsSecuritySpecs"
+  name="ConflictingContributeViewExecutePermissionsSecurity"
   enableDefaultDataCollectors="false"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run conflicting permissions security specs.</Description>
@@ -47,13 +47,11 @@ $TestSettingsFile = "$PSScriptRoot\LocalSecuritySpecs.testsettings"
 
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ConflictingContributeViewExecutePermissionsSecurity`""
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"ConflictingContributeViewExecutePermissionsSecurity`""
 } else {
 	# Create full VSTest argument string.
-	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll`" /resultsfile:" + $SolutionDir + "\TestResults\ConflictingContributeViewExecutePermissionsSecuritySpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
-# Start server under test
-cmd.exe /c $SolutionDir\TestScripts\Server\Service\Startup.bat
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
