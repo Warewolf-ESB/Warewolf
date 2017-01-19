@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
@@ -406,7 +407,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        private List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
+        private List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters)
         {
             var typeList = new List<Type>();
             // ReSharper disable once LoopCanBeConvertedToQuery
