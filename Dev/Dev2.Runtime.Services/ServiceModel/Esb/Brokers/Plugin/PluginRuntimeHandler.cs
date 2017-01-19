@@ -83,7 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
-                Args = setupInfo
+                Args = setupInfo,
             };
         }
 
