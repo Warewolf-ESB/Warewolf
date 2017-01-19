@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
@@ -31,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion,new SynchronousAsyncWorker());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dbActionRegion.Errors.Count);
@@ -55,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             sourceRegion.SelectedSource = dbsrc;
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             dbActionRegion.SelectedAction = action;
 
             //------------Assert Results-------------------------
@@ -81,7 +82,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             dbActionRegion.SomethingChanged += (a, b) => { evt = true; };
             dbActionRegion.SelectedAction = action;
 
@@ -108,7 +109,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -145,7 +146,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -179,7 +180,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             var cloned = dbActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -204,7 +205,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             // ReSharper disable once UseObjectOrCollectionInitializer
             DbActionMemento dbActionRegionToRestore = new DbActionMemento();
             dbActionRegionToRestore.IsEnabled = false;

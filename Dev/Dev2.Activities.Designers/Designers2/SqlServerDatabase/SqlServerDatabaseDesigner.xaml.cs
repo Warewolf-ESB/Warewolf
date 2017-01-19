@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Threading;
+
 namespace Dev2.Activities.Designers2.SqlServerDatabase
 {
     public partial class SqlServerDatabaseDesigner
@@ -19,7 +21,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         protected override SqlServerDatabaseDesignerViewModel CreateViewModel()
         {
-            return new SqlServerDatabaseDesignerViewModel(ModelItem);
+            return new SqlServerDatabaseDesignerViewModel(ModelItem,new AsyncWorker());
         }
 
     }
