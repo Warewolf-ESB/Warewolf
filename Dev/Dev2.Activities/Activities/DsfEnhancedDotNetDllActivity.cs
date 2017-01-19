@@ -142,8 +142,12 @@ namespace Dev2.Activities
                     }
                 }
                 ObjectResult = result.ObjectString;
-                var jContainer = JsonConvert.DeserializeObject(ObjectResult) as JContainer;
-                dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
+
+                if (!string.IsNullOrEmpty(ObjectName))
+                {
+                    var jContainer = JsonConvert.DeserializeObject(ObjectResult) as JContainer;
+                    dataObject.Environment.AddToJsonObjects(ObjectName, jContainer);
+                }
             }
             catch (Exception e)
             {
@@ -162,10 +166,10 @@ namespace Dev2.Activities
                 AddDebugItem(new DebugItemStaticDataParams("", "Constructor"), debugItem);
                 AddDebugItem(new DebugItemStaticDataParams(Constructor.ConstructorName, ""), debugItem);
                 _debugInputs.Add(debugItem);
-                if (ConstructorInputs != null)
+                if (ConstructorInputs != null && ConstructorInputs.Any())
                 {
                     debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Constructor Inputs"), debugItem);
                     foreach (var constructorInput in ConstructorInputs)
                     {
                         AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, update), debugItem);
@@ -175,17 +179,18 @@ namespace Dev2.Activities
                 if (!string.IsNullOrEmpty(ObjectName))
                 {
                     debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
                     AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
                 }
             }
 
-            if (MethodsToRun != null)
+            if (MethodsToRun != null && MethodsToRun.Any())
             {
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
+                    _debugInputs.Add(debugItem);
                     if (dev2MethodInfo.Parameters.Any())
                     {
                         debugItem = new DebugItem();
@@ -194,12 +199,14 @@ namespace Dev2.Activities
                         {
                             AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, update), debugItem);
                         }
+                        _debugInputs.Add(debugItem);
                     }
-                    if (string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
+                    if (!string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
                     {
                         debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
                         AddDebugItem(new DebugEvalResult(dev2MethodInfo.MethodResult, "", env, update), debugItem);
+                        _debugInputs.Add(debugItem);
                     }
                 }
             }
