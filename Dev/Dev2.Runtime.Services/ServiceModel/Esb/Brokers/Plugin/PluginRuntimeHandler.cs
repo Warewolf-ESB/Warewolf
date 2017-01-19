@@ -117,11 +117,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
             if (objectToRun.IsStatic)
             {
-                RunMethods(setupInfo, type, null, InvokeMethodsAction);
+                RunMethods(setupInfo, type, null, InvokeMethodsAction, loadedAssembly);
                 return;
             }
             var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
-            RunMethods(setupInfo, type, instance, InvokeMethodsAction);
+            RunMethods(setupInfo, type, instance, InvokeMethodsAction, loadedAssembly);
         }
 
         private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
@@ -144,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction)
+        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly)
         {
             if (setupInfo.MethodsToRun != null)
             {
@@ -152,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     if (dev2MethodInfo.Parameters != null)
                     {
-                        var typeList = BuildTypeList(dev2MethodInfo.Parameters);
+                        var typeList = BuildTypeList(dev2MethodInfo.Parameters,loadedAssembly);
                         var valuedTypeList = new List<object>();
                         foreach (var methodParameter in dev2MethodInfo.Parameters)
                         {
@@ -164,6 +164,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         var methodsAction = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
                         var knownBinder = new KnownTypesBinder();
                         knownBinder.KnownTypes.Add(type);
+                        knownBinder.KnownTypes.Add(methodsAction?.GetType());
                         dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString(knownBinder);
                     }
                 }
