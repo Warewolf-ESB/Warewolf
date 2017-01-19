@@ -3274,6 +3274,11 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.CloseTabButton, new Point(13, 4));
         }
 
+        public void click_ExchangeSource_CloseTabButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
+        }
+
         [Given(@"I Click Close DB Source Wizard Tab Button")]
         [When(@"I Click Close DB Source Wizard Tab Button")]
         [Then(@"I Click Close DB Source Wizard Tab Button")]
@@ -9273,8 +9278,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton);
         }
-
-        
 
         public void Click_SelectFilesButton_On_ExchangeEmailTool_LargeView()
         {
