@@ -211,18 +211,6 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -253,8 +241,6 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -30808,22 +30794,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem NewDatabaseSource
-        {
-            get
-            {
-                if ((this.mNewDatabaseSource == null))
-                {
-                    this.mNewDatabaseSource = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mNewDatabaseSource.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "TestingDb", PropertyExpressionOperator.Contains));
-                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mNewDatabaseSource;
-            }
-        }
-        
         public WpfListItem TestingDB
         {
             get
@@ -30839,12 +30809,28 @@ namespace Warewolf.UITests
                 return this.mTestingDB;
             }
         }
+        
+        public WpfListItem NewDatabaseSource
+        {
+            get
+            {
+                if ((this.mNewDatabaseSource == null))
+                {
+                    this.mNewDatabaseSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":null,""DatabaseName"":null,""Port"":0,""AuthenticationType"":""Windows"",""UserID"":null,""Password"":null,""DataList"":null,""ConnectionString"":""Data Source=;Initial Catalog=;Integrated Security=SSPI;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""2ad8c9a1-b6b3-440a-bad1-a5b234e87c1d"",""ResourceType"":""DbSource"",""ResourceName"":""New Database Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mNewDatabaseSource;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfListItem mNewDatabaseSource;
-        
         private WpfListItem mTestingDB;
+        
+        private WpfListItem mNewDatabaseSource;
         #endregion
     }
     
@@ -46137,7 +46123,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewEmailSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewEmailSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Host"":null,""UserName"":null,""Password"":null,""Port"":25,""EnableSsl"":false,""Timeout"":100000,""TestFromAddress"":null,""TestToAddress"":null,""DataList"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""33804493-8656-4cf8-9e5c-7776cf1dd287"",""ResourceType"":""EmailSource"",""ResourceName"":""New Email Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewEmailSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
                     this.mNewEmailSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -109802,6 +109788,18 @@ namespace Warewolf.UITests
                 return this.mswapfile;
             }
         }
+        
+        public AttachmentsForEmailFolder AttachmentsForEmailFolder
+        {
+            get
+            {
+                if ((this.mAttachmentsForEmailFolder == null))
+                {
+                    this.mAttachmentsForEmailFolder = new AttachmentsForEmailFolder(this);
+                }
+                return this.mAttachmentsForEmailFolder;
+            }
+        }
         #endregion
         
         #region Fields
@@ -109810,6 +109808,8 @@ namespace Warewolf.UITests
         private BOOTNXTFile mBOOTNXTFile;
         
         private WpfTreeItem mswapfile;
+        
+        private AttachmentsForEmailFolder mAttachmentsForEmailFolder;
         #endregion
     }
     
@@ -109890,72 +109890,125 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    public class AttachmentsForEmailFolder : WpfTreeItem
     {
         
-        public UIWarewolfDEV2SANELEMTWindow()
+        public AttachmentsForEmailFolder(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Select File(s)");
             #endregion
         }
         
         #region Properties
-        public UIConnectControlCustom UIConnectControlCustom
+        public attachment1 attachment1
         {
             get
             {
-                if ((this.mUIConnectControlCustom == null))
+                if ((this.mattachment1 == null))
                 {
-                    this.mUIConnectControlCustom = new UIConnectControlCustom(this);
+                    this.mattachment1 = new attachment1(this);
                 }
-                return this.mUIConnectControlCustom;
+                return this.mattachment1;
+            }
+        }
+        
+        public attachment2 attachment2
+        {
+            get
+            {
+                if ((this.mattachment2 == null))
+                {
+                    this.mattachment2 = new attachment2(this);
+                }
+                return this.mattachment2;
             }
         }
         #endregion
         
         #region Fields
-        private UIConnectControlCustom mUIConnectControlCustom;
+        private attachment1 mattachment1;
+        
+        private attachment2 mattachment2;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIConnectControlCustom : WpfCustom
+    public class attachment1 : WpfTreeItem
     {
         
-        public UIConnectControlCustom(UITestControl searchLimitContainer) : 
+        public attachment1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Select File(s)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UITheServerComboBoxCustom
+        public WpfCheckBox CheckBox
         {
             get
             {
-                if ((this.mUITheServerComboBoxCustom == null))
+                if ((this.mCheckBox == null))
                 {
-                    this.mUITheServerComboBoxCustom = new WpfCustom(this);
+                    this.mCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUITheServerComboBoxCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-                    this.mUITheServerComboBoxCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
-                    this.mUITheServerComboBoxCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxattachment1.txt_AutoID";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Select File(s)");
                     #endregion
                 }
-                return this.mUITheServerComboBoxCustom;
+                return this.mCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUITheServerComboBoxCustom;
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class attachment2 : WpfTreeItem
+    {
+        
+        public attachment2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Select File(s)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxattachment2.txt_AutoID";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
         #endregion
     }
 }
