@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -15,9 +14,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Views;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -55,6 +52,7 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
+            IsOutputsEmptyRows = Outputs.Count == 0;
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
@@ -304,12 +302,12 @@ namespace Dev2.Activities.Designers2.Core
                             {
                                 _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
                             }                            
-                            _modelItem.SetProperty("ObjectName", value);                            
+                            //_modelItem.SetProperty("ObjectName", value);                            
                         }
                         else
                         {
                             _objectName = string.Empty;
-                            _modelItem.SetProperty("ObjectName", _objectName);
+                           // _modelItem.SetProperty("ObjectName", _objectName);
                             OnPropertyChanged();
                         }
                     }

@@ -213,7 +213,7 @@
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetMethodGrid">
         <Grid x:Name="MethodsGrid" 
-                      Margin="-3,0,0,0" >
+                      Margin="-3,0,-4,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -666,7 +666,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="DotNetMethodsOutputGrid">
-        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch"  Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -681,31 +681,37 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
-                    <CheckBox x:Name="IsObjectCheckBox" 
-                              Grid.Column="1"
-                              IsChecked="{Binding IsObject}" 
-                              IsEnabled="{Binding IsEnabled}"
-                              ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
-                              Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                              Content="Output to Object"
-                              HorizontalAlignment="Left">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                        </i:Interaction.Behaviors>
-                    </CheckBox>
+                    <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Outputs - None" 
+                               Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Grid Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    
+                        <TextBlock Grid.Column="0" x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                        <CheckBox x:Name="IsObjectCheckBox" 
+                                  Grid.Column="1"
+                                  IsChecked="{Binding IsObject}" 
+                                  IsEnabled="{Binding IsEnabled}"
+                                  ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                                  Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                  Content="Output to Object"
+                                  HorizontalAlignment="Left">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
+                    </Grid>
                 </Grid>
 
                 <!-- OUTPUT MAPPINGS RESULT -->
-                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Grid Grid.Row="1" Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                     <controls:Dev2DataGrid x:Name="OutputsMappingDataGrid"
                                        ItemsSource="{Binding Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                           Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                        Height="Auto">
 
                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -770,21 +776,16 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </controls:Dev2DataGrid>
-                    <TextBlock Text="None"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Bottom"
-                           Margin="0,0,0,-18"
-                           Style="{StaticResource MenuTextBlockStyle}"
-                           Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </Grid>
                 <!-- OBJECT RESULT -->
-                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <Grid Grid.Row="1" Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                     <TextBox TextWrapping="Wrap" 
                              x:Name="ResponseTextbox"
                              IsReadOnly="True"
                              Height="Auto" 
                              MinHeight="60"
                              AcceptsReturn="True" 
+                             Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                              Text="{Binding ObjectResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              VerticalContentAlignment="Top"
                              SnapsToDevicePixels="True" 
@@ -793,27 +794,31 @@
                 </Grid>
             </Grid>
             <!-- RECORDSET NAME -->
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Recordset Name" />
-                <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
+            <Grid Grid.Row="1" Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Recordset Name" />
+                    <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
                          IsEnabled="{Binding IsEnabled}">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                    </i:Interaction.Behaviors>
-                </TextBox>
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </Grid>
             </Grid>
+            
             <!-- OBJECT NAME -->
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Object Name" />
-                <ui:IntellisenseTextBox Grid.Column="1" 
+            <Grid Grid.Row="1" Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Object Name" />
+                    <ui:IntellisenseTextBox Grid.Column="1" 
                                         WrapInBrackets="True"
                                         Padding="3"
                                         FilterType="JsonObject"
@@ -822,14 +827,15 @@
                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                         AutomationProperties.AutomationId="UI_TextBox_AutoID"
                                         ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                        <errors:ErrorsSetter Source="{Binding}"
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                            <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ObjectName"
                                              SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
                                              Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                    </i:Interaction.Behaviors>
-                </ui:IntellisenseTextBox>
+                        </i:Interaction.Behaviors>
+                    </ui:IntellisenseTextBox>
+                </Grid>
             </Grid>
         </Grid>
     </ControlTemplate>
@@ -860,6 +866,7 @@
             <TextBlock Grid.Column="0" x:Name="MethodsLabel" Text="Actions" />
             <ListBox x:Name="MethodListBox"
                      Grid.Row="1"
+                     BorderThickness="0"
                      ItemsSource="{Binding MethodsToRunList}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>

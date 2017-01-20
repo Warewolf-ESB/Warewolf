@@ -366,8 +366,15 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         Errors =
                             args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
-                    var namespaceItem = sender as DotNetNamespaceRegion;
-                    namespaceItem?.SetObjectName();
+                    var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
+                    var outputsRegion = dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) as OutputsRegion;
+                    if(outputsRegion != null)
+                    {
+                        if(dotNetNamespaceRegion.SelectedNamespace != null)
+                        {
+                            outputsRegion.ObjectResult = dotNetNamespaceRegion.SelectedNamespace.JsonObject;
+                        }
+                    }
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
@@ -399,12 +406,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 CreateMethodRegion();
                 regions.Add(MethodRegion);
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
-                
+
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
                 {
                     IsObject = true,
-                    IsEnabled = false
+                    IsEnabled = false,
+                    IsOutputsEmptyRows = false
                 };
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
@@ -473,7 +481,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             toolRegion.Errors?.Clear();
                         }
                     }
-                    CreateMethodRegion();
+                    //CreateMethodRegion();
                 }
             };
             MethodRegion.ErrorsHandler += (sender, list) =>
@@ -481,7 +489,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 List<ActionableErrorInfo> errorInfos =
                     list.Select(
                         error =>
-                            new ActionableErrorInfo(new ErrorInfo {ErrorType = ErrorType.Critical, Message = error}, () => { }))
+                            new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { }))
                         .ToList();
                 UpdateDesignValidationErrors(errorInfos);
                 Errors = new List<IActionableErrorInfo>(errorInfos);
