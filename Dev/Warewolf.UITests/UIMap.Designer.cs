@@ -19665,6 +19665,22 @@ namespace Warewolf.UITests
                 return this.mConstructorsComboBoxComboBox;
             }
         }
+        
+        public WpfList ActionListBoxList
+        {
+            get
+            {
+                if ((this.mActionListBoxList == null))
+                {
+                    this.mActionListBoxList = new WpfList(this);
+                    #region Search Criteria
+                    this.mActionListBoxList.SearchProperties[WpfList.PropertyNames.AutomationId] = "MethodListBox";
+                    this.mActionListBoxList.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mActionListBoxList;
+            }
+        }
         #endregion
         
         #region Fields
@@ -19689,6 +19705,8 @@ namespace Warewolf.UITests
         private WpfButton mCancelButton;
         
         private ConstructorsComboBoxComboBox mConstructorsComboBoxComboBox;
+        
+        private WpfList mActionListBoxList;
         #endregion
     }
     
@@ -108081,10 +108099,24 @@ namespace Warewolf.UITests
                 return this.mUIFlowchartCustom;
             }
         }
+        
+        public UIFlowchartCustom11 UIFlowchartCustom1
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom1 == null))
+                {
+                    this.mUIFlowchartCustom1 = new UIFlowchartCustom11(this);
+                }
+                return this.mUIFlowchartCustom1;
+            }
+        }
         #endregion
         
         #region Fields
         private UIFlowchartCustom1 mUIFlowchartCustom;
+        
+        private UIFlowchartCustom11 mUIFlowchartCustom1;
         #endregion
     }
     
@@ -108156,6 +108188,173 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom11 : WpfCustom
+    {
+        
+        public UIFlowchartCustom11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 5(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfEnhancedDotNetDllCustom1 UIDsfEnhancedDotNetDllCustom
+        {
+            get
+            {
+                if ((this.mUIDsfEnhancedDotNetDllCustom == null))
+                {
+                    this.mUIDsfEnhancedDotNetDllCustom = new UIDsfEnhancedDotNetDllCustom1(this);
+                }
+                return this.mUIDsfEnhancedDotNetDllCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfEnhancedDotNetDllCustom1 mUIDsfEnhancedDotNetDllCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDsfEnhancedDotNetDllCustom1 : WpfCustom
+    {
+        
+        public UIDsfEnhancedDotNetDllCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL(DotNetDllDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UILargeViewContentCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ActivitiesDesignExpander UIDev2ActivitiesDesignExpander
+        {
+            get
+            {
+                if ((this.mUIDev2ActivitiesDesignExpander == null))
+                {
+                    this.mUIDev2ActivitiesDesignExpander = new UIDev2ActivitiesDesignExpander(this);
+                }
+                return this.mUIDev2ActivitiesDesignExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ActivitiesDesignExpander mUIDev2ActivitiesDesignExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ActivitiesDesignExpander : WpfExpander
+    {
+        
+        public UIDev2ActivitiesDesignExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ConstructorExpander__AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ActivitiesDesignButton UIDev2ActivitiesDesignButton
+        {
+            get
+            {
+                if ((this.mUIDev2ActivitiesDesignButton == null))
+                {
+                    this.mUIDev2ActivitiesDesignButton = new UIDev2ActivitiesDesignButton(this);
+                }
+                return this.mUIDev2ActivitiesDesignButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ActivitiesDesignButton mUIDev2ActivitiesDesignButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ActivitiesDesignButton : WpfButton
+    {
+        
+        public UIDev2ActivitiesDesignButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox UIConstructorsComboBoxComboBox
+        {
+            get
+            {
+                if ((this.mUIConstructorsComboBoxComboBox == null))
+                {
+                    this.mUIConstructorsComboBoxComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mUIConstructorsComboBoxComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ConstructorsComboBox";
+                    this.mUIConstructorsComboBoxComboBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIConstructorsComboBoxComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mUIConstructorsComboBoxComboBox;
         #endregion
     }
 }

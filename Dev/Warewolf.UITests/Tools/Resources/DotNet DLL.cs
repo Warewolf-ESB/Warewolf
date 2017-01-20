@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Tools.Resources
 {
     [CodedUITest]
-    public class DotNet_DLL
+    public class DotNet_DLL_UITests
     {
         [TestMethod]
 		[TestCategory("Resource Tools")]
