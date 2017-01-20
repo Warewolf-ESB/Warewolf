@@ -55,7 +55,14 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
-            IsOutputsEmptyRows = Outputs.Count == 0;
+            if (IsObject)
+            {
+                IsOutputsEmptyRows = Outputs.Count == 0;
+            }
+            else
+            {
+                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
+            }
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
