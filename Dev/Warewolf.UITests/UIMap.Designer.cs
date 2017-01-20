@@ -31,19 +31,6 @@ namespace Warewolf.UITests
     {
         
         /// <summary>
-        /// Open_UI_Map_Designer_To_Flowchart - Use 'Open_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
-        /// </summary>
-        public void Open_UI_Map_Designer_To_Flowchart()
-        {
-            #region Variable Declarations
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
-            Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
-        }
-        
-        /// <summary>
         /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
         /// </summary>
         public void AssertMethod1()
@@ -56,19 +43,20 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.AssertMethod1ExpectedValues.HumalClassListItemExists, humalClassListItem.Exists);
         }
         
-        #region Properties
-        public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
+        /// <summary>
+        /// Open_UI_Map_Designer_To_Flowchart - Use 'Open_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
+        /// </summary>
+        public void Open_UI_Map_Designer_To_Flowchart()
         {
-            get
-            {
-                if ((this.mOpen_UI_Map_Designer_To_FlowchartParams == null))
-                {
-                    this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
-                }
-                return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
+            #region Variable Declarations
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
+            Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
+        #region Properties
         public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
         {
             get
@@ -78,6 +66,18 @@ namespace Warewolf.UITests
                     this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
                 }
                 return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
+        public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
+        {
+            get
+            {
+                if ((this.mOpen_UI_Map_Designer_To_FlowchartParams == null))
+                {
+                    this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
+                }
+                return this.mOpen_UI_Map_Designer_To_FlowchartParams;
             }
         }
         
@@ -251,9 +251,9 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
-        
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -286,21 +286,6 @@ namespace Warewolf.UITests
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_UI_Map_Designer_To_Flowchart'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Open_UI_Map_Designer_To_FlowchartParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
-        /// </summary>
-        public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'AssertMethod1'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -312,6 +297,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of '{"AssemblyLocation":"C:\\Users\\Sanele.Mthembu\\So...' list item equals 'True'
         /// </summary>
         public bool HumalClassListItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_UI_Map_Designer_To_Flowchart'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Open_UI_Map_Designer_To_FlowchartParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
+        /// </summary>
+        public bool FlowchartExists = true;
         #endregion
     }
     
@@ -19906,9 +19906,10 @@ namespace Warewolf.UITests
                 {
                     this.mHumalClassListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mHumalClassListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"C:\\\\Users\\\\Sanele.Mthembu\\\\Source\\\\Repo2\\\\Dev\\\\Warewolf.Tool" +
-                        "sSpecs\\\\bin\\\\Debug\\\\TestingDotnetDllCascading.dll\",\"AssemblyName\":\"\",\"FullName\":" +
-                        "\"TestingDotnetDllCascading.Human\",\"MethodName\":null}";
+                    this.mHumalClassListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"C:\\\\ProgramData\\\\Warewolf\\\\Resources\\\\Dlls\\\\TestingDotnetDll" +
+                        "Cascading.dll\",\"AssemblyName\":\"\",\"FullName\":\"TestingDotnetDllCascading.Human\",\"M" +
+                        "ethodName\":null,\"JsonObject\":\"{\\\"Name\\\":\\\"\\\",\\\"PersonFood\\\":\\\"\\\",\\\"SurName\\\":\\\"\\" +
+                        "\"}\"}";
                     this.mHumalClassListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
@@ -108111,12 +108112,26 @@ namespace Warewolf.UITests
                 return this.mUIFlowchartCustom1;
             }
         }
+        
+        public UIFlowchartCustom2 UIFlowchartCustom2
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom2 == null))
+                {
+                    this.mUIFlowchartCustom2 = new UIFlowchartCustom2(this);
+                }
+                return this.mUIFlowchartCustom2;
+            }
+        }
         #endregion
         
         #region Fields
         private UIFlowchartCustom1 mUIFlowchartCustom;
         
         private UIFlowchartCustom11 mUIFlowchartCustom1;
+        
+        private UIFlowchartCustom2 mUIFlowchartCustom2;
         #endregion
     }
     
@@ -108355,6 +108370,144 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfComboBox mUIConstructorsComboBoxComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom2 : WpfCustom
+    {
+        
+        public UIFlowchartCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 6(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfEnhancedDotNetDllCustom2 UIDsfEnhancedDotNetDllCustom
+        {
+            get
+            {
+                if ((this.mUIDsfEnhancedDotNetDllCustom == null))
+                {
+                    this.mUIDsfEnhancedDotNetDllCustom = new UIDsfEnhancedDotNetDllCustom2(this);
+                }
+                return this.mUIDsfEnhancedDotNetDllCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfEnhancedDotNetDllCustom2 mUIDsfEnhancedDotNetDllCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDsfEnhancedDotNetDllCustom2 : WpfCustom
+    {
+        
+        public UIDsfEnhancedDotNetDllCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL(DotNetDllDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UILargeViewContentCustom1 UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom1(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UILargeViewContentCustom1 mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom1 : WpfCustom
+    {
+        
+        public UILargeViewContentCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UINamespaceComboBoxComboBox UINamespaceComboBoxComboBox
+        {
+            get
+            {
+                if ((this.mUINamespaceComboBoxComboBox == null))
+                {
+                    this.mUINamespaceComboBoxComboBox = new UINamespaceComboBoxComboBox(this);
+                }
+                return this.mUINamespaceComboBoxComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UINamespaceComboBoxComboBox mUINamespaceComboBoxComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UINamespaceComboBoxComboBox : WpfComboBox
+    {
+        
+        public UINamespaceComboBoxComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "NamespaceComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UIAssemblyLocationCProListItem
+        {
+            get
+            {
+                if ((this.mUIAssemblyLocationCProListItem == null))
+                {
+                    this.mUIAssemblyLocationCProListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIAssemblyLocationCProListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"C:\\\\ProgramData\\\\Warewolf\\\\Resources\\\\Dlls\\\\TestingDotnetDll" +
+                        "Cascading.dll\",\"AssemblyName\":\"\",\"FullName\":\"TestingDotnetDllCascading.Human\",\"M" +
+                        "ethodName\":null,\"JsonObject\":\"{\\\"Name\\\":\\\"\\\",\\\"PersonFood\\\":\\\"\\\",\\\"SurName\\\":\\\"\\" +
+                        "\"}\"}";
+                    this.mUIAssemblyLocationCProListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIAssemblyLocationCProListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUIAssemblyLocationCProListItem;
         #endregion
     }
 }
