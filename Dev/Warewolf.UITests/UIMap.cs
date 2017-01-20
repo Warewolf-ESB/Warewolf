@@ -1315,7 +1315,6 @@ namespace Warewolf.UITests
         public void Click_DB_Source_Wizard_Test_Connection_Button()
         {
             var point = new Point();
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is visible.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.Spinner);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseCombobox.TryGetClickablePoint(out point), "Database Combobox is not visible.");
@@ -2859,20 +2858,10 @@ namespace Warewolf.UITests
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHereCustom);
         }
 
-        [Given(@"I Select New Sharepoint Server Source")]
-        [When(@"I Select New Sharepoint Server Source")]
-        [Then(@"I Select New Sharepoint Server Source")]
-        public void WhenISelectNewSharepointServerSource()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.Server.NewSharePointSource);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists);
-        }
-
-        [Given(@"I Click UserButton OnSharepointSource")]
-        [When(@"I Click UserButton OnSharepointSource")]
-        [Then(@"I Click UserButton OnSharepointSource")]
-        public void IClickUserButtonOnSharepointSource()
+        [Given(@"I Click User Button On Sharepoint Source")]
+        [When(@"I Click User Button On Sharepoint Source")]
+        [Then(@"I Click User Button On Sharepoint Source")]
+        public void Click_UserButton_On_SharepointSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
@@ -2882,7 +2871,7 @@ namespace Warewolf.UITests
         [Given(@"I Click UserButton On Database Source")]
         [When(@"I Click UserButton On Database Source")]
         [Then(@"I Click UserButton On Database Source")]
-        public void IClickUserButtonOnDatabaseSource()
+        public void Click_UserButton_On_DatabaseSource()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
@@ -4196,9 +4185,8 @@ namespace Warewolf.UITests
         public void Open_ExplorerFirstItem_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ShowVersionHistory.Exists, "Show version history does not exist after right clicking a resource");
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewSwagger.Exists, "View Swagger button does not exist");
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.ViewSwagger.Enabled, "View swagger is disabled");
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
         [When(@"I Open Explorer First Item Tests With Context Menu")]
@@ -9307,6 +9295,11 @@ namespace Warewolf.UITests
                 Directory.Delete(folderName);
                 Assert.IsFalse(Directory.Exists(folderName));
             }
+        }
+
+        public void Click_Close_ExchangeSource_Tab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
         }
     }
 }
