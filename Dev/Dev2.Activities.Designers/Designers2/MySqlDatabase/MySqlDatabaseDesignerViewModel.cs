@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Communication;
@@ -54,9 +55,10 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
             : base(modelItem)
         {
+            _worker = worker;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -166,10 +168,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             UpdateWorstError();
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
             : base(modelItem)
         {
             Model = model;
+            _worker = worker;
             SetupCommonProperties();
         }
 
@@ -296,6 +299,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
+        private readonly IAsyncWorker _worker;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -338,7 +342,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
