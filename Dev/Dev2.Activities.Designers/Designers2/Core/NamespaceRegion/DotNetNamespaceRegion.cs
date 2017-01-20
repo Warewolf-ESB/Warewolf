@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
-using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -57,14 +56,20 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if (_source.SelectedSource != null && !IsNewPluginNamespace)
+                    if (_source.SelectedSource != null)
                     {
-                        Namespaces = model.GetNameSpaces(_source.SelectedSource);
+                        if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
+                        {
+                            Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
+
+                        }
+                        else
+                        {
+                            Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+
+                        }
                     }
-                    if (IsNewPluginNamespace)
-                    {
-                        Namespaces = model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
-                    }
+
                     IsRefreshing = false;
                 }, CanRefresh);
 
@@ -141,21 +146,25 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void UpdateBasedOnSource()
         {
-            if (_source?.SelectedSource != null && !IsNewPluginNamespace)
+            if (_source?.SelectedSource != null)
             {
-                Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+                if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
+                {
+                    Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
 
 
-                IsNamespaceEnabled = true;
-                IsEnabled = true;
-            }
-            if (_source?.SelectedSource != null && IsNewPluginNamespace)
-            {
-                Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
+                    IsNamespaceEnabled = true;
+                    IsEnabled = true;
+                }
+                else
+                {
+                    Namespaces = _model.GetNameSpaces(_source.SelectedSource);
 
 
-                IsNamespaceEnabled = true;
-                IsEnabled = true;
+                    IsNamespaceEnabled = true;
+                    IsEnabled = true;
+                }
+
             }
         }
 
@@ -185,22 +194,22 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
-      /*  public void SetObjectName()
-        {
-            if (IsNewPluginNamespace)
-            {
-                var outputsToolRegion = Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
-                if(outputsToolRegion != null)
-                {
-                    if(SelectedNamespace != null)
-                    {
-                        outputsToolRegion.ObjectResult = SelectedNamespace.JsonObject;
-                        var objectName = "@" + SelectedNamespace.FullName.Split('.').LastOrDefault();
-                        outputsToolRegion.ObjectName = DataListUtil.AddBracketsToValueIfNotExist(objectName);
-                    }
-                }
-            }
-        }*/
+        /*  public void SetObjectName()
+          {
+              if (IsNewPluginNamespace)
+              {
+                  var outputsToolRegion = Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
+                  if(outputsToolRegion != null)
+                  {
+                      if(SelectedNamespace != null)
+                      {
+                          outputsToolRegion.ObjectResult = SelectedNamespace.JsonObject;
+                          var objectName = "@" + SelectedNamespace.FullName.Split('.').LastOrDefault();
+                          outputsToolRegion.ObjectName = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                      }
+                  }
+              }
+          }*/
 
         public ICollection<INamespaceItem> Namespaces
         {

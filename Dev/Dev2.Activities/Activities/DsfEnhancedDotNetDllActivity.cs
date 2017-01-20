@@ -146,8 +146,8 @@ namespace Dev2.Activities
                     if (dev2MethodInfo.IsObject)
                     {
 
-                        var jContainer = dev2MethodInfo.MethodResult.DeserializeToObject() ??
-                            JToken.Parse(dev2MethodInfo.MethodResult) as JContainer;
+                        var jContainer = JToken.Parse(dev2MethodInfo.MethodResult) as JContainer
+                            ?? dev2MethodInfo.MethodResult.DeserializeToObject();
                         dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
                     }
                     else
