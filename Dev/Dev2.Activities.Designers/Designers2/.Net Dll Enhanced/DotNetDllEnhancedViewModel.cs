@@ -330,6 +330,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = false;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = true;
                         }
                         if (Regions != null)
                         {
@@ -349,6 +350,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = true;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = true;
                         }
                         if (Regions != null)
                         {
@@ -385,6 +387,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = true;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
                         if (Regions != null)
                         {
