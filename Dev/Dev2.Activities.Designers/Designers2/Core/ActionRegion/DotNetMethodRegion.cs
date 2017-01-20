@@ -158,9 +158,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                var firstOrDefault = _modelItem.GetProperty<List<IPluginAction>>("MethodsToRun").FirstOrDefault();
+               
 
-                return firstOrDefault ?? _selectedMethod;
+                return  _selectedMethod;
             }
             set
             {
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (!string.IsNullOrEmpty(_selectedMethod.Method))
                         StorePreviousValues(_selectedMethod.GetIdentifier());
-                    _modelItem.SetProperty("MethodsToRun", new List<IPluginAction>(new[] { value }));
+                 
 
                 }
                 if (Dependants != null)
@@ -218,6 +218,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             set
             {
+                
                 _methodsToRun = value;
                 OnPropertyChanged();
             }
