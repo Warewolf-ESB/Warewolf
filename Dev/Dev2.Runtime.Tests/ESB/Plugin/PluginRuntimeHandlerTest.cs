@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PluginRuntimeHandlerTest
     {
-        
+
         #region FetchNamespaceListObject
 
         [TestMethod]
@@ -48,6 +48,22 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 var result = isolated.Value.FetchNamespaceListObject(source);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result.Count > 0);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        public void PluginRuntimeHandler_FetchNamespaceListObjectWithJsonObjects_WhenValidDll_ExpectNamespaces()
+        {
+            //------------Setup for test--------------------------
+            var source = CreatePluginSource(typeof(DummyClassForPluginTest));
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = isolated.Value.FetchNamespaceListObjectWithJsonObjects(source);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
             }
@@ -73,6 +89,22 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
+        public void PluginRuntimeHandler_FetchNamespaceListObjectWithJsonObjects_WhenNullDll_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObjectWithJsonObjects(null);
+                //------------Assert Results-------------------------
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [ExpectedException(typeof(NullReferenceException))]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenNullLocationInSource_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -87,6 +119,20 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
+        public void PluginRuntimeHandler_FetchNamespaceListObjectWithJsonObjects_WhenNullLocationInSource_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var source = CreatePluginSource(typeof(DummyClassForPluginTest), true);
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObjectWithJsonObjects(source);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [ExpectedException(typeof(NullReferenceException))]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenNullLocationAndInvalidSourceID_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -94,6 +140,21 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 isolated.Value.FetchNamespaceListObject(source);
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void PluginRuntimeHandler_FetchNamespaceListObjectWithJsonObjects_WhenNullLocationAndInvalidSourceID_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var source = CreatePluginSource(typeof(DummyClassForPluginTest), true);
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObjectWithJsonObjects(source);
             }
 
         }
@@ -114,6 +175,24 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var pluginRuntimeHandler = new PluginRuntimeHandler(mockAssemblyLoader.Object);
             //---------------Test Result -----------------------
             pluginRuntimeHandler.FetchNamespaceListObject(source);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(BadImageFormatException))]
+        public void FetchNamespaceListObjectWithJsonObjects_GivenThrowsBadFormatExceptionError_ShouldRethrowBadFormatException()
+        {
+            //---------------Set up test pack-------------------
+            var source = CreatePluginSource(typeof(DummyClassForPluginTest));
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            Assembly assembly;
+            mockAssemblyLoader.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out assembly))
+                .Throws(new BadImageFormatException());
+            var pluginRuntimeHandler = new PluginRuntimeHandler(mockAssemblyLoader.Object);
+            //---------------Test Result -----------------------
+            pluginRuntimeHandler.FetchNamespaceListObjectWithJsonObjects(source);
         }
 
         #endregion
@@ -228,6 +307,21 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 Assert.IsFalse(result.Any());
             }
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        public void PluginRuntimeHandler_ListConstructors_WhenInvalidLocation_ExpectNoResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = isolated.Value.ListConstructors("z:\foo\asm.dll", "asm.dll", "asm.dll");
+                Assert.IsFalse(result.Any());
+            }
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
@@ -244,8 +338,40 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        public void PluginRuntimeHandler_ListConstructors_WhenValidLocation_ExpectResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListConstructors(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocation_ExpectResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+            }
+        }
+
         #endregion
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
@@ -287,12 +413,12 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
                 });
 
-                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
                 Assert.IsNotNull(deserializeToObject);
             }
         }
 
-      
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -302,7 +428,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(Human);
-            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "set_Name" , Parameters = new List<IMethodParameter>()
+            {
+                new ConstructorParameter()
+                {
+                    Name = "value", Value = "Micky", TypeName = typeof(string).FullName, IsRequired = true
+                }
+            } } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -321,12 +453,12 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 };
                 var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
 
-                var deserializeToObject = instance.ObjectString.DeserializeToObject<Human>();
+                var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
                 Assert.IsNotNull(deserializeToObject);
                 instance.Args = pluginInvokeArgs;
                 var run = isolated.Value.Run(instance);
                 Assert.IsNotNull(run);
-                StringAssert.Contains(run.ObjectString,"Default");
+                StringAssert.Contains(run.ObjectString, "Default");
             }
         }
 
@@ -338,7 +470,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(StaticClass);
-            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString", Parameters = new List<IMethodParameter>() } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -369,7 +501,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(StaticClass);
-            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToStringOnStatic", Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToStringOnStatic", Parameters = new List<IMethodParameter>() } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -403,7 +535,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
 
             var type = typeof(SealedClass);
-            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" , Parameters = new List<IMethodParameter>()} }, type, new ServiceConstructor());
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString", Parameters = new List<IMethodParameter>() } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<PluginRuntimeHandler>())
             {
@@ -486,5 +618,19 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     }
     public class Main
     {
+        private readonly string _a;
+
+        public Main(string a)
+        {
+            _a = a;
+        }
+
+        public string A
+        {
+            get
+            {
+                return _a;
+            }
+        }
     }
 }

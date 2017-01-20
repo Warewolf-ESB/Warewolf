@@ -155,6 +155,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         {
             get
             {
+                _selectedConstructor = _modelItem.GetProperty<IPluginConstructor>("Constructor");
                 return _selectedConstructor;
             }
             set
@@ -163,7 +164,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 {
                     if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
                         StorePreviousValues(_selectedConstructor.GetIdentifier());
-                    OnSomethingChanged(this);
+                    _modelItem.SetProperty("Constructor", value);
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();

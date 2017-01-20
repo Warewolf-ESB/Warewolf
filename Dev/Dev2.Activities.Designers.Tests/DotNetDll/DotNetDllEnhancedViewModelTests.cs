@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.OutputsRegion);
             Assert.IsNotNull(vm.ErrorRegion);
             Assert.IsNotNull(vm.Regions);
-            Assert.AreEqual(7, vm.Regions.Count);
+            Assert.AreEqual(10, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
             Assert.IsNotNull(vm.TestInputCommand);
             Assert.IsNotNull(vm.Properties);
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.Validate();
 
-            Assert.AreEqual(1, vm.Errors.Count);
+            Assert.AreEqual(3, vm.Errors.Count);
 
         }
 
@@ -303,8 +303,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             var ps = new Mock<IPluginServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
-            ps.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Throws(new BadImageFormatException());
-            ps.Setup(a => a.GetActions(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
+            ps.Setup(a => a.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Throws(new BadImageFormatException());
+            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -319,23 +319,28 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         {
             var ps = new Mock<IPluginServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
-            ps.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem>() { new NamespaceItem() { FullName = "f" } });
-            ps.Setup(a => a.GetActions(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
+            ps.Setup(a => a.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem>() { new NamespaceItem() { FullName = "f" } });
+            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
             return ps;
         }
 
         static ModelItem CreateModelItem()
         {
-            var activity = new DsfDotNetDllActivity();
+            var activity = new DsfEnhancedDotNetDllActivity();
             return ModelItemUtils.CreateModelItem(activity);
         }
 
         static ModelItem CreateModelItemWithValues()
         {
-            var activity = new DsfDotNetDllActivity();
-            activity.Method = new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() { new ServiceInput() { Name = "a", Value = "b" } } };
-            activity.Namespace = new NamespaceItem() { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" };
-            activity.SourceId = id;
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                MethodsToRun = new List<IPluginAction>(new[]
+                {
+                    new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() { new ServiceInput() { Name = "a", Value = "b" } } }
+                }),
+                Namespace = new NamespaceItem() { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" },
+                SourceId = id
+            };
             return ModelItemUtils.CreateModelItem(activity);
         }
     }
