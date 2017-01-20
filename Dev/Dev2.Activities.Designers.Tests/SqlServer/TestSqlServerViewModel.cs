@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.AreEqual(2,sqlServer.ActionRegion.Actions.Count);
+            Assert.AreEqual(1,sqlServer.ActionRegion.Actions.Count);
         }
 
         [TestMethod]

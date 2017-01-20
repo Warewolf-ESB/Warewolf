@@ -87,16 +87,11 @@ namespace Dev2.Services.Sql
         {           
             DataSet ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
-            return ds.Tables[0];
-
-//            var table = new DataTable();
-//            table.Load(reader, LoadOption.OverwriteChanges);
-//            var retrieveStatistics = _sqlConnection.RetrieveStatistics();
-//            foreach (DictionaryEntry retrieveStatistic in retrieveStatistics)
-//            {
-//                Dev2Logger.Debug("Sql Stat:"+retrieveStatistic.Key+": "+retrieveStatistic.Value);
-//            }
-//            return table;
+            if (ds.Tables.Count > 0)
+            {
+                return ds.Tables[0];
+            }
+            return new DataTable();
         }
 
         public DataSet FetchDataSet(IDbCommand command)
