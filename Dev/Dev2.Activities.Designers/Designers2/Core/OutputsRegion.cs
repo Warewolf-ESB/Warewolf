@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
-            if (IsObject)
+            if (!IsObject)
             {
                 IsOutputsEmptyRows = Outputs.Count == 0;
             }
