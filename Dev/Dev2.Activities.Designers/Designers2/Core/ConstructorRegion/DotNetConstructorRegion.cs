@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
+        private bool _isConstructorExpanded;
 
         public DotNetConstructorRegion()
         {
@@ -70,6 +71,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                     IsRefreshing = false;
                 }, CanRefresh);
 
+                IsConstructorExpanded = false;
                 IsEnabled = true;
                 _modelItem = modelItem;
             }
@@ -214,6 +216,18 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             set
             {
                 _isConstructorEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsConstructorExpanded
+        {
+            get
+            {
+                return _isConstructorExpanded;
+            }
+            set
+            {
+                _isConstructorExpanded = value;
                 OnPropertyChanged();
             }
         }

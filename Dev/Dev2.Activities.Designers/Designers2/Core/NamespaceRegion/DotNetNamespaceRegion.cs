@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             try
             {
                 Errors = new List<string>();
-                LabelWidth = 70;
+                LabelWidth = 74;
                 ToolRegionName = "DotNetNamespaceRegion";
                 _modelItem = modelItem;
                 _model = model;
@@ -58,16 +58,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
                     {
-                        if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
-                        {
-                            Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
-
-                        }
-                        else
-                        {
-                            Namespaces = _model.GetNameSpaces(_source.SelectedSource);
-
-                        }
+                        Namespaces = _modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity) ? _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource) : _model.GetNameSpaces(_source.SelectedSource);
                     }
 
                     IsRefreshing = false;
@@ -135,8 +126,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 _errors.Add(e.Message);
                 Errors = _errors;
-
-
             }
             finally
             {
@@ -151,20 +140,15 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
                 {
                     Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
-
-
                     IsNamespaceEnabled = true;
                     IsEnabled = true;
                 }
                 else
                 {
                     Namespaces = _model.GetNameSpaces(_source.SelectedSource);
-
-
                     IsNamespaceEnabled = true;
                     IsEnabled = true;
                 }
-
             }
         }
 

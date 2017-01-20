@@ -126,7 +126,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = false;
             if (_action?.SelectedMethod != null)
             {
-
                 Inputs = _action.SelectedMethod.Inputs;
                 _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
