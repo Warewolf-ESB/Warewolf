@@ -66,6 +66,31 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DatabaseActionRegion_ConstructorWithSelectedAction")]
+        public void DatabaseActionRegion_ConstructorWithSelectedAction_IsRefreshingTrue_IsActionEnabledFalse()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
+            var src = new Mock<IDbServiceModel>();
+            var dbsrc = new DbSourceDefinition() { Id = id, Name = "johnny"};
+            var action = new DbAction() { Name = "bravo" };
+            src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
+
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
+            sourceRegion.SelectedSource = dbsrc;
+
+            //------------Execute Test---------------------------
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            dbActionRegion.SelectedAction = action;
+            dbActionRegion.IsRefreshing = true;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(action, dbActionRegion.SelectedAction);
+            Assert.IsFalse(dbActionRegion.CanRefresh());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DatabaseActionRegion_ChangeActionSomethingChanged")]
         public void DatabaseActionRegion_ChangeActionSomethingChanged_ExpectedChange_Result()
         {
