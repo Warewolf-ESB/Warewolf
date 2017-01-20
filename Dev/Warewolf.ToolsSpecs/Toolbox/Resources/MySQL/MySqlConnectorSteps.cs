@@ -427,7 +427,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel);
             Assert.IsTrue(viewModel.ActionRegion.IsActionEnabled);
-            Assert.IsNull(viewModel.ActionRegion.SelectedAction);
         }
 
         [Then(@"Inputs on mysql connector tool is null")]
