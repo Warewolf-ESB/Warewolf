@@ -7872,7 +7872,7 @@ namespace Warewolf.UITests
         [Then(@"I Select New Folder From SaveDialog Context Menu")]
         public void Select_NewFolder_From_SaveDialogContextMenu()
         {
-            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem);
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
 
         [Given(@"I Select Rename From SaveDialog Context Menu")]
@@ -7931,10 +7931,19 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
-        [Then(@"""(.*)"" is open")]
-        public void ThenIsOpen(string tabName)
+        [Then(@"Remote ""(.*)"" is open")]
+        public void RemoteResourceIsOpen(string tabName)
         {
-            //WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists);
+            Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
+        }
+
+        [Then(@"Local ""(.*)"" is open")]
+        public void LocalResourceIsOpen(string tabName)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
 

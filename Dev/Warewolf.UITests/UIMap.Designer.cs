@@ -3534,6 +3534,22 @@ namespace Warewolf.UITests
                 return this.mSelectedItemAsLocalhost;
             }
         }
+        
+        public WpfText LocalhostConnectedText
+        {
+            get
+            {
+                if ((this.mLocalhostConnectedText == null))
+                {
+                    this.mLocalhostConnectedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLocalhostConnectedText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+                    this.mLocalhostConnectedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLocalhostConnectedText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3546,6 +3562,8 @@ namespace Warewolf.UITests
         private WpfText mSelectedItemAsRemoteConnectionIntegrationConnected;
         
         private WpfText mSelectedItemAsLocalhost;
+        
+        private WpfText mLocalhostConnectedText;
         #endregion
     }
     
