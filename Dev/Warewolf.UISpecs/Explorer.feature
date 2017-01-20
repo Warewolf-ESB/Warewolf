@@ -48,14 +48,14 @@ Scenario: Opening Workflow local and remote using right click
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
-   And I Select Delete FromExplorerContextMenu
+   And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
  
  Scenario: Deleting a Folder in localhost
    Given The Warewolf Studio is running
    When I Filter the Explorer with "FolderToDelete" 
    And I RightClick Explorer Localhost First Item
-   And I Select Delete FromExplorerContextMenu
+   And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
 
  Scenario: Filter Should Clear On Connection Of Remote Server
@@ -79,7 +79,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer First Remote Server First Item
-   And I Select Delete FromExplorerContextMenu
+   And I Select Delete From Explorer Context Menu
    And I Click MessageBox Yes 
    And I Click Explorer Connect Remote Server Button   
 
