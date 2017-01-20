@@ -77,6 +77,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         [DataMember]
         public string ExecuteAction { get; set; }
 
+        [DataMember]
+        public bool IsObject { get; set; }
+
         public List<MethodOutput> Outputs { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
