@@ -84,7 +84,7 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 }
 
 # Create full MSTest argument string.
-$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:" + $PSScriptRoot + "\TestResults\IntegrationTestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\IntegrationTestResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
