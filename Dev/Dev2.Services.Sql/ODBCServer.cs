@@ -201,18 +201,15 @@ namespace Dev2.Services.Sql
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
-        public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
+        public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
         {
             try
             {
                 
                 
                 using (OdbcDataAdapter adapter = new OdbcDataAdapter(command as OdbcCommand))
-                {
-                    var dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    var reader = dataTable.CreateDataReader();
-                    return handler(reader);
+                {                    
+                    return handler(adapter);
                 }
             }
             catch (DbException e)
@@ -222,14 +219,14 @@ namespace Dev2.Services.Sql
                     DataTable exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
-                    return handler(new DataTableReader(exceptionDataTable));
+                    return handler(new OdbcDataAdapter());
                 }
                 throw;
             }
         }
 
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
         {
             if (command.CommandType == CommandType.StoredProcedure)
             {
