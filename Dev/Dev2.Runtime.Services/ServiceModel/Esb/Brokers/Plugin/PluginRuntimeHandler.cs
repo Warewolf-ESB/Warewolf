@@ -133,7 +133,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             if (instance != null)
             {
-                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+
+                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.Instance, null,  valuedTypeList.ToArray() , CultureInfo.CurrentCulture);
                 return result;
             }
             if (valuedTypeList.Count == 0)
@@ -159,9 +160,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
                         var valuedTypeList = new List<object>();
+                        // ReSharper disable once LoopCanBeConvertedToQuery
                         foreach (var methodParameter in dev2MethodInfo.Parameters)
                         {
-                            valuedTypeList = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
+                            var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
+                            if (a != null)
+                            {
+                                var item = a.FirstOrDefault();
+                                valuedTypeList.Add(item);
+                            }
                         }
 
                         var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
