@@ -140,7 +140,7 @@
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate x:Name="EnvironmentDataTemplate"  DataType="{x:Type interfaces:IEnvironmentViewModel}" ItemsSource="{Binding Children}">
-                        <Grid>
+                        <Grid Background="Transparent">
                             <Grid.ContextMenu>
                                 <ContextMenu
                                  Style="{StaticResource ContextMenuStyle}"
@@ -422,7 +422,7 @@
 
                         <HierarchicalDataTemplate.ItemTemplate>
                             <HierarchicalDataTemplate x:Name="ExplorerItemDataTemplate"  DataType="{x:Type interfaces:IExplorerItemViewModel}" ItemsSource="{Binding Children}">
-                                <Grid >
+                                <Grid Background="Transparent">
                                     <Grid.ContextMenu>
                                         <ContextMenu Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
 								 Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
