@@ -721,7 +721,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             var pluginServiceDefinition = new PluginServiceDefinition
             {
                 Source = SourceRegion.SelectedSource,
-                Action = MethodRegion.SelectedMethod,
+                Action = MethodRegion?.SelectedMethod,
                 Inputs = new List<IServiceInput>()
             };
             var dt = new List<IServiceInput>();

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Net_Dll_Enhanced;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -50,6 +51,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             var ps = SetupEmptyMockSource();
             //------------Execute Test---------------------------
             var vm = new DotNetDllEnhancedViewModel(CreateModelItem(), ps.Object);
+            vm.MethodRegion = new DotNetMethodRegion();
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.ModelItem);
@@ -69,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.OutputsRegion);
             Assert.IsNotNull(vm.ErrorRegion);
             Assert.IsNotNull(vm.Regions);
-            Assert.AreEqual(10, vm.Regions.Count);
+            Assert.AreEqual(7, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
             Assert.IsNotNull(vm.TestInputCommand);
             Assert.IsNotNull(vm.Properties);
@@ -92,7 +94,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.Validate();
 
-            Assert.AreEqual(3, vm.Errors.Count);
+            Assert.AreEqual(2, vm.Errors.Count);
 
         }
 
@@ -270,27 +272,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(inf);
             Assert.AreEqual("bob error", inf.Message);
         }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllEnhancedViewModel_SetDisplayName")]
-        public void DotNetDllEnhancedViewModel_Test()
-        {
-            //------------Setup for test--------------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
-            CustomContainer.Register(mockShellViewModel.Object);
-            var ps = SetupEmptyMockSource();
-            //------------Execute Test---------------------------
-
-            var vm = new DotNetDllEnhancedViewModel(CreateModelItemWithValues(), ps.Object);
-            vm.TestProcedure();
-            //------------Assert Results-------------------------
-
-
-
-        }
+        
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
