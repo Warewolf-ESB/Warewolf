@@ -285,7 +285,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         bool _generateOutputsVisible;
         private ServiceInputBuilder _builder;
-        private List<IMethodToolRegion<IPluginAction>> _methodsToRunList;
+        private ObservableCollection<IMethodToolRegion<IPluginAction>> _methodsToRunList;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -330,6 +330,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = false;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = true;
                         }
                         if (Regions != null)
                         {
@@ -349,6 +350,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = true;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = true;
                         }
                         if (Regions != null)
                         {
@@ -385,6 +387,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         {
                             OutputsRegion.IsEnabled = true;
                             OutputsRegion.IsObject = true;
+                            OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
                         if (Regions != null)
                         {
@@ -403,16 +406,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ConstructorRegion);
-                CreateMethodRegion();
-                regions.Add(MethodRegion);
+                
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
-
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
                 {
                     IsObject = true,
-                    IsEnabled = false,
-                    IsOutputsEmptyRows = false
+                    IsEnabled = false
                 };
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
@@ -420,71 +420,57 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     OutputsRegion.IsEnabled = true;
                 }
 
-                MethodInputRegion = new DotNetMethodInputRegion(ModelItem, MethodRegion);
-                regions.Add(MethodInputRegion);
-                MethodOutputsRegion = new DotNetMethodOutputsRegion(ModelItem, true)
-                {
-                    IsObject = true,
-                    IsEnabled = false
-                };
-                regions.Add(MethodOutputsRegion);
-                if (MethodOutputsRegion.Outputs == null || MethodOutputsRegion.Outputs.Count == 0)
-                {
-                    MethodOutputsRegion.IsEnabled = false;
-                }
-                else if (MethodOutputsRegion.Outputs.Count > 0)
-                {
-                    MethodOutputsRegion.IsEnabled = true;
-                }
+                CreateMethodRegion();
 
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
                 SourceRegion.Dependants.Add(NamespaceRegion);
                 NamespaceRegion.Dependants.Add(ConstructorRegion);
                 NamespaceRegion.Dependants.Add(OutputsRegion);
-                NamespaceRegion.Dependants.Add(MethodRegion);
                 ConstructorRegion.Dependants.Add(InputArea);
                 ConstructorRegion.Dependants.Add(OutputsRegion);
-                MethodRegion.Dependants.Add(MethodInputRegion);
-                MethodRegion.Dependants.Add(MethodOutputsRegion);
-
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
 
-            MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
-            AddToMethodsList();
             return regions;
-        }
-
-        private void AddToMethodsList()
-        {
-            if (MethodsToRunList == null)
-            {
-                MethodsToRunList = new List<IMethodToolRegion<IPluginAction>>();
-            }
-            MethodsToRunList.Add(MethodRegion);
         }
 
         private void CreateMethodRegion()
         {
-            MethodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+            var methodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion);
+            methodRegion.SelectedMethod = null;
+            var outputRegion = new DotNetMethodOutputsRegion(ModelItem,true);
+            var inputRegion = new DotNetMethodInputRegion(ModelItem,methodRegion);
+            outputRegion.IsEnabled = false;
+            outputRegion.IsObject = true;
+            if (outputRegion.Outputs == null || outputRegion.Outputs.Count == 0)
             {
-                SourceChangedAction = () =>
+                outputRegion.IsEnabled = false;
+            }
+            else if (outputRegion.Outputs.Count > 0)
+            {
+                outputRegion.IsEnabled = true;
+            }
+
+            methodRegion.Dependants.Add(inputRegion);
+            methodRegion.Dependants.Add(outputRegion);
+            methodRegion.InputRegion = inputRegion;
+            methodRegion.OutputRegion = outputRegion;
+            methodRegion.SourceChangedAction = () =>
+            {
+                outputRegion.IsEnabled = false;
+                outputRegion.IsObject = true;
+                if (methodRegion.SelectedMethod != null)
                 {
-                    MethodOutputsRegion.IsEnabled = false;
-                    MethodOutputsRegion.IsObject = true;
-                    if (Regions != null)
+                    bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
+                    if (!hasUnselectedValue)
                     {
-                        foreach (var toolRegion in Regions)
-                        {
-                            toolRegion.Errors?.Clear();
-                        }
+                        CreateMethodRegion();
                     }
-                    //CreateMethodRegion();
                 }
             };
-            MethodRegion.ErrorsHandler += (sender, list) =>
+            methodRegion.ErrorsHandler += (sender, list) =>
             {
                 List<ActionableErrorInfo> errorInfos =
                     list.Select(
@@ -494,10 +480,20 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 UpdateDesignValidationErrors(errorInfos);
                 Errors = new List<IActionableErrorInfo>(errorInfos);
             };
-            AddToMethodsList();
+            AddToMethodsList(methodRegion);
         }
 
-        public List<IMethodToolRegion<IPluginAction>> MethodsToRunList
+        private void AddToMethodsList(DotNetMethodRegion methodRegion)
+        {
+            if (MethodsToRunList == null)
+            {
+                MethodsToRunList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+            }
+            MethodsToRunList.Add(methodRegion);
+            NamespaceRegion.Dependants.Add(methodRegion);
+        }
+
+        public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList
         {
             get
             {

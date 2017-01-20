@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
         private ICollection<IServiceOutputMapping> _outputs;
         public DotNetMethodOutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
         {
-            ToolRegionName = "OutputsRegion";
+            ToolRegionName = "DotNetMethodOutputsRegion";
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
-            IsOutputsEmptyRows = Outputs.Count == 0;
+            IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers2.Core
         //Needed for Deserialization
         public DotNetMethodOutputsRegion()
         {
-            ToolRegionName = "OutputsRegion";
+            ToolRegionName = "DotNetMethodOutputsRegion";
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 

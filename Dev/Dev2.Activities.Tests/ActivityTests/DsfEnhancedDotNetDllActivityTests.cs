@@ -10,6 +10,7 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using FluentAssertions.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
@@ -796,12 +797,88 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("", constructorValue);
             var action = debugOutputs[1].ResultsList[0].Label;
             var actionname = debugOutputs[1].ResultsList[0].Value;
-            Assert.AreEqual("Action: ",action);
+            Assert.AreEqual("Action: ", action);
             Assert.AreEqual("ToString", actionname);
             var outPut = debugOutputs[2].ResultsList[0].Label;
             var val = debugOutputs[2].ResultsList[1].Value;
-            Assert.AreEqual("Output",outPut);
+            Assert.AreEqual("Output", outPut);
             Assert.AreEqual("John", val);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenHasIncorrectExistingTypeObjectSelected_ShouldAddCorrectError()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var food = new Food { FoodName = "Lettuce" };
+            var human = new Human("Micky", "Mouse", food);
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            var executionEnv = new Mock<IExecutionEnvironment>();
+            var foodJson = food.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { typeof(Food) } });
+            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(foodJson));
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+               .Returns(newWarewolfAtomResult);
+            var johnResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(johnResult);
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
+
+            activity.ConstructorInputs = new List<IServiceInput>()
+            {
+                new ServiceInput("name","John")
+                {
+                    TypeName = typeof(string).FullName,
+                    RequiredField = true
+                }
+            };
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                IsExistingObject = true,
+                ConstructorName = "@food"
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction()
+                {
+                    Method = "ToString",
+                    Inputs = new List<IServiceInput>()
+                    {
+                        new ServiceInput("name","Micky")
+                    },
+                    MethodResult = new Human().SerializeToJsonString(new KnownTypesBinder()
+                    {
+                        KnownTypes = new List<Type>(){type}
+                    })
+                }
+            };
+            activity.ObjectName = "@food";
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            ErrorResultTO err;
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, err.FetchErrors().Count);
+            const string error = "Cannot convert given JSON to target type" +
+                    "Type specified in JSON 'TestingDotnetDllCascading.Food, TestingDotnetDllCascading, Version=0.0.6228.17143, Culture=neutral, PublicKeyToken=null' is not compatible with 'TestingDotnetDllCascading.Human, TestingDotnetDllCascading, Version=0.0.6228.17143, Culture=neutral, PublicKeyToken=null'.Path '$type', line 3, position 43.";
+            Assert.AreEqual(1, err.FetchErrors().Count);
+            var single = err.FetchErrors().Single();
+            Assert.AreEqual(error.RemoveNewLines().RemoveWhiteSpace(),single.RemoveNewLines().RemoveWhiteSpace());
         }
     }
 
