@@ -148,7 +148,8 @@ namespace Dev2.Activities
 
                         var jContainer = JToken.Parse(dev2MethodInfo.MethodResult) as JContainer
                             ?? dev2MethodInfo.MethodResult.DeserializeToObject();
-                        dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
+                        if (!string.IsNullOrEmpty(dev2MethodInfo.OutputVariable))
+                            dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
                     }
                     else
                     {
@@ -179,7 +180,8 @@ namespace Dev2.Activities
                             else if (jObj.IsPrimitive())
                             {
                                 var value = jObj.ToString();
-                                dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                                if (!string.IsNullOrEmpty(dev2MethodInfo.OutputVariable))
+                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
                             }
                         }
                     }
