@@ -15,7 +15,6 @@ if ($Args.Count -gt 0) {
                 $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	            Continue
             }
         }
     }
