@@ -212,15 +212,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
         {
             get
             {
-                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
                 {
-                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
                 }
-                return this.mUIWarewolfDEV2DYLANDELWindow;
+                return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
         #endregion
@@ -254,7 +254,7 @@ namespace Warewolf.UITests
         
         private SelectFilesWindow mSelectFilesWindow;
         
-        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -3548,6 +3548,22 @@ namespace Warewolf.UITests
                 return this.mSelectedItemAsLocalhost;
             }
         }
+        
+        public WpfText LocalhostConnectedText
+        {
+            get
+            {
+                if ((this.mLocalhostConnectedText == null))
+                {
+                    this.mLocalhostConnectedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLocalhostConnectedText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+                    this.mLocalhostConnectedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLocalhostConnectedText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3560,6 +3576,8 @@ namespace Warewolf.UITests
         private WpfText mSelectedItemAsRemoteConnectionIntegrationConnected;
         
         private WpfText mSelectedItemAsLocalhost;
+        
+        private WpfText mLocalhostConnectedText;
         #endregion
     }
     
@@ -109872,419 +109890,72 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
     {
         
-        public UIWarewolfDEV2DYLANDELWindow()
+        public UIWarewolfDEV2SANELEMTWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UILargeViewContentCustom
+        public UIConnectControlCustom UIConnectControlCustom
         {
             get
             {
-                if ((this.mUILargeViewContentCustom == null))
+                if ((this.mUIConnectControlCustom == null))
                 {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
+                    this.mUIConnectControlCustom = new UIConnectControlCustom(this);
                 }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        
-        public UISharepointCopyFileAcCustom UISharepointCopyFileAcCustom
-        {
-            get
-            {
-                if ((this.mUISharepointCopyFileAcCustom == null))
-                {
-                    this.mUISharepointCopyFileAcCustom = new UISharepointCopyFileAcCustom(this);
-                }
-                return this.mUISharepointCopyFileAcCustom;
-            }
-        }
-        
-        public WpfCustom UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUISmallViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-                    this.mUISmallViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-                    this.mUISmallViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        
-        public WpfCustom UIOnErrorCustom
-        {
-            get
-            {
-                if ((this.mUIOnErrorCustom == null))
-                {
-                    this.mUIOnErrorCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIOnErrorCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
-                    this.mUIOnErrorCustom.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
-                    this.mUIOnErrorCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUIOnErrorCustom;
-            }
-        }
-        
-        public UISharepointDeleteListCustom UISharepointDeleteListCustom
-        {
-            get
-            {
-                if ((this.mUISharepointDeleteListCustom == null))
-                {
-                    this.mUISharepointDeleteListCustom = new UISharepointDeleteListCustom(this);
-                }
-                return this.mUISharepointDeleteListCustom;
-            }
-        }
-        
-        public UISharepointMoveFileAcCustom UISharepointMoveFileAcCustom
-        {
-            get
-            {
-                if ((this.mUISharepointMoveFileAcCustom == null))
-                {
-                    this.mUISharepointMoveFileAcCustom = new UISharepointMoveFileAcCustom(this);
-                }
-                return this.mUISharepointMoveFileAcCustom;
-            }
-        }
-        
-        public UISharepointReadListAcCustom UISharepointReadListAcCustom
-        {
-            get
-            {
-                if ((this.mUISharepointReadListAcCustom == null))
-                {
-                    this.mUISharepointReadListAcCustom = new UISharepointReadListAcCustom(this);
-                }
-                return this.mUISharepointReadListAcCustom;
-            }
-        }
-        
-        public UISharepointUpdateListCustom UISharepointUpdateListCustom
-        {
-            get
-            {
-                if ((this.mUISharepointUpdateListCustom == null))
-                {
-                    this.mUISharepointUpdateListCustom = new UISharepointUpdateListCustom(this);
-                }
-                return this.mUISharepointUpdateListCustom;
-            }
-        }
-        
-        public UIOnErrorGroup UIOnErrorGroup
-        {
-            get
-            {
-                if ((this.mUIOnErrorGroup == null))
-                {
-                    this.mUIOnErrorGroup = new UIOnErrorGroup(this);
-                }
-                return this.mUIOnErrorGroup;
+                return this.mUIConnectControlCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        
-        private UISharepointCopyFileAcCustom mUISharepointCopyFileAcCustom;
-        
-        private WpfCustom mUISmallViewContentCustom;
-        
-        private WpfCustom mUIOnErrorCustom;
-        
-        private UISharepointDeleteListCustom mUISharepointDeleteListCustom;
-        
-        private UISharepointMoveFileAcCustom mUISharepointMoveFileAcCustom;
-        
-        private UISharepointReadListAcCustom mUISharepointReadListAcCustom;
-        
-        private UISharepointUpdateListCustom mUISharepointUpdateListCustom;
-        
-        private UIOnErrorGroup mUIOnErrorGroup;
+        private UIConnectControlCustom mUIConnectControlCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointCopyFileAcCustom : WpfCustom
+    public class UIConnectControlCustom : WpfCustom
     {
         
-        public UISharepointCopyFileAcCustom(UITestControl searchLimitContainer) : 
+        public UIConnectControlCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointCopyFileDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Copy File(SharePointCopyFileDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public WpfCustom UILargeViewContentCustom
+        public WpfCustom UITheServerComboBoxCustom
         {
             get
             {
-                if ((this.mUILargeViewContentCustom == null))
+                if ((this.mUITheServerComboBoxCustom == null))
                 {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
+                    this.mUITheServerComboBoxCustom = new WpfCustom(this);
                     #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mUITheServerComboBoxCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+                    this.mUITheServerComboBoxCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+                    this.mUITheServerComboBoxCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUILargeViewContentCustom;
+                return this.mUITheServerComboBoxCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointDeleteListCustom : WpfCustom
-    {
-        
-        public UISharepointDeleteListCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListDeleteDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Delete List Item (0)(SharepointListDeleteDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointMoveFileAcCustom : WpfCustom
-    {
-        
-        public UISharepointMoveFileAcCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharePointMoveFileDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SharePoint Move File(SharePointMoveFileDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointReadListAcCustom : WpfCustom
-    {
-        
-        public UISharepointReadListAcCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListReadDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Read List Item (0)(SharepointListReadDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UISharepointUpdateListCustom : WpfCustom
-    {
-        
-        public UISharepointUpdateListCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SharepointListUpdateDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sharepoint Update List Item (0)(SharepointListUpdateDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIOnErrorGroup : WpfGroup
-    {
-        
-        public UIOnErrorGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI__Variable_AutoIDComboBox UIUI__Variable_AutoIDComboBox
-        {
-            get
-            {
-                if ((this.mUIUI__Variable_AutoIDComboBox == null))
-                {
-                    this.mUIUI__Variable_AutoIDComboBox = new UIUI__Variable_AutoIDComboBox(this);
-                }
-                return this.mUIUI__Variable_AutoIDComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI__Variable_AutoIDComboBox mUIUI__Variable_AutoIDComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI__Variable_AutoIDComboBox : WpfComboBox
-    {
-        
-        public UIUI__Variable_AutoIDComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Variable_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UITextEdit
-        {
-            get
-            {
-                if ((this.mUITextEdit == null))
-                {
-                    this.mUITextEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUITextEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUITextEdit;
+        private WpfCustom mUITheServerComboBoxCustom;
         #endregion
     }
 }
