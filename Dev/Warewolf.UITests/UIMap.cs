@@ -4280,10 +4280,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.NewWorkflowItem);
         }
 
+        [Given(@"I Select Open From Explorer Context Menu")]
         [When(@"I Select Open From Explorer Context Menu")]
+        [Then(@"I Select Open From Explorer Context Menu")]
         public void Select_Open_From_ExplorerContextMenu()
         {
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open, new Point(30, 11));
+            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists);
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
         [When(@"I Select Tests From Context Menu")]
