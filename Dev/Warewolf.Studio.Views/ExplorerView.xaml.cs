@@ -274,27 +274,27 @@ namespace Warewolf.Studio.Views
 
         private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
-            if (treeViewItem != null)
-            {
-                var environmentViewModel = treeViewItem.DataContext as EnvironmentViewModel;
-                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
-                if (environmentViewModel != null)
-                {
-                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
-                    if (treeViewItem.ContextMenu != null)
-                        treeViewItem.ContextMenu.DataContext = environmentViewModel;
-                }
-                else if (explorerItemViewModel != null)
-                {
-                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
-                    if (treeViewItem.ContextMenu != null)
-                        treeViewItem.ContextMenu.DataContext = explorerItemViewModel;
-                }
-
-                treeViewItem.Focus();
-                e.Handled = true;
-            }
+//            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+//            if (treeViewItem != null)
+//            {
+//                var environmentViewModel = treeViewItem.DataContext as EnvironmentViewModel;
+//                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+//                if (environmentViewModel != null)
+//                {
+//                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
+//                    if (treeViewItem.ContextMenu != null)
+//                        treeViewItem.ContextMenu.DataContext = environmentViewModel;
+//                }
+//                else if (explorerItemViewModel != null)
+//                {
+//                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
+////                    if (treeViewItem.ContextMenu != null)
+////                        treeViewItem.ContextMenu.DataContext = explorerItemViewModel;
+//                }
+//
+//                treeViewItem.Focus();
+//                e.Handled = true;
+//            }
             _isDragging = false;
             _canDrag = false;
         }
