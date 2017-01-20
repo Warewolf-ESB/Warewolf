@@ -1978,6 +1978,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot convert given JSON to target type.
+        /// </summary>
+        public static string JSONIncompatibleConversionError {
+            get {
+                return ResourceManager.GetString("JSONIncompatibleConversionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Local input path is not set.
         /// </summary>
         public static string LocalInputPathEmpty {

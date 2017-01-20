@@ -168,10 +168,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-            
-            var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
+
+            var inputs2 = new List<IServiceInput>(Inputs.Select(a => new ServiceInput(a.Name, a.Value)
             {
-                EmptyIsNull = a.EmptyIsNull, TypeName = a.TypeName 
+                EmptyIsNull = a.EmptyIsNull,
+                TypeName = a.TypeName
             }));
             return new DotNetInputRegionClone
             {
