@@ -127,6 +127,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
             RunMethods(setupInfo, type, instance, InvokeMethodsAction, loadedAssembly);
+            objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
         }
 
         private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
