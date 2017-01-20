@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Workflow
         public void Workflow_Name_Counter()
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved2Text.Exists, "Second new workflow tab is not Unsaved 2");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow exists after creating it with shortcut");
         }
 
         [TestMethod]
@@ -20,6 +20,7 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
             UIMap.Make_Workflow_Savable_By_Dragging_Start();
+            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         #region Additional test attributes
