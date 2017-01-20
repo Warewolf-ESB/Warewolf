@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -29,8 +25,41 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create assemblies list.
+if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\Warewolf.UIBindingTests"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
+}
+if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Warewolf.AcceptanceTesting.*.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $TestAssembliesPath -Include Warewolf.UIBindingTests.*.dll -Recurse | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 

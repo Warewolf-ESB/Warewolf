@@ -16,7 +16,7 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
             UIMap.RightClick_StackOverFlowService_OnDesignSurface();
             UIMap.Select_Copy_FromContextMenu();
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.RightClick_AssignOnDesignSurface();
             UIMap.Select_Paste_FromContextMenu();
             var controlExistsNow = UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow);

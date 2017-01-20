@@ -11,7 +11,7 @@ namespace Warewolf.UITests.ODBCSource
         // ReSharper disable once InconsistentNaming
         public void ODBCSource_CreateSourceUITests()
         {
-            UIMap.Select_NewODBCSource_FromExplorerContextMenu();
+            UIMap.Select_NewODBCSource_From_ExplorerContextMenu();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();

@@ -15,9 +15,9 @@ namespace Warewolf.UITests
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
-            UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
+            UIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
-            UIMap.Select_ShowVersionHistory_FromExplorerContextMenu();
+            UIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
         }
 
         #region Additional test attributes
