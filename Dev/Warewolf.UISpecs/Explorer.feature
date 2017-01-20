@@ -34,10 +34,10 @@ Scenario: Opening Workflow local and remote using right click
    And I Click Explorer Connect Remote Server Button
    And I Filter the Explorer with "Hello World"
    And I RightClick Explorer First Remote Server First Item
-   And I Select Open FromExplorerContextMenu
+   And I Select Open From Explorer Context Menu
    Then Remote "Hello World - Remote Connection Integration" is open
    Then I RightClick Explorer Localhost First Item
-   And I Select Open FromExplorerContextMenu
+   And I Select Open From Explorer Context Menu
    Then Local "Hello World" is open
 
  Scenario: Deleting a Resource localhost

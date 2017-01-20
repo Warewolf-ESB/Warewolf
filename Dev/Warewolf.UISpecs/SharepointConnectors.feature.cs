@@ -85,11 +85,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I Drag Toolbox Sharepoint CopyFile Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("I Select New Sharepoint Server Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click New Source Button From SharepointCopyFile Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
  testRunner.When("I Enter Sharepoint ServerSource ServerName", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.And("I Click UserButton OnSharepointSource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click User Button On Sharepoint Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I Enter Sharepoint ServerSource User Credentials", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
