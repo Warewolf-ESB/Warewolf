@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 SourceChangedAction();
                 OnSomethingChanged(this);
             }
-            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+            var delegateCommand = RefreshActionsCommand as DelegateCommand;
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedAction = value;
@@ -225,6 +225,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _isRefreshing = value;
                 OnPropertyChanged();
+                var delegateCommand = RefreshActionsCommand as DelegateCommand;
+                delegateCommand?.RaiseCanExecuteChanged();
             }
         }
 
