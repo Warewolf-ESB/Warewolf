@@ -59,18 +59,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _worker = worker;
                 _source.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
-                IsRefreshing = false;
-                IsEnabled = false;
                 if (_source.SelectedSource != null)
                 {
                     LoadActions(model);
                 }
-                if (!string.IsNullOrEmpty(ProcedureName))
-                {
-                    IsActionEnabled = true;
-                    IsEnabled = true;
-                    SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);
-                }
+                
                 RefreshActionsCommand = new DelegateCommand(o =>
                 {
                     if (_source.SelectedSource != null)
@@ -90,10 +83,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private void LoadActions(IDbServiceModel model)
         {
             IsRefreshing = true;
+            SelectedAction = null;
+            IsActionEnabled = false;
+            IsEnabled = false;
             _worker.Start(() => model.GetActions(_source.SelectedSource), delegate(ICollection<IDbAction> actions)
             {
                 Actions = actions;
                 IsRefreshing = false;
+                IsActionEnabled = true;
+                IsEnabled = true;
+                if (!string.IsNullOrEmpty(ProcedureName))
+                {
+                    SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);
+                }
             });
         }
 
@@ -102,16 +104,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors.Clear();
-                IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 if (_source?.SelectedSource != null)
                 {
-                    LoadActions(_model);
-                    SelectedAction = null;
-                    IsActionEnabled = true;
-                    IsEnabled = true;
+                    LoadActions(_model);                   
                 }
-                IsRefreshing = false;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -143,8 +140,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null;
-            return _source.SelectedSource != null;
+            var isActionEnabled = _source.SelectedSource != null && !IsRefreshing;
+            IsActionEnabled = isActionEnabled;
+            return isActionEnabled;
         }
 
         public IDbAction SelectedAction
