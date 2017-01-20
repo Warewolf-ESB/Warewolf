@@ -13,13 +13,14 @@ namespace Warewolf.UITests
         [TestCategory("DotNetPluginSource")]
         public void CreateDotNetPluginSource()
         {
-            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.Enabled, "Assembly Combobox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton.Enabled, "Assembly Combobox Button is not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Combobox Button is enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton.Enabled, "GAC Assembly Combobox Button is not enabled");
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         [TestMethod]
@@ -32,7 +33,7 @@ namespace Warewolf.UITests
 
             try
             {
-                UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
+                UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
                 UIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
                 Assert.IsTrue(UIMap.ChooseDLLWindow.FilterTextBox.Enabled, "Filter Combobox is not enabled.");
                 Assert.IsTrue(UIMap.ChooseDLLWindow.DLLDataTree.Enabled, "DLL Data Tree is not enabled.");
@@ -54,6 +55,7 @@ namespace Warewolf.UITests
                     File.Delete(filePath);
                 }
             }
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         [TestMethod]
@@ -64,7 +66,7 @@ namespace Warewolf.UITests
             var fileStream = File.Create(filePath);
             fileStream.Close();
 
-            UIMap.Click_NewDotNetPluginSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             UIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
             Assert.IsTrue(UIMap.ChooseDLLWindow.FilterTextBox.Enabled, "Filter Combobox is not enabled.");
             UIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
@@ -77,6 +79,7 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         #region Additional test attributes

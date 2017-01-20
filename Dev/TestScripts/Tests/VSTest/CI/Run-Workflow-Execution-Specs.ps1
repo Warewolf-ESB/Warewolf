@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -46,8 +42,41 @@ $TestSettingsFile = "$PSScriptRoot\WorkflowExecutionSpecs.testsettings"
 "@)
 
 # Create assemblies list.
+if (Test-Path "$PSScriptRoot\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Specs"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Specs"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Specs"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Specs"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Specs"
+}
+if (Test-Path "$PSScriptRoot\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $TestAssembliesPath -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 

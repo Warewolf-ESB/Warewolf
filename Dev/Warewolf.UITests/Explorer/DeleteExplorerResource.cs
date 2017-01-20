@@ -21,7 +21,7 @@ namespace Warewolf.UITests
         public void Delete_ExplorerResource()
         {
             UIMap.Filter_Explorer(flowSwitch);
-            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Explorer_Refresh_Button();
@@ -34,7 +34,7 @@ namespace Warewolf.UITests
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
             Assert.IsTrue(Directory.Exists(resourcesFolder));
             UIMap.Filter_Explorer(flowSequence);
-            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
@@ -47,7 +47,7 @@ namespace Warewolf.UITests
         public void DeletedResourceShowDependencies()
         {
             UIMap.Filter_Explorer(uiTestDependencyOne);
-            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
             Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
@@ -62,7 +62,7 @@ namespace Warewolf.UITests
         public void DeletedFolderShowDependencies()
         {
             UIMap.Filter_Explorer(uiTestDependencyFolder);
-            UIMap.Delete_FirstResource_FromContextMenu();
+            UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
             Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
             Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
