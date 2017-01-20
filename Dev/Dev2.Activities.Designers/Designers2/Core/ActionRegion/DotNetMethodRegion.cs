@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -34,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public DotNetMethodRegion()
         {
-            ToolRegionName = "DotNetActionRegion";
+            ToolRegionName = "DotNetMethodRegion";
         }
 
         public DotNetMethodRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
@@ -44,7 +45,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Errors = new List<string>();
 
                 LabelWidth = 70;
-                ToolRegionName = "DotNetActionRegion";
+                ToolRegionName = "DotNetMethodRegion";
                 _modelItem = modelItem;
                 _model = model;
                 _source = source;
@@ -173,7 +174,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
+                    var region = outputs as DotNetMethodOutputsRegion;
                     if (region != null)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
@@ -373,6 +374,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _modelItem.SetProperty("SavedAction", value);
             }
         }
+
+        public DotNetMethodInputRegion InputRegion { get; set; }
+        public DotNetMethodOutputsRegion OutputRegion { get; set; }
 
         #endregion
 

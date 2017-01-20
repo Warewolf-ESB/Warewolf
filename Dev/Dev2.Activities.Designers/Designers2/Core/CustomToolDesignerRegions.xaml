@@ -18,6 +18,7 @@
                     xmlns:inputRegion="clr-namespace:Dev2.Activities.Designers2.Core.InputRegion"
                     xmlns:constructorRegion="clr-namespace:Dev2.Activities.Designers2.Core.ConstructorRegion"
                     xmlns:netDllEnhanced="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
+                    xmlns:actionRegion="clr-namespace:Dev2.Activities.Designers2.Core.ActionRegion"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -840,7 +841,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="DotNetInputOutputGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
+    <ControlTemplate x:Key="DotNetInputOutputGrid" d:DataContext="{d:DesignInstance actionRegion:DotNetMethodRegion}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -849,8 +850,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Control Grid.Row="0" DataContext="{Binding MethodInputRegion}" Template="{StaticResource DotNetMethodsInputGrid}"/>
-            <Control Grid.Row="1" DataContext="{Binding MethodOutputsRegion}" Template="{StaticResource DotNetMethodsOutputGrid}"/>
+            <Control Grid.Row="0" DataContext="{Binding InputRegion}" Template="{StaticResource DotNetMethodsInputGrid}"/>
+            <Control Grid.Row="1" DataContext="{Binding OutputRegion}" Template="{StaticResource DotNetMethodsOutputGrid}"/>
         </Grid>
     </ControlTemplate>
 
@@ -867,9 +868,10 @@
             <ListBox x:Name="MethodListBox"
                      Grid.Row="1"
                      BorderThickness="0"
-                     ItemsSource="{Binding MethodsToRunList}">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
+                     ItemsSource="{Binding MethodsToRunList}"
+                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <Expander x:Name="MethodExpander" 
                                       Header="{Binding .}" 
@@ -880,14 +882,14 @@
                                       AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=Node.Data.SelectedAction}">
                                 <Expander.HeaderTemplate>
                                     <DataTemplate>
-                                        <Control DataContext="{Binding MethodRegion}" Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                                        <Control Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
                                     </DataTemplate>
                                 </Expander.HeaderTemplate>
                                 <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
                             </Expander>
                         </WrapPanel>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
             
         </Grid>
