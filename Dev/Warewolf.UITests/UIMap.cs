@@ -7872,7 +7872,7 @@ namespace Warewolf.UITests
         [Then(@"I Select New Folder From SaveDialog Context Menu")]
         public void Select_NewFolder_From_SaveDialogContextMenu()
         {
-            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem);
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
 
         [Given(@"I Select Rename From SaveDialog Context Menu")]
