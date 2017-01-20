@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
-                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
+                    xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core">
 
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
@@ -12,6 +13,8 @@
         <ResourceDictionary Source="../../Elements/ListBox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
 
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="Transparent" />
@@ -753,6 +756,7 @@
                                           FontFamily="{TemplateBinding FontFamily}" 
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                          IsEnabled="{TemplateBinding IsEnabled}"
                                           MinHeight="0" 
                                           Padding="{TemplateBinding Padding}" 
                                           Style="{StaticResource DotNetDllExpanderDownHeaderStyle}" 
@@ -771,7 +775,8 @@
                             <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
+                            <Setter TargetName="HeaderSite" Property="Margin" Value="-9,0,0,0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

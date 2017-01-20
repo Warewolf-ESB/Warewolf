@@ -65,7 +65,6 @@ namespace Dev2.Activities.Designers2.Core
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -84,7 +83,6 @@ namespace Dev2.Activities.Designers2.Core
             RemoveItemPropertyChangeEvent(e);
             // ReSharper restore ExplicitCallerInfoArgument
         }
-
 
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
@@ -263,7 +261,6 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-     
                 if (Outputs != null)
                 {
                     _recordsetName = value;
@@ -295,7 +292,6 @@ namespace Dev2.Activities.Designers2.Core
             get { return _objectName; }
             set
             {
-               
                 if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
                 {
                     try
@@ -322,7 +318,6 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         //Is not an object identifier
                     }
-                    
                 }
             }
         }

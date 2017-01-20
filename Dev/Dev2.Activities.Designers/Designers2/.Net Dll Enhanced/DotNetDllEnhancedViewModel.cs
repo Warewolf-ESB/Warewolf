@@ -31,7 +31,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
     public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetEnhancedViewModel
     {
         private IOutputsToolRegion _outputsRegion;
-        private IOutputsToolRegion _methodOutputsRegion;
         private IDotNetConstructorInputRegion _inputArea;
         private IDotNetMethodInputRegion _methodInputRegion;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
@@ -180,9 +179,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 foreach (var designValidationError in SourceRegion.Errors)
                 {
-                    DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
+                    DesignValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
-
             }
             if (Errors.Count <= 0)
             {
@@ -336,13 +334,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsObject = true;
                             OutputsRegion.IsOutputsEmptyRows = true;
                         }
-                        if (Regions != null)
-                        {
-                            foreach (var toolRegion in Regions)
-                            {
-                                toolRegion.Errors?.Clear();
-                            }
-                        }
+                        ClearToolRegionErrors();
                     }
                 };
                 regions.Add(SourceRegion);
@@ -356,22 +348,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsObject = true;
                             OutputsRegion.IsOutputsEmptyRows = true;
                         }
-                        if (Regions != null)
-                        {
-                            foreach (var toolRegion in Regions)
-                            {
-                                toolRegion.Errors?.Clear();
-                            }
-                        }
+                        ClearToolRegionErrors();
                     },
                     IsNewPluginNamespace = true
                 };
                 NamespaceRegion.SomethingChanged += (sender, args) =>
                 {
                     if (args.Errors != null)
-                        Errors =
-                            args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
-                                .ToList();
+                        Errors = args.Errors.Select(e => new ActionableErrorInfo
+                        {
+                            ErrorType = ErrorType.Critical,
+                            Message = e
+                        } as IActionableErrorInfo).ToList();
                     var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
                     var outputsRegion = dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) as OutputsRegion;
                     if (outputsRegion != null)
@@ -393,13 +381,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsObject = true;
                             OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
-                        if (Regions != null)
-                        {
-                            foreach (var toolRegion in Regions)
-                            {
-                                toolRegion.Errors?.Clear();
-                            }
-                        }
+                        ClearToolRegionErrors();
                     },
                 };
 
@@ -440,10 +422,23 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             return regions;
         }
 
+        private void ClearToolRegionErrors()
+        {
+            if (Regions != null)
+            {
+                foreach (var toolRegion in Regions)
+                {
+                    toolRegion.Errors?.Clear();
+                }
+            }
+        }
+
         private void CreateMethodRegion()
         {
-            var methodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion);
-            methodRegion.SelectedMethod = null;
+            var methodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+            {
+                SelectedMethod = null
+            };
             var outputRegion = new DotNetMethodOutputsRegion(ModelItem, true);
             var inputRegion = new DotNetMethodInputRegion(ModelItem, methodRegion);
             outputRegion.IsEnabled = false;
@@ -477,10 +472,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             methodRegion.ErrorsHandler += (sender, list) =>
             {
                 List<ActionableErrorInfo> errorInfos =
-                    list.Select(
-                        error =>
-                            new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { }))
-                        .ToList();
+                    list.Select(error => new ActionableErrorInfo(new ErrorInfo
+                    {
+                        ErrorType = ErrorType.Critical,
+                        Message = error
+                    }, () => { })).ToList();
                 UpdateDesignValidationErrors(errorInfos);
                 Errors = new List<IActionableErrorInfo>(errorInfos);
             };
@@ -677,18 +673,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 OnPropertyChanged();
             }
         }
-        public IOutputsToolRegion MethodOutputsRegion
-        {
-            get
-            {
-                return _methodOutputsRegion;
-            }
-            set
-            {
-                _methodOutputsRegion = value;
-                OnPropertyChanged();
-            }
-        }
         public bool GenerateOutputsVisible
         {
             get
@@ -703,7 +687,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     ManageServiceInputViewModel.InputArea.IsEnabled = true;
                     ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
-
                 }
                 else
                 {
@@ -711,7 +694,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
-
                 OnPropertyChanged();
             }
         }
@@ -741,7 +723,17 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+                Errors = new List<IActionableErrorInfo>
+                {
+                    new ActionableErrorInfo(new ErrorInfo
+                    {
+                        ErrorType = ErrorType.Critical,
+                        FixData = "",
+                        FixType = FixType.None,
+                        Message = exception.Message,
+                        StackTrace = exception.StackTrace
+                    }, () => { })
+                };
         }
 
         public void SetDisplayName(string outputFieldName)
