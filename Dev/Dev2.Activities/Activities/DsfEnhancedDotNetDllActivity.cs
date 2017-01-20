@@ -124,7 +124,7 @@ namespace Dev2.Activities
                     pluginExecutionDto = PluginServiceExecutionFactory.CreateInstance(args);
                 }
 
-                var result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
+                PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
 
                 MethodsToRun = result.Args.MethodsToRun?.Select(p => new PluginAction()
                 {
@@ -195,7 +195,15 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                errors.AddError(e.Message);
+
+                if (e.HResult == -2146233088)
+                {
+                    errors.AddError(ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message);
+                }
+                else
+                {
+                    errors.AddError(e.Message);
+                }
             }
         }
 
