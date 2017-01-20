@@ -30818,7 +30818,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewDatabaseSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":null,""DatabaseName"":null,""Port"":0,""AuthenticationType"":""Windows"",""UserID"":null,""Password"":null,""DataList"":null,""ConnectionString"":""Data Source=;Initial Catalog=;Integrated Security=SSPI;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""2ad8c9a1-b6b3-440a-bad1-a5b234e87c1d"",""ResourceType"":""DbSource"",""ResourceName"":""New Database Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
                     this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }

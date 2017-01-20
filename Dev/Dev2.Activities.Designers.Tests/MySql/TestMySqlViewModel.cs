@@ -261,12 +261,13 @@ namespace Dev2.Activities.Designers.Tests.MySql
             var sqlServer = new MySqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
+            sqlServer.ActionRegion.IsRefreshing = false;
             //------------Execute Test---------------------------
             sqlServer.ActionRegion.RefreshActionsCommand.Execute(null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.AreEqual(2, sqlServer.ActionRegion.Actions.Count);
+            Assert.AreEqual(1, sqlServer.ActionRegion.Actions.Count);
         }
 
 
