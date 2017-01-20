@@ -285,11 +285,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
                         serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                        serviceMethod.IsObject = false;
+                        
                     }
                     else
                     {
                         var jObject = GetPropertiesJObject(returnType);
                         serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                        serviceMethod.IsObject = true;
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>

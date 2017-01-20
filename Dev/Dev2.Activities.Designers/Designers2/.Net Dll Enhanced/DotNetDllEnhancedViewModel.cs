@@ -2,6 +2,8 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -19,6 +21,8 @@ using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
@@ -370,9 +374,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                                 .ToList();
                     var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
                     var outputsRegion = dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) as OutputsRegion;
-                    if(outputsRegion != null)
+                    if (outputsRegion != null)
                     {
-                        if(dotNetNamespaceRegion.SelectedNamespace != null)
+                        if (dotNetNamespaceRegion.SelectedNamespace != null)
                         {
                             outputsRegion.ObjectResult = dotNetNamespaceRegion.SelectedNamespace.JsonObject;
                         }
@@ -406,7 +410,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ConstructorRegion);
-                
+
                 InputArea = new DotNetConstructorInputRegion(ModelItem, ConstructorRegion);
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true)
@@ -440,8 +444,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             var methodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion);
             methodRegion.SelectedMethod = null;
-            var outputRegion = new DotNetMethodOutputsRegion(ModelItem,true);
-            var inputRegion = new DotNetMethodInputRegion(ModelItem,methodRegion);
+            var outputRegion = new DotNetMethodOutputsRegion(ModelItem, true);
+            var inputRegion = new DotNetMethodInputRegion(ModelItem, methodRegion);
             outputRegion.IsEnabled = false;
             outputRegion.IsObject = true;
             if (outputRegion.Outputs == null || outputRegion.Outputs.Count == 0)
@@ -487,10 +491,76 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             if (MethodsToRunList == null)
             {
-                MethodsToRunList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+                var pluginActions = ModelItem.GetProperty<ICollection<IPluginAction>>("MethodsToRun");
+                if (pluginActions == null || pluginActions.Count == 0)
+                {
+                    var current = pluginActions;
+                    var outputMappings = current ?? new List<IPluginAction>();
+                    var outputs = new ObservableCollection<IPluginAction>();
+                    outputs.CollectionChanged += MethodsToRunListOnCollectionChanged;
+                    outputs.AddRange(outputMappings);
+                    
+                    MethodsToRunList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+                }
+                else
+                {
+                    var outputs = new ObservableCollection<IPluginAction>();
+                    outputs.CollectionChanged += MethodsToRunListOnCollectionChanged;
+                    var regionCollections =
+                        new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+
+                    //outputs.AddRange(pluginActions);
+                    foreach (var pluginAction in pluginActions)
+                    {
+                        if (pluginAction == null) continue;
+                        regionCollections.Add(new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion)
+                        {
+                            SelectedMethod = pluginAction
+                        });
+                    }
+                    MethodsToRunList = regionCollections;
+                }
             }
-            MethodsToRunList.Add(methodRegion);
+            var methodRegions = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+            methodRegions.AddRange(MethodsToRunList);
+            methodRegions.Add(methodRegion);
+            MethodsToRunList = methodRegions;
             NamespaceRegion.Dependants.Add(methodRegion);
+        }
+
+        private void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            AddItemPropertyChangeEvent(e);
+            RemoveItemPropertyChangeEvent(e);
+        }
+
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems == null) return;
+            foreach (INotifyPropertyChanged item in args.NewItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged += ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ModelItem.SetProperty("MethodsToRun", _methodsToRunList.ToList());
+        }
+
+        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.OldItems == null) return;
+            foreach (INotifyPropertyChanged item in args.OldItems)
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged -= ItemPropertyChanged;
+                }
+            }
         }
 
         public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList
@@ -501,7 +571,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
             set
             {
-                _methodsToRunList = value;
+                if (value != null)
+                {
+                    _methodsToRunList = value;
+                    var pluginActions = value.Where(p => p.SelectedMethod != null).Select(region => region.SelectedMethod).ToList();
+                    ModelItem.SetProperty("MethodsToRun", pluginActions);
+                }
+                else
+                {
+                    _methodsToRunList.Clear();
+                    ModelItem.SetProperty("MethodsToRun", _methodsToRunList.ToList());
+                    OnPropertyChanged();
+                }
                 OnPropertyChanged();
             }
         }

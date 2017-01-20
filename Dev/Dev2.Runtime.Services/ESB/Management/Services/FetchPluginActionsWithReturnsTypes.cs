@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public FetchPluginActionsWithReturnsTypes()
         {
-            
+
         }
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -72,7 +72,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.TypeName } as IServiceInput).ToList(),
                         Method = a.Name,
                         Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
-                        Dev2ReturnType = a.Dev2ReturnType
+                        Dev2ReturnType = a.Dev2ReturnType,
+                        IsObject = a.IsObject
                     } as IPluginAction).ToList();
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
