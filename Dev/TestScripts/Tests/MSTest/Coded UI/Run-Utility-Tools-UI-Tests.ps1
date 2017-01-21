@@ -82,8 +82,13 @@ if (!(Test-Path $TestAssemblyPath)) {
 	exit 1
 }
 
-# Create full VSTest argument string.
-$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\UtilityToolsUITests.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Utility Tools`""
+if ($TestList -eq "") {
+	# Create full MSTest argument string.
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\UtilityToolsUITests.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"Utility Tools`""
+} else {
+	# Create full MSTest argument string.
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\UtilityToolsUITests.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
