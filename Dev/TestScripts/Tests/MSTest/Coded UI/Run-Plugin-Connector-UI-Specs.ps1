@@ -81,6 +81,9 @@ if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UISpecs.dll at $PSScriptRoot\Warewolf.UISpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }
+if (!(Test-Path $PSScriptRoot\TestResults)) {
+	New-Item -ItemType Directory $PSScriptRoot\TestResults
+}
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
