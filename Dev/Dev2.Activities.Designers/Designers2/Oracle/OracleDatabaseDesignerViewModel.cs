@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Communication;
@@ -53,9 +54,10 @@ namespace Dev2.Activities.Designers2.Oracle
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         
-        public OracleDatabaseDesignerViewModel(ModelItem modelItem)
+        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
             : base(modelItem)
         {
+            _worker = worker;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -164,10 +166,11 @@ namespace Dev2.Activities.Designers2.Oracle
             UpdateWorstError();
         }
 
-        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model)
+        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
             : base(modelItem)
         {
             Model = model;
+            _worker = worker;
             SetupCommonProperties();
         }
 
@@ -294,6 +297,7 @@ namespace Dev2.Activities.Designers2.Oracle
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(OracleDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
+        private IAsyncWorker _worker;
 
         public ICommand TestInputCommand { get; set; }
 
@@ -332,7 +336,7 @@ namespace Dev2.Activities.Designers2.Oracle
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.Oracle) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();

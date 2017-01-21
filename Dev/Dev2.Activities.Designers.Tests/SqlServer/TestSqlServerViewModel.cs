@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
@@ -41,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.Validate();
 
             //------------Assert Results-------------------------
@@ -59,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var mod = new SqlServerModel();
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             //------------Execute Test---------------------------
             sqlServer.ClearValidationMemoWithNoFoundError();
             //------------Assert Results-------------------------
@@ -78,7 +79,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
@@ -98,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 
@@ -120,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 
@@ -138,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var id = Guid.NewGuid();
             var mod = new SqlServerModel();
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
@@ -146,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.AreEqual(2,sqlServer.ActionRegion.Actions.Count);
+            Assert.AreEqual(1,sqlServer.ActionRegion.Actions.Count);
         }
 
         [TestMethod]
@@ -160,7 +161,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -196,7 +197,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -227,7 +228,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var mod = new SqlServerModel();
             mod.HasRecError = true;
             var act = new DsfSqlServerDatabaseActivity();
-            var viewModel = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var viewModel = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -245,7 +246,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
@@ -278,7 +279,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
@@ -313,7 +314,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();

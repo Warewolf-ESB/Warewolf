@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Security
 {
     public class ClientAuthorizationService : AuthorizationServiceBase
