@@ -84,7 +84,7 @@ if (!(Test-Path $TestAssemblyPath)) {
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:TestResults\DropboxToolsUITestingResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Dropbox Tools`""
+$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\DropboxToolsUITestingResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Dropbox Tools`""
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
