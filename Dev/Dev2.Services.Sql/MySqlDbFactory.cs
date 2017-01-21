@@ -50,11 +50,15 @@ namespace Dev2.Services.Sql
 
 
 
-        public DataTable CreateTable(IDataReader reader, LoadOption overwriteChanges)
+        public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            var table = new DataTable();
-            table.Load(reader, LoadOption.OverwriteChanges);
-            return table;
+            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            reader.Fill(ds);
+            return ds.Tables[0];
+
+//            var table = new DataTable();
+//            table.Load(reader, LoadOption.OverwriteChanges);
+//            return table;
         }
 
         public DataSet FetchDataSet(IDbCommand command)

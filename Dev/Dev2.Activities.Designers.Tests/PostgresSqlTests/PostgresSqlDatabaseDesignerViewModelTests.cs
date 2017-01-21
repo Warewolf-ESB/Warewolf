@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
@@ -31,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            return new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            return new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
         }
 
         [TestMethod]
@@ -86,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 
             //------------Execute Test---------------------------
 
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 
@@ -107,7 +108,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -137,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -162,7 +163,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();
@@ -194,7 +195,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var id = Guid.NewGuid();
             var mod = new PostgreSqlModel();
             var act = new DsfPostgreSqlActivity();
-            var sqlServer = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var sqlServer = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
@@ -202,7 +203,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.AreEqual(2, sqlServer.ActionRegion.Actions.Count);
+            Assert.AreEqual(1, sqlServer.ActionRegion.Actions.Count);
         }
 
         [TestMethod]
@@ -215,7 +216,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();

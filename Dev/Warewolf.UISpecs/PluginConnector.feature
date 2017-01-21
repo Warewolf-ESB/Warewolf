@@ -7,10 +7,10 @@ Feature: PluginConnector
 Scenario: Plugin Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Select NewPluginSource FromExplorerContextMenu
+	And I Click New DotNetPluginSource Explorer Context Menu
 	And I Type "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Numerics.dll" into Plugin Source Wizard Assembly Textbox
 	And I Save Valid Service With Ribbon Button And Dialog As "UITestingPluginSource"
-	And I Click Close Plugin Source Wizard Tab Button
+	And I Click Close DotNetPlugin Source Tab
 	And I Drag DotNet DLL Connector Onto DesignSurface
 	And I Select First Item From DotNet DLL Large View Source Combobox
 	And I Select Namespace
