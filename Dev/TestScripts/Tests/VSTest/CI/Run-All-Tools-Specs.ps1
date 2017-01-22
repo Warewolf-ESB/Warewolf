@@ -42,7 +42,8 @@ $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
 </TestSettings>
 "@)
 
-# Find Test Assembly
+# Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
 }

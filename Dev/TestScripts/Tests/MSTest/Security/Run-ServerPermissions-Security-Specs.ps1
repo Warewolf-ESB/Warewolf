@@ -41,6 +41,7 @@ $TestSettingsFile = "$PSScriptRoot\ServerPermissionsSecurity.testsettings"
 "@)
 
 # Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
@@ -74,7 +75,7 @@ if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll") {
 if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if (!(Test-Path "$TestAssemblyPath")) {
 	Write-Host Cannot find Warewolf.SecuritySpecs.dll at $PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }

@@ -74,7 +74,7 @@ if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Specs.dll") {
 if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Specs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if (!(Test-Path "$TestAssemblyPath")) {
 	Write-Host Cannot find Warewolf.*.Specs.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Specs
 	exit 1
 }

@@ -44,6 +44,7 @@ $TestSettingsFile = "$PSScriptRoot\DefaultLayoutUITests.testsettings"
 "@)
 
 # Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
 }
@@ -74,7 +75,7 @@ if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll") {
 if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if (!(Test-Path "$TestAssemblyPath")){
 	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UISpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }
