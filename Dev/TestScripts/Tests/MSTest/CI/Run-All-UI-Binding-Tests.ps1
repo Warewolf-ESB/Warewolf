@@ -24,6 +24,7 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Find test assemblies
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UIBindingTests"
 }

@@ -41,6 +41,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 "@)
 
 # Find test assemblies
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Specs\Warewolf.*.Specs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Specs"
 }

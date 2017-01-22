@@ -21,6 +21,7 @@ if ($Args.Count -gt 0) {
 }
 
 # Find test assemblies
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\Dev2.Activities.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Dev2.Activities.Tests.dll"
 }
