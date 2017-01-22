@@ -24,6 +24,7 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create assemblies list.
+$TestAssembliesList = ''
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
 }
@@ -57,7 +58,6 @@ elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
 elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
-$TestAssembliesList = ''
 foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Warewolf.*.Tests.dll ) {
 	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
