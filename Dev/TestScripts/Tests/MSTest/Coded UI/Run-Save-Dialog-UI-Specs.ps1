@@ -88,7 +88,7 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SaveDialogUISpecsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"Save Dialog`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SaveDialogUISpecsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"SaveDialog`""
 } else {
 	# Create full MSTest argument string.
 	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SaveDialogUISpecsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
