@@ -64,7 +64,7 @@ foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Warewolf.*.Tests.dll
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
 }
-foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Dev2.*.Tests ) {
+foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Dev2.*.Tests.dll ) {
 	if ($file.Name -ne "Dev2.Activities.Designers.Tests.dll" -and $file.Name -ne "Dev2.Activities.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
