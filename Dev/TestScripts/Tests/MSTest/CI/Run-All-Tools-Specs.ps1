@@ -52,37 +52,37 @@ $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll"
 }
-if (!(Test-Path "$TestAssemblyPath")) {
+if ($TestAssemblyPath -ne "") {
 	Write-Host Cannot find Warewolf.ToolsSpecs.dll at $PSScriptRoot\Warewolf.ToolsSpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }
