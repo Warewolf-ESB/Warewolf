@@ -57,7 +57,7 @@ elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
 elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
 }
-if ($TestAssemblyPath -ne "") {
+if ($TestAssemblyPath -eq "") {
 	Write-Host Cannot find Warewolf.UIBindingTests.*.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UIBindingTests
 	exit 1
 }

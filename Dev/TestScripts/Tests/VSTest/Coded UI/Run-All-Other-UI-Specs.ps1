@@ -78,7 +78,7 @@ elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs.dll") {
 elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll"
 }
-if ($TestAssemblyPath -ne "") {
+if ($TestAssemblyPath -eq "") {
 	Write-Host Cannot find Warewolf.UISpecs.dll at $PSScriptRoot\Warewolf.UISpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }
