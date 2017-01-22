@@ -43,6 +43,7 @@ $TestSettingsFile = "$PSScriptRoot\SubworkflowExecutionSpecs.testsettings"
 "@)
 
 # Create assemblies list.
+$TestAssembliesPath = ''
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
 }
@@ -77,10 +78,10 @@ elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $PSScriptRoot -Filter Warewolf.*.Specs ) {
+foreach ($file in Get-ChildItem $PSScriptRoot -Filter Warewolf.*.Specs.dll ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
 }
-foreach ($file in Get-ChildItem $PSScriptRoot -Filter Dev2.*.Specs ) {
+foreach ($file in Get-ChildItem $PSScriptRoot -Filter Dev2.*.Specs.dll ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
 }
 
