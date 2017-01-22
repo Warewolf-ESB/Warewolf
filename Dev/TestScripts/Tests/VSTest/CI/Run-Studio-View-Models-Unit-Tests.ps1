@@ -20,7 +20,8 @@ if ($Args.Count -gt 0) {
     }
 }
 
-# Find Test Assembly
+# Find test assembly
+$TestAssemblyPath = ""
 if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
