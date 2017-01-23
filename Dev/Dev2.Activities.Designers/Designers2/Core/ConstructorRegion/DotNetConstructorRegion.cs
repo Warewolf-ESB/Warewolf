@@ -106,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged();
             }
         }
-
+        
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
@@ -168,6 +168,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                     if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
                         StorePreviousValues(_selectedConstructor.GetIdentifier());
                     _modelItem.SetProperty("Constructor", value);
+                   
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
