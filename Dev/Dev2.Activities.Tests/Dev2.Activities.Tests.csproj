@@ -183,6 +183,7 @@
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\CountRecordsTest.cs" />
+    <Compile Include="ActivityTests\DecisionActivityTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Delete\DropBoxDeleteTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DropBoxDownloadTests.cs" />
