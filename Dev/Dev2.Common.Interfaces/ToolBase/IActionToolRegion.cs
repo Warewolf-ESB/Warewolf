@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         ICollection<T> MethodsToRun { get; set; }
         ICommand RefreshMethodsCommand { get; }
         bool IsActionEnabled { get; set; }
+        bool IsMethodExpanded { get; set; }
         bool IsRefreshing { get; set; }
         event SomethingChanged SomethingChanged;
         double LabelWidth { get; set; }

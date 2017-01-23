@@ -7,8 +7,6 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DotNetPluginSourceTests
     {
-        const string SourceName = "CodedUITestDotNetPluginSource";
-
         [TestMethod]
         [TestCategory("DotNetPluginSource")]
         public void CreateDotNetPluginSource()

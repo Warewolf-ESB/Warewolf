@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
+        private bool _isMethodExpanded;
 
         public DotNetMethodRegion()
         {
@@ -72,6 +73,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsRefreshing = false;
                 }, CanRefresh);
 
+                IsMethodExpanded = false;
                 IsEnabled = true;
                 _modelItem = modelItem;
             }
@@ -158,8 +160,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-               
-
                 return  _selectedMethod;
             }
             set
@@ -168,8 +168,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (!string.IsNullOrEmpty(_selectedMethod.Method))
                         StorePreviousValues(_selectedMethod.GetIdentifier());
-                 
-
                 }
                 if (Dependants != null)
                 {
@@ -212,19 +210,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-
                 return _methodsToRun;
             }
-
             set
             {
-                
                 _methodsToRun = value;
                 OnPropertyChanged();
             }
         }
-
-
 
         public ICommand RefreshMethodsCommand { get; set; }
         public bool IsActionEnabled
@@ -236,6 +229,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
                 _isActionEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsMethodExpanded
+        {
+            get
+            {
+                return _isMethodExpanded;
+            }
+            set
+            {
+                _isMethodExpanded = value;
                 OnPropertyChanged();
             }
         }
@@ -326,7 +331,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Method = value;
             }
-
             OnPropertyChanged("SelectedMethod");
         }
 
