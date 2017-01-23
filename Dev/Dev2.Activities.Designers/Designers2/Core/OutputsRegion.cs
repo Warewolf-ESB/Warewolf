@@ -132,7 +132,6 @@ namespace Dev2.Activities.Designers2.Core
         private string _objectResult;
         private bool _isObjectOutputUsed;
         private IShellViewModel _shellViewModel;
-        private IJsonObjectsView _jsonObjectView;
         private RelayCommand _viewObjectResult;
         private bool _isConstructorSelected;
 
@@ -317,16 +316,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
 
-        public IJsonObjectsView JsonObjectsView
-        {
-            private get
-            {
-                var jsonObjectsView = _jsonObjectView ?? (_jsonObjectView = new JsonObjectsView());
-               
-                return jsonObjectsView;
-            }
-            set { _jsonObjectView = value; }
-        }
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
         public RelayCommand ViewObjectResult
         {
