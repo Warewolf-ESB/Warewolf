@@ -6948,6 +6948,8 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Open Sharepoint Copy Tool Large View")]
+        [Then(@"I Open Sharepoint Copy Tool Large View")]
+        [Given(@"I Open Sharepoint Copy Tool Large View")]
         public void Open_SharepointCopyTool_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile, new Point(230, 11));
