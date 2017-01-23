@@ -60,7 +60,7 @@
             <Grid x:Name="ErrorGrid" 
                   Grid.Row="2"
                   Margin="{StaticResource ControlBorderTop}" 
-                  Visibility="{Binding OnErrorVisible}">
+                  >
                 <errors:OnError />
             </Grid>
             <!-- ReSharper restore UnusedMember.Global -->

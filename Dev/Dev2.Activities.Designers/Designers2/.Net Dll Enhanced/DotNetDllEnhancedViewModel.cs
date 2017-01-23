@@ -32,7 +32,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
     {
         private IOutputsToolRegion _outputsRegion;
         private IDotNetConstructorInputRegion _inputArea;
-        private IDotNetMethodInputRegion _methodInputRegion;
         private ISourceToolRegion<IPluginSource> _sourceRegion;
         private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
         private IConstructorRegion<IPluginConstructor> _constructorRegion;
@@ -439,17 +438,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 SelectedMethod = null
             };
-            var outputRegion = new DotNetMethodOutputsRegion(methodRegion);
-            var inputRegion = new DotNetMethodInputRegion(methodRegion);
-            outputRegion.IsEnabled = false;
-
-            methodRegion.Dependants.Add(inputRegion);
-            methodRegion.Dependants.Add(outputRegion);
-            methodRegion.InputRegion = inputRegion;
-            methodRegion.OutputRegion = outputRegion;
             methodRegion.SourceChangedAction = () =>
             {
-                outputRegion.IsEnabled = false;
                 if (methodRegion.SelectedMethod != null)
                 {
                     bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
@@ -635,18 +625,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             set
             {
                 _inputArea = value;
-                OnPropertyChanged();
-            }
-        }
-        public IDotNetMethodInputRegion MethodInputRegion
-        {
-            get
-            {
-                return _methodInputRegion;
-            }
-            set
-            {
-                _methodInputRegion = value;
                 OnPropertyChanged();
             }
         }
