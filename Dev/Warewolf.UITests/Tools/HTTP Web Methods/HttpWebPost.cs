@@ -21,7 +21,6 @@ namespace Warewolf.UITests.Tools
         public void HTTPWebPostTool_SmallView_UITest()
         {
             UIMap.Collapse_POSTWebTool_LargeView_To_SmallView();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.SmallView.Exists, "Web POST small view does not exist after collapsing the large view with a double click.");
         }
 
         [TestMethod]
@@ -67,7 +66,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            UIMap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
+            UIMap.Drag_POSTWebTool_Onto_DesignSurface();
         }
 
         UIMap UIMap
