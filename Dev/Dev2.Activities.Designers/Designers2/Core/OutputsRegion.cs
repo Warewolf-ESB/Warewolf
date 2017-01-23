@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
         {
             ToolRegionName = "OutputsRegion";
+            Dependants = new List<IToolRegion>();
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
@@ -70,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core
                 IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
             }
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            
+          
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -234,7 +235,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                var constructorRegion = Dependants.SingleOrDefault(region => region is DotNetConstructorRegion) as DotNetConstructorRegion;
+                var constructorRegion = Dependants?.SingleOrDefault(region => region is DotNetConstructorRegion) as DotNetConstructorRegion;
                 if (constructorRegion != null)
                 {
                     _isConstructorSelected = constructorRegion.SelectedConstructor != null;

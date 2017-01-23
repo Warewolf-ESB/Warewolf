@@ -1082,7 +1082,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" HorizontalAlignment="Left" 
-                           Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                           Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
                 <Grid Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
