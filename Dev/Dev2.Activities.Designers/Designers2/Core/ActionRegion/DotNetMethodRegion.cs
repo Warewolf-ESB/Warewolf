@@ -10,7 +10,9 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Common.Utils;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Views;
 using Warewolf.Core;
 using Warewolf.Storage;
 // ReSharper disable ExplicitCallerInfoArgument
@@ -26,6 +28,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
+        private RelayCommand _viewObjectResult;
         private IPluginAction _selectedMethod;
         private IPluginServiceModel _model;
         private ICollection<IPluginAction> _methodsToRun;
@@ -187,7 +190,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return _selectedMethod?.IsVoid ?? false;
+                return _selectedMethod == null || _selectedMethod.IsVoid;
             }
             set
             {
@@ -218,7 +221,41 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public bool IsObject => _selectedMethod != null && _selectedMethod.IsObject;
+        public bool IsObject
+        {
+            get { return _selectedMethod != null && _selectedMethod.IsObject; }
+            set
+            {
+                if (_selectedMethod != null)
+                    _selectedMethod.IsObject = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsObjectEnabled => !IsObject;
+
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
+
+        public RelayCommand ViewObjectResult
+        {
+            get
+            {
+                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                {
+                    ViewJsonObjects();
+                }, CanRunCommand));
+            }
+        }
+
+        private bool CanRunCommand(object obj)
+        {
+            return true;
+        }
+
+        private void ViewJsonObjects()
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+        }
 
         public string ObjectName
         {
