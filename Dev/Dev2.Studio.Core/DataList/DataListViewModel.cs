@@ -267,7 +267,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
-        private IJsonObjectsView _jsonObjectView;
 
         #endregion Properties
 
@@ -292,11 +291,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _helper = new DataListViewModelHelper(this);
         }
 
-        public IJsonObjectsView JsonObjectsView
-        {
-            private get { return _jsonObjectView ?? (_jsonObjectView = new JsonObjectsView()); }
-            set { _jsonObjectView = value; }
-        }
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
         private void ViewJsonObjects(IComplexObjectItemModel item)
         {
