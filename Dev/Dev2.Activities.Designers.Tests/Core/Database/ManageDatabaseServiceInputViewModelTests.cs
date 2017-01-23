@@ -5,7 +5,6 @@ using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
 // ReSharper disable UseObjectOrCollectionInitializer
@@ -30,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
             ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
@@ -55,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             vm.TestAction = () => { called = true; };
@@ -83,7 +82,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
             var called = false;
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.PropertyChanged += (sender, args) => called = true;
             inputview.Model = new DatabaseService();
@@ -104,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
@@ -126,7 +125,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = null;
 
@@ -148,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             sqlServer.OutputsRegion.Outputs = null;
 
@@ -169,7 +168,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
@@ -191,7 +190,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService(){Source = new DbSourceDefinition(), Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
             inputview.ExecuteTest();
@@ -226,7 +225,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
             inputview.ExecuteClose();
@@ -254,7 +253,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             var lst = new List<IServiceInput>();

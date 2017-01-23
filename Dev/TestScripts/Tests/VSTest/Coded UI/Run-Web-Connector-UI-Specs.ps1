@@ -33,9 +33,7 @@ $TestSettingsFile = "$PSScriptRoot\WebConnectorUISpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
-"@ + [guid]::NewGuid() + @"
-`"
+  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
   name=`"WebConnectorUISpecs`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -78,9 +76,6 @@ if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
 }
 if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll"
-}
-if (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll"
 }
 if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UISpecs.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir

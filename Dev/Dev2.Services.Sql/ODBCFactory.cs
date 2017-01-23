@@ -45,11 +45,11 @@ namespace Dev2.Services.Sql
             return ((OdbcConnection)connection).GetSchema();
         }
 
-        public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
+        public DataTable CreateTable(IDataReader reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
-            reader.Fill(ds);
-            return ds.Tables[0];
+            var table = new DataTable();
+            table.Load(reader, LoadOption.OverwriteChanges);
+            return table;
         }
 
         public DataSet FetchDataSet(IDbCommand command)

@@ -40,7 +40,7 @@ namespace Warewolf.Studio.Views
             _isDragging = false;
         }
 
-        private void TreeMouseMove(object sender, MouseEventArgs e)
+        private void Tree_MouseMove(object sender, MouseEventArgs e)
         {
             if (_canDrag)
             {
@@ -56,7 +56,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void DropTreeDrop(object sender, DragEventArgs e)
+        private void DropTree_Drop(object sender, DragEventArgs e)
         {
             try
             {
@@ -272,19 +272,34 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void TreeViewItemPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var treeView = sender as TreeView;
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
-                SetSelected(treeView,treeViewItem.DataContext);
+                var environmentViewModel = treeViewItem.DataContext as EnvironmentViewModel;
+                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
+                if (environmentViewModel != null)
+                {
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerEnvironmentMenu") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = environmentViewModel;
+                }
+                else if (explorerItemViewModel != null)
+                {
+                    treeViewItem.ContextMenu = ExplorerTree.TryFindResource("ExplorerContextMenuManager") as ContextMenu;
+                    if (treeViewItem.ContextMenu != null)
+                        treeViewItem.ContextMenu.DataContext = explorerItemViewModel;
+                }
+
+                treeViewItem.Focus();
+                e.Handled = true;
             }
             _isDragging = false;
             _canDrag = false;
         }
 
-        private void TreeViewItemPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
@@ -329,24 +344,18 @@ namespace Warewolf.Studio.Views
         private void ExplorerTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var treeView = sender as TreeView;
-            var item = e.NewValue;
-            SetSelected(treeView, item);
-        }
-
-        private void SetSelected(TreeView treeView, object item)
-        {
             var singleEnvironmentExplorerViewModel = treeView?.DataContext as SingleEnvironmentExplorerViewModel;
-            if(singleEnvironmentExplorerViewModel != null)
+            if (singleEnvironmentExplorerViewModel != null)
             {
-                var explorerItemViewModel = item as IExplorerItemViewModel;
-                if(explorerItemViewModel != null)
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                if (explorerItemViewModel != null)
                 {
                     singleEnvironmentExplorerViewModel.SelectedItem = explorerItemViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = null;
                 }
                 else
                 {
-                    var environmentViewModel = item as IEnvironmentViewModel;
+                    var environmentViewModel = e.NewValue as IEnvironmentViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = environmentViewModel;
                     singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
@@ -355,20 +364,20 @@ namespace Warewolf.Studio.Views
             {
                 var explorerViewModel = DataContext as ExplorerViewModel;
 
-                var explorerItemViewModel = item as IExplorerItemViewModel;
-                if(explorerItemViewModel != null)
+                var explorerItemViewModel = e.NewValue as IExplorerItemViewModel;
+                if (explorerItemViewModel != null)
                 {
                     explorerItemViewModel.IsSelected = true;
-                    if(explorerViewModel?.ConnectControlViewModel != null)
+                    if (explorerViewModel?.ConnectControlViewModel != null)
                         explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
                 }
                 else
                 {
-                    var environmentViewModel = item as IEnvironmentViewModel;
-                    if(environmentViewModel != null)
+                    var environmentViewModel = e.NewValue as IEnvironmentViewModel;
+                    if (environmentViewModel != null)
                     {
                         environmentViewModel.IsSelected = true;
-                        if(explorerViewModel?.ConnectControlViewModel != null)
+                        if (explorerViewModel?.ConnectControlViewModel != null)
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                     }
                 }
@@ -472,7 +481,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void TreeViewItemRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             e.Handled = true;
         }

@@ -14,9 +14,6 @@ namespace Dev2.Common.Interfaces
         List<IDllListingModel> DllListingModels { get; set; }
         bool IsLoading { get; set; }
         string SearchTerm { get; set; }
-        string FilterTooltip { get; set; }
-        string FilesTooltip { get; set; }
-        string SelectTooltip { get; set; }
         ICommand ClearSearchTextCommand { get; set; }
         IDllListingModel GetGacDLL();
         IDllListingModel GetFileSystemDLL();

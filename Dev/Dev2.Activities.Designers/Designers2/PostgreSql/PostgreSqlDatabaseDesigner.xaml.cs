@@ -8,8 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Threading;
-
 namespace Dev2.Activities.Designers2.PostgreSql
 {
     public partial class PostgreSqlDatabaseDesigner
@@ -21,7 +19,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         protected override PostgreSqlDatabaseDesignerViewModel CreateViewModel()
         {
-            return new PostgreSqlDatabaseDesignerViewModel(ModelItem, new AsyncWorker());
+            return new PostgreSqlDatabaseDesignerViewModel(ModelItem);
         }
     }
 }

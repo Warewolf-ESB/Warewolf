@@ -1,4 +1,8 @@
-﻿# Read playlists and args.
+﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+$WorkingDir = (Get-Item $PSScriptRoot).FullName
+# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -29,9 +33,7 @@ $TestSettingsFile = "$PSScriptRoot\OtherUISpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
-"@ + [guid]::NewGuid() + @"
-`"
+  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
   name=`"OtherUISpecs`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -45,41 +47,38 @@ $TestSettingsFile = "$PSScriptRoot\OtherUISpecs.testsettings"
 "@)
 
 # Find test assembly
-if (Test-Path "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs.dll"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll"
 }
 if (!(Test-Path $TestAssemblyPath)) {
-	Write-Host Cannot find Warewolf.UISpecs.dll at $PSScriptRoot\Warewolf.UISpecs\bin\Debug or $PSScriptRoot
+	Write-Host Cannot find Warewolf.UISpecs.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
 	exit 1
 }
 
@@ -91,7 +90,7 @@ if ($TestList -eq "") {
 }
 
 # Display full command including full argument string.
-Write-Host $PSScriptRoot> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host $WorkingDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

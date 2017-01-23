@@ -186,7 +186,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if (model != null)
             {
-                model.WorkflowChanged += UpdateForWorkflowChange;
                 _environmentModel = model.EnvironmentModel;
                 if (_environmentModel != null)
                 {
@@ -197,11 +196,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
-        }
-
-        private void UpdateForWorkflowChange()
-        {
-            _workspaceSaved = false;
         }
 
         private void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList compileMessageList)
@@ -411,7 +405,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            if (!resourceModel.IsWorkflowSaved)
+            if (resourceModel.UserPermissions.IsContributor())
             {
                 var succesfulSave = Save(resourceModel, true);
                 if (!succesfulSave)
@@ -477,13 +471,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
-            if (!ContextualResourceModel.IsWorkflowSaved)
+            var successfuleSave = Save(ContextualResourceModel, true);
+            if (!successfuleSave)
             {
-                var successfuleSave = Save(ContextualResourceModel, true);
-                if (!successfuleSave)
-                {
-                    return;
-                }
+                return;
             }
             ViewInBrowserInternal(ContextualResourceModel);
         }
@@ -503,14 +494,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
-                if(!ContextualResourceModel.IsWorkflowSaved && !_workspaceSaved)
+                var successfuleSave = Save(ContextualResourceModel, true);
+                if (!successfuleSave)
                 {
-                    var successfuleSave = Save(ContextualResourceModel, true);
-                    if(!successfuleSave)
-                    {
-                        return;
-                    }
-                }                
+                    return;
+                }
             }
             else
             {
@@ -521,10 +509,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 SetDebugStatus(DebugStatus.Finished);
                 return;
             }
+
             var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
             inputDataViewModel.LoadWorkflowInputs();
             inputDataViewModel.Save();
-
         }
 
         public void BindToModel()
@@ -534,7 +522,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         private bool _waitingforDialog;
-        private bool _workspaceSaved;
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
@@ -606,11 +593,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
-                _workspaceSaved = true;
             }
             else
             {
-                _workspaceSaved = true;
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.Save(resource);
                 DisplaySaveResult(saveResult, resource);
             }

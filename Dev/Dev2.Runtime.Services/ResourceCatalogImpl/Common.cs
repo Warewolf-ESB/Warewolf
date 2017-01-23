@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        private static  void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
+        public static  void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
         {
             if (compileMessagesTO == null || compileMessagesTO.Count == 0)
             {
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return errorMessagesElement;
         }
 
-        private static void UpdateIsValid(XElement resourceElement)
+       public static void UpdateIsValid(XElement resourceElement)
         {
             var isValid = false;
             var isValidAttrib = resourceElement.Attribute("IsValid");

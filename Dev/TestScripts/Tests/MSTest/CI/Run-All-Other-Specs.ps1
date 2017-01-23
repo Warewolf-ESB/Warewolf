@@ -1,4 +1,8 @@
-﻿# Read playlists and args.
+﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
+# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -41,59 +45,17 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 </TestSettings>
 "@)
 
-# Find test assemblies
-if (Test-Path "$PSScriptRoot\Warewolf.Specs\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Specs"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Specs"
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Specs"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Specs"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Specs"
-}
-if (Test-Path "$PSScriptRoot\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Specs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
-}
-if (!(Test-Path $TestAssemblyPath)) {
-	Write-Host Cannot find Warewolf.*.Specs.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Specs
-	exit 1
-}
-if (!(Test-Path $PSScriptRoot\TestResults)) {
-	New-Item -ItemType Directory $PSScriptRoot\TestResults
-}
-
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $TestAssemblyPath -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
 }
 
 if ($TestList -eq "") {
-	# Create full MSTest argument string.
+	# Create full VSTest argument string.
 	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution`""
 } else {
-	# Create full MSTest argument string.
+	# Create full VSTest argument string.
 	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 

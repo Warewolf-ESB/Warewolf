@@ -68,9 +68,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 rec.Fields.AddRange(new List<RecordsetField>(serviceDef.OutputMappings.Select(a => new RecordsetField { Name = a.MappedFrom, Alias = a.MappedTo, RecordsetAlias = a.RecordSetName, Path = new DataTablePath(a.RecordSetName, a.MappedFrom) })));
                 recset.Add(rec);
                 var parameters = serviceDef.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
-
+                var constructorParams = serviceDef.Constructor.Inputs.Select(input => new ConstructorParameter() { Name = input.Name, Value = input.Value, TypeName = input.TypeName, EmptyToNull = input.EmptyToNull, IsRequired = input.IsRequired, ShortTypeName = Type.GetType(input.TypeName)?.FullName });
                 var res = new PluginService
                 {
+                    Constructor = new ServiceConstructor(serviceDef.Constructor.ConstructorName, constructorParams, null),
                     Method = new ServiceMethod(serviceDef.Name, serviceDef.Name, parameters, null, output, serviceDef.Action.Method),
                     ResourceName = serviceDef.Name,
                     ResourceID = serviceDef.Id,

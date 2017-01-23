@@ -33,6 +33,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         public List<DuplicateResource> DuplicateResources { get; set; }
         readonly object _loadLock = new object();
+        readonly object _workspaceLock = new object();
         private readonly FileWrapper _dev2FileWrapper;
         readonly IPerformanceCounter _perfCounter;
 
@@ -381,17 +382,20 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             IResource foundResource = null;
             try
             {
-                List<IResource> resources;
-                if(_workspaceResources.TryGetValue(workspaceID, out resources))
+                //lock (_workspaceLock)
                 {
-                    foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
-                }
-
-                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
-                {
-                    if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                    List<IResource> resources;
+                    if (_workspaceResources.TryGetValue(workspaceID, out resources))
                     {
                         foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                    }
+
+                    if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                    {
+                        if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                        {
+                            foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                        }
                     }
                 }
             }
@@ -409,17 +413,21 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID)
         {
             IResource foundResource = null;
-            List<IResource> resources;
-            if(_workspaceResources.TryGetValue(workspaceID, out resources))
-            {
-                foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
-            }
 
-            if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+            //lock (_workspaceLock)
             {
-                if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                List<IResource> resources;
+                if (_workspaceResources.TryGetValue(workspaceID, out resources))
                 {
                     foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                }
+
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                    {
+                        foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                    }
                 }
             }
             return GetResourceContents(foundResource);

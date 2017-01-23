@@ -17,8 +17,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public interface IRuntime
     {
+        PluginExecutionDto CreateInstance(PluginInvokeArgs constructor);
+        PluginExecutionDto Run(PluginExecutionDto dto);
         object Run(PluginInvokeArgs setupInfo);
 
-        IOutputDescription Test(PluginInvokeArgs setupInfo,out string serializedResult);
+        IOutputDescription Test(PluginInvokeArgs setupInfo, out string serializedResult);
     }
 }

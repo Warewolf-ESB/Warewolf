@@ -259,14 +259,13 @@ namespace Dev2.Services.Sql
         #endregion Connect
 
         private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataAdapter, T> handler)
+            Func<IDataReader, T> handler)
         {
             try
             {
-                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command as NpgsqlCommand);
-                using (adapter)
+                using (var reader = command.ExecuteReader(commandBehavior))
                 {
-                    return handler(adapter);
+                    return handler(reader);
                 }
             }
             catch (DbException e)
@@ -276,7 +275,7 @@ namespace Dev2.Services.Sql
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
-                    return handler(new NpgsqlDataAdapter());
+                    return handler(new DataTableReader(exceptionDataTable));
                 }
                 throw;
             }
@@ -311,16 +310,12 @@ namespace Dev2.Services.Sql
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate (IDataAdapter reader)
+                    delegate (IDataReader reader)
                     {
                         var sb = new StringBuilder();
-                        DataSet ds = new DataSet(); //conn is opened by dataadapter
-                        reader.Fill(ds);
-                        var t = ds.Tables[0];
-                        var dataTableReader = t.CreateDataReader();
-                        while (dataTableReader.Read())
+                        while (reader.Read())
                         {
-                            var value = dataTableReader.GetValue(2);
+                            var value = reader.GetValue(2);
                             if (value != null)
                             {
                                 sb.Append(value);

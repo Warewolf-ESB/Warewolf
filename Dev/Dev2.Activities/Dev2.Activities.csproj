@@ -212,6 +212,7 @@
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />

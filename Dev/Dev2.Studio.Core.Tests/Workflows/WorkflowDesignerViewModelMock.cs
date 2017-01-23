@@ -176,10 +176,5 @@ namespace Dev2.Core.Tests.Workflows
         {
             return PerformAddItems(new List<ModelItem> { modelItems }).FirstOrDefault();
         }
-
-        public void FireWorkflowChanged()
-        {
-            WorkflowChanged.Invoke();
-        }
     }
 }

@@ -1780,6 +1780,8 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
             Assert.AreEqual(workflowLink, wd.DisplayWorkflowLink);
             wd.Dispose();
 
@@ -1860,6 +1862,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var unsavedResourceModel = new Mock<IContextualResourceModel>();
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
+            unsavedResourceModel.Setup(model => model.WorkflowXaml).Returns(new StringBuilder("workflow xaml"));
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
             var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true);
             //------------Execute Test---------------------------
@@ -1867,6 +1870,9 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
+
 
         }
 
