@@ -46,12 +46,6 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.FetchDbActions(source);
         }
 
-        public ICollection<IDbAction> RefreshActions(IDbSource source)
-        {
-            source.ReloadActions = true;
-            return _queryProxy.FetchDbActions(source);
-        }
-
         public void CreateNewSource(enSourceType type)
         {
             switch (type)
@@ -99,16 +93,6 @@ namespace Warewolf.Studio.ViewModels
         public DataTable TestService(IDatabaseService inputValues)
         {
             return _updateRepository.TestDbService(inputValues);
-        }
-
-        public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
-        {
-            return new List<IServiceOutputMapping>();
-        }
-
-        public void SaveService(IDatabaseService toModel)
-        {
-            _updateRepository.Save(toModel);
         }
 
         #endregion

@@ -1866,6 +1866,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void LoadDesignerXaml()
         {
+
             var xaml = _resourceModel.WorkflowXaml;
 
             // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
@@ -2467,6 +2468,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
             }
+            WorkflowChanged?.Invoke();
         }
 
         private void ModelItemPropertyChanged(ModelChangedEventArgs e)
@@ -2496,6 +2498,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
             DataObject = null;
+            WorkflowChanged?.Invoke();
         }
 
         private void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
