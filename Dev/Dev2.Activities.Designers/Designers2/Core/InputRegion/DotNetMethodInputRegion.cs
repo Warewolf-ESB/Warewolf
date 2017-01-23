@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,7 +9,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
-using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
@@ -19,7 +16,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetMethodInputRegion : IDotNetMethodInputRegion
     {
-        private readonly ModelItem _modelItem;
         private readonly IMethodToolRegion<IPluginAction> _action;
         bool _isEnabled;
         private ICollection<IServiceInput> _inputs;
@@ -32,65 +28,28 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             ToolRegionName = "DotNetInputRegion";
         }
 
-        public DotNetMethodInputRegion(ModelItem modelItem, IMethodToolRegion<IPluginAction> action)
+        public DotNetMethodInputRegion(IMethodToolRegion<IPluginAction> action)
             : this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DotNetInputRegion";
-            _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
-            var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
             Inputs = new ObservableCollection<IServiceInput>();
             var inputs = new ObservableCollection<IServiceInput>();
-            inputs.CollectionChanged += InputsCollectionChanged;
-            inputs.AddRange(serviceInputs);
-            Inputs = inputs;
-            IsInputsEmptyRows = Inputs.Count == 0;
-            if (inputsFromModel == null)
+            if (action.SelectedMethod != null)
+            {
+                inputs.AddRange(action.SelectedMethod.Inputs);
+                Inputs = inputs;
+                IsInputsEmptyRows = Inputs.Count == 0;
                 UpdateOnActionSelection();
-            IsEnabled = action?.SelectedMethod != null;
+            }
+            IsEnabled = action.SelectedMethod != null;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
         public DotNetMethodInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
-        }
-
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            AddItemPropertyChangeEvent(e);
-            RemoveItemPropertyChangeEvent(e);
-        }
-
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
-        {
-            if (args.NewItems == null) return;
-            foreach (INotifyPropertyChanged item in args.NewItems)
-            {
-                if (item != null)
-                {
-                    item.PropertyChanged += ItemPropertyChanged;
-                }
-            }
-        }
-
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _modelItem.SetProperty("Inputs", Inputs.ToList());
-        }
-
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
-        {
-            if (args.OldItems == null) return;
-            foreach (INotifyPropertyChanged item in args.OldItems)
-            {
-                if (item != null)
-                {
-                    item.PropertyChanged -= ItemPropertyChanged;
-                }
-            }
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -235,16 +194,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 if (value != null)
                 {
                     _inputs = value;
-                    _modelItem.SetProperty("Inputs", value.ToList());
                     OnPropertyChanged();
                 }
                 else
                 {
                     _inputs.Clear();
-                    _modelItem.SetProperty("Outputs", _inputs.ToList());
                     OnPropertyChanged();
                 }
-
             }
         }
 
