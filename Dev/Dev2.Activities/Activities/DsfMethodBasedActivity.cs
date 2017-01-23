@@ -11,25 +11,27 @@ namespace Dev2.Activities
     {
         protected void BuildParameterIterators(int update, List<MethodParameter> inputs, IWarewolfListIterator itrCollection, List<IWarewolfIterator> itrs, IDSFDataObject dataObject)
         {
-            if(inputs != null)
             {
-                foreach(var sai in inputs)
+                if (inputs != null)
                 {
-                    string val = sai.Name;
-                    string toInject = null;
-
-                    if(val != null)
+                    foreach (var sai in inputs)
                     {
-                        toInject = sai.Value;
-                    }
+                        string val = sai.Name;
+                        string toInject = null;
 
-                    var paramIterator = new WarewolfIterator(dataObject.Environment.Eval(toInject, update));
-                    itrCollection.AddVariableToIterateOn(paramIterator);
-                    itrs.Add(paramIterator);
+                        if (val != null)
+                        {
+                            toInject = sai.Value;
+                        }
+                       
+                        var paramIterator = new WarewolfIterator(dataObject.Environment.Eval(toInject, update));
+                        itrCollection.AddVariableToIterateOn(paramIterator);
+                        itrs.Add(paramIterator);
+                    }
                 }
+                // ReSharper disable once RedundantJumpStatement
+                return;
             }
-            // ReSharper disable once RedundantJumpStatement
-            return;
         }
     }
 }

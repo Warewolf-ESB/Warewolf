@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 // ReSharper disable CyclomaticComplexity
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities
 {
@@ -145,13 +146,15 @@ namespace Dev2.Activities
             return null;
         }
 
-        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        #endregion
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
                 var activity = ExecuteDecision(dataObject);
-                return activity;
+                NextNodes = new List<IDev2Activity> { activity };
             }
             catch (Exception e)
             {
@@ -174,16 +177,7 @@ namespace Dev2.Activities
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
                 }
-            }
-
-            return null;
-        }
-
-        #endregion
-
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-        {
-
+            }            
         }
 
         #region Overrides of DsfNativeActivity<string>

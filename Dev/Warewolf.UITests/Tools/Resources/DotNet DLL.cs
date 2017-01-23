@@ -108,7 +108,7 @@ namespace Warewolf.UITests.Tools.Resources
 
         [TestMethod]
         [TestCategory("Resource Tools")]
-        public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
+        public void Selecting_Action_Then_Clear_Removes_EmptyActions()
         {
         }
 

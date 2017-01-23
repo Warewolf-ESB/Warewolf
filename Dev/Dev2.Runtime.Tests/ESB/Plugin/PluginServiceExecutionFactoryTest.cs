@@ -49,23 +49,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
-        public void PluginRuntimeHandler_GetNamespacesWithJsonObjects_WhenValidDll_ExpectNamespaces()
-        {
-            //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-            //------------Execute Test---------------------------
-            //using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                
-                var result = PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(source);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(result.Count > 0);
-            }
-        }
-
-        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -73,16 +56,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         {
             //------------Execute Test---------------------------
             PluginServiceExecutionFactory.GetNamespaces(null);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void PluginRuntimeHandler_GetNamespacesWithJsonObjects_WhenNullDll_ExpectException()
-        {
-            //------------Execute Test---------------------------
-            PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(null);
         }
 
         
@@ -104,40 +77,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
-        public void PluginRuntimeHandler_GetConstructors_WhenValidDll_ExpectValidResults()
-        {
-            //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-            var service = CreatePluginService();
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                var result = PluginServiceExecutionFactory.GetConstructors(source.AssemblyLocation, source.AssemblyName, service.Namespace);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(result.Count > 0);
-            }            
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
-        public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDll_ExpectValidResults()
-        {
-            //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-            var service = CreatePluginService();
-            //------------Execute Test---------------------------
-            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-                var result = PluginServiceExecutionFactory.GetMethodsWithReturns(source.AssemblyLocation, source.AssemblyName, service.Namespace);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(result.Count > 0);
-            }            
-        }
-
-        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
         public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()
@@ -151,14 +90,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                PluginInvokeArgs args = new PluginInvokeArgs
-                {
-                      AssemblyLocation = source.AssemblyLocation
-                    , AssemblyName = "Foo"
-                    , Fullname = svc.Namespace
-                    , Method = svc.Method.Name
-                    , Parameters = svc.Method.Parameters
-                };
+                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
                 var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
                 //------------Assert Results-------------------------

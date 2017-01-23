@@ -155,6 +155,10 @@ namespace Dev2.Activities.Designers2.Service
                 }
             }
             var environmentModel = environmentRepository.Get(EnvironmentID);
+            if (EnvironmentID == Guid.Empty)
+            {
+                environmentModel = environmentRepository.ActiveEnvironment;
+            }
             if(environmentModel?.Connection?.WebServerUri != null)
             {
                 var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());

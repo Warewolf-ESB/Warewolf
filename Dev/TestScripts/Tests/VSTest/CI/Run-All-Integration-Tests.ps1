@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -48,8 +44,41 @@ $TestSettingsFile = "$PSScriptRoot\IntegrationTests.testsettings"
 "@)
 
 # Create assemblies list.
+if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\debug"
+}
+if (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug"
+}
+if (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug"
+}
+if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot"
+}
+if (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.IntegrationTests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $TestAssembliesPath -Include Dev2.IntegrationTests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 

@@ -9,7 +9,7 @@ namespace Dev2.Common.Interfaces.ToolBase
 
         ICollection<IServiceOutputMapping> Outputs { get; set; }
         bool OutputMappingEnabled { get; set; }
-        bool IsOutputsEmptyRows { get; set; }
+        bool IsOutputsEmptyRows { get; }
         string RecordsetName { get; set; }
         bool IsObject { get; set; }
         string ObjectName { get; set; }

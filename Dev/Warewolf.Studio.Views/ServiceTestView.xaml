@@ -29,7 +29,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters1:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed"/>
             <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
-            <customControls:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
+            <views:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>

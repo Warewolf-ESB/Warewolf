@@ -5,7 +5,6 @@ using Dev2.Util;
 
 namespace Warewolf.Core
 {
-    [Serializable]
     public class ServiceInput : ObservableObject,IServiceInput, IEquatable<ServiceInput>
     {
         private string _value;
