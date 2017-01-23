@@ -32,7 +32,7 @@ namespace Warewolf.UITests
         public void DeletedResourceIsRemovedFromResources()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
+            Assert.IsTrue(Directory.Exists(resourcesFolder), "Resource Folder does not exist");
             UIMap.Filter_Explorer(flowSequence);
             UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
@@ -49,10 +49,10 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(uiTestDependencyOne);
             UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists, "Apply To All button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists, "Delete Anyway button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists, "Show Dependencies button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists, "OK button does not exist.");
             Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnywayText.Exists, "Error Deleting Confirmation MessageBox does not exist");
             UIMap.Click_DeleteAnyway_MessageBox_OK();
         }
@@ -64,12 +64,12 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(uiTestDependencyFolder);
             UIMap.Delete_FirstResource_From_ExplorerContextMenu();
             UIMap.Click_MessageBox_Yes();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            Assert.IsTrue(UIMap.MessageBoxWindow.Applytoall.Exists, "Apply To All button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.DeleteAnyway.Exists, "Delete Anyway button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.ShowDependencies.Exists, "Show Dependencies button does not exist.");
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists, "OK button does not exist.");
             UIMap.Click_MessageBox_DeleteAnyway();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "Item did not delete");
         }
 
         #region Additional test attributes
