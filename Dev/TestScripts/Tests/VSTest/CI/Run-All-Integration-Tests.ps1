@@ -46,34 +46,34 @@ $TestSettingsFile = "$PSScriptRoot\IntegrationTests.testsettings"
 if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\debug"
 }
-if (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug"
 }
-if (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug"
 }
-if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot"
 }
-if (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
 $TestAssembliesList = ''
@@ -88,4 +88,4 @@ $FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSetting
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

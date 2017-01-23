@@ -44,46 +44,55 @@ $TestSettingsFile = "$PSScriptRoot\DebugInputUITesting.testsettings"
 "@)
 
 # Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if ($TestAssemblyPath -eq ""){
 	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UITests\bin\Debug or $PSScriptRoot
 	exit 1
 }
+if (!(Test-Path $PSScriptRoot\TestResults)) {
+	New-Item -ItemType Directory $PSScriptRoot\TestResults
+}
 
-# Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\DebugInputUITestingResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"Debug Input`""
+if ($TestList -eq "") {
+	# Create full MSTest argument string.
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\DebugInputUITestingResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"Debug Input`""
+} else {
+	# Create full MSTest argument string.
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\DebugInputUITestingResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+}
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
