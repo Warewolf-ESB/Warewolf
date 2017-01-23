@@ -108,7 +108,18 @@ namespace Dev2.Activities
                 iter.AddVariableToIterateOn(c3);
                 while (iter.HasMoreData())
                 {
-                    ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                    try
+                    {
+                        ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                    }
+                    catch(Exception)
+                    {
+                        if (errorIfNull)
+                        {
+                            throw;
+                        }
+                        ret.Add(false);
+                    }
                 }
                 return ret;
 
