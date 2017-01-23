@@ -463,17 +463,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     var actions = new ObservableCollection<IPluginAction>();
                     actions.CollectionChanged += MethodsToRunListOnCollectionChanged;
-                    var regionCollections = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
-
                     actions.AddRange(pluginActions);
-                    foreach (var pluginAction in pluginActions)
-                    {
-                        if (pluginAction == null) continue;
-                        regionCollections.Add(new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion)
-                        {
-                            SelectedMethod = pluginAction
-                        });
-                    }
+
+                    var regionCollections = BuildRegionsFromActions(pluginActions);
                     MethodsToRunList = regionCollections;
                 }
             }
@@ -482,6 +474,23 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             methodRegions.Add(methodRegion);
             MethodsToRunList = methodRegions;
             NamespaceRegion.Dependants.Add(methodRegion);
+        }
+
+        private ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
+        {
+            var regionCollections = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+            foreach(var pluginAction in pluginActions)
+            {
+                if(pluginAction == null)
+                {
+                    continue;
+                }
+                regionCollections.Add(new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion)
+                {
+                    SelectedMethod = pluginAction
+                });
+            }
+            return regionCollections;
         }
 
         private void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -523,6 +532,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             get
             {
+                var pluginActions = ModelItem.GetProperty<List<IPluginAction>>("MethodsToRun");
+                var regionCollections = BuildRegionsFromActions(pluginActions);
                 return _methodsToRunList;
             }
             set
@@ -536,7 +547,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 else
                 {
                     _methodsToRunList.Clear();
-                    ModelItem.SetProperty("MethodsToRun", _methodsToRunList.ToList());
+                    var pluginActions = _methodsToRunList.Where(p => p.SelectedMethod != null).Select(region => region.SelectedMethod).ToList();
+                    ModelItem.SetProperty("MethodsToRun", pluginActions.ToList());
                     OnPropertyChanged();
                 }
                 OnPropertyChanged();
