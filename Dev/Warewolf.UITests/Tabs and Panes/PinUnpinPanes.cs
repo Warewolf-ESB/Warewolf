@@ -17,6 +17,7 @@ namespace Warewolf.UITests.Tabs
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.UnpinnedTab), "Unpinned pane still exists after being dragged onto the central dock indicator.");
+            Playback.Wait(1000);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
         }
 
@@ -37,7 +38,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinSettingsWizardTab()
+        public void UnpinAndRepinSettingsWizardTab()
         {
             UIMap.Click_Settings_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
@@ -45,7 +46,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinServerSourceWizardTab()
+        public void UnpinAndRepinServerSourceWizardTab()
         {
             UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
@@ -53,7 +54,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinDBSourceWizardTab()
+        public void UnpinAndRepinDBSourceWizardTab()
         {
             UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
@@ -61,7 +62,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinDotNetPluginSourceWizardTab()
+        public void UnpinAndRepinDotNetPluginSourceWizardTab()
         {
             UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
@@ -69,15 +70,16 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinWebSourceWizardTab()
+        public void UnpinAndRepinWebSourceWizardTab()
         {
             UIMap.Click_NewWebSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Exists, "Web server test connection button does not exist on new web source wizard tab.");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinDeployWizardTab()
+        public void UnpinAndRepinDeployWizardTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
@@ -85,7 +87,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinDependencyGraphWizardTab()
+        public void UnpinAndRepinDependencyGraphWizardTab()
         {
             UIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
@@ -93,7 +95,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinTestsWizardTab()
+        public void UnpinAndRepinTestsWizardTab()
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
@@ -102,7 +104,7 @@ namespace Warewolf.UITests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinSchedulerWizardTab()
+        public void UnpinAndRepinSchedulerWizardTab()
         {
             UIMap.Click_Scheduler_Ribbon_Button();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
