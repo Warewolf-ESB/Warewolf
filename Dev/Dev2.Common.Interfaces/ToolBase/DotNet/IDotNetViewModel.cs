@@ -31,6 +31,7 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         IPluginService ToModel();
         void ErrorMessage(Exception exception, bool hasError);
         void SetDisplayName(string displayName);
+
     }
 
     public interface IDotNetInputRegion : IToolRegion

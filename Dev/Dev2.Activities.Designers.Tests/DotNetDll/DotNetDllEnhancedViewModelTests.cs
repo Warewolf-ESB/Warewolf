@@ -6,11 +6,14 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Net_Dll_Enhanced;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
@@ -18,6 +21,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Testing;
 // ReSharper disable InconsistentNaming
@@ -73,7 +77,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.Regions);
             Assert.AreEqual(7, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
-            Assert.IsNotNull(vm.TestInputCommand);
             Assert.IsNotNull(vm.Properties);
             Assert.AreEqual(1, vm.Properties.Count);
         }
@@ -165,7 +168,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             //------------Assert Results-------------------------
             vm.ClearValidationMemoWithNoFoundError();
-            Assert.AreEqual(vm.DesignValidationErrors[0].Message, String.Empty);
+            Assert.AreEqual(vm.DesignValidationErrors[0].Message, string.Empty);
         }
 
 
@@ -263,7 +266,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Execute Test---------------------------
 
             var vm = new DotNetDllEnhancedViewModel(CreateModelItemWithValues(), ps.Object);
-            vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
+            vm.DesignValidationErrors.Add(new ErrorInfo { Message = "bob error", ErrorType = ErrorType.Critical });
             PrivateObject p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
             var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
@@ -272,7 +275,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(inf);
             Assert.AreEqual("bob error", inf.Message);
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -284,9 +287,9 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             CustomContainer.Register(mockShellViewModel.Object);
 
             var ps = new Mock<IPluginServiceModel>();
-            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
+            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource> { new PluginSourceDefinition { Id = id } });
             ps.Setup(a => a.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Throws(new BadImageFormatException());
-            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
+            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction> { new PluginAction { FullName = "bob", Inputs = new List<IServiceInput>() } });
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -296,13 +299,683 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(buildRegions.Single(region => region is INamespaceToolRegion<INamespaceItem>).Errors.Count, 1);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelSourceRegionProperties()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            var guid = Guid.NewGuid();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
+            {
+                new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
+            });
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = new NamespaceItem
+                {
+                    FullName = typeof(Human).FullName,
+                    AssemblyLocation = typeof(Human).Assembly.Location,
+                }
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.SourceId = guid;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.SourceRegion);
+
+            var sourceRegion = dotNetDllEnhancedViewModel.SourceRegion;
+            Assert.IsNotNull(sourceRegion);
+            var selectedSource = sourceRegion.SelectedSource;
+            Assert.AreEqual(activity.SourceId, selectedSource.Id);
+            Assert.AreEqual("Source1", selectedSource.Name);
+            Assert.AreEqual("GACAssemblyName", selectedSource.GACAssemblyName);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelNameSpaceRegionProperties()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            var type = typeof(Human);
+            var guid = Guid.NewGuid();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
+            {
+                new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
+            });
+
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var jsonString = new Human("Jimmy", "Jambo", new Food()).SerializeToJsonString(new KnownTypesBinder()
+            {
+                KnownTypes = new List<Type>(type.Assembly.ExportedTypes)
+            });
+
+            var namespaceItem = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                JsonObject = jsonString,
+
+            };
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = namespaceItem
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.SourceId = guid;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.NamespaceRegion);
+
+            var namespaceRegion = dotNetDllEnhancedViewModel.NamespaceRegion;
+            Assert.IsNotNull(namespaceRegion);
+            var selectedNamespace = namespaceRegion.SelectedNamespace;
+            Assert.IsNotNull(selectedNamespace);
+            Assert.AreEqual(namespaceItem.FullName, selectedNamespace.FullName);
+            Assert.AreEqual(namespaceItem.AssemblyLocation, selectedNamespace.AssemblyLocation);
+            Assert.AreEqual(namespaceItem.AssemblyName, selectedNamespace.AssemblyName);
+            Assert.AreEqual(namespaceItem.JsonObject, selectedNamespace.JsonObject);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenNamespaceChanges_ShouldPopulateOutPutRegionWithObjectResult()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            var type = typeof(Human);
+            var guid = Guid.NewGuid();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
+            {
+                new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
+            });
+
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var jsonString = new Human("Jimmy", "Jambo", new Food()).SerializeToJsonString(new KnownTypesBinder()
+            {
+                KnownTypes = new List<Type>(type.Assembly.ExportedTypes)
+            });
+
+            var namespaceItem = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                JsonObject = jsonString,
+
+            };
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = namespaceItem
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.SourceId = guid;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.NamespaceRegion);
+
+            var namespaceRegion = dotNetDllEnhancedViewModel.NamespaceRegion;
+            Assert.IsNotNull(namespaceRegion);
+            var selectedNamespace = namespaceRegion.SelectedNamespace;
+            Assert.IsNotNull(selectedNamespace);
+            Assert.AreEqual(namespaceItem.FullName, selectedNamespace.FullName);
+            Assert.AreEqual(namespaceItem.AssemblyLocation, selectedNamespace.AssemblyLocation);
+            Assert.AreEqual(namespaceItem.AssemblyName, selectedNamespace.AssemblyName);
+            Assert.AreEqual(namespaceItem.JsonObject, selectedNamespace.JsonObject);
+            namespaceRegion.SelectedNamespace = new NamespaceItem()
+            {
+                JsonObject = "JsonObject"
+                ,
+                FullName = typeof(Food).FullName
+                ,
+                AssemblyLocation = typeof(Food).Assembly.Location
+
+            };
+            var objectResult = dotNetDllEnhancedViewModel.OutputsRegion.ObjectResult;
+            Assert.AreEqual("JsonObject", objectResult);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ToModel_GivenNamespaceChanges_ShouldModelCorreclty()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            var type = typeof(Human);
+            var guid = Guid.NewGuid();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
+            {
+                new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
+            });
+
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var jsonString = new Human("Jimmy", "Jambo", new Food()).SerializeToJsonString(new KnownTypesBinder()
+            {
+                KnownTypes = new List<Type>(type.Assembly.ExportedTypes)
+            });
+
+            var namespaceItem = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                JsonObject = jsonString,
+
+            };
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = namespaceItem
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.SourceId = guid;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            var pluginService = dotNetDllEnhancedViewModel.ToModel();
+            Assert.AreEqual(activity.SourceId, pluginService.Source.Id);
+            Assert.AreEqual(activity.Namespace.FullName, pluginService.Namespace.FullName);
+            Assert.AreEqual(activity.Constructor.ConstructorName, pluginService.Constructor.ConstructorName);
+            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginService.Constructor.Inputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelConstructorRegionProperties()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = new NamespaceItem
+                {
+                    FullName = typeof(Human).FullName,
+                    AssemblyLocation = typeof(Human).Assembly.Location,
+                }
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.ConstructorRegion);
+
+            var pluginConstructor = dotNetDllEnhancedViewModel.ConstructorRegion.SelectedConstructor;
+            Assert.IsNotNull(pluginConstructor);
+            var constructorName = pluginConstructor.ConstructorName;
+            Assert.AreEqual(activity.Constructor.ConstructorName, constructorName);
+            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginConstructor.Inputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenConstructorIsChanged_ShouldSetIsConstructorSelectedOnTheOutPutsRegion()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = new NamespaceItem
+                {
+                    FullName = typeof(Human).FullName,
+                    AssemblyLocation = typeof(Human).Assembly.Location,
+                }
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.ConstructorRegion);
+
+            var pluginConstructor = dotNetDllEnhancedViewModel.ConstructorRegion.SelectedConstructor;
+            Assert.IsNotNull(pluginConstructor);
+            var constructorName = pluginConstructor.ConstructorName;
+            Assert.AreEqual(activity.Constructor.ConstructorName, constructorName);
+            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginConstructor.Inputs.Count);
+            Assert.IsTrue(dotNetDllEnhancedViewModel.OutputsRegion.IsConstructorSelected);
+            dotNetDllEnhancedViewModel.ConstructorRegion.SelectedConstructor = null;
+            Assert.IsFalse(dotNetDllEnhancedViewModel.OutputsRegion.IsConstructorSelected);
+
+        }
+
+       
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelOutPutRegionProperties()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = new NamespaceItem
+                {
+                    FullName = typeof(Human).FullName,
+                    AssemblyLocation = typeof(Human).Assembly.Location,
+                }
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            var humanString = food.SerializeToJsonString(new KnownTypesBinder
+            {
+                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+            });
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",humanString)
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.IsObject = true;
+            activity.ObjectName = "@Human";
+            activity.ObjectResult = humanString;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.OutputsRegion);
+
+            var outputsRegion = dotNetDllEnhancedViewModel.OutputsRegion;
+            Assert.IsNotNull(outputsRegion);
+            Assert.AreEqual(true, outputsRegion.IsObject);
+            Assert.AreEqual("@Human", outputsRegion.ObjectName);
+            //Assert.AreEqual(humanString.RemoveWhiteSpace().Replace(Environment.NewLine,"").TrimStart().TrimEnd()
+            //    , outputsRegion.ObjectResult.RemoveWhiteSpace().Replace(Environment.NewLine, "").TrimStart().TrimEnd());
+            Assert.AreEqual(0, outputsRegion.Outputs.Count);
+            Assert.AreEqual(1, outputsRegion.Dependants.Count);
+            Assert.AreEqual("OutputsRegion", outputsRegion.ToolRegionName);
+            Assert.AreEqual(true, outputsRegion.IsObjectOutputUsed);
+            Assert.AreEqual(true, outputsRegion.IsConstructorSelected);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelMethodRegionProperties()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IPluginServiceModel>();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = new PluginConstructor
+                {
+                    ConstructorName = ".ctor ",
+                    Inputs = new List<IConstructorParameter>
+                    {
+                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    },
+                },
+                Namespace = new NamespaceItem
+                {
+                    FullName = typeof(Human).FullName,
+                    AssemblyLocation = typeof(Human).Assembly.Location,
+                }
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                },
+                new PluginAction()
+                {
+                      Inputs = new List<IServiceInput>()
+                      {
+                          new ServiceInput("name","name"),
+                          new ServiceInput("name","name"),
+                      },
+                    IsObject = true,
+                    IsVoid = false,
+                    Method = "ToString",
+                }
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.MethodsToRunList);
+
+            var methodToolRegions = dotNetDllEnhancedViewModel.MethodsToRunList;
+            Assert.AreEqual(3, methodToolRegions.Count);
+            IMethodToolRegion<IPluginAction> methodToolRegion1 = methodToolRegions[0];
+            Assert.IsNotNull(methodToolRegion1.SelectedMethod);
+            Assert.AreEqual("SetNameInternal", methodToolRegion1.SelectedMethod.Method);
+            Assert.AreEqual(true, methodToolRegion1.SelectedMethod.IsVoid);
+            Assert.AreEqual(false, methodToolRegion1.SelectedMethod.IsObject);
+            Assert.AreEqual(0, methodToolRegion1.SelectedMethod.Inputs.Count);
+
+            IMethodToolRegion<IPluginAction> methodToolRegion2 = methodToolRegions[0];
+            Assert.IsNotNull(methodToolRegion2.SelectedMethod);
+            Assert.AreEqual("ToString", methodToolRegion2.SelectedMethod.Method);
+            Assert.AreEqual(true, methodToolRegion2.SelectedMethod.IsVoid);
+            Assert.AreEqual(false, methodToolRegion2.SelectedMethod.IsObject);
+            Assert.AreEqual(2, methodToolRegion2.SelectedMethod.Inputs.Count);
+
+            IMethodToolRegion<IPluginAction> emptyMethod = methodToolRegions[1];
+            Assert.IsNull(emptyMethod.SelectedMethod);
+
+        }
+
         private static readonly Guid id = Guid.NewGuid();
         private static Mock<IPluginServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IPluginServiceModel>();
-            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
-            ps.Setup(a => a.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem>() { new NamespaceItem() { FullName = "f" } });
-            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
+            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource> { new PluginSourceDefinition { Id = id } });
+            ps.Setup(a => a.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem> { new NamespaceItem { FullName = "f" } });
+            ps.Setup(a => a.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction> { new PluginAction { FullName = "bob", Inputs = new List<IServiceInput>() } });
             return ps;
         }
 
@@ -318,9 +991,9 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             {
                 MethodsToRun = new List<IPluginAction>(new[]
                 {
-                    new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() { new ServiceInput() { Name = "a", Value = "b" } } }
+                    new PluginAction { FullName = "bob", Inputs = new List<IServiceInput> { new ServiceInput { Name = "a", Value = "b" } } }
                 }),
-                Namespace = new NamespaceItem() { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" },
+                Namespace = new NamespaceItem { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" },
                 SourceId = id
             };
             return ModelItemUtils.CreateModelItem(activity);
