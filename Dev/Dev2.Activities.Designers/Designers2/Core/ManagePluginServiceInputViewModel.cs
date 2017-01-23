@@ -69,6 +69,7 @@ namespace Dev2.Activities.Designers2.Core
             _viewmodel = model;
             _serverModel = serviceModel;
         }
+       
 
         public bool OutputCountExpandAllowed
         {

@@ -1965,7 +1965,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
-                    WorkflowChanged?.Invoke();
                     NotifyOfPropertyChange(() => DisplayName);
                     ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
                 }
@@ -2324,7 +2323,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 || isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity")
                 || isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity")
                 || isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity")
-                || isWorkflow.Contains("DsfDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"))
+                || isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"))
             {
                 IsItemDragged.Instance.IsDragged = true;
             }
@@ -2679,7 +2678,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _selectedItem = value;
             }
         }
-        public bool WorkspaceSave => _workspaceSave;
 
         #region Implementation of IHandle<EditActivityMessage>
 
@@ -2707,6 +2705,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
+            resourceModel.Environment.ResourceRepository.DeleteResource(resourceModel);
             var unsavedName = resourceModel.ResourceName;
             UpdateResourceModel(message, resourceModel, unsavedName);
             PublishMessages(resourceModel);
@@ -2774,12 +2773,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-        private void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
+        private static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;
             resourceModel.DisplayName = message.ResourceName;
             resourceModel.Category = message.ResourceCategory;
-            resourceModel.WorkflowXaml = ServiceDefinition?.Replace(unsavedName, message.ResourceName);
+            resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
@@ -2791,14 +2790,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var savedItem = viewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
                 item.AddChild(savedItem);
             }
+            resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.IsWorkflowSaved = true;
         }
-
-        #region Implementation of IWorkflowDesignerViewModel
-
-        public System.Action WorkflowChanged { get; set; }
-
-        #endregion
 
         #endregion
     }

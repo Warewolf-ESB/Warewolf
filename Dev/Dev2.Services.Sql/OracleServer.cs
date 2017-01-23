@@ -7,6 +7,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 // ReSharper disable NonLocalizedString
 // ReSharper disable ForCanBeConvertedToForeach
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
@@ -303,7 +304,7 @@ namespace Dev2.Services.Sql
             }
         }
         
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
         {
             try
             {
@@ -333,19 +334,17 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            var da = new OracleDataAdapter(command as OracleCommand);
-                            using (da)
+                            using (OracleDataReader reader = ((OracleRefCursor)obj.Value).GetDataReader())
                             {
-                                return handler(da);
+                                return handler(reader);
                             }
                         }
                         catch (Exception e)
                         {
-                            var da = new OracleDataAdapter(command as OracleCommand);
-                            using (da)
+                            using (IDataReader reader = command.ExecuteReader(commandBehavior))
                             {
                                 Console.WriteLine(e);
-                                return handler(da);
+                                return handler(reader);
                             }
                         }
                     }
@@ -354,13 +353,13 @@ namespace Dev2.Services.Sql
                         var table = new DataTable("SingleValues");
                         table.Columns.AddRange(singleOutParams.Select(parameter => new DataColumn(parameter.ParameterName)).ToArray());
                         table.LoadDataRow(singleOutParams.Select(parameter => parameter.Value).ToArray(), true);
-                        return handler(new OracleDataAdapter()); 
+                        return handler(table.CreateDataReader()); 
                     }                    
                 }
-                var oraDa = new OracleDataAdapter(command as OracleCommand);
-                using (oraDa)
+
+                using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
-                    return handler(oraDa);
+                    return handler(reader);
                 }
 
             }
@@ -371,7 +370,7 @@ namespace Dev2.Services.Sql
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
-                    return handler(new OracleDataAdapter());
+                    return handler(new DataTableReader(exceptionDataTable));
                 }
                 throw;
             }
@@ -410,21 +409,17 @@ namespace Dev2.Services.Sql
         {
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                 $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line"))
-            {                
+            {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo, GetStringBuilder);
             }
         }
 
-        private string GetStringBuilder(IDataAdapter reader)
+        private string GetStringBuilder(IDataReader reader)
         {
             var sb = new StringBuilder();
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
-            reader.Fill(ds);
-            var t = ds.Tables[0];
-            var dataTableReader = t.CreateDataReader();
-            while (dataTableReader.Read())
+            while (reader.Read())
             {
-                object value = dataTableReader.GetValue(0);
+                object value = reader.GetValue(0);
                 if (value != null)
                 {
                     sb.Append(value);

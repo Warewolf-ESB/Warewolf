@@ -1,4 +1,8 @@
-﻿# Read playlists and args.
+﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
+# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -20,47 +24,12 @@ if ($Args.Count -gt 0) {
         }
     }
 }
-
-# Find Test Assembly
 if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot"
-}
-if (Test-Path "$PSScriptRoot\..\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.Activities.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
-}
 
 # Create full VSTest argument string.
-$FullArgsList = " `"$PSScriptRoot\Dev2.Activities.Tests.dll`" /logger:trx" + $TestList
+$FullArgsList = " `"$SolutionDir\Dev2.Activities.Tests\bin\Debug\Dev2.Activities.Tests.dll`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

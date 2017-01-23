@@ -148,70 +148,59 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId)
         {
-            var portNumber = "3142";
-            if(File.Exists("userServerSettings.config"))
-            {
-                var doc = XDocument.Load("userServerSettings.config");
-                var appSettingsElement = doc.Element("appSettings");
-                var webServerPortElement = appSettingsElement?.Elements()
-                    .FirstOrDefault(element => element.Name == "add" && element.Attribute("key")?.Value == "webServerPort");
-                if(webServerPortElement != null)
-                {
-                    portNumber = webServerPortElement.Attribute("value")?.Value;
-                }
-            }
-            else
-            {
-                Log("Error", $"userServerSettings.config does not exist in {Directory.GetCurrentDirectory()}");
-            }
-
-            string postUrl = $"http://localhost:{portNumber}/services/{resourceId}.xml";
+            string postUrl = $"http://localhost:3142/services/{workflowName}.xml?Name=&wid={resourceId}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            string result = string.Empty;
-
-            WebRequest req = WebRequest.Create(postUrl);
-            req.Credentials = CredentialCache.DefaultNetworkCredentials;
-            req.Method = "GET";
-
-            try
+            int len = postUrl.Split('?').Length;
+            if (len == 2)
             {
-                using(var response = req.GetResponse() as HttpWebResponse)
-                {
-                    if(response != null)
-                    {
-                        // ReSharper disable AssignNullToNotNullAttribute
-                        using(var reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
-                        {
-                            result = reader.ReadToEnd();
-                        }
+                string result = string.Empty;
 
-                        if(response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
+                WebRequest req = WebRequest.Create(postUrl);
+                req.Credentials = CredentialCache.DefaultNetworkCredentials;
+                req.Method = "GET";
+
+                try
+                {
+                    using (var response = req.GetResponse() as HttpWebResponse)
+                    {
+                        if (response != null)
                         {
-                            Log("Error", $"Error from execution: {result}");
-                            CreateDebugState(result, workflowName, taskName);
-                            Environment.Exit(1);
-                        }
-                        else
-                        {
-                            Log("Info", $"Completed execution. Output: {result}");
-                            WriteDebugItems(workflowName, taskName, result);
+                            // ReSharper disable AssignNullToNotNullAttribute
+                            using (var reader = new StreamReader(response.GetResponseStream()))
+                            // ReSharper restore AssignNullToNotNullAttribute
+                            {
+                                result = reader.ReadToEnd();
+                            }
+
+                            if (response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
+                            {
+                                Log("Error", $"Error from execution: {result}");
+                                CreateDebugState(result, workflowName, taskName);
+                                Environment.Exit(1);
+                            }
+                            else
+                            {
+                                Log("Info", $"Completed execution. Output: {result}");
+
+                                WriteDebugItems(workflowName, taskName, result);
+                            }
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
+                    Console.Write(e.Message);
+                    Console.WriteLine(e.StackTrace);
+                    Log("Error",
+                        string.Format(
+                            "Error executing request. Exception: {0}" + Environment.NewLine + "StackTrace: {1}",
+                            e.Message, e.StackTrace));
+                    Environment.Exit(1);
+                }
+                return result;
             }
-            catch(Exception e)
-            {
-                CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
-                Console.Write(e.Message);
-                Console.WriteLine(e.StackTrace);
-                Log("Error",
-                    string.Format(
-                        "Error executing request. Exception: {0}" + Environment.NewLine + "StackTrace: {1}",
-                        e.Message, e.StackTrace));
-                Environment.Exit(1);
-            }
-            return result;
+            return string.Empty;
         }
 
         private static void CreateDebugState(string result, string workflowName, string taskName)

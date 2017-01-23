@@ -28,18 +28,6 @@ Scenario: Opening and Editing Workflow from Explorer Remote
 	And I Try Close Workflow
 	And I Click Explorer Connect Remote Server Button	
 
-Scenario: Opening Workflow local and remote using right click
-   Given The Warewolf Studio is running
-   When I Select RemoteConnectionIntegration From Explorer
-   And I Click Explorer Connect Remote Server Button
-   And I Filter the Explorer with "Hello World"
-   And I RightClick Explorer First Remote Server First Item
-   And I Select Open FromExplorerContextMenu
-   Then Remote "Hello World - Remote Connection Integration" is open
-   Then I RightClick Explorer Localhost First Item
-   And I Select Open FromExplorerContextMenu
-   Then Local "Hello World" is open
-
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
    When I Create New Workflow using shortcut
@@ -48,14 +36,14 @@ Scenario: Opening Workflow local and remote using right click
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
-   And I Select Delete From Explorer Context Menu
+   And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
  
  Scenario: Deleting a Folder in localhost
    Given The Warewolf Studio is running
    When I Filter the Explorer with "FolderToDelete" 
    And I RightClick Explorer Localhost First Item
-   And I Select Delete From Explorer Context Menu
+   And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
 
  Scenario: Filter Should Clear On Connection Of Remote Server
@@ -79,7 +67,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer First Remote Server First Item
-   And I Select Delete From Explorer Context Menu
+   And I Select Delete FromExplorerContextMenu
    And I Click MessageBox Yes 
    And I Click Explorer Connect Remote Server Button   
 

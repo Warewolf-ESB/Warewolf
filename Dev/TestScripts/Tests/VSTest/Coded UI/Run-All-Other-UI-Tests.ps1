@@ -33,9 +33,7 @@ $TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
-"@ + [guid]::NewGuid() + @"
-`"
+  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
   name=`"OtherUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -76,9 +74,6 @@ if (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
 if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
-}
 if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
 	exit 1
@@ -86,7 +81,7 @@ if (!(Test-Path $TestAssemblyPath)) {
 
 # Create full VSTest argument string.
 if ($TestList -eq "") {
-	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)&(TestCategory!=Shortcut Keys)`""
+	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)`""
 } else {
 	$FullArgsList = " `"" + $WorkingDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }

@@ -1,4 +1,8 @@
-﻿# Read playlists and args.
+﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
+# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -24,56 +28,14 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
-# Find test assemblies
-if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UIBindingTests"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
-}
-if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
-}
-if (!(Test-Path $TestAssemblyPath)) {
-	Write-Host Cannot find Warewolf.UIBindingTests.*.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UIBindingTests
-	exit 1
-}
-if (!(Test-Path $PSScriptRoot\TestResults)) {
-	New-Item -ItemType Directory $PSScriptRoot\TestResults
-}
-
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $TestAssemblyPath -Include Warewolf.UIBindingTests.*.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $SolutionDir -Include Warewolf.AcceptanceTesting.*.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
 }
 
-# Create full MSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $PSScriptRoot + "\TestResults\UIBindingtestResults.trx`" " + $TestList
+# Create full VSTest argument string.
+$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\UIBindingTestResults.trx " + $TestList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList

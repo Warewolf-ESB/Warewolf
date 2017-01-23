@@ -28,8 +28,6 @@ namespace Dev2.Studio.Core.ViewModels
         Action<ModelItem> ItemSelectedAction { get; set; }
         bool IsTestView { get; set; }
         ModelItem SelectedItem { get; set; }
-        bool WorkspaceSave { get; }
-        Action WorkflowChanged { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         void Dispose();

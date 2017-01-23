@@ -1298,4 +1298,7 @@ Please contact your Windows System Administrator.</value>
   <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
     <value>Not Authorized</value>
   </data>
+  <data name="JSONIncompatibleConversionError" xml:space="preserve">
+    <value>Cannot convert given JSON to target type</value>
+  </data>
 </root>

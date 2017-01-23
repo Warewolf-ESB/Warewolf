@@ -1988,15 +1988,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter for the file you want to attach.
-        /// </summary>
-        public static string ManageEmailAttachmentFilterTooltip {
-            get {
-                return ResourceManager.GetString("ManageEmailAttachmentFilterTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Does the server require SSL?.
         /// </summary>
         public static string ManageEmailEnableSslNoTooltip {
@@ -2177,7 +2168,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click the elipses [...] to select an assembly from the Dll.
+        ///   Looks up a localized string similar to Select the full path of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceAssemblyNameButtonTooltip {
             get {
@@ -2213,7 +2204,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click the elipses [...] to select a Config File.
+        ///   Looks up a localized string similar to Select the full path of the Config file you want to use.
         /// </summary>
         public static string ManagePluginSourceConfigFileButtonTooltip {
             get {
@@ -2240,52 +2231,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path of the Assembly you would like to select.
+        ///   Looks up a localized string similar to Filter for the file you want or GAC entry.
         /// </summary>
-        public static string ManagePluginSourceFilesAssemblyTooltip {
+        public static string ManagePluginSourceFilterTooltip {
             get {
-                return ResourceManager.GetString("ManagePluginSourceFilesAssemblyTooltip", resourceCulture);
+                return ResourceManager.GetString("ManagePluginSourceFilterTooltip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path of the Config File you would like to select.
-        /// </summary>
-        public static string ManagePluginSourceFilesConfigTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceFilesConfigTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The full path of the GAC you would like to select.
-        /// </summary>
-        public static string ManagePluginSourceFilesGACTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceFilesGACTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter for the dll you want to select.
-        /// </summary>
-        public static string ManagePluginSourceFilterAssemblyTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceFilterAssemblyTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter for the GAC you want to select.
-        /// </summary>
-        public static string ManagePluginSourceFilterGACTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceFilterGACTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click the elipses [...] to select an assembly from the GAC.
+        ///   Looks up a localized string similar to Select the GAC name of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceGacAssemblyNameButtonTooltip {
             get {
@@ -2308,33 +2263,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ManagePluginSourceRefreshTooltip {
             get {
                 return ResourceManager.GetString("ManagePluginSourceRefreshTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add the selected Assembly to the plugin.
-        /// </summary>
-        public static string ManagePluginSourceSelectAssemblyTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceSelectAssemblyTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add the selected Config File to the plugin.
-        /// </summary>
-        public static string ManagePluginSourceSelectConfigFileTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceSelectConfigFileTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add the selected GAC to the plugin.
-        /// </summary>
-        public static string ManagePluginSourceSelectGACTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginSourceSelectGACTooltip", resourceCulture);
             }
         }
         
@@ -2933,6 +2861,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceSelectActionToolTip {
             get {
                 return ResourceManager.GetString("PluginServiceSelectActionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select constructor to execute..
+        /// </summary>
+        public static string PluginServiceSelectConstructorToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectConstructorToolTip", resourceCulture);
             }
         }
         

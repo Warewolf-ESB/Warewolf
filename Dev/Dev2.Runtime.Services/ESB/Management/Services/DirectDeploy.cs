@@ -137,7 +137,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IConnections Connections
         {
-            private get
+            get
             {
                 return _connections ?? (_connections = new Connections());
             }
@@ -149,7 +149,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public ITestCatalog TestCatalog
         {
-            private get
+            get
             {
                 return _testCatalog ?? Runtime.TestCatalog.Instance;
             }
@@ -161,7 +161,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IResourceCatalog ResourceCatalog
         {
-            private get
+            get
             {
                 return _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
             }

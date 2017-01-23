@@ -76,9 +76,6 @@ if (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
 if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
-}
 if (!(Test-Path $TestAssemblyPath)) {
 	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UITests\bin\Debug or $WorkingDir
 	exit 1

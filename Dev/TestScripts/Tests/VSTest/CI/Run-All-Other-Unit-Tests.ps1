@@ -1,4 +1,8 @@
-﻿# Read playlists and args.
+﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
+# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -25,46 +29,13 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create assemblies list.
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
-}
-if (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot"
-}
-if (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
-}
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
-}
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Warewolf.*.Tests.dll ) {
+foreach ($file in Get-ChildItem $SolutionDir\Warewolf.Tests -Filter Warewolf.*.Tests.dll ) {
 	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
 }
-foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Dev2.*.Tests ) {
+foreach ($file in Get-ChildItem $SolutionDir\Warewolf.Tests -Filter Dev2.*.Tests ) {
 	if ($file.Name -ne "Dev2.Activities.Designers.Tests.dll" -and $file.Name -ne "Dev2.Activities.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}

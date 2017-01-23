@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch (Exception e)
             {
 
-                return serializer.SerializeToBuilder(new ExecuteMessage()
+                return serializer.SerializeToBuilder(new ExecuteMessage
                 {
                     HasError = true,
                     Message = new StringBuilder(e.Message)
