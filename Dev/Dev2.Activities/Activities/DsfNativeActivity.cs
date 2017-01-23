@@ -1007,7 +1007,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val1, variable, val2, val3);
+                    var actMsg = string.Format(msg, val2, variable, val1, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                     if (testResult.Message.EndsWith(Environment.NewLine))
                     {
