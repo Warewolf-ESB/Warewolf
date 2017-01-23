@@ -9,16 +9,29 @@ namespace Warewolf.UITests
         const string SourceName = "CodedUITestCOMPluginSource";
 
         [TestMethod]
-        [TestCategory("COMPluginSource")]
-        public void SelectComPluginSource()
+        [TestCategory("Plugin Sources")]
+        public void OpenComPluginSource_From_ExplorerContextMenu_UITests()
         {
-            UIMap.Select_NewCOMPluginSource_FromExplorerContextMenu();
+            UIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Enabled);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Enabled);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.Enabled);
+
+        }
+
+        [TestMethod]
+        [TestCategory("Plugin Sources")]
+        public void Create_ComPluginSource_UITests()
+        {
+            UIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists);
+            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             UIMap.Select_AssemblyFile_From_COMPluginDataTree();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("COM Plugin Source");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            UIMap.Click_COMPluginSource_CloseTabButton();
         }
 
         #region Additional test attributes

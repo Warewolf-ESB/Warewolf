@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -84,16 +83,15 @@ namespace Dev2.Services.Sql
             }
         }
 
-        public DataTable CreateTable(IDataReader reader, LoadOption overwriteChanges)
-        {
-            var table = new DataTable();
-            table.Load(reader, LoadOption.OverwriteChanges);
-            var retrieveStatistics = _sqlConnection.RetrieveStatistics();
-            foreach (DictionaryEntry retrieveStatistic in retrieveStatistics)
+        public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
+        {           
+            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            reader.Fill(ds);
+            if (ds.Tables.Count > 0)
             {
-                Dev2Logger.Debug("Sql Stat:"+retrieveStatistic.Key+": "+retrieveStatistic.Value);
+                return ds.Tables[0];
             }
-            return table;
+            return new DataTable();
         }
 
         public DataSet FetchDataSet(IDbCommand command)

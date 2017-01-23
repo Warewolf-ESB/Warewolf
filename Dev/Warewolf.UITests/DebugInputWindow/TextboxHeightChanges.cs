@@ -13,7 +13,7 @@ namespace Warewolf.UITests
         public void DebugInputTextboxHeightChangesUITest()
         {
             UIMap.Filter_Explorer("Hello World");
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Press_F5_To_Debug();
             var varValue = UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
 

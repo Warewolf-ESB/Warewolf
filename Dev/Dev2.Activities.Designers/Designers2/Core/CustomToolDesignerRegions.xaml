@@ -87,7 +87,14 @@
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.ManageDbServiceActionsTooltip}"
                               IsEditable="False"
+                              VirtualizingStackPanel.IsVirtualizing="True" 
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseServiceSelectActionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -188,7 +195,14 @@
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
                               IsEditable="False"
+                              VirtualizingStackPanel.IsVirtualizing="True" 
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

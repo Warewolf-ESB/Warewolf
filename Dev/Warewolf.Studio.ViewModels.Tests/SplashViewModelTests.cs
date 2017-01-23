@@ -157,6 +157,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SplashViewModel_Copyright")]
+        public void SplashViewModel_Copyright_Valid_ShouldContainCurrentYear()
+        {
+            //------------Setup for test--------------------------
+            var currentYear = DateTime.Now.Year.ToString();
+
+            //------------Execute Test---------------------------
+            var copyRightText = _target.WarewolfCopyright;
+            //------------Assert Results-------------------------
+            StringAssert.Contains(copyRightText,currentYear);
+        }
+
+        [TestMethod]
         public void TestContributorsUrl()
         {
             //arrange

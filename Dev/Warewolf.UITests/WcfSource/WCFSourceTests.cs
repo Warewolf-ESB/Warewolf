@@ -5,14 +5,28 @@ namespace Warewolf.UITests
 {
     [CodedUITest]
     public class WcfSourceTests
-    {
-        const string SourceName = "CodedUITestWcfSource";
+    { 
+        [TestMethod]
+        [TestCategory("WCF Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Open_WcfSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_NewWcfSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            UIMap.Click_Close_WCFServiceSource_TabButton();
+        }
 
         [TestMethod]
+        [TestCategory("WCF Source")]
         // ReSharper disable once InconsistentNaming
-        public void WcfSource_CreateSourceUITests()
+        public void Create_WCFSource_UITests()
         {
-            UIMap.Select_NewWcfSource_FromExplorerContextMenu();
+            UIMap.Select_NewWcfSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.Exists, "WCF Source Tab does now exist");
+            UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
+            UIMap.Click_WCFServiceSource_TestConnectionButton();
+            UIMap.Click_Close_WCFServiceSource_TabButton();
         }
 
         #region Additional test attributes

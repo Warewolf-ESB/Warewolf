@@ -9,24 +9,34 @@ namespace Warewolf.UITests.PostgreSQLSource
         const string SourceName = "CodedUITestMyPostgreSQLSource";
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void PostgreSQLSource_CreateSourceUITests()
+        public void Open_PostgreSQLSource_From_ExplorerContextMenu_UITests()
         {
-            UIMap.Select_NewPostgreSQLSource_FromExplorerContextMenu();
+            UIMap.Select_NewPostgreSQLSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "PostgreSQL Server Address combobox is disabled new PostgreSQL Source wizard tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username textbox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password textbos is not enabled.");
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Create_PostgreSQLSource_UITests()
+        {
+            UIMap.Select_NewPostgreSQLSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "PostGre Source Tab does not exist");
             UIMap.Enter_Text_Into_DatabaseServer_Tab();
             UIMap.IEnterRunAsUserPostGresOnDatabaseSource();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_postgres_From_DB_Source_Wizard_Database_Combobox();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("TestPostgresSQLDBSource");
-            UIMap.Filter_Explorer("TestPostgresSQLDBSource");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Database did not save in the explorer UI.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
