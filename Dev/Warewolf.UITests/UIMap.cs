@@ -667,7 +667,7 @@ namespace Warewolf.UITests
             WaitForSpinner(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
-        public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
+        public void WaitForSpinner(UITestControl control, int searchTimeout = 30000)
         {
             WaitForControlNotVisible(control, searchTimeout);
         }
@@ -1871,11 +1871,9 @@ namespace Warewolf.UITests
         [Given(@"I Click New Web Source Test Connection Button")]
         [When(@"I Click New Web Source Test Connection Button")]
         [Then(@"I Click New Web Source Test Connection Button")]
-        public void Click_New_Web_Source_Test_Connection_Button()
+        public void Click_NewWebSource_TestConnectionButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.Spinner);
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after testing a valid web source.");
         }
 
         public void Click_Scheduler_Ribbon_Button()
@@ -9290,6 +9288,11 @@ namespace Warewolf.UITests
         public void Click_Close_ExchangeSource_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
+        }
+
+        public void Click_NewWebSource_CancelConnectionButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.CancelTestButton);
         }
     }
 }
