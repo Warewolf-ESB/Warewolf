@@ -26,6 +26,5 @@ namespace Dev2.Common.Interfaces.DB
 
         IStudioUpdateManager UpdateRepository { get; }
 
-        ICollection<IDbAction> RefreshActions(IDbSource source);
     }
 }
