@@ -41,40 +41,41 @@ $TestSettingsFile = "$PSScriptRoot\ConflictingViewExecutePermissionsSecurity.tes
 "@)
 
 # Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs\bin\Debug\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.SecuritySpecs.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.SecuritySpecs.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if ($TestAssemblyPath -eq "") {
 	Write-Host Cannot find Warewolf.SecuritySpecs.dll at $PSScriptRoot\Warewolf.SecuritySpecs\bin\Debug or $PSScriptRoot
 	exit 1
 }

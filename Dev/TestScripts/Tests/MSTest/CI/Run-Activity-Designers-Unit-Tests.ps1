@@ -21,40 +21,41 @@ if ($Args.Count -gt 0) {
 }
 
 # Find test assemblies
+$TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.Activities.Designers.Tests\bin\Debug\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.Activities.Designers.Tests.dll"
 }
-if (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.Activities.Designers.Tests.dll") {
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.Activities.Designers.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.Activities.Designers.Tests.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+if ($TestAssemblyPath -eq "") {
 	Write-Host Cannot find Dev2.Activities.Designers.Tests.dll at $PSScriptRoot\Dev2.Activities.Designers.Tests\bin\Debug or $PSScriptRoot
 	exit 1
 }
