@@ -21,7 +21,6 @@ namespace Warewolf.UITests.Tools
         public void HTTPWebDeleteTool_SmallView_UITest()
         {
             UIMap.Collapse_DELETEWebTool_LargeView_To_SmallView();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.SmallView.Exists, "Web DELETE small view does not exist after collapsing the large view with a double click.");
         }
 
         [TestMethod]
@@ -67,7 +66,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
+            UIMap.Drag_DELETEWebTool_Onto_DesignSurface();
         }
 
         UIMap UIMap
