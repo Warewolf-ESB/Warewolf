@@ -3939,6 +3939,23 @@ namespace Warewolf.UITests
                 return this.mFolderCount;
             }
         }
+        
+        public WpfText DisplayName
+        {
+            get
+            {
+                if ((this.mDisplayName == null))
+                {
+                    this.mDisplayName = new WpfText(this);
+                    #region Search Criteria
+                    this.mDisplayName.SearchProperties[WpfText.PropertyNames.AutomationId] = "ResourceNameTextBlock";
+                    this.mDisplayName.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDisplayName.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDisplayName;
+            }
+        }
         #endregion
         
         #region Fields
@@ -3957,6 +3974,8 @@ namespace Warewolf.UITests
         private WpfCheckBox mExpansionToggleButton;
         
         private WpfText mFolderCount;
+        
+        private WpfText mDisplayName;
         #endregion
     }
     
@@ -13129,6 +13148,18 @@ namespace Warewolf.UITests
                 return this.mCollapseAllToggleButton;
             }
         }
+        
+        public BreadcrumbbarList BreadcrumbbarList
+        {
+            get
+            {
+                if ((this.mBreadcrumbbarList == null))
+                {
+                    this.mBreadcrumbbarList = new BreadcrumbbarList(this);
+                }
+                return this.mBreadcrumbbarList;
+            }
+        }
         #endregion
         
         #region Fields
@@ -13137,6 +13168,8 @@ namespace Warewolf.UITests
         private WpfToggleButton mExpandAllToggleButton;
         
         private WpfToggleButton mCollapseAllToggleButton;
+        
+        private BreadcrumbbarList mBreadcrumbbarList;
         #endregion
     }
     
@@ -14364,6 +14397,35 @@ namespace Warewolf.UITests
                 return this.mSharepointDeleteFile;
             }
         }
+        
+        public WpfCustom HelloWordFlowChartName
+        {
+            get
+            {
+                if ((this.mHelloWordFlowChartName == null))
+                {
+                    this.mHelloWordFlowChartName = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mHelloWordFlowChartName.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.UserControl";
+                    this.mHelloWordFlowChartName.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DisplayNameReadOnlyControl";
+                    this.mHelloWordFlowChartName.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHelloWordFlowChartName;
+            }
+        }
+        
+        public KeepNewNameFlowChartName KeepNewNameFlowChartName
+        {
+            get
+            {
+                if ((this.mKeepNewNameFlowChartName == null))
+                {
+                    this.mKeepNewNameFlowChartName = new KeepNewNameFlowChartName(this);
+                }
+                return this.mKeepNewNameFlowChartName;
+            }
+        }
         #endregion
         
         #region Fields
@@ -14544,6 +14606,10 @@ namespace Warewolf.UITests
         private WpfCustom mstackOverflowTestWF;
         
         private SharepointDeleteFile mSharepointDeleteFile;
+        
+        private WpfCustom mHelloWordFlowChartName;
+        
+        private KeepNewNameFlowChartName mKeepNewNameFlowChartName;
         #endregion
     }
     
@@ -67905,6 +67971,79 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class KeepNewNameFlowChartName : WpfCustom
+    {
+        
+        public KeepNewNameFlowChartName(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.UserControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DisplayNameReadOnlyControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText DisplayValue
+        {
+            get
+            {
+                if ((this.mDisplayValue == null))
+                {
+                    this.mDisplayValue = new WpfText(this);
+                    #region Search Criteria
+                    this.mDisplayValue.SearchProperties[WpfText.PropertyNames.Instance] = "1";
+                    this.mDisplayValue.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisplayValue;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mDisplayValue;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class BreadcrumbbarList : WpfList
+    {
+        
+        public BreadcrumbbarList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "breadCrumbListBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem KeepNewNameListItem
+        {
+            get
+            {
+                if ((this.mKeepNewNameListItem == null))
+                {
+                    this.mKeepNewNameListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mKeepNewNameListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "KeepNewName";
+                    this.mKeepNewNameListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mKeepNewNameListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mKeepNewNameListItem;
         #endregion
     }
     
