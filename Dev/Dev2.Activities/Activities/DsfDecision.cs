@@ -122,14 +122,26 @@ namespace Dev2.Activities
                     }
                 }
                 return ret;
-
             });
 
             var results = res as IList<bool> ?? res.ToList();
             var resultval = true;
             if (results.Any())
             {
-                resultval = And ? results.Aggregate(true, (a, b) => a && b) : results.Any(a => a);
+                if (And)
+                {
+                    if(results.Any(b => b == false))
+                    {
+                        resultval = false;
+                    }
+                }
+                else
+                {
+                    if(results.All(b => b == false))
+                    {
+                        resultval = false;
+                    }
+                }
             }
 
             Result = GetResultString(resultval.ToString(),Conditions);
@@ -371,7 +383,7 @@ namespace Dev2.Activities
             return new List<string>();
         }
 
-        public bool And { private get; set; }
+        public bool And { get; set; }
     }
 
 
