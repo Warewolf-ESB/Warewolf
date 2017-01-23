@@ -43,12 +43,6 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         ICollection<IServiceInput> Inputs { get; set; }
     }
 
-    public interface IDotNetMethodInputRegion : IToolRegion
-    {
-        ICollection<IServiceInput> Inputs { get; set; }
-    }
-
-
     public interface IComViewModel
     {
         ISourceToolRegion<IComPluginSource> SourceRegion { get; set; }
