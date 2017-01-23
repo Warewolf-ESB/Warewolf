@@ -25,6 +25,8 @@ namespace Warewolf.Studio.ViewModels
         readonly Action _closeAction;
         private bool _allowMultipleSelection;
         private string _selectedDriveName;
+        private string _filesTooltip;
+        private string _selectTooltip;
 
         public MessageBoxResult Result { get; private set; }
 
@@ -43,6 +45,13 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(o => Cancel());
             SaveCommand = new DelegateCommand(o => Save());
             AllowMultipleSelection = allowMultipleSelection;
+            FilesTooltip = Resources.Languages.Tooltips.ManagePluginSourceFilesConfigTooltip;
+            SelectTooltip = Resources.Languages.Tooltips.ManagePluginSourceSelectConfigFileTooltip;
+            if (AllowMultipleSelection)
+            {
+                FilesTooltip = Resources.Languages.Tooltips.ManageEmailAttachmentDriveNameTooltip;
+                SelectTooltip = Resources.Languages.Tooltips.ManageEmailAttachmentAttachTooltip;
+            }
         }
 
         public IList<FileListingModel> Drives { get; set; }
@@ -111,7 +120,36 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DriveName);
             }
         }
-
+        public string FilesTooltip
+        {
+            get
+            {
+                return _filesTooltip;
+            }
+            set
+            {
+                if (!value.Equals(_filesTooltip))
+                {
+                    _filesTooltip = value;
+                    OnPropertyChanged(() => FilesTooltip);
+                }
+            }
+        }
+        public string SelectTooltip
+        {
+            get
+            {
+                return _selectTooltip;
+            }
+            set
+            {
+                if (!value.Equals(_selectTooltip))
+                {
+                    _selectTooltip = value;
+                    OnPropertyChanged(() => SelectTooltip);
+                }
+            }
+        }
         public string SelectedDriveName
         {
             get { return _selectedDriveName; }

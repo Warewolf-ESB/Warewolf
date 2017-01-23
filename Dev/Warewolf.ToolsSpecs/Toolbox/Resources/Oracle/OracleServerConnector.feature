@@ -68,8 +68,7 @@ Scenario: Change Source on Existing tool
 	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
 	When Source iz changed from to "GreenPoint"
 	Then Action is Enable
-	And Inputs is Disable
-	And Outputs is Disable
+	And Inputs is Enable
 	And Validate is Enable
 
 Scenario: Changing Actions

@@ -10,14 +10,14 @@ namespace Warewolf.UITests.Tools.Data
 		[TestCategory("Data Tools")]
         public void DataSplitTool_OpenLargeViewUITest()
         {
-            UIMap.Open_Data_Split_Large_View();
+            UIMap.Open_DataSplit_LargeView();
         }
 
         [TestMethod]
 		[TestCategory("Data Tools")]
         public void DataSplitTool_OpenQVIUITest()
         {
-            UIMap.Open_Data_Split_Tool_Qvi_Large_View();
+            UIMap.Open_DataSplitToolQvi_LargeView();
         }
 
         #region Additional test attributes

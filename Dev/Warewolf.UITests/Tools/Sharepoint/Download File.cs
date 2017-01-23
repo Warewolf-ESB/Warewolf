@@ -8,27 +8,51 @@ namespace Warewolf.UITests.Tools.Sharepoint
     {
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
-        public void Sharepoint_Download_File_Small_View_UITest()
+        public void Sharepoint_DownloadFile_SmallView_UITest()
         {
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.SourceCombobox.Exists, "Source combobox does not exist on small view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.Server.Exists, "Server Combobox does not exist on small view after tool has been dragged from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.EditSourceButton.Exists, "Edit Source Button does not exist on small view after tool has been dragged from the toolbox.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.LocalPathToIntellisenseCombobox.Textbox.Exists, "Local Path To textbox does not exist on small view after tool has been dragged from the toolbox.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.ServerPathFromIntellisenseCombobox.Textbox.Exists, "Server Path From textbox does not exist on small view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.ServerPathFromIntellisenseCombobox.Exists, "Server Path From Combobox does not exist on small view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.LocalPathToIntellisenseCombobox.Textbox.Exists, "Local Path To Combobox does not exist on small view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.SmallView.ResultIntellisenseCombobox.Textbox.Exists, "Result Combobox does not exist on small view after tool has been dragged from the toolbox.");
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
-        public void Sharepoint_Download_File_Large_View_UITest()
+        public void Sharepoint_DownloadFile_LargeView_UITest()
         {
-            UIMap.Open_Sharepoint_Download_File_Tool_Large_View_With_Double_Click();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.SourceCombobox.Exists, "Source combobox does not exist on tool large view after openning the large view with a double click.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.LocalPathToIntellisenseCombobox.Textbox.Exists, "Local Path To textbox does not exist on tool large view after openning the large view with a double click.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.ServerPathFromIntellisenseTextbox.Textbox.Exists, "Server Path From textbox does not exist on tool large view after openning the large view with a double click.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.OnErrorPane.Exists, "OnError Pane does not exist on tool large view after openning the large view with a double click.");
+            UIMap.Open_SharepointDownloadFileTool_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.Server.Exists, "Server Combobox does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.EditSourceButton.Exists, "Edit Source Button does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.ServerPathFromIntellisenseTextbox.Exists, "Server Path From Combobox does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.LocalPathToIntellisenseCombobox.Textbox.Exists, "Local Path To Combobox does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.ResultComboBox.Exists, "Result Combobox does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.OverwriteCheckBox.Exists, "Overwrite Checkbox does not exist on large view after tool has been dragged from the toolbox.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.LargeView.OnErrorPane.Exists, "On Error Pane does not exist on large view after tool has been dragged from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDownloadFile.DoneButton.Exists, "Done Button does not exist on tool large view after openning the large view with a double click.");
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
         }
 
-       #region Additional test attributes
+        [TestMethod]
+        [TestCategory("Sharepoint Tools")]
+        public void NewSource_From_SharepointDownloadFileTool_UITest()
+        {
+            UIMap.Open_SharepointDownloadFileTool_LargeView();
+            UIMap.Click_NewSource_From_SharepointDownloadFileTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Enabled, "Server Name Textbox is not enabled.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Enabled, "Windows Radio button is not enabled.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Enabled, "User Radio button is not enabled.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.Enabled, "Test Connection button is enabled.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
+            UIMap.Click_Close_SharepointSource_Tab_Button();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.Click_MessageBox_No();
+        }
+
+        #region Additional test attributes
 
         [TestInitialize()]
         public void MyTestInitialize()
