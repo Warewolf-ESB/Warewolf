@@ -381,9 +381,20 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsObject = true;
                             OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
+                        
                         ClearToolRegionErrors();
                     },
                 };
+                ConstructorRegion.SomethingChanged += (sender, args) =>
+                {
+                    var dotNetConstructorRegion = sender as DotNetConstructorRegion;
+                    var outputsRegion = dotNetConstructorRegion?.Dependants.SingleOrDefault(region => region is OutputsRegion) as OutputsRegion;
+                    if(outputsRegion != null)
+                    {
+                        outputsRegion.IsConstructorSelected = dotNetConstructorRegion.SelectedConstructor != null;
+                    }
+                };
+
 
                 ConstructorRegion.ErrorsHandler += (sender, list) =>
                 {
