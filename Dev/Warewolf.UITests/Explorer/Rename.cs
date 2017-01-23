@@ -35,7 +35,6 @@ namespace Warewolf.UITests
             var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Renamed";
             UIMap.Filter_Explorer(Folder);
             UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Assert.IsTrue(Directory.Exists(renamedFolder), "Folder did not rename");
             //Put back the Original Name
             Directory.Move(renamedFolder, resourcesFolder);
