@@ -175,10 +175,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     var region = outputs as DotNetMethodOutputsRegion;
                     if (region != null)
                     {
-                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;
                         region.ObjectResult = string.Empty;
-                        region.IsObject = false;
                         region.ObjectName = string.Empty;
                     }
                 }
