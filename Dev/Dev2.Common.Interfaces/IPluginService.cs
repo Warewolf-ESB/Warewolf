@@ -23,6 +23,8 @@ namespace Dev2.Common.Interfaces
         IList<IServiceOutputMapping> OutputMappings { get; set; }
         string Path { get; set; }
         IPluginConstructor Constructor { get; set; }
+        INamespaceItem Namespace { get; set; }
         IPluginAction Action { get; set; }
+        List<IPluginAction> Actions { get; set; }
     }
 }
