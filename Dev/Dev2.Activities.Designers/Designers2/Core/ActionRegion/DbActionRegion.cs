@@ -68,6 +68,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (_source.SelectedSource != null)
                     {
+                        _source.SelectedSource.ReloadActions = true;
                         LoadActions(model);
                     }
                 }, o=>CanRefresh());
