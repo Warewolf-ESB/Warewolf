@@ -7433,7 +7433,17 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(175, 9));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.HumalClassListItem, new Point(163, 17));
         }
-        public void Click_DotNet_DLL_Large_View_Action_Combobox()
+        public void Click_DotNet_DLL_Large_View_FirstAction_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(175, 9));
+        }
+
+        public void Click_DotNet_DLL_Large_View_SecondAction_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(175, 9));
+        }
+
+        public void Click_DotNet_DLL_Large_View_ThirdAction_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(175, 9));
         }
@@ -7442,14 +7452,31 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.ConstructorsComboBoxComboBox, new Point(175, 9));
         }
-        public void Click_DotNet_DLL_Large_View_Actions_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(175, 9));
-        }
 
         public void Select_DotNet_DLL_Large_View_Constructor_With_One_Parameter_From_Constructor_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.ConstructorsComboBoxComboBox.CtorItem2, new Point(175, 9));
+        }
+        public void Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName, new Point(175, 9));
+        }
+        public void Select_DotNet_DLL_Large_View_SetName_Action_For_SecondAction_From_Actions_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem2.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName, new Point(175, 9));
+        }
+        public void Select_DotNet_DLL_Large_View_SetName_Action_For_ThirdAction_From_Actions_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem3.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName, new Point(175, 9));
+        }
+        public void Click_Refresh_Combobox_Button_On_Third_Action_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem3.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName, new Point(175, 9));
+        }
+
+        public void Click_Refresh_Combobox_Button_On_Second_Action_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem3.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName, new Point(175, 9));
         }
 
         [When(@"I Select Empty Constructor From DotNet DLL Large View Constructor Combobox")]
@@ -7463,14 +7490,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(175, 9));
             Mouse.Click(MainStudioWindow.getName, new Point(163, 17));
         }
-
-        //[When(@"I Select FirstItem From DotNet DLL Large View Action Combobox")]
-        //public void Select_FirstItem_From_DotNet_DLL_Large_View_Action_Combobox()
-        //{
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(216, 7));
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
-        //    Assert.AreEqual("Dev2.Common.Interfaces.PluginAction", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        //}
+        
 
         [When(@"I Select GetCountries From SQL Server Large View Action Combobox")]
         public void Select_GetCountries_From_SQL_Server_Large_View_Action_Combobox()
@@ -9075,9 +9095,11 @@ namespace Warewolf.UITests
         }        
         public void I_Expand_Costructor_Tree()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DrawHighlight();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.DrawHighlight();
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander, new Point(186, 30));
+        }       
+        public void I_Expand_First_Action_Tree()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander, new Point(186, 30));
         }     
     }    
 }
