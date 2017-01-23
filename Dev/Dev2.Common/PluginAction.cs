@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces.DB;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Common.Interfaces
 {
-    public class PluginAction : IPluginAction
+    public class PluginAction : IPluginAction, INotifyPropertyChanged
     {
         string _fullName;
         string _method;
@@ -81,7 +84,16 @@ namespace Dev2.Common.Interfaces
         public string MethodResult { get; set; }
         public string OutputVariable { get; set; }
         public bool IsObject { get; set; }
+        public bool IsVoid { get; set; }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
