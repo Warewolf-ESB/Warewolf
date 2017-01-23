@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -29,15 +25,17 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name=`"UITests`"
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
+  name=`"OtherUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run UI Tests.</Description>
+  <Description>Run Other UI Tests.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
@@ -46,8 +44,47 @@ $TestSettingsFile = "$PSScriptRoot\LocalOtherUITests.testsettings"
 </TestSettings>
 "@)
 
+# Find test assembly
+if (Test-Path "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UITests.dll"
+}
+if (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
+}
+if (!(Test-Path $TestAssemblyPath)) {
+	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UITests\bin\Debug or $PSScriptRoot
+	exit 1
+}
+
 # Create full VSTest argument string.
-$FullArgsList = "/testcontainer:`"" + $SolutionDir + "\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll`" /resultsfile:TestResults\OtherUITestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing`""
+$FullArgsList = "/testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Shortcut Keys`""
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList

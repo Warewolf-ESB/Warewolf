@@ -37,9 +37,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         public string AssemblyLocation { get; set; }
+
         public string AssemblyName { get; set; }
+
         public string FullName { get; set; }
+
         public string MethodName { get; set; }
-        public string JsonObject { get; set; }
     }
 }

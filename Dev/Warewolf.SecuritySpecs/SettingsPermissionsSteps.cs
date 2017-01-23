@@ -221,6 +221,20 @@ namespace Dev2.Activities.Specs.Permissions
             FeatureContext.Current["currentEnvironment"] = reconnectModel;
         }
 
+        IEnvironmentModel LoadResources()
+        {
+            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            EnsureEnvironmentConnected(environmentModel);
+            if (environmentModel.IsConnected)
+            {
+                if (!environmentModel.HasLoadedResources)
+                {
+                    environmentModel.ForceLoadResources();
+                }
+            }
+            return environmentModel;
+        }
+
         [Then(@"resources should have ""(.*)""")]
         public void ThenResourcesShouldHave(string resourcePerms)
         {
@@ -236,28 +250,10 @@ namespace Dev2.Activities.Specs.Permissions
                 }
             }
             var resourceModels = environmentModel.ResourceRepository.All();
-            var totalNumberOfResources = resourceModels.Count;
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
-            Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
-        }
-
-        IEnvironmentModel LoadResources()
-        {
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
-            EnsureEnvironmentConnected(environmentModel);
-            if (environmentModel.IsConnected)
-            {
-                if (!environmentModel.HasLoadedResources)
-                {
-                    environmentModel.ForceLoadResources();
-                }
-            }
-            //            var resourceModels = environmentModel.ResourceRepository.All();
-            //            foreach (var resourceModel in resourceModels)
-            //            {
-            //                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-            //            }
-            return environmentModel;
+            var totalNumberOfResources = resourceModels.Count;
+            var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
+            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
         }
 
         [Then(@"resources should not have ""(.*)""")]

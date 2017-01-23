@@ -16,15 +16,6 @@ namespace DummyNamespaceForTest
     [Serializable]
     public class DummyClassForPluginTest
     {
-        public DummyClassForPluginTest(string name)
-        {
-            Name = name;
-        }
-
-        public DummyClassForPluginTest()
-        {
-            
-        }
         public string Name { get; set; }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]

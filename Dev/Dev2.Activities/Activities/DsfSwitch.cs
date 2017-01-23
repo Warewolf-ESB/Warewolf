@@ -10,6 +10,9 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities
 {
@@ -65,8 +68,9 @@ namespace Dev2.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
+        
 
-        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
@@ -94,8 +98,8 @@ namespace Dev2.Activities
                         {
                             DebugOutput(dataObject);
                         }
-                        
-                        return Switches[a];
+
+                        NextNodes = new List<IDev2Activity> { Switches[a] };
                     }
                     if (Default != null)
                     {
@@ -105,7 +109,7 @@ namespace Dev2.Activities
                         {
                             DebugOutput(dataObject);
                         }
-                        return activity;
+                        NextNodes = new List<IDev2Activity> { activity };
                     }
                 }
             }
@@ -125,13 +129,6 @@ namespace Dev2.Activities
                 }
             }
 
-            return null;
-        }
-        
-
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-        {
-           
         }
 
         void Debug(IDSFDataObject dataObject, string firstOrDefault, Dev2Switch ds)
@@ -253,7 +250,8 @@ namespace Dev2.Activities
         {
             return null;
         }
-        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
             bool hasResult = false;
@@ -301,11 +299,7 @@ namespace Dev2.Activities
             {
                 throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
             }
-            return activity;
-        }
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-        {
-
+            NextNodes = new List<IDev2Activity> { activity };
         }
 
         #endregion
