@@ -439,18 +439,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 SelectedMethod = null
             };
-            var outputRegion = new DotNetMethodOutputsRegion(ModelItem, true);
-            var inputRegion = new DotNetMethodInputRegion(ModelItem, methodRegion);
+            var outputRegion = new DotNetMethodOutputsRegion(methodRegion);
+            var inputRegion = new DotNetMethodInputRegion(methodRegion);
             outputRegion.IsEnabled = false;
-            outputRegion.IsObject = true;
-            if (outputRegion.Outputs == null || outputRegion.Outputs.Count == 0)
-            {
-                outputRegion.IsEnabled = false;
-            }
-            else if (outputRegion.Outputs.Count > 0)
-            {
-                outputRegion.IsEnabled = true;
-            }
 
             methodRegion.Dependants.Add(inputRegion);
             methodRegion.Dependants.Add(outputRegion);
@@ -459,7 +450,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             methodRegion.SourceChangedAction = () =>
             {
                 outputRegion.IsEnabled = false;
-                outputRegion.IsObject = true;
                 if (methodRegion.SelectedMethod != null)
                 {
                     bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
@@ -491,21 +481,20 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (pluginActions == null || pluginActions.Count == 0)
                 {
                     var current = pluginActions;
-                    var outputMappings = current ?? new List<IPluginAction>();
-                    var outputs = new ObservableCollection<IPluginAction>();
-                    outputs.CollectionChanged += MethodsToRunListOnCollectionChanged;
-                    outputs.AddRange(outputMappings);
+                    var actions = current ?? new List<IPluginAction>();
+                    var collection = new ObservableCollection<IPluginAction>();
+                    collection.CollectionChanged += MethodsToRunListOnCollectionChanged;
+                    collection.AddRange(actions);
                     
                     MethodsToRunList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
                 }
                 else
                 {
-                    var outputs = new ObservableCollection<IPluginAction>();
-                    outputs.CollectionChanged += MethodsToRunListOnCollectionChanged;
-                    var regionCollections =
-                        new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+                    var actions = new ObservableCollection<IPluginAction>();
+                    actions.CollectionChanged += MethodsToRunListOnCollectionChanged;
+                    var regionCollections = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
 
-                    //outputs.AddRange(pluginActions);
+                    actions.AddRange(pluginActions);
                     foreach (var pluginAction in pluginActions)
                     {
                         if (pluginAction == null) continue;

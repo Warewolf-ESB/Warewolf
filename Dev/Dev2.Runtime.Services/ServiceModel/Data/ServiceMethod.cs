@@ -80,6 +80,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         [DataMember]
         public bool IsObject { get; set; }
 
+        [DataMember]
+        public bool IsVoid { get; set; }
+
         public List<MethodOutput> Outputs { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
