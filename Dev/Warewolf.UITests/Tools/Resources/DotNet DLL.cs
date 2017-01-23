@@ -101,6 +101,19 @@ namespace Warewolf.UITests.Tools.Resources
 
         [TestMethod]
         [TestCategory("Resource Tools")]
+        public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
+        {
+        }
+
+
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
+        {
+        }
+
+        [TestMethod]
+        [TestCategory("Resource Tools")]
         public void Selecting_Classname_And_Action_Creates_New_Blank_Action_Dropbox_UITests()
         {
             UIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
