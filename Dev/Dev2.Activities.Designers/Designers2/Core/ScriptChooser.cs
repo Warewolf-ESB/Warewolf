@@ -9,14 +9,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public FileChooserMessage ChooseScriptSources(string includeFile)
         {
-            const string separator = @";";
+            const string Separator = @";";
             var chooserMessage = new FileChooserMessage();
             
             if (includeFile == null)
             {
                 includeFile = "";
             }
-            chooserMessage.SelectedFiles = includeFile.Split(separator.ToCharArray());
+            chooserMessage.SelectedFiles = includeFile.Split(Separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         if (chooserMessage.SelectedFiles != null)
                         {
-                            includeFile = string.Join(separator, chooserMessage.SelectedFiles);
+                            includeFile = string.Join(Separator, chooserMessage.SelectedFiles);
                         }
                     }
                 }
