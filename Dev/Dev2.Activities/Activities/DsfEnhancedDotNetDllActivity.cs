@@ -143,6 +143,8 @@ namespace Dev2.Activities
                 } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
+                    if(dev2MethodInfo.IsVoid)
+                        continue;
                     if (dev2MethodInfo.IsObject)
                     {
 

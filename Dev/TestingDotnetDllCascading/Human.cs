@@ -49,6 +49,10 @@ namespace TestingDotnetDllCascading
             PersonFood = food;
         }
 
+        public void SetNameInternal()
+        {
+            Name = "System.Default";
+        }
 
         public List<Food> FavouriteFoods()
         {
