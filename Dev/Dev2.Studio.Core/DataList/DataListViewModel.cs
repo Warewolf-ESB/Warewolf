@@ -356,6 +356,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     WriteToResourceModel();
                     FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                     DeleteCommand.RaiseCanExecuteChanged();
+                    UpdateIntellisenseList();
                 }, CanDelete));
             }
         }
@@ -404,6 +405,7 @@ namespace Dev2.Studio.ViewModels.DataList
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             ViewComplexObjectsCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
+            UpdateIntellisenseList();
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
@@ -453,10 +455,21 @@ namespace Dev2.Studio.ViewModels.DataList
             if (parts.Count > 0)
                 AddBlankRow(null);
 
-            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
-            Provider.VariableList = new ObservableCollection<string>(items);
+            UpdateIntellisenseList();
 
             WriteToResourceModel();
+        }
+
+        private void UpdateIntellisenseList()
+        {
+            if(_scalarCollection != null && _recsetCollection != null && _complexObjectCollection != null && _complexObjectHandler != null)
+            {
+                var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
+                if(Provider != null)
+                {
+                    Provider.VariableList = new ObservableCollection<string>(items);
+                }
+            }
         }
 
         #endregion Add/Remove Missing Methods
