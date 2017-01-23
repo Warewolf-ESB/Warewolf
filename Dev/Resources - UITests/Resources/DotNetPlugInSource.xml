@@ -1,9 +1,9 @@
 
-<Source ID="1cfc7938-d96a-4d2c-b82c-070a86309b01" Name="DotNetPlugInSource" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\Users\Sanele.Mthembu\Source\Repo2\Dev\Warewolf.ToolsSpecs\bin\Debug\TestingDotnetDllCascading.dll" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="0.0.6226.28316" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="1cfc7938-d96a-4d2c-b82c-070a86309b01" Name="DotNetPlugInSource" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\ProgramData\Warewolf\Resources\Dlls\TestingDotnetDllCascading.dll" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="0.0.6229.24227" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>DotNetPlugInSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>PluginSource</TypeOf>
-  <VersionInfo DateTimeStamp="2017-01-17T15:55:30.2855359+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1cfc7938-d96a-4d2c-b82c-070a86309b01" VersionId="5bf7ab3e-eaf2-44e1-963b-c9f2802aa03c" />
+  <VersionInfo DateTimeStamp="2017-01-20T13:42:18.400309+02:00" Reason="" User="DEV2\Sanele.Mthembu" VersionNumber="2" ResourceId="1cfc7938-d96a-4d2c-b82c-070a86309b01" VersionId="74067e64-11fe-42f2-b323-ae60f91abfde" />
 </Source>
