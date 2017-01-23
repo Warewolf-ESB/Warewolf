@@ -9,7 +9,7 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="265"
+                               MinHeight="250"
                                Height="Auto"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"

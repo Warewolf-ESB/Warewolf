@@ -282,11 +282,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         Name = info.Name
                     };
                     var returnType = info.ReturnType;
+                    
                     if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
                         serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
                         serviceMethod.IsObject = false;
                         
+                    }
+                    else if (info.ReturnType == typeof (void))
+                    {
+                        serviceMethod.IsVoid = true;
                     }
                     else
                     {
