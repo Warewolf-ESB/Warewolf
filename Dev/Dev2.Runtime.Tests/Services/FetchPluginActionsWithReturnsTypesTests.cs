@@ -130,5 +130,52 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(pluginActions);
             Assert.IsTrue(pluginActions.Any(action => action.FullName == personObject.FullName));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Execute_GivenSourceAndNamespaceWithVoidActions_ShouldReturnAVoidFunction()
+        {
+            var humanType   = typeof(Human);
+            //------------Setup for test--------------------------
+            var pluginSource = new PluginSource
+            {
+                ResourceName = humanType.FullName,
+                ResourceID = humanType.GUID,
+                AssemblyName = humanType.AssemblyQualifiedName,
+                AssemblyLocation = humanType.Assembly.Location
+            };
+
+            var resourceCat = new Mock<IResourceCatalog>();
+            resourceCat.Setup(catalog => catalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(pluginSource);
+            var fetchPluginActionsWithReturnsTypes = new FetchPluginActionsWithReturnsTypes(resourceCat.Object);            
+            
+            var jsonSerializer = new Dev2JsonSerializer();
+            var sourceDefinition = new PluginSourceDefinition
+            {
+                Id = humanType.GUID, Name = humanType.FullName, Path = humanType.Assembly.Location
+            };
+            var namespaceItem = new NamespaceItem
+            {
+                FullName = humanType.FullName,
+                AssemblyLocation = humanType.Assembly.Location,
+                AssemblyName = humanType.Assembly.FullName
+            };
+
+            var serialezedSource = jsonSerializer.SerializeToBuilder(sourceDefinition);
+            var serialezedNamespace = jsonSerializer.SerializeToBuilder(namespaceItem);
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { "source", serialezedSource },
+                { "namespace", serialezedNamespace }
+            };
+            var workspace = new Mock<IWorkspace>();
+            var execute = fetchPluginActionsWithReturnsTypes.Execute(values, workspace.Object);
+            var results = jsonSerializer.Deserialize<ExecuteMessage>(execute);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(results.HasError);
+            var pluginActions = jsonSerializer.Deserialize<List<IPluginAction>>(results.Message);
+            Assert.IsTrue(pluginActions.Any(action => action.IsVoid));
+        }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Common.Interfaces;
