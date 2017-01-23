@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
 		[TestCategory("HTTP Tools")]
-        public void HTTPWebGetTool_LargeView_UITest()
+        public void HttpWebGetToolClickLargeViewUITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.SourcesComboBox.Exists, "Web GET large view sources combobox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton.Exists, "Web GET large view generate inputs button does not exist.");
@@ -18,15 +18,7 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HTTPWebGetTool_SmallView_UITest()
-        {
-            UIMap.Collapse_GETWebTool_LargeView_To_SmallView();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView.Exists, "Web GET small view does not exist after collapsing the large view with a double click.");
-        }
-
-        [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void NewSource_From_HTTPWebGetTool_UITest()
+        public void NewSource_From_WebGetToolUITest()
         {
             UIMap.Click_NewSourceButton_From_HttpWebGetTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
@@ -39,11 +31,18 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void Click_HTTPWebGetTool_GenerateOutputsButton_UITest()
+        public void HttpWebGetToolEnableGenerateOutputsButton()
         {
-            UIMap.Select_GETWebTool_Source_From_SourceCombobox();
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton.Enabled, "Web GET tool large view generate outputs button is not enabled after selecting a source.");
-            UIMap.Click_GETWebTool_GenerateOutputsButton();
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HttpWebGetToolClickGenerateOutputsButton()
+        {
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
+            UIMap.Click_GetWeb_GenerateOutputs_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.DoneButton.Exists, "Web GET tool large view generate outputs done button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.CancelButton.Exists, "Web GET tool large view generate outputs cancel button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.PasteButton.Exists, "Web GET tool large view generate outputs paste button does not exist.");
@@ -51,12 +50,20 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void Click_HTTPWebGetTool_TestInputs_DoneButton_UITest()
+        public void HttpWebGetToolClickTestInputsDoneButton()
         {
-            UIMap.Select_GETWebTool_Source_From_SourceCombobox();
-            UIMap.Click_GETWebTool_GenerateOutputsButton();
-            UIMap.Click_GETWebTool_TestInputsButton();
-            UIMap.Click_GETWebTool_Outputs_DoneButton();
+            UIMap.Select_Test_Source_From_GET_Web_Large_View_Source_Combobox();
+            UIMap.Click_GET_Web_Large_View_Generate_Outputs();
+            UIMap.Click_GET_Web_Large_View_Test_Inputs_Button();
+            UIMap.Click_GET_Web_Large_View_Test_Inputs_Done_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HttpWebGetToolSmallView()
+        {
+            UIMap.Collapse_GET_Web_Connector_Tool_Large_View_to_Small_View();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView.Exists, "Web GET small view does not exist after collapsing the large view with a double click.");
         }
 
         #region Additional test attributes
