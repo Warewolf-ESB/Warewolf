@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.ConstructorRegion;
@@ -414,6 +415,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     toolRegion.Errors?.Clear();
                 }
             }
+            MethodsToRunList = null;
+            CreateMethodRegion();
         }
 
         private void CreateMethodRegion()
@@ -478,6 +481,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             MethodsToRunList = methodRegions;
             NamespaceRegion.Dependants.Add(methodRegion);
         }
+
+        public ICommand DeleteActionCommand { get; set; }
 
         private ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
         {
