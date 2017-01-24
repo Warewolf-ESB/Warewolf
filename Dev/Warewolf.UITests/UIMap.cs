@@ -7197,15 +7197,35 @@ namespace Warewolf.UITests
         public void Rename_FolderItem_ToNewFolderItem(string newName)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            Select_Rename_From_Explorer_ContextMenu();
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = newName;
             Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [Given(@"I Select Rename From Explorer Context Menu")]
+        [When(@"I Select Rename From Explorer Context Menu")]
+        [Then(@"I Select Rename From Explorer Context Menu")]
+        private void Select_Rename_From_Explorer_ContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
         }
 
         [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         [Given(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         public void Rename_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I Rename Explorer First item")]
+        [Then(@"I Rename Explorer First item")]
+        [Given(@"I Rename Explorer First item")]
+        public void Rename_Explorer_First_Item(string newName)
         {
             var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             Mouse.Click(firstItem);
@@ -7839,15 +7859,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
-
-        [Given(@"I Select Rename From SaveDialog Context Menu")]
-        [When(@"I Select Rename From SaveDialog Context Menu")]
-        [Then(@"I Select Rename From SaveDialog Context Menu")]
-        public void Select_Rename_From_SaveDialog_ContextMenu()
-        {
-            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
-        }
-
+        
         [Given(@"I Select Delete From SaveDialog Context Menu")]
         [When(@"I Select Delete From SaveDialog Context Menu")]
         [Then(@"I Select Delete From SaveDialog Context Menu")]
