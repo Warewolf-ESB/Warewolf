@@ -26,7 +26,6 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         private IPluginConstructor _selectedConstructor;
         private readonly IPluginServiceModel _model;
         private ICollection<IPluginConstructor> _constructors;
-        private bool _isConstructorEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
@@ -59,7 +58,6 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 }
                 if (Method != null && Constructors != null)
                 {
-                    IsConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
                     SelectedConstructor = Constructors.FirstOrDefault(constructor => constructor.ConstructorName == Method.ConstructorName);
                 }
                 RefreshConstructorsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -141,17 +139,14 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             if (_source?.SelectedSource != null)
             {
                 Constructors = _model.GetConstructors(_source.SelectedSource, _namespace.SelectedNamespace);
-                SelectedConstructor = null;
-                IsConstructorEnabled = true;
+                SelectedConstructor = Constructors.FirstOrDefault();
                 IsEnabled = true;
             }
         }
 
         public bool CanRefresh()
         {
-            var isConstructorEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            IsConstructorEnabled = isConstructorEnabled;
-            return isConstructorEnabled;
+            return IsConstructorEnabled;
         }
 
         public IPluginConstructor SelectedConstructor
@@ -206,18 +201,8 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         }
         public ICommand RefreshConstructorsCommand { get; set; }
 
-        public bool IsConstructorEnabled
-        {
-            get
-            {
-                return _isConstructorEnabled;
-            }
-            set
-            {
-                _isConstructorEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsConstructorEnabled => _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+
         public bool IsConstructorExpanded
         {
             get

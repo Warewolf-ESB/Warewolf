@@ -32,7 +32,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private IPluginAction _selectedMethod;
         private readonly IPluginServiceModel _model;
         private ICollection<IPluginAction> _methodsToRun;
-        private bool _isActionEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
@@ -72,7 +71,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 }
                 if (Method != null && MethodsToRun != null)
                 {
-                    IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
                     SelectedMethod = MethodsToRun.FirstOrDefault(action => action.Method == Method.Method);
                 }
                 RefreshMethodsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -156,16 +154,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 MethodsToRun = _model.GetActionsWithReturns(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedMethod = null;
-                IsActionEnabled = true;
                 IsEnabled = true;
             }
         }
 
         public bool CanRefresh()
         {
-            var isActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            IsActionEnabled = isActionEnabled;
-            return isActionEnabled;
+            return IsActionEnabled;
         }
 
         public IPluginAction SelectedMethod
@@ -373,18 +368,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
 
         public ICommand RefreshMethodsCommand { get; set; }
-        public bool IsActionEnabled
-        {
-            get
-            {
-                return _isActionEnabled;
-            }
-            set
-            {
-                _isActionEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsActionEnabled => _source.SelectedSource != null && _namespace.SelectedNamespace != null;
         public bool IsDeleteActionEnabled => SelectedMethod != null;
 
         public bool IsMethodExpanded

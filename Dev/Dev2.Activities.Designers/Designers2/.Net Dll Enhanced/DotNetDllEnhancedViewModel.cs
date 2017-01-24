@@ -25,6 +25,7 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
+using Microsoft.Practices.Prism.Commands;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
@@ -95,11 +96,19 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 IsWorstErrorReadOnly = true;
             });
 
+            DeleteActionCommand = new DelegateCommand<DotNetMethodRegion>(DeleteAction);
+
             SetDisplayName("");
             OutputsRegion.OutputMappingEnabled = true;
 
             InitializeProperties();
 
+        }
+
+        private void DeleteAction(DotNetMethodRegion method)
+        {
+            if (method != null)
+                MethodsToRunList.Remove(method);
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -482,7 +491,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             NamespaceRegion.Dependants.Add(methodRegion);
         }
 
-        public ICommand DeleteActionCommand { get; set; }
+        public DelegateCommand<DotNetMethodRegion> DeleteActionCommand { get; set; }
 
         private ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
         {
@@ -534,6 +543,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 }
             }
         }
+
+        public bool IsConstructorVisible => ConstructorRegion?.Constructors?.Count > 0;
+        public bool IsActionsVisible => NamespaceRegion?.SelectedNamespace != null;
 
         public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList
         {
