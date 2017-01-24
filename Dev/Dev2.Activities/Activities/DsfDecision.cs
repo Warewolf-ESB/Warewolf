@@ -137,10 +137,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    if(results.All(b => b == false))
-                    {
-                        resultval = false;
-                    }
+                    resultval = results.Any(b => b);
                 }
             }
 
