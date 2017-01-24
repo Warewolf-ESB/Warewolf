@@ -163,12 +163,9 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
             set
             {
-                if (!Equals(value, _selectedConstructor) && _selectedConstructor != null)
+                if (value != null)
                 {
-                    if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
-                        StorePreviousValues(_selectedConstructor.GetIdentifier());
                     _modelItem.SetProperty("Constructor", value);
-                   
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
