@@ -1003,7 +1003,7 @@ Scenario: Run Selected Test in Web
 	When I run selected test in Web
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                            |
-	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
+	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
