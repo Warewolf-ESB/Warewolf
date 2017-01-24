@@ -168,15 +168,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedMethod) && _selectedMethod != null)
-                {
-                    if (!string.IsNullOrEmpty(_selectedMethod.Method))
-                        StorePreviousValues(_selectedMethod.GetIdentifier());
-                }
+                //_selectedMethod = value;
+                //if (!Equals(value, _selectedMethod) && _selectedMethod != null)
+                //{
+                //    if (!string.IsNullOrEmpty(_selectedMethod.Method))
+                //        StorePreviousValues(_selectedMethod.GetIdentifier());
+                //}
 
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
                 OnPropertyChanged("IsVoid");
+                OnPropertyChanged("Method");
                 OnPropertyChanged("RecordsetName");
                 OnPropertyChanged("IsObject");
                 OnPropertyChanged("ObjectName");

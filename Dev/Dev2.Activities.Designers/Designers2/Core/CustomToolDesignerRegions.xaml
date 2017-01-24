@@ -211,46 +211,6 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetMethodGrid">
-        <Grid x:Name="MethodsGrid" 
-                      Margin="-3,0,0,0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
-            <ComboBox x:Name="ActionsComboBox"
-                              Grid.Column="1"
-                              Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding MethodsToRun}"
-                              DisplayMemberPath="Method" 
-                              IsEnabled="{Binding IsActionEnabled}"
-                              ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
-                              IsEditable="False"
-                              SelectedItem="{Binding SelectedMethod}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-            <Button x:Name="ActionRefreshButton" 
-                            Grid.Column="2"
-                            Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-                <Button.Content>
-                    <fa:FontAwesome Icon="Refresh"/>
-                </Button.Content>
-            </Button>
-            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
-                                                        Grid.Column="2"
-                                                        Width="22"
-                                                        Height="22"
-                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
-        </Grid>
-    </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetConstructorGrid" d:DataContext="{d:DesignInstance constructorRegion:DotNetConstructorRegion}">
         <Grid x:Name="ConstructorsGrid" 
                       Margin="-3,0,3,0" >
@@ -587,7 +547,43 @@
                                           AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=SelectedMethod}">
                                     <Expander.HeaderTemplate>
                                         <DataTemplate>
-                                            <Control Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                                            <Grid x:Name="MethodsGrid" Margin="-3,0,0,0" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+                                                <ComboBox x:Name="ActionsComboBox"
+                                                          Grid.Column="1"
+                                                          Margin="{StaticResource ControlBorderRight}"
+                                                          ItemsSource="{Binding MethodsToRun}"
+                                                          SelectedValuePath="Method"
+                                                          IsEnabled="{Binding IsActionEnabled}"
+                                                          ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
+                                                          IsEditable="False"
+                                                          SelectedItem="{Binding SelectedMethod, Mode=TwoWay}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                                                    </i:Interaction.Behaviors>
+                                                </ComboBox>
+                                                <Button x:Name="ActionRefreshButton" 
+                                                        Grid.Column="2"
+                                                        Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
+                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                                                    </i:Interaction.Behaviors>
+                                                    <Button.Content>
+                                                        <fa:FontAwesome Icon="Refresh"/>
+                                                    </Button.Content>
+                                                </Button>
+                                                <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                                                    Grid.Column="2"
+                                                                                    Width="22"
+                                                                                    Height="22"
+                                                                                    Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+                                            </Grid>
                                         </DataTemplate>
                                     </Expander.HeaderTemplate>
                                     <Grid>

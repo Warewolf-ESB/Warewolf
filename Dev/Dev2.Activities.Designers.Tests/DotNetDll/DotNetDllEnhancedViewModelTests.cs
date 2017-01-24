@@ -56,7 +56,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.ModelItem);
             Assert.IsTrue(vm.HasLargeView);
-            Assert.IsNotNull(vm.ManageServiceInputViewModel);
             Assert.AreEqual(46, vm.LabelWidth);
             Assert.AreEqual("Done", vm.ButtonDisplayValue);
             Assert.IsTrue(vm.ShowLarge);
@@ -73,7 +72,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.Regions);
             Assert.AreEqual(7, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
-            Assert.IsNotNull(vm.TestInputCommand);
             Assert.IsNotNull(vm.Properties);
             Assert.AreEqual(1, vm.Properties.Count);
         }
@@ -97,36 +95,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(2, vm.Errors.Count);
 
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllEnhancedViewModel_GenerateOutputsVisible")]
-        public void DotNetDllEnhancedViewModel_GenerateOutputsVisible_Set_SetsOtherProperties()
-        {
-            //------------Setup for test--------------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
-            CustomContainer.Register(mockShellViewModel.Object);
-            var ps = SetupEmptyMockSource();
-            //------------Execute Test---------------------------
-
-            var vm = new DotNetDllEnhancedViewModel(CreateModelItem(), ps.Object);
-            vm.ManageServiceInputViewModel.InputArea.IsEnabled = false;
-            vm.ManageServiceInputViewModel.OutputArea.IsEnabled = false;
-            //------------Assert Results-------------------------
-            vm.GenerateOutputsVisible = true;
-
-            Assert.IsTrue(vm.GenerateOutputsVisible);
-            Assert.IsTrue(vm.ManageServiceInputViewModel.InputArea.IsEnabled);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsEnabled);
-
-            vm.GenerateOutputsVisible = false;
-            Assert.IsFalse(vm.GenerateOutputsVisible);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.InputArea.IsEnabled);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsEnabled);
-
-        }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

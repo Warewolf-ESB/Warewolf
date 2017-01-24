@@ -23,7 +23,6 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
-using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
@@ -41,7 +40,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         const string DoneText = "Done";
         const string FixText = "Fix";
-        const string OutputDisplayName = " - Outputs";
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
@@ -63,7 +61,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            InitialiseViewModel(new ManageEnhancedPluginServiceInputViewModel(this));
+            InitialiseViewModel();
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
@@ -76,10 +74,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageEnhancedPluginServiceInputViewModel manageServiceInputViewModel)
+        private void InitialiseViewModel()
         {
-            ManageServiceInputViewModel = manageServiceInputViewModel;
-
             BuildRegions();
 
             LabelWidth = 46;
@@ -234,8 +230,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public IManageEnhancedPluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
-
         private IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
@@ -258,11 +252,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         public static readonly DependencyProperty WorstErrorProperty =
             DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(DotNetDllEnhancedViewModel), new PropertyMetadata(ErrorType.None));
 
-        bool _generateOutputsVisible;
         private ServiceInputBuilder _builder;
         private ObservableCollection<IMethodToolRegion<IPluginAction>> _methodsToRunList;
-
-        public DelegateCommand TestInputCommand { get; set; }
 
         private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
@@ -356,7 +347,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                         }
 
                         ClearToolRegionErrors();
-                    },
+                    }
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
@@ -385,7 +376,17 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     IsEnabled = false
                 };
                 regions.Add(OutputsRegion);
-                CreateMethodRegion();
+
+                var pluginActions = ModelItem.GetProperty<List<IPluginAction>>("MethodsToRun");
+                var regionCollections = BuildRegionsFromActions(pluginActions);
+                if (regionCollections.Any())
+                {
+                    MethodsToRunList = regionCollections;
+                }
+                else
+                {
+                    CreateMethodRegion();
+                }
 
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -396,7 +397,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 ConstructorRegion.Dependants.Add(OutputsRegion);
                 OutputsRegion.Dependants.Add(ConstructorRegion);
             }
-            regions.Add(ManageServiceInputViewModel);
             Regions = regions;
 
             return regions;
@@ -485,10 +485,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     continue;
                 }
-                regionCollections.Add(new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion)
-                {
-                    SelectedMethod = pluginAction
-                });
+                var dotNetMethodRegion = new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion);
+                dotNetMethodRegion.SelectedMethod = pluginAction;
+                regionCollections.Add(dotNetMethodRegion);
             }
             return regionCollections;
         }
@@ -532,8 +531,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             get
             {
-                var pluginActions = ModelItem.GetProperty<List<IPluginAction>>("MethodsToRun");
-                var regionCollections = BuildRegionsFromActions(pluginActions);
                 return _methodsToRunList;
             }
             set
@@ -630,30 +627,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             set
             {
                 _outputsRegion = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool GenerateOutputsVisible
-        {
-            get
-            {
-                return _generateOutputsVisible;
-            }
-            set
-            {
-                _generateOutputsVisible = value;
-                if (value)
-                {
-                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
-                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
-                    SetRegionVisibility(false);
-                }
-                else
-                {
-                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
-                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
-                    SetRegionVisibility(true);
-                }
                 OnPropertyChanged();
             }
         }
