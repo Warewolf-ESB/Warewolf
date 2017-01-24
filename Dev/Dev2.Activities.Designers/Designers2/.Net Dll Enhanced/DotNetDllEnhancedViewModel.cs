@@ -24,7 +24,6 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
-using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
