@@ -503,7 +503,11 @@ namespace Dev2.Runtime.Hosting
 
         IExplorerRepositoryResult MoveSingeItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
-            var newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+            var newResourcePath = newPath;
+            if (!string.IsNullOrEmpty(itemToMove.ResourcePath))
+            {
+                newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
+            }
             var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
             var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
             var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".xml"}";
