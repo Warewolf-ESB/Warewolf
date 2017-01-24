@@ -147,20 +147,31 @@ namespace Dev2.Runtime.Hosting
 
         public void LoadWorkspace(Guid workspaceID)
         {
-            var @lock = ResourceCatalogImpl.Common.GetWorkspaceLock(workspaceID);
-            if (_loading)
+            try
             {
-                return;
+                var @lock = ResourceCatalogImpl.Common.GetWorkspaceLock(workspaceID);
+                if (_loading)
+                {
+                    return;
+                }
+                _loading = true;
+                lock (@lock)
+                {
+                    WorkspaceResources.AddOrUpdate(workspaceID,
+                        id => LoadWorkspaceImpl(workspaceID),
+                        (id, resources) => LoadWorkspaceImpl(workspaceID));
+                }
+                
             }
-            _loading = true;
-            lock (@lock)
+            catch (Exception e)
             {
-                WorkspaceResources.AddOrUpdate(workspaceID,
-                    id => LoadWorkspaceImpl(workspaceID),
-                    (id, resources) => LoadWorkspaceImpl(workspaceID));
+                Dev2Logger.Error("Error Loading Resources.", e);
+                throw;
             }
-
-            _loading = false;
+            finally
+            {
+                _loading = false;
+            }
         }
 
         #endregion
