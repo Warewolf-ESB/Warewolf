@@ -95,5 +95,10 @@ namespace Dev2.Common.Interfaces
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public override string ToString()
+        {
+            return Method;
+        }
     }
 }

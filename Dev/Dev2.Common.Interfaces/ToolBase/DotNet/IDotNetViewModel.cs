@@ -27,7 +27,6 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         IMethodToolRegion<IPluginAction> MethodRegion { get; set; }
         IDotNetConstructorInputRegion InputArea { get; set; }
         IOutputsToolRegion OutputsRegion { get; set; }
-        bool GenerateOutputsVisible { get; set; }
         IPluginService ToModel();
         void ErrorMessage(Exception exception, bool hasError);
         void SetDisplayName(string displayName);
