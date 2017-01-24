@@ -502,21 +502,6 @@ namespace Dev2.Activities.Designers2.PostgreSql
             }
         }
 
-        private static void GetValue(string s, List<IServiceInput> dt)
-        {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);            
-            if (exp.IsScalarExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-            if (exp.IsRecordSetExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-        }
-
         private IDbServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
