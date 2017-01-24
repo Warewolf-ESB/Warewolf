@@ -32,7 +32,7 @@ namespace Warewolf.UITests
         public void DuplicateFolder_And_Use_Same_Name_Shows_Error()
         {
             UIMap.Click_Duplicate_From_ExplorerContextMenu("DuplicateFolderNameError");
-            Assert.IsTrue(UIMap.SaveDialogWindow.ErrorLabel.Exists);
+            Assert.IsTrue(UIMap.SaveDialogWindow.ErrorLabel.Exists, "Sve Error dialog does not exist after clicking Duplicate");
             UIMap.Click_SaveDialog_CancelButton();
         }
         

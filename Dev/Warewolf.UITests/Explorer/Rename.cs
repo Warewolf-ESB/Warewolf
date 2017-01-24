@@ -38,10 +38,10 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(Folder);
             UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Assert.IsTrue(Directory.Exists(renamedFolder));
+            Assert.IsTrue(Directory.Exists(renamedFolder), renamedFolder+" does niot exist.");
             //Put back the Original Name
             Directory.Move(renamedFolder, resourcesFolder);
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
+            Assert.IsTrue(Directory.Exists(resourcesFolder), resourcesFolder + " does not exist.");
             UIMap.Click_Explorer_Refresh_Button();
         }
 
