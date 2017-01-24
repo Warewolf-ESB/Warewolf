@@ -73,11 +73,11 @@ namespace Warewolf.UITests
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             
             UIMap.Rename_Explorer_First_Item(newName);
-            UIMap.Enter_Variable_And_Value_Into_Assign("User", "SM");
-            UIMap.Save_Workflow_Using_Shortcut();
+            UIMap.Make_Workflow_Savable_By_Dragging_Start();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameListItem.DisplayText, newName);
+            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem.DisplayText, newName);
         }
 
         #region Additional test attributes
