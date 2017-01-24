@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Common.Utils;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Views;
 using Warewolf.Core;
 using Warewolf.Storage;
 // ReSharper disable ExplicitCallerInfoArgument
