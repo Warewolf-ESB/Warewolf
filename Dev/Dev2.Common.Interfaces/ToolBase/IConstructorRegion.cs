@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         T SelectedConstructor { get; set; }
         ICollection<T> Constructors { get; set; }
         ICommand RefreshConstructorsCommand { get; }
-        bool IsConstructorEnabled { get; set; }
+        bool IsConstructorEnabled { get; }
         bool IsConstructorExpanded { get; set; }
         bool IsRefreshing { get; set; }
         event SomethingChanged SomethingChanged;

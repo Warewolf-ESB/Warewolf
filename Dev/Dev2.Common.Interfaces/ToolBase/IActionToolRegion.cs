@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         T SelectedMethod { get; set; }
         ICollection<T> MethodsToRun { get; set; }
         ICommand RefreshMethodsCommand { get; }
-        bool IsActionEnabled { get; set; }
+        bool IsActionEnabled { get; }
         bool IsMethodExpanded { get; set; }
         bool IsRefreshing { get; set; }
         event SomethingChanged SomethingChanged;

@@ -9,7 +9,7 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="250"
+                               MinHeight="180"
                                Height="Auto"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
@@ -48,16 +48,23 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewDotNetSelectionNamespaceGrid}"/>
 
-            <Control Grid.Row="1" Template="{StaticResource NewDotNetMethodListGrid}"/>
+            <Control Grid.Row="1" Template="{StaticResource NewDotNetConstructorListGrid}"
+                     Visibility="{Binding IsConstructorVisible, Converter={StaticResource BoolToVisibilityConverter}}" 
+                     IsVisibleChanged="UIElement_OnIsVisibleChanged"/>
+
+            <Control Grid.Row="2" Template="{StaticResource NewDotNetMethodListGrid}" 
+                     Visibility="{Binding IsActionsVisible, Converter={StaticResource BoolToVisibilityConverter}}" 
+                     IsVisibleChanged="UIElement_OnIsVisibleChanged"/>
 
             <Grid x:Name="ErrorGrid" 
-                  Grid.Row="2"
+                  Grid.Row="3"
                   Margin="{StaticResource ControlBorderTop}" >
                 <errors:OnError />
             </Grid>

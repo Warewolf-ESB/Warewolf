@@ -225,29 +225,6 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetConstructorGrid" d:DataContext="{d:DesignInstance constructorRegion:DotNetConstructorRegion}">
-        <Grid x:Name="ConstructorsGrid" 
-                      Margin="-3,0,0,0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ConstructorLabel" Text="Constructor" Margin="{StaticResource ControlBorderRight}" />
-            <ComboBox x:Name="ConstructorsComboBox"
-                              Grid.Column="1"
-                              Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding Constructors}"
-                              DisplayMemberPath="ConstructorName" 
-                              IsEnabled="{Binding IsConstructorEnabled}"
-                              ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
-                              IsEditable="False"
-                              SelectedItem="{Binding SelectedConstructor}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-        </Grid>
-    </ControlTemplate>
     <ControlTemplate x:Key="NewNamespaceGrid">
         <Grid x:Name="ActionsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
@@ -517,7 +494,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="NewDotNetMethodListGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
-        <Grid x:Name="MethodListGrid">
+        <Grid x:Name="MethodListGrid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -528,7 +505,6 @@
             <ListBox x:Name="MethodListBox"
                     BorderThickness="0"
                     ItemsSource="{Binding MethodsToRunList}"
-                    Background="{StaticResource WarewolfPanelGreyBrush}"
                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="actionRegion:DotNetMethodRegion" >
@@ -1145,7 +1121,26 @@
                           AutomationProperties.AutomationId="{Binding StringFormat=UI_ConstructorExpander_{0}_AutoID, Path=ConstructorRegion.SelectedConstructor}">
                     <Expander.HeaderTemplate>
                         <DataTemplate>
-                            <Control DataContext="{Binding ConstructorRegion}" Template="{StaticResource NewDotNetConstructorGrid}" />
+                            <Grid x:Name="ConstructorsGrid" Margin="-3,0,0,0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="ConstructorLabel" Text="Constructor" Margin="{StaticResource ControlBorderRight}" />
+                                <ComboBox x:Name="ConstructorsComboBox"
+                                          Grid.Column="1"
+                                          Margin="{StaticResource ControlBorderRight}"
+                                          ItemsSource="{Binding ConstructorRegion.Constructors}"
+                                          DisplayMemberPath="ConstructorName" 
+                                          IsEnabled="{Binding ConstructorRegion.IsConstructorEnabled}"
+                                          ToolTip="{x:Static languages:Tooltips.PluginServiceSelectConstructorToolTip}"
+                                          IsEditable="False"
+                                          SelectedItem="{Binding ConstructorRegion.SelectedConstructor}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </ComboBox>
+                            </Grid>
                         </DataTemplate>
                     </Expander.HeaderTemplate>
                     <Grid>
@@ -1166,14 +1161,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewSelectionGrid}"/>
 
             <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
-
-            <Control Template="{StaticResource NewDotNetConstructorListGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
 
