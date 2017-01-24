@@ -11,12 +11,12 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Resource Tools")]
         public void ResourcePickerTests_CodedUI_DropWorkflowFromToolbox_ExpectResourcePickerToBehaveCorrectly_UITest()
         {
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
-            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is not enabled");
             UIMap.Click_Service_Picker_Dialog_OK();
         }
         
@@ -24,7 +24,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickCancel_UITest()
         {
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_Cancel();
@@ -36,7 +36,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsAndClickOK_UITest()
         {
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_OK();
@@ -48,11 +48,11 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerTestsByDoubleClick_UITest()
         {
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.DoubleClick_FirstItem_From_ServicePicker_Tree();
-            Assert.IsTrue(UIMap.ServicePickerDialog.Exists);
-            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsTrue(UIMap.ServicePickerDialog.Exists, "Server Picker Dialog does not exist");
+            Assert.IsTrue(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is not enabled");
             UIMap.Click_Service_Picker_Dialog_Cancel();
         }
 
@@ -60,7 +60,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("Resource Tools")]
         public void SelectResource_FromResourcePickerAndClickOK_ThenDeleteWorkFlowAndDragServiceAgain_UITest()
         {
-            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled);
+            Assert.IsFalse(UIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
             UIMap.Filter_ServicePicker_Explorer("Hello World");
             UIMap.Select_FirstItem_From_ServicePicker_Tree();
             UIMap.Click_Service_Picker_Dialog_OK();

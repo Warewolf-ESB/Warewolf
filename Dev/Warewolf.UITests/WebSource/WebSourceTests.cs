@@ -26,13 +26,13 @@ namespace Warewolf.UITests.WebSource
         public void Create_WebSource_UITests()
         {
             UIMap.Click_NewWebSource_From_ExplorerContextMenu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web Source Tab does not exist.");
             UIMap.Click_UserButton_On_WebServiceSourceTab();
             UIMap.Enter_TextIntoAddress_On_WebServiceSourceTab();
             UIMap.Enter_RunAsUser_On_WebServiceSourceTab();
             UIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            UIMap.Click_New_Web_Source_Test_Connection_Button();
+            UIMap.Click_NewWebSource_TestConnectionButton();
+            UIMap.Click_NewWebSource_CancelConnectionButton();
             UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
             UIMap.Click_MessageBox_No();
         }
