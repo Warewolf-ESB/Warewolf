@@ -19,7 +19,6 @@ if ($Args.Count -gt 0) {
                 $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	            Continue
             }
         }
     }
@@ -33,7 +32,9 @@ $TestSettingsFile = "$PSScriptRoot\WebConnectorUISpecs.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
   name=`"WebConnectorUISpecs`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -47,37 +48,41 @@ $TestSettingsFile = "$PSScriptRoot\WebConnectorUISpecs.testsettings"
 "@)
 
 # Find test assembly
+$TestAssemblyPath = ""
 if (Test-Path "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs.dll"
 }
-if (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
+elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
 	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll"
 }
-if (!(Test-Path $TestAssemblyPath)) {
+elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll"
+}
+if ($TestAssemblyPath -eq "") {
 	Write-Host Cannot find Warewolf.UISpecs.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
 	exit 1
 }

@@ -61,7 +61,6 @@ Scenario: Creating New DB Source General Testing
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRGENDEV"
-	And Password field is "Visible"
 	And "Save" is "Disabled"
 	When I type Username as "testuser"
 	And I type Password as "test123"

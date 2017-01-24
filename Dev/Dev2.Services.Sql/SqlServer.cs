@@ -155,7 +155,8 @@ namespace Dev2.Services.Sql
                     {
                         List<IDbDataParameter> parameters = GetProcedureParameters(command);
 
-                        string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                        //string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                        string helpText = "";
 
                         if (IsStoredProcedure(row, procedureTypeColumn))
                         {
@@ -258,13 +259,14 @@ namespace Dev2.Services.Sql
         #endregion
 
         private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataReader, T> handler)
+            Func<IDataAdapter, T> handler)
         {
             try
             {
-                using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                var da = new SqlDataAdapter(command as SqlCommand);
+                using (da)
                 {
-                    return handler(reader);
+                    return handler(da);
                 }
             }
             catch (DbException e)
@@ -274,7 +276,7 @@ namespace Dev2.Services.Sql
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
-                    return handler(new DataTableReader(exceptionDataTable));
+                    return handler(new SqlDataAdapter());
                 }
                 throw;
             }
@@ -314,12 +316,16 @@ namespace Dev2.Services.Sql
                     string.Format("sp_helptext '{0}'", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate(IDataReader reader)
+                    delegate(IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
-                        while (reader.Read())
+                        DataSet ds = new DataSet(); //conn is opened by dataadapter
+                        reader.Fill(ds);
+                        var t = ds.Tables[0];
+                        var dataTableReader = t.CreateDataReader();
+                        while (dataTableReader.Read())
                         {
-                            object value = reader.GetValue(0);
+                            object value = dataTableReader.GetValue(0);
                             if (value != null)
                             {
                                 sb.Append(value);

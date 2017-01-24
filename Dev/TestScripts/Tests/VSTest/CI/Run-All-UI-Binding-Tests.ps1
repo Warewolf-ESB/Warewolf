@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -19,7 +15,6 @@ if ($Args.Count -gt 0) {
                 $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	            Continue
             }
         }
     }
@@ -29,8 +24,41 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create assemblies list.
+if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\Warewolf.UIBindingTests"
+}
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
+}
+elseif (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot"
+}
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Warewolf.AcceptanceTesting.*.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $TestAssembliesPath -Include Warewolf.UIBindingTests.*.dll -Recurse | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 
@@ -41,4 +69,4 @@ $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

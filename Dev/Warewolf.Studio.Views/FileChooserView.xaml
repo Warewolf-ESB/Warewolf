@@ -273,7 +273,7 @@
                          x:Name="DriveNameTextBox" 
                          Text="{Binding DriveName, UpdateSourceTrigger=PropertyChanged}" 
                          Visibility="{Binding AllowMultipleSelection, Converter={StaticResource BoolToVisibilityConverter}}"
-                         ToolTip="{x:Static languages:Tooltips.ManageEmailAttachmentDriveNameTooltip}"></TextBox>
+                         ToolTip="{Binding FilesTooltip}"></TextBox>
                 <ui:IntellisenseTextBox x:Name="DriveNameIntellisenseTextBox"
                                         Grid.Column="1" 
                                         AllowUserInsertLine="False"
@@ -281,7 +281,7 @@
                                         WrapInBrackets="False"
                                         MaxHeight="25"
                                         Visibility="{Binding AllowMultipleSelection, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                        ToolTip="{x:Static languages:Tooltips.ManageEmailAttachmentDriveNameTooltip}"
+                                        ToolTip="{Binding FilesTooltip}"
                                         Style="{StaticResource AutoCompleteBoxStyle}"
                                         SelectionChanged="DriveNameIntellisenseTextBox_OnSelectionChanged">
                     <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -296,7 +296,7 @@
                 <Button Command="{Binding SaveCommand}" 
                         x:Name="SaveButton"
                         Content="Select"
-                        ToolTip="{x:Static languages:Tooltips.ManageEmailAttachmentAttachTooltip}"
+                        ToolTip="{Binding SelectTooltip}"
                         Width="Auto"
                         Margin="{StaticResource ControlBorderRight}">
                 </Button>

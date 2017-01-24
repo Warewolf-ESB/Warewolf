@@ -5,7 +5,7 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
     Given The Warewolf Studio is running
 	And I Filter the Explorer with "Hello World"
 	And I RightClick Explorer Localhost First Item
-	And I Select Deploy FromExplorerContextMenu
+	And I Select Deploy From Explorer Context Menu
 	And I Select "Hello World" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
 	
@@ -16,7 +16,6 @@ Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button		
 	And I Select "DeployViewOnly" from the source tab 
-	And I Wait For Explorer First Remote Server Spinner	
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Deploy button	
 	And I Click Deploy version conflicts MessageBox OK
@@ -30,7 +29,6 @@ Scenario: Deploy From RemoteConnection
 	When I Click Deploy Ribbon Button
     And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
 	And I Click Deploy Tab Source Server Connect Button
-	And I Wait For Explorer First Remote Server Spinner	
     And Resources is visible on the tree
 	And I Select "Hello World" from the source tab 
 	And I Click Deploy button	
@@ -98,7 +96,7 @@ Scenario: Deploying From Explorer Opens The Deploy With All Resources in Folder 
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
-	And I Select Deploy FromExplorerContextMenu
+	And I Select Deploy From Explorer Context Menu
 	And I Enter "Unit Tests" Into Deploy Source Filter	
 	Then Filtered Resourse Is Checked For Deploy
 	And I Click Close Deploy Tab Button
@@ -107,7 +105,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
-	And I Select Deploy FromExplorerContextMenu
+	And I Select Deploy From Explorer Context Menu
 	And I Click Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
 	And I Click Deploy Tab Destination Server Connect Button
@@ -121,7 +119,7 @@ Scenario: Deploy Disconnect Clears Destination
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "Unit Tests"
 	And I RightClick Explorer Localhost First Item
-	And I Select Deploy FromExplorerContextMenu
+	And I Select Deploy From Explorer Context Menu
     And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
 	Then Deploy Button Is Enabled

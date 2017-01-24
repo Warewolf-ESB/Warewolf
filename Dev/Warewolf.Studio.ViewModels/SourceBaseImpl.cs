@@ -121,5 +121,10 @@ namespace Warewolf.Studio.ViewModels
             }
             return exceptionMsg;
         }
+
+        protected virtual void OnIsActiveChanged()
+        {
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

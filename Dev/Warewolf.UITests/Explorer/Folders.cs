@@ -18,7 +18,7 @@ namespace Warewolf.UITests
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
             UIMap.Filter_Explorer("Acceptance Tests");
-            UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Context_Menu();
+            UIMap.Create_NewWorkflow_Of_ExplorerFirstItem_With_ExplorerContextMenu();
             UIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog(ResourceCreatedInFolder);
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);

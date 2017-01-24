@@ -15,11 +15,8 @@ Scenario: Schedule with history
 	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  When the "ScheduleWithHistory" is executed "1" times
 	  Then the Schedule task has "NO" error
-	  Then the schedule status is "Success"
+	  Then the schedule status is "Error"
 	  And "ScheduleWithHistory" has "2" row of history	   
-	  And the history debug output for "ScheduleWithHistory" for row "1" is 
-	  | # |                   |
-	  | 1 | [[Message]] = String |
 
 @Scheduler
 Scenario: Creating task with schedule statud disabled
@@ -46,11 +43,9 @@ Scenario: Setting schedule task "At log on"
 	  | At log on    | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  Then the Schedule task has "No" error
 	  When the "Diceroll1" is executed "1" times
-	  Then the schedule status is "Success"
+	  Then the schedule status is "Error"
 	  And "Diceroll1" has "2" row of history	   
-	  And the history debug output for "ScheduleWithHistory" for row "1" is 
-		| # |                    |
-		| 1 | [[Message]] = String |
+	  
 
 @Scheduler
 Scenario: Schedule the task with Incorrect username or password
@@ -76,12 +71,9 @@ Scenario: Schedule with LocalUser
 	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  When the "LocalUserSchedule" is executed "1" times
 	  Then the Schedule task has "No" error
-	  Then the schedule status is "Success"
+	  Then the schedule status is "Error"
 	  And "LocalUserSchedule" has "2" row of history	   
-	  And the history debug output for "LocalUserSchedule" for row "1" is 
-	  | # |                   |
-	  | 1 | [[Message]] = String |
-
+	  
 @Scheduler
 Scenario: Schedule with ErrorInDebug
       Given I have a schedule "ScheduleWithError"

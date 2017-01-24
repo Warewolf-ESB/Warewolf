@@ -1,6 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
+using Dev2.UI;
 using Infragistics.Controls.Menus;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
@@ -116,6 +118,24 @@ namespace Warewolf.Studio.Views
                     return GacAssemblyNameButton.IsEnabled;
             }
             return false;
+        }
+
+        private void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            var intellisenseTextBox = sender as IntellisenseTextBox;
+            if (intellisenseTextBox != null)
+            {
+                if (string.IsNullOrWhiteSpace(intellisenseTextBox.Text))
+                {
+                    if (Application.Current != null)
+                        intellisenseTextBox.Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
+                }
+                else
+                {
+                    if (Application.Current != null)
+                        intellisenseTextBox.Style = Application.Current.TryFindResource("DisabledAutoCompleteBoxStyle") as Style;
+                }
+            }
         }
     }
 }

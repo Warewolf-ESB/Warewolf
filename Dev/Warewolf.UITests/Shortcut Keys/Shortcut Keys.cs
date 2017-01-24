@@ -4,28 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.UITests.Workflow
 {
     [CodedUITest]
-    public class WorkflowTests
+    public class Shortcut_Keys
     {
         private const string Folder = "Acceptance Tests";
         private const string HelloWorld = "Hello World";
-
-        //[TestMethod]
-        //[TestCategory("Tabs and Panes")]
-        //public void Workflow_Name_Counter()
-        //{
-        //    UIMap.Create_New_Workflow_Using_Shortcut();
-        //    Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIUnsaved2Text.Exists, "Second new workflow tab is not Unsaved 2");
-        //}
-
-        //[TestMethod]
-        //[TestCategory("Tabs and Panes")]
-        //public void Unsaved_Workflow_Name_Asterisk()
-        //{
-        //    UIMap.Create_New_Workflow_Using_Shortcut();
-        //    UIMap.Make_Workflow_Savable_By_Dragging_Start();
-        //}
-
+        
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_W_Opens_NewWorkflow()
         {
             UIMap.Click_LocalHost_Once();
@@ -34,6 +19,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Opens_SaveWorkflow_Dialog_For_New_Workflows()
         {
             UIMap.Click_New_Workflow_Ribbon_Button();
@@ -42,11 +28,13 @@ namespace Warewolf.UITests.Workflow
             Assert.IsTrue(UIMap.SaveDialogWindow.Exists);
             UIMap.Click_SaveDialog_CancelButton();
         }
+
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
         {
             UIMap.Filter_Explorer("Hello World");
-            UIMap.Open_Explorer_First_Item_With_Context_Menu();
+            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             UIMap.Save_Workflow_Using_Shortcut();
@@ -54,6 +42,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
         {
             UIMap.Filter_Explorer(HelloWorld);
@@ -64,7 +53,9 @@ namespace Warewolf.UITests.Workflow
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
             UIMap.Click_Close_Deploy_Tab_Button();
         }
+
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
         {
             UIMap.Filter_Explorer(Folder);
@@ -76,6 +67,7 @@ namespace Warewolf.UITests.Workflow
         }
 
         [TestMethod]
+        [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployWizardTab()
         {
             UIMap.Click_LocalHost_Once();

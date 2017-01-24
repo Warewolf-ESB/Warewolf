@@ -70,7 +70,7 @@ namespace Warewolf.UITests
             UIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog(RandomWorkFlow);
             UIMap.Filter_Explorer(RandomWorkFlow);
-            UIMap.Open_Explorer_First_Item_Tests_With_Context_Menu();
+            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
             UIMap.Click_Create_New_Tests(true);
             UIMap.Click_New_Workflow_Tab();
             UIMap.Press_F6();

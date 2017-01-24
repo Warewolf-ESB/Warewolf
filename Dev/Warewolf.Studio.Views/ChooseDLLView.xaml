@@ -64,7 +64,7 @@
                                                   Text="{Binding SearchTerm, Delay=450, UpdateSourceTrigger=PropertyChanged}"
                                                   Style="{StaticResource SearchTextboxStyle}"
                                                   LabelText="Filter"
-                                                  ToolTip="{x:Static languages:Tooltips.ManagePluginSourceFilterTooltip}"
+                                                  ToolTip="{Binding FilterTooltip}"
                                                   ClearSearchCommand="{Binding ClearSearchTextCommand}"
                                                   ClearSearchToolTip="{x:Static languages:Tooltips.ManagePluginSourceClearSearchTooltip}"
                                                   HorizontalAlignment="Stretch" >
@@ -113,14 +113,17 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Files: "></TextBlock>
-                <TextBox x:Name="FilesTextBox" Grid.Column="1" Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{x:Static languages:Tooltips.ManageEmailAttachmentDriveNameTooltip}"></TextBox>
+                <TextBox x:Name="FilesTextBox" 
+                         Grid.Column="1" 
+                         Text="{Binding AssemblyName, UpdateSourceTrigger=PropertyChanged}" 
+                         ToolTip="{Binding FilesTooltip}"></TextBox>
             </Grid>
 
             <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
                 <Button Command="{Binding SelectCommand}" 
                         x:Name="SelectButton"
                         Content="Select"
-                        ToolTip="{x:Static languages:Tooltips.ManageEmailAttachmentAttachTooltip}"
+                        ToolTip="{Binding SelectTooltip}"
                         Width="Auto"
                         Margin="{StaticResource ControlBorderRight}">
                 </Button>

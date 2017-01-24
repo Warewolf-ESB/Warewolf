@@ -159,7 +159,7 @@
                                         Margin="{StaticResource ControlBorderTopRight}"
                                         ToolTipService.ShowOnDisabled="True"
                                         ToolTip="{x:Static languages:Tooltips.ManagePluginSourceGacAssemblyNameTooltip}"
-                                        Style="{StaticResource AutoCompleteBoxStyle}"
+                                        TextChanged="GacAssemblyNameTextBox_OnTextChanged"
                                         Text="{Binding GACAssemblyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </ui:IntellisenseTextBox>
                 <Button x:Name="GacAssemblyNameButton" 

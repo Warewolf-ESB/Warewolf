@@ -1069,8 +1069,29 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ManagePluginSourceRefreshTooltip" xml:space="preserve">
     <value>Refresh the available files and GAC entries</value>
   </data>
-  <data name="ManagePluginSourceFilterTooltip" xml:space="preserve">
-    <value>Filter for the file you want or GAC entry</value>
+  <data name="ManagePluginSourceFilterGACTooltip" xml:space="preserve">
+    <value>Filter for the GAC you want to select</value>
+  </data>
+  <data name="ManagePluginSourceFilterAssemblyTooltip" xml:space="preserve">
+    <value>Filter for the dll you want to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesGACTooltip" xml:space="preserve">
+    <value>The full path of the GAC you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesAssemblyTooltip" xml:space="preserve">
+    <value>The full path of the Assembly you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesConfigTooltip" xml:space="preserve">
+    <value>The full path of the Config File you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceSelectGACTooltip" xml:space="preserve">
+    <value>Add the selected GAC to the plugin</value>
+  </data>
+  <data name="ManagePluginSourceSelectAssemblyTooltip" xml:space="preserve">
+    <value>Add the selected Assembly to the plugin</value>
+  </data>
+  <data name="ManagePluginSourceSelectConfigFileTooltip" xml:space="preserve">
+    <value>Add the selected Config File to the plugin</value>
   </data>
   <data name="ManagePluginSourceClearSearchTooltip" xml:space="preserve">
     <value>Clear the filter criteria</value>
@@ -1085,16 +1106,16 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>The GAC name of the DLL you want to use</value>
   </data>
   <data name="ManagePluginSourceGacAssemblyNameButtonTooltip" xml:space="preserve">
-    <value>Select the GAC name of the DLL you want to use</value>
+    <value>Click the elipses [...] to select an assembly from the GAC</value>
   </data>
   <data name="ManagePluginSourceConfigFileDisabledTooltip" xml:space="preserve">
     <value>You cannot select a Config file without an Assembly selected</value>
   </data>
   <data name="ManagePluginSourceAssemblyNameButtonTooltip" xml:space="preserve">
-    <value>Select the full path of the DLL you want to use</value>
+    <value>Click the elipses [...] to select an assembly from the Dll</value>
   </data>
   <data name="ManagePluginSourceConfigFileButtonTooltip" xml:space="preserve">
-    <value>Select the full path of the Config file you want to use</value>
+    <value>Click the elipses [...] to select a Config File</value>
   </data>
   <data name="ManagePluginSourceConfigFileButtonDisabledTooltip" xml:space="preserve">
     <value>You cannot select a Config file without an Assemble selected</value>
@@ -1158,6 +1179,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ManageEmailEnableSslNoTooltip" xml:space="preserve">
     <value>Does the server require SSL?</value>
+  </data>
+  <data name="ManageEmailAttachmentFilterTooltip" xml:space="preserve">
+    <value>Filter for the file you want to attach</value>
   </data>
   <data name="ManageEmailAttachmentDriveNameTooltip" xml:space="preserve">
     <value>The full path of the files you would like to attach</value>

@@ -1007,6 +1007,29 @@ Scenario: Run Selected Test in Web
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
+Scenario: Run Selected Test in Web with input variable value
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And I update inputs as
+	| Variable Name | Value |
+	| Name             |  Bob     |
+	And I update outputs as
+	| Variable Name | Value |
+	| Message   |   Hello Bob.    |
+	And save is enabled
+	When I save	
+	When I run selected test in Web
+	Then The WebResponse as
+	| Test Name | Result | Message |
+	| Test 1    | Passed |         |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"

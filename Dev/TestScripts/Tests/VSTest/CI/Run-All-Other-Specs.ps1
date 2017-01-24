@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -19,7 +15,6 @@ if ($Args.Count -gt 0) {
                 $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	            Continue
             }
         }
     }
@@ -48,12 +43,45 @@ $TestSettingsFile = "$PSScriptRoot\AllOtherSpecs.testsettings"
 "@)
 
 # Create assemblies list.
-$TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Filter Warewolf.*.Specs ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+if (Test-Path "$PSScriptRoot\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
 }
-foreach ($file in Get-ChildItem $SolutionDir -Filter Dev2.*.Specs ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "\bin\Debug\" + $file.Name + ".dll`""
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Specs\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
+}
+elseif (Test-Path "$PSScriptRoot\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot"
+}
+elseif (Test-Path "$PSScriptRoot\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
+$TestAssembliesList = ''
+foreach ($file in Get-ChildItem $PSScriptRoot -Filter Warewolf.*.Specs.dll ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+}
+foreach ($file in Get-ChildItem $PSScriptRoot -Filter Dev2.*.Specs.dll ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 
 if ($TestList -eq "") {
@@ -68,4 +96,4 @@ if ($TestList -eq "") {
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

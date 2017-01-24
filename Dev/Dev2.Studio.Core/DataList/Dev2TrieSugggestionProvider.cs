@@ -26,9 +26,7 @@ namespace Dev2.Studio.Core.DataList
             }
             set
             {
-                if (_variableList == null || (value.Union(_variableList).Count() != _variableList.Count))
-                    _variableList = value;
-
+                _variableList = value;
                 PatriciaTrie = new SuffixTrie<string>(1);
 
                 PatriciaTrieScalars = new SuffixTrie<string>(1);
