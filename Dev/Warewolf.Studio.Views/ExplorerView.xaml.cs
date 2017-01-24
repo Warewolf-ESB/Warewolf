@@ -264,12 +264,9 @@ namespace Warewolf.Studio.Views
 
         private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //if ((bool)e.NewValue)
-            {
-                var textBox = sender as TextBox;
-                Keyboard.Focus(textBox);
-                textBox?.SelectAll();
-            }
+            var textBox = sender as TextBox;
+            Keyboard.Focus(textBox);
+            textBox?.SelectAll();
         }
 
         private void TreeViewItemPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
