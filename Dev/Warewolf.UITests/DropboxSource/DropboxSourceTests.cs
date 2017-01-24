@@ -6,15 +6,29 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DropboxSourceTests
     {
-        const string SourceName = "CodedUITestDropboxSource";
-
         [TestMethod]
+        [TestCategory("Dropbox Source")]
         // ReSharper disable once InconsistentNaming
-        public void DropboxSource_CreateSourceUITests()
+        public void Open_DropboxSource_From_ExplorerContextMenu_UITests()
         {
-            UIMap.Select_NewDropboxSource_FromExplorerContextMenu();
+            UIMap.Select_NewDropboxSource_From_ExplorerContextMenu();
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton.Enabled, "Authorise button is enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.ServerTypeComboBox.Enabled, "Server Type Combobox is not enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Enabled, "OAuth Key Textbox is not enabled");
+            UIMap.Click_OAuthSource_CloseTabButton();
         }
 
+        [TestMethod]
+        [TestCategory("Dropbox Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Create_DropboxSource_UITests()
+        {
+            UIMap.Select_NewDropboxSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.Exists, "OAuth Source Tab does not exist");
+            UIMap.Enter_TextIntoOAuthKey_On_OAuthSourceTab();
+            UIMap.Click_OAuthSource_AuthoriseButton();
+            UIMap.Click_OAuthSource_CloseTabButton();
+        }
         #region Additional test attributes
 
         [TestInitialize()]

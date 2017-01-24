@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 {
@@ -105,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged();
             }
         }
-
+        
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
@@ -162,10 +163,8 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
             set
             {
-                if (!Equals(value, _selectedConstructor) && _selectedConstructor != null)
+                if (value != null)
                 {
-                    if (!string.IsNullOrEmpty(_selectedConstructor.ConstructorName))
-                        StorePreviousValues(_selectedConstructor.GetIdentifier());
                     _modelItem.SetProperty("Constructor", value);
                 }
                 RestoreIfPrevious(value);

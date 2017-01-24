@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             //using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                
+
                 var result = PluginServiceExecutionFactory.GetNamespaces(source);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
@@ -58,7 +59,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             //using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                
+
                 var result = PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(source);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(null);
         }
 
-        
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 var result = PluginServiceExecutionFactory.GetMethods(source.AssemblyLocation, source.AssemblyName, service.Namespace);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
-            }            
+            }
         }
 
         [TestMethod]
@@ -117,7 +118,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 var result = PluginServiceExecutionFactory.GetConstructors(source.AssemblyLocation, source.AssemblyName, service.Namespace);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
-            }            
+            }
         }
 
         [TestMethod]
@@ -134,7 +135,25 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 var result = PluginServiceExecutionFactory.GetMethodsWithReturns(source.AssemblyLocation, source.AssemblyName, service.Namespace);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(result.Count > 0);
-            }            
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDllMethodIsVoid_ExpectValidResultsWithVoidMethod()
+        {
+            //------------Setup for test--------------------------
+            var source = CreatePluginSource();
+            var service = CreatePluginService();
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = PluginServiceExecutionFactory.GetMethodsWithReturns(source.AssemblyLocation, source.AssemblyName, service.Namespace);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result.Count > 0);
+                Assert.IsTrue(result.Any(method => method.IsVoid));
+            }
         }
 
         [TestMethod]
@@ -145,19 +164,23 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             var svc = CreatePluginService();
-                     
-            
+
+
 
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs
                 {
-                      AssemblyLocation = source.AssemblyLocation
-                    , AssemblyName = "Foo"
-                    , Fullname = svc.Namespace
-                    , Method = svc.Method.Name
-                    , Parameters = svc.Method.Parameters
+                    AssemblyLocation = source.AssemblyLocation
+                    ,
+                    AssemblyName = "Foo"
+                    ,
+                    Fullname = svc.Namespace
+                    ,
+                    Method = svc.Method.Name
+                    ,
+                    Parameters = svc.Method.Parameters
                 };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
                 var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
@@ -170,8 +193,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 {
                     Assert.Fail("Failed Conversion for Assert");
                 }
-            }  
-            
+            }
+
         }
 
         #region Helper Methods
@@ -182,13 +205,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var assembly = type.Assembly;
 
             string loc = null;
-            if(!nullLocation)
+            if (!nullLocation)
             {
                 loc = assembly.Location;
             }
 
             Guid resourceID = Guid.Empty;
-            if(!invalidResourceID)
+            if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();
             }

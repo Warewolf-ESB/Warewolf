@@ -76,7 +76,6 @@ namespace Dev2.Activities.Designers2.Core
         void ResetOutputsView()
         {
             IsEnabled = false;
-            _viewmodel.GenerateOutputsVisible = false;
             InputArea.IsEnabled = false;
             OutputArea.IsEnabled = false;
             TestResults = string.Empty;

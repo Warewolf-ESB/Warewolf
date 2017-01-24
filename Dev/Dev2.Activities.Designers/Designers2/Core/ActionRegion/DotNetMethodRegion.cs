@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Common.Utils;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
+using Warewolf.Storage;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -25,6 +27,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
+        private RelayCommand _viewObjectResult;
         private IPluginAction _selectedMethod;
         private IPluginServiceModel _model;
         private ICollection<IPluginAction> _methodsToRun;
@@ -164,24 +167,167 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedMethod) && _selectedMethod != null)
-                {
-                    if (!string.IsNullOrEmpty(_selectedMethod.Method))
-                        StorePreviousValues(_selectedMethod.GetIdentifier());
-                }
-                if (Dependants != null)
-                {
-                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as DotNetMethodOutputsRegion;
-                    if (region != null)
-                    {
-                        region.RecordsetName = string.Empty;
-                        region.ObjectResult = string.Empty;
-                        region.ObjectName = string.Empty;
-                    }
-                }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
+                OnPropertyChanged("IsVoid");
+                OnPropertyChanged("Method");
+                OnPropertyChanged("RecordsetName");
+                OnPropertyChanged("IsObject");
+                OnPropertyChanged("ObjectName");
+                OnPropertyChanged("ObjectResult");
+                OnPropertyChanged("Inputs");
+                OnPropertyChanged("IsInputsEmptyRows");
+            }
+        }
+
+        public bool IsVoid
+        {
+            get
+            {
+                return _selectedMethod == null || _selectedMethod.IsVoid;
+            }
+            set
+            {
+                if (_selectedMethod != null)
+                {
+                    _selectedMethod.IsVoid = value;
+                }
+                OnPropertyChanged();
+            }
+        }
+        public string RecordsetName
+        {
+            get
+            {
+                if (_selectedMethod != null)
+                {
+                    return _selectedMethod.OutputVariable;
+                }
+                return string.Empty;
+            }
+            set
+            {
+                if (_selectedMethod != null)
+                {
+                    _selectedMethod.OutputVariable = value;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsObject
+        {
+            get { return _selectedMethod != null && _selectedMethod.IsObject; }
+            set
+            {
+                if (_selectedMethod != null)
+                    _selectedMethod.IsObject = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsObjectEnabled => !IsObject;
+
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
+
+        public RelayCommand ViewObjectResult
+        {
+            get
+            {
+                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                {
+                    ViewJsonObjects();
+                }, CanRunCommand));
+            }
+        }
+
+        private bool CanRunCommand(object obj)
+        {
+            return true;
+        }
+
+        private void ViewJsonObjects()
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+        }
+
+        public string ObjectName
+        {
+            get { return _selectedMethod?.OutputVariable; }
+            set
+            {
+                if (IsObject && !string.IsNullOrEmpty(ObjectResult))
+                {
+                    try
+                    {
+                        if (value != null)
+                        {
+                            _selectedMethod.OutputVariable = value;
+                            OnPropertyChanged();
+                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+                            if (language.IsJsonIdentifierExpression)
+                            {
+                                //_shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+                            }
+                        }
+                        else
+                        {
+                            _selectedMethod.OutputVariable = string.Empty;
+                            OnPropertyChanged();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Is not an object identifier
+                    }
+                }
+            }
+        }
+
+        public bool IsInputsEmptyRows => Inputs==null || Inputs.Count==0;
+
+
+        public ICollection<IServiceInput> Inputs
+        {
+            get
+            {
+                return _selectedMethod?.Inputs;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    if (_selectedMethod != null)
+                    {
+                        _selectedMethod.Inputs = value.ToList();
+                    }
+                    OnPropertyChanged();
+                    OnPropertyChanged("IsInputsEmptyRows");
+                }
+                else
+                {
+                    _selectedMethod?.Inputs.Clear();
+                    OnPropertyChanged();
+                    OnPropertyChanged("IsInputsEmptyRows");
+                }
+            }
+        }
+
+        public string ObjectResult
+        {
+            get { return _selectedMethod?.Dev2ReturnType; }
+            set
+            {
+                if (value != null)
+                {
+                    _selectedMethod.Dev2ReturnType = JSONUtils.Format(value);
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _selectedMethod.Dev2ReturnType = string.Empty;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -377,9 +523,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _modelItem.SetProperty("SavedAction", value);
             }
         }
-
-        public DotNetMethodInputRegion InputRegion { get; set; }
-        public DotNetMethodOutputsRegion OutputRegion { get; set; }
 
         #endregion
 

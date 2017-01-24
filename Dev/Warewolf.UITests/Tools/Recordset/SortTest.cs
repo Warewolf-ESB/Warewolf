@@ -10,7 +10,7 @@ namespace Warewolf.UITests
         [TestCategory("Recordset Tools")]
         public void Sort_OpenLargeViewUITest()
         {                        
-            UIMap.Open_SortRecords_Large_View();
+            UIMap.Open_SortRecords_LargeView();
         }
 
         #region Additional test attributes

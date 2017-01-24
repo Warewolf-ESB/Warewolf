@@ -119,23 +119,35 @@
                       DataContextChanged="ExplorerTree_OnDataContextChanged"
                       PreviewMouseLeftButtonUp="ExplorerTree_OnPreviewMouseLeftButtonUp"
                       customControls:DragDropExtension.ScrollOnDragDrop="True"
-                      PreviewMouseMove="Tree_MouseMove"
+                      PreviewMouseMove="TreeMouseMove"
                       SelectedItemChanged="ExplorerTree_OnSelectedItemChanged"
                       KeyboardNavigation.TabNavigation="Continue"
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       KeyUp="ExplorerTree_OnKeyUp"
-                      Drop="DropTree_Drop"
+                      Drop="DropTreeDrop"
                       DragOver="ExplorerTree_OnDragOver"
                       DragLeave="ExplorerTree_OnDragLeave"
                       DragEnter="ExplorerTree_OnDragEnter">
-                <TreeView.Resources>
-                    <ContextMenu x:Key="ExplorerEnvironmentMenu"
+                <TreeView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource TreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItemPreviewMouseRightButtonDown"/>
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItemPreviewMouseLeftButtonDown"/>
+                            <EventSetter Event="RequestBringIntoView" Handler="TreeViewItemRequestBringIntoView"/>
+                        </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate x:Name="EnvironmentDataTemplate"  DataType="{x:Type interfaces:IEnvironmentViewModel}" ItemsSource="{Binding Children}">
+                        <Grid Background="Transparent">
+                            <Grid.ContextMenu>
+                                <ContextMenu
                                  Style="{StaticResource ContextMenuStyle}"
                                  StaysOpen="true"
                                  Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}"
                                  KeyUp="ExplorerContextMenuView_OnKeyUp">
-                        <MenuItem Name="NewService"
+                                    <MenuItem Name="NewService"
                                   Command="{Binding NewServiceCommand}"
                                   Header="New Workflow Service"
                                   Style="{StaticResource MenuItemStyle}"
@@ -143,15 +155,15 @@
                                   IsEnabled="{Binding CanCreateWorkflowService}"
                                   ToolTip="{Binding NewServiceTooltip}"
                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource NewServiceIcon}"/>
-                            </MenuItem.Icon>
-                            <MenuItem.InputBindings>
-                                <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
-                            </MenuItem.InputBindings>
-                        </MenuItem>
+                                        <MenuItem.Icon>
+                                            <Image Style="{StaticResource NewServiceIcon}"/>
+                                        </MenuItem.Icon>
+                                        <MenuItem.InputBindings>
+                                            <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                        </MenuItem.InputBindings>
+                                    </MenuItem>
 
-                        <MenuItem Name="NewFolder"
+                                    <MenuItem Name="NewFolder"
                                     Command="{Binding CreateFolderCommand}"
                                     CommandParameter="Folder"
                                     Style="{StaticResource MenuItemStyle}"
@@ -160,10 +172,10 @@
                                     IsEnabled="{Binding CanCreateFolder}" 
                                     ToolTip="{Binding NewFolderTooltip}"/>
 
-                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                    <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
-                        <!--Set Visibility to collapsed until we add functionality for deploy on server-->
-                        <MenuItem Name="Deploy"
+                                    <!--Set Visibility to collapsed until we add functionality for deploy on server-->
+                                    <MenuItem Name="Deploy"
                                 Command="{Binding DeployCommand}"
                                 CommandParameter="{Binding Path=Data}"
                                 Header="Deploy"
@@ -171,12 +183,12 @@
                                 IsEnabled="{Binding CanDeploy}"
                                 ToolTip="{Binding DeployTooltip}"
                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
-                            </MenuItem.Icon>
-                        </MenuItem>
+                                        <MenuItem.Icon>
+                                            <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                        <MenuItem Name="ServerVersion"
+                                    <MenuItem Name="ServerVersion"
                                 Command="{Binding ShowServerVersionCommand}"
                                 Header="Server Version"
                                 Style="{StaticResource MenuItemStyle}"
@@ -184,646 +196,175 @@
                                 ToolTip="{Binding ServerVersionTooltip}"
                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
-                        <MenuItem Name="ViewApisJson"
+                                    <MenuItem Name="ViewApisJson"
                                 Command="{Binding ViewApisJsonCommand}"
                                 Header="View Apis.Json"
                                 Style="{StaticResource MenuItemStyle}"
                                 IsEnabled="{Binding CanViewApisJson}" 
                                 ToolTip="{Binding ViewApisJsonTooltip}"
                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource ViewApisJsonIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
+                                        <MenuItem.Icon>
+                                            <Image Style="{StaticResource ViewApisJsonIcon}"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                    <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
-                        <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                            <MenuItem Name="NewServerSource"
+                                    <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        <MenuItem Name="NewServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewServerCommand}"
                                                   Header="New Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewServerSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewServerSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewSqlServerSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewServerSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewSqlServerSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewSqlServerSourceCommand}"
                                                   Header="New SQL Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewSqlServerSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewMySqlSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewMySqlSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewMySqlSourceCommand}"
                                                   Header="New MySQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewMySqlSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewMySqlSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewPostgreSqlSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewMySqlSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewPostgreSqlSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewPostgreSqlSourceCommand}"
                                                   Header="New PostgreSQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewPostgreSqlSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewOracleSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewOracleSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewOracleSourceCommand}"
                                                   Header="New Oracle Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewOracleSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewOracleSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewOdbcSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewOracleSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewOdbcSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewOdbcSourceCommand}"
                                                   Header="New ODBC Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewOdbcSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewOdbcSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewWebSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewOdbcSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewWebSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewWebSourceSourceCommand}"
                                                   CommandParameter="WebSource"
                                                   Header="New Web Service Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewWebSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewWebSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewPluginSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewWebSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewPluginSourceCommand}"
                                                   Header="New DotNet Plugin Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewPluginSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewComPluginSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewComPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewComPluginSourceCommand}"
                                                   Header="New COM Plugin Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewComPluginSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewWcfSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewWcfSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewWcfSourceCommand}"
                                                   Header="New Wcf Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewComPluginSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewEmailSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewEmailSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewEmailSourceSourceCommand}"
                                                   Header="New Email Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewEmailSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewEmailSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewExchangeSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewEmailSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewExchangeSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewExchangeSourceSourceCommand}"
                                                   Header="New Exchange Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewExchangeSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewEmailSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewRabbitMqSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewEmailSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewRabbitMqSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewRabbitMQSourceSourceCommand}"
                                                   Header="New RabbitMQ Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewRabbitMqSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewDropboxSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewDropboxSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewDropboxSourceSourceCommand}"
                                                   Header="New Dropbox Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewDropboxSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewDropboxSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewSharepointSource"
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewDropboxSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="NewSharepointSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewSharepointSourceSourceCommand}"
                                                   Header="New Sharepoint Source"
                                                   IsEnabled="{Binding CanCreateSource}"
                                                   ToolTip="{Binding NewSharepointSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewSharepointSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-                    </ContextMenu>
-
-                    <ContextMenu x:Key="ExplorerContextMenuManager" Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
-								 Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <MenuItem Name="Open"
-								  Command="{Binding OpenCommand}"
-								  CommandParameter="WorkflowService"
-                                  IsEnabled="{Binding CanView}"
-								  ToolTip="{Binding OpenTooltip}">
-                            <MenuItem.Style>
-                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Header" Value="Open"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
-                                                <Condition Binding="{Binding IsExpanded}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Header" Value="Collapse" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
-                                                <Condition Binding="{Binding IsExpanded}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Header" Value="Expand" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                        </MenuItem>
-
-                        <MenuItem Name="NewServiceItem"
-								  Command="{Binding NewServiceCommand}"
-								  Header="New Workflow Service"
-								  InputGestureText="[Ctrl+W]"
-								  IsEnabled="{Binding CanCreateWorkflowService}"
-								  ToolTip="{Binding NewServiceTooltip}">
-                            <MenuItem.Style>
-                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
-                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource NewServiceIcon}"/>
-                            </MenuItem.Icon>
-                            <MenuItem.InputBindings>
-                                <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
-                            </MenuItem.InputBindings>
-                        </MenuItem>
-
-                        <Separator Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                        <MenuItem Name="DebugInputs"
-								  Command="{Binding DebugCommand}"
-								  Header="Debug Inputs"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanDebugInputs}"
-								  ToolTip="{Binding DebugInputsTooltip}"
-								  Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="DebugStudio"
-								  Command="{Binding DebugStudioCommand}"
-								  Header="Debug Studio"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanDebugStudio}"
-								  ToolTip="{Binding DebugStudioTooltip}"
-								  Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="DebugBrowser"
-								  Command="{Binding DebugBrowserCommand}"
-								  Header="Debug Browser"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanDebugBrowser}"
-								  ToolTip="{Binding DebugBrowserTooltip}"
-								  Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="Schedule"
-								  Command="{Binding ScheduleCommand}"
-								  Header="Schedule"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanCreateSchedule}"
-								  ToolTip="{Binding ScheduleTooltip}"
-								  Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
-
-                        <MenuItem Name="NewFolderFromItem"
-								  Command="{Binding CreateFolderCommand}"
-								  CommandParameter="Folder"
-								  Header="New Folder"
-								  Style="{StaticResource MenuItemStyle}"
-								  InputGestureText="[Ctrl+Shift+F]"
-								  IsEnabled="{Binding CanCreateFolder}" 
-								  ToolTip="{Binding NewFolderTooltip}"
-								  Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                        <MenuItem Name="Rename"
-								  Command="{Binding RenameCommand}"
-								  CommandParameter="{Binding Data}"
-								  Header="Rename"
-								  Style="{StaticResource MenuItemStyle}"
-								  InputGestureText="[F2]"
-								  IsEnabled="{Binding CanRename}"
-								  ToolTip="{Binding RenameTooltip}">
-                            <i:Interaction.Behaviors>
-                                <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}" Tree="{Binding Path=Node.Manager.NodeLayout.Tree}" />
-                            </i:Interaction.Behaviors>
-                        </MenuItem>
-                        <MenuItem Name="Delete"
-								  Command="{Binding DeleteCommand}"
-								  CommandParameter="{Binding Data}"
-								  Header="Delete"
-								  IsEnabled="{Binding CanDelete}"
-								  ToolTip="{Binding DeleteTooltip}">
-                            <MenuItem.Style>
-                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsFolder}" Value="True"/>
-                                                <Condition Binding="{Binding IsSaveDialog}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="TrashOutline" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="Duplicate"
-								  Command="{Binding DuplicateCommand}"
-								  CommandParameter="{Binding Path=Data}"
-								  Header="Duplicate"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanDuplicate}"
-								  ToolTip="{Binding DuplicateTooltip}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
-
-                        <MenuItem Name="Test"
-								  Command="{Binding CreateTestCommand}"
-								  CommandParameter="{Binding Path=Data}"
-								  Header="Tests"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanCreateTest}"
-								  ToolTip="{Binding CreateTestTooltip}"
-								  Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="RunAllTests"
-								  Command="{Binding RunAllTestsCommand}"
-								  Header="Run All Tests"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanViewRunAllTests}"
-								  ToolTip="{Binding RunAllTestsTooltip}"
-								  Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                        </MenuItem>
-
-                        <MenuItem Name="DeployItem"
-								  Command="{Binding DeployCommand}"
-								  CommandParameter="{Binding Path=Data}"
-								  InputGestureText="[Ctrl+D]"
-								  Header="Deploy"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanDeploy}"
-								  ToolTip="{Binding DeployTooltip}"
-                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Name="Dependencies"
-								  Command="{Binding ShowDependenciesCommand}"
-								  CommandParameter="{Binding Data}"
-								  Header="Show Dependencies"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanShowDependencies}"
-								  ToolTip="{Binding DependenciesTooltip}"
-								  Visibility="{Binding IsDependenciesVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="ViewSwagger"
-								  Command="{Binding ViewSwaggerCommand}"
-								  Header="View Swagger"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanViewSwagger}" 
-								  ToolTip="{Binding ViewSwaggerTooltip}"
-								  Visibility="{Binding IsViewSwaggerVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,0,0,0"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="ViewApisJsonItem"
-								  Command="{Binding ViewApisJsonCommand}"
-								  Header="View Apis.Json"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanViewApisJson}" 
-								  ToolTip="{Binding ViewApisJsonTooltip}"
-								  Visibility="{Binding IsViewJsonApisVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource ViewApisJsonIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <Separator Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                        <MenuItem Name="ShowHideVersions"
-								  Command="{Binding ShowVersionHistory}"
-								  Header="{Binding VersionHeader}"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding CanShowVersions}"
-								  ToolTip="{Binding ShowHideVersionsTooltip}"
-								  Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <MenuItem.Icon>
-                                <Image Style="{StaticResource ShowHideVersionsIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Name="Rollback"
-								  Command="{Binding RollbackCommand}"
-								  CommandParameter="{Binding Data}"
-								  Header="Make Current Version"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding IsVersion}" 
-								  ToolTip="{Binding RollbackTooltip}"
-								  Visibility="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                        <MenuItem Name="OpenVersion"
-								  Command="{Binding OpenVersionCommand}"
-								  CommandParameter="{Binding Data}"
-								  Header="Open Version"
-								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding IsVersion}" 
-								  ToolTip="{Binding OpenVersionTooltip}"
-								  Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                        <Separator>
-                            <Separator.Style>
-                                <Style TargetType="{x:Type Separator}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
-                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Separator.Style>
-                        </Separator>
-
-                        <MenuItem Header="Sources">
-                            <MenuItem.Style>
-                                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
-                                                <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                            <MenuItem Name="NewServerSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewServerCommand}"
-									  Header="New Server Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewServerSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewServerSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewSqlServerSourceItem"
-                                                  Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewSqlServerSourceCommand}"
-                                                  Header="New SQL Server Source"
-                                                  IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewSqlServerSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewMySqlSourceItem"
-                                                  Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewMySqlSourceCommand}"
-                                                  Header="New MySQL Source"
-                                                  IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewMySqlSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewMySqlSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewPostgreSqlSourceItem"
-                                                  Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewPostgreSqlSourceCommand}"
-                                                  Header="New PostgreSQL Source"
-                                                  IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewPostgreSqlSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewOracleSourceItem"
-                                                  Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewOracleSourceCommand}"
-                                                  Header="New Oracle Source"
-                                                  IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewOracleSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewOracleSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewOdbcSourceItem"
-                                                  Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewOdbcSourceCommand}"
-                                                  Header="New ODBC Source"
-                                                  IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewOdbcSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewOdbcSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewWebSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewWebSourceSourceCommand}"
-									  CommandParameter="WebSource"
-									  Header="New Web Service Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewWebSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewWebSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewPluginSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewPluginSourceCommand}"
-									  Header="New DotNet Plugin Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewPluginSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewComPluginSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewComPluginSourceCommand}"
-									  Header="New COM Plugin Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewComPluginSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewPluginSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewEmailSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewEmailSourceSourceCommand}"
-									  Header="New Email Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewEmailSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewEmailSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewExchangeSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewExchangeSourceSourceCommand}"
-									  Header="New Exchange Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewExchangeSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewEmailSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewRabbitMqSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewRabbitMQSourceSourceCommand}"
-									  Header="New RabbitMQ Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewRabbitMqSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewDropboxSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewDropboxSourceSourceCommand}"
-									  Header="New Dropbox Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewDropboxSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewDropboxSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="NewSharepointSourceItem"
-									  Style="{StaticResource MenuItemStyle}"
-									  Command="{Binding NewSharepointSourceSourceCommand}"
-									  Header="New Sharepoint Source"
-									  IsEnabled="{Binding CanCreateSource}"
-									  ToolTip="{Binding NewSharepointSourceTooltip}">
-                                <MenuItem.Icon>
-                                    <Image Style="{StaticResource NewSharepointSourceIcon}"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-                    </ContextMenu>
-                </TreeView.Resources>
-                <TreeView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource TreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
-                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
-                        <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate x:Name="EnvironmentDataTemplate"  DataType="{x:Type interfaces:IEnvironmentViewModel}" ItemsSource="{Binding Children}">
-                        <Grid>
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewSharepointSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="*" />
@@ -881,7 +422,467 @@
 
                         <HierarchicalDataTemplate.ItemTemplate>
                             <HierarchicalDataTemplate x:Name="ExplorerItemDataTemplate"  DataType="{x:Type interfaces:IExplorerItemViewModel}" ItemsSource="{Binding Children}">
-                                <Grid>
+                                <Grid Background="Transparent">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu Style="{StaticResource ContextMenuStyle}"  StaysOpen="true"
+								 Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <MenuItem Name="Open"
+								  Command="{Binding OpenCommand}"
+								  CommandParameter="WorkflowService"
+                                  IsEnabled="{Binding CanView}"
+								  ToolTip="{Binding OpenTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Header" Value="Open"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Header" Value="Collapse" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Header" Value="Expand" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
+                                            </MenuItem>
+
+                                            <MenuItem Name="NewServiceItem"
+								  Command="{Binding NewServiceCommand}"
+								  Header="New Workflow Service"
+								  InputGestureText="[Ctrl+W]"
+								  IsEnabled="{Binding CanCreateWorkflowService}"
+								  ToolTip="{Binding NewServiceTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource NewServiceIcon}"/>
+                                                </MenuItem.Icon>
+                                                <MenuItem.InputBindings>
+                                                    <KeyBinding Key="W" Command="{Binding NewServiceCommand}" Modifiers="Control" />
+                                                </MenuItem.InputBindings>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="DebugInputs"
+								  Command="{Binding DebugCommand}"
+								  Header="Debug Inputs"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanDebugInputs}"
+								  ToolTip="{Binding DebugInputsTooltip}"
+								  Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="DebugStudio"
+								  Command="{Binding DebugStudioCommand}"
+								  Header="Debug Studio"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanDebugStudio}"
+								  ToolTip="{Binding DebugStudioTooltip}"
+								  Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="DebugBrowser"
+								  Command="{Binding DebugBrowserCommand}"
+								  Header="Debug Browser"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanDebugBrowser}"
+								  ToolTip="{Binding DebugBrowserTooltip}"
+								  Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="Schedule"
+								  Command="{Binding ScheduleCommand}"
+								  Header="Schedule"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanCreateSchedule}"
+								  ToolTip="{Binding ScheduleTooltip}"
+								  Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+
+                                            <MenuItem Name="NewFolderFromItem"
+								  Command="{Binding CreateFolderCommand}"
+								  CommandParameter="Folder"
+								  Header="New Folder"
+								  Style="{StaticResource MenuItemStyle}"
+								  InputGestureText="[Ctrl+Shift+F]"
+								  IsEnabled="{Binding CanCreateFolder}" 
+								  ToolTip="{Binding NewFolderTooltip}"
+								  Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="Rename"
+								  Command="{Binding RenameCommand}"
+								  CommandParameter="{Binding Data}"
+								  Header="Rename"
+								  Style="{StaticResource MenuItemStyle}"
+								  InputGestureText="[F2]"
+								  IsEnabled="{Binding CanRename}"
+								  ToolTip="{Binding RenameTooltip}">
+                                                <i:Interaction.Behaviors>
+                                                    <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}" Tree="{Binding Path=Node.Manager.NodeLayout.Tree}" />
+                                                </i:Interaction.Behaviors>
+                                            </MenuItem>
+                                            <MenuItem Name="Delete"
+								  Command="{Binding DeleteCommand}"
+								  CommandParameter="{Binding Data}"
+								  Header="Delete"
+								  IsEnabled="{Binding CanDelete}"
+								  ToolTip="{Binding DeleteTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsSaveDialog}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="TrashOutline" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="Duplicate"
+								  Command="{Binding DuplicateCommand}"
+								  CommandParameter="{Binding Path=Data}"
+								  Header="Duplicate"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanDuplicate}"
+								  ToolTip="{Binding DuplicateTooltip}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+
+                                            <MenuItem Name="Test"
+								  Command="{Binding CreateTestCommand}"
+								  CommandParameter="{Binding Path=Data}"
+								  Header="Tests"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanCreateTest}"
+								  ToolTip="{Binding CreateTestTooltip}"
+								  Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="RunAllTests"
+								  Command="{Binding RunAllTestsCommand}"
+								  Header="Run All Tests"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanViewRunAllTests}"
+								  ToolTip="{Binding RunAllTestsTooltip}"
+								  Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            </MenuItem>
+
+                                            <MenuItem Name="DeployItem"
+								  Command="{Binding DeployCommand}"
+								  CommandParameter="{Binding Path=Data}"
+								  InputGestureText="[Ctrl+D]"
+								  Header="Deploy"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanDeploy}"
+								  ToolTip="{Binding DeployTooltip}"
+                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Name="Dependencies"
+								  Command="{Binding ShowDependenciesCommand}"
+								  CommandParameter="{Binding Data}"
+								  Header="Show Dependencies"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanShowDependencies}"
+								  ToolTip="{Binding DependenciesTooltip}"
+								  Visibility="{Binding IsDependenciesVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="ViewSwagger"
+								  Command="{Binding ViewSwaggerCommand}"
+								  Header="View Swagger"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanViewSwagger}" 
+								  ToolTip="{Binding ViewSwaggerTooltip}"
+								  Visibility="{Binding IsViewSwaggerVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,0,0,0"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="ViewApisJsonItem"
+								  Command="{Binding ViewApisJsonCommand}"
+								  Header="View Apis.Json"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanViewApisJson}" 
+								  ToolTip="{Binding ViewApisJsonTooltip}"
+								  Visibility="{Binding IsViewJsonApisVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ViewApisJsonIcon}"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="ShowHideVersions"
+								  Command="{Binding ShowVersionHistory}"
+								  Header="{Binding VersionHeader}"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding CanShowVersions}"
+								  ToolTip="{Binding ShowHideVersionsTooltip}"
+								  Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem.Icon>
+                                                    <Image Style="{StaticResource ShowHideVersionsIcon}"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Name="Rollback"
+								  Command="{Binding RollbackCommand}"
+								  CommandParameter="{Binding Data}"
+								  Header="Make Current Version"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding IsVersion}" 
+								  ToolTip="{Binding RollbackTooltip}"
+								  Visibility="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <MenuItem Name="OpenVersion"
+								  Command="{Binding OpenVersionCommand}"
+								  CommandParameter="{Binding Data}"
+								  Header="Open Version"
+								  Style="{StaticResource MenuItemStyle}"
+								  IsEnabled="{Binding IsVersion}" 
+								  ToolTip="{Binding OpenVersionTooltip}"
+								  Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                            <Separator>
+                                                <Separator.Style>
+                                                    <Style TargetType="{x:Type Separator}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Separator.Style>
+                                            </Separator>
+
+                                            <MenuItem Header="Sources">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsNewFolderVisible}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsSaveDialog}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
+                                                <MenuItem Name="NewServerSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewServerCommand}"
+									  Header="New Server Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewServerSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewServerSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewSqlServerSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewSqlServerSourceCommand}"
+                                                  Header="New SQL Server Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewSqlServerSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewMySqlSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewMySqlSourceCommand}"
+                                                  Header="New MySQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewMySqlSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewMySqlSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewPostgreSqlSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewPostgreSqlSourceCommand}"
+                                                  Header="New PostgreSQL Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewPostgreSqlSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewOracleSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOracleSourceCommand}"
+                                                  Header="New Oracle Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOracleSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewOracleSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewOdbcSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewOdbcSourceCommand}"
+                                                  Header="New ODBC Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding NewOdbcSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewOdbcSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewWebSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewWebSourceSourceCommand}"
+									  CommandParameter="WebSource"
+									  Header="New Web Service Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewWebSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewWebSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewPluginSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewPluginSourceCommand}"
+									  Header="New DotNet Plugin Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewPluginSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewComPluginSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewComPluginSourceCommand}"
+									  Header="New COM Plugin Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewComPluginSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewPluginSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewEmailSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewEmailSourceSourceCommand}"
+									  Header="New Email Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewEmailSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewEmailSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewExchangeSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewExchangeSourceSourceCommand}"
+									  Header="New Exchange Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewExchangeSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewEmailSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewRabbitMqSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewRabbitMQSourceSourceCommand}"
+									  Header="New RabbitMQ Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewRabbitMqSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewDropboxSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewDropboxSourceSourceCommand}"
+									  Header="New Dropbox Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewDropboxSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewDropboxSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewSharepointSourceItem"
+									  Style="{StaticResource MenuItemStyle}"
+									  Command="{Binding NewSharepointSourceSourceCommand}"
+									  Header="New Sharepoint Source"
+									  IsEnabled="{Binding CanCreateSource}"
+									  ToolTip="{Binding NewSharepointSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewSharepointSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />

@@ -32,6 +32,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Views;
 using Dev2.Threading;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -211,6 +212,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
+            CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());

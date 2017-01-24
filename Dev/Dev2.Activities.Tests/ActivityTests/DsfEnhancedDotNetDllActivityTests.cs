@@ -10,11 +10,11 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using FluentAssertions.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -873,12 +873,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO err;
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, err.FetchErrors().Count);
-            const string error = "Cannot convert given JSON to target type" +
-                    "Type specified in JSON 'TestingDotnetDllCascading.Food, TestingDotnetDllCascading, Version=0.0.6228.17143, Culture=neutral, PublicKeyToken=null' is not compatible with 'TestingDotnetDllCascading.Human, TestingDotnetDllCascading, Version=0.0.6228.17143, Culture=neutral, PublicKeyToken=null'.Path '$type', line 3, position 43.";
+           
             Assert.AreEqual(1, err.FetchErrors().Count);
             var single = err.FetchErrors().Single();
-            Assert.AreEqual(error.RemoveNewLines().RemoveWhiteSpace(),single.RemoveNewLines().RemoveWhiteSpace());
+            StringAssert.Contains(single,ErrorResource.JSONIncompatibleConversionError);
         }
     }
 

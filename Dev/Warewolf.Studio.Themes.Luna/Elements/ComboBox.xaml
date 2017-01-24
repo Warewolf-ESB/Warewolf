@@ -694,6 +694,9 @@
                                Margin="1"
                                KeyboardNavigation.IsTabStop="False"
                                AllowsTransparency="true"
+                               Width="{Binding Path=ActualWidth,
+                                            RelativeSource={RelativeSource Mode=FindAncestor,
+                                                      AncestorType=Grid}}"
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">

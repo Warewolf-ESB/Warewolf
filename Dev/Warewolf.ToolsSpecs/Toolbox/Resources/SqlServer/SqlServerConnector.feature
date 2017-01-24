@@ -36,8 +36,7 @@ Scenario: Change SQL Server Source on Existing tool
 	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Source is changed from to "GreenPoint"
 	Then Action is Enabled
-	And Inputs is Disabled 
-	And Outputs is Disabled
+	And Inputs is Enabled 
 	And Validate is Enabled 
 
 @ChangingSqlServerFunctions

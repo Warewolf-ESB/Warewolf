@@ -15,6 +15,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Threading;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 
@@ -98,7 +99,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
             mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockAction.Object);
 
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
             oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;            
 
             AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
@@ -402,7 +403,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockDatabaseInputViewModel.SetupAllProperties();
-            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
             scenarioContext.Add("viewModel", oracleDatabaseDesignerViewModel);
             scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);

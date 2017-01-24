@@ -27,10 +27,10 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
         IMethodToolRegion<IPluginAction> MethodRegion { get; set; }
         IDotNetConstructorInputRegion InputArea { get; set; }
         IOutputsToolRegion OutputsRegion { get; set; }
-        bool GenerateOutputsVisible { get; set; }
         IPluginService ToModel();
         void ErrorMessage(Exception exception, bool hasError);
         void SetDisplayName(string displayName);
+
     }
 
     public interface IDotNetInputRegion : IToolRegion
@@ -42,12 +42,6 @@ namespace Dev2.Common.Interfaces.ToolBase.DotNet
     {
         ICollection<IServiceInput> Inputs { get; set; }
     }
-
-    public interface IDotNetMethodInputRegion : IToolRegion
-    {
-        ICollection<IServiceInput> Inputs { get; set; }
-    }
-
 
     public interface IComViewModel
     {
