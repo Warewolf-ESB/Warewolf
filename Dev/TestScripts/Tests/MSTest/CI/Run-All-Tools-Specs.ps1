@@ -23,30 +23,6 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
-# Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
-[system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"Tools Specs`" id=`"
-"@ + [guid]::NewGuid() + @"
-`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>These are default test settings for a local test run.</Description>
-  <NamingScheme baseName=`"ToolsSpecs`" appendTimeStamp=`"false`" useDefault=`"false`" />
-  <Execution>
-    <Hosts skipUnhostableTests=`"false`" />
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId=`"13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b`">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext=`"true`" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-    </TestTypeSpecific>
-    <AgentRule name=`"LocalMachineDefaultRole`">
-    </AgentRule>
-  </Execution>
-</TestSettings>
-"@)
-
 # Find test assembly
 $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs\bin\Debug\Warewolf.ToolsSpecs.dll") {
