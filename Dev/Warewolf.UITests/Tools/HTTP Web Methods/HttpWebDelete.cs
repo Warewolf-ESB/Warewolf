@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebDeleteToolClickLargeViewUITest()
+        public void HTTPWebDeleteTool_LargeView_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.SourcesComboBox.Exists, "Web Delete large view sources combobox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton.Exists, "Web Delete large view generate inputs button does not exist.");
@@ -18,7 +18,14 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void NewSource_From_WebDeleteToolUITest()
+        public void HTTPWebDeleteTool_SmallView_UITest()
+        {
+            UIMap.Collapse_DELETEWebTool_LargeView_To_SmallView();
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void NewSource_From_HTTPWebDeleteTool_UITest()
         {
             UIMap.Click_NewSourceButton_From_HttpWebDeleteTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
@@ -31,18 +38,12 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebDeleteToolEnableGenerateOutputsButton()
+        public void Click_HTTPWebDeleteTool_GenerateOutputsButton_UITest()
         {
-            UIMap.Select_Test_Source_From_DELETE_Web_Large_View_Source_Combobox();
+            UIMap.Select_DELETEWebTool_Source_From_SourceCombobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton.Enabled, "Web DELETE tool large view generate outputs button is not enabled after selecting a source.");
-        }
-
-        [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void HttpWebDeleteToolClickTestInputsDoneButton()
-        {
-            UIMap.Select_Test_Source_From_DELETE_Web_Large_View_Source_Combobox();
-            UIMap.Click_DELETE_Web_Large_View_Generate_Outputs();
+            UIMap.Click_DELETEWebTool_GenerateOutputsButton();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton.Exists, "Web DELETE tool large view generate outputs test button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.DoneButton.Exists, "Web DELETE tool large view generate outputs done button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.CancelButton.Exists, "Web DELETE tool large view generate outputs cancel button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.PasteButton.Exists, "Web DELETE tool large view generate outputs paste button does not exist.");
@@ -50,10 +51,12 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebDeleteToolSmallView()
+        public void Click_HTTPWebDeleteTool_TestInputs_DoneButton_UITest()
         {
-            UIMap.Collapse_DeleteWeb_Tool_Large_View_to_Small_View_With_Double_Click();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.SmallView.Exists, "Web DELETE small view does not exist after collapsing the large view with a double click.");
+            UIMap.Select_DELETEWebTool_Source_From_SourceCombobox();
+            UIMap.Click_DELETEWebTool_GenerateOutputsButton();
+            UIMap.Click_DELETEWebTool_TestInputsButton();
+            UIMap.Click_DELETEWebTool_Outputs_DoneButton();
         }
         #region Additional test attributes
 
@@ -63,7 +66,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            UIMap.Drag_DeleteWeb_Toolbox_Onto_Workflow_Surface();
+            UIMap.Drag_DELETEWebTool_Onto_DesignSurface();
         }
 
         UIMap UIMap

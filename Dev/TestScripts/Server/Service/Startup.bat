@@ -43,8 +43,6 @@ if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
 @echo on
-@echo Creating Warewolf Server Service... Please any key to continue. Consider changing the user the service runs as to ensure accurate test results.
-PAUSE
 IF EXIST %windir%\nircmd.exe (
 	IF NOT "%1"=="" (
 		nircmd elevate sc create "Warewolf Server" binPath= "%DotCoverExePath% cover /TargetExecutable=\"%DeploymentDirectory%\Warewolf Server.exe\" /LogFile=\"%ProgramData%\Warewolf\Server Log\dotCover.log\" /Output=\"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\"" start= demand
