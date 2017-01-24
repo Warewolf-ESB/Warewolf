@@ -55,6 +55,10 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq UNKNOWN")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN")
+
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq NOT RESPONDING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING")
 sc interrogate "Warewolf Server"
 goto WaitForServiceReadyLoopBody
 
@@ -69,6 +73,10 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq UNKNOWN")
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN")
+
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Server.vshost.exe" /fi "STATUS eq NOT RESPONDING")
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING")
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
