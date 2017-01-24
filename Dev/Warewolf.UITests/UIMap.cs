@@ -9036,6 +9036,20 @@ namespace Warewolf.UITests
             Mouse.Click(uIDsfMultiAssignActiviCustom, new Point(77, 8));
         }
 
+        /// <summary>
+        /// Click_Output_Step
+        /// </summary>
+        public void Click_Decision_Step()
+        {
+            #region Variable Declarations
+            var uIDsfDescisionActiviCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit;
+            #endregion
+
+            // Click 'DsfMultiAssignActivity' custom control
+            uIDsfDescisionActiviCustom.DrawHighlight();
+            Mouse.Click(uIDsfDescisionActiviCustom, new Point(77, 8));
+        }
+
         [Then(@"I Enter Text Into Database Server Tab")]
         [Given(@"I Enter Text Into Database Server Tab")]
         [Then(@"I Enter Text Into Database Server Tab")]
