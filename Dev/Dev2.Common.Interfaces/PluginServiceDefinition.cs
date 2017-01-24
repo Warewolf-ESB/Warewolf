@@ -25,7 +25,9 @@ namespace Dev2.Common.Interfaces
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string Path { get; set; }
         public IPluginConstructor Constructor { get; set; }
+        public INamespaceItem Namespace { get; set; }
         public IPluginAction Action { get; set; }
+        public List<IPluginAction> Actions { get; set; }
 
         #endregion
 
@@ -64,12 +66,15 @@ namespace Dev2.Common.Interfaces
             {
                 return true;
             }
+
             return string.Equals(Name, other.Name)
                 && Id.Equals(other.Id)
                 && Equals(Source, other.Source)
                 && string.Equals(Path, other.Path)
                 && Equals(Action, other.Action)
-                && Equals(Constructor, other.Constructor);
+                && Equals(Constructor, other.Constructor)
+                && Equals(Namespace, other.Namespace)
+                && Equals(Actions, other.Actions);
         }
 
         /// <summary>

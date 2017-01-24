@@ -149,7 +149,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 record.Add(new RecordsetCell
                 {
                     Name = record.Label + "." + colName,
-                    Value = random.GenerateString(30, string.Empty, true)
+                    Value = random.GenerateString(30, string.Empty)
                 });
             }
             var jsonStr = JsonConvert.SerializeObject(record);

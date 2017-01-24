@@ -177,23 +177,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
-
-        /*  public void SetObjectName()
-          {
-              if (IsNewPluginNamespace)
-              {
-                  var outputsToolRegion = Dependants.SingleOrDefault(region => region is IOutputsToolRegion) as IOutputsToolRegion;
-                  if(outputsToolRegion != null)
-                  {
-                      if(SelectedNamespace != null)
-                      {
-                          outputsToolRegion.ObjectResult = SelectedNamespace.JsonObject;
-                          var objectName = "@" + SelectedNamespace.FullName.Split('.').LastOrDefault();
-                          outputsToolRegion.ObjectName = DataListUtil.AddBracketsToValueIfNotExist(objectName);
-                      }
-                  }
-              }
-          }*/
+        
 
         public ICollection<INamespaceItem> Namespaces
         {

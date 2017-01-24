@@ -31,6 +31,9 @@ namespace Warewolf.Studio.ViewModels
         private string _assemblyName;
         private List<IDllListingModel> _dllListingModels;
         private IChooseDLLView _view;
+        private string _filterTooltip;
+        private string _filesTooltip;
+        private string _selectTooltip;
 
         public DLLChooser(IManagePluginSourceModel updateManager)
         {
@@ -44,6 +47,9 @@ namespace Warewolf.Studio.ViewModels
                 _view?.RequestClose();
             });
             SelectCommand = new DelegateCommand(o => _view?.RequestClose());
+            FilterTooltip = Resources.Languages.Tooltips.ManageEmailAttachmentFilterTooltip;
+            FilesTooltip = Resources.Languages.Tooltips.ManageEmailAttachmentDriveNameTooltip;
+            SelectTooltip = Resources.Languages.Tooltips.ManageEmailAttachmentAttachTooltip;
         }
 
         public IDllListingModel GetGacDLL()
@@ -62,6 +68,9 @@ namespace Warewolf.Studio.ViewModels
                     dllListingModel.IsExpanded = true;
                 }
             }
+            FilterTooltip = Resources.Languages.Tooltips.ManagePluginSourceFilterGACTooltip;
+            FilesTooltip = Resources.Languages.Tooltips.ManagePluginSourceFilesGACTooltip;
+            SelectTooltip = Resources.Languages.Tooltips.ManagePluginSourceSelectGACTooltip;
             _view = CustomContainer.GetInstancePerRequestType<IChooseDLLView>();
             _view.ShowView(this);
             return SelectedDll;
@@ -76,6 +85,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 DllListingModels = AllDllListingModels[0].Children.ToList();
             }
+            FilterTooltip = Resources.Languages.Tooltips.ManagePluginSourceFilterAssemblyTooltip;
+            FilesTooltip = Resources.Languages.Tooltips.ManagePluginSourceFilesAssemblyTooltip;
+            SelectTooltip = Resources.Languages.Tooltips.ManagePluginSourceSelectAssemblyTooltip;
             _view = CustomContainer.GetInstancePerRequestType<IChooseDLLView>();
             _view.ShowView(this);
             return SelectedDll;
@@ -120,6 +132,51 @@ namespace Warewolf.Studio.ViewModels
                     _searchTerm = value;
                     PerformSearch(_searchTerm);
                     OnPropertyChanged(() => SearchTerm);
+                }
+            }
+        }
+        public string FilterTooltip
+        {
+            get
+            {
+                return _filterTooltip;
+            }
+            set
+            {
+                if (!value.Equals(_filterTooltip))
+                {
+                    _filterTooltip = value;
+                    OnPropertyChanged(() => FilterTooltip);
+                }
+            }
+        }
+        public string FilesTooltip
+        {
+            get
+            {
+                return _filesTooltip;
+            }
+            set
+            {
+                if (!value.Equals(_filesTooltip))
+                {
+                    _filesTooltip = value;
+                    OnPropertyChanged(() => FilesTooltip);
+                }
+            }
+        }
+        public string SelectTooltip
+        {
+            get
+            {
+                return _selectTooltip;
+            }
+            set
+            {
+                if (!value.Equals(_selectTooltip))
+                {
+                    _selectTooltip = value;
+                    OnPropertyChanged(() => SelectTooltip);
                 }
             }
         }

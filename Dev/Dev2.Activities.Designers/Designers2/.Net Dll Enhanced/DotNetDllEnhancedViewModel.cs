@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -43,6 +44,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
+        [ExcludeFromCodeCoverage]
         public DotNetDllEnhancedViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -55,6 +57,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Resources_Dot_net_DLL;
         }
+
 
         Guid UniqueID => GetProperty<Guid>();
 
@@ -479,9 +482,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
         {
             var regionCollections = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
-            foreach(var pluginAction in pluginActions)
+            foreach (var pluginAction in pluginActions)
             {
-                if(pluginAction == null)
+                if (pluginAction == null)
                 {
                     continue;
                 }
@@ -512,7 +515,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ModelItem.SetProperty("MethodsToRun", _methodsToRunList.ToList());
+            ModelItem.SetProperty("MethodsToRun", GetActionsToRun());
         }
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
@@ -636,20 +639,31 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             var pluginServiceDefinition = new PluginServiceDefinition
             {
                 Source = SourceRegion.SelectedSource,
-                Action = MethodRegion?.SelectedMethod,
-                Inputs = new List<IServiceInput>()
+                Constructor = ConstructorRegion.SelectedConstructor,
+                Namespace = NamespaceRegion.SelectedNamespace,
+                Actions = GetActionsToRun()
             };
             var dt = new List<IServiceInput>();
             foreach (var serviceInput in InputArea.Inputs)
             {
                 _builder = _builder ?? new ServiceInputBuilder();
                 _builder.GetValue(serviceInput.Value, dt);
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, serviceInput.Value)
-                {
-                    TypeName = serviceInput.TypeName
-                });
+                //pluginServiceDefinition.Inputs.Add(new ServiceInput()
+                //{
+                //    TypeName = serviceInput.TypeName,
+                //    Name = serviceInput.Name,
+                //    Value = serviceInput.Value,
+                //    Required = serviceInput.RequiredField,
+                //    EmptyToNull = serviceInput.EmptyIsNull,
+                //});
             }
             return pluginServiceDefinition;
+        }
+
+        private List<IPluginAction> GetActionsToRun()
+        {
+            var pluginActions = MethodsToRunList.Where(region => region.SelectedMethod != null).Select(region => region.SelectedMethod);
+            return pluginActions.ToList();
         }
 
         public void ErrorMessage(Exception exception, bool hasError)

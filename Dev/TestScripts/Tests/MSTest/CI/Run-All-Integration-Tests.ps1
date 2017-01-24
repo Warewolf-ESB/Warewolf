@@ -1,8 +1,4 @@
-﻿if ([string]::IsNullOrEmpty($PSScriptRoot)) {
-	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-$SolutionDir = (Get-Item $PSScriptRoot).parent.parent.parent.parent.FullName
-# Read playlists and args.
+﻿# Read playlists and args.
 $TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
@@ -19,7 +15,6 @@ if ($Args.Count -gt 0) {
                 $TestList = " /test:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	            Continue
             }
         }
     }
@@ -45,14 +40,51 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 </TestSettings>
 "@)
 
-# Create assemblies list.
-$TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.IntegrationTests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+# Find test assembly
+$TestAssemblyPath = ""
+if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll"
+}
+elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll"
+}
+if ($TestAssemblyPath -eq "") {
+	Write-Host Cannot find Dev2.IntegrationTests.dll at $PSScriptRoot\Dev2.IntegrationTests\bin\Debug or $PSScriptRoot
+	exit 1
+}
+if (!(Test-Path $PSScriptRoot\TestResults)) {
+	New-Item -ItemType Directory $PSScriptRoot\TestResults
 }
 
-# Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\IntegrationTestResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+# Create full MSTest argument string.
+$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\IntegrationTestResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\MSTest.exe`"$FullArgsList
