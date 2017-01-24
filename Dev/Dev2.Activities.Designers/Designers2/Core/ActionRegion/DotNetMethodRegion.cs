@@ -433,7 +433,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = IsEnabled,
                 SelectedMethod = SelectedMethod == null ? null : new PluginAction
                 {
-                    Inputs = SelectedMethod?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                    Inputs = SelectedMethod?.Inputs?.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
                     FullName = SelectedMethod.FullName,
                     Method = SelectedMethod.Method
                 }
@@ -465,19 +465,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private void SetSelectedAction(IPluginAction value)
         {
             _selectedMethod = value;
-            SavedAction = value;
             if (value != null)
             {
                 Method = value;
             }
             OnPropertyChanged("SelectedMethod");
-        }
-
-
-        private void StorePreviousValues(string actionName)
-        {
-            _previousRegions.Remove(actionName);
-            _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
         private void RestorePreviousValues(IPluginAction value)
@@ -504,18 +496,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _errors = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public IPluginAction SavedAction
-        {
-            get
-            {
-                return _modelItem.GetProperty<IPluginAction>("SavedAction");
-            }
-            set
-            {
-                _modelItem.SetProperty("SavedAction", value);
             }
         }
 
