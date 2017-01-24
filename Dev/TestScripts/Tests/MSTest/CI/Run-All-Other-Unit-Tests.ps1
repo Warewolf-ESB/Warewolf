@@ -24,35 +24,25 @@ if ($Args.Count -gt 0) {
 $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\bin\Debug\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot"
-}
-elseif (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
 }
 if ($TestAssemblyPath -eq "") {
