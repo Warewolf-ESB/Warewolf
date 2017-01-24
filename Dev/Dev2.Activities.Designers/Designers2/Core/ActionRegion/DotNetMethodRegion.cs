@@ -167,13 +167,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                //_selectedMethod = value;
-                //if (!Equals(value, _selectedMethod) && _selectedMethod != null)
-                //{
-                //    if (!string.IsNullOrEmpty(_selectedMethod.Method))
-                //        StorePreviousValues(_selectedMethod.GetIdentifier());
-                //}
-
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
                 OnPropertyChanged("IsVoid");
