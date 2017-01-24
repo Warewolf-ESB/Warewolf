@@ -629,7 +629,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
                     wasCalled = true;
             };
             //---------------Test Result -----------------------
-            dotNetMethodRegion.IsActionEnabled = true;
+            //dotNetMethodRegion.IsActionEnabled = true;
             Assert.IsTrue(wasCalled);
             Assert.AreEqual(true, dotNetMethodRegion.IsActionEnabled);
         }

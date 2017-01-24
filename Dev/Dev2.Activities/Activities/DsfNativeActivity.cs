@@ -503,15 +503,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (_debugState != null)
             {
-                _debugState.ClientID = dataObject.ClientID;
-                _debugState.OriginatingResourceID = dataObject.ResourceID;
-                _debugState.SourceResourceID = dataObject.SourceResourceID;
-                _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
+                DispatchDebugState(_debugState,dataObject);
                 if (stateType == StateType.After)
                 {
                     _debugState = null;
                 }
+            }
+        }
+
+
+        protected void DispatchDebugState(IDebugState state, IDSFDataObject dataObject)
+        {
+            if (state != null)
+            {
+                state.ClientID = dataObject.ClientID;
+                state.OriginatingResourceID = dataObject.ResourceID;
+                state.SourceResourceID = dataObject.SourceResourceID;
+                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
             }
         }
 
