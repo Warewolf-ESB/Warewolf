@@ -132,6 +132,7 @@
     <Compile Include="Core\ComDll\ComDllSourceRegionTest.cs" />
     <Compile Include="Core\DotNetConstructorInputRegionTests.cs" />
     <Compile Include="Core\DotNetInputRegionTests.cs" />
+    <Compile Include="Core\DotNet\DotNetMethodRegionTests.cs" />
     <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />

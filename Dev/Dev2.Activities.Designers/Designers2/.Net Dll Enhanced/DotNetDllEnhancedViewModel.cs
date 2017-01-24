@@ -353,12 +353,12 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
-                    var dotNetConstructorRegion = sender as DotNetConstructorRegion;
+                    /*var dotNetConstructorRegion = sender as DotNetConstructorRegion;
                     var outputsRegion = dotNetConstructorRegion?.Dependants.SingleOrDefault(region => region is OutputsRegion) as OutputsRegion;
                     if (outputsRegion != null)
                     {
                         outputsRegion.IsConstructorSelected = dotNetConstructorRegion.SelectedConstructor != null;
-                    }
+                    }*/
                 };
 
 
