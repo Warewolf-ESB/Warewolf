@@ -729,9 +729,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var errors = new ErrorResultTO();
 
-
-            Dev2Logger.Error(errors.MakeDisplayReady());
-
+            if (errors.HasErrors())
+            {
+                Dev2Logger.Error(errors.MakeDisplayReady());
+            }
             return string.Empty;
         }
 
