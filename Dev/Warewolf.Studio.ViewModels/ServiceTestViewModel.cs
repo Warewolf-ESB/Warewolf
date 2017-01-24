@@ -1069,6 +1069,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                     var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
                     var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
+                    if (parentActivityAbstract == null)
+                    {
+                        var boolParentAct = computedValue as DsfActivityAbstract<bool>;
+                        parentActivityUniqueID = boolParentAct?.UniqueID;
+                    }
                     if (parentActivityUniqueID == activityUniqueID)
                     {
                         return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
