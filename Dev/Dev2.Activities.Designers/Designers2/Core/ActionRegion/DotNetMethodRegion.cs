@@ -376,6 +376,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
+        public bool IsDeleteActionEnabled => SelectedMethod != null;
+
         public bool IsMethodExpanded
         {
             get

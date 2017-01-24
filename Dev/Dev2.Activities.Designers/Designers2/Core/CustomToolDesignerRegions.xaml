@@ -227,11 +227,10 @@
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetConstructorGrid" d:DataContext="{d:DesignInstance constructorRegion:DotNetConstructorRegion}">
         <Grid x:Name="ConstructorsGrid" 
-                      Margin="-3,0,3,0" >
+                      Margin="-3,0,0,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="ConstructorLabel" Text="Constructor" Margin="{StaticResource ControlBorderRight}" />
             <ComboBox x:Name="ConstructorsComboBox"
@@ -247,22 +246,6 @@
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectConstructorHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button x:Name="ConstructorRefreshButton" 
-                            Grid.Column="2"
-                            Command="{Binding Path=RefreshConstructorsCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshConstructorHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-                <Button.Content>
-                    <fa:FontAwesome Icon="Refresh"/>
-                </Button.Content>
-            </Button>
-            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
-                                                        Grid.Column="2"
-                                                        Width="22"
-                                                        Height="22"
-                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewNamespaceGrid">
@@ -541,20 +524,25 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
-                    BorderThickness="1" 
-                    Margin="{StaticResource ControlBorderTop}">
-                <ListBox x:Name="MethodListBox"
-                         BorderThickness="0"
-                         ItemsSource="{Binding MethodsToRunList}"
-                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="actionRegion:DotNetMethodRegion" >
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+            <ListBox x:Name="MethodListBox"
+                    BorderThickness="0"
+                    ItemsSource="{Binding MethodsToRunList}"
+                    Background="{StaticResource WarewolfPanelGreyBrush}"
+                    ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="actionRegion:DotNetMethodRegion" >
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <Border BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                                    BorderThickness="1" 
+                                    x:Name="MethodBorder"
+                                    Width="{Binding ElementName=MethodListBox, Path=ActualWidth}"
+                                    Background="{StaticResource WarewolfPanelGreyBrush}"
+                                    Margin="{StaticResource ControlBorderTop}">
                                 <Expander x:Name="MethodExpander" 
                                           Header="{Binding .}" 
                                           HorizontalAlignment="Stretch"
-                                          Width="{Binding ElementName=MethodListGrid, Path=ActualWidth}"
+                                          Width="{Binding ElementName=MethodBorder, Path=ActualWidth}"
                                           IsExpanded="{Binding IsMethodExpanded}" 
                                           IsEnabled="{Binding IsActionEnabled}"
                                           Style="{StaticResource DotNetDllExpander}" 
@@ -581,22 +569,19 @@
                                                         <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
                                                     </i:Interaction.Behaviors>
                                                 </ComboBox>
-                                                <Button x:Name="ActionRefreshButton" 
-                                                        Grid.Column="2"
-                                                        Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
-                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                    <i:Interaction.Behaviors>
-                                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
-                                                    </i:Interaction.Behaviors>
+                                                <Button Grid.Column="2" 
+											            Grid.Row="0" 
+                                                        Command="{Binding ElementName=MethodListBox, Path=DataContext.DeleteActionCommand }" 
+											            CommandParameter="{Binding .}" 
+											            IsEnabled="{Binding IsDeleteActionEnabled}"
+											            Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
                                                     <Button.Content>
-                                                        <fa:FontAwesome Icon="Refresh"/>
+                                                        <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                                     </Button.Content>
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.TestsDeleteSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                    </i:Interaction.Behaviors>
                                                 </Button>
-                                                <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
-                                                                                    Grid.Column="2"
-                                                                                    Width="22"
-                                                                                    Height="22"
-                                                                                    Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
                                             </Grid>
                                         </DataTemplate>
                                     </Expander.HeaderTemplate>
@@ -621,7 +606,7 @@
                                                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                                                    Height="Auto"
                                                                    BorderBrush="Transparent"
-                                                                   Margin="3,0,3,0"
+                                                                   Margin="3,0,-3,0"
                                                                    Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
                                                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -712,7 +697,7 @@
 
                                         </Grid>
 
-                                        <Grid x:Name="OutputsTemplate" Grid.Row="1" VerticalAlignment="Stretch" >
+                                        <Grid x:Name="OutputsTemplate" Grid.Row="1" VerticalAlignment="Stretch" Margin="0,0,3,0" >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
@@ -798,11 +783,11 @@
                                         </Grid>
                                     </Grid>
                                 </Expander>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Border>
+                            </Border>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </ControlTemplate>
 
@@ -1085,7 +1070,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" >
-        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" Margin="0,0,3,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -1148,6 +1133,7 @@
             </Grid.RowDefinitions>
             <Border BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
                     BorderThickness="1" 
+                    Background="{StaticResource WarewolfPanelGreyBrush}"
                     Margin="{StaticResource ControlBorderTop}">
                 <Expander x:Name="MethodExpander" 
                           Header="{Binding .}" 
