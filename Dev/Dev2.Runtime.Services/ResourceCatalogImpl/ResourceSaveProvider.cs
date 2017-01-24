@@ -305,6 +305,29 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
                         return;
                     }
+                    var res = resources.FirstOrDefault(p => p.ResourceID == resource.ResourceID);
+                    if (res != null)//Found Existing resource
+                    {
+                        if (res.ResourceName != resource.ResourceName) // Renamed while open
+                        {
+                            
+                            var resourceXml = contents.ToXElement();
+                            resourceXml.SetAttributeValue("Name", res.ResourceName);
+                            resourceXml.SetElementValue("DisplayName", res.ResourceName);
+                            var actionElement = resourceXml.Element("Action");
+                            var xamlElement = actionElement?.Element("XamlDefinition");
+                            if (xamlElement != null)
+                            {
+                                var xamlContent = xamlElement.Value;
+                                xamlElement.Value = xamlContent.
+                                    Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
+                                    .Replace("Flowchart DisplayName=\""+ resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
+                            }
+                            resource.ResourceName = res.ResourceName;
+                            contents = resourceXml.ToStringBuilder();
+                            
+                        }
+                    }
                     var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
 
                     #region Save to disk
