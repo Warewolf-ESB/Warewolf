@@ -83,7 +83,8 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
             UIMap.Select_DotNet_Dll_Classname();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.ConstructorsComboBoxComboBox.Enabled);
-            UIMap.Click_DotNet_DLL_Large_View_Actions_Combobox();
+            UIMap.Click_DotNet_DLL_Large_View_FirstAction_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName.Exists);
         }
 
         [TestMethod]
@@ -105,6 +106,15 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
         {
+            UIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
+            UIMap.Select_DotNet_Dll_Classname();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.ConstructorsComboBoxComboBox.Enabled);
+            UIMap.Click_DotNet_DLL_Large_View_FirstAction_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName.Exists);
+            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox();
+            UIMap.I_Expand_First_Action_Tree();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1.Exists);
         }
 
 
@@ -112,6 +122,20 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
         {
+            UIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
+            UIMap.Select_DotNet_Dll_Classname();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CostructorExpander.ConstructorsComboBoxComboBox.Enabled);
+            UIMap.Click_DotNet_DLL_Large_View_FirstAction_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.setName.Exists);
+            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox();
+            UIMap.Click_DotNet_DLL_Large_View_SecondAction_Combobox();
+            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_SecondAction_From_Actions_Combobox();
+            UIMap.Click_DotNet_DLL_Large_View_ThirdAction_Combobox();
+            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_ThirdAction_From_Actions_Combobox();
+            UIMap.Click_Refresh_Combobox_Button_On_Third_Action_Combobox();
+            UIMap.Click_Refresh_Combobox_Button_On_Second_Action_Combobox();
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem3.Expander.Dev2ActivitiesDesignButton.ActionsComboBox));
         }
 
         [TestMethod]
