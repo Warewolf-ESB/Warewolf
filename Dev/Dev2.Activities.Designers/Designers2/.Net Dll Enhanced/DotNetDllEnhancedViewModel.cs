@@ -384,6 +384,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (regionCollections.Any())
                 {
                     MethodsToRunList = regionCollections;
+                    CreateMethodRegion();
                 }
                 else
                 {

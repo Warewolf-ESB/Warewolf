@@ -561,7 +561,7 @@
                                           AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=SelectedMethod}">
                                     <Expander.HeaderTemplate>
                                         <DataTemplate>
-                                            <Grid x:Name="MethodsGrid" Margin="-3,0,0,0" >
+                                            <Grid x:Name="MethodsGrid" Margin="-3,0,3,0" >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
