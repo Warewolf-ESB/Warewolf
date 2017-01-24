@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
 {
@@ -59,6 +60,24 @@ namespace Warewolf.UITests
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);           
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowTesting_AddTestStep")]
+        public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
+        {
+            //------------Setup for test--------------------------
+            UIMap.Filter_Explorer(HelloWorld);
+            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
+            UIMap.Click_Create_New_Tests(true);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Fail);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------
+            UIMap.Click_Decision_Step();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
         }
 
         [TestMethod]
