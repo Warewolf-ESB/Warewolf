@@ -310,7 +310,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     {
                         if (res.ResourceName != resource.ResourceName) // Renamed while open
                         {
-                            
                             var resourceXml = contents.ToXElement();
                             resourceXml.SetAttributeValue("Name", res.ResourceName);
                             resourceXml.SetElementValue("DisplayName", res.ResourceName);
