@@ -84,7 +84,6 @@ namespace Dev2.Common.Common
 
             // remove the darn header ;)
             sb = sb.CleanEncodingHeaderForXmlSave();
-
             if (!File.Exists(fileName))
             {
                 using (File.Create(fileName))
