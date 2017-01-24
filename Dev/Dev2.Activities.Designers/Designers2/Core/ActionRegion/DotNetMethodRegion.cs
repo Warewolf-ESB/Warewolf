@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Common.Utils;
+using Dev2.Data.Util;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
@@ -29,20 +30,28 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private Action _sourceChangedAction;
         private RelayCommand _viewObjectResult;
         private IPluginAction _selectedMethod;
-        private IPluginServiceModel _model;
+        private readonly IPluginServiceModel _model;
         private ICollection<IPluginAction> _methodsToRun;
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
         private bool _isMethodExpanded;
+        private readonly IShellViewModel _shellViewModel;
 
         public DotNetMethodRegion()
         {
             ToolRegionName = "DotNetMethodRegion";
         }
 
+        internal DotNetMethodRegion(IShellViewModel shellViewModel)
+        {
+            VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);
+            _shellViewModel = shellViewModel;
+        }
+
         public DotNetMethodRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
+            : this(CustomContainer.Get<IShellViewModel>())
         {
             try
             {
@@ -163,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return  _selectedMethod;
+                return _selectedMethod;
             }
             set
             {
@@ -267,7 +276,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                             var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
                             if (language.IsJsonIdentifierExpression)
                             {
-                                //_shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
                             }
                         }
                         else
@@ -284,7 +293,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public bool IsInputsEmptyRows => Inputs==null || Inputs.Count==0;
+        public bool IsInputsEmptyRows => Inputs == null || Inputs.Count == 0;
 
 
         public ICollection<IServiceInput> Inputs

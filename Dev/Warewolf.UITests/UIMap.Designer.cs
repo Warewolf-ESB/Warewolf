@@ -211,18 +211,6 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -253,8 +241,6 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -20132,12 +20118,26 @@ namespace Warewolf.UITests
                 return this.mActionListItem2;
             }
         }
+        
+        public ActionListItem3 ActionListItem3
+        {
+            get
+            {
+                if ((this.mActionListItem3 == null))
+                {
+                    this.mActionListItem3 = new ActionListItem3(this);
+                }
+                return this.mActionListItem3;
+            }
+        }
         #endregion
         
         #region Fields
         private ActionListItem1 mActionListItem1;
         
         private ActionListItem2 mActionListItem2;
+        
+        private ActionListItem3 mActionListItem3;
         #endregion
     }
     
@@ -20392,6 +20392,156 @@ namespace Warewolf.UITests
     {
         
         public ActionsComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "ActionsComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem setName
+        {
+            get
+            {
+                if ((this.msetName == null))
+                {
+                    this.msetName = new WpfListItem(this);
+                    #region Search Criteria
+                    this.msetName.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.PluginAction";
+                    this.msetName.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.msetName.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.msetName;
+            }
+        }
+        
+        public WpfListItem getName
+        {
+            get
+            {
+                if ((this.mgetName == null))
+                {
+                    this.mgetName = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mgetName.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mgetName;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem msetName;
+        
+        private WpfListItem mgetName;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ActionListItem3 : WpfListItem
+    {
+        
+        public ActionListItem3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Activities.Designers2.Core.ActionRegion.DotNetMethodRegion";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Expander2 Expander
+        {
+            get
+            {
+                if ((this.mExpander == null))
+                {
+                    this.mExpander = new Expander2(this);
+                }
+                return this.mExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Expander2 mExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Expander2 : WpfExpander
+    {
+        
+        public Expander2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "MethodExpander";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public Dev2ActivitiesDesignButton2 Dev2ActivitiesDesignButton
+        {
+            get
+            {
+                if ((this.mDev2ActivitiesDesignButton == null))
+                {
+                    this.mDev2ActivitiesDesignButton = new Dev2ActivitiesDesignButton2(this);
+                }
+                return this.mDev2ActivitiesDesignButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Dev2ActivitiesDesignButton2 mDev2ActivitiesDesignButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Dev2ActivitiesDesignButton2 : WpfButton
+    {
+        
+        public Dev2ActivitiesDesignButton2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ActionsComboBox2 ActionsComboBox
+        {
+            get
+            {
+                if ((this.mActionsComboBox == null))
+                {
+                    this.mActionsComboBox = new ActionsComboBox2(this);
+                }
+                return this.mActionsComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ActionsComboBox2 mActionsComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ActionsComboBox2 : WpfComboBox
+    {
+        
+        public ActionsComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -23960,13 +24110,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public ActionsCombobox2 ActionsCombobox
+        public ActionsCombobox3 ActionsCombobox
         {
             get
             {
                 if ((this.mActionsCombobox == null))
                 {
-                    this.mActionsCombobox = new ActionsCombobox2(this);
+                    this.mActionsCombobox = new ActionsCombobox3(this);
                 }
                 return this.mActionsCombobox;
             }
@@ -24134,7 +24284,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private ActionsCombobox2 mActionsCombobox;
+        private ActionsCombobox3 mActionsCombobox;
         
         private SourcesCombobox3 mSourcesCombobox;
         
@@ -24161,10 +24311,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ActionsCombobox2 : WpfComboBox
+    public class ActionsCombobox3 : WpfComboBox
     {
         
-        public ActionsCombobox2(UITestControl searchLimitContainer) : 
+        public ActionsCombobox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -25728,13 +25878,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ActionsComboBox3 ActionsComboBox
+        public ActionsComboBox4 ActionsComboBox
         {
             get
             {
                 if ((this.mActionsComboBox == null))
                 {
-                    this.mActionsComboBox = new ActionsComboBox3(this);
+                    this.mActionsComboBox = new ActionsComboBox4(this);
                 }
                 return this.mActionsComboBox;
             }
@@ -25840,7 +25990,7 @@ namespace Warewolf.UITests
         
         private WpfButton mEditSourceButton;
         
-        private ActionsComboBox3 mActionsComboBox;
+        private ActionsComboBox4 mActionsComboBox;
         
         private WpfButton mRefreshButton;
         
@@ -25893,10 +26043,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ActionsComboBox3 : WpfComboBox
+    public class ActionsComboBox4 : WpfComboBox
     {
         
-        public ActionsComboBox3(UITestControl searchLimitContainer) : 
+        public ActionsComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -110398,6 +110548,129 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AttachmentsForEmailFolder : WpfTreeItem
+    {
+        
+        public AttachmentsForEmailFolder(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Select File(s)");
+            #endregion
+        }
+        
+        #region Properties
+        public attachment1 attachment1
+        {
+            get
+            {
+                if ((this.mattachment1 == null))
+                {
+                    this.mattachment1 = new attachment1(this);
+                }
+                return this.mattachment1;
+            }
+        }
+        
+        public attachment2 attachment2
+        {
+            get
+            {
+                if ((this.mattachment2 == null))
+                {
+                    this.mattachment2 = new attachment2(this);
+                }
+                return this.mattachment2;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private attachment1 mattachment1;
+        
+        private attachment2 mattachment2;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class attachment1 : WpfTreeItem
+    {
+        
+        public attachment1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Select File(s)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxattachment1.txt_AutoID";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class attachment2 : WpfTreeItem
+    {
+        
+        public attachment2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Select File(s)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_CheckBoxattachment2.txt_AutoID";
+                    this.mCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCheckBox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
         #endregion
     }
 }
