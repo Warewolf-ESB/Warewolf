@@ -7,8 +7,8 @@ namespace Warewolf.UITests.Tools
     public class HttpWebPost
     {
         [TestMethod]
-		[TestCategory("HTTP Tools")]
-        public void HttpWebPostToolClickLargeViewDoneButton()
+        [TestCategory("HTTP Tools")]
+        public void HTTPWebPostTool_LargeView_UITest()
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.SourcesComboBox.Exists, "Web POST large view sources combobox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Exists, "Web POST large view generate inputs button does not exist.");
@@ -18,7 +18,14 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void NewSource_From_WebPostToolUITest()
+        public void HTTPWebPostTool_SmallView_UITest()
+        {
+            UIMap.Collapse_POSTWebTool_LargeView_To_SmallView();
+        }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void NewSource_From_HTTPWebPostTool_UITest()
         {
             UIMap.Click_NewSourceButton_From_HttpWebPostTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
@@ -31,18 +38,11 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebPostToolEnableGenerateOutputsButton()
+        public void Click_HTTPWebPostTool_GenerateOutputsButton_UITest()
         {
-            UIMap.Select_Test_Source_From_POST_Web_Large_View_Source_Combobox();
+            UIMap.Select_POSTWebTool_Source_From_SourceCombobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Enabled, "Web POST tool large view generate outputs button is not enabled after selecting a source.");
-        }
-
-        [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void HttpWebPostToolClickGenerateOutputsButton()
-        {
-            UIMap.Select_Test_Source_From_POST_Web_Large_View_Source_Combobox();
-            UIMap.Click_Web_Post_Tool_GenerateOutputs_Button();
+            UIMap.Click_POSTWebTool_GenerateOutputsButton();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.DoneButton.Exists, "Web PUT tool large view generate outputs done button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.CancelButton.Exists, "Web PUT tool large view generate outputs cancel button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.PasteButton.Exists, "Web PUT tool large view generate outputs paste button does not exist.");
@@ -50,10 +50,12 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HttpWebPostToolSmallView()
+        public void Click_HTTPWebPostTool_TestInputs_DoneButton_UITest()
         {
-            UIMap.Collapse_PostWeb_RequestTool_Large_View_to_Small_View_With_Double_Click();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.SmallView.Exists, "Web POST small view does not exist after collapsing the large view with a double click.");
+            UIMap.Select_POSTWebTool_Source_From_SourceCombobox();
+            UIMap.Click_POSTWebTool_GenerateOutputsButton();
+            UIMap.Click_POSTWebTool_TestInputsButton();
+            UIMap.Click_POSTWebTool_Outputs_DoneButton();
         }
 
         #region Additional test attributes
@@ -64,7 +66,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            UIMap.Drag_PostWeb_RequestTool_Onto_DesignSurface();
+            UIMap.Drag_POSTWebTool_Onto_DesignSurface();
         }
 
         UIMap UIMap
