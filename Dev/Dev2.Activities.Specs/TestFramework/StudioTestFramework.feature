@@ -982,7 +982,6 @@ Scenario: Run a test with Error Expected
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	
-
 #Web Execution
 Scenario: Run Selected Test in Web
 	Given the test builder is open with "Hello World"
@@ -994,16 +993,16 @@ Scenario: Run Selected Test in Web
 	And test name starts with "Test 1"
 	And inputs are
 	| Variable Name | Value |
-	| Name             |       |
+	| Name          |       |
 	And outputs as
 	| Variable Name | Value |
-	| Message   |       |
+	| Message       |       |
 	And save is enabled
 	When I save	
 	When I run selected test in Web
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                            |
-	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected 'Hello World.' for 'Message' but got '' |
+	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 

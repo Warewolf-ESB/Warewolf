@@ -80422,7 +80422,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -81861,10 +81861,24 @@ namespace Warewolf.UITests
                 return this.mDsfMultiAssignActiviCustom;
             }
         }
+        
+        public DsfDecisioActiviCustom DsfDecisioActiviCustom
+        {
+            get
+            {
+                if ((this.mDsfDecisioActiviCustom == null))
+                {
+                    this.mDsfDecisioActiviCustom = new DsfDecisioActiviCustom(this);
+                }
+                return this.mDsfDecisioActiviCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private DsfMultiAssignActiviCustom mDsfMultiAssignActiviCustom;
+        
+        private DsfDecisioActiviCustom mDsfDecisioActiviCustom;
         #endregion
     }
     
@@ -81892,6 +81906,43 @@ namespace Warewolf.UITests
                     this.mDisplayNameEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mDisplayNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameBox";
+                    this.mDisplayNameEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisplayNameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mDisplayNameEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DsfDecisioActiviCustom : WpfCustom
+    {
+        
+        public DsfDecisioActiviCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowDecisionDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "FlowDecisionDesigner";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit DisplayNameEdit
+        {
+            get
+            {
+                if ((this.mDisplayNameEdit == null))
+                {
+                    this.mDisplayNameEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDisplayNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameTextBox";
                     this.mDisplayNameEdit.WindowTitles.Add("Warewolf");
                     #endregion
                 }
