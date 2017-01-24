@@ -26,22 +26,9 @@ namespace Warewolf.UITests
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public partial class UIMap
     {
-        
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfExpander uIWarewolfStudioViewMoExpander = this.UIWarewolfDEV2HAGASHENWindow.UIInfragisticsControlsTreeItem.UIWarewolfStudioViewMoExpander;
-            #endregion
-
-            // Verify that the 'AutomationId' property of 'Warewolf.Studio.ViewModels.ServiceTestStep' expander equals 'UI_ServiceTestTestStepExpander_If [[Name]] <> (Not Equal) _AutoID'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIWarewolfStudioViewMoExpanderAutomationId, uIWarewolfStudioViewMoExpander.AutomationId);
-        }
         
         /// <summary>
         /// Open_UI_Map_Designer_To_Flowchart - Use 'Open_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
@@ -57,18 +44,6 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
             get
@@ -236,23 +211,9 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
-        
-        public UIWarewolfDEV2HAGASHENWindow UIWarewolfDEV2HAGASHENWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2HAGASHENWindow == null))
-                {
-                    this.mUIWarewolfDEV2HAGASHENWindow = new UIWarewolfDEV2HAGASHENWindow();
-                }
-                return this.mUIWarewolfDEV2HAGASHENWindow;
-            }
-        }
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
@@ -280,30 +241,13 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        
-        private UIWarewolfDEV2HAGASHENWindow mUIWarewolfDEV2HAGASHENWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'AutomationId' property of 'Warewolf.Studio.ViewModels.ServiceTestStep' expander equals 'UI_ServiceTestTestStepExpander_If [[Name]] <> (Not Equal) _AutoID'
-        /// </summary>
-        public string UIWarewolfStudioViewMoExpanderAutomationId = "UI_ServiceTestTestStepExpander_If [[Name]] <> (Not Equal) _AutoID";
         #endregion
     }
     
     /// <summary>
     /// Parameters to be passed into 'Open_UI_Map_Designer_To_Flowchart'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Open_UI_Map_Designer_To_FlowchartParams
     {
         
@@ -315,7 +259,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
         
@@ -1184,7 +1128,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabContextMenu : WpfMenu
     {
         
@@ -1238,7 +1182,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerEnvironmentContextMenu : WpfMenu
     {
         
@@ -1652,7 +1596,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerContextMenu : WpfMenu
     {
         
@@ -2152,7 +2096,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesMenuItem : WpfMenuItem
     {
         
@@ -2455,7 +2399,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DesignSurfaceContextMenu : WpfMenu
     {
         
@@ -2689,7 +2633,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExitFullScreenF11Text : WpfText
     {
         
@@ -2725,7 +2669,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SideMenuBar : WpfCustom
     {
         
@@ -2917,7 +2861,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewWorkflowButton : WpfButton
     {
         
@@ -2953,7 +2897,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LockunlockthemenuButton : WpfButton
     {
         
@@ -3025,7 +2969,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DockManager : WpfCustom
     {
         
@@ -3212,7 +3156,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneLeft : WpfCustom
     {
         
@@ -3312,7 +3256,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Explorer : WpfCustom
     {
         
@@ -3427,7 +3371,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConnectControl : WpfCustom
     {
         
@@ -3496,7 +3440,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerComboBox : WpfCustom
     {
         
@@ -3623,7 +3567,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextBox : WpfEdit
     {
         
@@ -3677,7 +3621,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree : WpfTree
     {
         
@@ -3723,7 +3667,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class localhost : WpfTreeItem
     {
         
@@ -3804,7 +3748,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox : WpfCheckBox
     {
         
@@ -3862,7 +3806,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstItem : WpfTreeItem
     {
         
@@ -4016,7 +3960,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage : WpfImage
     {
         
@@ -4073,7 +4017,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstSubItem : WpfTreeItem
     {
         
@@ -4160,7 +4104,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage1 : WpfImage
     {
         
@@ -4217,7 +4161,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstItem1 : WpfTreeItem
     {
         
@@ -4332,7 +4276,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage2 : WpfImage
     {
         
@@ -4389,7 +4333,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstSubItem1 : WpfTreeItem
     {
         
@@ -4462,7 +4406,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage3 : WpfImage
     {
         
@@ -4519,7 +4463,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecondSubItem : WpfTreeItem
     {
         
@@ -4592,7 +4536,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage4 : WpfImage
     {
         
@@ -4649,7 +4593,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ThirdSubItem : WpfTreeItem
     {
         
@@ -4722,7 +4666,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage5 : WpfImage
     {
         
@@ -4779,7 +4723,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecondSubItem1 : WpfTreeItem
     {
         
@@ -4852,7 +4796,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage6 : WpfImage
     {
         
@@ -4909,7 +4853,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ThirdSubItem1 : WpfTreeItem
     {
         
@@ -4982,7 +4926,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage7 : WpfImage
     {
         
@@ -5039,7 +4983,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecondItem : WpfTreeItem
     {
         
@@ -5074,7 +5018,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstSubItem2 : WpfTreeItem
     {
         
@@ -5128,7 +5072,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage8 : WpfImage
     {
         
@@ -5185,7 +5129,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstRemoteServer : WpfTreeItem
     {
         
@@ -5272,7 +5216,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox1 : WpfCheckBox
     {
         
@@ -5330,7 +5274,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstItem2 : WpfTreeItem
     {
         
@@ -5387,7 +5331,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToolBox : WpfCustom
     {
         
@@ -5452,7 +5396,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextBox1 : WpfEdit
     {
         
@@ -5506,7 +5450,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToolListBox : WpfList
     {
         
@@ -5706,7 +5650,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FlowTools : WpfGroup
     {
         
@@ -5766,7 +5710,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Decision : WpfListItem
     {
         
@@ -5803,7 +5747,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Switch : WpfListItem
     {
         
@@ -5840,7 +5784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Sequence : WpfListItem
     {
         
@@ -5877,7 +5821,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataTools : WpfGroup
     {
         
@@ -6007,7 +5951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignObject : WpfListItem
     {
         
@@ -6044,7 +5988,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MultiAssign : WpfListItem
     {
         
@@ -6081,7 +6025,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataMerge : WpfListItem
     {
         
@@ -6118,7 +6062,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BaseConvert : WpfListItem
     {
         
@@ -6155,7 +6099,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CaseConvert : WpfListItem
     {
         
@@ -6192,7 +6136,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataSplit : WpfListItem
     {
         
@@ -6229,7 +6173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindIndex : WpfListItem
     {
         
@@ -6266,7 +6210,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Replace : WpfListItem
     {
         
@@ -6303,7 +6247,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Database : WpfGroup
     {
         
@@ -6420,7 +6364,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MySQL : WpfListItem
     {
         
@@ -6457,7 +6401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SQLBulkInsert : WpfListItem
     {
         
@@ -6494,7 +6438,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SQLServer : WpfListItem
     {
         
@@ -6531,7 +6475,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Email : WpfGroup
     {
         
@@ -6577,7 +6521,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SMTPSend : WpfListItem
     {
         
@@ -6614,7 +6558,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExchangeSend : WpfListItem
     {
         
@@ -6651,7 +6595,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileAndFTP : WpfGroup
     {
         
@@ -6809,7 +6753,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Create : WpfListItem
     {
         
@@ -6846,7 +6790,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Copy : WpfListItem
     {
         
@@ -6883,7 +6827,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Delete : WpfListItem
     {
         
@@ -6920,7 +6864,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Move : WpfListItem
     {
         
@@ -6957,7 +6901,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReadFolder : WpfListItem
     {
         
@@ -6994,7 +6938,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReadFile : WpfListItem
     {
         
@@ -7031,7 +6975,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WriteFile : WpfListItem
     {
         
@@ -7068,7 +7012,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Rename : WpfListItem
     {
         
@@ -7105,7 +7049,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZip : WpfListItem
     {
         
@@ -7142,7 +7086,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Zip : WpfListItem
     {
         
@@ -7179,7 +7123,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HTTPWebMethods : WpfGroup
     {
         
@@ -7253,7 +7197,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DELETE1 : WpfListItem
     {
         
@@ -7290,7 +7234,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class GET : WpfListItem
     {
         
@@ -7327,7 +7271,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class POST : WpfListItem
     {
         
@@ -7364,7 +7308,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PUT : WpfListItem
     {
         
@@ -7401,7 +7345,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LoopTools : WpfGroup
     {
         
@@ -7447,7 +7391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ForEach : WpfListItem
     {
         
@@ -7484,7 +7428,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Selectandapply : WpfListItem
     {
         
@@ -7516,7 +7460,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ButtonImageText : WpfText
     {
         
@@ -7552,7 +7496,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetTools : WpfGroup
     {
         
@@ -7654,7 +7598,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Length : WpfListItem
     {
         
@@ -7691,7 +7635,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindRecords : WpfListItem
     {
         
@@ -7728,7 +7672,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Delete2 : WpfListItem
     {
         
@@ -7765,7 +7709,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Sort : WpfListItem
     {
         
@@ -7802,7 +7746,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Count : WpfListItem
     {
         
@@ -7839,7 +7783,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UniqueRecords : WpfListItem
     {
         
@@ -7876,7 +7820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceTools : WpfGroup
     {
         
@@ -7950,7 +7894,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Service : WpfListItem
     {
         
@@ -7987,7 +7931,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComDLL : WpfListItem
     {
         
@@ -8024,7 +7968,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DotNetDLL : WpfListItem
     {
         
@@ -8061,7 +8005,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WCF : WpfListItem
     {
         
@@ -8098,7 +8042,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptingTools : WpfGroup
     {
         
@@ -8186,7 +8130,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CMDScript : WpfListItem
     {
         
@@ -8223,7 +8167,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Script : WpfListItem
     {
         
@@ -8260,7 +8204,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class JavaScript : WpfListItem
     {
         
@@ -8292,7 +8236,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIToolButtonImageText : WpfText
     {
         
@@ -8328,7 +8272,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Python : WpfListItem
     {
         
@@ -8360,7 +8304,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIToolButtonImageText1 : WpfText
     {
         
@@ -8396,7 +8340,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Ruby : WpfListItem
     {
         
@@ -8428,7 +8372,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIToolButtonImageText2 : WpfText
     {
         
@@ -8464,7 +8408,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointTools : WpfGroup
     {
         
@@ -8634,7 +8578,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateListItems : WpfListItem
     {
         
@@ -8671,7 +8615,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteListItems : WpfListItem
     {
         
@@ -8708,7 +8652,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReadListItems : WpfListItem
     {
         
@@ -8745,7 +8689,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UpdateListItems : WpfListItem
     {
         
@@ -8782,7 +8726,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DownloadFile : WpfListItem
     {
         
@@ -8815,7 +8759,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ImageText : WpfText
     {
         
@@ -8851,7 +8795,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteFile : WpfListItem
     {
         
@@ -8883,7 +8827,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ImageText1 : WpfText
     {
         
@@ -8919,7 +8863,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReadFolder1 : WpfListItem
     {
         
@@ -8951,7 +8895,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ImageText2 : WpfText
     {
         
@@ -8987,7 +8931,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StorageDropbox : WpfGroup
     {
         
@@ -9061,7 +9005,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Download : WpfListItem
     {
         
@@ -9098,7 +9042,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Upload : WpfListItem
     {
         
@@ -9135,7 +9079,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ListContents : WpfListItem
     {
         
@@ -9172,7 +9116,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Delete3 : WpfListItem
     {
         
@@ -9209,7 +9153,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UtilityTools : WpfGroup
     {
         
@@ -9431,7 +9375,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AggregateCalculate : WpfListItem
     {
         
@@ -9468,7 +9412,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Comment : WpfListItem
     {
         
@@ -9505,7 +9449,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateJSON : WpfListItem
     {
         
@@ -9542,7 +9486,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Calculate : WpfListItem
     {
         
@@ -9579,7 +9523,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DateTime : WpfListItem
     {
         
@@ -9616,7 +9560,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DateTimeDifference : WpfListItem
     {
         
@@ -9653,7 +9597,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SysInfo : WpfListItem
     {
         
@@ -9690,7 +9634,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FormatNumber : WpfListItem
     {
         
@@ -9727,7 +9671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Random : WpfListItem
     {
         
@@ -9764,7 +9708,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Email1 : WpfListItem
     {
         
@@ -9801,7 +9745,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebRequest : WpfListItem
     {
         
@@ -9837,7 +9781,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XPath : WpfListItem
     {
         
@@ -9874,7 +9818,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Help : WpfCustom
     {
         
@@ -9949,7 +9893,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneMiddle : WpfCustom
     {
         
@@ -10018,7 +9962,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabManSplitPane : WpfCustom
     {
         
@@ -10051,7 +9995,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabMan : WpfTabList
     {
         
@@ -10372,7 +10316,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StartPage : WpfTabPage
     {
         
@@ -10422,7 +10366,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorksurfaceContext : WpfCustom
     {
         
@@ -10455,7 +10399,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SettingsView : WpfCustom
     {
         
@@ -10488,7 +10432,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabList : WpfTabList
     {
         
@@ -10547,7 +10491,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecurityTab : WpfTabPage
     {
         
@@ -10597,7 +10541,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecurityWindow : WpfCustom
     {
         
@@ -10644,7 +10588,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPermissions : WpfTable
     {
         
@@ -10690,7 +10634,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WarewolfAdminROW : WpfPane
     {
         
@@ -10807,7 +10751,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteCell : WpfCell
     {
         
@@ -10844,7 +10788,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployToCell : WpfCell
     {
         
@@ -10883,7 +10827,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployFromCell : WpfCell
     {
         
@@ -10921,7 +10865,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AdministratorCell : WpfCell
     {
         
@@ -10959,7 +10903,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ViewCell : WpfCell
     {
         
@@ -10997,7 +10941,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteCell : WpfCell
     {
         
@@ -11035,7 +10979,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContributeCell : WpfCell
     {
         
@@ -11073,7 +11017,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PublicROW : WpfPane
     {
         
@@ -11190,7 +11134,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_DeployToCell : WpfCell
     {
         
@@ -11227,7 +11171,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_DeployFromCell : WpfCell
     {
         
@@ -11264,7 +11208,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_AdministratorCell : WpfCell
     {
         
@@ -11301,7 +11245,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ViewCell : WpfCell
     {
         
@@ -11338,7 +11282,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ExecuteCell : WpfCell
     {
         
@@ -11375,7 +11319,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ContributeCell : WpfCell
     {
         
@@ -11412,7 +11356,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WindowsGroup : WpfCell
     {
         
@@ -11449,7 +11393,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourcePermissions : WpfTable
     {
         
@@ -11481,7 +11425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1 : WpfPane
     {
         
@@ -11584,7 +11528,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceCell : WpfCell
     {
         
@@ -11638,7 +11582,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WindowsGroupCell : WpfCell
     {
         
@@ -11692,7 +11636,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ViewCell1 : WpfCell
     {
         
@@ -11728,7 +11672,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteCell1 : WpfCell
     {
         
@@ -11764,7 +11708,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContributeCell1 : WpfCell
     {
         
@@ -11800,7 +11744,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteCell1 : WpfCell
     {
         
@@ -11836,7 +11780,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LoggingTab : WpfTabPage
     {
         
@@ -11869,7 +11813,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LogSettingsViewConte : WpfCustom
     {
         
@@ -11916,7 +11860,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StudioLogs : WpfPane
     {
         
@@ -11949,7 +11893,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StudioLogFile : WpfText
     {
         
@@ -11985,7 +11929,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerLogs : WpfPane
     {
         
@@ -12017,7 +11961,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerLogFile : WpfText
     {
         
@@ -12053,7 +11997,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PerfomanceCounterTab : WpfTabPage
     {
         
@@ -12086,7 +12030,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PerfmonViewContent : WpfCustom
     {
         
@@ -12147,7 +12091,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceTable : WpfTable
     {
         
@@ -12179,7 +12123,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row11 : WpfPane
     {
         
@@ -12282,7 +12226,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TotalErrors : WpfCell
     {
         
@@ -12318,7 +12262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceCell1 : WpfCell
     {
         
@@ -12371,7 +12315,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RequestPerSecond : WpfCell
     {
         
@@ -12407,7 +12351,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteCell2 : WpfCell
     {
         
@@ -12443,7 +12387,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConcurrentRequest : WpfCell
     {
         
@@ -12479,7 +12423,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AverageExecTime : WpfCell
     {
         
@@ -12515,7 +12459,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerTable : WpfTable
     {
         
@@ -12617,7 +12561,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AverageExecCounter : WpfCell
     {
         
@@ -12655,7 +12599,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConcurrRequest : WpfCell
     {
         
@@ -12692,7 +12636,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RequestPerSeccond : WpfCell
     {
         
@@ -12729,7 +12673,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TotalErrors1 : WpfCell
     {
         
@@ -12766,7 +12710,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowsNotFound : WpfCell
     {
         
@@ -12803,7 +12747,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NotAuthorisedErrors : WpfCell
     {
         
@@ -12840,7 +12784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResetCounter : WpfText
     {
         
@@ -12876,7 +12820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowTab : WpfTabPage
     {
         
@@ -13047,7 +12991,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext1 : WpfCustom
     {
         
@@ -13094,7 +13038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowDesignerView : WpfCustom
     {
         
@@ -13127,7 +13071,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DesignerView : WpfCustom
     {
         
@@ -13196,7 +13140,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane : WpfPane
     {
         
@@ -13229,7 +13173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActivityTypeDesigner : WpfCustom
     {
         
@@ -13262,7 +13206,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowItemPresenter : WpfCustom
     {
         
@@ -13295,7 +13239,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Flowchart : WpfCustom
     {
         
@@ -14603,7 +14547,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RabbitMQPublish : WpfCustom
     {
         
@@ -14668,7 +14612,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom : WpfCustom
     {
         
@@ -14851,7 +14795,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueueNameComboBox : WpfComboBox
     {
         
@@ -14887,7 +14831,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MessageComboBox : WpfComboBox
     {
         
@@ -14923,7 +14867,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsComboBox : WpfComboBox
     {
         
@@ -14959,7 +14903,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom : WpfCustom
     {
         
@@ -14992,7 +14936,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup : WpfGroup
     {
         
@@ -15056,7 +15000,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox : WpfComboBox
     {
         
@@ -15092,7 +15036,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox : WpfComboBox
     {
         
@@ -15128,7 +15072,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom : WpfCustom
     {
         
@@ -15243,7 +15187,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueueNameComboBox1 : WpfComboBox
     {
         
@@ -15279,7 +15223,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MessageComboBox1 : WpfComboBox
     {
         
@@ -15315,7 +15259,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsComboBox1 : WpfComboBox
     {
         
@@ -15351,7 +15295,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RabbitMQConsume : WpfCustom
     {
         
@@ -15416,7 +15360,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom1 : WpfCustom
     {
         
@@ -15609,7 +15553,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueueNameComboBox2 : WpfComboBox
     {
         
@@ -15645,7 +15589,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResponseComboBox : WpfComboBox
     {
         
@@ -15682,7 +15626,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrefetchComboBox : WpfComboBox
     {
         
@@ -15719,7 +15663,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TimeOutComboBox : WpfComboBox
     {
         
@@ -15756,7 +15700,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsComboBox2 : WpfComboBox
     {
         
@@ -15792,7 +15736,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom1 : WpfCustom
     {
         
@@ -15825,7 +15769,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup1 : WpfGroup
     {
         
@@ -15889,7 +15833,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox1 : WpfComboBox
     {
         
@@ -15925,7 +15869,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox1 : WpfComboBox
     {
         
@@ -15961,7 +15905,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom1 : WpfCustom
     {
         
@@ -16062,7 +16006,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueueNameComboBox3 : WpfComboBox
     {
         
@@ -16098,7 +16042,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResponseComboBox1 : WpfComboBox
     {
         
@@ -16135,7 +16079,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebPut : WpfCustom
     {
         
@@ -16224,7 +16168,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView : WpfCustom
     {
         
@@ -16497,7 +16441,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Table : WpfTable
     {
         
@@ -16529,7 +16473,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow1 : WpfRow
     {
         
@@ -16576,7 +16520,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemValueCell : WpfCell
     {
         
@@ -16609,7 +16553,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox : WpfComboBox
     {
         
@@ -16646,7 +16590,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderCell : WpfCell
     {
         
@@ -16679,7 +16623,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderComboBox : WpfComboBox
     {
         
@@ -16716,7 +16660,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesComboBox : WpfComboBox
     {
         
@@ -16753,7 +16697,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueryStringText : WpfText
     {
         
@@ -16789,7 +16733,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputsTable : WpfTable
     {
         
@@ -16825,7 +16769,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebDelete : WpfCustom
     {
         
@@ -16894,7 +16838,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView1 : WpfCustom
     {
         
@@ -17155,7 +17099,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Table1 : WpfTable
     {
         
@@ -17187,7 +17131,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow11 : WpfRow
     {
         
@@ -17234,7 +17178,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemValueCell1 : WpfCell
     {
         
@@ -17267,7 +17211,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox1 : WpfComboBox
     {
         
@@ -17304,7 +17248,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderCell1 : WpfCell
     {
         
@@ -17337,7 +17281,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderComboBox1 : WpfComboBox
     {
         
@@ -17374,7 +17318,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesComboBox1 : WpfComboBox
     {
         
@@ -17410,7 +17354,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueryStringText1 : WpfText
     {
         
@@ -17446,7 +17390,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignObject1 : WpfCustom
     {
         
@@ -17561,7 +17505,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView : WpfCustom
     {
         
@@ -17594,7 +17538,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid : WpfTable
     {
         
@@ -17640,7 +17584,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row12 : WpfRow
     {
         
@@ -17687,7 +17631,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell : WpfCell
     {
         
@@ -17721,7 +17665,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTextbox : WpfEdit
     {
         
@@ -17757,7 +17701,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell : WpfCell
     {
         
@@ -17795,7 +17739,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2 : WpfRow
     {
         
@@ -17842,7 +17786,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell1 : WpfCell
     {
         
@@ -17880,7 +17824,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell1 : WpfCell
     {
         
@@ -17918,7 +17862,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView2 : WpfCustom
     {
         
@@ -18001,7 +17945,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid1 : WpfTable
     {
         
@@ -18047,7 +17991,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row13 : WpfRow
     {
         
@@ -18094,7 +18038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldCell : WpfCell
     {
         
@@ -18127,7 +18071,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldNameComboBox : WpfComboBox
     {
         
@@ -18163,7 +18107,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldValueCell : WpfCell
     {
         
@@ -18196,7 +18140,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldValueComboBox : WpfComboBox
     {
         
@@ -18232,7 +18176,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row21 : WpfRow
     {
         
@@ -18279,7 +18223,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldValueCell1 : WpfCell
     {
         
@@ -18312,7 +18256,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldValueComboBox1 : WpfComboBox
     {
         
@@ -18348,7 +18292,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldCell1 : WpfCell
     {
         
@@ -18381,7 +18325,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldNameComboBox1 : WpfComboBox
     {
         
@@ -18417,7 +18361,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnError : WpfCustom
     {
         
@@ -18450,7 +18394,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup2 : WpfGroup
     {
         
@@ -18522,7 +18466,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QuickVariableInputContent : WpfCustom
     {
         
@@ -18681,7 +18625,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom : WpfCustom
     {
         
@@ -18714,7 +18658,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup : WpfGroup
     {
         
@@ -18746,7 +18690,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewButton : WpfButton
     {
         
@@ -18782,7 +18726,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebRequest1 : WpfCustom
     {
         
@@ -18866,7 +18810,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom2 : WpfCustom
     {
         
@@ -18969,7 +18913,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputComboBox : WpfComboBox
     {
         
@@ -19005,7 +18949,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderComboBox2 : WpfComboBox
     {
         
@@ -19042,7 +18986,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TimeOutComboBox1 : WpfComboBox
     {
         
@@ -19078,7 +19022,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox : WpfComboBox
     {
         
@@ -19114,7 +19058,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom1 : WpfCustom
     {
         
@@ -19147,7 +19091,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup1 : WpfGroup
     {
         
@@ -19179,7 +19123,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewButton1 : WpfButton
     {
         
@@ -19215,7 +19159,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom2 : WpfCustom
     {
         
@@ -19248,7 +19192,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup3 : WpfGroup
     {
         
@@ -19312,7 +19256,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox2 : WpfComboBox
     {
         
@@ -19348,7 +19292,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebSerciveComboBox : WpfComboBox
     {
         
@@ -19384,7 +19328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom2 : WpfCustom
     {
         
@@ -19431,7 +19375,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputComboBox1 : WpfComboBox
     {
         
@@ -19467,7 +19411,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox1 : WpfComboBox
     {
         
@@ -19503,7 +19447,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DotNetDll1 : WpfCustom
     {
         
@@ -19573,7 +19517,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView3 : WpfCustom
     {
         
@@ -19756,7 +19700,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesComboBox2 : WpfComboBox
     {
         
@@ -19810,7 +19754,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActionsComboBox : WpfComboBox
     {
         
@@ -19882,7 +19826,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ClassNameComboBox : WpfComboBox
     {
         
@@ -19954,7 +19898,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeDataGridTable : WpfTable
     {
         
@@ -19986,7 +19930,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row14 : WpfRow
     {
         
@@ -20032,7 +19976,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputVariableCell : WpfCell
     {
         
@@ -20065,7 +20009,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputVariableComboBox : WpfComboBox
     {
         
@@ -20101,7 +20045,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class EmptyIsNullCell : WpfCell
     {
         
@@ -20138,7 +20082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataMerge1 : WpfCustom
     {
         
@@ -20258,7 +20202,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView1 : WpfCustom
     {
         
@@ -20309,7 +20253,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UISmallDataGridTable : WpfTable
     {
         
@@ -20369,7 +20313,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row : WpfRow
     {
         
@@ -20416,7 +20360,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell : WpfCell
     {
         
@@ -20450,7 +20394,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1InputVariabComboBox : WpfComboBox
     {
         
@@ -20486,7 +20430,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell : WpfCell
     {
         
@@ -20520,7 +20464,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1UsingDComboBox : WpfComboBox
     {
         
@@ -20556,7 +20500,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row22 : WpfRow
     {
         
@@ -20623,7 +20567,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell1 : WpfCell
     {
         
@@ -20657,7 +20601,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2InputVariabComboBox : WpfComboBox
     {
         
@@ -20693,7 +20637,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell1 : WpfCell
     {
         
@@ -20727,7 +20671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2UsingComboBox : WpfComboBox
     {
         
@@ -20763,7 +20707,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row3 : WpfRow
     {
         
@@ -20796,7 +20740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MergeTypeCell : WpfCell
     {
         
@@ -20834,7 +20778,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView4 : WpfCustom
     {
         
@@ -20899,7 +20843,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatGrid : WpfTable
     {
         
@@ -20959,7 +20903,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row4 : WpfRow
     {
         
@@ -21020,7 +20964,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell2 : WpfCell
     {
         
@@ -21067,7 +21011,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1InputVariabComboBox1 : WpfComboBox
     {
         
@@ -21103,7 +21047,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2InputVariabComboBox1 : WpfComboBox
     {
         
@@ -21139,7 +21083,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MergeTypeCell1 : WpfCell
     {
         
@@ -21208,7 +21152,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row4MergeTypeComboBox : WpfComboBox
     {
         
@@ -21244,7 +21188,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell2 : WpfCell
     {
         
@@ -21291,7 +21235,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1UsingComboBox : WpfComboBox
     {
         
@@ -21327,7 +21271,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2UsingComboBox1 : WpfComboBox
     {
         
@@ -21363,7 +21307,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row23 : WpfRow
     {
         
@@ -21424,7 +21368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell3 : WpfCell
     {
         
@@ -21457,7 +21401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2InputVariabComboBox2 : WpfComboBox
     {
         
@@ -21493,7 +21437,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MergeTypeCell2 : WpfCell
     {
         
@@ -21530,7 +21474,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell3 : WpfCell
     {
         
@@ -21563,7 +21507,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2UsingComboBox2 : WpfComboBox
     {
         
@@ -21599,7 +21543,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row31 : WpfRow
     {
         
@@ -21632,7 +21576,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MergeTypeCell3 : WpfCell
     {
         
@@ -21665,7 +21609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row4MergeTypeComboBox1 : WpfComboBox
     {
         
@@ -21701,7 +21645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup4 : WpfGroup
     {
         
@@ -21755,7 +21699,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataSplit1 : WpfCustom
     {
         
@@ -21834,7 +21778,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QuickVariableInputContent1 : WpfCustom
     {
         
@@ -21993,7 +21937,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom2 : WpfCustom
     {
         
@@ -22026,7 +21970,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup2 : WpfGroup
     {
         
@@ -22058,7 +22002,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewButton2 : WpfButton
     {
         
@@ -22094,7 +22038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom3 : WpfCustom
     {
         
@@ -22195,7 +22139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceStringComboBox : WpfComboBox
     {
         
@@ -22231,7 +22175,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeDataGridTable1 : WpfTable
     {
         
@@ -22263,7 +22207,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row15 : WpfRow
     {
         
@@ -22351,7 +22295,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell : WpfCell
     {
         
@@ -22384,7 +22328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox2 : WpfComboBox
     {
         
@@ -22420,7 +22364,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitTypeCell : WpfCell
     {
         
@@ -22457,7 +22401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell4 : WpfCell
     {
         
@@ -22490,7 +22434,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingComboBox : WpfComboBox
     {
         
@@ -22526,7 +22470,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IncludeCell : WpfCell
     {
         
@@ -22563,7 +22507,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class EscapeCharCell : WpfCell
     {
         
@@ -22596,7 +22540,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class EscapeCharComboBox : WpfComboBox
     {
         
@@ -22632,7 +22576,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom3 : WpfCustom
     {
         
@@ -22679,7 +22623,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceStringComboBox1 : WpfComboBox
     {
         
@@ -22715,7 +22659,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable : WpfTable
     {
         
@@ -22747,7 +22691,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row16 : WpfRow
     {
         
@@ -22807,7 +22751,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell2 : WpfCell
     {
         
@@ -22841,7 +22785,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox2 : WpfComboBox
     {
         
@@ -22877,7 +22821,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitTypeCell1 : WpfCell
     {
         
@@ -22915,7 +22859,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AtIndexCell : WpfCell
     {
         
@@ -22949,7 +22893,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AtIndexComboBox : WpfComboBox
     {
         
@@ -22985,7 +22929,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MySqlDatabase : WpfCustom
     {
         
@@ -23055,7 +22999,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView5 : WpfCustom
     {
         
@@ -23250,7 +23194,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom3 : WpfCustom
     {
         
@@ -23283,7 +23227,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup5 : WpfGroup
     {
         
@@ -23347,7 +23291,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox3 : WpfComboBox
     {
         
@@ -23383,7 +23327,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox2 : WpfComboBox
     {
         
@@ -23419,7 +23363,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SqlServerDatabase : WpfCustom
     {
         
@@ -23489,7 +23433,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView6 : WpfCustom
     {
         
@@ -23704,7 +23648,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActionsCombobox1 : WpfComboBox
     {
         
@@ -23740,7 +23684,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesCombobox3 : WpfComboBox
     {
         
@@ -23776,7 +23720,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputsTable1 : WpfTable
     {
         
@@ -23822,7 +23766,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row17 : WpfRow
     {
         
@@ -23855,7 +23799,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataCell : WpfCell
     {
         
@@ -23888,7 +23832,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataCombobox : WpfComboBox
     {
         
@@ -23924,7 +23868,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row24 : WpfRow
     {
         
@@ -23957,7 +23901,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataCell1 : WpfCell
     {
         
@@ -23990,7 +23934,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataCombobox1 : WpfComboBox
     {
         
@@ -24026,7 +23970,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestInputsTable : WpfTable
     {
         
@@ -24059,7 +24003,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row18 : WpfRow
     {
         
@@ -24091,7 +24035,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestDataCell : WpfCell
     {
         
@@ -24124,7 +24068,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestDataComboBox : WpfComboBox
     {
         
@@ -24160,7 +24104,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom4 : WpfCustom
     {
         
@@ -24193,7 +24137,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup6 : WpfGroup
     {
         
@@ -24243,7 +24187,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox4 : WpfComboBox
     {
         
@@ -24279,7 +24223,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ODBCDatabaseActivCustom : WpfCustom
     {
         
@@ -24349,7 +24293,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView7 : WpfCustom
     {
         
@@ -24504,7 +24448,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActionCommandComboBox : WpfComboBox
     {
         
@@ -24540,7 +24484,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom5 : WpfCustom
     {
         
@@ -24573,7 +24517,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup7 : WpfGroup
     {
         
@@ -24637,7 +24581,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox5 : WpfComboBox
     {
         
@@ -24673,7 +24617,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox3 : WpfComboBox
     {
         
@@ -24709,7 +24653,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OracleDatabaseActCustom : WpfCustom
     {
         
@@ -24779,7 +24723,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView8 : WpfCustom
     {
         
@@ -24974,7 +24918,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom6 : WpfCustom
     {
         
@@ -25007,7 +24951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup8 : WpfGroup
     {
         
@@ -25071,7 +25015,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox6 : WpfComboBox
     {
         
@@ -25107,7 +25051,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox4 : WpfComboBox
     {
         
@@ -25143,7 +25087,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PostgreSqlActivitCustom : WpfCustom
     {
         
@@ -25213,7 +25157,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView9 : WpfCustom
     {
         
@@ -25400,7 +25344,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourcesComboBox4 : WpfComboBox
     {
         
@@ -25436,7 +25380,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActionsComboBox2 : WpfComboBox
     {
         
@@ -25472,7 +25416,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom7 : WpfCustom
     {
         
@@ -25505,7 +25449,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup9 : WpfGroup
     {
         
@@ -25569,7 +25513,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox7 : WpfComboBox
     {
         
@@ -25605,7 +25549,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox5 : WpfComboBox
     {
         
@@ -25641,7 +25585,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BaseConvert1 : WpfCustom
     {
         
@@ -25743,7 +25687,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView10 : WpfCustom
     {
         
@@ -25776,7 +25720,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid2 : WpfTable
     {
         
@@ -25808,7 +25752,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row19 : WpfRow
     {
         
@@ -25841,7 +25785,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell : WpfCell
     {
         
@@ -25875,7 +25819,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox : WpfControl
     {
         
@@ -25912,7 +25856,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView2 : WpfCustom
     {
         
@@ -25945,7 +25889,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid3 : WpfTable
     {
         
@@ -25977,7 +25921,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row110 : WpfRow
     {
         
@@ -26010,7 +25954,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell1 : WpfCell
     {
         
@@ -26044,7 +25988,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox1 : WpfControl
     {
         
@@ -26081,7 +26025,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CaseConvert1 : WpfCustom
     {
         
@@ -26178,7 +26122,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QuickVariableInputContent2 : WpfCustom
     {
         
@@ -26337,7 +26281,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom3 : WpfCustom
     {
         
@@ -26370,7 +26314,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup3 : WpfGroup
     {
         
@@ -26402,7 +26346,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewButton3 : WpfButton
     {
         
@@ -26438,7 +26382,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom4 : WpfCustom
     {
         
@@ -26471,7 +26415,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable1 : WpfTable
     {
         
@@ -26503,7 +26447,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row111 : WpfRow
     {
         
@@ -26549,7 +26493,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell3 : WpfCell
     {
         
@@ -26583,7 +26527,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox3 : WpfComboBox
     {
         
@@ -26619,7 +26563,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertFuncCell : WpfCell
     {
         
@@ -26657,7 +26601,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom4 : WpfCustom
     {
         
@@ -26704,7 +26648,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable2 : WpfTable
     {
         
@@ -26736,7 +26680,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row112 : WpfRow
     {
         
@@ -26782,7 +26726,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputVariableCell : WpfCell
     {
         
@@ -26816,7 +26760,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputVariableComboBox : WpfComboBox
     {
         
@@ -26852,7 +26796,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertToCell : WpfCell
     {
         
@@ -26890,7 +26834,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom8 : WpfCustom
     {
         
@@ -26923,7 +26867,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup10 : WpfGroup
     {
         
@@ -26987,7 +26931,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox8 : WpfComboBox
     {
         
@@ -27023,7 +26967,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox6 : WpfComboBox
     {
         
@@ -27059,7 +27003,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ForEach1 : WpfCustom
     {
         
@@ -27124,7 +27068,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView3 : WpfCustom
     {
         
@@ -27222,7 +27166,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromIntellisenseTextbox : WpfComboBox
     {
         
@@ -27258,7 +27202,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToIntellisenseTextbox : WpfComboBox
     {
         
@@ -27294,7 +27238,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropActivityHereCustom : WpfCustom
     {
         
@@ -27331,7 +27275,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView11 : WpfCustom
     {
         
@@ -27424,7 +27368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ForEachFromIntellisenseTextbox : WpfComboBox
     {
         
@@ -27460,7 +27404,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -27496,7 +27440,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropActivityHere : WpfCustom
     {
         
@@ -27533,7 +27477,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane : WpfCustom
     {
         
@@ -27566,7 +27510,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup11 : WpfGroup
     {
         
@@ -27616,7 +27560,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseTextbox : WpfComboBox
     {
         
@@ -27652,7 +27596,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Length1 : WpfCustom
     {
         
@@ -27717,7 +27661,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom5 : WpfCustom
     {
         
@@ -27796,7 +27740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetComboBox : WpfComboBox
     {
         
@@ -27832,7 +27776,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox3 : WpfComboBox
     {
         
@@ -27868,7 +27812,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom9 : WpfCustom
     {
         
@@ -27901,7 +27845,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup12 : WpfGroup
     {
         
@@ -27947,7 +27891,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox : WpfComboBox
     {
         
@@ -27983,7 +27927,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox7 : WpfComboBox
     {
         
@@ -28019,7 +27963,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom5 : WpfCustom
     {
         
@@ -28066,7 +28010,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox4 : WpfComboBox
     {
         
@@ -28102,7 +28046,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetComboBox1 : WpfComboBox
     {
         
@@ -28138,7 +28082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindRecordsIndex : WpfCustom
     {
         
@@ -28203,7 +28147,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom6 : WpfCustom
     {
         
@@ -28264,7 +28208,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldsToSearchComboBox : WpfComboBox
     {
         
@@ -28300,7 +28244,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable3 : WpfTable
     {
         
@@ -28332,7 +28276,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row113 : WpfRow
     {
         
@@ -28378,7 +28322,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTypeCell : WpfCell
     {
         
@@ -28416,7 +28360,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchCriteriaCell : WpfCell
     {
         
@@ -28450,7 +28394,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchCriteriaComboBox : WpfComboBox
     {
         
@@ -28486,7 +28430,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox5 : WpfComboBox
     {
         
@@ -28522,7 +28466,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom6 : WpfCustom
     {
         
@@ -28633,7 +28577,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FieldsToSearchComboBox1 : WpfComboBox
     {
         
@@ -28669,7 +28613,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeDataGridTable2 : WpfTable
     {
         
@@ -28701,7 +28645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row114 : WpfRow
     {
         
@@ -28747,7 +28691,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTypeCell1 : WpfCell
     {
         
@@ -28784,7 +28728,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchCriteriaCell1 : WpfCell
     {
         
@@ -28817,7 +28761,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchCriteriaComboBox1 : WpfComboBox
     {
         
@@ -28853,7 +28797,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox6 : WpfComboBox
     {
         
@@ -28889,7 +28833,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom10 : WpfCustom
     {
         
@@ -28922,7 +28866,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup13 : WpfGroup
     {
         
@@ -28986,7 +28930,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox9 : WpfComboBox
     {
         
@@ -29022,7 +28966,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox8 : WpfComboBox
     {
         
@@ -29058,7 +29002,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteRecord : WpfCustom
     {
         
@@ -29123,7 +29067,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom7 : WpfCustom
     {
         
@@ -29170,7 +29114,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetComboBox2 : WpfComboBox
     {
         
@@ -29206,7 +29150,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox7 : WpfComboBox
     {
         
@@ -29242,7 +29186,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom7 : WpfCustom
     {
         
@@ -29321,7 +29265,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetComboBox3 : WpfComboBox
     {
         
@@ -29357,7 +29301,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox8 : WpfComboBox
     {
         
@@ -29393,7 +29337,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom11 : WpfCustom
     {
         
@@ -29426,7 +29370,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup14 : WpfGroup
     {
         
@@ -29490,7 +29434,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox10 : WpfComboBox
     {
         
@@ -29526,7 +29470,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox9 : WpfComboBox
     {
         
@@ -29562,7 +29506,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SortRecords : WpfCustom
     {
         
@@ -29627,7 +29571,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom8 : WpfCustom
     {
         
@@ -29678,7 +29622,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SortFieldComboBox : WpfComboBox
     {
         
@@ -29714,7 +29658,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom8 : WpfCustom
     {
         
@@ -29779,7 +29723,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SortFieldComboBox1 : WpfComboBox
     {
         
@@ -29815,7 +29759,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom12 : WpfCustom
     {
         
@@ -29848,7 +29792,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup15 : WpfGroup
     {
         
@@ -29912,7 +29856,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox11 : WpfComboBox
     {
         
@@ -29948,7 +29892,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox10 : WpfComboBox
     {
         
@@ -29984,7 +29928,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CountRecordset : WpfCustom
     {
         
@@ -30049,7 +29993,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom9 : WpfCustom
     {
         
@@ -30128,7 +30072,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecorsetComboBox : WpfComboBox
     {
         
@@ -30164,7 +30108,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox9 : WpfComboBox
     {
         
@@ -30200,7 +30144,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom13 : WpfCustom
     {
         
@@ -30233,7 +30177,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup16 : WpfGroup
     {
         
@@ -30297,7 +30241,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox12 : WpfComboBox
     {
         
@@ -30333,7 +30277,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox11 : WpfComboBox
     {
         
@@ -30369,7 +30313,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom9 : WpfCustom
     {
         
@@ -30416,7 +30360,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecorsetComboBox1 : WpfComboBox
     {
         
@@ -30452,7 +30396,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox10 : WpfComboBox
     {
         
@@ -30488,7 +30432,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SqlBulkInsert1 : WpfCustom
     {
         
@@ -30571,7 +30515,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom10 : WpfCustom
     {
         
@@ -30836,7 +30780,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseComboBox : WpfComboBox
     {
         
@@ -30890,7 +30834,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TableNameComboBox : WpfComboBox
     {
         
@@ -30926,7 +30870,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BatchSizeComboBox : WpfComboBox
     {
         
@@ -30962,7 +30906,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TimeoutComboBox2 : WpfComboBox
     {
         
@@ -30998,7 +30942,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox11 : WpfComboBox
     {
         
@@ -31034,7 +30978,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom14 : WpfCustom
     {
         
@@ -31067,7 +31011,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup17 : WpfGroup
     {
         
@@ -31131,7 +31075,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox13 : WpfComboBox
     {
         
@@ -31167,7 +31111,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox12 : WpfComboBox
     {
         
@@ -31203,7 +31147,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom10 : WpfCustom
     {
         
@@ -31322,7 +31266,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseComboBox1 : WpfComboBox
     {
         
@@ -31376,7 +31320,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox12 : WpfComboBox
     {
         
@@ -31412,7 +31356,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Unique : WpfCustom
     {
         
@@ -31477,7 +31421,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom11 : WpfCustom
     {
         
@@ -31552,7 +31496,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFieldsComboBox : WpfComboBox
     {
         
@@ -31588,7 +31532,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReturnFieldsComboBox : WpfComboBox
     {
         
@@ -31624,7 +31568,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsComboBox3 : WpfComboBox
     {
         
@@ -31660,7 +31604,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom15 : WpfCustom
     {
         
@@ -31693,7 +31637,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup18 : WpfGroup
     {
         
@@ -31757,7 +31701,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox1 : WpfComboBox
     {
         
@@ -31793,7 +31737,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox13 : WpfComboBox
     {
         
@@ -31829,7 +31773,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom11 : WpfCustom
     {
         
@@ -31890,7 +31834,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFieldsComboBox1 : WpfComboBox
     {
         
@@ -31926,7 +31870,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReturnFieldsComboBox1 : WpfComboBox
     {
         
@@ -31962,7 +31906,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsComboBox4 : WpfComboBox
     {
         
@@ -31998,7 +31942,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateJson1 : WpfCustom
     {
         
@@ -32035,7 +31979,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteCommandLine : WpfCustom
     {
         
@@ -32100,7 +32044,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent : WpfCustom
     {
         
@@ -32179,7 +32123,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseTextbox : WpfComboBox
     {
         
@@ -32215,7 +32159,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseTextbox : WpfComboBox
     {
         
@@ -32251,7 +32195,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnError1 : WpfCustom
     {
         
@@ -32284,7 +32228,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup19 : WpfGroup
     {
         
@@ -32348,7 +32292,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -32384,7 +32328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorWorkflow : WpfComboBox
     {
         
@@ -32420,7 +32364,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent : WpfCustom
     {
         
@@ -32467,7 +32411,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -32503,7 +32447,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -32539,7 +32483,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointMoveFile : WpfCustom
     {
         
@@ -32604,7 +32548,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView12 : WpfCustom
     {
         
@@ -32729,7 +32673,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server : WpfComboBox
     {
         
@@ -32783,7 +32727,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromDirectoryComboBox : WpfComboBox
     {
         
@@ -32819,7 +32763,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathDirectoryComboBox : WpfComboBox
     {
         
@@ -32856,7 +32800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox13 : WpfComboBox
     {
         
@@ -32892,7 +32836,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane1 : WpfCustom
     {
         
@@ -32925,7 +32869,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup20 : WpfGroup
     {
         
@@ -32989,7 +32933,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox : WpfComboBox
     {
         
@@ -33025,7 +32969,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox : WpfComboBox
     {
         
@@ -33061,7 +33005,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView4 : WpfCustom
     {
         
@@ -33154,7 +33098,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server1 : WpfComboBox
     {
         
@@ -33208,7 +33152,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromDirectoryComboBox1 : WpfComboBox
     {
         
@@ -33244,7 +33188,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathDirectoryComboBox1 : WpfComboBox
     {
         
@@ -33281,7 +33225,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox14 : WpfComboBox
     {
         
@@ -33317,7 +33261,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointCreateListItem : WpfCustom
     {
         
@@ -33382,7 +33326,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView13 : WpfCustom
     {
         
@@ -33526,7 +33470,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server2 : WpfComboBox
     {
         
@@ -33580,7 +33524,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList : WpfComboBox
     {
         
@@ -33634,7 +33578,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTable : WpfTable
     {
         
@@ -33694,7 +33638,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContentTypeRow : WpfRow
     {
         
@@ -33727,7 +33671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemContentTypeCell : WpfCell
     {
         
@@ -33764,7 +33708,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TitleRow : WpfRow
     {
         
@@ -33797,7 +33741,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TitleColumnCell : WpfCell
     {
         
@@ -33834,7 +33778,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsRow : WpfRow
     {
         
@@ -33867,7 +33811,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemAttachmentsCell : WpfCell
     {
         
@@ -33904,7 +33848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane2 : WpfCustom
     {
         
@@ -33937,7 +33881,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup21 : WpfGroup
     {
         
@@ -34001,7 +33945,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -34037,7 +33981,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -34073,7 +34017,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox15 : WpfComboBox
     {
         
@@ -34109,7 +34053,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView5 : WpfCustom
     {
         
@@ -34225,7 +34169,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server3 : WpfComboBox
     {
         
@@ -34279,7 +34223,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList1 : WpfComboBox
     {
         
@@ -34333,7 +34277,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox16 : WpfComboBox
     {
         
@@ -34369,7 +34313,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointCopyFile : WpfCustom
     {
         
@@ -34434,7 +34378,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView14 : WpfCustom
     {
         
@@ -34559,7 +34503,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromDirectoryComboBox2 : WpfComboBox
     {
         
@@ -34595,7 +34539,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathDirectoryComboBox2 : WpfComboBox
     {
         
@@ -34632,7 +34576,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox17 : WpfComboBox
     {
         
@@ -34668,7 +34612,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane3 : WpfCustom
     {
         
@@ -34701,7 +34645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup22 : WpfGroup
     {
         
@@ -34765,7 +34709,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -34801,7 +34745,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -34837,7 +34781,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server4 : WpfComboBox
     {
         
@@ -34873,7 +34817,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView6 : WpfCustom
     {
         
@@ -34966,7 +34910,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server5 : WpfComboBox
     {
         
@@ -35020,7 +34964,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromDirectoryComboBox3 : WpfComboBox
     {
         
@@ -35056,7 +35000,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathDirectoryComboBox3 : WpfComboBox
     {
         
@@ -35093,7 +35037,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox18 : WpfComboBox
     {
         
@@ -35129,7 +35073,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointDeleteListItem : WpfCustom
     {
         
@@ -35194,7 +35138,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView15 : WpfCustom
     {
         
@@ -35356,7 +35300,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server6 : WpfComboBox
     {
         
@@ -35410,7 +35354,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList2 : WpfComboBox
     {
         
@@ -35464,7 +35408,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTable1 : WpfTable
     {
         
@@ -35496,7 +35440,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow12 : WpfRow
     {
         
@@ -35556,7 +35500,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameCell : WpfCell
     {
         
@@ -35593,7 +35537,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell : WpfCell
     {
         
@@ -35630,7 +35574,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell4 : WpfCell
     {
         
@@ -35663,7 +35607,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox4 : WpfComboBox
     {
         
@@ -35699,7 +35643,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane4 : WpfCustom
     {
         
@@ -35732,7 +35676,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup23 : WpfGroup
     {
         
@@ -35796,7 +35740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -35832,7 +35776,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -35868,7 +35812,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox19 : WpfComboBox
     {
         
@@ -35904,7 +35848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView7 : WpfCustom
     {
         
@@ -36020,7 +35964,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server7 : WpfComboBox
     {
         
@@ -36074,7 +36018,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList3 : WpfComboBox
     {
         
@@ -36128,7 +36072,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox20 : WpfComboBox
     {
         
@@ -36164,7 +36108,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointReadListItem : WpfCustom
     {
         
@@ -36229,7 +36173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView16 : WpfCustom
     {
         
@@ -36391,7 +36335,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server8 : WpfComboBox
     {
         
@@ -36445,7 +36389,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList4 : WpfComboBox
     {
         
@@ -36499,7 +36443,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTableVariables : WpfTable
     {
         
@@ -36531,7 +36475,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow13 : WpfRow
     {
         
@@ -36591,7 +36535,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameCell1 : WpfCell
     {
         
@@ -36628,7 +36572,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell1 : WpfCell
     {
         
@@ -36665,7 +36609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell5 : WpfCell
     {
         
@@ -36698,7 +36642,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox5 : WpfComboBox
     {
         
@@ -36734,7 +36678,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTableValues : WpfTable
     {
         
@@ -36766,7 +36710,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow14 : WpfRow
     {
         
@@ -36826,7 +36770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameCell2 : WpfCell
     {
         
@@ -36863,7 +36807,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell2 : WpfCell
     {
         
@@ -36900,7 +36844,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell6 : WpfCell
     {
         
@@ -36933,7 +36877,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox6 : WpfComboBox
     {
         
@@ -36969,7 +36913,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane5 : WpfCustom
     {
         
@@ -37002,7 +36946,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup24 : WpfGroup
     {
         
@@ -37066,7 +37010,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -37102,7 +37046,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -37138,7 +37082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView8 : WpfCustom
     {
         
@@ -37258,7 +37202,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server9 : WpfComboBox
     {
         
@@ -37312,7 +37256,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList5 : WpfComboBox
     {
         
@@ -37366,7 +37310,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointUpdateListItem : WpfCustom
     {
         
@@ -37431,7 +37375,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView17 : WpfCustom
     {
         
@@ -37607,7 +37551,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server10 : WpfComboBox
     {
         
@@ -37661,7 +37605,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList6 : WpfComboBox
     {
         
@@ -37715,7 +37659,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTableVariables1 : WpfTable
     {
         
@@ -37747,7 +37691,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow15 : WpfRow
     {
         
@@ -37807,7 +37751,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameCell3 : WpfCell
     {
         
@@ -37844,7 +37788,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell3 : WpfCell
     {
         
@@ -37881,7 +37825,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell7 : WpfCell
     {
         
@@ -37914,7 +37858,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox7 : WpfComboBox
     {
         
@@ -37950,7 +37894,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGridTableValues1 : WpfTable
     {
         
@@ -37982,7 +37926,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow16 : WpfRow
     {
         
@@ -38042,7 +37986,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameCell4 : WpfCell
     {
         
@@ -38079,7 +38023,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell4 : WpfCell
     {
         
@@ -38116,7 +38060,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell8 : WpfCell
     {
         
@@ -38149,7 +38093,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox8 : WpfComboBox
     {
         
@@ -38185,7 +38129,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane6 : WpfCustom
     {
         
@@ -38218,7 +38162,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup25 : WpfGroup
     {
         
@@ -38282,7 +38226,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -38318,7 +38262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -38354,7 +38298,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox21 : WpfComboBox
     {
         
@@ -38390,7 +38334,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView9 : WpfCustom
     {
         
@@ -38506,7 +38450,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server11 : WpfComboBox
     {
         
@@ -38560,7 +38504,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MethodList7 : WpfComboBox
     {
         
@@ -38614,7 +38558,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox22 : WpfComboBox
     {
         
@@ -38650,7 +38594,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointUploadFile : WpfCustom
     {
         
@@ -38715,7 +38659,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView18 : WpfCustom
     {
         
@@ -38822,7 +38766,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server12 : WpfComboBox
     {
         
@@ -38876,7 +38820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalPathFromIntellisenseCombobox : WpfComboBox
     {
         
@@ -38912,7 +38856,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathToIntellisenseCombobox : WpfComboBox
     {
         
@@ -38949,7 +38893,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsIntellisenseCombobox : WpfComboBox
     {
         
@@ -38985,7 +38929,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane7 : WpfCustom
     {
         
@@ -39018,7 +38962,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup26 : WpfGroup
     {
         
@@ -39082,7 +39026,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox6 : WpfComboBox
     {
         
@@ -39118,7 +39062,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox6 : WpfComboBox
     {
         
@@ -39154,7 +39098,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView10 : WpfCustom
     {
         
@@ -39247,7 +39191,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server13 : WpfComboBox
     {
         
@@ -39301,7 +39245,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalPathFromIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -39337,7 +39281,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathToIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -39374,7 +39318,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -39410,7 +39354,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointDownloadFile : WpfCustom
     {
         
@@ -39475,7 +39419,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView11 : WpfCustom
     {
         
@@ -39568,7 +39512,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathFromIntellisenseCombobox : WpfComboBox
     {
         
@@ -39604,7 +39548,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalPathToIntellisenseCombobox : WpfComboBox
     {
         
@@ -39641,7 +39585,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox : WpfComboBox
     {
         
@@ -39677,7 +39621,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server14 : WpfComboBox
     {
         
@@ -39713,7 +39657,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView19 : WpfCustom
     {
         
@@ -39838,7 +39782,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server15 : WpfComboBox
     {
         
@@ -39874,7 +39818,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathFromIntellisenseTextbox : WpfComboBox
     {
         
@@ -39910,7 +39854,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalPathToIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -39947,7 +39891,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane8 : WpfCustom
     {
         
@@ -39980,7 +39924,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup27 : WpfGroup
     {
         
@@ -40044,7 +39988,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox7 : WpfComboBox
     {
         
@@ -40080,7 +40024,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox7 : WpfComboBox
     {
         
@@ -40116,7 +40060,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox23 : WpfComboBox
     {
         
@@ -40152,7 +40096,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointReadFolder : WpfCustom
     {
         
@@ -40217,7 +40161,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView12 : WpfCustom
     {
         
@@ -40350,7 +40294,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathIntellisenseCombobox : WpfComboBox
     {
         
@@ -40386,7 +40330,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -40422,7 +40366,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server16 : WpfComboBox
     {
         
@@ -40458,7 +40402,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView20 : WpfCustom
     {
         
@@ -40605,7 +40549,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server17 : WpfComboBox
     {
         
@@ -40641,7 +40585,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -40677,7 +40621,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseTextbox2 : WpfComboBox
     {
         
@@ -40713,7 +40657,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane9 : WpfCustom
     {
         
@@ -40746,7 +40690,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup28 : WpfGroup
     {
         
@@ -40810,7 +40754,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox8 : WpfComboBox
     {
         
@@ -40846,7 +40790,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox8 : WpfComboBox
     {
         
@@ -40882,7 +40826,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Calculate1 : WpfCustom
     {
         
@@ -40947,7 +40891,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView21 : WpfCustom
     {
         
@@ -40980,7 +40924,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox2 : WpfControl
     {
         
@@ -41017,7 +40961,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView13 : WpfCustom
     {
         
@@ -41050,7 +40994,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox3 : WpfControl
     {
         
@@ -41087,7 +41031,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AggregateCalculat : WpfCustom
     {
         
@@ -41152,7 +41096,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom12 : WpfCustom
     {
         
@@ -41199,7 +41143,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class fxComboBox : WpfComboBox
     {
         
@@ -41235,7 +41179,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox24 : WpfComboBox
     {
         
@@ -41271,7 +41215,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom12 : WpfCustom
     {
         
@@ -41332,7 +41276,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class fxComboBox1 : WpfComboBox
     {
         
@@ -41368,7 +41312,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox25 : WpfComboBox
     {
         
@@ -41404,7 +41348,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom16 : WpfCustom
     {
         
@@ -41437,7 +41381,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup29 : WpfGroup
     {
         
@@ -41501,7 +41445,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox14 : WpfComboBox
     {
         
@@ -41537,7 +41481,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox14 : WpfComboBox
     {
         
@@ -41573,7 +41517,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DateTime1 : WpfCustom
     {
         
@@ -41638,7 +41582,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom13 : WpfCustom
     {
         
@@ -41759,7 +41703,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputComboBox2 : WpfComboBox
     {
         
@@ -41795,7 +41739,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputFormatComboBox : WpfComboBox
     {
         
@@ -41831,7 +41775,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AddTimeAmountComboBox : WpfComboBox
     {
         
@@ -41867,7 +41811,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputFormatComboBox : WpfComboBox
     {
         
@@ -41903,7 +41847,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox26 : WpfComboBox
     {
         
@@ -41939,7 +41883,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom17 : WpfCustom
     {
         
@@ -41972,7 +41916,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup30 : WpfGroup
     {
         
@@ -42036,7 +41980,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox15 : WpfComboBox
     {
         
@@ -42072,7 +42016,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox15 : WpfComboBox
     {
         
@@ -42108,7 +42052,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom13 : WpfCustom
     {
         
@@ -42211,7 +42155,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputComboBox3 : WpfComboBox
     {
         
@@ -42247,7 +42191,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputFormatComboBox1 : WpfComboBox
     {
         
@@ -42283,7 +42227,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AddTimeTypeComboBox : WpfComboBox
     {
         
@@ -42319,7 +42263,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AddTimeAmountComboBox1 : WpfComboBox
     {
         
@@ -42355,7 +42299,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputFormatComboBox1 : WpfComboBox
     {
         
@@ -42391,7 +42335,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox27 : WpfComboBox
     {
         
@@ -42427,7 +42371,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DateTimeDifference1 : WpfCustom
     {
         
@@ -42492,7 +42436,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom14 : WpfCustom
     {
         
@@ -42599,7 +42543,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Input1ComboBox : WpfComboBox
     {
         
@@ -42635,7 +42579,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Input2ComboBox : WpfComboBox
     {
         
@@ -42671,7 +42615,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputFormatComboBox2 : WpfComboBox
     {
         
@@ -42707,7 +42651,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox28 : WpfComboBox
     {
         
@@ -42743,7 +42687,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom18 : WpfCustom
     {
         
@@ -42776,7 +42720,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup31 : WpfGroup
     {
         
@@ -42840,7 +42784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox16 : WpfComboBox
     {
         
@@ -42876,7 +42820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox16 : WpfComboBox
     {
         
@@ -42912,7 +42856,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom14 : WpfCustom
     {
         
@@ -43001,7 +42945,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Input1ComboBox1 : WpfComboBox
     {
         
@@ -43037,7 +42981,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Input2ComboBox1 : WpfComboBox
     {
         
@@ -43073,7 +43017,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputFormatComboBox3 : WpfComboBox
     {
         
@@ -43109,7 +43053,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputInComboBox : WpfComboBox
     {
         
@@ -43145,7 +43089,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox29 : WpfComboBox
     {
         
@@ -43181,7 +43125,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class GatherSystemInfo : WpfCustom
     {
         
@@ -43283,7 +43227,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom15 : WpfCustom
     {
         
@@ -43330,7 +43274,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom19 : WpfCustom
     {
         
@@ -43363,7 +43307,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup32 : WpfGroup
     {
         
@@ -43427,7 +43371,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox17 : WpfComboBox
     {
         
@@ -43463,7 +43407,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox17 : WpfComboBox
     {
         
@@ -43499,7 +43443,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable4 : WpfTable
     {
         
@@ -43531,7 +43475,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row115 : WpfRow
     {
         
@@ -43577,7 +43521,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell2 : WpfCell
     {
         
@@ -43611,7 +43555,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox2 : WpfComboBox
     {
         
@@ -43647,7 +43591,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TypeCell : WpfCell
     {
         
@@ -43685,7 +43629,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom15 : WpfCustom
     {
         
@@ -43718,7 +43662,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable5 : WpfTable
     {
         
@@ -43750,7 +43694,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row116 : WpfRow
     {
         
@@ -43796,7 +43740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell3 : WpfCell
     {
         
@@ -43830,7 +43774,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox3 : WpfComboBox
     {
         
@@ -43866,7 +43810,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TypeCell1 : WpfCell
     {
         
@@ -43904,7 +43848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FormatNumber1 : WpfCustom
     {
         
@@ -43969,7 +43913,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom16 : WpfCustom
     {
         
@@ -44072,7 +44016,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NumberInputComboBox : WpfComboBox
     {
         
@@ -44108,7 +44052,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RoundingComboBox : WpfComboBox
     {
         
@@ -44180,7 +44124,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecimalsToShowComboBox : WpfComboBox
     {
         
@@ -44216,7 +44160,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultInputComboBox : WpfComboBox
     {
         
@@ -44252,7 +44196,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom20 : WpfCustom
     {
         
@@ -44285,7 +44229,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup33 : WpfGroup
     {
         
@@ -44349,7 +44293,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox18 : WpfComboBox
     {
         
@@ -44385,7 +44329,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox18 : WpfComboBox
     {
         
@@ -44421,7 +44365,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RoundingInputComboBox : WpfComboBox
     {
         
@@ -44457,7 +44401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom16 : WpfCustom
     {
         
@@ -44535,7 +44479,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NumberInputComboBox1 : WpfComboBox
     {
         
@@ -44571,7 +44515,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecimalsToShowComboBox1 : WpfComboBox
     {
         
@@ -44607,7 +44551,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultInputComboBox1 : WpfComboBox
     {
         
@@ -44643,7 +44587,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Random1 : WpfCustom
     {
         
@@ -44722,7 +44666,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView14 : WpfCustom
     {
         
@@ -44783,7 +44727,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class From : WpfComboBox
     {
         
@@ -44819,7 +44763,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class To : WpfComboBox
     {
         
@@ -44856,7 +44800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox30 : WpfComboBox
     {
         
@@ -44892,7 +44836,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom17 : WpfCustom
     {
         
@@ -44985,7 +44929,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromComboBox : WpfComboBox
     {
         
@@ -45021,7 +44965,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox : WpfComboBox
     {
         
@@ -45058,7 +45002,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox31 : WpfComboBox
     {
         
@@ -45094,7 +45038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom21 : WpfCustom
     {
         
@@ -45127,7 +45071,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup34 : WpfGroup
     {
         
@@ -45191,7 +45135,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox19 : WpfComboBox
     {
         
@@ -45227,7 +45171,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox19 : WpfComboBox
     {
         
@@ -45263,7 +45207,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom17 : WpfCustom
     {
         
@@ -45352,7 +45296,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TypeComboBox : WpfComboBox
     {
         
@@ -45406,7 +45350,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromComboBox1 : WpfComboBox
     {
         
@@ -45442,7 +45386,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox1 : WpfComboBox
     {
         
@@ -45479,7 +45423,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox32 : WpfComboBox
     {
         
@@ -45515,7 +45459,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LengthComboBox : WpfComboBox
     {
         
@@ -45552,7 +45496,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SMTPEmail : WpfCustom
     {
         
@@ -45617,7 +45561,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent1 : WpfCustom
     {
         
@@ -45724,7 +45668,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceComboBox : WpfComboBox
     {
         
@@ -45760,7 +45704,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox2 : WpfComboBox
     {
         
@@ -45796,7 +45740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubjectComboBox : WpfComboBox
     {
         
@@ -45832,7 +45776,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BodyComboBox : WpfComboBox
     {
         
@@ -45868,7 +45812,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox33 : WpfComboBox
     {
         
@@ -45904,7 +45848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent1 : WpfCustom
     {
         
@@ -46157,7 +46101,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceComboBox1 : WpfComboBox
     {
         
@@ -46193,7 +46137,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FromAddressComboBox : WpfComboBox
     {
         
@@ -46229,7 +46173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox3 : WpfComboBox
     {
         
@@ -46265,7 +46209,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CCComboBox : WpfComboBox
     {
         
@@ -46301,7 +46245,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BCCComboBox : WpfComboBox
     {
         
@@ -46337,7 +46281,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubjectComboBox1 : WpfComboBox
     {
         
@@ -46373,7 +46317,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BodyComboBox1 : WpfComboBox
     {
         
@@ -46409,7 +46353,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox34 : WpfComboBox
     {
         
@@ -46445,7 +46389,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsComboBox : WpfComboBox
     {
         
@@ -46481,7 +46425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExchangeEmail : WpfCustom
     {
         
@@ -46528,7 +46472,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent2 : WpfCustom
     {
         
@@ -46735,7 +46679,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsComboBox1 : WpfComboBox
     {
         
@@ -46771,7 +46715,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BCCComboBox1 : WpfComboBox
     {
         
@@ -46807,7 +46751,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BodyComboBox2 : WpfComboBox
     {
         
@@ -46843,7 +46787,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CCComboBox1 : WpfComboBox
     {
         
@@ -46879,7 +46823,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox35 : WpfComboBox
     {
         
@@ -46915,7 +46859,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubjectComboBox2 : WpfComboBox
     {
         
@@ -46951,7 +46895,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox4 : WpfComboBox
     {
         
@@ -46987,7 +46931,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent2 : WpfCustom
     {
         
@@ -47116,7 +47060,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToComboBox5 : WpfComboBox
     {
         
@@ -47152,7 +47096,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubjectComboBox3 : WpfComboBox
     {
         
@@ -47188,7 +47132,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BodyComboBox3 : WpfComboBox
     {
         
@@ -47224,7 +47168,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox36 : WpfComboBox
     {
         
@@ -47260,7 +47204,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Comment1 : WpfCustom
     {
         
@@ -47293,7 +47237,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom18 : WpfCustom
     {
         
@@ -47345,7 +47289,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CommentComboBox : WpfComboBox
     {
         
@@ -47381,7 +47325,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XPath1 : WpfCustom
     {
         
@@ -47483,7 +47427,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom19 : WpfCustom
     {
         
@@ -47544,7 +47488,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceStringComboBox2 : WpfComboBox
     {
         
@@ -47580,7 +47524,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeDataGridTable3 : WpfTable
     {
         
@@ -47612,7 +47556,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row117 : WpfRow
     {
         
@@ -47658,7 +47602,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell4 : WpfCell
     {
         
@@ -47691,7 +47635,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox4 : WpfComboBox
     {
         
@@ -47727,7 +47671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XpathCell : WpfCell
     {
         
@@ -47760,7 +47704,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XpathComboBox : WpfComboBox
     {
         
@@ -47796,7 +47740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom22 : WpfCustom
     {
         
@@ -47829,7 +47773,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup35 : WpfGroup
     {
         
@@ -47893,7 +47837,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox20 : WpfComboBox
     {
         
@@ -47929,7 +47873,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox20 : WpfComboBox
     {
         
@@ -47965,7 +47909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom18 : WpfCustom
     {
         
@@ -48012,7 +47956,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceStringComboBox3 : WpfComboBox
     {
         
@@ -48048,7 +47992,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable6 : WpfTable
     {
         
@@ -48080,7 +48024,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row118 : WpfRow
     {
         
@@ -48126,7 +48070,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell5 : WpfCell
     {
         
@@ -48160,7 +48104,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableComboBox5 : WpfComboBox
     {
         
@@ -48196,7 +48140,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XpathCell1 : WpfCell
     {
         
@@ -48230,7 +48174,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XpathComboBox1 : WpfComboBox
     {
         
@@ -48266,7 +48210,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxDownload : WpfCustom
     {
         
@@ -48331,7 +48275,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent3 : WpfCustom
     {
         
@@ -48478,7 +48422,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalFileIntellisenseCombobox : WpfComboBox
     {
         
@@ -48514,7 +48458,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox : WpfComboBox
     {
         
@@ -48550,7 +48494,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -48587,7 +48531,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane10 : WpfCustom
     {
         
@@ -48620,7 +48564,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup36 : WpfGroup
     {
         
@@ -48684,7 +48628,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox : WpfComboBox
     {
         
@@ -48720,7 +48664,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWebServiceIntellisenseCombobox : WpfComboBox
     {
         
@@ -48756,7 +48700,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent3 : WpfCustom
     {
         
@@ -48803,7 +48747,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalFileIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -48839,7 +48783,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -48875,7 +48819,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxUpload : WpfCustom
     {
         
@@ -48940,7 +48884,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent4 : WpfCustom
     {
         
@@ -49105,7 +49049,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalFileIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -49141,7 +49085,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -49177,7 +49121,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -49214,7 +49158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane11 : WpfCustom
     {
         
@@ -49247,7 +49191,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup37 : WpfGroup
     {
         
@@ -49311,7 +49255,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -49347,7 +49291,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWebServiceIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -49383,7 +49327,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent4 : WpfCustom
     {
         
@@ -49430,7 +49374,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalFileIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -49466,7 +49410,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -49502,7 +49446,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxDelete : WpfCustom
     {
         
@@ -49567,7 +49511,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent5 : WpfCustom
     {
         
@@ -49682,7 +49626,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -49718,7 +49662,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -49755,7 +49699,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane12 : WpfCustom
     {
         
@@ -49788,7 +49732,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup38 : WpfGroup
     {
         
@@ -49852,7 +49796,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -49888,7 +49832,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWebServiceIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -49924,7 +49868,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent5 : WpfCustom
     {
         
@@ -49957,7 +49901,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -49993,7 +49937,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxFileList : WpfCustom
     {
         
@@ -50058,7 +50002,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContent6 : WpfCustom
     {
         
@@ -50245,7 +50189,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxPathIntellisenseCombobox : WpfComboBox
     {
         
@@ -50281,7 +50225,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -50318,7 +50262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane13 : WpfCustom
     {
         
@@ -50351,7 +50295,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup39 : WpfGroup
     {
         
@@ -50415,7 +50359,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -50451,7 +50395,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWebServiceIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -50487,7 +50431,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContent6 : WpfCustom
     {
         
@@ -50534,7 +50478,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropboxPathIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -50570,7 +50514,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -50607,7 +50551,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathCreate : WpfCustom
     {
         
@@ -50672,7 +50616,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom20 : WpfCustom
     {
         
@@ -50797,7 +50741,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameoComboBox : WpfComboBox
     {
         
@@ -50833,7 +50777,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox : WpfComboBox
     {
         
@@ -50869,7 +50813,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox : WpfComboBox
     {
         
@@ -50906,7 +50850,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox37 : WpfComboBox
     {
         
@@ -50942,7 +50886,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom23 : WpfCustom
     {
         
@@ -50975,7 +50919,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup40 : WpfGroup
     {
         
@@ -51039,7 +50983,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox21 : WpfComboBox
     {
         
@@ -51075,7 +51019,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox21 : WpfComboBox
     {
         
@@ -51111,7 +51055,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom19 : WpfCustom
     {
         
@@ -51158,7 +51102,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox : WpfComboBox
     {
         
@@ -51194,7 +51138,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox38 : WpfComboBox
     {
         
@@ -51230,7 +51174,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathCopy : WpfCustom
     {
         
@@ -51295,7 +51239,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom21 : WpfCustom
     {
         
@@ -51481,7 +51425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox1 : WpfComboBox
     {
         
@@ -51517,7 +51461,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox1 : WpfComboBox
     {
         
@@ -51553,7 +51497,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox1 : WpfComboBox
     {
         
@@ -51590,7 +51534,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox : WpfComboBox
     {
         
@@ -51626,7 +51570,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationUserNameComboBox : WpfComboBox
     {
         
@@ -51663,7 +51607,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationFileOrFolderComboBox : WpfComboBox
     {
         
@@ -51700,7 +51644,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox39 : WpfComboBox
     {
         
@@ -51736,7 +51680,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom24 : WpfCustom
     {
         
@@ -51769,7 +51713,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup41 : WpfGroup
     {
         
@@ -51833,7 +51777,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox22 : WpfComboBox
     {
         
@@ -51869,7 +51813,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox22 : WpfComboBox
     {
         
@@ -51905,7 +51849,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom20 : WpfCustom
     {
         
@@ -51966,7 +51910,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox2 : WpfComboBox
     {
         
@@ -52002,7 +51946,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox1 : WpfComboBox
     {
         
@@ -52038,7 +51982,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox40 : WpfComboBox
     {
         
@@ -52074,7 +52018,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathDelete : WpfCustom
     {
         
@@ -52139,7 +52083,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom22 : WpfCustom
     {
         
@@ -52246,7 +52190,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox3 : WpfComboBox
     {
         
@@ -52282,7 +52226,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox2 : WpfComboBox
     {
         
@@ -52318,7 +52262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameComboBox : WpfComboBox
     {
         
@@ -52354,7 +52298,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox41 : WpfComboBox
     {
         
@@ -52390,7 +52334,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom25 : WpfCustom
     {
         
@@ -52423,7 +52367,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup42 : WpfGroup
     {
         
@@ -52487,7 +52431,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox23 : WpfComboBox
     {
         
@@ -52523,7 +52467,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox23 : WpfComboBox
     {
         
@@ -52559,7 +52503,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom21 : WpfCustom
     {
         
@@ -52606,7 +52550,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox4 : WpfComboBox
     {
         
@@ -52642,7 +52586,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox42 : WpfComboBox
     {
         
@@ -52678,7 +52622,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathMove : WpfCustom
     {
         
@@ -52743,7 +52687,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom23 : WpfCustom
     {
         
@@ -52929,7 +52873,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox5 : WpfComboBox
     {
         
@@ -52965,7 +52909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox3 : WpfComboBox
     {
         
@@ -53001,7 +52945,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeCombobox : WpfComboBox
     {
         
@@ -53038,7 +52982,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox2 : WpfComboBox
     {
         
@@ -53074,7 +53018,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationUserNameComboBox1 : WpfComboBox
     {
         
@@ -53111,7 +53055,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationPrvateKeyComboBox : WpfComboBox
     {
         
@@ -53148,7 +53092,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox43 : WpfComboBox
     {
         
@@ -53184,7 +53128,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom26 : WpfCustom
     {
         
@@ -53217,7 +53161,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup43 : WpfGroup
     {
         
@@ -53281,7 +53225,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox24 : WpfComboBox
     {
         
@@ -53317,7 +53261,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox24 : WpfComboBox
     {
         
@@ -53353,7 +53297,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom22 : WpfCustom
     {
         
@@ -53414,7 +53358,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox6 : WpfComboBox
     {
         
@@ -53450,7 +53394,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox3 : WpfComboBox
     {
         
@@ -53486,7 +53430,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox44 : WpfComboBox
     {
         
@@ -53522,7 +53466,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FolderRead : WpfCustom
     {
         
@@ -53587,7 +53531,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom24 : WpfCustom
     {
         
@@ -53748,7 +53692,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DirectoryComboBox : WpfComboBox
     {
         
@@ -53784,7 +53728,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox4 : WpfComboBox
     {
         
@@ -53820,7 +53764,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox2 : WpfComboBox
     {
         
@@ -53856,7 +53800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox45 : WpfComboBox
     {
         
@@ -53892,7 +53836,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom27 : WpfCustom
     {
         
@@ -53925,7 +53869,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup44 : WpfGroup
     {
         
@@ -53975,7 +53919,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox25 : WpfComboBox
     {
         
@@ -54011,7 +53955,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom23 : WpfCustom
     {
         
@@ -54058,7 +54002,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DirectoryComboBox1 : WpfComboBox
     {
         
@@ -54094,7 +54038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox46 : WpfComboBox
     {
         
@@ -54130,7 +54074,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileRead : WpfCustom
     {
         
@@ -54195,7 +54139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom25 : WpfCustom
     {
         
@@ -54302,7 +54246,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameComboBox1 : WpfComboBox
     {
         
@@ -54338,7 +54282,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox5 : WpfComboBox
     {
         
@@ -54374,7 +54318,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox3 : WpfComboBox
     {
         
@@ -54411,7 +54355,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox47 : WpfComboBox
     {
         
@@ -54447,7 +54391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom28 : WpfCustom
     {
         
@@ -54480,7 +54424,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup45 : WpfGroup
     {
         
@@ -54544,7 +54488,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox26 : WpfComboBox
     {
         
@@ -54580,7 +54524,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox25 : WpfComboBox
     {
         
@@ -54616,7 +54560,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom24 : WpfCustom
     {
         
@@ -54663,7 +54607,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameComboBox2 : WpfComboBox
     {
         
@@ -54699,7 +54643,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox48 : WpfComboBox
     {
         
@@ -54735,7 +54679,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileWrite : WpfCustom
     {
         
@@ -54800,7 +54744,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom26 : WpfCustom
     {
         
@@ -54971,7 +54915,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameComboBox3 : WpfComboBox
     {
         
@@ -55007,7 +54951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OverwriteRadioButton : WpfRadioButton
     {
         
@@ -55061,7 +55005,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContentsComboBox : WpfComboBox
     {
         
@@ -55097,7 +55041,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox6 : WpfComboBox
     {
         
@@ -55133,7 +55077,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox4 : WpfComboBox
     {
         
@@ -55193,7 +55137,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row5 : WpfRow
     {
         
@@ -55240,7 +55184,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell4 : WpfCell
     {
         
@@ -55274,7 +55218,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1InputVariabComboBox2 : WpfComboBox
     {
         
@@ -55310,7 +55254,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell5 : WpfCell
     {
         
@@ -55344,7 +55288,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row1UsingDComboBox1 : WpfComboBox
     {
         
@@ -55380,7 +55324,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row25 : WpfRow
     {
         
@@ -55447,7 +55391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputCell5 : WpfCell
     {
         
@@ -55481,7 +55425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2InputVariabComboBox3 : WpfComboBox
     {
         
@@ -55517,7 +55461,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UsingCell6 : WpfCell
     {
         
@@ -55551,7 +55495,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row2UsingComboBox3 : WpfComboBox
     {
         
@@ -55587,7 +55531,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row32 : WpfRow
     {
         
@@ -55620,7 +55564,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MergeTypeCell4 : WpfCell
     {
         
@@ -55658,7 +55602,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox49 : WpfComboBox
     {
         
@@ -55694,7 +55638,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom29 : WpfCustom
     {
         
@@ -55727,7 +55671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup46 : WpfGroup
     {
         
@@ -55791,7 +55735,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox27 : WpfComboBox
     {
         
@@ -55827,7 +55771,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox26 : WpfComboBox
     {
         
@@ -55863,7 +55807,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom25 : WpfCustom
     {
         
@@ -55924,7 +55868,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileNameComboBox4 : WpfComboBox
     {
         
@@ -55960,7 +55904,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContentsComboBox1 : WpfComboBox
     {
         
@@ -55996,7 +55940,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox50 : WpfComboBox
     {
         
@@ -56032,7 +55976,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PathRename : WpfCustom
     {
         
@@ -56097,7 +56041,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom27 : WpfCustom
     {
         
@@ -56283,7 +56227,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox7 : WpfComboBox
     {
         
@@ -56319,7 +56263,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox7 : WpfComboBox
     {
         
@@ -56355,7 +56299,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox5 : WpfComboBox
     {
         
@@ -56392,7 +56336,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewNameComboBox : WpfComboBox
     {
         
@@ -56428,7 +56372,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewFileUserNameComboBox : WpfComboBox
     {
         
@@ -56465,7 +56409,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewFilePrivateKeyComboBox : WpfComboBox
     {
         
@@ -56502,7 +56446,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox51 : WpfComboBox
     {
         
@@ -56538,7 +56482,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom30 : WpfCustom
     {
         
@@ -56571,7 +56515,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup47 : WpfGroup
     {
         
@@ -56635,7 +56579,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox28 : WpfComboBox
     {
         
@@ -56671,7 +56615,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox27 : WpfComboBox
     {
         
@@ -56707,7 +56651,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom26 : WpfCustom
     {
         
@@ -56768,7 +56712,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox8 : WpfComboBox
     {
         
@@ -56804,7 +56748,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewNameComboBox1 : WpfComboBox
     {
         
@@ -56840,7 +56784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox52 : WpfComboBox
     {
         
@@ -56876,7 +56820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZip1 : WpfCustom
     {
         
@@ -56941,7 +56885,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom28 : WpfCustom
     {
         
@@ -57145,7 +57089,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZipNameComboBox : WpfComboBox
     {
         
@@ -57181,7 +57125,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox8 : WpfComboBox
     {
         
@@ -57217,7 +57161,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox6 : WpfComboBox
     {
         
@@ -57253,7 +57197,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox4 : WpfComboBox
     {
         
@@ -57289,7 +57233,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZipUserNameComboBox : WpfComboBox
     {
         
@@ -57326,7 +57270,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZipPrivateKeyComboBox : WpfComboBox
     {
         
@@ -57363,7 +57307,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox53 : WpfComboBox
     {
         
@@ -57399,7 +57343,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom31 : WpfCustom
     {
         
@@ -57432,7 +57376,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup48 : WpfGroup
     {
         
@@ -57496,7 +57440,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox29 : WpfComboBox
     {
         
@@ -57532,7 +57476,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox28 : WpfComboBox
     {
         
@@ -57568,7 +57512,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom27 : WpfCustom
     {
         
@@ -57629,7 +57573,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnZipNameComboBox1 : WpfComboBox
     {
         
@@ -57665,7 +57609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox54 : WpfComboBox
     {
         
@@ -57701,7 +57645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationComboBox5 : WpfComboBox
     {
         
@@ -57737,7 +57681,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Zip1 : WpfCustom
     {
         
@@ -57802,7 +57746,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom29 : WpfCustom
     {
         
@@ -58019,7 +57963,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox9 : WpfComboBox
     {
         
@@ -58055,7 +57999,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserNameComboBox9 : WpfComboBox
     {
         
@@ -58091,7 +58035,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrivateKeyComboBox7 : WpfComboBox
     {
         
@@ -58128,7 +58072,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ZipNameComboBox : WpfComboBox
     {
         
@@ -58164,7 +58108,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ZipDestinationUsernComboBox : WpfComboBox
     {
         
@@ -58200,7 +58144,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ZipPrivateKeyComboBox : WpfComboBox
     {
         
@@ -58237,7 +58181,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectedCompressComboBox : WpfComboBox
     {
         
@@ -58327,7 +58271,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom32 : WpfCustom
     {
         
@@ -58360,7 +58304,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup49 : WpfGroup
     {
         
@@ -58424,7 +58368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox30 : WpfComboBox
     {
         
@@ -58460,7 +58404,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox29 : WpfComboBox
     {
         
@@ -58496,7 +58440,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox55 : WpfComboBox
     {
         
@@ -58532,7 +58476,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom28 : WpfCustom
     {
         
@@ -58593,7 +58537,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FileOrFolderComboBox10 : WpfComboBox
     {
         
@@ -58629,7 +58573,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ZipNameComboBox1 : WpfComboBox
     {
         
@@ -58665,7 +58609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox56 : WpfComboBox
     {
         
@@ -58701,7 +58645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindIndex1 : WpfCustom
     {
         
@@ -58766,7 +58710,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom30 : WpfCustom
     {
         
@@ -58877,7 +58821,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CharactersComboBox : WpfComboBox
     {
         
@@ -58913,7 +58857,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFieldComboBox : WpfComboBox
     {
         
@@ -58949,7 +58893,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom33 : WpfCustom
     {
         
@@ -58982,7 +58926,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup50 : WpfGroup
     {
         
@@ -59046,7 +58990,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox30 : WpfComboBox
     {
         
@@ -59082,7 +59026,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox31 : WpfComboBox
     {
         
@@ -59118,7 +59062,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox57 : WpfComboBox
     {
         
@@ -59154,7 +59098,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom29 : WpfCustom
     {
         
@@ -59251,7 +59195,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox58 : WpfComboBox
     {
         
@@ -59287,7 +59231,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CharactersComboBox1 : WpfComboBox
     {
         
@@ -59323,7 +59267,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFieldComboBox1 : WpfComboBox
     {
         
@@ -59359,7 +59303,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Replace1 : WpfCustom
     {
         
@@ -59424,7 +59368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeViewContentCustom31 : WpfCustom
     {
         
@@ -59513,7 +59457,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFiledsComboBox : WpfComboBox
     {
         
@@ -59549,7 +59493,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindComboBox : WpfComboBox
     {
         
@@ -59585,7 +59529,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReplaceComboBox : WpfComboBox
     {
         
@@ -59621,7 +59565,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox59 : WpfComboBox
     {
         
@@ -59657,7 +59601,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIOnErrorCustom : WpfCustom
     {
         
@@ -59690,7 +59634,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup51 : WpfGroup
     {
         
@@ -59754,7 +59698,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebserviceComboBox31 : WpfComboBox
     {
         
@@ -59790,7 +59734,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox32 : WpfComboBox
     {
         
@@ -59826,7 +59770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallViewContentCustom30 : WpfCustom
     {
         
@@ -59901,7 +59845,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InFiledsComboBox1 : WpfComboBox
     {
         
@@ -59937,7 +59881,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FindComboBox1 : WpfComboBox
     {
         
@@ -59973,7 +59917,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ReplaceComboBox1 : WpfComboBox
     {
         
@@ -60009,7 +59953,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox60 : WpfComboBox
     {
         
@@ -60045,7 +59989,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Decision1 : WpfCustom
     {
         
@@ -60082,7 +60026,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Switch1 : WpfCustom
     {
         
@@ -60133,7 +60077,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCombobox6 : WpfComboBox
     {
         
@@ -60169,7 +60113,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Sequence1 : WpfCustom
     {
         
@@ -60202,7 +60146,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceLargeView : WpfCustom
     {
         
@@ -60249,7 +60193,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AddModeNewActivity : WpfCustom
     {
         
@@ -60287,7 +60231,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorCustom34 : WpfCustom
     {
         
@@ -60320,7 +60264,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup52 : WpfGroup
     {
         
@@ -60384,7 +60328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableComboBox33 : WpfComboBox
     {
         
@@ -60420,7 +60364,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebServiceComboBox32 : WpfComboBox
     {
         
@@ -60456,7 +60400,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MultiAssign1 : WpfCustom
     {
         
@@ -60567,7 +60511,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView15 : WpfCustom
     {
         
@@ -60600,7 +60544,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid4 : WpfTable
     {
         
@@ -60660,7 +60604,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row119 : WpfRow
     {
         
@@ -60721,7 +60665,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell6 : WpfCell
     {
         
@@ -60754,7 +60698,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox : WpfComboBox
     {
         
@@ -60804,7 +60748,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox : WpfEdit
     {
         
@@ -60840,7 +60784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell9 : WpfCell
     {
         
@@ -60873,7 +60817,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox1 : WpfComboBox
     {
         
@@ -60909,7 +60853,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell : WpfCell
     {
         
@@ -60947,7 +60891,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row26 : WpfRow
     {
         
@@ -61008,7 +60952,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell7 : WpfCell
     {
         
@@ -61041,7 +60985,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox2 : WpfComboBox
     {
         
@@ -61091,7 +61035,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox1 : WpfEdit
     {
         
@@ -61126,7 +61070,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell10 : WpfCell
     {
         
@@ -61159,7 +61103,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox3 : WpfComboBox
     {
         
@@ -61195,7 +61139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell1 : WpfCell
     {
         
@@ -61233,7 +61177,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row33 : WpfRow
     {
         
@@ -61294,7 +61238,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell8 : WpfCell
     {
         
@@ -61327,7 +61271,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox4 : WpfComboBox
     {
         
@@ -61377,7 +61321,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox2 : WpfEdit
     {
         
@@ -61412,7 +61356,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell11 : WpfCell
     {
         
@@ -61445,7 +61389,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox5 : WpfComboBox
     {
         
@@ -61481,7 +61425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell2 : WpfCell
     {
         
@@ -61519,7 +61463,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView22 : WpfCustom
     {
         
@@ -61566,7 +61510,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid5 : WpfTable
     {
         
@@ -61640,7 +61584,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row120 : WpfRow
     {
         
@@ -61687,7 +61631,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell9 : WpfCell
     {
         
@@ -61720,7 +61664,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox6 : WpfComboBox
     {
         
@@ -61756,7 +61700,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell12 : WpfCell
     {
         
@@ -61789,7 +61733,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox7 : WpfComboBox
     {
         
@@ -61825,7 +61769,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row27 : WpfRow
     {
         
@@ -61872,7 +61816,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell10 : WpfCell
     {
         
@@ -61905,7 +61849,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox8 : WpfComboBox
     {
         
@@ -61941,7 +61885,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell13 : WpfCell
     {
         
@@ -61974,7 +61918,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox9 : WpfComboBox
     {
         
@@ -62010,7 +61954,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row34 : WpfRow
     {
         
@@ -62057,7 +62001,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell11 : WpfCell
     {
         
@@ -62090,7 +62034,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox10 : WpfComboBox
     {
         
@@ -62126,7 +62070,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell14 : WpfCell
     {
         
@@ -62159,7 +62103,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox11 : WpfComboBox
     {
         
@@ -62195,7 +62139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row41 : WpfRow
     {
         
@@ -62242,7 +62186,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell12 : WpfCell
     {
         
@@ -62275,7 +62219,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox12 : WpfComboBox
     {
         
@@ -62311,7 +62255,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell15 : WpfCell
     {
         
@@ -62344,7 +62288,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox13 : WpfComboBox
     {
         
@@ -62380,7 +62324,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane14 : WpfCustom
     {
         
@@ -62413,7 +62357,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup53 : WpfGroup
     {
         
@@ -62477,7 +62421,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox9 : WpfComboBox
     {
         
@@ -62513,7 +62457,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox9 : WpfComboBox
     {
         
@@ -62549,7 +62493,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DoneButton : WpfButton
     {
         
@@ -62586,7 +62530,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QuickVariableInputContent3 : WpfCustom
     {
         
@@ -62745,7 +62689,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom4 : WpfCustom
     {
         
@@ -62778,7 +62722,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup4 : WpfGroup
     {
         
@@ -62814,7 +62758,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebPost : WpfCustom
     {
         
@@ -62903,7 +62847,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView23 : WpfCustom
     {
         
@@ -63180,7 +63124,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Table2 : WpfTable
     {
         
@@ -63212,7 +63156,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow17 : WpfRow
     {
         
@@ -63259,7 +63203,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemValueCell2 : WpfCell
     {
         
@@ -63292,7 +63236,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox9 : WpfComboBox
     {
         
@@ -63329,7 +63273,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderCell2 : WpfCell
     {
         
@@ -63362,7 +63306,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderComboBox3 : WpfComboBox
     {
         
@@ -63399,7 +63343,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueryStringText2 : WpfText
     {
         
@@ -63435,7 +63379,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputsTable2 : WpfTable
     {
         
@@ -63471,7 +63415,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Error1 : WpfText
     {
         
@@ -63506,7 +63450,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebGet : WpfCustom
     {
         
@@ -63576,7 +63520,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView24 : WpfCustom
     {
         
@@ -63841,7 +63785,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeadersTable : WpfTable
     {
         
@@ -63873,7 +63817,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemRow18 : WpfRow
     {
         
@@ -63920,7 +63864,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemValueCell3 : WpfCell
     {
         
@@ -63953,7 +63897,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueComboBox10 : WpfComboBox
     {
         
@@ -63990,7 +63934,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderCell3 : WpfCell
     {
         
@@ -64023,7 +63967,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HeaderComboBox4 : WpfComboBox
     {
         
@@ -64060,7 +64004,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QueryStringText3 : WpfText
     {
         
@@ -64096,7 +64040,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExternalWorkFlow : WpfCustom
     {
         
@@ -64133,7 +64077,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Javascript1 : WpfCustom
     {
         
@@ -64198,7 +64142,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView16 : WpfCustom
     {
         
@@ -64245,7 +64189,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox : WpfComboBox
     {
         
@@ -64281,7 +64225,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultsIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -64317,7 +64261,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView25 : WpfCustom
     {
         
@@ -64428,7 +64372,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -64464,7 +64408,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsIntellisenseCombobox : WpfComboBox
     {
         
@@ -64500,7 +64444,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox6 : WpfComboBox
     {
         
@@ -64536,7 +64480,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane15 : WpfCustom
     {
         
@@ -64569,7 +64513,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup54 : WpfGroup
     {
         
@@ -64633,7 +64577,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -64669,7 +64613,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteWorkflowIntellisenseCombobox : WpfComboBox
     {
         
@@ -64705,7 +64649,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Python1 : WpfCustom
     {
         
@@ -64770,7 +64714,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView17 : WpfCustom
     {
         
@@ -64817,7 +64761,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -64853,7 +64797,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox7 : WpfComboBox
     {
         
@@ -64889,7 +64833,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView26 : WpfCustom
     {
         
@@ -65000,7 +64944,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -65036,7 +64980,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox3 : WpfComboBox
     {
         
@@ -65072,7 +65016,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox8 : WpfComboBox
     {
         
@@ -65108,7 +65052,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane16 : WpfCustom
     {
         
@@ -65141,7 +65085,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup55 : WpfGroup
     {
         
@@ -65205,7 +65149,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableIntellisenseCombobox : WpfComboBox
     {
         
@@ -65241,7 +65185,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteWorkflowIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -65277,7 +65221,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Ruby1 : WpfCustom
     {
         
@@ -65342,7 +65286,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView18 : WpfCustom
     {
         
@@ -65389,7 +65333,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox4 : WpfComboBox
     {
         
@@ -65425,7 +65369,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox9 : WpfComboBox
     {
         
@@ -65461,7 +65405,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView27 : WpfCustom
     {
         
@@ -65572,7 +65516,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -65608,7 +65552,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScriptIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -65644,7 +65588,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultIntellisenseCombobox10 : WpfComboBox
     {
         
@@ -65680,7 +65624,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane17 : WpfCustom
     {
         
@@ -65713,7 +65657,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup56 : WpfGroup
     {
         
@@ -65777,7 +65721,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox5 : WpfComboBox
     {
         
@@ -65813,7 +65757,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteWorkflowIntellisenseCombobox2 : WpfComboBox
     {
         
@@ -65849,7 +65793,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectAndApply1 : WpfCustom
     {
         
@@ -65914,7 +65858,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView19 : WpfCustom
     {
         
@@ -65975,7 +65919,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectFromIntellisenseTextbox : WpfComboBox
     {
         
@@ -66011,7 +65955,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AliasIntellisenseTextbox : WpfComboBox
     {
         
@@ -66048,7 +65992,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropActivityHere1 : WpfCustom
     {
         
@@ -66085,7 +66029,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView28 : WpfCustom
     {
         
@@ -66160,7 +66104,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectFromIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -66196,7 +66140,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AliasIntellisenseTextbox1 : WpfComboBox
     {
         
@@ -66233,7 +66177,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DropActivityHere2 : WpfCustom
     {
         
@@ -66270,7 +66214,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane18 : WpfCustom
     {
         
@@ -66303,7 +66247,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup57 : WpfGroup
     {
         
@@ -66367,7 +66311,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseTextbox2 : WpfComboBox
     {
         
@@ -66403,7 +66347,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWorkflowIntellisenseTextbox : WpfComboBox
     {
         
@@ -66439,7 +66383,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PrefixcontainsinvaliText : WpfText
     {
         
@@ -66475,7 +66419,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DsfWebDeleteOutputsLargeView : WpfCustom
     {
         
@@ -66532,7 +66476,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComDll1 : WpfCustom
     {
         
@@ -66602,7 +66546,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView29 : WpfCustom
     {
         
@@ -66851,7 +66795,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPanel : WpfCustom
     {
         
@@ -66884,7 +66828,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup58 : WpfGroup
     {
         
@@ -66948,7 +66892,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox10 : WpfComboBox
     {
         
@@ -66984,7 +66928,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorWebServiceIntellisenseCombobox : WpfComboBox
     {
         
@@ -67020,7 +66964,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WcfService : WpfCustom
     {
         
@@ -67090,7 +67034,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView30 : WpfCustom
     {
         
@@ -67303,7 +67247,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPanel1 : WpfCustom
     {
         
@@ -67336,7 +67280,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup59 : WpfGroup
     {
         
@@ -67400,7 +67344,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox11 : WpfComboBox
     {
         
@@ -67436,7 +67380,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorWebServiceIntellisenseCombobox1 : WpfComboBox
     {
         
@@ -67472,7 +67416,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Adornert_numbernText : WpfText
     {
         
@@ -67507,7 +67451,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointDeleteFile : WpfCustom
     {
         
@@ -67572,7 +67516,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView20 : WpfCustom
     {
         
@@ -67651,7 +67595,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server18 : WpfComboBox
     {
         
@@ -67687,7 +67631,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathComboBox : WpfComboBox
     {
         
@@ -67723,7 +67667,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox61 : WpfComboBox
     {
         
@@ -67759,7 +67703,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView31 : WpfCustom
     {
         
@@ -67856,7 +67800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Server19 : WpfComboBox
     {
         
@@ -67892,7 +67836,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPathComboBox1 : WpfComboBox
     {
         
@@ -67928,7 +67872,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultComboBox62 : WpfComboBox
     {
         
@@ -67964,7 +67908,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TopScrollViewerPane : WpfPane
     {
         
@@ -68039,7 +67983,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnsavedWorkflowLinkText : WpfText
     {
         
@@ -68074,7 +68018,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HttpLocalHostText : WpfText
     {
         
@@ -68108,7 +68052,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UrlWithRenamedFolder : WpfText
     {
         
@@ -68145,7 +68089,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnitTestsUrlWorkflowUrlText : WpfText
     {
         
@@ -68181,7 +68125,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContentPane : WpfCustom
     {
         
@@ -68214,7 +68158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContentDockManager : WpfCustom
     {
         
@@ -68247,7 +68191,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneRight : WpfCustom
     {
         
@@ -68294,7 +68238,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Variables : WpfCustom
     {
         
@@ -68345,7 +68289,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatalistView : WpfCustom
     {
         
@@ -68428,7 +68372,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTree : WpfTree
     {
         
@@ -68474,7 +68418,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTreeItem : WpfTreeItem
     {
         
@@ -68581,7 +68525,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem1 : WpfTreeItem
     {
         
@@ -68653,7 +68597,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane1 : WpfPane
     {
         
@@ -68687,7 +68631,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox : WpfEdit
     {
         
@@ -68758,7 +68702,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteButton : WpfButton
     {
         
@@ -68796,7 +68740,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem2 : WpfTreeItem
     {
         
@@ -68868,7 +68812,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane2 : WpfPane
     {
         
@@ -68902,7 +68846,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox1 : WpfEdit
     {
         
@@ -68978,7 +68922,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem3 : WpfTreeItem
     {
         
@@ -69050,7 +68994,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane3 : WpfPane
     {
         
@@ -69084,7 +69028,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox2 : WpfEdit
     {
         
@@ -69160,7 +69104,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem4 : WpfTreeItem
     {
         
@@ -69232,7 +69176,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane4 : WpfPane
     {
         
@@ -69266,7 +69210,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox3 : WpfEdit
     {
         
@@ -69342,7 +69286,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem5 : WpfTreeItem
     {
         
@@ -69414,7 +69358,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane5 : WpfPane
     {
         
@@ -69448,7 +69392,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox4 : WpfEdit
     {
         
@@ -69524,7 +69468,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetTreeItem : WpfTreeItem
     {
         
@@ -69631,7 +69575,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem11 : WpfTreeItem
     {
         
@@ -69778,7 +69722,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane6 : WpfPane
     {
         
@@ -69812,7 +69756,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox5 : WpfEdit
     {
         
@@ -69888,7 +69832,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field1 : WpfTreeItem
     {
         
@@ -69960,7 +69904,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane7 : WpfPane
     {
         
@@ -69994,7 +69938,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox6 : WpfEdit
     {
         
@@ -70051,7 +69995,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field2 : WpfTreeItem
     {
         
@@ -70123,7 +70067,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane8 : WpfPane
     {
         
@@ -70157,7 +70101,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox7 : WpfEdit
     {
         
@@ -70214,7 +70158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field3 : WpfTreeItem
     {
         
@@ -70286,7 +70230,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane9 : WpfPane
     {
         
@@ -70320,7 +70264,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox8 : WpfEdit
     {
         
@@ -70377,7 +70321,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field4 : WpfTreeItem
     {
         
@@ -70449,7 +70393,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane10 : WpfPane
     {
         
@@ -70483,7 +70427,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox9 : WpfEdit
     {
         
@@ -70540,7 +70484,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem21 : WpfTreeItem
     {
         
@@ -70687,7 +70631,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane11 : WpfPane
     {
         
@@ -70721,7 +70665,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox10 : WpfEdit
     {
         
@@ -70797,7 +70741,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field11 : WpfTreeItem
     {
         
@@ -70869,7 +70813,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane12 : WpfPane
     {
         
@@ -70903,7 +70847,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox11 : WpfEdit
     {
         
@@ -70960,7 +70904,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field21 : WpfTreeItem
     {
         
@@ -71032,7 +70976,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane13 : WpfPane
     {
         
@@ -71066,7 +71010,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox12 : WpfEdit
     {
         
@@ -71123,7 +71067,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field31 : WpfTreeItem
     {
         
@@ -71195,7 +71139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane14 : WpfPane
     {
         
@@ -71229,7 +71173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox13 : WpfEdit
     {
         
@@ -71286,7 +71230,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field41 : WpfTreeItem
     {
         
@@ -71358,7 +71302,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane15 : WpfPane
     {
         
@@ -71392,7 +71336,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox14 : WpfEdit
     {
         
@@ -71449,7 +71393,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem31 : WpfTreeItem
     {
         
@@ -71554,7 +71498,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane16 : WpfPane
     {
         
@@ -71588,7 +71532,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox15 : WpfEdit
     {
         
@@ -71664,7 +71608,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field : WpfTreeItem
     {
         
@@ -71735,7 +71679,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane17 : WpfPane
     {
         
@@ -71769,7 +71713,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox16 : WpfEdit
     {
         
@@ -71826,7 +71770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem41 : WpfTreeItem
     {
         
@@ -71931,7 +71875,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane18 : WpfPane
     {
         
@@ -71965,7 +71909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox17 : WpfEdit
     {
         
@@ -72041,7 +71985,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field5 : WpfTreeItem
     {
         
@@ -72112,7 +72056,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane19 : WpfPane
     {
         
@@ -72146,7 +72090,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox18 : WpfEdit
     {
         
@@ -72203,7 +72147,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem51 : WpfTreeItem
     {
         
@@ -72308,7 +72252,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane20 : WpfPane
     {
         
@@ -72342,7 +72286,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox19 : WpfEdit
     {
         
@@ -72418,7 +72362,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field6 : WpfTreeItem
     {
         
@@ -72489,7 +72433,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane21 : WpfPane
     {
         
@@ -72523,7 +72467,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox20 : WpfEdit
     {
         
@@ -72580,7 +72524,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextbox2 : WpfEdit
     {
         
@@ -72652,7 +72596,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutput : WpfCustom
     {
         
@@ -72803,7 +72747,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutputTree : WpfTree
     {
         
@@ -72863,7 +72807,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Step1 : WpfTreeItem
     {
         
@@ -73012,7 +72956,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetGroup : WpfExpander
     {
         
@@ -73069,7 +73013,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubWorkflow : WpfTreeItem
     {
         
@@ -73101,7 +73045,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIHelloWorldTreeItem1 : WpfTreeItem
     {
         
@@ -73139,7 +73083,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTreeItem : WpfTreeItem
     {
         
@@ -73176,7 +73120,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusBar : WpfEdit
     {
         
@@ -73212,7 +73156,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CommentTreeItem : WpfTreeItem
     {
         
@@ -73249,7 +73193,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DBSourceTab : WpfTabPage
     {
         
@@ -73336,7 +73280,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext2 : WpfCustom
     {
         
@@ -73528,7 +73472,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ManageDatabaseSourceControl : WpfCustom
     {
         
@@ -73606,7 +73550,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerComboBox1 : WpfComboBox
     {
         
@@ -73660,7 +73604,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIDatabaseComboxBoxCustom : WpfCustom
     {
         
@@ -73769,7 +73713,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatabaseCombobox2 : WpfCustom
     {
         
@@ -73825,7 +73769,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorText : WpfText
     {
         
@@ -73862,7 +73806,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FilesMenu : WpfMenu
     {
         
@@ -73898,7 +73842,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DependencyGraphTab : WpfTabPage
     {
         
@@ -73948,7 +73892,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorksurfaceContext3 : WpfCustom
     {
         
@@ -73981,7 +73925,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DependencyView : WpfCustom
     {
         
@@ -74014,7 +73958,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewer : WpfPane
     {
         
@@ -74171,7 +74115,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NestingLevelsText : WpfText
     {
         
@@ -74207,7 +74151,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node1 : WpfCustom
     {
         
@@ -74244,7 +74188,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node2 : WpfCustom
     {
         
@@ -74281,7 +74225,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node3 : WpfCustom
     {
         
@@ -74318,7 +74262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node4 : WpfCustom
     {
         
@@ -74355,7 +74299,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Node5 : WpfCustom
     {
         
@@ -74392,7 +74336,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DotNetPluginSourceTab : WpfTabPage
     {
         
@@ -74442,7 +74386,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext4 : WpfCustom
     {
         
@@ -74557,7 +74501,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssemblyComboBox : WpfComboBox
     {
         
@@ -74593,7 +74537,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConfigFileComboBox : WpfComboBox
     {
         
@@ -74629,7 +74573,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class GACAssemblyComboBox : WpfComboBox
     {
         
@@ -74665,7 +74609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebSourceTab : WpfTabPage
     {
         
@@ -74716,7 +74660,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext5 : WpfCustom
     {
         
@@ -74898,7 +74842,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsTab : WpfTabPage
     {
         
@@ -74965,7 +74909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext6 : WpfCustom
     {
         
@@ -74998,7 +74942,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTestView : WpfCustom
     {
         
@@ -75300,7 +75244,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UrlText : WpfText
     {
         
@@ -75337,7 +75281,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsListboxList : WpfList
     {
         
@@ -75439,7 +75383,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateTest : WpfListItem
     {
         
@@ -75475,7 +75419,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test1 : WpfListItem
     {
         
@@ -75708,7 +75652,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test2 : WpfListItem
     {
         
@@ -75942,7 +75886,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test3 : WpfListItem
     {
         
@@ -76175,7 +76119,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test4 : WpfListItem
     {
         
@@ -76408,7 +76352,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test5 : WpfListItem
     {
         
@@ -76641,7 +76585,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestInputsTable1 : WpfTable
     {
         
@@ -76673,7 +76617,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row121 : WpfRow
     {
         
@@ -76706,7 +76650,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell2 : WpfCell
     {
         
@@ -76739,7 +76683,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox14 : WpfComboBox
     {
         
@@ -76775,7 +76719,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestOutputsTable : WpfTable
     {
         
@@ -76807,7 +76751,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row122 : WpfRow
     {
         
@@ -76840,7 +76784,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell3 : WpfCell
     {
         
@@ -76873,7 +76817,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox15 : WpfComboBox
     {
         
@@ -76909,7 +76853,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StepTestDataTreeTree : WpfTree
     {
         
@@ -77039,7 +76983,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SetOutputTreeItem : WpfTreeItem
     {
         
@@ -77071,7 +77015,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputMessageAssert : WpfExpander
     {
         
@@ -77118,7 +77062,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable7 : WpfTable
     {
         
@@ -77165,7 +77109,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row123 : WpfRow
     {
         
@@ -77254,7 +77198,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell1 : WpfCell
     {
         
@@ -77292,7 +77236,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell : WpfCell
     {
         
@@ -77331,7 +77275,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell : WpfCell
     {
         
@@ -77371,7 +77315,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertValueCell : WpfCell
     {
         
@@ -77410,7 +77354,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell4 : WpfCustom
     {
         
@@ -77447,7 +77391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader : WpfControl
     {
         
@@ -77541,7 +77485,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert : WpfControl
     {
         
@@ -77601,7 +77545,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader : WpfButton
     {
         
@@ -77715,7 +77659,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignToNameTreeItem : WpfTreeItem
     {
         
@@ -77761,7 +77705,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignAssert : WpfExpander
     {
         
@@ -77808,7 +77752,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable8 : WpfTable
     {
         
@@ -77855,7 +77799,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row124 : WpfRow
     {
         
@@ -77930,7 +77874,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell2 : WpfCell
     {
         
@@ -77968,7 +77912,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell1 : WpfCell
     {
         
@@ -78007,7 +77951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell : WpfCell
     {
         
@@ -78041,7 +77985,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox : WpfComboBox
     {
         
@@ -78098,7 +78042,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell1 : WpfCell
     {
         
@@ -78138,7 +78082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader1 : WpfControl
     {
         
@@ -78232,7 +78176,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert1 : WpfControl
     {
         
@@ -78294,7 +78238,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader1 : WpfButton
     {
         
@@ -78408,7 +78352,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataSplitItem : WpfExpander
     {
         
@@ -78441,7 +78385,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIUI_StepOutputs_AssigTable : WpfTable
     {
         
@@ -78474,7 +78418,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIPART_ColumnHeadersPrHeader : WpfControl
     {
         
@@ -78508,7 +78452,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIItemColumnHeader : WpfControl
     {
         
@@ -78547,7 +78491,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceTreeItem : WpfTreeItem
     {
         
@@ -78579,7 +78523,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceAssert : WpfExpander
     {
         
@@ -78626,7 +78570,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitNamesTreeItem : WpfTreeItem
     {
         
@@ -78658,7 +78602,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitNamesAssert : WpfExpander
     {
         
@@ -78705,7 +78649,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable9 : WpfTable
     {
         
@@ -78752,7 +78696,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row125 : WpfRow
     {
         
@@ -78827,7 +78771,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell3 : WpfCell
     {
         
@@ -78865,7 +78809,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell2 : WpfCell
     {
         
@@ -78904,7 +78848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell1 : WpfCell
     {
         
@@ -78938,7 +78882,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox1 : WpfComboBox
     {
         
@@ -78995,7 +78939,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell2 : WpfCell
     {
         
@@ -79035,7 +78979,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader2 : WpfControl
     {
         
@@ -79129,7 +79073,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert2 : WpfControl
     {
         
@@ -79191,7 +79135,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader2 : WpfButton
     {
         
@@ -79305,7 +79249,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader3 : WpfButton
     {
         
@@ -79419,7 +79363,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ForeachTreeItem : WpfTreeItem
     {
         
@@ -79546,7 +79490,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceTreeItem1 : WpfTreeItem
     {
         
@@ -79578,7 +79522,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertCaseToTitleCase : WpfTreeItem
     {
         
@@ -79610,7 +79554,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertCase : WpfExpander
     {
         
@@ -79657,7 +79601,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable10 : WpfTable
     {
         
@@ -79704,7 +79648,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row126 : WpfRow
     {
         
@@ -79779,7 +79723,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell4 : WpfCell
     {
         
@@ -79817,7 +79761,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell3 : WpfCell
     {
         
@@ -79856,7 +79800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell2 : WpfCell
     {
         
@@ -79890,7 +79834,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox2 : WpfComboBox
     {
         
@@ -79947,7 +79891,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell3 : WpfCell
     {
         
@@ -79987,7 +79931,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader3 : WpfControl
     {
         
@@ -80081,7 +80025,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert3 : WpfControl
     {
         
@@ -80143,7 +80087,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader4 : WpfButton
     {
         
@@ -80257,7 +80201,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionTreeItem : WpfTreeItem
     {
         
@@ -80289,7 +80233,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionAssert : WpfExpander
     {
         
@@ -80336,7 +80280,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable11 : WpfTable
     {
         
@@ -80383,7 +80327,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row127 : WpfRow
     {
         
@@ -80458,7 +80402,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell5 : WpfCell
     {
         
@@ -80497,7 +80441,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell4 : WpfCell
     {
         
@@ -80537,7 +80481,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell3 : WpfCell
     {
         
@@ -80571,7 +80515,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox3 : WpfComboBox
     {
         
@@ -80628,7 +80572,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell4 : WpfCell
     {
         
@@ -80668,7 +80612,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader4 : WpfControl
     {
         
@@ -80762,7 +80706,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert4 : WpfControl
     {
         
@@ -80820,7 +80764,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader5 : WpfButton
     {
         
@@ -80953,7 +80897,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RandomTreeItem : WpfTreeItem
     {
         
@@ -80985,7 +80929,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RandomExpander : WpfExpander
     {
         
@@ -81037,7 +80981,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable12 : WpfTable
     {
         
@@ -81070,7 +81014,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row128 : WpfRow
     {
         
@@ -81103,7 +81047,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertValueCell1 : WpfCell
     {
         
@@ -81142,7 +81086,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DiceRollTreeItem : WpfTreeItem
     {
         
@@ -81174,7 +81118,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DiceRollExpander : WpfExpander
     {
         
@@ -81207,7 +81151,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable13 : WpfTable
     {
         
@@ -81240,7 +81184,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row129 : WpfRow
     {
         
@@ -81273,7 +81217,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell6 : WpfCell
     {
         
@@ -81313,7 +81257,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputMessageStep : WpfExpander
     {
         
@@ -81359,7 +81303,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIUI_StepOutputs_SetthTable : WpfTable
     {
         
@@ -81391,7 +81335,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIItemRow : WpfRow
     {
         
@@ -81423,7 +81367,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIItemWarewolfStudioViCell : WpfCell
     {
         
@@ -81460,7 +81404,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputStepHeader : WpfButton
     {
         
@@ -81532,7 +81476,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserControl_1Custom : WpfCustom
     {
         
@@ -81565,7 +81509,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane22 : WpfPane
     {
         
@@ -81598,7 +81542,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActivityBuilderCustom : WpfCustom
     {
         
@@ -81631,7 +81575,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowItemPresenteCustom : WpfCustom
     {
         
@@ -81678,7 +81622,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FlowchartCustom : WpfCustom
     {
         
@@ -81705,17 +81649,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom DsfDecisioActiviCustom
+        public DsfDecisioActiviCustom DsfDecisioActiviCustom
         {
             get
             {
                 if ((this.mDsfDecisioActiviCustom == null))
                 {
-                    this.mDsfDecisioActiviCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mDsfDecisioActiviCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowDecisionDesigner";
-                    this.mDsfDecisioActiviCustom.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mDsfDecisioActiviCustom = new DsfDecisioActiviCustom(this);
                 }
                 return this.mDsfDecisioActiviCustom;
             }
@@ -81725,11 +81665,11 @@ namespace Warewolf.UITests
         #region Fields
         private DsfMultiAssignActiviCustom mDsfMultiAssignActiviCustom;
         
-        private WpfCustom mDsfDecisioActiviCustom;
+        private DsfDecisioActiviCustom mDsfDecisioActiviCustom;
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DsfMultiAssignActiviCustom : WpfCustom
     {
         
@@ -81766,7 +81706,44 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DsfDecisioActiviCustom : WpfCustom
+    {
+        
+        public DsfDecisioActiviCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowDecisionDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "FlowDecisionDesigner";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit DisplayNameEdit
+        {
+            get
+            {
+                if ((this.mDisplayNameEdit == null))
+                {
+                    this.mDisplayNameEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDisplayNameEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameTextBox";
+                    this.mDisplayNameEdit.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDisplayNameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mDisplayNameEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIFlowchartCustom : WpfCustom
     {
         
@@ -81804,7 +81781,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerTab : WpfTabPage
     {
         
@@ -81854,7 +81831,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext7 : WpfCustom
     {
         
@@ -81887,7 +81864,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerView : WpfCustom
     {
         
@@ -82311,7 +82288,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConnectControl1 : WpfCustom
     {
         
@@ -82402,7 +82379,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulesList : WpfList
     {
         
@@ -82494,7 +82471,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UINameworkflow1ResourcListItem : WpfListItem
     {
         
@@ -82529,7 +82506,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SchedulerListItem : WpfListItem
     {
         
@@ -82561,7 +82538,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateTaskButton : WpfButton
     {
         
@@ -82597,7 +82574,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewTask : WpfListItem
     {
         
@@ -82632,7 +82609,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class HelloWorldResourListItem : WpfListItem
     {
         
@@ -82666,7 +82643,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointServerSourceTab : WpfTabPage
     {
         
@@ -82717,7 +82694,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointServerSourceView : WpfCustom
     {
         
@@ -82750,7 +82727,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SharepointView : WpfCustom
     {
         
@@ -82894,7 +82871,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployTab : WpfTabPage
     {
         
@@ -82944,7 +82921,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext8 : WpfCustom
     {
         
@@ -82977,7 +82954,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DockManager1 : WpfCustom
     {
         
@@ -83010,7 +82987,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployView : WpfCustom
     {
         
@@ -83319,7 +83296,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployButton : WpfButton
     {
         
@@ -83356,7 +83333,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DestinationServerConectControl : WpfCustom
     {
         
@@ -83426,7 +83403,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Combobox : WpfCustom
     {
         
@@ -83517,7 +83494,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceServerConectControl : WpfCustom
     {
         
@@ -83587,7 +83564,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Combobox1 : WpfCustom
     {
         
@@ -83674,7 +83651,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalhostText : WpfText
     {
         
@@ -83711,7 +83688,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceServerExplorer : WpfCustom
     {
         
@@ -83798,7 +83775,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree1 : WpfTree
     {
         
@@ -83844,7 +83821,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SourceServerName : WpfTreeItem
     {
         
@@ -83876,7 +83853,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstExplorerTreeItem : WpfTreeItem
     {
         
@@ -83915,7 +83892,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LocalHost1 : WpfTreeItem
     {
         
@@ -83966,7 +83943,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Item1 : WpfTreeItem
     {
         
@@ -84004,7 +83981,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WCFServiceSourceTab : WpfTabPage
     {
         
@@ -84054,7 +84031,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext9 : WpfCustom
     {
         
@@ -84109,7 +84086,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerSourceTab : WpfTabPage
     {
         
@@ -84252,7 +84229,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext10 : WpfCustom
     {
         
@@ -84407,7 +84384,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NewServerSource : WpfCustom
     {
         
@@ -84522,7 +84499,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AuthTypeOptions : WpfCustom
     {
         
@@ -84559,7 +84536,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ProtocolCombobox : WpfCustom
     {
         
@@ -84614,7 +84591,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AddressComboBox : WpfComboBox
     {
         
@@ -84668,7 +84645,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorText1 : WpfText
     {
         
@@ -84705,7 +84682,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SettingsTab : WpfTabPage
     {
         
@@ -84755,7 +84732,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorksurfaceContext11 : WpfCustom
     {
         
@@ -84788,7 +84765,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SettingsView1 : WpfCustom
     {
         
@@ -84821,7 +84798,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabList1 : WpfTabList
     {
         
@@ -84880,7 +84857,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecurityTab1 : WpfTabPage
     {
         
@@ -84930,7 +84907,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SecurityWindow1 : WpfCustom
     {
         
@@ -84977,7 +84954,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerPermissions1 : WpfTable
     {
         
@@ -85023,7 +85000,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WarewolfAdminROW1 : WpfPane
     {
         
@@ -85140,7 +85117,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteCell3 : WpfCell
     {
         
@@ -85177,7 +85154,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployToCell1 : WpfCell
     {
         
@@ -85216,7 +85193,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeployFromCell1 : WpfCell
     {
         
@@ -85254,7 +85231,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AdministratorCell1 : WpfCell
     {
         
@@ -85292,7 +85269,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ViewCell2 : WpfCell
     {
         
@@ -85330,7 +85307,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExecuteCell2 : WpfCell
     {
         
@@ -85368,7 +85345,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ContributeCell2 : WpfCell
     {
         
@@ -85406,7 +85383,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PublicROW1 : WpfPane
     {
         
@@ -85523,7 +85500,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_DeployToCell1 : WpfCell
     {
         
@@ -85560,7 +85537,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_DeployFromCell1 : WpfCell
     {
         
@@ -85597,7 +85574,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_AdministratorCell1 : WpfCell
     {
         
@@ -85634,7 +85611,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ViewCell1 : WpfCell
     {
         
@@ -85671,7 +85648,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ExecuteCell1 : WpfCell
     {
         
@@ -85708,7 +85685,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Public_ContributeCell1 : WpfCell
     {
         
@@ -85745,7 +85722,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WindowsGroup1 : WpfCell
     {
         
@@ -85782,7 +85759,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourcePermissions1 : WpfTable
     {
         
@@ -85819,7 +85796,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LoggingTab1 : WpfTabPage
     {
         
@@ -85852,7 +85829,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LogSettingsViewConte1 : WpfCustom
     {
         
@@ -85899,7 +85876,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StudioLogs1 : WpfPane
     {
         
@@ -85932,7 +85909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StudioLogFile1 : WpfText
     {
         
@@ -85968,7 +85945,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerLogs1 : WpfPane
     {
         
@@ -86000,7 +85977,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerLogFile1 : WpfText
     {
         
@@ -86036,7 +86013,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PerfomanceCounterTab1 : WpfTabPage
     {
         
@@ -86069,7 +86046,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PerfmonViewContent1 : WpfCustom
     {
         
@@ -86130,7 +86107,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceTable1 : WpfTable
     {
         
@@ -86162,7 +86139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row130 : WpfPane
     {
         
@@ -86265,7 +86242,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TotalErrors2 : WpfCell
     {
         
@@ -86301,7 +86278,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceCell2 : WpfCell
     {
         
@@ -86354,7 +86331,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RequestPerSecond1 : WpfCell
     {
         
@@ -86390,7 +86367,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteCell4 : WpfCell
     {
         
@@ -86426,7 +86403,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConcurrentRequest1 : WpfCell
     {
         
@@ -86462,7 +86439,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AverageExecTime1 : WpfCell
     {
         
@@ -86498,7 +86475,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerTable1 : WpfTable
     {
         
@@ -86600,7 +86577,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AverageExecCounter1 : WpfCell
     {
         
@@ -86638,7 +86615,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConcurrRequest1 : WpfCell
     {
         
@@ -86675,7 +86652,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RequestPerSeccond1 : WpfCell
     {
         
@@ -86712,7 +86689,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TotalErrors3 : WpfCell
     {
         
@@ -86749,7 +86726,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowsNotFound1 : WpfCell
     {
         
@@ -86786,7 +86763,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NotAuthorisedErrors1 : WpfCell
     {
         
@@ -86823,7 +86800,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResetCounter1 : WpfText
     {
         
@@ -86859,7 +86836,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RabbitMqSourceTab : WpfTabPage
     {
         
@@ -86910,7 +86887,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RabbitMQSourceCustom : WpfCustom
     {
         
@@ -87055,7 +87032,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class EmailSourceTab : WpfTabPage
     {
         
@@ -87105,7 +87082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SendTestModelsCustom : WpfCustom
     {
         
@@ -87337,7 +87314,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToTextBoxEdit : WpfEdit
     {
         
@@ -87373,7 +87350,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExchangeSourceTab : WpfTabPage
     {
         
@@ -87424,7 +87401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SendTestModelsCustom1 : WpfCustom
     {
         
@@ -87562,7 +87539,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ToTextBox : WpfEdit
     {
         
@@ -87598,7 +87575,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PassedText : WpfText
     {
         
@@ -87634,7 +87611,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class COMPlugInSourceTab : WpfTabPage
     {
         
@@ -87684,7 +87661,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext12 : WpfCustom
     {
         
@@ -87767,7 +87744,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RefreshButton : WpfButton
     {
         
@@ -87804,7 +87781,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextBox3 : WpfEdit
     {
         
@@ -87840,7 +87817,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OAuthSourceWizardTab : WpfTabPage
     {
         
@@ -87890,7 +87867,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext13 : WpfCustom
     {
         
@@ -87959,7 +87936,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServerTypeComboBox : WpfCustom
     {
         
@@ -87996,7 +87973,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Help1 : WpfCustom
     {
         
@@ -88071,7 +88048,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabManSplitPane1 : WpfCustom
     {
         
@@ -88104,7 +88081,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabMan1 : WpfTabList
     {
         
@@ -88137,7 +88114,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsTab1 : WpfTabPage
     {
         
@@ -88204,7 +88181,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext14 : WpfCustom
     {
         
@@ -88237,7 +88214,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTestView1 : WpfCustom
     {
         
@@ -88539,7 +88516,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UrlText1 : WpfText
     {
         
@@ -88576,7 +88553,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestsListboxList1 : WpfList
     {
         
@@ -88678,7 +88655,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CreateTest1 : WpfListItem
     {
         
@@ -88714,7 +88691,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test11 : WpfListItem
     {
         
@@ -88947,7 +88924,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test21 : WpfListItem
     {
         
@@ -89181,7 +89158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test31 : WpfListItem
     {
         
@@ -89414,7 +89391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test41 : WpfListItem
     {
         
@@ -89647,7 +89624,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Test51 : WpfListItem
     {
         
@@ -89880,7 +89857,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestInputsTable2 : WpfTable
     {
         
@@ -89912,7 +89889,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row131 : WpfRow
     {
         
@@ -89945,7 +89922,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell5 : WpfCell
     {
         
@@ -89978,7 +89955,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox16 : WpfComboBox
     {
         
@@ -90014,7 +89991,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TestOutputsTable1 : WpfTable
     {
         
@@ -90046,7 +90023,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row132 : WpfRow
     {
         
@@ -90079,7 +90056,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell6 : WpfCell
     {
         
@@ -90112,7 +90089,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseComboBox17 : WpfComboBox
     {
         
@@ -90148,7 +90125,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StepTestDataTreeTree1 : WpfTree
     {
         
@@ -90264,7 +90241,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SetOutputTreeItem1 : WpfTreeItem
     {
         
@@ -90296,7 +90273,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OutputMessageAssert1 : WpfExpander
     {
         
@@ -90343,7 +90320,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable14 : WpfTable
     {
         
@@ -90390,7 +90367,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row133 : WpfRow
     {
         
@@ -90479,7 +90456,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell7 : WpfCell
     {
         
@@ -90517,7 +90494,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell5 : WpfCell
     {
         
@@ -90556,7 +90533,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell5 : WpfCell
     {
         
@@ -90596,7 +90573,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertValueCell2 : WpfCell
     {
         
@@ -90635,7 +90612,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Cell7 : WpfCustom
     {
         
@@ -90672,7 +90649,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader5 : WpfControl
     {
         
@@ -90766,7 +90743,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert5 : WpfControl
     {
         
@@ -90828,7 +90805,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader6 : WpfButton
     {
         
@@ -90942,7 +90919,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignToNameTreeItem1 : WpfTreeItem
     {
         
@@ -90974,7 +90951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignAssert1 : WpfExpander
     {
         
@@ -91021,7 +90998,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable15 : WpfTable
     {
         
@@ -91068,7 +91045,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row134 : WpfRow
     {
         
@@ -91143,7 +91120,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell8 : WpfCell
     {
         
@@ -91181,7 +91158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell6 : WpfCell
     {
         
@@ -91220,7 +91197,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell4 : WpfCell
     {
         
@@ -91254,7 +91231,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox4 : WpfComboBox
     {
         
@@ -91311,7 +91288,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell6 : WpfCell
     {
         
@@ -91351,7 +91328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader6 : WpfControl
     {
         
@@ -91445,7 +91422,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert6 : WpfControl
     {
         
@@ -91507,7 +91484,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader7 : WpfButton
     {
         
@@ -91621,7 +91598,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceTreeItem2 : WpfTreeItem
     {
         
@@ -91653,7 +91630,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceAssert1 : WpfExpander
     {
         
@@ -91700,7 +91677,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitNamesTreeItem1 : WpfTreeItem
     {
         
@@ -91732,7 +91709,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitNamesAssert1 : WpfExpander
     {
         
@@ -91779,7 +91756,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable16 : WpfTable
     {
         
@@ -91826,7 +91803,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row135 : WpfRow
     {
         
@@ -91901,7 +91878,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell9 : WpfCell
     {
         
@@ -91939,7 +91916,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell7 : WpfCell
     {
         
@@ -91978,7 +91955,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell5 : WpfCell
     {
         
@@ -92012,7 +91989,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox5 : WpfComboBox
     {
         
@@ -92069,7 +92046,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell7 : WpfCell
     {
         
@@ -92109,7 +92086,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader7 : WpfControl
     {
         
@@ -92203,7 +92180,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert7 : WpfControl
     {
         
@@ -92265,7 +92242,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader8 : WpfButton
     {
         
@@ -92379,7 +92356,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader9 : WpfButton
     {
         
@@ -92493,7 +92470,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ForeachTreeItem1 : WpfTreeItem
     {
         
@@ -92620,7 +92597,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SequenceTreeItem3 : WpfTreeItem
     {
         
@@ -92652,7 +92629,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertCaseToTitleCase1 : WpfTreeItem
     {
         
@@ -92684,7 +92661,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ConvertCase1 : WpfExpander
     {
         
@@ -92731,7 +92708,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable17 : WpfTable
     {
         
@@ -92778,7 +92755,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row136 : WpfRow
     {
         
@@ -92853,7 +92830,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell10 : WpfCell
     {
         
@@ -92891,7 +92868,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell8 : WpfCell
     {
         
@@ -92930,7 +92907,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell6 : WpfCell
     {
         
@@ -92964,7 +92941,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox6 : WpfComboBox
     {
         
@@ -93021,7 +92998,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell8 : WpfCell
     {
         
@@ -93061,7 +93038,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader8 : WpfControl
     {
         
@@ -93155,7 +93132,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert8 : WpfControl
     {
         
@@ -93217,7 +93194,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader10 : WpfButton
     {
         
@@ -93331,7 +93308,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionTreeItem1 : WpfTreeItem
     {
         
@@ -93363,7 +93340,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionAssert1 : WpfExpander
     {
         
@@ -93412,7 +93389,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable18 : WpfTable
     {
         
@@ -93459,7 +93436,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row137 : WpfRow
     {
         
@@ -93534,7 +93511,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell11 : WpfCell
     {
         
@@ -93572,7 +93549,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertOperatorCell9 : WpfCell
     {
         
@@ -93611,7 +93588,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueCell7 : WpfCell
     {
         
@@ -93645,7 +93622,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OptionsForValueComboBox7 : WpfComboBox
     {
         
@@ -93702,7 +93679,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusViewCell9 : WpfCell
     {
         
@@ -93742,7 +93719,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ColumnHeadersPrHeader9 : WpfControl
     {
         
@@ -93836,7 +93813,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MockOrAssert9 : WpfControl
     {
         
@@ -93898,7 +93875,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertHeader11 : WpfButton
     {
         
@@ -94031,7 +94008,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RandomTreeItem1 : WpfTreeItem
     {
         
@@ -94063,7 +94040,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RandomExpander1 : WpfExpander
     {
         
@@ -94115,7 +94092,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable19 : WpfTable
     {
         
@@ -94148,7 +94125,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row138 : WpfRow
     {
         
@@ -94181,7 +94158,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssertValueCell3 : WpfCell
     {
         
@@ -94220,7 +94197,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DiceRollTreeItem1 : WpfTreeItem
     {
         
@@ -94252,7 +94229,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DiceRollExpander1 : WpfExpander
     {
         
@@ -94285,7 +94262,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallDataGridTable20 : WpfTable
     {
         
@@ -94318,7 +94295,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row139 : WpfRow
     {
         
@@ -94351,7 +94328,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResultCell12 : WpfCell
     {
         
@@ -94391,7 +94368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UserControl_1Custom1 : WpfCustom
     {
         
@@ -94424,7 +94401,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane23 : WpfPane
     {
         
@@ -94457,7 +94434,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActivityBuilderCustom1 : WpfCustom
     {
         
@@ -94490,7 +94467,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowItemPresenteCustom1 : WpfCustom
     {
         
@@ -94523,7 +94500,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FlowchartCustom1 : WpfCustom
     {
         
@@ -94556,7 +94533,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DsfMultiAssignActiviCustom1 : WpfCustom
     {
         
@@ -94593,7 +94570,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugInputDialog : WpfWindow
     {
         
@@ -94699,7 +94676,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TabItemsTabList : WpfTabList
     {
         
@@ -94759,7 +94736,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputDataTab : WpfTabPage
     {
         
@@ -94791,7 +94768,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputsTable3 : WpfTable
     {
         
@@ -94837,7 +94814,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row140 : WpfPane
     {
         
@@ -94871,7 +94848,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueCell : WpfCell
     {
         
@@ -94904,7 +94881,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueComboboxl : WpfComboBox
     {
         
@@ -94940,7 +94917,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row28 : WpfPane
     {
         
@@ -94974,7 +94951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueCell1 : WpfCell
     {
         
@@ -95007,7 +94984,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class InputValueComboboxl1 : WpfComboBox
     {
         
@@ -95043,7 +95020,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class XMLTab : WpfTabPage
     {
         
@@ -95080,7 +95057,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class JSONTab : WpfTabPage
     {
         
@@ -95132,7 +95109,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CommentTreeItem1 : WpfTreeItem
     {
         
@@ -95169,7 +95146,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsNewRemoteServer : WpfCustom
     {
         
@@ -95206,7 +95183,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsLocalhost : WpfText
     {
         
@@ -95242,7 +95219,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsLocalhostConnected : WpfCustom
     {
         
@@ -95279,7 +95256,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsRemoteConnectionIntegrationConnected : WpfCustom
     {
         
@@ -95316,7 +95293,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsMicrosoftSQLServer : WpfCustom
     {
         
@@ -95353,7 +95330,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemPostgreSqlDatabase : WpfCustom
     {
         
@@ -95390,7 +95367,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemODBCDatabase : WpfCustom
     {
         
@@ -95427,7 +95404,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemMySqlDatabase : WpfCustom
     {
         
@@ -95464,7 +95441,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnpinnedTab : WpfCustom
     {
         
@@ -95496,7 +95473,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPane : WpfCustom
     {
         
@@ -95528,7 +95505,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext15 : WpfCustom
     {
         
@@ -95589,7 +95566,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowDesignerView1 : WpfCustom
     {
         
@@ -95622,7 +95599,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DesignerView1 : WpfCustom
     {
         
@@ -95691,7 +95668,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane24 : WpfPane
     {
         
@@ -95724,7 +95701,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActivityTypeDesigner1 : WpfCustom
     {
         
@@ -95757,7 +95734,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowItemPresenter1 : WpfCustom
     {
         
@@ -95790,7 +95767,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Flowchart1 : WpfCustom
     {
         
@@ -95874,7 +95851,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MultiAssign2 : WpfCustom
     {
         
@@ -95985,7 +95962,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView21 : WpfCustom
     {
         
@@ -96018,7 +95995,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid6 : WpfTable
     {
         
@@ -96078,7 +96055,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row141 : WpfRow
     {
         
@@ -96139,7 +96116,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell13 : WpfCell
     {
         
@@ -96172,7 +96149,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox18 : WpfComboBox
     {
         
@@ -96222,7 +96199,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox3 : WpfEdit
     {
         
@@ -96258,7 +96235,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell16 : WpfCell
     {
         
@@ -96291,7 +96268,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox19 : WpfComboBox
     {
         
@@ -96327,7 +96304,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell3 : WpfCell
     {
         
@@ -96365,7 +96342,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row29 : WpfRow
     {
         
@@ -96426,7 +96403,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell14 : WpfCell
     {
         
@@ -96459,7 +96436,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox20 : WpfComboBox
     {
         
@@ -96509,7 +96486,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox4 : WpfEdit
     {
         
@@ -96544,7 +96521,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell17 : WpfCell
     {
         
@@ -96577,7 +96554,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox21 : WpfComboBox
     {
         
@@ -96613,7 +96590,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell4 : WpfCell
     {
         
@@ -96651,7 +96628,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row35 : WpfRow
     {
         
@@ -96712,7 +96689,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell15 : WpfCell
     {
         
@@ -96745,7 +96722,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox22 : WpfComboBox
     {
         
@@ -96795,7 +96772,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox5 : WpfEdit
     {
         
@@ -96830,7 +96807,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell18 : WpfCell
     {
         
@@ -96863,7 +96840,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox23 : WpfComboBox
     {
         
@@ -96899,7 +96876,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell5 : WpfCell
     {
         
@@ -96937,7 +96914,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView32 : WpfCustom
     {
         
@@ -96984,7 +96961,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid7 : WpfTable
     {
         
@@ -97058,7 +97035,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row142 : WpfRow
     {
         
@@ -97105,7 +97082,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell16 : WpfCell
     {
         
@@ -97138,7 +97115,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox24 : WpfComboBox
     {
         
@@ -97174,7 +97151,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell19 : WpfCell
     {
         
@@ -97207,7 +97184,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox25 : WpfComboBox
     {
         
@@ -97243,7 +97220,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row210 : WpfRow
     {
         
@@ -97290,7 +97267,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell17 : WpfCell
     {
         
@@ -97323,7 +97300,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox26 : WpfComboBox
     {
         
@@ -97359,7 +97336,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell20 : WpfCell
     {
         
@@ -97392,7 +97369,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox27 : WpfComboBox
     {
         
@@ -97428,7 +97405,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row36 : WpfRow
     {
         
@@ -97475,7 +97452,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell18 : WpfCell
     {
         
@@ -97508,7 +97485,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox28 : WpfComboBox
     {
         
@@ -97544,7 +97521,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell21 : WpfCell
     {
         
@@ -97577,7 +97554,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox29 : WpfComboBox
     {
         
@@ -97613,7 +97590,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row42 : WpfRow
     {
         
@@ -97660,7 +97637,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell19 : WpfCell
     {
         
@@ -97693,7 +97670,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox30 : WpfComboBox
     {
         
@@ -97729,7 +97706,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell22 : WpfCell
     {
         
@@ -97762,7 +97739,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class IntellisenseCombobox31 : WpfComboBox
     {
         
@@ -97798,7 +97775,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorPane19 : WpfCustom
     {
         
@@ -97831,7 +97808,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup60 : WpfGroup
     {
         
@@ -97895,7 +97872,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorVariableIntellisenseCombobox12 : WpfComboBox
     {
         
@@ -97931,7 +97908,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorServiceIntellisenseCombobox10 : WpfComboBox
     {
         
@@ -97967,7 +97944,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DoneButton1 : WpfButton
     {
         
@@ -98004,7 +97981,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class QuickVariableInputContent4 : WpfCustom
     {
         
@@ -98163,7 +98140,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewCustom5 : WpfCustom
     {
         
@@ -98196,7 +98173,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class PreviewGroup5 : WpfGroup
     {
         
@@ -98232,7 +98209,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Error11 : WpfText
     {
         
@@ -98267,7 +98244,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TopScrollViewerPane1 : WpfPane
     {
         
@@ -98300,7 +98277,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnsavedWorkflowLinkText1 : WpfText
     {
         
@@ -98335,7 +98312,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplitPaneRight1 : WpfCustom
     {
         
@@ -98382,7 +98359,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Variables1 : WpfCustom
     {
         
@@ -98451,7 +98428,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DatalistView1 : WpfCustom
     {
         
@@ -98534,7 +98511,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTree1 : WpfTree
     {
         
@@ -98580,7 +98557,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableTreeItem1 : WpfTreeItem
     {
         
@@ -98687,7 +98664,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem12 : WpfTreeItem
     {
         
@@ -98759,7 +98736,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane25 : WpfPane
     {
         
@@ -98793,7 +98770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox21 : WpfEdit
     {
         
@@ -98864,7 +98841,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteButton1 : WpfButton
     {
         
@@ -98902,7 +98879,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem22 : WpfTreeItem
     {
         
@@ -98974,7 +98951,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane26 : WpfPane
     {
         
@@ -99008,7 +98985,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox22 : WpfEdit
     {
         
@@ -99084,7 +99061,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem32 : WpfTreeItem
     {
         
@@ -99156,7 +99133,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane27 : WpfPane
     {
         
@@ -99190,7 +99167,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox23 : WpfEdit
     {
         
@@ -99266,7 +99243,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem42 : WpfTreeItem
     {
         
@@ -99338,7 +99315,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane28 : WpfPane
     {
         
@@ -99372,7 +99349,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox24 : WpfEdit
     {
         
@@ -99448,7 +99425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem52 : WpfTreeItem
     {
         
@@ -99520,7 +99497,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane29 : WpfPane
     {
         
@@ -99554,7 +99531,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox25 : WpfEdit
     {
         
@@ -99630,7 +99607,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetTreeItem1 : WpfTreeItem
     {
         
@@ -99737,7 +99714,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem13 : WpfTreeItem
     {
         
@@ -99884,7 +99861,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane30 : WpfPane
     {
         
@@ -99918,7 +99895,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox26 : WpfEdit
     {
         
@@ -99994,7 +99971,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field12 : WpfTreeItem
     {
         
@@ -100066,7 +100043,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane31 : WpfPane
     {
         
@@ -100100,7 +100077,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox27 : WpfEdit
     {
         
@@ -100157,7 +100134,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field22 : WpfTreeItem
     {
         
@@ -100229,7 +100206,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane32 : WpfPane
     {
         
@@ -100263,7 +100240,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox28 : WpfEdit
     {
         
@@ -100320,7 +100297,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field32 : WpfTreeItem
     {
         
@@ -100392,7 +100369,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane33 : WpfPane
     {
         
@@ -100426,7 +100403,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox29 : WpfEdit
     {
         
@@ -100483,7 +100460,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field42 : WpfTreeItem
     {
         
@@ -100555,7 +100532,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane34 : WpfPane
     {
         
@@ -100589,7 +100566,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox30 : WpfEdit
     {
         
@@ -100646,7 +100623,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem23 : WpfTreeItem
     {
         
@@ -100793,7 +100770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane35 : WpfPane
     {
         
@@ -100827,7 +100804,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox31 : WpfEdit
     {
         
@@ -100903,7 +100880,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field13 : WpfTreeItem
     {
         
@@ -100975,7 +100952,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane36 : WpfPane
     {
         
@@ -101009,7 +100986,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox32 : WpfEdit
     {
         
@@ -101066,7 +101043,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field23 : WpfTreeItem
     {
         
@@ -101138,7 +101115,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane37 : WpfPane
     {
         
@@ -101172,7 +101149,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox33 : WpfEdit
     {
         
@@ -101229,7 +101206,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field33 : WpfTreeItem
     {
         
@@ -101301,7 +101278,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane38 : WpfPane
     {
         
@@ -101335,7 +101312,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox34 : WpfEdit
     {
         
@@ -101392,7 +101369,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field43 : WpfTreeItem
     {
         
@@ -101464,7 +101441,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane39 : WpfPane
     {
         
@@ -101498,7 +101475,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox35 : WpfEdit
     {
         
@@ -101555,7 +101532,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem33 : WpfTreeItem
     {
         
@@ -101660,7 +101637,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane40 : WpfPane
     {
         
@@ -101694,7 +101671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox36 : WpfEdit
     {
         
@@ -101770,7 +101747,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field7 : WpfTreeItem
     {
         
@@ -101841,7 +101818,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane41 : WpfPane
     {
         
@@ -101875,7 +101852,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox37 : WpfEdit
     {
         
@@ -101932,7 +101909,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem43 : WpfTreeItem
     {
         
@@ -102037,7 +102014,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane42 : WpfPane
     {
         
@@ -102071,7 +102048,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox38 : WpfEdit
     {
         
@@ -102147,7 +102124,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field8 : WpfTreeItem
     {
         
@@ -102218,7 +102195,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane43 : WpfPane
     {
         
@@ -102252,7 +102229,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox39 : WpfEdit
     {
         
@@ -102309,7 +102286,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem53 : WpfTreeItem
     {
         
@@ -102414,7 +102391,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane44 : WpfPane
     {
         
@@ -102448,7 +102425,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox40 : WpfEdit
     {
         
@@ -102524,7 +102501,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Field9 : WpfTreeItem
     {
         
@@ -102595,7 +102572,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane45 : WpfPane
     {
         
@@ -102629,7 +102606,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NameTextbox41 : WpfEdit
     {
         
@@ -102686,7 +102663,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SearchTextbox4 : WpfEdit
     {
         
@@ -102758,7 +102735,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutput1 : WpfCustom
     {
         
@@ -102909,7 +102886,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DebugOutputTree1 : WpfTree
     {
         
@@ -102969,7 +102946,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Step11 : WpfTreeItem
     {
         
@@ -103099,7 +103076,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RecordsetGroup1 : WpfExpander
     {
         
@@ -103156,7 +103133,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SubWorkflow1 : WpfTreeItem
     {
         
@@ -103188,7 +103165,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIHelloWorldTreeItem11 : WpfTreeItem
     {
         
@@ -103226,7 +103203,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServiceTreeItem1 : WpfTreeItem
     {
         
@@ -103263,7 +103240,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StatusBar1 : WpfEdit
     {
         
@@ -103299,7 +103276,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CommentTreeItem2 : WpfTreeItem
     {
         
@@ -103336,7 +103313,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UnpinnedTabContextMenu : WpfMenu
     {
         
@@ -103444,7 +103421,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
     {
         
@@ -103481,7 +103458,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAspostgresDB : WpfCustom
     {
         
@@ -103518,7 +103495,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsmysqlDB : WpfCustom
     {
         
@@ -103555,7 +103532,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsHRDB : WpfCustom
     {
         
@@ -103592,7 +103569,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsExcelFilesDB : WpfCustom
     {
         
@@ -103629,7 +103606,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ComboboxListItemAsDropboxServerType : WpfCustom
     {
         
@@ -103666,7 +103643,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Dev2TestingDBCustom : WpfCustom
     {
         
@@ -103703,7 +103680,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MessageBoxWindow : WpfWindow
     {
         
@@ -104052,7 +104029,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class YesButton : WpfButton
     {
         
@@ -104088,7 +104065,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NoButton : WpfButton
     {
         
@@ -104124,7 +104101,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CancelButton : WpfButton
     {
         
@@ -104160,7 +104137,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SaveDialogWindow : WpfWindow
     {
         
@@ -104332,7 +104309,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerView : WpfCustom
     {
         
@@ -104400,7 +104377,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree2 : WpfTree
     {
         
@@ -104450,7 +104427,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class localhost2 : WpfTreeItem
     {
         
@@ -104553,7 +104530,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox2 : WpfCheckBox
     {
         
@@ -104611,7 +104588,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstItem3 : WpfTreeItem
     {
         
@@ -104679,7 +104656,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ResourceImageImage9 : WpfImage
     {
         
@@ -104717,7 +104694,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FirstSubItem3 : WpfTreeItem
     {
         
@@ -104755,7 +104732,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class NinethItem : WpfTreeItem
     {
         
@@ -104793,7 +104770,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SaveDialogContextMenu : WpfMenu
     {
         
@@ -104901,7 +104878,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SplashPageWindow : WpfWindow
     {
         
@@ -104915,7 +104892,7 @@ namespace Warewolf.UITests
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionOrSwitchDialog : WpfWindow
     {
         
@@ -105679,7 +105656,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OnErrorGroup61 : WpfGroup
     {
         
@@ -105743,7 +105720,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorVariableIntellisenseCombobox6 : WpfComboBox
     {
         
@@ -105779,7 +105756,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorServiceIntellisenseCombobox : WpfComboBox
     {
         
@@ -105815,7 +105792,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView33 : WpfCustom
     {
         
@@ -105921,7 +105898,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Table3 : WpfTable
     {
         
@@ -105953,7 +105930,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row143 : WpfRow
     {
         
@@ -106033,7 +106010,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchValueCell : WpfCell
     {
         
@@ -106067,7 +106044,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchValueIntellisenseCombobox : WpfComboBox
     {
         
@@ -106103,7 +106080,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DeleteRowCell : WpfCell
     {
         
@@ -106140,7 +106117,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MatchTypeCell5 : WpfCell
     {
         
@@ -106177,7 +106154,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectWindowsGroupDialog : WinWindow
     {
         
@@ -106236,7 +106213,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemPanel : WinWindow
     {
         
@@ -106272,7 +106249,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class OKPanel : WinWindow
     {
         
@@ -106308,7 +106285,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CancelPanel : WinWindow
     {
         
@@ -106344,7 +106321,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ServicePickerDialog : WpfWindow
     {
         
@@ -106413,7 +106390,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Explorer1 : WpfCustom
     {
         
@@ -106481,7 +106458,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ExplorerTree3 : WpfTree
     {
         
@@ -106513,7 +106490,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Localhost3 : WpfTreeItem
     {
         
@@ -106573,7 +106550,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem14 : WpfTreeItem
     {
         
@@ -106614,7 +106591,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class TreeItem24 : WpfTreeItem
     {
         
@@ -106655,7 +106632,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Checkbox3 : WpfCheckBox
     {
         
@@ -106694,7 +106671,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StartNodePopupWindow : WpfWindow
     {
         
@@ -106768,7 +106745,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CustomWindow : WpfWindow
     {
         
@@ -106796,7 +106773,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class StartNodeItemMenu : WpfMenu
     {
         
@@ -107000,7 +106977,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class FloatingWindowCustom : WpfCustom
     {
         
@@ -107034,7 +107011,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkSurfaceContext16 : WpfCustom
     {
         
@@ -107067,7 +107044,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowDesignerView2 : WpfCustom
     {
         
@@ -107100,7 +107077,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DesignerView2 : WpfCustom
     {
         
@@ -107169,7 +107146,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ScrollViewerPane46 : WpfPane
     {
         
@@ -107202,7 +107179,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ActivityTypeDesigner2 : WpfCustom
     {
         
@@ -107235,7 +107212,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WorkflowItemPresenter2 : WpfCustom
     {
         
@@ -107268,7 +107245,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Flowchart2 : WpfCustom
     {
         
@@ -107300,7 +107277,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MultiAssign3 : WpfCustom
     {
         
@@ -107402,7 +107379,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SmallView22 : WpfCustom
     {
         
@@ -107435,7 +107412,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid8 : WpfTable
     {
         
@@ -107495,7 +107472,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row144 : WpfRow
     {
         
@@ -107556,7 +107533,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell20 : WpfCell
     {
         
@@ -107589,7 +107566,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox4 : WpfComboBox
     {
         
@@ -107639,7 +107616,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox6 : WpfEdit
     {
         
@@ -107675,7 +107652,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell23 : WpfCell
     {
         
@@ -107708,7 +107685,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox5 : WpfComboBox
     {
         
@@ -107744,7 +107721,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell6 : WpfCell
     {
         
@@ -107782,7 +107759,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row211 : WpfRow
     {
         
@@ -107843,7 +107820,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell21 : WpfCell
     {
         
@@ -107876,7 +107853,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox6 : WpfComboBox
     {
         
@@ -107926,7 +107903,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox7 : WpfEdit
     {
         
@@ -107961,7 +107938,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell24 : WpfCell
     {
         
@@ -107994,7 +107971,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox7 : WpfComboBox
     {
         
@@ -108030,7 +108007,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell7 : WpfCell
     {
         
@@ -108068,7 +108045,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row37 : WpfRow
     {
         
@@ -108129,7 +108106,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell22 : WpfCell
     {
         
@@ -108162,7 +108139,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox8 : WpfComboBox
     {
         
@@ -108212,7 +108189,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Textbox8 : WpfEdit
     {
         
@@ -108247,7 +108224,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell25 : WpfCell
     {
         
@@ -108280,7 +108257,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox9 : WpfComboBox
     {
         
@@ -108316,7 +108293,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class RowNumberCell8 : WpfCell
     {
         
@@ -108354,7 +108331,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class LargeView34 : WpfCustom
     {
         
@@ -108387,7 +108364,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DataGrid9 : WpfTable
     {
         
@@ -108461,7 +108438,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row145 : WpfRow
     {
         
@@ -108508,7 +108485,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell23 : WpfCell
     {
         
@@ -108541,7 +108518,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox10 : WpfComboBox
     {
         
@@ -108577,7 +108554,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell26 : WpfCell
     {
         
@@ -108610,7 +108587,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignValueCombobox : WpfComboBox
     {
         
@@ -108646,7 +108623,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row212 : WpfRow
     {
         
@@ -108693,7 +108670,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell24 : WpfCell
     {
         
@@ -108726,7 +108703,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox11 : WpfComboBox
     {
         
@@ -108762,7 +108739,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell27 : WpfCell
     {
         
@@ -108795,7 +108772,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignValueCombobox1 : WpfComboBox
     {
         
@@ -108831,7 +108808,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row38 : WpfRow
     {
         
@@ -108878,7 +108855,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell25 : WpfCell
     {
         
@@ -108911,7 +108888,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox12 : WpfComboBox
     {
         
@@ -108947,7 +108924,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell28 : WpfCell
     {
         
@@ -108980,7 +108957,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignValueCombobox2 : WpfComboBox
     {
         
@@ -109016,7 +108993,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Row43 : WpfRow
     {
         
@@ -109063,7 +109040,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class VariableCell26 : WpfCell
     {
         
@@ -109096,7 +109073,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Listbox13 : WpfComboBox
     {
         
@@ -109132,7 +109109,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ValueCell29 : WpfCell
     {
         
@@ -109165,7 +109142,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AssignValueCombobox3 : WpfComboBox
     {
         
@@ -109201,7 +109178,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ItemMenu : WpfMenu
     {
         
@@ -109235,7 +109212,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DesignSurfaceMenu : WpfMenu
     {
         
@@ -109287,7 +109264,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ErrorWindow : WinWindow
     {
         
@@ -109323,7 +109300,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CriticalErrorWindow : WinWindow
     {
         
@@ -109359,7 +109336,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class WebBrowserErrorWindow : WinWindow
     {
         
@@ -109391,7 +109368,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Pane : WinPane
     {
         
@@ -109427,7 +109404,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class ChooseDLLWindow : WpfWindow
     {
         
@@ -109531,7 +109508,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DLLDataTree : WpfTree
     {
         
@@ -109577,7 +109554,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CDrive : WpfTreeItem
     {
         
@@ -109653,7 +109630,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class GAC : WpfTreeItem
     {
         
@@ -109691,7 +109668,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SelectFilesWindow : WpfWindow
     {
         
@@ -109777,7 +109754,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DrivesDataTree : WpfTree
     {
         
@@ -109809,7 +109786,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class CTreeItem : WpfTreeItem
     {
         
@@ -109887,7 +109864,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class bootmgrFile : WpfTreeItem
     {
         
@@ -109925,7 +109902,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class BOOTNXTFile : WpfTreeItem
     {
         
@@ -109963,7 +109940,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class AttachmentsForEmailFolder : WpfTreeItem
     {
         
@@ -110010,7 +109987,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class attachment1 : WpfTreeItem
     {
         
@@ -110048,7 +110025,7 @@ namespace Warewolf.UITests
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class attachment2 : WpfTreeItem
     {
         
@@ -110083,108 +110060,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
-    public class UIWarewolfDEV2HAGASHENWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2HAGASHENWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\HAGASHEN.NAIDU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\HAGASHEN.NAIDU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
-    public class UIInfragisticsControlsTreeItem : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\HAGASHEN.NAIDU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfStudioViewMoExpander UIWarewolfStudioViewMoExpander
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoExpander == null))
-                {
-                    this.mUIWarewolfStudioViewMoExpander = new UIWarewolfStudioViewMoExpander(this);
-                }
-                return this.mUIWarewolfStudioViewMoExpander;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfStudioViewMoExpander mUIWarewolfStudioViewMoExpander;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.25420.1")]
-    public class UIWarewolfStudioViewMoExpander : WpfExpander
-    {
-        
-        public UIWarewolfStudioViewMoExpander(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_If [[Name]] <> (Not Equal) _AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\HAGASHEN.NAIDU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIWarewolfStudioViewMoButton
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoButton == null))
-                {
-                    this.mUIWarewolfStudioViewMoButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
-                    this.mUIWarewolfStudioViewMoButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIWarewolfStudioViewMoButton.WindowTitles.Add("Warewolf (DEV2\\HAGASHEN.NAIDU)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIWarewolfStudioViewMoButton;
         #endregion
     }
 }

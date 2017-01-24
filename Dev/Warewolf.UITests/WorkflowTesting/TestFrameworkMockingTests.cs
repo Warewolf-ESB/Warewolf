@@ -67,14 +67,14 @@ namespace Warewolf.UITests
         [TestCategory("WorkflowTesting_AddTestStep")]
         public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
         {
-            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------           
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
-            UIMap.Click_Create_New_Tests(true);
-            UIMap.Click_Run_Test_Button(TestResultEnum.Fail);
+            UIMap.Click_Create_New_Tests(true, 4);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
             //------------Assert Preconditions-------------------
-            //------------Execute Test---------------------------
-            UIMap.Click_Decision_Step();
+            //------------Execute Test---------------------------            
+            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
             //------------Assert Results-------------------------
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
@@ -128,7 +128,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.AssertStudioIsRunning();
+            //UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap

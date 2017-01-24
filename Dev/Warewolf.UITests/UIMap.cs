@@ -2064,7 +2064,7 @@ namespace Warewolf.UITests
             }
             Click_Close_Tests_Tab();
         }
-         
+
         [Given(@"I Select Acceptance Test in delete")]
         [When(@"I Select Acceptance Test in delete")]
         [Then(@"I Select Acceptance Test in delete")]
@@ -7927,7 +7927,7 @@ namespace Warewolf.UITests
             Assert.AreEqual("Next", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
 
-        
+
         [Given(@"I Select Open FromExplorerContextMenu")]
         [When(@"I Select Open FromExplorerContextMenu")]
         [Then(@"I Select Open FromExplorerContextMenu")]
@@ -9071,11 +9071,12 @@ namespace Warewolf.UITests
         public void Click_Decision_Step()
         {
             #region Variable Declarations
-            WpfCustom uIDsfDescisionActiviCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom;
+            var uIDsfDescisionActiviCustom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit;
             #endregion
 
             // Click 'DsfMultiAssignActivity' custom control
-            Mouse.Click(uIDsfDescisionActiviCustom);
+            uIDsfDescisionActiviCustom.DrawHighlight();
+            Mouse.Click(uIDsfDescisionActiviCustom, new Point(77, 8));
         }
 
         [Then(@"I Enter Text Into Database Server Tab")]
@@ -9167,7 +9168,7 @@ namespace Warewolf.UITests
             Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
         }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
-        {         
+        {
             Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
             Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree();
@@ -9284,7 +9285,7 @@ namespace Warewolf.UITests
 
         public void Click_RabbitMQSource_TestConnectionButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton);            
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.ItemImage.Exists);
         }
 
