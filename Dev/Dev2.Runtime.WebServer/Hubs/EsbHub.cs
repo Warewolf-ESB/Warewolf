@@ -345,7 +345,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             user = Context.User.Identity.Name;
                             userPrinciple = Context.User;
                             Thread.CurrentPrincipal = userPrinciple;
-                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]");
                         }
                         StringBuilder processRequest = null;
                         Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
