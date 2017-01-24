@@ -39,6 +39,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBeProtected.Global
@@ -266,7 +267,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ "+user?.Identity?.Name+" : "+user?.Identity?.AuthenticationType+" : "+ user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if(canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -442,7 +443,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 else
                 {
-                    // convert output to JSON ;)
                     executePayload =
                         "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
                     executePayload += allErrors.MakeDataListReady(false);
@@ -451,23 +451,15 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
-
-            // JSON Data ;)
-            if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
+            if (dataObject.ReturnType == EmitionTypes.JSON)
             {
-                var start = executePayload.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
-                if(start >= 0)
-                {
-                    var end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
-                    start += GlobalConstants.OpenJSON.Length;
-
-                    executePayload = CleanupHtml(executePayload.Substring(start, end - start));
-                    if(!string.IsNullOrEmpty(executePayload))
-                    {
-                        return new StringResponseWriter(executePayload, ContentTypes.Json);
-                    }
-                }
-            }
+                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            }else if (dataObject.ReturnType == EmitionTypes.XML)
+            {
+                formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                var xml = JsonConvert.DeserializeXNode(executePayload,"DataList");
+                executePayload = xml.ToString();
+            }              
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
             return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -729,9 +721,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var errors = new ErrorResultTO();
 
-
-            Dev2Logger.Error(errors.MakeDisplayReady());
-
+            if (errors.HasErrors())
+            {
+                Dev2Logger.Error(errors.MakeDisplayReady());
+            }
             return string.Empty;
         }
 
