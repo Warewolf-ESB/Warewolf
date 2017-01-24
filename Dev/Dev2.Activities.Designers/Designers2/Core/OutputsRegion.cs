@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Activities.Designers2.Core.ConstructorRegion;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -16,7 +17,6 @@ using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Views;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
         {
             ToolRegionName = "OutputsRegion";
+            Dependants = new List<IToolRegion>();
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
@@ -55,6 +56,11 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
+           
+            IsObject = _modelItem.GetProperty<bool>("IsObject");
+            ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
+            ObjectName = _modelItem.GetProperty<string>("ObjectName");
+            IsObjectOutputUsed = isObjectOutputUsed;
             if (!IsObject)
             {
                 IsOutputsEmptyRows = Outputs.Count == 0;
@@ -63,12 +69,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
             }
-            IsObject = _modelItem.GetProperty<bool>("IsObject");
-            ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
-            ObjectName = _modelItem.GetProperty<string>("ObjectName");
-            IsObjectOutputUsed = isObjectOutputUsed;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            
+          
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -129,8 +131,8 @@ namespace Dev2.Activities.Designers2.Core
         private string _objectResult;
         private bool _isObjectOutputUsed;
         private IShellViewModel _shellViewModel;
-        private IJsonObjectsView _jsonObjectView;
         private RelayCommand _viewObjectResult;
+        private bool _isConstructorSelected;
 
         #region Implementation of IToolRegion
 
@@ -227,6 +229,23 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+        public bool IsConstructorSelected       
+        {
+            get
+            {
+                var constructorRegion = Dependants?.SingleOrDefault(region => region is DotNetConstructorRegion) as DotNetConstructorRegion;
+                if (constructorRegion != null)
+                {
+                    _isConstructorSelected = constructorRegion.SelectedConstructor != null;
+                }
+                return _isConstructorSelected;
+            }
+            set
+            {
+                _isConstructorSelected = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool OutputMappingEnabled
         {
@@ -296,11 +315,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
 
-        public IJsonObjectsView JsonObjectsView
-        {
-            private get { return _jsonObjectView ?? (_jsonObjectView = new JsonObjectsView()); }
-            set { _jsonObjectView = value; }
-        }
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
         public RelayCommand ViewObjectResult
         {
@@ -323,6 +338,7 @@ namespace Dev2.Activities.Designers2.Core
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
         }
 
+        
 
         public string ObjectName
         {

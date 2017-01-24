@@ -266,5 +266,6 @@
         <Setter Property="MinWidth" Value="200" />
         <Setter Property="MinHeight" Value="20" />
         <Setter Property="BorderThickness" Value="2" />
+        
     </Style>
 </ResourceDictionary>

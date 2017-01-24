@@ -9,24 +9,34 @@ namespace Warewolf.UITests
         const string SourceName = "CodedUITestSQLServerSource";
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void SQLServerSource_CreateSourceUITests()
+        public void Open_SQLServerSource_From_ExplorerContextMenu_UITests()
         {
-            UIMap.Click_New_SQLServerSource_From_Explorer_Context_Menu();
+            UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "SQL Server Address combobox is disabled new Sql Server Source wizard tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
-            UIMap.IClickUserButtonOnDatabaseSource();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Create_SQLServerSource_UITests()
+        {
+            UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "SQL Server Source does not exist.");
+            UIMap.Click_UserButton_On_DatabaseSource();
             UIMap.Enter_Text_Into_DatabaseServer_Tab();
             UIMap.IEnterRunAsUserTestUserOnDatabaseSource();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
-            UIMap.Save_With_Ribbon_Button_And_Dialog("TestSQLServerDBSource");
-            UIMap.Filter_Explorer("TestSQLServerDBSource");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Database did not save in the explorer UI.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Sourec did not save in the explorer UI.");
             UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 

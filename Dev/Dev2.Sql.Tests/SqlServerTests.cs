@@ -198,15 +198,14 @@ namespace Dev2.Sql.Tests
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
+            var mockReader = new Mock<IDataAdapter>();
             var somethingAdded = false;
             factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
             DataTable dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
-            factory.Setup(a => a.CreateTable(mockReader.Object, LoadOption.OverwriteChanges)).Returns(dt);
+            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(dt);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var sqlServer = new SqlServer(factory.Object);
@@ -242,7 +241,7 @@ namespace Dev2.Sql.Tests
             var mockCommand = new Mock<IDbCommand>();
             var mockReader = new Mock<IDataReader>();
             var queue = new Queue<DataTable>();
-
+            
             mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
@@ -262,7 +261,7 @@ namespace Dev2.Sql.Tests
 
             queue.Enqueue(new DataTable()); // no params
 
-            factory.Setup(a => a.CreateTable(mockReader.Object, LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
+            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var sqlServer = new SqlServer(factory.Object);
@@ -304,10 +303,8 @@ namespace Dev2.Sql.Tests
             //------------Setup for test--------------------------
             var factory = new Mock<IDbFactory>();
             var mockCommand = new Mock<IDbCommand>();
-            var mockReader = new Mock<IDataReader>();
             var queue = new Queue<DataTable>();
 
-            mockCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(mockReader.Object);
             mockCommand.Setup(a => a.CommandText).Returns("Dave.Bob");
 
             var helpTextCommand = new Mock<IDbCommand>();
@@ -326,7 +323,7 @@ namespace Dev2.Sql.Tests
 
             queue.Enqueue(new DataTable()); // no params
 
-            factory.Setup(a => a.CreateTable(mockReader.Object, LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
+            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var sqlServer = new SqlServer(factory.Object);
@@ -390,7 +387,7 @@ namespace Dev2.Sql.Tests
 
             queue.Enqueue(new DataTable()); // no params
 
-            factory.Setup(a => a.CreateTable(mockReader.Object, LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
+            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), LoadOption.OverwriteChanges)).Returns(queue.Dequeue);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var sqlServer = new SqlServer(factory.Object);
@@ -576,7 +573,7 @@ namespace Dev2.Sql.Tests
             dtParams.Rows.Add("@moo", SqlDbType.VarChar, 25);
             queue.Enqueue(dtParams); // no params
 
-            factory.Setup(a => a.CreateTable(It.IsAny<IDataReader>(), It.IsAny<LoadOption>())).Returns(queue.Dequeue);
+            factory.Setup(a => a.CreateTable(It.IsAny<IDataAdapter>(), It.IsAny<LoadOption>())).Returns(queue.Dequeue);
             var conn = new Mock<IDbConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             var sqlServer = new SqlServer(factory.Object);
@@ -739,7 +736,7 @@ namespace Dev2.Sql.Tests
 
 
                 sqlServer.FetchDataTable(mockCommand.Object);
-                factory.Verify(a=>a.CreateTable(It.IsAny<IDataReader>(),LoadOption.OverwriteChanges));
+                factory.Verify(a=>a.CreateTable(It.IsAny<IDataAdapter>(),LoadOption.OverwriteChanges));
                
 
 

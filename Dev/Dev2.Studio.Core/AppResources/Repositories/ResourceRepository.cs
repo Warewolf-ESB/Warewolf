@@ -339,6 +339,38 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
+        public async Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel == null)
+            {
+                var msg = new ExecuteMessage { HasError = true };
+                msg.SetMessage("Failure");
+                return msg;
+            }
+
+            var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
+            if (!string.IsNullOrEmpty(resourceModel.ResourceName) && resourceModel.ResourceName.Contains("Unsaved"))
+            {
+                comsController.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
+                comsController.AddPayloadArgument("ResourceType", resourceModel.ResourceType.ToString());
+                ExecuteMessage deleteResourceFromWorkspace = await comsController.ExecuteCommandAsync<ExecuteMessage>(_environmentModel.Connection, _environmentModel.Connection.WorkspaceID);
+                return deleteResourceFromWorkspace;
+            }
+
+            var res = _resourceModels.FirstOrDefault(c => c.ID == resourceModel.ID);
+
+            if (res == null)
+            {
+                var msg = new ExecuteMessage { HasError = true };
+                msg.SetMessage("Failure");
+                return msg;
+            }
+
+            comsController.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
+            comsController.AddPayloadArgument("ResourceType", resourceModel.ResourceType.ToString());
+            return await comsController.ExecuteCommandAsync<ExecuteMessage>(_environmentModel.Connection, _environmentModel.Connection.WorkspaceID);
+        }
+
         public ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource)
         {
             if (resource == null)

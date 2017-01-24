@@ -87,7 +87,14 @@
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.ManageDbServiceActionsTooltip}"
                               IsEditable="False"
+                              VirtualizingStackPanel.IsVirtualizing="True" 
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseServiceSelectActionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -188,7 +195,14 @@
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
                               IsEditable="False"
+                              VirtualizingStackPanel.IsVirtualizing="True" 
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -209,46 +223,6 @@
                                                         Width="22"
                                                         Height="22"
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
-        </Grid>
-    </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetMethodGrid">
-        <Grid x:Name="MethodsGrid" 
-                      Margin="-3,0,0,0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
-            <ComboBox x:Name="ActionsComboBox"
-                              Grid.Column="1"
-                              Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding MethodsToRun}"
-                              DisplayMemberPath="Method" 
-                              IsEnabled="{Binding IsActionEnabled}"
-                              ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
-                              IsEditable="False"
-                              SelectedItem="{Binding SelectedMethod}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-            <Button x:Name="ActionRefreshButton" 
-                            Grid.Column="2"
-                            Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-                <Button.Content>
-                    <fa:FontAwesome Icon="Refresh"/>
-                </Button.Content>
-            </Button>
-            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
-                                                        Grid.Column="2"
-                                                        Width="22"
-                                                        Height="22"
-                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetConstructorGrid" d:DataContext="{d:DesignInstance constructorRegion:DotNetConstructorRegion}">
@@ -559,209 +533,6 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="DotNetMethodsInputGrid">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs - None" 
-                       Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <controls:Dev2DataGrid x:Name="LargeDataGrid"
-                                   ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
-                                   Height="Auto"
-                                   BorderBrush="Transparent"
-                                   Margin="3,0,3,0"
-                                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-
-                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="*"
-                                            MinWidth="125"
-                                            Header="Input Data or [[Variable]]"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ui:IntellisenseTextBox DefaultText="[[Variable]]"
-                                                        AllowMultilinePaste="True"
-                                                        AcceptsReturn="True"
-                                                        AllowUserInsertLine="True"
-                                                        MaxHeight="80"
-                                                        Margin="0,0,1,1"
-                                                        TextWrapping="Wrap"
-                                                        WrapInBrackets="False"
-                                                        ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
-                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:HelpText.InputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
-                                                            SourcePropertyName="Value"
-                                                            SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
-                                                            Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Width="SizeToCells"
-                                            MinWidth="65"
-                                            Header="Parameter"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                    <TextBlock Text="{Binding Path=Name}"
-                                                TextTrimming="CharacterEllipsis"
-                                                VerticalAlignment="Center"
-                                                Padding="3,0"
-                                                ToolTip="{Binding OutputColumn.ColumnName}">                               
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                                    </TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Width="SizeToCells"
-                                            MinWidth="90"
-                                            Header="Empty Is Null"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
-                                        <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                                        </i:Interaction.Behaviors>
-                                    </CheckBox>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </controls:Dev2DataGrid>
-
-        </Grid>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="DotNetMethodsOutputGrid">
-        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid>
-                <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" 
-                               Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <Grid Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
-                    <CheckBox x:Name="IsObjectCheckBox" 
-                                  Grid.Column="1"
-                                  IsChecked="{Binding IsObject}" 
-                                  IsEnabled="{Binding IsEnabled}"
-                                  ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
-                                  Content="Output to Object"
-                                  HorizontalAlignment="Left">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                        </i:Interaction.Behaviors>
-                    </CheckBox>
-                </Grid>
-            </Grid>
-            <!-- RECORDSET NAME -->
-            <Grid Grid.Row="1" Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Recordset Name" />
-                    <TextBox Grid.Column="1" 
-                             x:Name="RecordSetTextBox" 
-                             Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                </Grid>
-            </Grid>
-
-            <!-- OBJECT NAME -->
-            <Grid Grid.Row="1" Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Object Name" />
-                    <ui:IntellisenseTextBox Grid.Column="1" 
-                                        WrapInBrackets="True"
-                                        Padding="3"
-                                        FilterType="JsonObject"
-                                        Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                        AutomationProperties.AutomationId="UI_TextBox_AutoID"
-                                        ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                            <errors:ErrorsSetter Source="{Binding}"
-                                             SourcePropertyName="ObjectName"
-                                             SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
-                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                        </i:Interaction.Behaviors>
-                    </ui:IntellisenseTextBox>
-                </Grid>
-            </Grid>
-        </Grid>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="DotNetInputOutputGrid" d:DataContext="{d:DesignInstance actionRegion:DotNetMethodRegion}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Control Grid.Row="0" DataContext="{Binding InputRegion}" Template="{StaticResource DotNetMethodsInputGrid}"/>
-            <Control Grid.Row="1" DataContext="{Binding OutputRegion}" Template="{StaticResource DotNetMethodsOutputGrid}"/>
-        </Grid>
-    </ControlTemplate>
-
     <ControlTemplate x:Key="NewDotNetMethodListGrid" d:DataContext="{d:DesignInstance netDllEnhanced:DotNetDllEnhancedViewModel}">
         <Grid x:Name="MethodListGrid">
             <Grid.ColumnDefinitions>
@@ -778,7 +549,7 @@
                          ItemsSource="{Binding MethodsToRunList}"
                          ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="actionRegion:DotNetMethodRegion" >
                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                 <Expander x:Name="MethodExpander" 
                                           Header="{Binding .}" 
@@ -790,10 +561,242 @@
                                           AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=SelectedMethod}">
                                     <Expander.HeaderTemplate>
                                         <DataTemplate>
-                                            <Control Template="{StaticResource NewDotNetMethodGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                                            <Grid x:Name="MethodsGrid" Margin="-3,0,3,0" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+                                                <ComboBox x:Name="ActionsComboBox"
+                                                          Grid.Column="1"
+                                                          Margin="{StaticResource ControlBorderRight}"
+                                                          ItemsSource="{Binding MethodsToRun}"
+                                                          SelectedValuePath="Method"
+                                                          IsEnabled="{Binding IsActionEnabled}"
+                                                          ToolTip="{x:Static languages:Tooltips.PluginServiceSelectActionToolTip}"
+                                                          IsEditable="False"
+                                                          SelectedItem="{Binding SelectedMethod, Mode=TwoWay}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                                                    </i:Interaction.Behaviors>
+                                                </ComboBox>
+                                                <Button x:Name="ActionRefreshButton" 
+                                                        Grid.Column="2"
+                                                        Command="{Binding Path=RefreshMethodsCommand, Mode=TwoWay}"
+                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core:HelpSetter Text="{x:Static languages:HelpText.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                                                    </i:Interaction.Behaviors>
+                                                    <Button.Content>
+                                                        <fa:FontAwesome Icon="Refresh"/>
+                                                    </Button.Content>
+                                                </Button>
+                                                <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                                                    Grid.Column="2"
+                                                                                    Width="22"
+                                                                                    Height="22"
+                                                                                    Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+                                            </Grid>
                                         </DataTemplate>
                                     </Expander.HeaderTemplate>
-                                    <Control Template="{StaticResource DotNetInputOutputGrid}" Margin="{StaticResource ControlBorderRight}"/>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="InputsLabel" 
+                                                       Text="Inputs - None" 
+                                                       Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <controls:Dev2DataGrid x:Name="LargeDataGrid"
+                                                                   ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                                                   Height="Auto"
+                                                                   BorderBrush="Transparent"
+                                                                   Margin="3,0,3,0"
+                                                                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+
+                                                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                                <DataGrid.Columns>
+                                                    <DataGridTemplateColumn Width="*"
+                                                                            MinWidth="125"
+                                                                            Header="Input Data or [[Variable]]"
+                                                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                            d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <ui:IntellisenseTextBox DefaultText="[[Variable]]"
+                                                                                        AllowMultilinePaste="True"
+                                                                                        AcceptsReturn="True"
+                                                                                        AllowUserInsertLine="True"
+                                                                                        MaxHeight="80"
+                                                                                        Margin="0,0,1,1"
+                                                                                        TextWrapping="Wrap"
+                                                                                        WrapInBrackets="False"
+                                                                                        ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
+                                                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                        Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                                    <i:Interaction.Behaviors>
+                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.InputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                                                            SourcePropertyName="Value"
+                                                                                            SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                                            Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                                    </i:Interaction.Behaviors>
+                                                                    <AutomationProperties.AutomationId>
+                                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                                            <Binding Path="IndexNumber" />
+                                                                        </MultiBinding>
+                                                                    </AutomationProperties.AutomationId>
+                                                                </ui:IntellisenseTextBox>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTemplateColumn Width="SizeToCells"
+                                                                            MinWidth="65"
+                                                                            Header="Parameter"
+                                                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                                                    <TextBlock Text="{Binding Path=Name}"
+                                                                                TextTrimming="CharacterEllipsis"
+                                                                                VerticalAlignment="Center"
+                                                                                Padding="3,0"
+                                                                                ToolTip="{Binding OutputColumn.ColumnName}">
+                                                                        <AutomationProperties.AutomationId>
+                                                                            <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                                                <Binding Path="IndexNumber" />
+                                                                            </MultiBinding>
+                                                                        </AutomationProperties.AutomationId>
+                                                                    </TextBlock>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTemplateColumn Width="SizeToCells"
+                                                                            MinWidth="90"
+                                                                            Header="Empty Is Null"
+                                                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
+                                                                        <i:Interaction.Behaviors>
+                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                                        </i:Interaction.Behaviors>
+                                                                    </CheckBox>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </controls:Dev2DataGrid>
+
+                                        </Grid>
+
+                                        <Grid x:Name="OutputsTemplate" Grid.Row="1" VerticalAlignment="Stretch" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid>
+                                                <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" 
+                                                           Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Grid Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                                                    <CheckBox x:Name="IsObjectCheckBox" 
+                                                              Grid.Column="1"
+                                                              IsChecked="{Binding IsObject}" 
+                                                              IsEnabled="{Binding IsObjectEnabled}"
+                                                              ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                                                              Content="Output to Object"
+                                                              HorizontalAlignment="Left">
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </CheckBox>
+                                                    <Button x:Name="ViewOutputsBtn" 
+                                                            Width="Auto" 
+                                                            Grid.Column="2" 
+                                                            Content="View Outputs" 
+                                                            HorizontalAlignment="Right" 
+                                                            Command="{Binding ViewObjectResult}"
+                                                            Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                </Grid>
+                                            </Grid>
+                                            <!-- RECORDSET NAME -->
+                                            <Grid Grid.Row="1" Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Variable Name" />
+                                                    <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </TextBox>
+                                                </Grid>
+                                            </Grid>
+
+                                            <!-- OBJECT NAME -->
+                                            <Grid Grid.Row="1" Visibility="{Binding IsVoid, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                <Grid Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Variable Name" />
+                                                    <ui:IntellisenseTextBox Grid.Column="1" 
+                                                                            WrapInBrackets="True"
+                                                                            Padding="3"
+                                                                            FilterType="JsonObject"
+                                                                            Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                                            AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                                                            ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                                 SourcePropertyName="ObjectName"
+                                                                                 SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
+                                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </ui:IntellisenseTextBox>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </Expander>
                             </WrapPanel>
                         </DataTemplate>
@@ -1096,8 +1099,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" HorizontalAlignment="Left" 
-                           Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <Grid Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                           Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                <Grid Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -1108,7 +1111,7 @@
                 </Grid>
             </Grid>
             <!-- OBJECT NAME -->
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsConstructorSelected, Converter={StaticResource bool2VisibilityConverter} }">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>

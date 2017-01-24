@@ -17,14 +17,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsObjectOutputUsed { get; set; }
         IOutputDescription Description { get; set; }
         bool OutputCountExpandAllowed { get; set; }
-    }
-
-    public interface IMethodOutputRegion : IToolRegion
-    {
-        bool IsVoid { get; set; }
-        string RecordsetName { get; set; }
-        bool IsObject { get; }
-        string ObjectName { get; set; }
-        string ObjectResult { get; set; }
+        bool IsConstructorSelected { get; set; }
     }
 }

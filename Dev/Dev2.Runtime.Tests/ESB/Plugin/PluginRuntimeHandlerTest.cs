@@ -370,6 +370,23 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndVoid_ExpectResultsWithVoidMethod()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+                Assert.IsTrue(result.Any(method => method.IsVoid));
+            }
+        }
+
         #endregion
 
         [TestMethod]
@@ -414,6 +431,53 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 });
 
                 var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
+                Assert.IsNotNull(deserializeToObject);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_CreateInstance_WhenHumanWithInputs_ExpectHumanStringObjectWithInputs()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var instance = isolated.Value.CreateInstance(new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IConstructorParameter>()
+                        {
+                            new ConstructorParameter()
+                            {
+                                  Name = "name"
+                                , Value = "Jimmy"
+                                , TypeName = typeof(string).AssemblyQualifiedName
+                                , IsRequired = true
+                            }
+                        },
+
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                });
+
+                var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
+                var firstOrDefault = deserializeToObject as Human;
+                if (firstOrDefault != null)
+                {
+
+                    Assert.AreEqual("Jimmy", firstOrDefault.Name);
+                }
                 Assert.IsNotNull(deserializeToObject);
             }
         }
@@ -631,6 +695,11 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             {
                 return _a;
             }
+        }
+
+        public void VoidMethod()
+        {
+
         }
     }
 }

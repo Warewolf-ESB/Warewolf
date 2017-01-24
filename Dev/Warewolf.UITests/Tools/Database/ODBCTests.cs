@@ -33,7 +33,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void Click_ODBCTool_LargeView_NewSourceButton_UITest()
         {
-            UIMap.Click_ODBCTool_LargeView_NewSourceButton();
+            UIMap.Click_NewSourceButton_From_ODBCTool();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
         }

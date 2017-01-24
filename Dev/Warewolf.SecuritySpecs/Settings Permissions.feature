@@ -36,8 +36,8 @@ Scenario Outline: Setting Selected Resource Permissions for Users
         When connected as user part of "<User Group>"
         Then "<Resource>" should have "<Permissions>"
 		And resources should not have "<Rights>" 
-Examples: 
-        | No | Resource Rights           | User Group | Resources | Rights | Resource                                      | Permissions               |
+Examples:
+        | No | Resource Rights           | User Group | Resources | Rights | Resource                         | Permissions               |
         | 1  | View                      | Users      | All       | None   | Examples\Control Flow - Decision | View                      |
         | 2  | Execute                   | Users      | All       | None   | Examples\Control Flow - Decision | Execute                   |
         | 3  | Contribute, View, Execute | Users      | All       | None   | Examples\Control Flow - Decision | Contribute, View, Execute |

@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces.Services.Sql
 
         DataTable GetSchema(IDbConnection connection, string collectionName);
 
-        DataTable CreateTable(IDataReader reader, LoadOption overwriteChanges);
+        DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges);
 
         DataSet FetchDataSet(IDbCommand command);
     }

@@ -143,6 +143,8 @@ namespace Dev2.Activities
                 } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
                 foreach (var dev2MethodInfo in MethodsToRun)
                 {
+                    if (dev2MethodInfo.IsVoid)
+                        continue;
                     if (dev2MethodInfo.IsObject)
                     {
 
@@ -211,8 +213,12 @@ namespace Dev2.Activities
 
         private string GetEvaluatedResult(IDSFDataObject dataObject, string value)
         {
-            var warewolfEvalResult = dataObject.Environment.Eval(value, 0);
-            return ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            if (!string.IsNullOrEmpty(value))
+            {
+                var warewolfEvalResult = dataObject.Environment.Eval(value, 0);
+                return ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            }
+            return string.Empty;
         }
 
         #region Overrides of DsfActivity

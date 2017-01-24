@@ -442,7 +442,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()));
+            mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()));
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);
 
             var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
@@ -451,7 +451,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             repository.Remove(model.Object);
             Assert.AreEqual(0, repository.WorkspaceItems.Count);
-            mockResourceRepo.Verify(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()), Times.Once());
+            mockResourceRepo.Verify(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()), Times.Once());
         }
 
         [TestMethod]
@@ -468,7 +468,7 @@ namespace Dev2.Core.Tests.Workspaces
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()));
+            mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()));
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);
 
             var repositoryPath = GetUniqueRepositoryPath();
@@ -482,7 +482,7 @@ namespace Dev2.Core.Tests.Workspaces
             }
             repository.Remove(model.Object);
             Assert.IsTrue(File.Exists(repositoryPath));
-            mockResourceRepo.Verify(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()), Times.Once());
+            mockResourceRepo.Verify(resourceRepository => resourceRepository.DeleteResourceFromWorkspaceAsync(It.IsAny<IContextualResourceModel>()), Times.Once());
         }
 
 

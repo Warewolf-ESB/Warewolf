@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Threading;
+
 namespace Dev2.Activities.Designers2.MySqlDatabase
 {
     public partial class MySqlDatabaseDesigner
@@ -19,7 +21,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         protected override MySqlDatabaseDesignerViewModel CreateViewModel()
         {
-            return new MySqlDatabaseDesignerViewModel(ModelItem);
+            return new MySqlDatabaseDesignerViewModel(ModelItem,new AsyncWorker());
         }
 
     }
