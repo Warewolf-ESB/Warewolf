@@ -85,16 +85,16 @@ namespace Dev2.FindMissingStrategies
                     results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
                 }
             }
-            else if(activityType == typeof(DsfSqlServerDatabaseActivity))
+            else if (activityType == typeof(DsfSqlServerDatabaseActivity))
             {
                 var maAct = activity as DsfSqlServerDatabaseActivity;
                 if (maAct != null)
                 {
-                    if(maAct.Inputs != null)
+                    if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
-                    if(maAct.Outputs != null)
+                    if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
                     }
@@ -108,16 +108,17 @@ namespace Dev2.FindMissingStrategies
                         results.Add(maAct.OnErrorWorkflow);
                     }
                 }
-            }else if(activityType == typeof(DsfMySqlDatabaseActivity))
+            }
+            else if (activityType == typeof(DsfMySqlDatabaseActivity))
             {
                 var maAct = activity as DsfMySqlDatabaseActivity;
                 if (maAct != null)
                 {
-                    if(maAct.Inputs != null)
+                    if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
-                    if(maAct.Outputs != null)
+                    if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
                     }
@@ -217,7 +218,7 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
-                    
+
                     if (maAct.QueryString != null)
                     {
                         results.Add(maAct.QueryString);
@@ -228,7 +229,7 @@ namespace Dev2.FindMissingStrategies
                     }
                     if (maAct.Headers != null)
                     {
-                        foreach(var nameValue in maAct.Headers)
+                        foreach (var nameValue in maAct.Headers)
                         {
                             results.Add(nameValue.Name);
                             results.Add(nameValue.Value);
@@ -258,7 +259,7 @@ namespace Dev2.FindMissingStrategies
                         }
                     }
                 }
-            } 
+            }
             else if (activityType == typeof(DsfWebDeleteActivity))
             {
                 var maAct = activity as DsfWebDeleteActivity;
@@ -274,7 +275,7 @@ namespace Dev2.FindMissingStrategies
                     }
                     if (maAct.Headers != null)
                     {
-                        foreach(var nameValue in maAct.Headers)
+                        foreach (var nameValue in maAct.Headers)
                         {
                             results.Add(nameValue.Name);
                             results.Add(nameValue.Value);
@@ -289,7 +290,7 @@ namespace Dev2.FindMissingStrategies
                         if (!string.IsNullOrEmpty(maAct.ObjectName))
                         {
                             results.Add(maAct.ObjectName);
-                        }                       
+                        }
                     }
                     else
                     {
@@ -324,7 +325,7 @@ namespace Dev2.FindMissingStrategies
                     }
                     if (maAct.Headers != null)
                     {
-                        foreach(var nameValue in maAct.Headers)
+                        foreach (var nameValue in maAct.Headers)
                         {
                             results.Add(nameValue.Name);
                             results.Add(nameValue.Value);
@@ -339,7 +340,7 @@ namespace Dev2.FindMissingStrategies
                         if (!string.IsNullOrEmpty(maAct.ObjectName))
                         {
                             results.Add(maAct.ObjectName);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -413,7 +414,7 @@ namespace Dev2.FindMissingStrategies
                     if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }                
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);
@@ -444,13 +445,22 @@ namespace Dev2.FindMissingStrategies
                 var maAct = activity as DsfEnhancedDotNetDllActivity;
                 if (maAct != null)
                 {
-                    if (maAct.Inputs != null)
+                    if (maAct.ConstructorInputs != null)
                     {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                        results.AddRange(InternalFindMissing(maAct.ConstructorInputs));
                     }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);
+                    }
+
+                    if (maAct.MethodsToRun != null)
+                    {
+                        foreach (var pluginAction in maAct.MethodsToRun)
+                        {
+                            if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
+                                results.Add(pluginAction.OutputVariable);
+                        }
                     }
                     if (maAct.IsObject)
                     {
@@ -562,6 +572,6 @@ namespace Dev2.FindMissingStrategies
                 }
             }
             return results;
-        }        
+        }
     }
 }
