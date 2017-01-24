@@ -578,6 +578,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var dt = DateTime.Now;
                     DispatchDebugState(dataObject, StateType.After, update, dt);
+                    ChildDebugStateDispatch(dataObject);
                     _debugOutputs = new List<DebugItem>();
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update, dt);
@@ -593,6 +594,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ResourceID = oldResourceId;
             }
 
+        }
+
+        protected virtual void ChildDebugStateDispatch(IDSFDataObject dataObject)
+        {
         }
 
         public override List<string> GetOutputs()
