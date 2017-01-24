@@ -9273,7 +9273,7 @@ namespace Warewolf.UITests
 
         public void CreateFolderForAttachments(string folderName)
         {
-            var directoryStream = Directory.CreateDirectory(folderName);
+            Directory.CreateDirectory(folderName);
         }
 
         public void RemoveTestFiles(string filePath1, string filePath2, string folderName)
