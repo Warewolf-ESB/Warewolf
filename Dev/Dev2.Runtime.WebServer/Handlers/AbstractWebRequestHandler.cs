@@ -451,15 +451,27 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
-            if (dataObject.ReturnType == EmitionTypes.JSON)
+            if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-            }else if (dataObject.ReturnType == EmitionTypes.XML)
-            {
-                formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                var xml = JsonConvert.DeserializeXNode(executePayload,"DataList");
-                executePayload = xml.ToString();
-            }              
+                if (dataObject.ReturnType == EmitionTypes.JSON)
+                {
+                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                }
+                else if (dataObject.ReturnType == EmitionTypes.XML)
+                {
+                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                    try
+                    {
+                        var xml = JsonConvert.DeserializeXNode(executePayload, "DataList");
+                        executePayload = xml?.ToString() ?? "";
+                    }
+                    catch(Exception)
+                    {
+                        //if error leave the payload alone
+                    }
+                    
+                }
+            }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
             return new StringResponseWriter(executePayload, formatter.ContentType);
