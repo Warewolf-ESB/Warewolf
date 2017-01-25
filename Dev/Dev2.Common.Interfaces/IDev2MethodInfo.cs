@@ -9,5 +9,6 @@ namespace Dev2.Common.Interfaces
         string MethodResult { get; set; }
         string OutputVariable { get; set; }
         bool IsObject { get; set; }
+        bool IsVoid { get; set; }
     }
 }
