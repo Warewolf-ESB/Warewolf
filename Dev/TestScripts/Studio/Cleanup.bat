@@ -21,7 +21,7 @@ REM ****************************************************************************
 
 set /a LoopCounter=0
 :RetryClean
-IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
+IF NOT EXIST "%PROGRAMDATA%\Warewolf\Resources" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Tests" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF NOT EXIST "%PROGRAMDATA%\Warewolf\Server Settings" GOTO StopRetrying
 
 IF NOT "%1"=="" (
 	REM ** Soft Kill **
@@ -66,7 +66,7 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROG
 @echo on
 
 REM ** Clear Studio debug input data
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat") else (rd /S /Q "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c del "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat") else (del "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat")
 @echo off
 IF EXIST "%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat" echo ERROR CANNOT DELETE %LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat
 @echo on

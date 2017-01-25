@@ -1,0 +1,1 @@
+IF EXIST "%~dp0Cleanup.bat" CALL "%~dp0Cleanup.bat" dotcover ELSE ECHO Cannot find Cleanup.bat
