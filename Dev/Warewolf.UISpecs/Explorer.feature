@@ -6,7 +6,6 @@ Feature: Explorer
 
 Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	Given The Warewolf Studio is running
-	And I Try DisConnect To Remote Server
 	When I Create New Workflow using shortcut
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
@@ -20,7 +19,6 @@ Scenario: Drag on Remote Subworkflow from Explorer and Execute it
 	
 Scenario: Opening and Editing Workflow from Explorer Remote
 	Given The Warewolf Studio is running
-	And I Try DisConnect To Remote Server
 	When I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
 	And I Filter the Explorer with "Hello World"
@@ -60,7 +58,6 @@ Scenario: Opening Workflow local and remote using right click
 
  Scenario: Filter Should Clear On Connection Of Remote Server
    Given The Warewolf Studio is running
-   And I Try DisConnect To Remote Server
    When I Filter the Explorer with "Hello World" 
    When I Select RemoteConnectionIntegration From Explorer
    And I Click Explorer Connect Remote Server Button
@@ -69,7 +66,6 @@ Scenario: Opening Workflow local and remote using right click
 
  Scenario: Deleting a Resource Remote
    Given The Warewolf Studio is running
-   And I Try DisConnect To Remote Server
    When I Select RemoteConnectionIntegration From Explorer
    And I Click Explorer Connect Remote Server Button
    And I Wait For Explorer First Remote Server Spinner
@@ -92,7 +88,6 @@ Scenario: Clear filter
 
    Scenario: Refresh Remote Server Refreshes Only The Remote Server
 	Given The Warewolf Studio is running	
-	And I Try DisConnect To Remote Server
 	When I Connect To Remote Server
 	And I Double Click Localhost Server
 	And I Select Connected RemoteConnectionIntegration From Explorer

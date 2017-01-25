@@ -33,7 +33,13 @@ if %errorLevel% == 0 (
 @echo on
 
 REM ** Cleanup **
-call "%~dp0Cleanup.bat"
+IF EXIST "%~dp0Cleanup.bat" (
+	call "%~dp0Cleanup.bat"
+) else (
+	IF EXIST "%~dp0qtcleanup.bat" (
+		call "%~dp0qtcleanup.bat"
+	)
+)
 
 REM ** Init path to DotCover Exe **
 IF NOT "%1"=="" (
