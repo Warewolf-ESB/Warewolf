@@ -78,7 +78,7 @@ if (Test-Path "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if ($TestAssemblyPath -eq ""){
-	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UITests\bin\Debug or $PSScriptRoot
+	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UITests\bin\Debug
 	exit 1
 }
 if (!(Test-Path $PSScriptRoot\TestResults)) {
