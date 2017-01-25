@@ -3,11 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
-using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data;
@@ -168,7 +166,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     try
                     {
-                        Dev2Logger.Debug("Current User: " + Thread.CurrentPrincipal?.Identity?.Name);
                         signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
                         tx.Complete();
                     }
