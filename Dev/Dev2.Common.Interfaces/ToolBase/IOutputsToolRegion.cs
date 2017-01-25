@@ -6,7 +6,6 @@ namespace Dev2.Common.Interfaces.ToolBase
 {
     public interface IOutputsToolRegion : IToolRegion
     {
-
         ICollection<IServiceOutputMapping> Outputs { get; set; }
         bool OutputMappingEnabled { get; set; }
         bool IsOutputsEmptyRows { get; set; }
@@ -17,6 +16,5 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsObjectOutputUsed { get; set; }
         IOutputDescription Description { get; set; }
         bool OutputCountExpandAllowed { get; set; }
-        bool IsConstructorSelected { get; set; }
     }
 }

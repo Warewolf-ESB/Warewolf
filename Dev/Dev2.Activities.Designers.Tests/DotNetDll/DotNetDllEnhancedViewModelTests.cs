@@ -74,7 +74,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.OutputsRegion);
             Assert.IsNotNull(vm.ErrorRegion);
             Assert.IsNotNull(vm.Regions);
-            Assert.AreEqual(7, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
             Assert.IsNotNull(vm.Properties);
             Assert.AreEqual(1, vm.Properties.Count);
@@ -688,82 +687,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void LoadDotNetTool_GivenConstructorIsChanged_ShouldSetIsConstructorSelectedOnTheOutPutsRegion()
-        {
-            //---------------Set up test pack-------------------
-            var mock = new Mock<IPluginServiceModel>();
-            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
-            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
-            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
-            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
-            var activity = new DsfEnhancedDotNetDllActivity
-            {
-                Constructor = new PluginConstructor
-                {
-                    ConstructorName = ".ctor ",
-                    Inputs = new List<IConstructorParameter>
-                    {
-                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                    },
-                },
-                Namespace = new NamespaceItem
-                {
-                    FullName = typeof(Human).FullName,
-                    AssemblyLocation = typeof(Human).Assembly.Location,
-                }
-            };
-
-            var food = new Food
-            {
-                FoodName = "Cake"
-            };
-            activity.ConstructorInputs = new List<IServiceInput>
-            {
-                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
-                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
-                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
-                {
-                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
-                            }))
-                {
-                        TypeName = typeof(string).AssemblyQualifiedName
-                },
-            };
-            activity.MethodsToRun = new List<IPluginAction>
-            {
-                new PluginAction
-                {
-                    Inputs = new List<IServiceInput>(),
-                    IsObject = false,
-                    IsVoid = true,
-                    Method = "SetNameInternal",
-                }
-            };
-            var modelItem = ModelItemUtils.CreateModelItem(activity);
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
-            //---------------Execute Test ----------------------
-            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(dotNetDllEnhancedViewModel.ConstructorRegion);
-
-            var pluginConstructor = dotNetDllEnhancedViewModel.ConstructorRegion.SelectedConstructor;
-            Assert.IsNotNull(pluginConstructor);
-            var constructorName = pluginConstructor.ConstructorName;
-            Assert.AreEqual(activity.Constructor.ConstructorName, constructorName);
-            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginConstructor.Inputs.Count);
-            Assert.IsTrue(dotNetDllEnhancedViewModel.OutputsRegion.IsConstructorSelected);
-            dotNetDllEnhancedViewModel.ConstructorRegion.SelectedConstructor = null;
-            Assert.IsFalse(dotNetDllEnhancedViewModel.OutputsRegion.IsConstructorSelected);
-
-        }
-
-       
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void LoadDotNetTool_GivenModelItemWIthValues_ShouldPopulateViewModelOutPutRegionProperties()
         {
             //---------------Set up test pack-------------------
@@ -839,8 +762,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(1, outputsRegion.Dependants.Count);
             Assert.AreEqual("OutputsRegion", outputsRegion.ToolRegionName);
             Assert.AreEqual(true, outputsRegion.IsObjectOutputUsed);
-            Assert.AreEqual(true, outputsRegion.IsConstructorSelected);
-
         }
 
         [TestMethod]
@@ -926,14 +847,14 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(false, methodToolRegion1.SelectedMethod.IsObject);
             Assert.AreEqual(0, methodToolRegion1.SelectedMethod.Inputs.Count);
 
-            IMethodToolRegion<IPluginAction> methodToolRegion2 = methodToolRegions[0];
+            IMethodToolRegion<IPluginAction> methodToolRegion2 = methodToolRegions[1];
             Assert.IsNotNull(methodToolRegion2.SelectedMethod);
             Assert.AreEqual("ToString", methodToolRegion2.SelectedMethod.Method);
-            Assert.AreEqual(true, methodToolRegion2.SelectedMethod.IsVoid);
-            Assert.AreEqual(false, methodToolRegion2.SelectedMethod.IsObject);
+            Assert.AreEqual(false, methodToolRegion2.SelectedMethod.IsVoid);
+            Assert.AreEqual(true, methodToolRegion2.SelectedMethod.IsObject);
             Assert.AreEqual(2, methodToolRegion2.SelectedMethod.Inputs.Count);
 
-            IMethodToolRegion<IPluginAction> emptyMethod = methodToolRegions[1];
+            IMethodToolRegion<IPluginAction> emptyMethod = methodToolRegions[2];
             Assert.IsNull(emptyMethod.SelectedMethod);
 
         }

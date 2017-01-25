@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces;
 namespace Dev2.Common
 {
     [Serializable]
-    public class PluginConstructor : IPluginConstructor
+    public class PluginConstructor : IPluginConstructor, IEquatable<PluginConstructor>
     {
         public PluginConstructor()
         {
@@ -29,5 +29,60 @@ namespace Dev2.Common
         public bool IsExistingObject { get; set; }
 
         #endregion
+
+        public bool Equals(PluginConstructor other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            if (GetHashCode() == other.GetHashCode())
+                return true;
+
+            return string.Equals(ConstructorName, other.ConstructorName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((PluginConstructor)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Inputs?.GetHashCode() ?? 0) * 397) ^ (ConstructorName?.GetHashCode() ?? 0);
+            }
+        }
+        public static bool operator ==(PluginConstructor left, PluginConstructor right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(PluginConstructor left, PluginConstructor right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override string ToString()
+        {
+            return ConstructorName;
+        }
     }
 }

@@ -602,40 +602,6 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsActionEnabled_GivenIsSet_ShouldPropertyChangesChanges()
-        {
-            //------------Setup for test--------------------------
-            var serviceModel = new Mock<IPluginServiceModel>();
-            serviceModel.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>()))
-                        .Returns(new List<IPluginAction>()
-                        {
-                            new PluginAction()
-                        });
-            var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity();
-            var modelItem = ModelItemUtils.CreateModelItem(dsfEnhancedDotNetDllActivity);
-            var pluginSourceRegion = new Mock<ISourceToolRegion<IPluginSource>>();
-            pluginSourceRegion.Setup(region => region.SelectedSource).Returns(new Mock<IPluginSource>().Object);
-            var nameSpaceRegion = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            var shellVm = new Mock<IShellViewModel>();
-            CustomContainer.Register(shellVm.Object);
-
-            //------------Execute Test---------------------------
-            var dotNetMethodRegion = new DotNetMethodRegion(serviceModel.Object, modelItem, pluginSourceRegion.Object, nameSpaceRegion.Object);
-            var wasCalled = false;
-
-            dotNetMethodRegion.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "IsActionEnabled")
-                    wasCalled = true;
-            };
-            //---------------Test Result -----------------------
-            dotNetMethodRegion.IsActionEnabled = true;
-            Assert.IsTrue(wasCalled);
-            Assert.AreEqual(true, dotNetMethodRegion.IsActionEnabled);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void IsMethodExpanded_GivenIsSet_ShouldPropertyChangesChanges()
         {
             //------------Setup for test--------------------------
