@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -8,6 +9,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -489,77 +491,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenGivenhasConstructorWithInputs_ShouldShowInputs()
-        {
-            //---------------Set up test pack-------------------
-            var type = typeof(Human);
-            var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
-            var knownBinder = new KnownTypesBinder();
-            knownBinder.KnownTypes.Add(type);
-            var activity = new DsfEnhancedDotNetDllActivityMock();
-            var mock = new Mock<IDSFDataObject>();
-            var esbChannel = new Mock<IEsbChannel>();
-            var executionEnv = new Mock<IExecutionEnvironment>();
-            var humanString = DataListUtil.ConvertModelToJson(human).ToString();
-            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
-                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
-            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
-               .Returns(newWarewolfAtomResult);
-            var johnResult = CommonFunctions.WarewolfEvalResult
-                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
-            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns(johnResult);
-            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
-            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
-            activity.ConstructorInputs = new List<IServiceInput>()
-            {
-                new ServiceInput("name","John")
-                {
-                    TypeName = typeof(string).FullName,
-                    RequiredField = true
-                }
-            };
-            activity.Namespace = new NamespaceItem
-            {
-                FullName = type.FullName,
-                AssemblyLocation = type.Assembly.Location,
-                AssemblyName = type.Assembly.FullName,
-                MethodName = "ToString"
-            };
-            activity.Constructor = new PluginConstructor
-            {
-                IsExistingObject = true,
-                ConstructorName = "@Human"
-            };
-            activity.MethodsToRun = new List<IPluginAction>
-            {
-                new PluginAction()
-                {
-                    Method = "ToString",
-                    Inputs = new List<IServiceInput>(),
-                }
-            };
-
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var debugInputs = activity.GetDebugInputs(executionEnv.Object, 0);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(3, debugInputs.Count);
-            var constructorLabel = debugInputs[0].ResultsList[0].Label;
-            var constructorValue = debugInputs[0].ResultsList[1].Value;
-            Assert.AreEqual("Constructor", constructorLabel);
-            Assert.AreEqual("@Human", constructorValue);
-
-            var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
-            var constructorInput1Value = debugInputs[2].ResultsList[0].Value;
-            var constructorInput1name = debugInputs[2].ResultsList[0].Label;
-            Assert.AreEqual("Constructor Inputs", constructorInputsLabel);
-            Assert.AreEqual("name", constructorInput1name);
-            Assert.AreEqual("John", constructorInput1Value);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenActivity_ShouldReturnDatgrid()
         {
             //---------------Set up test pack-------------------
@@ -573,7 +504,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenActions_ShouldActionsDebug()
+        public void BuildConstructorInputs_GivenConstructor_ShouldConstructorDebug()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -626,18 +557,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var debugInputs = activity.GetDebugInputs(executionEnv.Object, 0);
+            var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildConstructorInputs", BindingFlags.Instance | BindingFlags.NonPublic);
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object }) as List<DebugItem>;
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, debugInputs.Count);
-            var constructorLabel = debugInputs[0].ResultsList[0].Label;
-            var constructorValue = debugInputs[0].ResultsList[1].Value;
-            Assert.AreEqual("Constructor", constructorLabel);
-            Assert.AreEqual("@Human", constructorValue);
+            Assert.IsNotNull(debugInputs);
+            Assert.AreEqual(1, debugInputs.Count);
 
-            var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
-            var constructorInput1Value = debugInputs[2].ResultsList[0].Value;
-            var constructorInput1name = debugInputs[2].ResultsList[0].Label;
-            Assert.AreEqual("Constructor Inputs", constructorInputsLabel);
+            var constructorInput1Value = debugInputs[0].ResultsList[0].Value;
+            var constructorInput1name = debugInputs[0].ResultsList[0].Label;
             Assert.AreEqual("name", constructorInput1name);
             Assert.AreEqual("John", constructorInput1Value);
 
@@ -645,7 +572,76 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenActionsWithInputs_ShouldActionsInputDebug()
+        public void BuildConstructorOutput_GivenConstructorWithOutput_ShouldConstructorDebug()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            var executionEnv = new Mock<IExecutionEnvironment>();
+            var humanString = DataListUtil.ConvertModelToJson(human).ToString();
+            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+               .Returns(newWarewolfAtomResult);
+            var johnResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(johnResult);
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
+            activity.ConstructorInputs = new List<IServiceInput>()
+            {
+                new ServiceInput("name","John")
+                {
+                    TypeName = typeof(string).FullName,
+                    RequiredField = true
+                }
+            };
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                IsExistingObject = true,
+                ConstructorName = "@Human"
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction()
+                {
+                    Method = "ToString",
+                    Inputs = new List<IServiceInput>(),
+                }
+            };
+            activity.ObjectName = "[[@Human]]";
+            activity.ObjectResult = "humanString";
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildConstructorOutput", BindingFlags.Instance | BindingFlags.NonPublic);
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object }) as List<DebugItem>;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(debugInputs);
+            Assert.AreEqual(1, debugInputs.Count);
+            var constructorValue = debugInputs[0].ResultsList[0].Value;
+            Assert.AreNotEqual("", constructorValue);
+            Assert.IsNotNull(constructorValue);
+            var humanObject = constructorValue.DeserializeToObject<Human>();
+            Assert.IsNotNull(humanObject);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildMethodInputs_GivenActionsWithInputs_ShouldActionsInputDebug()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -687,47 +683,36 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
+            var pluginAction = new PluginAction()
+            {
+                Method = "ToString",
+                Inputs = new List<IServiceInput>()
+                {
+                    new ServiceInput("name","Micky")
+                },
+            };
             activity.MethodsToRun = new List<IPluginAction>
             {
-                new PluginAction()
-                {
-                    Method = "ToString",
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("name","Micky")
-                    },
-                }
+                pluginAction
             };
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var debugInputs = activity.GetDebugInputs(executionEnv.Object, 0);
+            var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildMethodInputs", BindingFlags.Instance | BindingFlags.NonPublic);
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction }) as List<DebugItem>;
             //---------------Test Result -----------------------
-            Assert.AreEqual(6, debugInputs.Count);
-            var constructorLabel = debugInputs[0].ResultsList[0].Label;
-            var constructorValue = debugInputs[0].ResultsList[1].Value;
-            Assert.AreEqual("Constructor", constructorLabel);
-            Assert.AreEqual("@Human", constructorValue);
+            Assert.IsNotNull(debugInputs);
+            Assert.AreEqual(1, debugInputs.Count);
 
-            var constructorInputsLabel = debugInputs[1].ResultsList[0].Label;
-            var constructorInput1Value = debugInputs[2].ResultsList[0].Value;
-            var constructorInput1name = debugInputs[2].ResultsList[0].Label;
-            Assert.AreEqual("Constructor Inputs", constructorInputsLabel);
-            Assert.AreEqual("name", constructorInput1name);
-            Assert.AreEqual("John", constructorInput1Value);
-            var label = debugInputs[3].ResultsList[0].Label;
-            Assert.AreEqual("Action: ", label);
-            var input = debugInputs[4].ResultsList[0].Label;
-            Assert.AreEqual("Inputs", input);
-            var name = debugInputs[5].ResultsList[0].Label;
-            var value = debugInputs[5].ResultsList[0].Value;
+            var name = debugInputs[0].ResultsList[0].Label;
+            var value = debugInputs[0].ResultsList[0].Value;
             Assert.AreEqual("name", name);
             Assert.AreEqual("John", value);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetDebugOutputs_GivenHasContstructorHasObjectname_ShouldAddObjectOutput()
+        public void BuildMethodOutputs_GivenMethodOutput_ShouldDebugOutput()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -769,40 +754,34 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsExistingObject = true,
                 ConstructorName = "@Human"
             };
+            var pluginAction = new PluginAction()
+            {
+                Method = "ToString",
+                Inputs = new List<IServiceInput>()
+                {
+                    new ServiceInput("name","Micky")
+                },
+                MethodResult = new Human().SerializeToJsonString(new KnownTypesBinder()
+                {
+                    KnownTypes = new List<Type>() { type }
+                })
+            };
             activity.MethodsToRun = new List<IPluginAction>
             {
-                new PluginAction()
-                {
-                    Method = "ToString",
-                    Inputs = new List<IServiceInput>()
-                    {
-                        new ServiceInput("name","Micky")
-                    },
-                    MethodResult = new Human().SerializeToJsonString(new KnownTypesBinder()
-                    {
-                        KnownTypes = new List<Type>(){type}
-                    })
-                }
+                pluginAction
             };
             activity.ObjectName = "@Human";
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var debugOutputs = activity.GetDebugOutputs(executionEnv.Object, 0);
+            var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildMethodOutputs", BindingFlags.Instance | BindingFlags.NonPublic);
+            var debugOutputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction }) as List<DebugItem>;
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, debugOutputs.Count);
-            var constructorLabel = debugOutputs[0].ResultsList[0].Label;
-            var constructorValue = debugOutputs[0].ResultsList[0].Value;
-            Assert.AreEqual("Constructor Output", constructorLabel);
-            Assert.AreEqual("", constructorValue);
-            var action = debugOutputs[1].ResultsList[0].Label;
-            var actionname = debugOutputs[1].ResultsList[0].Value;
-            Assert.AreEqual("Action: ", action);
-            Assert.AreEqual("ToString", actionname);
-            var outPut = debugOutputs[2].ResultsList[0].Label;
-            var val = debugOutputs[2].ResultsList[1].Value;
-            Assert.AreEqual("Output", outPut);
-            Assert.AreEqual("John", val);
+            Assert.IsNotNull(debugOutputs);
+            Assert.AreEqual(1, debugOutputs.Count);
+
+            var val = debugOutputs[0].ResultsList[0].Value;
+            StringAssert.Contains(val, "John");
         }
 
         [TestMethod]
@@ -873,10 +852,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO err;
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
-           
+
             Assert.AreEqual(1, err.FetchErrors().Count);
             var single = err.FetchErrors().Single();
-            StringAssert.Contains(single,ErrorResource.JSONIncompatibleConversionError);
+            StringAssert.Contains(single, ErrorResource.JSONIncompatibleConversionError);
         }
     }
 

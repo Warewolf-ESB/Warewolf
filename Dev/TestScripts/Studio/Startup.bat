@@ -12,7 +12,13 @@ if %errorLevel% == 0 (
 @echo on
 
 REM ** Cleanup **
-call "%~dp0Cleanup.bat"
+IF EXIST "%~dp0Cleanup.bat" (
+	call "%~dp0Cleanup.bat"
+) else (
+	IF EXIST "%~dp0qtcleanup.bat" (
+		call "%~dp0qtcleanup.bat"
+	)
+)
 
 REM ** Init path to DotCover Exe **
 IF NOT "%1"=="" (
@@ -44,6 +50,7 @@ IF EXIST "%~dp0Warewolf Server.exe" SET ServerBinDirectory=%~dp0
 IF EXIST "%~dp0Server\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Server
 IF EXIST "%~dp0DebugServer\Warewolf Server.exe" SET ServerBinDirectory=%~dp0DebugServer
 IF EXIST "%~dp0Dev2.Server\bin\Debug\Warewolf Server.exe" SET ServerBinDirectory=%~dp0Dev2.Server\bin\Debug
+IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET ServerBinDirectory=%DeploymentDirectory%\Server
 IF EXIST "%ServerBinDirectory%\Warewolf Server.exe" (
 	echo Success: Warewolf server found at %ServerBinDirectory%\Warewolf Server.exe.
 ) else (
