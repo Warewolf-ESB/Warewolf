@@ -9,9 +9,11 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class RenameExplorerResource
     {
-        private const string Folder = "Acceptance Tests";
+        private const string Folder = "FolderRenameInExplorer";
         private const string newFolderName = "FolderItem2";
         private const string newResourceName = "FolderItem2";
+        private const string ResourceToRename = "KeepNewName";
+        const string newName = ResourceToRename + "Renamed";
 
         [TestMethod]
         [TestCategory("Explorer")]
@@ -30,17 +32,12 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Explorer")]
         public void RenameFolder_UsingF2_Shortcut()
-        {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
-            var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Renamed";
+        {            
+            var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\";
             UIMap.Filter_Explorer(Folder);
             UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Assert.IsTrue(Directory.Exists(renamedFolder));
-            //Put back the Original Name
-            Directory.Move(renamedFolder, resourcesFolder);
-            Assert.IsTrue(Directory.Exists(resourcesFolder));
-            UIMap.Click_Explorer_Refresh_Button();
+            Assert.IsTrue(Directory.Exists(renamedFolder + Folder + "_Renamed"), "Folder did not rename");
+            
         }
 
         [TestMethod]
@@ -55,16 +52,27 @@ namespace Warewolf.UITests
 
             UIMap.Filter_Explorer(WorkflowName);
             UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Exists);
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(ExistingFloder));
             UIMap.Rename_Folder_Using_Shortcut(AcceptanceTestsRenamed);
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UrlWithRenamedFolder.UrlWithRenamedFolderHyperlink.Exists);
-            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UrlWithRenamedFolder.UrlWithRenamedFolderHyperlink.Alt.Contains(AcceptanceTestsRenamed));
             Directory.Move(renamedFolder, resourcesFolder);
             UIMap.Click_Close_Workflow_Tab_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Rename_Resource_Close_And_ReOpen_Resource_Keeps_New_Name()
+        {
+            UIMap.Filter_Explorer(ResourceToRename);
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            
+            UIMap.Rename_Explorer_First_Item(newName);
+            UIMap.Make_Workflow_Savable_By_Dragging_Start();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem.DisplayText, newName);
         }
 
         #region Additional test attributes

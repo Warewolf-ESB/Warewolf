@@ -201,7 +201,6 @@ namespace Dev2.Runtime.Hosting
 
                                     StringBuilder updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
                                 }

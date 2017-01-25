@@ -120,10 +120,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var oldPath = resource.GetSavePath();
-            var newPath = oldPath.Replace(oldCategory, newCategory);
-            if (string.IsNullOrEmpty(oldPath))
+            var newPath = newCategory;
+            if (!string.IsNullOrEmpty(oldPath))
             {
-                newPath = newCategory;
+                newPath = oldPath.Replace(oldCategory, newCategory);
             }
             ((ResourceCatalog)_resourceCatalog).SetResourceFilePath(workspaceID, resource, ref newPath);
             return new ResourceCatalogResult {Status = ExecStatus.Success};
