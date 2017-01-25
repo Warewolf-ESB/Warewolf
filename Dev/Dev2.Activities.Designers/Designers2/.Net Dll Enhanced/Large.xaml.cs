@@ -36,16 +36,22 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
             if (dotNetDllEnhancedViewModel != null)
             {
-                if (!dotNetDllEnhancedViewModel.IsConstructorVisible && dotNetDllEnhancedViewModel.IsActionsVisible)
-                {
-                    minHeight = 220;
-                }
-                else if (dotNetDllEnhancedViewModel.IsConstructorVisible && dotNetDllEnhancedViewModel.IsActionsVisible)
+                if (dotNetDllEnhancedViewModel.IsConstructorVisible || dotNetDllEnhancedViewModel.IsActionsVisible)
                 {
                     minHeight = 250;
                 }
             }
             MinHeight = minHeight;
+            Height = double.NaN;
+        }
+
+        private void ConstructorExpander_OnExpanded(object sender, RoutedEventArgs e)
+        {
+            Height = double.NaN;
+        }
+
+        private void MethodExpander_OnExpanded(object sender, RoutedEventArgs e)
+        {
             Height = double.NaN;
         }
     }

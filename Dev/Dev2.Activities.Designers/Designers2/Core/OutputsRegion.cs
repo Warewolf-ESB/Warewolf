@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Dev2.Activities.Designers2.Core.ConstructorRegion;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -132,7 +131,6 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isObjectOutputUsed;
         private IShellViewModel _shellViewModel;
         private RelayCommand _viewObjectResult;
-        private bool _isConstructorSelected;
 
         #region Implementation of IToolRegion
 
@@ -226,23 +224,6 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _outputCountExpandAllowed = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsConstructorSelected       
-        {
-            get
-            {
-                var constructorRegion = Dependants?.SingleOrDefault(region => region is DotNetConstructorRegion) as DotNetConstructorRegion;
-                if (constructorRegion != null)
-                {
-                    _isConstructorSelected = constructorRegion.SelectedConstructor != null;
-                }
-                return _isConstructorSelected;
-            }
-            set
-            {
-                _isConstructorSelected = value;
                 OnPropertyChanged();
             }
         }

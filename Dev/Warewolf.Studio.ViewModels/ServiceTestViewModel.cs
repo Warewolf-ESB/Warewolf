@@ -624,6 +624,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ProcessSequence(modelItem);
                 }
+                else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
+                {
+                    ProcessEnhanchedDotNetDll(modelItem);
+                }
                 else if (itemType == typeof(FlowSwitch<string>))
                 {
                     ProcessFlowSwitch(modelItem);
@@ -674,6 +678,24 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 AddSequence(sequence, null, SelectedServiceTest.TestSteps);
+            }
+        }
+
+        private void ProcessEnhanchedDotNetDll(ModelItem modelItem)
+        {
+            var dotNetDllActivity = GetCurrentActivity<DsfEnhancedDotNetDllActivity>(modelItem);
+            var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
+            if (buildParentsFromModelItem != null)
+            {
+                AddEnhancedDotNetDll(dotNetDllActivity, buildParentsFromModelItem as ServiceTestStep, buildParentsFromModelItem.Children);
+                if (FindExistingStep(buildParentsFromModelItem.UniqueId.ToString()) == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(buildParentsFromModelItem);
+                }
+            }
+            else
+            {
+                AddEnhancedDotNetDll(dotNetDllActivity, null, SelectedServiceTest.TestSteps);
             }
         }
 
@@ -858,6 +880,37 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        {
+            if (dotNetDllActivity != null)
+            {
+                var uniqueId = dotNetDllActivity.UniqueID;
+                var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+
+                var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+                {
+                    StepDescription = dotNetDllActivity.DisplayName,
+                    Parent = parent
+                };
+                SetStepIcon(typeof(DsfEnhancedDotNetDllActivity), testStep);
+
+                AddEnhancedDotNetDllConstructor(dotNetDllActivity.Constructor, testStep);
+
+                foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
+                {
+                    AddEnhancedDotNetDllMethod(pluginAction, testStep);
+                }
+                if (exists == null)
+                {
+                    serviceTestSteps.Add(testStep);
+                }
+                else
+                {
+                    AddMissingChild(serviceTestSteps, testStep);
+                }
+            }
+        }
+
         private static void AddMissingChild(ObservableCollection<IServiceTestStep> serviceTestSteps, ServiceTestStep testStep)
         {
             if (serviceTestSteps.Count > 0)
@@ -911,6 +964,48 @@ namespace Warewolf.Studio.ViewModels
                 }).Cast<IServiceTestOutput>().ToObservableCollection();
                 serviceTestStep.StepOutputs = serviceTestOutputs;
                 SetStepIcon(act.GetType(), serviceTestStep);
+                testStep.Children.Add(serviceTestStep);
+            }
+        }
+
+        private void AddEnhancedDotNetDllConstructor(IPluginConstructor dotNetConstructor, ServiceTestStep testStep)
+        {
+            //var outputs = dotNetConstructor.ReturnObject;
+            //if (!string.IsNullOrWhiteSpace(outputs))
+            {
+                var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), dotNetConstructor.ConstructorName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+                {
+                    StepDescription = dotNetConstructor.ConstructorName,
+                    Parent = testStep
+                };
+                //var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
+                //{
+                //    HasOptionsForValue = false,
+                //    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                //}).Cast<IServiceTestOutput>().ToObservableCollection();
+                //serviceTestStep.StepOutputs = serviceTestOutputs;
+                //SetStepIcon(act.GetType(), serviceTestStep);
+                testStep.Children.Add(serviceTestStep);
+            }
+        }
+
+        private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, ServiceTestStep testStep)
+        {
+            //var outputs = pluginAction.MethodResult;
+            //if (!string.IsNullOrWhiteSpace(outputs))
+            {
+                var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), pluginAction.Method, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+                {
+                    StepDescription = pluginAction.Method,
+                    Parent = testStep
+                };
+                //var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
+                //{
+                //    HasOptionsForValue = false,
+                //    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                //}).Cast<IServiceTestOutput>().ToObservableCollection();
+                //serviceTestStep.StepOutputs = serviceTestOutputs;
+                //SetStepIcon(act.GetType(), serviceTestStep);
                 testStep.Children.Add(serviceTestStep);
             }
         }
