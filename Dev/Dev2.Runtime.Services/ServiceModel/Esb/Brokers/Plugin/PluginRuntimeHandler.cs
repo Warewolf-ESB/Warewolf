@@ -58,31 +58,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
 
-            object instance = new object();
-            if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
-            {
-                try
-                {
-                    instance = Activator.CreateInstance(type, constructorArgs);
-                }
-                catch (Exception)
-                {
-                    var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
-                    if (types != null)
-                    {
-                        var constructorInfo = type.GetConstructor(types.ToArray());
-                        if (constructorInfo != null)
-                        {
-                            instance = constructorInfo.Invoke(constructorArgs.ToArray());
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                instance = Activator.CreateInstance(type);
-            }
+            var instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
             // ReSharper disable once PossibleNullReferenceException
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
@@ -92,10 +68,43 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             };
         }
 
+        private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
+        {
+            object instance = new object();
+            if(setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
+            {
+                try
+                {
+                    instance = Activator.CreateInstance(type, constructorArgs);
+                }
+                catch(Exception)
+                {
+                    var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
+                    if(types != null)
+                    {
+                        var constructorInfo = type.GetConstructor(types.ToArray());
+                        if(constructorInfo != null)
+                        {
+                            instance = constructorInfo.Invoke(constructorArgs.ToArray());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                instance = Activator.CreateInstance(type);
+            }
+            return instance;
+        }
+
         public PluginExecutionDto Run(PluginExecutionDto dto)
         {
             try
             {
+                if (!dto.Args.PluginConstructor.IsExistingObject)
+                {
+                    dto = CreateInstance(dto.Args);
+                }
                 var args = dto.Args;
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
@@ -135,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             if (instance != null)
             {
 
-                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.Instance, null,  valuedTypeList.ToArray() , CultureInfo.CurrentCulture);
+                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.Instance, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
                 return result;
             }
             if (valuedTypeList.Count == 0)
@@ -282,14 +291,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         Name = info.Name
                     };
                     var returnType = info.ReturnType;
-                    
+
                     if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
                         serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
                         serviceMethod.IsObject = false;
-                        
+
                     }
-                    else if (info.ReturnType == typeof (void))
+                    else if (info.ReturnType == typeof(void))
                     {
                         serviceMethod.IsVoid = true;
                     }
