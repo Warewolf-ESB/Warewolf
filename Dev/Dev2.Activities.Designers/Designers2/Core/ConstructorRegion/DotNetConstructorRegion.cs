@@ -139,7 +139,11 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             if (_source?.SelectedSource != null)
             {
                 Constructors = _model.GetConstructors(_source.SelectedSource, _namespace.SelectedNamespace);
-                SelectedConstructor = Constructors.FirstOrDefault();
+                SelectedConstructor = null;
+                if (Constructors.Count > 0)
+                {
+                    SelectedConstructor = Constructors.FirstOrDefault();
+                }
                 IsEnabled = true;
             }
         }
@@ -158,10 +162,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
             set
             {
-                if (value != null)
-                {
-                    _modelItem.SetProperty("Constructor", value);
-                }
+                _modelItem.SetProperty("Constructor", value);
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
