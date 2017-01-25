@@ -7209,6 +7209,13 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
         }
+        [Given(@"I Select Rename From SaveDialog Context Menu")]
+        [When(@"I Select Rename From SaveDialog Context Menu")]
+        [Then(@"I Select Rename From SaveDialog Context Menu")]
+        private void Select_Rename_From_SaveDialog_ContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
+        }
 
         [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
