@@ -756,7 +756,7 @@ namespace Warewolf.UITests
         [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
-            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist on the Surface.");
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
         }
 
@@ -997,7 +997,8 @@ namespace Warewolf.UITests
         [When(@"I Click SaveDialog Save Button")]
         [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
-        {
+        {            
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save button on the Save Dialog is not Enabled");
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
         }
         public void TryCloseNewWebSourceWizardTab()
@@ -3831,6 +3832,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
