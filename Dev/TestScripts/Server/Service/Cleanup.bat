@@ -66,7 +66,7 @@ goto WaitForServiceReadyLoopBody
 REM Stop Server Service:
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
 :StopProcess
-IF NOT "%1"=="" (
+IF "%1"=="dotcover" (
 	REM ** Soft Kill **
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING") else (taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN")
@@ -74,7 +74,7 @@ IF NOT "%1"=="" (
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING") else (taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq UNKNOWN")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq NOT RESPONDING")
-	waitfor StudioShutdown /t 30 2>NUL
+	waitfor StudioShutdown /t 120 2>NUL
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING") else (taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING")
@@ -84,7 +84,7 @@ IF NOT "%1"=="" (
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq UNKNOWN")
 	IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING") else (taskkill /im WarewolfCOMIPC.exe /fi "STATUS eq NOT RESPONDING")
-	waitfor ServerShutdown /t 30 2>NUL
+	waitfor ServerShutdown /t 120 2>NUL
 )
 	
 REM ** Forced TaskKill **
