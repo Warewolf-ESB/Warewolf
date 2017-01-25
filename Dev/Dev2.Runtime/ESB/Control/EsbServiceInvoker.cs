@@ -212,7 +212,6 @@ namespace Dev2.Runtime.ESB
                 time.Stop();
                 ServerStats.IncrementTotalRequests();
                 ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
-                // BUG 9706 - 2013.06.22 - TWR : added
                 DispatchDebugErrors(errors, dataObject, StateType.End);
             }
             return result;
