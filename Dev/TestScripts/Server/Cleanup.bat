@@ -64,10 +64,10 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" echo ERROR CANNOT DELETE %PROG
 @echo on
 
 set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 exit 1
-rem wait for 5 seconds before trying again
-@echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
-waitfor ServerWorkspaceClean /t 5 2>NUL
+IF %LoopCounter% EQU 24 exit 1
+rem wait for 10 seconds before trying again
+@echo %AgentName% is attempting number %LoopCounter% out of 24: Waiting 10 more seconds for "%PROGRAMDATA%\Warewolf" folder cleanup...
+waitfor ServerWorkspaceClean /t 10 2>NUL
 set errorlevel=0
 goto RetryClean
 
