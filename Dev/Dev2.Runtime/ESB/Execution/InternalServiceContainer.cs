@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Text;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data;
