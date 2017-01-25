@@ -24,7 +24,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -36,6 +35,7 @@ namespace Warewolf.Studio.ViewModels
         bool _allowConnection;
         ObservableCollection<IServer> _servers;
         bool _isLoading;
+        private Guid? _selectedId;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
         {
@@ -51,8 +51,6 @@ namespace Warewolf.Studio.ViewModels
             LoadServers();
 
             SelectedConnection = server;
-            var evt = aggregator.GetEvent<ServerAddedEvent>();
-            evt?.Subscribe(ServerAdded);
             EditConnectionCommand = new DelegateCommand(AllowConnectionEdit,CanExecuteMethod);
             ToggleConnectionStateCommand = new DelegateCommand(CheckVersionConflict);
             if (Server.UpdateRepository != null)
@@ -86,10 +84,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 Servers = new ObservableCollection<IServer>();
             }
-            var x = servers.Where(a => !Servers.Select(q => q.EnvironmentID).Contains(a.EnvironmentID));
+            
+            //var x = servers.Where(a => !Servers.Select(q => q.EnvironmentID).Contains(a.EnvironmentID));
             Servers.Clear();
-            Servers.AddRange(x);
+            Servers.AddRange(servers);
             SetupServerDisconnect();
+            if (_selectedId != null && _selectedId!=Guid.Empty)
+            {
+                SelectedConnection = null;
+                var selectConnection = Servers.FirstOrDefault(server => server.EnvironmentID == _selectedId);
+                SelectedConnection = selectConnection;
+            }
         }
 
         private void SetupServerDisconnect()
@@ -257,9 +262,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (mainViewModel != null && ShouldUpdateActiveEnvironment)
                         {
-                            mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                            mainViewModel.NewServerSource(string.Empty);
+                            mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);                            
                         }
+                        mainViewModel.NewServerSource(string.Empty);
                         IsConnected = false;
                         AllowConnection = false;
                         OnPropertyChanged(()=>SelectedConnection);
@@ -409,6 +414,7 @@ namespace Warewolf.Studio.ViewModels
                 var mainViewModel = CustomContainer.Get<IMainViewModel>();
                 if (server != null)
                 {
+                    _selectedId = SelectedConnection?.EnvironmentID;
                     var environmentConnection = server.EnvironmentConnection;
                     mainViewModel.EditServer(new ServerSource
                     {
