@@ -10,7 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data;
@@ -83,10 +85,14 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     if (CanExecute(eme))
                     {
-                        var res = eme.Execute(Request.Args, TheWorkspace);
-                        Request.ExecuteResult = res;
+                        Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser,()=>
+                        {
+                            var res = eme.Execute(Request.Args, TheWorkspace);
+                            Request.ExecuteResult = res;
+                            result = DataObject.DataListID;
+                        });
                         errors.MergeErrors(invokeErrors);
-                        result = DataObject.DataListID;
+
                     }
                     else
                     {
