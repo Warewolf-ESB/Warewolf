@@ -81,18 +81,28 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
         private IExplorerItem SaveResource(Guid resourceId, string newPath, string newResourceName)
         {
-
             var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
             var xElement = result.ToXElement();
             var newResource = new Resource(xElement)
             {
                 IsUpgraded = true
             };
+            var resource = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID)
+                .FirstOrDefault(p=>p.ResourceID == resourceId);
+            var actionElement = xElement.Element("Action");
+            var xamlElement = actionElement?.Element("XamlDefinition");
             xElement.SetAttributeValue("Name",newResourceName);
             var resourceID = Guid.NewGuid();
             newResource.ResourceName = newResourceName;
             newResource.ResourceID = resourceID;
             xElement.SetElementValue("DisplayName", newResourceName);
+            if (xamlElement != null)
+            {
+                var xamlContent = xamlElement.Value;
+                xamlElement.Value = xamlContent.
+                        Replace("x:Class=\"" + resource?.ResourceName + "\"", "x:Class=\"" + newResourceName + "\"")
+                        .Replace("Flowchart DisplayName=\"" + resource?.ResourceName + "\"", "Flowchart DisplayName=\"" + newResourceName + "\"");
+            }
             var fixedResource = xElement.ToStringBuilder();
             _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource, fixedResource, newPath);
             SaveTests(resourceId, resourceID);

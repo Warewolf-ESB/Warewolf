@@ -38,11 +38,12 @@ namespace Warewolf.Studio.Views
                 DependencyObject node = e.OriginalSource as DependencyObject;
                 while (node != null)
                 {
-                    if (node is ActivityDesigner)
+                    if (node is WorkflowViewElement)
                     {
                         var dt = DataContext as ServiceTestViewModel;
                         var wd = dt?.WorkflowDesignerViewModel;
-                        var modelItem = wd?.SelectedItem;
+                        var designer = node as WorkflowViewElement;
+                        var modelItem = designer.ModelItem;
                         if (wd!=null && wd.IsTestView && modelItem != null)
                         {
                             wd.ItemSelectedAction?.Invoke(modelItem);
