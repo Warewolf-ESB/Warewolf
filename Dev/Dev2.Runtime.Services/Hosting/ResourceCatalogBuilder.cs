@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
@@ -202,7 +201,6 @@ namespace Dev2.Runtime.Hosting
 
                                     StringBuilder updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                                    Dev2Logger.Debug("Current User: "+Thread.CurrentPrincipal?.Identity?.Name);
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
                                 }
@@ -236,7 +234,6 @@ namespace Dev2.Runtime.Hosting
                             {
                                 try
                                 {
-                                    Dev2Logger.Debug("Current User: " + Thread.CurrentPrincipal?.Identity?.Name);
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
                                 }
