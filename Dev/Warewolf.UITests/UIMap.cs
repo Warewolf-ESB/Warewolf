@@ -1116,6 +1116,7 @@ namespace Warewolf.UITests
         [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
+            Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_SubItem_Service_From_Service_Picker_Dialog(ResourceName);
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
@@ -1135,6 +1136,7 @@ namespace Warewolf.UITests
         }
         public void Set_HelloWorld_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
+            Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_First_Service_From_Service_Picker_Dialog(ResourceName);
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
@@ -4617,7 +4619,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
@@ -7209,6 +7211,13 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
         }
+        [Given(@"I Select Rename From SaveDialog Context Menu")]
+        [When(@"I Select Rename From SaveDialog Context Menu")]
+        [Then(@"I Select Rename From SaveDialog Context Menu")]
+        private void Select_Rename_From_SaveDialog_ContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
+        }
 
         [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
@@ -8309,6 +8318,7 @@ namespace Warewolf.UITests
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
         }
 
@@ -8338,8 +8348,10 @@ namespace Warewolf.UITests
         }
 
         public void Click_Delete_On_AssignValue_TestStep()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);
+        {          
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.DrawHighlight();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.Enabled);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);            
         }
 
         [When(@"I Click AssigName From DesignSurface")]
