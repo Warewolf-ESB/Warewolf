@@ -887,14 +887,14 @@ namespace Warewolf.Studio.ViewModels
                 var uniqueId = dotNetDllActivity.UniqueID;
                 var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
-                var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfSequenceActivity).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+                var testStep = new ServiceTestStep(Guid.Parse(uniqueId), typeof(DsfEnhancedDotNetDllActivity).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
                 {
                     StepDescription = dotNetDllActivity.DisplayName,
                     Parent = parent
                 };
                 SetStepIcon(typeof(DsfEnhancedDotNetDllActivity), testStep);
 
-                AddEnhancedDotNetDllConstructor(dotNetDllActivity.Constructor, testStep);
+                AddEnhancedDotNetDllConstructor(dotNetDllActivity, testStep);
 
                 foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                 {
@@ -951,7 +951,6 @@ namespace Warewolf.Studio.ViewModels
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
             {
-
                 var serviceTestStep = new ServiceTestStep(Guid.Parse(act.UniqueID), act.GetType().Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
                 {
                     StepDescription = act.DisplayName,
@@ -968,46 +967,38 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddEnhancedDotNetDllConstructor(IPluginConstructor dotNetConstructor, ServiceTestStep testStep)
+        private void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, ServiceTestStep testStep)
         {
-            //var outputs = dotNetConstructor.ReturnObject;
-            //if (!string.IsNullOrWhiteSpace(outputs))
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), dotNetConstructor.Constructor.ConstructorName,
+                new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
-                var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), dotNetConstructor.ConstructorName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
-                {
-                    StepDescription = dotNetConstructor.ConstructorName,
-                    Parent = testStep
-                };
-                //var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
-                //{
-                //    HasOptionsForValue = false,
-                //    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                //}).Cast<IServiceTestOutput>().ToObservableCollection();
-                //serviceTestStep.StepOutputs = serviceTestOutputs;
-                //SetStepIcon(act.GetType(), serviceTestStep);
-                testStep.Children.Add(serviceTestStep);
-            }
+                StepDescription = dotNetConstructor.Constructor.ConstructorName,
+                Parent = testStep
+            };
+            var serviceOutputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput(dotNetConstructor.ObjectName ?? "", "", "", "")
+            };
+            serviceTestStep.StepOutputs = serviceOutputs;
+            SetStepIcon(testStep.ActivityType, serviceTestStep);
+            testStep.Children.Add(serviceTestStep);
         }
 
         private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, ServiceTestStep testStep)
         {
-            //var outputs = pluginAction.MethodResult;
-            //if (!string.IsNullOrWhiteSpace(outputs))
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), pluginAction.Method,
+                new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
-                var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), pluginAction.Method, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
-                {
-                    StepDescription = pluginAction.Method,
-                    Parent = testStep
-                };
-                //var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
-                //{
-                //    HasOptionsForValue = false,
-                //    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                //}).Cast<IServiceTestOutput>().ToObservableCollection();
-                //serviceTestStep.StepOutputs = serviceTestOutputs;
-                //SetStepIcon(act.GetType(), serviceTestStep);
-                testStep.Children.Add(serviceTestStep);
-            }
+                StepDescription = pluginAction.Method,
+                Parent = testStep
+            };
+            var serviceOutputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput(pluginAction.OutputVariable ?? "", "", "", "")
+            };
+            serviceTestStep.StepOutputs = serviceOutputs;
+            SetStepIcon(testStep.ActivityType, serviceTestStep);
+            testStep.Children.Add(serviceTestStep);
         }
 
         private void ProcessSwitch(ModelItem modelItem)
