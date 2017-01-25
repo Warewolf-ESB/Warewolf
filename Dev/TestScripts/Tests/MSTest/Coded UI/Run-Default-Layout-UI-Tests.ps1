@@ -8,11 +8,11 @@ if ($Args.Count -gt 0) {
 	    [xml]$playlistContent = Get-Content $_.FullName
 	    if ($playlistContent.Playlist.Add.count -gt 0) {
 	        foreach( $TestName in $playlistContent.Playlist.Add) {
-		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+		        $TestList += " /test:" + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	        }
 	    } else {        
             if ($playlistContent.Playlist.Add.Test -ne $null) {
-                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+                $TestList = " /test:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
             } else {
 	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
             }
