@@ -12,7 +12,6 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.Core;
 using Warewolf.Testing;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -32,8 +31,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         private Guid _serverEnvironmentId;
 
-        private ServerAddedEvent _serverAddedEvent;
-
         private ConnectControlViewModel _target;
 
         #endregion Fields
@@ -45,8 +42,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _serverMock = new Mock<IServer>();
             _eventAggregatorMock = new Mock<IEventAggregator>();
-            _serverAddedEvent = new ServerAddedEvent();
-            _eventAggregatorMock.Setup(it => it.GetEvent<ServerAddedEvent>()).Returns(_serverAddedEvent);
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
@@ -447,21 +442,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(serverEnvironmentId));
         }
 
-        [TestMethod]
-        public void TestServerAdded()
-        {
-            //arrange
-            var serverMock = new Mock<IServer>();
-            _changedProperties.Clear();
-
-            //act
-            _serverAddedEvent.Publish(serverMock.Object);
-
-            //assert
-            Assert.IsTrue(_changedProperties.Contains("Servers"));
-            Assert.IsTrue(_target.Servers.Contains(serverMock.Object));
-        }
-
+        
         [TestMethod]
         public void TestLoadServers()
         {
@@ -666,6 +647,33 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(_target.Servers.Contains(server1Mock.Object));
             Assert.IsTrue(_target.Servers.Contains(server2Mock.Object));
+        }
+
+        [TestMethod]
+        public void TestEditSelectedConnectionShouldSetSelectedConnection()
+        {
+            //arrange
+            var serverConnectionMock = new Mock<IServer>();
+            var serverConnectionEnvironmentId = Guid.NewGuid();
+            serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
+            _serverMock.Setup(it => it.GetAllServerConnections())
+                .Returns(new List<IServer> { serverConnectionMock.Object });
+            _updateRepositoryMock.Raise(it => it.ServerSaved += null);
+            var server1Mock = new Mock<IServer>();
+            server1Mock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
+            server1Mock.SetupGet(it => it.DisplayName).Returns("server1MockDisplayName");
+            var newEnvironmentID = Guid.NewGuid();
+            var server2Mock = new Mock<IServer>();
+            server2Mock.SetupGet(it => it.EnvironmentID).Returns(newEnvironmentID);
+
+            _serverMock.Setup(it => it.GetServerConnections())
+                .Returns(new List<IServer> { server1Mock.Object, server2Mock.Object });
+            _target.SelectedConnection = server2Mock.Object;
+            //act
+            _target.EditConnectionCommand.Execute(null);
+
+            //assert
+            Assert.IsNotNull(_target.SelectedConnection);
         }
 
         [TestMethod]
