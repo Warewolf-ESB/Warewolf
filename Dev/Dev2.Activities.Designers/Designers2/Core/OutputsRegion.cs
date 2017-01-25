@@ -338,6 +338,10 @@ namespace Dev2.Activities.Designers2.Core
                             var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
                             if (language.IsJsonIdentifierExpression)
                             {
+                                if (_shellViewModel == null)
+                                {
+                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                                }
                                 _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
                             }                            
                             _modelItem.SetProperty("ObjectName", value);                            
