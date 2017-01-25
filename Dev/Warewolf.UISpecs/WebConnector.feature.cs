@@ -83,30 +83,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.And("I Click New Web Source Explorer Context Menu Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
- testRunner.And("I Type The Testing Site into Web GET Source Wizard Address Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
- testRunner.And("I Click New Web Source Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.And("I Save Valid Service With Ribbon Button And Dialog As \"WebGETUITestingSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
- testRunner.And("I Click Close Web Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
  testRunner.And("I Drag GETWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
+#line 11
  testRunner.And("I Select Test Source From GET Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 12
  testRunner.And("I Click GET Web Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 13
  testRunner.And("I Click GET Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 14
  testRunner.And("I Click GET Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 15
  testRunner.And("I Click GET Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 16
  testRunner.And("I Click Debug Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 17
  testRunner.And("I Click DebugInput Debug Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -119,23 +109,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateAndExecuteNewWebPOSTConnector()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Execute New Web POST Connector", ((string[])(null)));
-#line 24
+#line 19
 this.ScenarioSetup(scenarioInfo);
-#line 25
+#line 20
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
+#line 21
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 22
  testRunner.When("I Drag POSTWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
+#line 23
  testRunner.And("I Select Test Source From POST Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 24
  testRunner.And("I Click POST Web Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 25
  testRunner.And("I Click POST Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 26
  testRunner.And("I Click POST Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 27
  testRunner.And("I Click POST Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -148,23 +138,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateAndExecuteNewWebPUTConnector()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Execute New Web PUT Connector", ((string[])(null)));
-#line 34
+#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 35
+#line 30
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 36
+#line 31
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 37
+#line 32
  testRunner.When("I Drag PUTWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
+#line 33
  testRunner.And("I Select Test Source From PUT Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 34
  testRunner.And("I Click PUT Web Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 35
  testRunner.And("I Click PUT Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 36
  testRunner.And("I Click PUT Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 37
  testRunner.And("I Click PUT Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -177,23 +167,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateAndExecuteNewWebDELETEConnector()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Execute New Web DELETE Connector", ((string[])(null)));
-#line 44
+#line 39
 this.ScenarioSetup(scenarioInfo);
-#line 45
+#line 40
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
+#line 41
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 47
+#line 42
  testRunner.When("I Drag DELETEWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
+#line 43
  testRunner.And("I Select Test Source From DELETE Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 44
  testRunner.And("I Click DELETE Web Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 45
  testRunner.And("I Click DELETE Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 46
  testRunner.And("I Click DELETE Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 47
  testRunner.And("I Click DELETE Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -206,28 +196,53 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RightClickAdornerControlWithError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Right click adorner control with error", ((string[])(null)));
-#line 54
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 55
+#line 50
  testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 51
  testRunner.When("I Filter the Explorer with \"BrokenDeleteWeb\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
+#line 52
  testRunner.And("I DoubleClick Explorer Localhost First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 53
  testRunner.And("I Open DeleteWeb Tool Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 54
  testRunner.And("I Select Test Source From DELETE Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 55
  testRunner.And("I Click DELETE Web Large View Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 56
  testRunner.And("I Click DELETE Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 57
  testRunner.Then("There is an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 63
+#line 58
  testRunner.And("I RightClick Ardoner Hyperlink", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 59
  testRunner.And("There is an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create and Save new Web Service Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebConnector")]
+        public virtual void CreateAndSaveNewWebServiceSource()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Save new Web Service Source", ((string[])(null)));
+#line 61
+this.ScenarioSetup(scenarioInfo);
+#line 62
+ testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 63
+ testRunner.And("I Click New Web Source Explorer Context Menu Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+ testRunner.And("I Type The Testing Site into Web GET Source Wizard Address Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+ testRunner.And("I Click New Web Source Test Connection Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.And("I Save Valid Service With Ribbon Button And Dialog As \"WebGETUITestingSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.And("I Click Close Web Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
