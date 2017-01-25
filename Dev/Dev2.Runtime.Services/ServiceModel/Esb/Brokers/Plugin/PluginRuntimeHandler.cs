@@ -71,19 +71,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
         {
             object instance = new object();
-            if(setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
+            if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
             {
                 try
                 {
                     instance = Activator.CreateInstance(type, constructorArgs);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
-                    if(types != null)
+                    if (types != null)
                     {
                         var constructorInfo = type.GetConstructor(types.ToArray());
-                        if(constructorInfo != null)
+                        if (constructorInfo != null)
                         {
                             instance = constructorInfo.Invoke(constructorArgs.ToArray());
                         }
@@ -304,9 +304,28 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     else
                     {
-                        var jObject = GetPropertiesJObject(returnType);
-                        serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
-                        serviceMethod.IsObject = true;
+                        var enumerableType = GetEnumerableType(returnType);
+                        if (enumerableType != null)
+                        {
+                            if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
+                            {
+                                serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                                serviceMethod.IsObject = false;
+                            }
+                            else
+                            {
+                                var jObject = GetPropertiesJObject(enumerableType);
+                                serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                                serviceMethod.IsObject = true;
+                            }
+                        }
+                        else
+                        {
+                            var jObject = GetPropertiesJObject(returnType);
+                            serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                            serviceMethod.IsObject = true;
+                        }
+                       
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>
@@ -337,6 +356,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 jObject.Add(property.Name, "");
             }
             return jObject;
+        }
+
+        static Type GetEnumerableType(Type type)
+        {
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var intType in type.GetInterfaces())
+            {
+                if (intType.IsGenericType
+                    && intType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    return intType.GetGenericArguments()[0];
+                }
+            }
+            return null;
         }
 
         /// <summary>
