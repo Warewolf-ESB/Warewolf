@@ -6,10 +6,12 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -23,6 +25,7 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
     public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity
     {
+        private List<IDebugState> _childStatesToDispatch;
         public INamespaceItem Namespace { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public List<IPluginAction> MethodsToRun { get; set; }
@@ -59,6 +62,7 @@ namespace Dev2.Activities
 
         protected void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
+            _childStatesToDispatch = new List<IDebugState>();
             errors = new ErrorResultTO();
             PluginExecutionDto pluginExecutionDto;
             if (Constructor.IsExistingObject)
@@ -125,7 +129,7 @@ namespace Dev2.Activities
                 }
 
                 PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
-
+                
                 MethodsToRun = result.Args.MethodsToRun?.Select(p => new PluginAction()
                 {
                     Method = p.Method,
@@ -141,52 +145,50 @@ namespace Dev2.Activities
                     } as IServiceInput).ToList() ?? new List<IServiceInput>()
 
                 } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
-                foreach (var dev2MethodInfo in MethodsToRun)
+            
+                foreach (var pluginAction in MethodsToRun)
                 {
-                    if (dev2MethodInfo.IsVoid)
+                    if (pluginAction.IsVoid)
                         continue;
-                    if (dev2MethodInfo.IsObject)
+                    if (pluginAction.IsObject)
                     {
 
-                        var jContainer = JToken.Parse(dev2MethodInfo.MethodResult) as JContainer
-                            ?? dev2MethodInfo.MethodResult.DeserializeToObject();
-                        if (!string.IsNullOrEmpty(dev2MethodInfo.OutputVariable))
-                            dataObject.Environment.AddToJsonObjects(dev2MethodInfo.OutputVariable, jContainer);
+                        var jContainer = JToken.Parse(pluginAction.MethodResult) as JContainer
+                            ?? pluginAction.MethodResult.DeserializeToObject();
+                        if (!string.IsNullOrEmpty(pluginAction.OutputVariable))
+                            dataObject.Environment.AddToJsonObjects(pluginAction.OutputVariable, jContainer);
                     }
                     else
                     {
-                        JToken jObj = JToken.Parse(dev2MethodInfo.MethodResult);
-                        if (jObj == null)
-                        {
-                            jObj = dev2MethodInfo.MethodResult.DeserializeToObject();
-                        }
+                        JToken jObj = JToken.Parse(pluginAction.MethodResult) ?? pluginAction.MethodResult.DeserializeToObject();
 
                         if (jObj != null)
                         {
                             if (jObj.IsEnumerableOfPrimitives())
                             {
                                 var values = jObj.Children().Select(token => token.ToString()).ToList();
-                                if (DataListUtil.IsValueScalar(dev2MethodInfo.OutputVariable))
+                                if (DataListUtil.IsValueScalar(pluginAction.OutputVariable))
                                 {
                                     var valueString = string.Join(",", values);
-                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, valueString, 0);
+                                    dataObject.Environment.Assign(pluginAction.OutputVariable, valueString, update);
                                 }
                                 else
                                 {
                                     foreach (var value in values)
                                     {
-                                        dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                                        dataObject.Environment.Assign(pluginAction.OutputVariable, value, update);
                                     }
                                 }
                             }
                             else if (jObj.IsPrimitive())
                             {
                                 var value = jObj.ToString();
-                                if (!string.IsNullOrEmpty(dev2MethodInfo.OutputVariable))
-                                    dataObject.Environment.Assign(dev2MethodInfo.OutputVariable, value, 0);
+                                if (!string.IsNullOrEmpty(pluginAction.OutputVariable))
+                                    dataObject.Environment.Assign(pluginAction.OutputVariable, value, update);
                             }
                         }
                     }
+                    DispatchDebugStateForMethod(pluginAction, dataObject);
                 }
                 ObjectResult = result.ObjectString;
 
@@ -195,7 +197,7 @@ namespace Dev2.Activities
                     var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
                     dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
                 }
-
+                DispatchDebugStateForConstructorInputs(dataObject);
             }
             catch (Exception e)
             {
@@ -209,6 +211,86 @@ namespace Dev2.Activities
                     errors.AddError(e.Message);
                 }
             }
+        }
+
+        #region Overrides of DsfActivity
+
+        protected override void ChildDebugStateDispatch(IDSFDataObject dataObject)
+        {
+            foreach(var debugState in _childStatesToDispatch)
+            {
+                DispatchDebugState(debugState,dataObject);
+            }
+        }
+
+        #endregion
+
+        private void DispatchDebugStateForMethod(IPluginAction action, IDSFDataObject dataObject)
+        {
+            var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            debugState.ErrorMessage = string.Empty;
+            //debugState.Server = dataObject.ServerID
+            debugState.IsSimulation = false;
+            debugState.HasError = false;
+            debugState.Inputs.AddRange(BuildMethodInputs(dataObject.Environment, action));
+            debugState.Outputs.AddRange(BuildMethodOutputs(dataObject.Environment, action));
+            _childStatesToDispatch.Add(debugState);
+        }
+
+        private DebugState PopulateDebugStateWithDefaultValues(IDSFDataObject dataObject)
+        {
+            var debugState = new DebugState
+            {
+                ID = Guid.NewGuid(),
+                ParentID = UniqueID.ToGuid(),
+                WorkSurfaceMappingId = WorkSurfaceMappingId,
+                WorkspaceID = dataObject.WorkspaceID,
+                StateType = StateType.All,
+                ActualType = GetType().Name,
+                StartTime = DateTime.Now,
+                EndTime =  DateTime.Now,
+                ActivityType = ActivityType.Step,
+                DisplayName = DisplayName,
+                IsSimulation = false,
+                ServerID = dataObject.ServerID,
+                OriginatingResourceID = dataObject.ResourceID,
+                OriginalInstanceID = dataObject.OriginalInstanceID,
+                //Server = name,
+                Version = string.Empty,
+                Name = "bob",
+                HasError = false,
+                //ErrorMessage = errorMessage,
+                EnvironmentID = dataObject.DebugEnvironmentId,
+                SessionID = dataObject.DebugSessionID
+            };
+            //var debugState = new DebugState
+            //{
+            //    ParentID = UniqueID.ToGuid(),
+            //    WorkSurfaceMappingId = WorkSurfaceMappingId,
+            //    WorkspaceID = dataObject.WorkspaceID,
+            //    StateType = StateType.After,
+            //    ActualType = GetType().Name,
+            //    StartTime = DateTime.Now,
+            //    EndTime = DateTime.Now,
+            //    ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
+            //    DisplayName = DisplayName,
+            //    ServerID = dataObject.ServerID,
+            //    OriginatingResourceID = dataObject.ResourceID,
+            //    OriginalInstanceID = dataObject.OriginalInstanceID,
+            //    Version = string.Empty,
+            //    EnvironmentID = dataObject.DebugEnvironmentId,
+            //    SessionID = dataObject.DebugSessionID,
+            //    Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription()
+            //};
+            return debugState;
+        }
+
+        private void DispatchDebugStateForConstructorInputs(IDSFDataObject dataObject)
+        {
+            var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            debugState.Inputs.AddRange(BuildConstructorInputs(dataObject.Environment));
+            debugState.Outputs.AddRange(BuildConstructorOutput(dataObject.Environment));
+            _childStatesToDispatch.Add(debugState);
         }
 
         private string GetEvaluatedResult(IDSFDataObject dataObject, string value)
@@ -225,87 +307,84 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        private IEnumerable<DebugItem> BuildConstructorInputs(IExecutionEnvironment env)
         {
-            base.GetDebugOutputs(env, update);
-            if (!string.IsNullOrEmpty(ObjectName))
-            {
-                DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
-                AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
-                _debugOutputs.Add(debugItem);
-            }
-
-            if (MethodsToRun != null && MethodsToRun.Any())
-            {
-                foreach (var dev2MethodInfo in MethodsToRun)
-                {
-                    DebugItem debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
-                    _debugOutputs.Add(debugItem);
-                    if (!string.IsNullOrEmpty(dev2MethodInfo.MethodResult))
-                    {
-                        debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
-                        AddDebugItem(new DebugEvalResult(dev2MethodInfo.MethodResult, "", env, update), debugItem);
-                        _debugOutputs.Add(debugItem);
-                    }
-                }
-            }
-
-            return _debugOutputs;
-        }
-
-        #endregion
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            base.GetDebugInputs(env, update);
+            var inputs = new List<DebugItem>();
             if (Constructor != null)
             {
                 DebugItem debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", "Constructor"), debugItem);
                 AddDebugItem(new DebugItemStaticDataParams(Constructor.ConstructorName, ""), debugItem);
-                _debugInputs.Add(debugItem);
+                inputs.Add(debugItem);
                 if (ConstructorInputs != null && ConstructorInputs.Any())
                 {
                     debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", "Constructor Inputs"), debugItem);
-                    _debugInputs.Add(debugItem);
+                    inputs.Add(debugItem);
                     foreach (var constructorInput in ConstructorInputs)
                     {
                         debugItem = new DebugItem();
-                        AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, update), debugItem);
-                        _debugInputs.Add(debugItem);
+                        AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, 0), debugItem);
+                        inputs.Add(debugItem);
                     }
                 }
             }
-            if (MethodsToRun != null && MethodsToRun.Any())
+
+            return inputs;
+        }
+        private IEnumerable<DebugItem> BuildConstructorOutput(IExecutionEnvironment env)
+        {
+            var debugItems = new List<DebugItem>();
+            if (!string.IsNullOrEmpty(ObjectName))
             {
-                foreach (var dev2MethodInfo in MethodsToRun)
-                {
-
-                    if (dev2MethodInfo.Inputs.Any())
-                    {
-                        DebugItem debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams(dev2MethodInfo.Method, "Action: "), debugItem);
-                        _debugInputs.Add(debugItem);
-                        debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
-                        _debugInputs.Add(debugItem);
-                        foreach (var methodParameter in dev2MethodInfo.Inputs)
-                        {
-                            debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, update), debugItem);
-                            _debugInputs.Add(debugItem);
-                        }
-                    }
-                }
+                DebugItem debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
+                AddDebugItem(new DebugEvalResult(ObjectName, "", env, 0), debugItem);
+                debugItems.Add(debugItem);
             }
-
-            return _debugInputs;
+            return debugItems;
         }
 
+
+
+        private IEnumerable<DebugItem> BuildMethodInputs(IExecutionEnvironment env, IPluginAction action)
+        {
+            var inputs = new List<DebugItem>();
+            if (action.Inputs.Any())
+            {
+                DebugItem debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams(action.Method, "Action: "), debugItem);
+                inputs.Add(debugItem);
+                debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
+                inputs.Add(debugItem);
+                foreach (var methodParameter in action.Inputs)
+                {
+                    debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, 0), debugItem);
+                    inputs.Add(debugItem);
+                }
+            }
+            return inputs;
+        }
+        private IEnumerable<DebugItem> BuildMethodOutputs(IExecutionEnvironment env, IPluginAction action)
+        {
+            var debugOutputs = new List<DebugItem>();
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams(action.Method, "Action: "), debugItem);
+            debugOutputs.Add(debugItem);
+            if (!string.IsNullOrEmpty(action.MethodResult))
+            {
+                debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
+                AddDebugItem(new DebugEvalResult(action.MethodResult, "", env, 0), debugItem);
+                debugOutputs.Add(debugItem);
+            }
+            return debugOutputs;
+        }
+        
+        #endregion
+       
         #endregion
 
         public override enFindMissingType GetFindMissingType()

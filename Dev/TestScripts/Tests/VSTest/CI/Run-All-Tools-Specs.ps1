@@ -23,66 +23,40 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
-# Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
-[system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings
-  id=`"
-"@ + [guid]::NewGuid() + @"
-`"
-  name="Tools Specs"
-  enableDefaultDataCollectors="false"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run Tool Specs.</Description>
-  <Deployment enabled="false" />
-  <Execution>
-    <Timeouts testTimeout=`"180000`" />
-  </Execution>
-</TestSettings>
-"@)
-
 # Find test assembly
 $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
-}
-elseif (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot"
-}
-elseif (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
-}
-elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.ToolsSpecs.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.ToolsSpecs.dll"
+} else {
+	Write-Host Cannot find Warewolf.ToolsSpecs.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.ToolsSpecs\bin\Debug
+	exit 1
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " `"" + $TestAssembliesPath + "\Warewolf.ToolsSpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
-Write-Host $PSScriptRoot> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host $PSScriptRoot> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
 Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Append -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

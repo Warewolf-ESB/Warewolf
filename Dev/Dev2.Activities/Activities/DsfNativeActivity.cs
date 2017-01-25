@@ -503,15 +503,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (_debugState != null)
             {
-                _debugState.ClientID = dataObject.ClientID;
-                _debugState.OriginatingResourceID = dataObject.ResourceID;
-                _debugState.SourceResourceID = dataObject.SourceResourceID;
-                _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
+                DispatchDebugState(_debugState,dataObject);
                 if (stateType == StateType.After)
                 {
                     _debugState = null;
                 }
+            }
+        }
+
+
+        protected void DispatchDebugState(IDebugState state, IDSFDataObject dataObject)
+        {
+            if (state != null)
+            {
+                state.ClientID = dataObject.ClientID;
+                state.OriginatingResourceID = dataObject.ResourceID;
+                state.SourceResourceID = dataObject.SourceResourceID;
+                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
             }
         }
 
@@ -1007,7 +1015,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val1, variable, val2, val3);
+                    var actMsg = string.Format(msg, val2, variable, val1, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                     if (testResult.Message.EndsWith(Environment.NewLine))
                     {
