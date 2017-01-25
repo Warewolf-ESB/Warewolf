@@ -53,6 +53,10 @@ namespace TestingDotnetDllCascading
         {
             Name = "System.Default";
         }
+        public List<int> BuildInts(int a, int b, int c, int d)
+        {
+            return new List<int>() { a, b, c, d };
+        }
 
         public List<Food> FavouriteFoods()
         {

@@ -57,7 +57,6 @@ namespace Dev2.Activities
                 Constructor = new PluginConstructor();
             }
 
-
             ExecuteService(update, out errors, Constructor, Namespace, dataObject);
         }
 
@@ -96,7 +95,6 @@ namespace Dev2.Activities
             pluginExecutionDto.Args = args;
             try
             {
-
                 PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
 
                 ObjectResult = result.ObjectString;
@@ -107,29 +105,18 @@ namespace Dev2.Activities
                     dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
                 }
                 DebugStateForConstructorInputsOutputs(dataObject, update);
-
-                MethodsToRun = result.Args.MethodsToRun?.Select(p => new PluginAction()
+                if (MethodsToRun != null)
                 {
-                    Method = p.Method,
-                    MethodResult = p.MethodResult,
-                    IsObject = p.IsObject,
-                    OutputVariable = p.OutputVariable,
-                    IsVoid = p.IsVoid,
-                    Inputs = p.Parameters?.Select(q => new ServiceInput(q.Name, q.Value)
+                    for (int i = 0; i < MethodsToRun.Count; i++)
                     {
-                        EmptyIsNull = q.EmptyToNull,
-                        RequiredField = q.IsRequired,
-                        TypeName = q.TypeName
-
-                    } as IServiceInput).ToList() ?? new List<IServiceInput>()
-
-                } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
-
+                        MethodsToRun[i].MethodResult = result.Args.MethodsToRun?[i].MethodResult;
+                    }
+                }
+                
                 AssignMethodResult(update, dataObject);
             }
             catch (Exception e)
             {
-
                 if (e.HResult == -2146233088)
                 {
                     errors.AddError(ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message);
@@ -145,7 +132,6 @@ namespace Dev2.Activities
         {
             foreach (var pluginAction in MethodsToRun)
             {
-
                 if (pluginAction.IsObject)
                 {
                     var jContainer = JToken.Parse(pluginAction.MethodResult) as JContainer
@@ -221,8 +207,6 @@ namespace Dev2.Activities
                             MethodResult = action.MethodResult,
                             OutputVariable = action.OutputVariable,
                             IsVoid = action.IsVoid
-
-
                         } as IDev2MethodInfo;
                     }
                     return new Dev2MethodInfo();
@@ -246,7 +230,6 @@ namespace Dev2.Activities
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
             debugState.DisplayName = action.Method;
-
             debugState.ErrorMessage = string.Empty;
             debugState.IsSimulation = false;
             debugState.HasError = false;
@@ -257,7 +240,6 @@ namespace Dev2.Activities
 
         private DebugState PopulateDebugStateWithDefaultValues(IDSFDataObject dataObject)
         {
-
             var debugState = new DebugState
             {
                 ID = Guid.NewGuid(),
@@ -280,7 +262,6 @@ namespace Dev2.Activities
                 Server = GetServerName() ?? "",
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
-
             };
             return debugState;
         }
