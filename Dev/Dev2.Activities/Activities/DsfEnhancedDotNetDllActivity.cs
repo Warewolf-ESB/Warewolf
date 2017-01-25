@@ -122,10 +122,10 @@ namespace Dev2.Activities
             pluginExecutionDto.Args = args;
             try
             {
-                if (!Constructor.IsExistingObject)
-                {
-                    pluginExecutionDto = PluginServiceExecutionFactory.CreateInstance(args);
-                }
+                //if (!Constructor.IsExistingObject)
+                //{
+                //    pluginExecutionDto = PluginServiceExecutionFactory.CreateInstance(args);
+                //}
 
                 PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
 
@@ -344,7 +344,7 @@ namespace Dev2.Activities
             if (!string.IsNullOrEmpty(action.MethodResult))
             {
                 var debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(action.MethodResult, action.OutputVariable, env, 0), debugItem);
+                AddDebugItem(new DebugEvalResult(action.OutputVariable, "", env, 0), debugItem);
                 debugOutputs.Add(debugItem);
             }
             return debugOutputs;
