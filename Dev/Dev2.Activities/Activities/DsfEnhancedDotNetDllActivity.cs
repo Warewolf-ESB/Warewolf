@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
@@ -129,7 +128,16 @@ namespace Dev2.Activities
                 }
 
                 PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
-                
+
+                ObjectResult = result.ObjectString;
+
+                if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
+                {
+                    var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
+                    dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
+                }
+                DebugStateForConstructorInputsOutputs(dataObject);
+
                 MethodsToRun = result.Args.MethodsToRun?.Select(p => new PluginAction()
                 {
                     Method = p.Method,
@@ -145,7 +153,7 @@ namespace Dev2.Activities
                     } as IServiceInput).ToList() ?? new List<IServiceInput>()
 
                 } as IPluginAction).ToList() ?? new List<IPluginAction>();// assign return values returned from the seperate AppDomain
-            
+
                 foreach (var pluginAction in MethodsToRun)
                 {
                     if (pluginAction.IsVoid)
@@ -190,14 +198,6 @@ namespace Dev2.Activities
                     }
                     DispatchDebugStateForMethod(pluginAction, dataObject);
                 }
-                ObjectResult = result.ObjectString;
-
-                if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
-                {
-                    var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
-                    dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
-                }
-                DispatchDebugStateForConstructorInputs(dataObject);
             }
             catch (Exception e)
             {
@@ -217,9 +217,9 @@ namespace Dev2.Activities
 
         protected override void ChildDebugStateDispatch(IDSFDataObject dataObject)
         {
-            foreach(var debugState in _childStatesToDispatch)
+            foreach (var debugState in _childStatesToDispatch)
             {
-                DispatchDebugState(debugState,dataObject);
+                DispatchDebugState(debugState, dataObject);
             }
         }
 
@@ -228,8 +228,9 @@ namespace Dev2.Activities
         private void DispatchDebugStateForMethod(IPluginAction action, IDSFDataObject dataObject)
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            debugState.DisplayName = action.Method;
+
             debugState.ErrorMessage = string.Empty;
-            //debugState.Server = dataObject.ServerID
             debugState.IsSimulation = false;
             debugState.HasError = false;
             debugState.Inputs.AddRange(BuildMethodInputs(dataObject.Environment, action));
@@ -239,6 +240,7 @@ namespace Dev2.Activities
 
         private DebugState PopulateDebugStateWithDefaultValues(IDSFDataObject dataObject)
         {
+
             var debugState = new DebugState
             {
                 ID = Guid.NewGuid(),
@@ -248,46 +250,29 @@ namespace Dev2.Activities
                 StateType = StateType.All,
                 ActualType = GetType().Name,
                 StartTime = DateTime.Now,
-                EndTime =  DateTime.Now,
+                EndTime = DateTime.Now,
                 ActivityType = ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = false,
                 ServerID = dataObject.ServerID,
                 OriginatingResourceID = dataObject.ResourceID,
                 OriginalInstanceID = dataObject.OriginalInstanceID,
-                //Server = name,
                 Version = string.Empty,
-                Name = "bob",
+                Name = GetType().Name,
                 HasError = false,
-                //ErrorMessage = errorMessage,
+                Server = GetServerName() ?? "",
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
+
             };
-            //var debugState = new DebugState
-            //{
-            //    ParentID = UniqueID.ToGuid(),
-            //    WorkSurfaceMappingId = WorkSurfaceMappingId,
-            //    WorkspaceID = dataObject.WorkspaceID,
-            //    StateType = StateType.After,
-            //    ActualType = GetType().Name,
-            //    StartTime = DateTime.Now,
-            //    EndTime = DateTime.Now,
-            //    ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
-            //    DisplayName = DisplayName,
-            //    ServerID = dataObject.ServerID,
-            //    OriginatingResourceID = dataObject.ResourceID,
-            //    OriginalInstanceID = dataObject.OriginalInstanceID,
-            //    Version = string.Empty,
-            //    EnvironmentID = dataObject.DebugEnvironmentId,
-            //    SessionID = dataObject.DebugSessionID,
-            //    Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription()
-            //};
             return debugState;
         }
 
-        private void DispatchDebugStateForConstructorInputs(IDSFDataObject dataObject)
+        private void DebugStateForConstructorInputsOutputs(IDSFDataObject dataObject)
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            if (Constructor != null)
+                debugState.DisplayName = Constructor.ConstructorName;
             debugState.Inputs.AddRange(BuildConstructorInputs(dataObject.Environment));
             debugState.Outputs.AddRange(BuildConstructorOutput(dataObject.Environment));
             _childStatesToDispatch.Add(debugState);
@@ -312,18 +297,11 @@ namespace Dev2.Activities
             var inputs = new List<DebugItem>();
             if (Constructor != null)
             {
-                DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "Constructor"), debugItem);
-                AddDebugItem(new DebugItemStaticDataParams(Constructor.ConstructorName, ""), debugItem);
-                inputs.Add(debugItem);
                 if (ConstructorInputs != null && ConstructorInputs.Any())
                 {
-                    debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Constructor Inputs"), debugItem);
-                    inputs.Add(debugItem);
                     foreach (var constructorInput in ConstructorInputs)
                     {
-                        debugItem = new DebugItem();
+                        var debugItem = new DebugItem();
                         AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, 0), debugItem);
                         inputs.Add(debugItem);
                     }
@@ -338,7 +316,6 @@ namespace Dev2.Activities
             if (!string.IsNullOrEmpty(ObjectName))
             {
                 DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "Constructor Output"), debugItem);
                 AddDebugItem(new DebugEvalResult(ObjectName, "", env, 0), debugItem);
                 debugItems.Add(debugItem);
             }
@@ -352,15 +329,9 @@ namespace Dev2.Activities
             var inputs = new List<DebugItem>();
             if (action.Inputs.Any())
             {
-                DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams(action.Method, "Action: "), debugItem);
-                inputs.Add(debugItem);
-                debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "Inputs"), debugItem);
-                inputs.Add(debugItem);
                 foreach (var methodParameter in action.Inputs)
                 {
-                    debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(methodParameter.Value, methodParameter.Name, env, 0), debugItem);
                     inputs.Add(debugItem);
                 }
@@ -370,21 +341,17 @@ namespace Dev2.Activities
         private IEnumerable<DebugItem> BuildMethodOutputs(IExecutionEnvironment env, IPluginAction action)
         {
             var debugOutputs = new List<DebugItem>();
-            DebugItem debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams(action.Method, "Action: "), debugItem);
-            debugOutputs.Add(debugItem);
             if (!string.IsNullOrEmpty(action.MethodResult))
             {
-                debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "Output"), debugItem);
-                AddDebugItem(new DebugEvalResult(action.MethodResult, "", env, 0), debugItem);
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugEvalResult(action.MethodResult, action.OutputVariable, env, 0), debugItem);
                 debugOutputs.Add(debugItem);
             }
             return debugOutputs;
         }
-        
+
         #endregion
-       
+
         #endregion
 
         public override enFindMissingType GetFindMissingType()
