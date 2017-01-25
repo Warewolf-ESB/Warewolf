@@ -4619,7 +4619,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
