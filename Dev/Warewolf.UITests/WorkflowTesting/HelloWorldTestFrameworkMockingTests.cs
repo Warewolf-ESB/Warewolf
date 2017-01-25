@@ -107,7 +107,6 @@ namespace Warewolf.UITests
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
 
         UIMap UIMap
