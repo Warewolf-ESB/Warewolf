@@ -189,10 +189,34 @@ namespace Warewolf.Studio.ViewModels
             else if(actualType == typeof(DsfSwitch).Name || actualType == typeof(TestMockSwitchStep).Name)
             {
                 SwitchFromDebug(debugState,debugItemContent);
-            }            
+            }
+            else if (actualType == typeof(DsfEnhancedDotNetDllActivity).Name)
+            {
+                EnhancedDotNetDllFromDebug(debugState, debugItemContent);
+            }
             else
             {
                 AddStepFromDebug(debugState, debugItemContent);
+            }
+        }
+
+        private void EnhancedDotNetDllFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
+        {
+            var exists = FindExistingStep(debugItemContent.ID.ToString());
+            ServiceTestStep serviceTestStep = null;
+            if (exists == null)
+            {
+                serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
+                // ReSharper disable once PossibleNullReferenceException
+                if (serviceTestStep != null)
+                {
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                }
+            }
+
+            if (debugState.Children != null && debugState.Children.Count > 0)
+            {
+                AddChildren(debugState, serviceTestStep);
             }
         }
 
@@ -470,8 +494,7 @@ namespace Warewolf.Studio.ViewModels
                     var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
-                            serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
@@ -487,8 +510,7 @@ namespace Warewolf.Studio.ViewModels
                             if (type != null)
                             {
                                 var act = Activator.CreateInstance(type) as IDev2Activity;
-                                childStep.StepOutputs =
-                                    AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
+                                childStep.StepOutputs = AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
@@ -505,7 +527,6 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (outputs.Count > 0)
                             {
-
                                 AddOutputs(outputs, serviceTestStep);
                             }
                             else
@@ -514,8 +535,7 @@ namespace Warewolf.Studio.ViewModels
                                 if (type != null)
                                 {
                                     var act = Activator.CreateInstance(type) as IDev2Activity;
-                                    serviceTestStep.StepOutputs =
-                                        AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                                    serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
                                 }
                             }
                         }
