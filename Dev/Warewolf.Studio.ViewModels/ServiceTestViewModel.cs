@@ -202,43 +202,14 @@ namespace Warewolf.Studio.ViewModels
 
         private void EnhancedDotNetDllFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
         {
-            var outputs = debugItemContent.Outputs;
             var exists = FindExistingStep(debugItemContent.ID.ToString());
             ServiceTestStep serviceTestStep = null;
             if (exists == null)
             {
                 serviceTestStep = SelectedServiceTest.AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, new ObservableCollection<IServiceTestOutput>()) as ServiceTestStep;
-                var hasOutputs = outputs?.Select(item => item.ResultsList).All(list => list.Count > 0);
-                var debugStateActivityTypeName = debugState.ActivityTypeName;
                 // ReSharper disable once PossibleNullReferenceException
-                if (outputs.Count > 0 && hasOutputs.HasValue && hasOutputs.Value)
-                {
-                    AddOutputs(outputs, serviceTestStep);
-                }
-                else
-                {
-                    var type = Types.FirstOrDefault(x => x.Name == debugStateActivityTypeName);
-                    if (type != null)
-                    {
-                        var act = Activator.CreateInstance(type) as IDev2Activity;
-                        if (serviceTestStep != null)
-                        {
-                            serviceTestStep.StepOutputs =
-                                AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
-                        }
-                    }
-                }
                 if (serviceTestStep != null)
                 {
-                    if (debugStateActivityTypeName == typeof(TestMockStep).Name)
-                    {
-                        var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-                        var val = model.GetCurrentValue();
-                        serviceTestStep.MockSelected = true;
-                        serviceTestStep.AssertSelected = false;
-                        serviceTestStep.Type = StepType.Mock;
-                        serviceTestStep.ActivityType = val.GetType().Name;
-                    }
                     SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                 }
             }
@@ -523,8 +494,7 @@ namespace Warewolf.Studio.ViewModels
                     var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType,
-                            serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
@@ -540,8 +510,7 @@ namespace Warewolf.Studio.ViewModels
                             if (type != null)
                             {
                                 var act = Activator.CreateInstance(type) as IDev2Activity;
-                                childStep.StepOutputs =
-                                    AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
+                                childStep.StepOutputs = AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
@@ -558,7 +527,6 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (outputs.Count > 0)
                             {
-
                                 AddOutputs(outputs, serviceTestStep);
                             }
                             else
@@ -567,8 +535,7 @@ namespace Warewolf.Studio.ViewModels
                                 if (type != null)
                                 {
                                     var act = Activator.CreateInstance(type) as IDev2Activity;
-                                    serviceTestStep.StepOutputs =
-                                        AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                                    serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
                                 }
                             }
                         }
