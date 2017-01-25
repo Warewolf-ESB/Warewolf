@@ -1068,7 +1068,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             DispatchDebugState(dataObject, before, update);
         }
-
+        protected string GetServerName()
+        {
+            return _debugState?.Server;
+        }
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage, DateTime? startTime = null, DateTime? endTime = null)
         {
             Guid parentInstanceID;
