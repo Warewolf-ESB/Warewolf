@@ -93,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.And("I Click Close Web Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I Drag GET Web Connector Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Drag GETWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.And("I Select Test Source From GET Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
@@ -101,7 +101,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.And("I Click GET Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.And("I Click GET Web Large View Test Inputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click GET Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
  testRunner.And("I Click GET Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
@@ -126,7 +126,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
- testRunner.When("I Drag PostWeb RequestTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Drag POSTWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
  testRunner.And("I Select Test Source From POST Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
@@ -134,7 +134,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.And("I Click POST Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
- testRunner.And("I Click POST Web Large View Test Inputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click POST Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
  testRunner.And("I Click POST Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -155,7 +155,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
- testRunner.When("I Drag PutWeb Tool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Drag PUTWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
  testRunner.And("I Select Test Source From PUT Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
@@ -163,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 40
  testRunner.And("I Click PUT Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
- testRunner.And("I Click PUT Web Large View Test Inputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click PUT Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
  testRunner.And("I Click PUT Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -184,7 +184,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 47
- testRunner.When("I Drag DeleteWeb Toolbox Onto Workflow Surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Drag DELETEWebTool Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
  testRunner.And("I Select Test Source From DELETE Web Large View Source Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
@@ -192,7 +192,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 50
  testRunner.And("I Click DELETE Web Large View Test Inputs Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
- testRunner.And("I Click DELETE Web Large View Test Inputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click DELETE Web Tool Outputs Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
  testRunner.And("I Click DELETE Web Large View Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
