@@ -9153,7 +9153,12 @@ namespace Warewolf.UITests
         [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
         public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
         {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
+            #region Variable Declarations
+            WpfTreeItem uIItemTreeItem = this.ChooseDLLWindow.DLLDataTree.GAC.FirstItem;
+            #endregion
+
+            // Click 'GAC' ->  tree item
+            Mouse.Click(uIItemTreeItem, new Point(68, 6));
         }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
