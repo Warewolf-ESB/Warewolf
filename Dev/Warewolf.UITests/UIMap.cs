@@ -8236,16 +8236,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
         }
 
-        [Given(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
-        [Then(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
-        [When(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
-
-        public void Type_The_Testing_Site_into_Web_GET_Source_Wizard_Address_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Get";
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web get address.");
-        }
-
         [When(@"I Type The Testing Site into Web POST Source Wizard Address Textbox")]
         public void Type_The_Testing_Site_into_Web_POST_Source_Wizard_Address_Textbox()
         {
