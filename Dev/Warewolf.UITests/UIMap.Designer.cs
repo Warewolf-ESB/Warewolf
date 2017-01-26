@@ -43,19 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfListItem keepNewNameRenamedListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem;
-            #endregion
-
-            // Verify that the 'DisplayText' property of 'KeepNewNameRenamed' list item equals 'KeepNewNameRenamed'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.KeepNewNameRenamedListItemDisplayText, keepNewNameRenamedListItem.DisplayText);
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -66,18 +53,6 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -253,8 +228,6 @@ namespace Warewolf.UITests
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -297,21 +270,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'DisplayText' property of 'KeepNewNameRenamed' list item equals 'KeepNewNameRenamed'
-        /// </summary>
-        public string KeepNewNameRenamedListItemDisplayText = "KeepNewNameRenamed";
         #endregion
     }
     
