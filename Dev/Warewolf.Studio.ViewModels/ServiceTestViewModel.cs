@@ -2233,7 +2233,8 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                testStep.Parent?.Children.Remove(testStep);
+                var foundParentStep = serviceTestSteps.FirstOrDefault(step => step.UniqueId == testStep.Parent?.UniqueId);
+                foundParentStep?.Children?.Remove(testStep);
             }
         }
 
