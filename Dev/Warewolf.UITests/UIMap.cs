@@ -756,7 +756,7 @@ namespace Warewolf.UITests
         [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
-            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist on the Surface.");
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
         }
 
@@ -997,7 +997,8 @@ namespace Warewolf.UITests
         [When(@"I Click SaveDialog Save Button")]
         [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
-        {
+        {            
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save button on the Save Dialog is not Enabled");
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
         }
         public void TryCloseNewWebSourceWizardTab()
@@ -3831,6 +3832,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
@@ -5424,7 +5426,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savble was unsucessful.");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
@@ -7868,7 +7870,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
-        
+
         [Given(@"I Select Delete From SaveDialog Context Menu")]
         [When(@"I Select Delete From SaveDialog Context Menu")]
         [Then(@"I Select Delete From SaveDialog Context Menu")]
@@ -8234,7 +8236,10 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
         }
 
+        [Given(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
+        [Then(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
         [When(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
+
         public void Type_The_Testing_Site_into_Web_GET_Source_Wizard_Address_Textbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Get";
@@ -8348,10 +8353,10 @@ namespace Warewolf.UITests
         }
 
         public void Click_Delete_On_AssignValue_TestStep()
-        {          
+        {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.DrawHighlight();
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.Enabled);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);            
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);
         }
 
         [When(@"I Click AssigName From DesignSurface")]
@@ -9148,7 +9153,12 @@ namespace Warewolf.UITests
         [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
         public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
         {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
+            #region Variable Declarations
+            WpfTreeItem uIItemTreeItem = this.ChooseDLLWindow.DLLDataTree.GAC.FirstItem;
+            #endregion
+
+            // Click 'GAC' ->  tree item
+            Mouse.Click(uIItemTreeItem, new Point(68, 6));
         }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {

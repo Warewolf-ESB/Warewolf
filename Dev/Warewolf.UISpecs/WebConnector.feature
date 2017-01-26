@@ -7,11 +7,6 @@ Feature: WebConnector
 Scenario: Create and Execute New Web GET Connector
 	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
-	And I Click New Web Source Explorer Context Menu Button
-	And I Type The Testing Site into Web GET Source Wizard Address Textbox
-	And I Click New Web Source Test Connection Button
-	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"
-	And I Click Close Web Source Wizard Tab Button
 	And I Drag GETWebTool Onto DesignSurface
 	And I Select Test Source From GET Web Large View Source Combobox
 	And I Click GET Web Large View Generate Outputs
@@ -63,6 +58,13 @@ Scenario: Right click adorner control with error
 	And I RightClick Ardoner Hyperlink
 	And There is an error
 
+Scenario: Create and Save new Web Service Source
+	Given The Warewolf Studio is running
+	And I Click New Web Source Explorer Context Menu Button
+	And I Type The Testing Site into Web GET Source Wizard Address Textbox
+	And I Click New Web Source Test Connection Button
+	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"
+	And I Click Close Web Source Wizard Tab Button
 
 
 	
