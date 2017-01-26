@@ -421,6 +421,103 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
+        [Then(@"the dotnetdll ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
+        public void ThenTheInInStepForDotNetDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if (parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            Assert.IsTrue(sequenceDebug.Count >= stepNumber);
+
+            var sequenceId = sequenceDebug[stepNumber - 1].ID;
+            var sequenceIsInForEach = sequenceDebug.Any(state => state.ID == sequenceId);
+            Assert.IsTrue(sequenceIsInForEach);
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsNotNull(toolSpecificDebug);
+            IDebugState debugState = toolSpecificDebug.FirstOrDefault();
+            if (debugState != null)
+            {
+                for (int index = 0; index < debugState.Inputs.Count; index++)
+                {
+                    var debugItem = debugState.Inputs[index];
+                    var tableRow = table.Rows[index];
+                    var variable = tableRow["Variable"];
+                    var value = tableRow["value"];
+                    var label = tableRow["label"];
+                    var operater = tableRow["operater"];
+                    var debugItemResult = debugItem.ResultsList.FirstOrDefault();
+                    if (debugItemResult != null)
+                    {
+                        Assert.AreEqual((object)value, debugItemResult.Value);
+                        Assert.AreEqual(variable, debugItemResult.Variable);
+                        Assert.AreEqual(label, debugItemResult.Label);
+                        Assert.AreEqual(operater, debugItemResult.Operator);
+                    }
+                }
+            }
+        }
+
+        [Then(@"the dotnetdll ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug output as")]
+        public void ThenTheDotnetdllInInStepForDebugOutputAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if (parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            Assert.IsTrue(sequenceDebug.Count >= stepNumber);
+
+            var sequenceId = sequenceDebug[stepNumber - 1].ID;
+            var sequenceIsInForEach = sequenceDebug.Any(state => state.ID == sequenceId);
+            Assert.IsTrue(sequenceIsInForEach);
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsNotNull(toolSpecificDebug);
+            IDebugState debugState = toolSpecificDebug.FirstOrDefault();
+            if (debugState != null)
+            {
+                for (int index = 0; index < debugState.Outputs.Count; index++)
+                {
+                    var debugItem = debugState.Outputs[index];
+                    var tableRow = table.Rows[index];
+                    var variable = tableRow["Variable"];
+                    var value = tableRow["value"];
+                    var operater = tableRow["operater"];
+                    var debugItemResult = debugItem.ResultsList.FirstOrDefault();
+                    if (debugItemResult != null)
+                    {
+                        Assert.AreEqual((object)value, debugItemResult.Value);
+                        Assert.AreEqual(variable, debugItemResult.Variable);
+                        Assert.AreEqual(operater, debugItemResult.Operator);
+                    }
+                }
+            }
+        }
+
+
         [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
@@ -479,6 +576,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
+
 
             _commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList());
@@ -581,7 +679,7 @@ namespace Dev2.Activities.Specs.Composition
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
                                                                          || model.Category == remoteWf.Replace('/', '\\'), true);
-                if(remoteResourceModel == null)
+                if (remoteResourceModel == null)
                 {
                     remoteEnvironment.LoadResources();
                     remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
@@ -2469,6 +2567,63 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+        [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
+        [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
+        public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity()
+            {
+                IsObject = true
+            };
+            var Source = table.Rows[0]["Source"];
+            var ClassName = table.Rows[0]["ClassName"];
+            var ObjectName = table.Rows[0]["ObjectName"];
+            var Action = table.Rows[0]["Action"];
+            var ActionOutputVaribale = table.Rows[0]["ActionOutputVaribale"];
+            dsfEnhancedDotNetDllActivity.ObjectName = ObjectName;
+            StudioServerProxy proxy = new StudioServerProxy(new CommunicationControllerFactory(), LocalEnvModel.Connection);
+            var pluginSource = proxy.QueryManagerProxy.FetchPluginSources().Single(source => source.Name.Equals(Source, StringComparison.InvariantCultureIgnoreCase));
+            var namespaceItems = proxy.QueryManagerProxy.FetchNamespacesWithJsonRetunrs(pluginSource);
+            var namespaceItem = namespaceItems.Single(item => item.FullName.Equals(ClassName, StringComparison.CurrentCultureIgnoreCase));
+            var pluginActions = proxy.QueryManagerProxy.PluginActionsWithReturns(pluginSource, namespaceItem);
+            var pluginAction = pluginActions.Single(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
+            IList<IPluginConstructor> pluginConstructors = proxy.QueryManagerProxy.PluginConstructors(pluginSource, namespaceItem);
+            pluginAction.OutputVariable = ActionOutputVaribale;
+            const string recNumber = "[[rec(*).number]]";
+            foreach (var serviceInput in pluginAction.Inputs)
+            {
+                serviceInput.Value = recNumber;
+            }
+            dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
+            dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
+            ScenarioContext.Current.Add(dotNetServiceName, dsfEnhancedDotNetDllActivity);
+            ScenarioContext.Current.Add("pluginConstructors", pluginConstructors);
+            _commonSteps.AddVariableToVariableList(ObjectName);
+            _commonSteps.AddVariableToVariableList(ActionOutputVaribale);
+            _commonSteps.AddVariableToVariableList(recNumber);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
+        }
+
+        [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
+        public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
+        {
+            var dsfEnhancedDotNetDllActivity = ScenarioContext.Current.Get<DsfEnhancedDotNetDllActivity>(serviceName);
+            var pluginConstructors = ScenarioContext.Current.Get<IList<IPluginConstructor>>("pluginConstructors");
+            var pluginConstructor = pluginConstructors.FirstOrDefault(constructor => constructor.Inputs.Count == p1);
+            dsfEnhancedDotNetDllActivity.Constructor = pluginConstructor;
+            dsfEnhancedDotNetDllActivity.ConstructorInputs = new List<IServiceInput>();
+            foreach (var tableRow in table.Rows)
+            {
+                var inputName = tableRow["parameterName"];
+                var value = tableRow["value"];
+                var type = tableRow["type"];
+                dsfEnhancedDotNetDllActivity.ConstructorInputs.Add(new ServiceInput(inputName, value)
+                {
+                    TypeName = type
+                });
+            }
+        }
+
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
@@ -3622,8 +3777,8 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
-        
-        
+
+
         [Given(@"I create a new unsaved workflow with name ""(.*)""")]
         [When(@"I create a new unsaved workflow with name ""(.*)""")]
         [Then(@"I create a new unsaved workflow with name ""(.*)""")]
@@ -3648,7 +3803,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             else
             {
-                Add("unsavedWFS",new List<IContextualResourceModel> {tempResource});
+                Add("unsavedWFS", new List<IContextualResourceModel> { tempResource });
             }
 
             environmentModel.ResourceRepository.Add(tempResource);
@@ -3671,7 +3826,7 @@ namespace Dev2.Activities.Specs.Composition
                 Add("environment", environmentModel);
                 Add("resourceRepo", environmentModel.ResourceRepository);
                 Add("debugStates", new List<IDebugState>());
-            }                       
+            }
         }
 
 
