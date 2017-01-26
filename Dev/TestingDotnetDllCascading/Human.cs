@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace TestingDotnetDllCascading
 {
@@ -60,15 +63,16 @@ namespace TestingDotnetDllCascading
 
         public List<Food> FavouriteFoods()
         {
-            var foods = new List<Food> { new Food { FoodName = "Pizza" }, new Food { FoodName = "Burger" }, new Food { FoodName = "Chicken" } };
-            return foods;
+            return _foods;
         }
-
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private List<Food> _foods = new List<Food> { new Food { FoodName = "Pizza" }, new Food { FoodName = "Burger" }, new Food { FoodName = "Chicken" } };
         public List<int> PhoneNumbers()
         {
             var numbers = new List<int> { 1284561478, 228561478, 215561475 };
             return numbers;
         }
+        
 
         #region Overrides of Object
 
@@ -83,6 +87,22 @@ namespace TestingDotnetDllCascading
             return $"Name:{Name}, Surname:{SurName}, FoodName:{PersonFood.FoodName}";
         }
 
+        public Human CopyHuman(Human human)
+        {
+            return new Human(human.Name, human.SurName, human.PersonFood);
+        }
+
+        public string AddFavouriteFood(Food food)
+        {
+            _foods.Add(food);
+            return food == null ? "No food passed in" : "Success";
+        }
+
+        public string RemoveFavouriteFood(Food food)
+        {
+            var removeAll = _foods.RemoveAll(food1 => food1.FoodName.Equals(food.FoodName, StringComparison.InvariantCultureIgnoreCase));
+            return $"removed {removeAll} foods";
+        }
 
         //Add list of strings
         //add a list of objects
