@@ -1294,8 +1294,8 @@ Scenario: Workflow with Assign and ForEach
 	 And the "ForEachTest" in WorkFlow "WFWithAssignForEach" has  "3" nested children 
 	 And each "11714Nested" contains debug outputs for "Assign (1)" as
       | variable | value    |
-      | [[a]]    | warewolf |  
-        
+      | [[a]]    | warewolf | 
+	          
 Scenario: Workflow with ForEach which contains assign
       Given I have a workflow "WFWithForEachContainingAssign"
 	  And "WFWithForEachContainingAssign" contains an Assign "Rec To Convert" as
@@ -1323,6 +1323,8 @@ Scenario: Workflow with ForEach which contains assign
 	  And the "MyAssign" in step 2 for "ForEachTest" debug outputs as
 		| # |                     |
 		| 1 | [[rec(2).a]] = Test |
+		
+
 
 Scenario: Gather System Info returns values
 	Given I have a workflow "WorkflowWithGatherSystemInfo"
@@ -1428,6 +1430,7 @@ Scenario: Workflow with ForEach which contains Sequence
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |	
 
+
 Scenario: Executing ForEach in Rec with star which contains Sequence
       Given I have a workflow "WorkFWithForEachwithRecContainingSequence"
 	  And "WorkFWithForEachwithRecContainingSequence" contains an Assign "RecVal" as
@@ -1491,6 +1494,72 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	   And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
+
+ Scenario: Workflow with ForEach in Rec with star which contains Dot Net DLL
+      Given I have a workflow "WFWithForEachContainingDotNetDLL"	
+	   And "WFWithForEachContainingDotNetDLL" contains an Assign "RecVal" as
+	  | variable         | value |
+	  | [[rec().number]] | 1     |
+	  | [[rec().number]] | 2     |
+	  | [[rec().number]] | 3     |
+	  | [[rec().number]] | 4     |
+	  And "WFWithForEachContainingDotNetDLL" contains a Foreach "ForEachTest" as "InRecordset" executions "[[rec(*)]]" 		
+	  And "ForEachTest" contains an DotNet DLL "DotNetService" as
+	     | Source                   | ClassName                       | ObjectName | Action    | ActionOutputVaribale |
+	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |
+	  And "DotNetService" constructorinputs 0 with inputs as
+	  | parameterName | value |type|
+	  
+      When "WFWithForEachContainingDotNetDLL" is executed
+	  Then the workflow execution has "NO" error
+	   And the "RecVal" in WorkFlow "WFWithForEachContainingDotNetDLL" debug inputs as 
+		  | # | Variable           | New Value |
+		  | 1 | [[rec().number]] = | 1         |
+		  | 2 | [[rec().number]] = | 2         |
+		  | 3 | [[rec().number]] = | 3         |
+		  | 4 | [[rec().number]] = | 4         |	  
+      And the "ForEachTest" in WorkFlow "WFWithForEachContainingDotNetDLL" has  "4" nested children 
+	  #And the ".ctor" in 'DotNetService' in step 1 for "ForEachTest1" debug inputs as
+		 # | # |                    | With | Using | Pad | Align |		  
+	  And the dotnetdll "BuildInts" in 'DotNet DLL' in step 1 for "ForEachTest" debug inputs as
+		 | label | Variable          | value | operater |
+		 | a     | [[rec(1).number]] | 1     | =        |
+		 | b     | [[rec(1).number]] | 1     | =        |
+		 | c     | [[rec(1).number]] | 1     | =        |
+		 | d     | [[rec(1).number]] | 1     | =        |
+	  And the dotnetdll "BuildInts" in 'DotNet DLL' in step 2 for "ForEachTest" debug inputs as
+			 | label | Variable          | value | operater |
+			 | a     | [[rec(2).number]] | 2     | =        |
+			 | b     | [[rec(2).number]] | 2     | =        |
+			 | c     | [[rec(2).number]] | 2     | =        |
+			 | d     | [[rec(2).number]] | 2     | =        |
+	 And the dotnetdll "BuildInts" in 'DotNet DLL' in step 3 for "ForEachTest" debug inputs as
+		 	 | label | Variable          | value | operater |
+		 	 | a     | [[rec(3).number]] | 3     | =        |
+		 	 | b     | [[rec(3).number]] | 3     | =        |
+		 	 | c     | [[rec(3).number]] | 3     | =        |
+		 	 | d     | [[rec(3).number]] | 3     | =        |
+	 And the dotnetdll "BuildInts" in 'DotNet DLL' in step 4 for "ForEachTest" debug inputs as
+		 	 | label | Variable          | value | operater |
+		 	 | a     | [[rec(4).number]] | 4     | =        |
+		 	 | b     | [[rec(4).number]] | 4     | =        |
+		 	 | c     | [[rec(4).number]] | 4     | =        |
+		 	 | d     | [[rec(4).number]] | 4     | =        |
+	And the dotnetdll "BuildInts" in "DotNet DLL" in step 1 for "ForEachTest" debug output as
+		 | label | Variable        | value | operater |
+	   	 |       | [[rec1(4).num]] | 1     | =        |
+    And the dotnetdll "BuildInts" in "DotNet DLL" in step 2 for "ForEachTest" debug output as
+		 | label | Variable        | value | operater |
+		 |       | [[rec1(8).num]] | 2     | =        |
+    And the dotnetdll "BuildInts" in "DotNet DLL" in step 3 for "ForEachTest" debug output as
+		 | label | Variable         | value | operater |
+		 |       | [[rec1(12).num]] | 3     | =        |
+    And the dotnetdll "BuildInts" in "DotNet DLL" in step 4 for "ForEachTest" debug output as
+		 | label | Variable         | value | operater |
+		 |       | [[rec1(16).num]] | 4     | =        |
+
+	
+		
 
 Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
       Given I have a workflow "WFContainsForEachInsideforEach"
