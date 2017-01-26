@@ -30,6 +30,7 @@
             <converters1:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed"/>
             <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
             <customControls:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
+            <customControls:ServiceTestHeaderTemplateWidthConverter x:Key="ServiceTestHeaderTemplateWidthConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -540,7 +541,7 @@
                                                                     AutomationProperties.AutomationId="{Binding StringFormat=UI_ServiceTestTestStepExpander_{0}_AutoID, Path=Node.Data.StepDescription}">
                                                             <Expander.HeaderTemplate>
                                                                 <DataTemplate>
-                                                                    <DockPanel LastChildFill="False" >
+                                                                    <DockPanel x:Name="TestStepDockPanel" LastChildFill="False" >
                                                                         <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                                                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
                                                                                 <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -550,9 +551,17 @@
                                                                             </StackPanel>
                                                                             <Image Source="{Binding Path=StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
                                                                             <TextBlock Text="{Binding Path=StepDescription}" 
-																					    ToolTip="{Binding Path=StepDescription}" 
-																					    FontWeight="Bold" 
-																					    HorizontalAlignment="Stretch"/>
+																					   ToolTip="{Binding Path=StepDescription}" 
+                                                                                       TextTrimming="CharacterEllipsis"
+																					   FontWeight="Bold" 
+																					   HorizontalAlignment="Stretch">
+                                                                                <TextBlock.Width>
+                                                                                    <MultiBinding Converter="{StaticResource ServiceTestHeaderTemplateWidthConverter}">
+                                                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                                    </MultiBinding>
+                                                                                </TextBlock.Width>
+                                                                            </TextBlock>
                                                                         </StackPanel>
 
                                                                         <Button DockPanel.Dock="Right" 
