@@ -7958,9 +7958,13 @@ namespace Warewolf.UITests
         [Given(@"I Click Edit Deploy Destination Server Button")]
         [When(@"I Click Edit Deploy Destination Server Button")]
         [Then(@"I Click Edit Deploy Destination Server Button")]
-        public void Click_Edit_Deploy_Destination_Server_Buttno()
+        public void Click_Edit_Deploy_Destination_Server_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditDestinationButton);
+        }
+        public void Select_Server_Authentication_Public()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
         }
 
         [When(@"I Select localhost From Deploy Tab Destination Server Combobox")]
