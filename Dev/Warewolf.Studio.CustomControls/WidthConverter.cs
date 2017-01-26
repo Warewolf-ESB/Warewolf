@@ -63,19 +63,18 @@ namespace Warewolf.Studio.CustomControls
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-
             try
             {
-                var xamDataTreeNodeControl = values[0] as Expander;
-                if (xamDataTreeNodeControl != null)
+                var expander = values[0] as Expander;
+                if (expander != null)
                 {
-                    return xamDataTreeNodeControl.ActualWidth - 80;
+                    return expander.ActualWidth - 80;
                 }
-                return 22;
+                return double.NaN;
             }
             catch (Exception)
             {
-                return 22;
+                return double.NaN;
             }
         }
 
