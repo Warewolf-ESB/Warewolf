@@ -613,8 +613,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
-
         private void OnError(Exception exception)
         {
             Dev2Logger.Error(exception);
@@ -913,25 +911,36 @@ namespace Warewolf.Studio.ViewModels
                     Parent = parent
                 };
                 SetStepIcon(typeof(DsfEnhancedDotNetDllActivity), testStep);
-
-                AddEnhancedDotNetDllConstructor(dotNetDllActivity, testStep);
-
-                foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
-                {
-                    AddEnhancedDotNetDllMethod(pluginAction, testStep);
-                }
                 if (exists == null)
                 {
                     serviceTestSteps.Add(testStep);
+                    AddEnhancedDotNetDllConstructor(dotNetDllActivity, testStep);
+                    foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
+                    {
+                        AddEnhancedDotNetDllMethod(pluginAction, testStep);
+                    }
                 }
                 else
                 {
-                    AddMissingChild(serviceTestSteps, testStep);
+                    AddMissingChild(serviceTestSteps, exists);
+                    var constructorStepExists = exists.Children.FirstOrDefault(step => step.UniqueId == dotNetDllActivity.Constructor.ID);
+                    if (constructorStepExists == null)
+                    {
+                        AddEnhancedDotNetDllConstructor(dotNetDllActivity, exists);
+                    }
+                    foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
+                    {
+                        IServiceTestStep actionExists = exists.Children.FirstOrDefault(step => step.UniqueId==pluginAction.ID);
+                        if (actionExists!=null)
+                        {
+                            AddEnhancedDotNetDllMethod(pluginAction, exists);
+                        }
+                    }
                 }
             }
         }
-
-        private static void AddMissingChild(ObservableCollection<IServiceTestStep> serviceTestSteps, ServiceTestStep testStep)
+        
+        private static void AddMissingChild(ObservableCollection<IServiceTestStep> serviceTestSteps, IServiceTestStep testStep)
         {
             if (serviceTestSteps.Count > 0)
             {
@@ -987,9 +996,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, ServiceTestStep testStep)
+        private void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
         {
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), dotNetConstructor.Constructor.ConstructorName,
+            var serviceTestStep = new ServiceTestStep(dotNetConstructor.Constructor.ID, testStep.ActivityType,
                 new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
                 StepDescription = dotNetConstructor.Constructor.ConstructorName,
@@ -1001,12 +1010,12 @@ namespace Warewolf.Studio.ViewModels
             };
             serviceTestStep.StepOutputs = serviceOutputs;
             SetStepIcon(testStep.ActivityType, serviceTestStep);
-            testStep.Children.Add(serviceTestStep);
+            testStep.Children.Insert(0,serviceTestStep);            
         }
 
-        private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, ServiceTestStep testStep)
+        private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
         {
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), pluginAction.Method,
+            var serviceTestStep = new ServiceTestStep(pluginAction.ID, testStep.ActivityType,
                 new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
                 StepDescription = pluginAction.Method,
@@ -1018,7 +1027,7 @@ namespace Warewolf.Studio.ViewModels
             };
             serviceTestStep.StepOutputs = serviceOutputs;
             SetStepIcon(testStep.ActivityType, serviceTestStep);
-            testStep.Children.Add(serviceTestStep);
+            testStep.Children.Add(serviceTestStep);            
         }
 
         private void ProcessSwitch(ModelItem modelItem)
@@ -2207,7 +2216,8 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                testStep.Parent?.Children.Remove(testStep);
+                var foundParentStep = serviceTestSteps.FirstOrDefault(step => step.UniqueId == testStep.Parent?.UniqueId);
+                foundParentStep?.Children?.Remove(testStep);
             }
         }
 
@@ -2295,6 +2305,7 @@ namespace Warewolf.Studio.ViewModels
                 testStep.TestInvalid = false;
             }
             SetStepIcon(testStep.ActivityType, testStep);
+
             if (step.Children != null)
             {
                 foreach (var serviceTestStep in step.Children)

@@ -94,6 +94,8 @@ namespace Dev2.Common.Interfaces
             return Method;
         }
 
+        public Guid ID { get; set; }
+
         #endregion
     }
 }

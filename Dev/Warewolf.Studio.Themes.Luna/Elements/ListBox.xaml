@@ -348,7 +348,7 @@
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
-                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Fill="Transparent"
                                    Visibility="Collapsed" />
                     </Grid>
                 </ControlTemplate>
