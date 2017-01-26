@@ -8,6 +8,7 @@ namespace Dev2.Common.Interfaces
     {
         string FullName { get; set; }
         string Method { get; set; }
+        Guid ID { get; set; }
         IList<IServiceInput> Inputs { get; set; }
         Type ReturnType { get; set; }
         IList<INameValue> Variables { get; set; }
