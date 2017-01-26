@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 }
                 if (Method != null && MethodsToRun != null)
                 {
-                    SelectedMethod = MethodsToRun.FirstOrDefault(action => action.Method == Method.Method);
+                    SelectedMethod = MethodsToRun.FirstOrDefault(action => Equals(action, Method));
                 }
                 RefreshMethodsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {

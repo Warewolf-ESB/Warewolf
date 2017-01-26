@@ -368,12 +368,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
-                    /*var dotNetConstructorRegion = sender as DotNetConstructorRegion;
-                    var outputsRegion = dotNetConstructorRegion?.Dependants.SingleOrDefault(region => region is OutputsRegion) as OutputsRegion;
-                    if (outputsRegion != null)
-                    {
-                        outputsRegion.IsConstructorSelected = dotNetConstructorRegion.SelectedConstructor != null;
-                    }*/
+                    
                 };
 
 
@@ -443,6 +438,10 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 if (methodRegion.SelectedMethod != null)
                 {
+                    if (methodRegion.SelectedMethod.ID == Guid.Empty)
+                    {
+                        methodRegion.SelectedMethod.ID = Guid.NewGuid();
+                    }
                     bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
                     if (!hasUnselectedValue)
                     {
