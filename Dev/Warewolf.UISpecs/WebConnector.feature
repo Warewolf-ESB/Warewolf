@@ -58,13 +58,5 @@ Scenario: Right click adorner control with error
 	And I RightClick Ardoner Hyperlink
 	And There is an error
 
-Scenario: Create and Save new Web Service Source
-	Given The Warewolf Studio is running
-	And I Click New Web Source Explorer Context Menu Button
-	And I Type The Testing Site into Web GET Source Wizard Address Textbox
-	And I Click New Web Source Test Connection Button
-	And I Save Valid Service With Ribbon Button And Dialog As "WebGETUITestingSource"
-	And I Click Close Web Source Wizard Tab Button
-
 
 	
