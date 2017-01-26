@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -101,10 +102,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                if (!dto.Args.PluginConstructor.IsExistingObject)
-                {
-                    dto = CreateInstance(dto.Args);
-                }
+                dto = ExecuteConstructor(dto);
                 var args = dto.Args;
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
@@ -118,6 +116,35 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Dev2Logger.Error(e);
                 throw;
             }
+        }
+
+        public PluginExecutionDto Run(PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo)
+        {
+            try
+            {
+                dto = ExecuteConstructor(dto);
+                var args = dto.Args;
+                Assembly loadedAssembly;
+                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
+                if (!tryLoadAssembly)
+                    throw new Exception(args.AssemblyName + "Not found");
+                ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
+                return dto;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+                throw;
+            }
+        }
+
+        public PluginExecutionDto ExecuteConstructor(PluginExecutionDto dto)
+        {
+            if(!dto.Args.PluginConstructor.IsExistingObject)
+            {
+                dto = CreateInstance(dto.Args);
+            }
+            return dto;
         }
 
         private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
@@ -136,6 +163,25 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
             RunMethods(setupInfo, type, instance, InvokeMethodsAction, loadedAssembly);
+            objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
+        }
+
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly,IDev2MethodInfo dev2MethodInfo)
+        {
+
+            VerifyArgument.IsNotNull("objectToRun", objectToRun);
+            VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
+            VerifyArgument.IsNotNull("setupInfo", setupInfo);
+            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var knownBinder = new KnownTypesBinder();
+            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
+            if (objectToRun.IsStatic)
+            {
+                ExecuteSingleMethod(type, null, InvokeMethodsAction, loadedAssembly,dev2MethodInfo);
+                return;
+            }
+            var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
+            ExecuteSingleMethod(type, instance, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);
             objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
         }
 
@@ -166,30 +212,35 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
                 {
-                    if (dev2MethodInfo.Parameters != null)
+                    ExecuteSingleMethod(type, instance, invokeMethodsAction, loadedAssembly, dev2MethodInfo);
+                }
+            }
+        }
+
+        private void ExecuteSingleMethod(Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
+        {
+            if(dev2MethodInfo.Parameters != null)
+            {
+                var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
+                var valuedTypeList = new List<object>();
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach(var methodParameter in dev2MethodInfo.Parameters)
+                {
+                    var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
+                    if(a != null)
                     {
-                        var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
-                        var valuedTypeList = new List<object>();
-                        // ReSharper disable once LoopCanBeConvertedToQuery
-                        foreach (var methodParameter in dev2MethodInfo.Parameters)
-                        {
-                            var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
-                            if (a != null)
-                            {
-                                var item = a.FirstOrDefault();
-                                valuedTypeList.Add(item);
-                            }
-                        }
-
-                        var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
-
-                        var methodsAction = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
-                        var knownBinder = new KnownTypesBinder();
-                        knownBinder.KnownTypes.Add(type);
-                        knownBinder.KnownTypes.Add(methodsAction?.GetType());
-                        dev2MethodInfo.MethodResult = methodsAction.SerializeToJsonString(knownBinder);
+                        var item = a.FirstOrDefault();
+                        valuedTypeList.Add(item);
                     }
                 }
+
+                var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
+
+                var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                var knownBinder = new KnownTypesBinder();
+                knownBinder.KnownTypes.Add(type);
+                knownBinder.KnownTypes.Add(methodsActionResult?.GetType());
+                dev2MethodInfo.MethodResult = methodsActionResult.SerializeToJsonString(knownBinder);
             }
         }
 

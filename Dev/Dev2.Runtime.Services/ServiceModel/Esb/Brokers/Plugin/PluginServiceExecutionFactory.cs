@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
@@ -33,6 +34,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 return runtime.Value.Run(dto);
             }
+        }
+
+        public static PluginExecutionDto InvokePlugin(Isolated<PluginRuntimeHandler> appDomain,PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo)
+        {
+            return appDomain.Value.Run(dto,dev2MethodInfo);
+        }
+
+        public static PluginExecutionDto ExecuteConstructor(Isolated<PluginRuntimeHandler> appDomain,PluginExecutionDto dto)
+        {
+            return appDomain.Value.ExecuteConstructor(dto);
+        }
+
+        public static Isolated<PluginRuntimeHandler> CreateAppDomain()
+        {
+            return CreateInvokeAppDomain();
+            
         }
 
 

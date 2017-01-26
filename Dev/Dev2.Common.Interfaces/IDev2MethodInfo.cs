@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
@@ -10,5 +11,6 @@ namespace Dev2.Common.Interfaces
         string OutputVariable { get; set; }
         bool IsObject { get; set; }
         bool IsVoid { get; set; }
+        Guid ID { get; set; }
     }
 }

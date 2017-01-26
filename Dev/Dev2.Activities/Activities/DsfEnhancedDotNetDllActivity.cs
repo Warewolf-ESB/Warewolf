@@ -13,12 +13,14 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
+using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -65,54 +67,104 @@ namespace Dev2.Activities
             _childStatesToDispatch = new List<IDebugState>();
             errors = new ErrorResultTO();
             PluginExecutionDto pluginExecutionDto;
-            if (Constructor.IsExistingObject)
+            if (!dataObject.IsServiceTestExecution)
             {
-                var existingObj = DataListUtil.AddBracketsToValueIfNotExist(Constructor.ConstructorName);
-                var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
-                var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
-                pluginExecutionDto = new PluginExecutionDto(existingObject);
+                if (Constructor.IsExistingObject)
+                {
+                    var existingObj = DataListUtil.AddBracketsToValueIfNotExist(Constructor.ConstructorName);
+                    var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
+                    var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+                    pluginExecutionDto = new PluginExecutionDto(existingObject);
+                }
+                else
+                {
+                    pluginExecutionDto = new PluginExecutionDto(string.Empty);
+                }
+                constructor.Inputs = new List<IConstructorParameter>();
+                foreach (var parameter in ConstructorInputs)
+                {
+                    var resultToString = GetEvaluatedResult(dataObject, parameter.Value, update);
+                    constructor.Inputs.Add(new ConstructorParameter()
+                    {
+                        TypeName = parameter.TypeName,
+                        Name = parameter.Name,
+                        Value = resultToString,
+                        EmptyToNull = parameter.EmptyIsNull,
+                        IsRequired = parameter.RequiredField
+                    });
+                }
             }
             else
             {
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
             }
-            constructor.Inputs = new List<IConstructorParameter>();
-            foreach (var parameter in ConstructorInputs)
-            {
-                var resultToString = GetEvaluatedResult(dataObject, parameter.Value, update);
-                constructor.Inputs.Add(new ConstructorParameter()
-                {
-                    TypeName = parameter.TypeName,
-                    Name = parameter.Name,
-                    Value = resultToString,
-                    EmptyToNull = parameter.EmptyIsNull,
-                    IsRequired = parameter.RequiredField
-                });
-            }
 
-            var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);
-            
+            var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);            
             pluginExecutionDto.Args = args;
             try
             {
-                PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(pluginExecutionDto);
-
-                ObjectResult = result.ObjectString;
-
-                if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
+                using(var appDomain = PluginServiceExecutionFactory.CreateAppDomain())
                 {
-                    var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
-                    dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
-                }
-                DebugStateForConstructorInputsOutputs(dataObject, update);
-                if (MethodsToRun != null)
-                {
-                    for (int i = 0; i < MethodsToRun.Count; i++)
+                    if (dataObject.IsServiceTestExecution)
                     {
-                        MethodsToRun[i].MethodResult = result.Args.MethodsToRun?[i].MethodResult;
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
+                        if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
+                        {
+                            if (!string.IsNullOrEmpty(serviceTestStep.StepOutputs?[0].Variable))
+                            {
+                                dataObject.Environment.AssignJson(new AssignValue(serviceTestStep.StepOutputs?[0].Variable, serviceTestStep.StepOutputs?[0].Value), 0);
+                                pluginExecutionDto.ObjectString = serviceTestStep.StepOutputs[0].Value;
+                            }
+                        }
+                        else
+                        {
+                            RegularConstructorExecution(dataObject, appDomain, pluginExecutionDto);
+                        }
                     }
+                    else
+                    {
+                        RegularConstructorExecution(dataObject, appDomain, pluginExecutionDto);
+                        DebugStateForConstructorInputsOutputs(dataObject, update);
+                    }
+                    
+                    var index = 0;
+                    foreach(var dev2MethodInfo in args.MethodsToRun)
+                    {
+                        if (dataObject.IsServiceTestExecution)
+                        {
+                            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == dev2MethodInfo.ID);
+                            if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
+                            {
+                                if (serviceTestStep.StepOutputs != null)
+                                {
+                                    foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                                    {
+                                        if (dev2MethodInfo.IsObject)
+                                        {
+                                            dataObject.Environment.AssignJson(new AssignValue(serviceTestOutput.Variable, serviceTestOutput.Value), 0);
+                                        }
+                                        else
+                                        {
+                                            dataObject.Environment.Assign(serviceTestOutput.Variable, serviceTestOutput.Value, 0);
+                                        }
+                                        dev2MethodInfo.MethodResult = serviceTestOutput.Value;
+                                        MethodsToRun[index].MethodResult = serviceTestOutput.Value;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index);
+                            }
+                        }
+                        else
+                        {
+                            RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index);
+                        }
+                        index++;
+                    }
+                    
                 }
-                
                 AssignMethodResult(update, dataObject);
             }
             catch (Exception e)
@@ -125,6 +177,23 @@ namespace Dev2.Activities
                 {
                     errors.AddError(e.Message);
                 }
+            }
+        }
+
+        private void RegularMethodExecution(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto, IDev2MethodInfo dev2MethodInfo, int i)
+        {
+            PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo);
+            ObjectResult = result.ObjectString;
+            MethodsToRun[i].MethodResult = result.Args.MethodsToRun?[i].MethodResult;
+        }
+
+        private void RegularConstructorExecution(IDSFDataObject dataObject, Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto)
+        {
+            PluginServiceExecutionFactory.ExecuteConstructor(appDomain, pluginExecutionDto);
+            if(!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
+            {
+                var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
+                dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
             }
         }
 
@@ -195,6 +264,7 @@ namespace Dev2.Activities
                         return new Dev2MethodInfo
                         {
                             Method = action.Method,
+                            ID = action.ID,
                             Parameters = action.Inputs?.Select(p => new MethodParameter
                             {
                                 Name = p.Name,
@@ -229,6 +299,7 @@ namespace Dev2.Activities
         private void DispatchDebugStateForMethod(IPluginAction action, IDSFDataObject dataObject, int update)
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            debugState.ID = action.ID;
             debugState.DisplayName = action.Method;
             debugState.ErrorMessage = string.Empty;
             debugState.IsSimulation = false;
@@ -242,7 +313,6 @@ namespace Dev2.Activities
         {
             var debugState = new DebugState
             {
-                ID = Guid.NewGuid(),
                 ParentID = UniqueID.ToGuid(),
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
@@ -270,7 +340,10 @@ namespace Dev2.Activities
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
             if (Constructor != null)
+            {
                 debugState.DisplayName = Constructor.ConstructorName;
+                debugState.ID = Constructor.ID;
+            }
             debugState.Inputs.AddRange(BuildConstructorInputs(dataObject.Environment, update));
             debugState.Outputs.AddRange(BuildConstructorOutput(dataObject.Environment, update));
             _childStatesToDispatch.Add(debugState);

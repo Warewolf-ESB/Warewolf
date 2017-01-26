@@ -516,9 +516,17 @@
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>WarewolfCOMIPC.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
