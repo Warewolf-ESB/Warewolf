@@ -11,7 +11,7 @@ namespace Warewolf.UITests
     {
         private const string Folder = "FolderRenameInExplorer";
         private const string newFolderName = "FolderItem2";
-        private const string newResourceName = "ResourceItem2";
+        private const string newResourceName = "FolderItem2";
         private const string ResourceToRename = "KeepNewName";
         const string newName = ResourceToRename + "Renamed";
 
