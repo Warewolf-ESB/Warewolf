@@ -2085,7 +2085,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(dataListViewModel.ComplexObjectCollection[0]);
             var mockJsonObjectsView = new Mock<IJsonObjectsView>();
             mockJsonObjectsView.Setup(view => view.ShowJsonString(It.IsAny<string>())).Verifiable();
-            CustomContainer.Register(mockJsonObjectsView.Object);
+            CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => mockJsonObjectsView.Object);
             dataListViewModel.ViewComplexObjectsCommand.Execute(dataListViewModel.ComplexObjectCollection[0]);
             mockJsonObjectsView.Verify(model => model.ShowJsonString(It.IsAny<string>()), Times.Once());
             CustomContainer.DeRegister<IJsonObjectsView>();

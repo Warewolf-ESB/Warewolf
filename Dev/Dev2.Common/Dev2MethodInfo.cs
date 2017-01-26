@@ -16,5 +16,6 @@ namespace Dev2.Common
         public string OutputVariable { get; set; }
         public bool IsObject { get; set; }
         public bool IsVoid { get; set; }
+        public Guid ID { get; set; }
     }
 }
