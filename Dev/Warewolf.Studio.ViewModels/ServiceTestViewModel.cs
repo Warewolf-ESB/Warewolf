@@ -917,34 +917,24 @@ namespace Warewolf.Studio.ViewModels
                     AddEnhancedDotNetDllConstructor(dotNetDllActivity, testStep);
                     foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                     {
-                        AddEnhancedDotNetDllMethod(pluginAction, testStep, -1);
+                        AddEnhancedDotNetDllMethod(pluginAction, testStep);
                     }
                 }
                 else
                 {
                     AddMissingChild(serviceTestSteps, exists);
-                    var constructorStepExists = exists.Children.FirstOrDefault(step => step.StepDescription == dotNetDllActivity.Constructor.ConstructorName);
+                    var constructorStepExists = exists.Children.FirstOrDefault(step => step.UniqueId == dotNetDllActivity.Constructor.ID);
                     if (constructorStepExists == null)
                     {
                         AddEnhancedDotNetDllConstructor(dotNetDllActivity, exists);
                     }
-                    var currentChildSteps = exists.Children.ToList();
-                    var i = 1; // Start at 1 as the constructor is always the first step
-                    var maxSteps = currentChildSteps.Count;
                     foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                     {
-                        var actionExists = false;
-                        if (i < maxSteps)
+                        IServiceTestStep actionExists = exists.Children.FirstOrDefault(step => step.UniqueId==pluginAction.ID);
+                        if (actionExists!=null)
                         {
-                            actionExists = currentChildSteps[i].StepDescription == pluginAction.Method;
+                            AddEnhancedDotNetDllMethod(pluginAction, exists);
                         }
-                        if (!actionExists)
-                        {
-                            AddEnhancedDotNetDllMethod(pluginAction, exists, i);
-                            currentChildSteps = exists.Children.ToList();
-                            maxSteps = currentChildSteps.Count;
-                        }
-                        i++;
                     }
                 }
             }
@@ -1008,7 +998,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
         {
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), testStep.ActivityType,
+            var serviceTestStep = new ServiceTestStep(dotNetConstructor.Constructor.ID, testStep.ActivityType,
                 new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
                 StepDescription = dotNetConstructor.Constructor.ConstructorName,
@@ -1023,9 +1013,9 @@ namespace Warewolf.Studio.ViewModels
             testStep.Children.Insert(0,serviceTestStep);            
         }
 
-        private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep, int i)
+        private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
         {
-            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), testStep.ActivityType,
+            var serviceTestStep = new ServiceTestStep(pluginAction.ID, testStep.ActivityType,
                 new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
             {
                 StepDescription = pluginAction.Method,
@@ -1037,14 +1027,7 @@ namespace Warewolf.Studio.ViewModels
             };
             serviceTestStep.StepOutputs = serviceOutputs;
             SetStepIcon(testStep.ActivityType, serviceTestStep);
-            if (i == -1)
-            {
-                testStep.Children.Add(serviceTestStep);
-            }
-            else
-            {
-                testStep.Children.Insert(i,serviceTestStep);
-            }
+            testStep.Children.Add(serviceTestStep);            
         }
 
         private void ProcessSwitch(ModelItem modelItem)
