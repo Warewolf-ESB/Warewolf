@@ -98,6 +98,14 @@ namespace Warewolf.UITests
             UIMap.Select_localhost_From_Deploy_Tab_Source_Server_Combobox();
             UIMap.Click_Close_Deploy_Tab_Button();
         }
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Edit_Destination_Server_ServerTab_Has_No_Star()
+        {            
+            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            UIMap.Click_Edit_Deploy_Destination_Server_Buttno();
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.TabDescription.DisplayText.Contains("*"));
+        }
 
         #region Additional test attributes
 

@@ -7955,6 +7955,14 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration.");
         }
 
+        [Given(@"I Click Edit Deploy Destination Server Button")]
+        [When(@"I Click Edit Deploy Destination Server Button")]
+        [Then(@"I Click Edit Deploy Destination Server Button")]
+        public void Click_Edit_Deploy_Destination_Server_Buttno()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditDestinationButton);
+        }
+
         [When(@"I Select localhost From Deploy Tab Destination Server Combobox")]
         public void Select_localhost_From_Deploy_Tab_Destination_Server_Combobox()
         {
