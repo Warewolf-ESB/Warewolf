@@ -84,5 +84,11 @@ namespace Dev2.Common
         {
             return ConstructorName;
         }
+
+        #region Implementation of IPluginConstructor
+
+        public Guid ID { get; set; }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
@@ -13,5 +14,6 @@ namespace Dev2.Common.Interfaces
     public interface IPluginConstructor : IConstructor
     {
         bool IsExistingObject { get; set; }
+        Guid ID { get; set; }
     }
 }
