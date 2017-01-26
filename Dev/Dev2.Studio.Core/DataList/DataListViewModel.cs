@@ -28,7 +28,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.Views;
 using ServiceStack.Common.Extensions;
 using System;
 using System.Collections.Generic;
@@ -42,6 +41,7 @@ using System.Xml;
 using Dev2.Data.TO;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
@@ -707,7 +707,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 return false;
             }
 
-            bool hasUnused = false;
+            bool hasUnused;
 
             if (ScalarCollection != null)
             {
@@ -742,7 +742,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     return true;
                 }
             }
-            return hasUnused;
+            return false;
         }
 
         /// <summary>
