@@ -173,7 +173,7 @@ namespace Warewolf.Studio.Views
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
-                else if (itemToMove.Server.ResourceID != environmentViewModel.ResourceId)
+                else if (itemToMove.Server.EnvironmentID != environmentViewModel.ResourceId)
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;

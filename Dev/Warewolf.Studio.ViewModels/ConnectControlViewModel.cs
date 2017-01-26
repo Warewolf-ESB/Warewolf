@@ -418,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
                     var environmentConnection = server.EnvironmentConnection;
                     mainViewModel.EditServer(new ServerSource
                     {
-                        Address = environmentConnection.AppServerUri.ToString(),
+                        Address = environmentConnection.WebServerUri.OriginalString,
                         ID = server.EnvironmentID,
                         AuthenticationType = environmentConnection.AuthenticationType,
                         UserName = environmentConnection.UserName,
