@@ -48,11 +48,47 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private void ConstructorExpander_OnExpanded(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
+            SetMinHeight();
         }
 
         private void MethodExpander_OnExpanded(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
+            SetMinHeight();
+        }
+
+        private void ConstructorExpander_OnCollapsed(object sender, RoutedEventArgs e)
+        {
+            Height = double.NaN;
+            SetMinHeight();
+        }
+
+        private void MethodExpander_OnCollapsed(object sender, RoutedEventArgs e)
+        {
+            Height = double.NaN;
+            SetMinHeight();
+        }
+
+        private void SetMinHeight()
+        {
+            MinHeight = 250;
+            var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
+            if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count == 1 && !ConstructorExpander.IsExpanded && dotNetDllEnhancedViewModel.MethodsToRunList[0].IsMethodExpanded)
+            {
+                MinHeight = 270;
+            }
+            else if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count == 1 && ConstructorExpander.IsExpanded)
+            {
+                MinHeight = 330;
+            }
+            else if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count > 1 && !ConstructorExpander.IsExpanded)
+            {
+                MinHeight = 330;
+            }
+            else if (dotNetDllEnhancedViewModel?.MethodsToRunList.Count > 1 && ConstructorExpander.IsExpanded)
+            {
+                MinHeight = 380;
+            }
         }
     }
 }
