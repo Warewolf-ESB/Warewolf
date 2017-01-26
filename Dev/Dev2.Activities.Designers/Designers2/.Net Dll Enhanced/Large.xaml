@@ -88,6 +88,7 @@
                                   IsEnabled="{Binding ConstructorRegion.IsConstructorEnabled}"
                                   Style="{StaticResource DotNetDllExpander}" 
                                   Expanded="ConstructorExpander_OnExpanded"
+                                  Collapsed="ConstructorExpander_OnCollapsed"
                                   Visibility="{Binding IsConstructorVisible, Converter={StaticResource BoolToVisibilityConverter}}" 
                                   AutomationProperties.AutomationId="{Binding StringFormat=UI_ConstructorExpander_{0}_AutoID, Path=ConstructorRegion.SelectedConstructor}">
                             <Expander.HeaderTemplate>
@@ -145,6 +146,7 @@
                                               IsExpanded="{Binding IsMethodExpanded}" 
                                               IsEnabled="{Binding IsActionEnabled}"
                                               Expanded="MethodExpander_OnExpanded"
+                                              Collapsed="MethodExpander_OnCollapsed"
                                               Style="{StaticResource DotNetDllExpander}" 
                                               AutomationProperties.AutomationId="{Binding StringFormat=UI_MethodExpander_{0}_AutoID, Path=SelectedMethod}">
                                         <Expander.HeaderTemplate>

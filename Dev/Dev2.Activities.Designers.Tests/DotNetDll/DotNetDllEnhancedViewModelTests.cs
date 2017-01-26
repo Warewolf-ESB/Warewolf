@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Net_Dll_Enhanced;
@@ -537,7 +538,98 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         public void ToModel_GivenNamespaceChanges_ShouldModelCorreclty()
         {
             //---------------Set up test pack-------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(mockShellViewModel.Object);
             var mock = new Mock<IPluginServiceModel>();
+            var type = typeof(Human);
+            var guid = Guid.NewGuid();
+            mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
+            {
+                new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
+            });
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
+            mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
+            var jsonString = new Human("Jimmy", "Jambo", new Food()).SerializeToJsonString(new KnownTypesBinder()
+            {
+                KnownTypes = new List<Type>(type.Assembly.ExportedTypes)
+            });
+
+            var namespaceItem = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                JsonObject = jsonString,
+
+            };
+            mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
+            var pluginConstructor = new PluginConstructor
+            {
+                ConstructorName = ".ctor ",
+                ReturnObject = string.Empty,
+                Inputs = new List<IConstructorParameter>
+                {
+                    new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                }
+            };
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                Constructor = pluginConstructor,
+                Namespace = namespaceItem
+            };
+
+            var food = new Food
+            {
+                FoodName = "Cake"
+            };
+            activity.ConstructorInputs = new List<IServiceInput>
+            {
+                new ServiceInput("name","John") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("surname","Doe") {TypeName = typeof(string).AssemblyQualifiedName},
+                new ServiceInput("food",food.SerializeToJsonString(new KnownTypesBinder
+                {
+                                KnownTypes = typeof(Food).Assembly.ExportedTypes.ToList()
+                            }))
+                {
+                        TypeName = typeof(string).AssemblyQualifiedName
+                },
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "SetNameInternal",
+                }
+            };
+            activity.SourceId = guid;
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            //---------------Execute Test ----------------------
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            //---------------Test Result -----------------------
+            var pluginService = dotNetDllEnhancedViewModel.ToModel();
+            Assert.AreEqual(activity.SourceId, pluginService.Source.Id);
+            Assert.AreEqual(activity.Namespace.FullName, pluginService.Namespace.FullName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public async Task DeleteActionCommand_GivenMethodRegion_ShouldFirePropertyChangeOnTheRegionList()
+        {
+            //---------------Set up test pack-------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var mock = new Mock<IPluginServiceModel>();
+            CustomContainer.Register(mockShellViewModel.Object);
             var type = typeof(Human);
             var guid = Guid.NewGuid();
             mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>
@@ -598,21 +690,38 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                     Inputs = new List<IServiceInput>(),
                     IsObject = false,
                     IsVoid = true,
-                    Method = "SetNameInternal",
+                    Method = "Method1",
+                },new PluginAction
+                {
+                    Inputs = new List<IServiceInput>(),
+                    IsObject = false,
+                    IsVoid = true,
+                    Method = "Method2",
                 }
             };
             activity.SourceId = guid;
             var modelItem = ModelItemUtils.CreateModelItem(activity);
+            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
+            Assert.IsNotNull(dotNetDllEnhancedViewModel.DeleteActionCommand);
+            Assert.IsTrue(dotNetDllEnhancedViewModel.DeleteActionCommand.CanExecute(null));
+            bool wasCalled = false;
+            dotNetDllEnhancedViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "MethodsToRunList")
+                {
+                    wasCalled = true;
+                }
+            };
             //---------------Execute Test ----------------------
-            var dotNetDllEnhancedViewModel = new DotNetDllEnhancedViewModel(modelItem, mock.Object);
+            var methodToolRegion = dotNetDllEnhancedViewModel.MethodsToRunList.First() as DotNetMethodRegion;
+            Assert.IsNotNull(methodToolRegion);
+            Assert.AreEqual(3, dotNetDllEnhancedViewModel.MethodsToRunList.Count);
+            await dotNetDllEnhancedViewModel.DeleteActionCommand.Execute(methodToolRegion);
             //---------------Test Result -----------------------
-            var pluginService = dotNetDllEnhancedViewModel.ToModel();
-            Assert.AreEqual(activity.SourceId, pluginService.Source.Id);
-            Assert.AreEqual(activity.Namespace.FullName, pluginService.Namespace.FullName);
-            Assert.AreEqual(activity.Constructor.ConstructorName, pluginService.Constructor.ConstructorName);
-            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginService.Constructor.Inputs.Count);
+            Assert.AreEqual(2, dotNetDllEnhancedViewModel.MethodsToRunList.Count);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]
