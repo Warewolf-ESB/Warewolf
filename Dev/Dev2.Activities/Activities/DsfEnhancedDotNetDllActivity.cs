@@ -91,7 +91,7 @@ namespace Dev2.Activities
             }
 
             var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);
-
+            
             pluginExecutionDto.Args = args;
             try
             {
