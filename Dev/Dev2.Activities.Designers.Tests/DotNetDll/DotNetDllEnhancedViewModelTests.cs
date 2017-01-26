@@ -545,6 +545,10 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 new PluginSourceDefinition {Name = "Source1", Id = guid , GACAssemblyName = "GACAssemblyName", }
             });
 
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
+            CustomContainer.Register(mockShellViewModel.Object);
+
             mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
             mock.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginAction>());
             var jsonString = new Human("Jimmy", "Jambo", new Food()).SerializeToJsonString(new KnownTypesBinder()
@@ -560,18 +564,20 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             };
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
+            var pluginConstructor = new PluginConstructor
+            {
+                ConstructorName = ".ctor ",
+                ReturnObject = string.Empty,
+                Inputs = new List<IConstructorParameter>
+                {
+                    new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                    new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
+                }
+            };
             var activity = new DsfEnhancedDotNetDllActivity
             {
-                Constructor = new PluginConstructor
-                {
-                    ConstructorName = ".ctor ",
-                    Inputs = new List<IConstructorParameter>
-                    {
-                        new ConstructorParameter { Name = "name", Value = "Jimmy", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                        new ConstructorParameter { Name = "surname", Value = "Mouse", TypeName = typeof(string).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                        new ConstructorParameter { Name = "food", Value = "Jimmy", TypeName = typeof(Food).AssemblyQualifiedName, IsRequired = true, EmptyToNull = true },
-                    },
-                },
+                Constructor = pluginConstructor,
                 Namespace = namespaceItem
             };
 
@@ -611,8 +617,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             var pluginService = dotNetDllEnhancedViewModel.ToModel();
             Assert.AreEqual(activity.SourceId, pluginService.Source.Id);
             Assert.AreEqual(activity.Namespace.FullName, pluginService.Namespace.FullName);
-            Assert.AreEqual(activity.Constructor.ConstructorName, pluginService.Constructor.ConstructorName);
-            Assert.AreEqual(activity.Constructor.Inputs.Count, pluginService.Constructor.Inputs.Count);
         }
 
         [TestMethod]
