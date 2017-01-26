@@ -14,6 +14,7 @@ using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -107,7 +108,12 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         private void DeleteAction(DotNetMethodRegion method)
         {
             if (method != null)
-                MethodsToRunList.Remove(method);
+            {
+                var newList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
+                var methodToolRegions = newList.AddRange(MethodsToRunList);
+                methodToolRegions.Remove(method);
+                MethodsToRunList = methodToolRegions.ToObservableCollection();
+            }
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -500,8 +506,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 {
                     continue;
                 }
-                var dotNetMethodRegion = new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion);
-                dotNetMethodRegion.SelectedMethod = pluginAction;
+                var dotNetMethodRegion = new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion) { SelectedMethod = pluginAction };
                 regionCollections.Add(dotNetMethodRegion);
             }
             return regionCollections;
@@ -564,9 +569,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     _methodsToRunList.Clear();
                     var pluginActions = _methodsToRunList.Where(p => p.SelectedMethod != null).Select(region => region.SelectedMethod).ToList();
                     ModelItem.SetProperty("MethodsToRun", pluginActions.ToList());
-                    OnPropertyChanged();
+                    OnPropertyChanged("MethodsToRunList");
                 }
-                OnPropertyChanged();
+                OnPropertyChanged("MethodsToRunList");
             }
         }
 
@@ -663,14 +668,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             {
                 _builder = _builder ?? new ServiceInputBuilder();
                 _builder.GetValue(serviceInput.Value, dt);
-                //pluginServiceDefinition.Inputs.Add(new ServiceInput()
-                //{
-                //    TypeName = serviceInput.TypeName,
-                //    Name = serviceInput.Name,
-                //    Value = serviceInput.Value,
-                //    Required = serviceInput.RequiredField,
-                //    EmptyToNull = serviceInput.EmptyIsNull,
-                //});
             }
             return pluginServiceDefinition;
         }
