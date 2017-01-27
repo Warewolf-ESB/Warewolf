@@ -155,7 +155,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
-Scenario: Changing Connected User For A remote Server Toggles The Deploy Enable State Correctly
+Scenario: Changing Authentication Type of Resource And Save Keeps the Changes
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
@@ -179,5 +179,14 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
 
-
-
+Scenario: Resource Permissions Toggles Deploy button correctly
+	Given The Warewolf Studio is running
+	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for localhost
+	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Connect Button
+	Then I validate I can Deploy "ResourceWithViewAndExecutePerm"
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Click Deploy Tab Destination Server Connect Button
+	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"

@@ -1133,7 +1133,7 @@ namespace Warewolf.UITests
             }
             Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
-        public void Set_HelloWorld_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
+        public void Set_FirstResource_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_First_Service_From_Service_Picker_Dialog(ResourceName);
@@ -1209,6 +1209,39 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for localhost")]
+        public void SetupPublicPermissionsForForLocalhost(string resource)
+        {
+            Click_Settings_Ribbon_Button();
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
+        public void SetupPublicPermissionsForForRemoteServer(string resource)
+        {
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                Mouse.Click(deleteFirstResourceButton);
+            }
+            Select_RemoteConnectionIntegration_From_Explorer();
+            Click_Explorer_RemoteServer_Connect_Button();
+            Click_Settings_Ribbon_Button();
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+        }
+
+        [Then(@"I validate I can Deploy ""(.*)""")]
+        public void ValidateICanDeploy(string resource)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"I validate I can not Deploy ""(.*)""")]
+        public void ValidateICanNotDeploy(string resource)
+        {
+            ScenarioContext.Current.Pending();
         }
 
         public void TryCloseDeployWizardTab()
