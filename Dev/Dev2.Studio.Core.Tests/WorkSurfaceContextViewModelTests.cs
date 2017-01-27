@@ -1013,7 +1013,6 @@ namespace Dev2.Core.Tests
             expected += 1;
             workSurfaceContextViewModel.ContextualResourceModel.IsWorkflowSaved = false;
             var designSurface = workSurfaceContextViewModel.WorkSurfaceViewModel as WorkflowDesignerViewModelMock;
-            Assert.IsNotNull(designSurface);
             designSurface.FireWorkflowChanged();
             workSurfaceContextViewModel.QuickDebugCommand.Execute(null);
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Exactly(expected));
