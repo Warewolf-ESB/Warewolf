@@ -1091,6 +1091,34 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	And I run the test
 	Then test result is Failed
 
+
+ Scenario: TestWF with enhanced Dot Net DLL tool
+      Given I have a workflow "TestWFWithForEachContainingDotNetDLL"	
+	   And "TestWFWithForEachContainingDotNetDLL" contains an Assign "RecVal" as
+	  | variable         | value |
+	  | [[rec().number]] | 1     |
+	  | [[rec().number]] | 2     |
+	  | [[rec().number]] | 3     |
+	  | [[rec().number]] | 4     |
+	  And "TestWFWithForEachContainingDotNetDLL" contains an DotNet DLL "DotNetService" as
+	     | Source                   | ClassName                       | ObjectName | Action    | ActionOutputVaribale |
+	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |
+	  And "DotNetService" constructorinputs 0 with inputs as
+	  | parameterName | value |type|
+	  And I save workflow "TestWFWithForEachContainingDotNetDLL"
+	  Then the test builder is open with "TestWFWithForEachContainingDotNetDLL"
+	  And I click New Test
+	  And a new test is added	
+      And test name starts with "Test 1"
+	  And I Add "DotNetService" as TestStep
+	  When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "TestWFWithForEachContainingDotNetDLL" is deleted as cleanup
+
+
 #Data Category
 Scenario: Test WF with Assign
 	Given I have a workflow "AssignTestWF"
