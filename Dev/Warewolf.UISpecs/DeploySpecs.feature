@@ -189,4 +189,5 @@ Scenario: Resource Permissions Toggles Deploy button correctly
 	Then I validate I can Deploy "ResourceWithViewAndExecutePerm"
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
+	And I Select localhost from the source tab
 	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"

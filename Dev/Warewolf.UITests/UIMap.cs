@@ -1215,33 +1215,43 @@ namespace Warewolf.UITests
         public void SetupPublicPermissionsForForLocalhost(string resource)
         {
             Click_Settings_Ribbon_Button();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                Mouse.Click(deleteFirstResourceButton);
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            Click_Close_Settings_Tab_Button();
         }
 
         [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
-            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
-            if (deleteFirstResourceButton.Enabled)
-            {
-                Mouse.Click(deleteFirstResourceButton);
-            }
             Select_RemoteConnectionIntegration_From_Explorer();
             Click_Explorer_RemoteServer_Connect_Button();
             Click_Settings_Ribbon_Button();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                Mouse.Click(deleteFirstResourceButton);
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
         }
 
         [Then(@"I validate I can Deploy ""(.*)""")]
         public void ValidateICanDeploy(string resource)
         {
-            ScenarioContext.Current.Pending();
+            Filter_Deploy_Source_Explorer(resource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
         }
 
         [Then(@"I validate I can not Deploy ""(.*)""")]
         public void ValidateICanNotDeploy(string resource)
         {
-            ScenarioContext.Current.Pending();
+            Filter_Deploy_Source_Explorer(resource);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
         }
 
         public void TryCloseDeployWizardTab()
@@ -1341,7 +1351,9 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
         }
 
+        [Given(@"I Select localhost from the source tab")]
         [When(@"I Select localhost from the source tab")]
+        [Then(@"I Select localhost from the source tab")]
         public void WhenISelectLocalhostFromTheSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.EnvironmentNameCheckCheckBox);
