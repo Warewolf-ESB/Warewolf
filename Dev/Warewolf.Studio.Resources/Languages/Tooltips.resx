@@ -263,8 +263,14 @@ Use a comma to separate the variables.</value>
   <data name="ToolboxClearSearchTooltip" xml:space="preserve">
     <value>Clear the filter box</value>
   </data>
+  <data name="ActionDeleteSelectedActionEnabledTooltip" xml:space="preserve">
+    <value>Delete this Action</value>
+  </data>
   <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
     <value>Delete this test</value>
+  </data>
+  <data name="ActionDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete an empty action</value>
   </data>
   <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
     <value>Cannot delete an enabled test</value>
