@@ -295,7 +295,7 @@
     <Compile Include="TOTests\JsonMappingToTest.cs" />
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
-    <Compile Include="TestHelperTests.cs" />
+    <Compile Include="ServiceTestHelperTests.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
