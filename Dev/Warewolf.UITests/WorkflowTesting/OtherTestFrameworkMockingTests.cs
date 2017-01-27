@@ -24,7 +24,6 @@ namespace Warewolf.UITests
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             Point point;
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
-            UIMap.Click_Close_Tests_Tab();
         }
         
         #region Additional test attributes

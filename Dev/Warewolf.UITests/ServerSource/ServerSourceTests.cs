@@ -33,7 +33,6 @@ namespace Warewolf.UITests.ServerSource
             UIMap.Enter_RunAsUser_On_ServerSourceTab();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes

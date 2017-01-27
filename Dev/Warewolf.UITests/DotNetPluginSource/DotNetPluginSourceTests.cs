@@ -49,7 +49,6 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
-            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         [TestMethod]
@@ -62,8 +61,8 @@ namespace Warewolf.UITests
             UIMap.Save_With_Ribbon_Button_And_Dialog(GACAssemblySourceName);
             UIMap.Filter_Explorer(GACAssemblySourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
+
         [TestMethod]
         [TestCategory("DotNetPluginSource")]
         public void SelectGACClearsDLLAssembly()
@@ -85,7 +84,6 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
-            UIMap.Click_Close_DotNetPlugin_Source_Tab();
         }
 
         #region Additional test attributes
