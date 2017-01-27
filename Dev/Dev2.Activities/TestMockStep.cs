@@ -81,23 +81,25 @@ namespace Dev2
             AddRecordsetsOutputs(Outputs.Where(output => DataListUtil.IsValueRecordset(output.Variable) && !output.Variable.Contains("@")), dataObject.Environment);
             foreach (var output in Outputs)
             {
-                var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
-                var value = output.Value;
-                if (variable.StartsWith("[[@"))
-                {
-                    dataObject.Environment.AssignJson(new AssignValue(variable,value),update);
-                }
-                else if (!DataListUtil.IsValueRecordset(output.Variable))
-                {
-                    dataObject.Environment.Assign(variable, value, 0);
-                }
-                if (dataObject.IsServiceTestExecution)
-                {
-                    if (dataObject.IsDebugMode())
+                if (!string.IsNullOrEmpty(output.Variable)) {
+                    var variable = DataListUtil.AddBracketsToValueIfNotExist(output.Variable);
+                    var value = output.Value;
+                    if (variable.StartsWith("[[@"))
                     {
-                        var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
-                        AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
-                        AddDebugAssertResultItem(res);
+                        dataObject.Environment.AssignJson(new AssignValue(variable, value), update);
+                    }
+                    else if (!DataListUtil.IsValueRecordset(output.Variable))
+                    {
+                        dataObject.Environment.Assign(variable, value, 0);
+                    }
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        if (dataObject.IsDebugMode())
+                        {
+                            var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
+                            AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
+                            AddDebugAssertResultItem(res);
+                        }
                     }
                 }
             }
