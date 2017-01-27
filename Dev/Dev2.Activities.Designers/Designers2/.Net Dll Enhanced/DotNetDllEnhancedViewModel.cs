@@ -350,6 +350,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             outputsRegion.ObjectResult = dotNetNamespaceRegion.SelectedNamespace.JsonObject;
                         }
                     }
+                    OnPropertyChanged("IsActionsVisible");
                 };
                 regions.Add(NamespaceRegion);
                 ConstructorRegion = new DotNetConstructorRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
@@ -368,7 +369,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
-                    
+                  OnPropertyChanged("IsConstructorVisible");  
                 };
 
 
@@ -547,7 +548,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public bool IsConstructorVisible => ConstructorRegion?.Constructors?.Count > 0;
+        public bool IsConstructorVisible
+        {
+            get
+            {
+                return ConstructorRegion?.Constructors?.Count > 0;
+            }
+        }
         public bool IsActionsVisible => NamespaceRegion?.SelectedNamespace != null;
 
         public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList

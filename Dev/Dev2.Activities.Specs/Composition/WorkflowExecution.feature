@@ -1518,9 +1518,7 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 		  | 2 | [[rec().number]] = | 2         |
 		  | 3 | [[rec().number]] = | 3         |
 		  | 4 | [[rec().number]] = | 4         |	  
-      And the "ForEachTest" in WorkFlow "WFWithForEachContainingDotNetDLL" has  "4" nested children 
-	  #And the ".ctor" in 'DotNetService' in step 1 for "ForEachTest1" debug inputs as
-		 # | # |                    | With | Using | Pad | Align |		  
+      And the "ForEachTest" in WorkFlow "WFWithForEachContainingDotNetDLL" has  "4" nested children 	 	  
 	  And the dotnetdll "BuildInts" in 'DotNet DLL' in step 1 for "ForEachTest" debug inputs as
 		 | label | Variable          | value | operater |
 		 | a     | [[rec(1).number]] | 1     | =        |
