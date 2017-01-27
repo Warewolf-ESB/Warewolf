@@ -538,8 +538,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         public void ToModel_GivenNamespaceChanges_ShouldModelCorreclty()
         {
             //---------------Set up test pack-------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            CustomContainer.Register(mockShellViewModel.Object);
             var mock = new Mock<IPluginServiceModel>();
             var type = typeof(Human);
             var guid = Guid.NewGuid();

@@ -20,7 +20,6 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -67,54 +66,43 @@ namespace Dev2.Activities
             _childStatesToDispatch = new List<IDebugState>();
             errors = new ErrorResultTO();
             PluginExecutionDto pluginExecutionDto;
-            if (!dataObject.IsServiceTestExecution)
+            if(Constructor.IsExistingObject)
             {
-                if (Constructor.IsExistingObject)
-                {
-                    var existingObj = DataListUtil.AddBracketsToValueIfNotExist(Constructor.ConstructorName);
-                    var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
-                    var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
-                    pluginExecutionDto = new PluginExecutionDto(existingObject);
-                }
-                else
-                {
-                    pluginExecutionDto = new PluginExecutionDto(string.Empty);
-                }
-                constructor.Inputs = new List<IConstructorParameter>();
-                foreach (var parameter in ConstructorInputs)
-                {
-                    var resultToString = GetEvaluatedResult(dataObject, parameter.Value, update);
-                    constructor.Inputs.Add(new ConstructorParameter()
-                    {
-                        TypeName = parameter.TypeName,
-                        Name = parameter.Name,
-                        Value = resultToString,
-                        EmptyToNull = parameter.EmptyIsNull,
-                        IsRequired = parameter.RequiredField
-                    });
-                }
+                var existingObj = DataListUtil.AddBracketsToValueIfNotExist(Constructor.ConstructorName);
+                var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
+                var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+                pluginExecutionDto = new PluginExecutionDto(existingObject);
             }
             else
             {
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
             }
-
-            var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);            
+            constructor.Inputs = new List<IConstructorParameter>();
+            foreach(var parameter in ConstructorInputs)
+            {
+                var resultToString = GetEvaluatedResult(dataObject, parameter.Value, update);
+                constructor.Inputs.Add(new ConstructorParameter()
+                {
+                    TypeName = parameter.TypeName,
+                    Name = parameter.Name,
+                    Value = resultToString,
+                    EmptyToNull = parameter.EmptyIsNull,
+                    IsRequired = parameter.RequiredField
+                });
+            }
+            
+            var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);
             pluginExecutionDto.Args = args;
             try
             {
                 using(var appDomain = PluginServiceExecutionFactory.CreateAppDomain())
                 {
-                    if (dataObject.IsServiceTestExecution)
+                    if(dataObject.IsServiceTestExecution)
                     {
                         var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
-                        if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
+                        if(serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
                         {
-                            if (!string.IsNullOrEmpty(serviceTestStep.StepOutputs?[0].Variable))
-                            {
-                                dataObject.Environment.AssignJson(new AssignValue(serviceTestStep.StepOutputs?[0].Variable, serviceTestStep.StepOutputs?[0].Value), 0);
-                                pluginExecutionDto.ObjectString = serviceTestStep.StepOutputs[0].Value;
-                            }
+                            MockConstructorExecution(dataObject, serviceTestStep, pluginExecutionDto);
                         }
                         else
                         {
@@ -126,31 +114,16 @@ namespace Dev2.Activities
                         RegularConstructorExecution(dataObject, appDomain, pluginExecutionDto);
                         DebugStateForConstructorInputsOutputs(dataObject, update);
                     }
-                    
+
                     var index = 0;
                     foreach(var dev2MethodInfo in args.MethodsToRun)
                     {
-                        if (dataObject.IsServiceTestExecution)
+                        if(dataObject.IsServiceTestExecution)
                         {
                             var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == dev2MethodInfo.ID);
-                            if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
+                            if(serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
                             {
-                                if (serviceTestStep.StepOutputs != null)
-                                {
-                                    foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                                    {
-                                        if (dev2MethodInfo.IsObject)
-                                        {
-                                            dataObject.Environment.AssignJson(new AssignValue(serviceTestOutput.Variable, serviceTestOutput.Value), 0);
-                                        }
-                                        else
-                                        {
-                                            dataObject.Environment.Assign(serviceTestOutput.Variable, serviceTestOutput.Value, 0);
-                                        }
-                                        dev2MethodInfo.MethodResult = serviceTestOutput.Value;
-                                        MethodsToRun[index].MethodResult = serviceTestOutput.Value;
-                                    }
-                                }
+                                MockMethodExecution(dataObject, serviceTestStep, dev2MethodInfo, index);
                             }
                             else
                             {
@@ -163,19 +136,64 @@ namespace Dev2.Activities
                         }
                         index++;
                     }
-                    
                 }
                 AssignMethodResult(update, dataObject);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                if (e.HResult == -2146233088)
+                if(e.HResult == -2146233088)
                 {
                     errors.AddError(ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message);
                 }
                 else
                 {
                     errors.AddError(e.Message);
+                }
+            }
+        }
+
+        private void MockMethodExecution(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, IDev2MethodInfo dev2MethodInfo, int index)
+        {
+            if(serviceTestStep.StepOutputs != null)
+            {
+                foreach(var serviceTestOutput in serviceTestStep.StepOutputs)
+                {
+                    if(dev2MethodInfo.IsObject)
+                    {
+                        var jContainer = JToken.Parse(serviceTestOutput.Value) as JContainer
+                                         ?? serviceTestOutput.Value.DeserializeToObject();
+                        if(!string.IsNullOrEmpty(serviceTestOutput.Variable))
+                        {
+                            dataObject.Environment.AddToJsonObjects(serviceTestOutput.Variable, jContainer);
+                        }
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(serviceTestOutput.Variable, serviceTestOutput.Value, 0);
+                    }
+                    dev2MethodInfo.MethodResult = serviceTestOutput.Value;
+                    MethodsToRun[index].MethodResult = serviceTestOutput.Value;
+                }
+            }
+        }
+
+        private static void MockConstructorExecution(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, PluginExecutionDto pluginExecutionDto)
+        {
+            if(!string.IsNullOrEmpty(serviceTestStep.StepOutputs?[0].Variable))
+            {
+                try
+                {
+                    var languageExpression = EvaluationFunctions.parseLanguageExpression(serviceTestStep.StepOutputs?[0].Variable, 0);
+                    if(languageExpression.IsJsonIdentifierExpression)
+                    {
+                        var jToken = JToken.Parse(serviceTestStep.StepOutputs?[0].Value) as JContainer ?? serviceTestStep.StepOutputs?[0].Value.DeserializeToObject();
+                        dataObject.Environment.AddToJsonObjects(serviceTestStep.StepOutputs[0].Variable, jToken);
+                        pluginExecutionDto.ObjectString = serviceTestStep.StepOutputs[0].Value;
+                    }
+                }
+                catch(Exception e)
+                {
+                    dataObject.Environment.Errors.Add(e.Message);
                 }
             }
         }
@@ -189,7 +207,7 @@ namespace Dev2.Activities
 
         private void RegularConstructorExecution(IDSFDataObject dataObject, Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto)
         {
-            PluginServiceExecutionFactory.ExecuteConstructor(appDomain, pluginExecutionDto);
+            pluginExecutionDto = PluginServiceExecutionFactory.ExecuteConstructor(appDomain, pluginExecutionDto);
             if(!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
             {
                 var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
