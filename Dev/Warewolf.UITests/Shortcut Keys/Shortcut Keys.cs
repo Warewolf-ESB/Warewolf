@@ -51,7 +51,6 @@ namespace Warewolf.UITests.Workflow
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
             UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
-            UIMap.Click_Close_Deploy_Tab_Button();
         }
 
         [TestMethod]
@@ -74,7 +73,6 @@ namespace Warewolf.UITests.Workflow
             UIMap.Open_Deploy_Using_Shortcut();
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
-            UIMap.Click_Close_Deploy_Tab_Button();
         }
 
 
