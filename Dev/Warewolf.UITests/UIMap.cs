@@ -1065,10 +1065,9 @@ namespace Warewolf.UITests
         [Given(@"I Click Debug Ribbon Button")]
         [When(@"I Click Debug Ribbon Button")]
         [Then(@"I Click Debug Ribbon Button")]
-        public void Click_Debug_Ribbon_Button()
+        public void Click_DebugRibbonButton_From_Sidebar()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
 
         [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
@@ -2398,7 +2397,7 @@ namespace Warewolf.UITests
 
         public void Debug_Workflow_With_Ribbon_Button()
         {
-            Click_Debug_Ribbon_Button();
+            Click_DebugRibbonButton_From_Sidebar();
             Click_DebugInput_Debug_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
@@ -3126,7 +3125,6 @@ namespace Warewolf.UITests
         [Then(@"I Click Cancel DebugInput Window")]
         public void Click_Cancel_DebugInput_Window()
         {
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Enabled, "CancelButton is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.CancelButton, new Point(26, 13));
         }
 
@@ -3979,7 +3977,6 @@ namespace Warewolf.UITests
         public void Open_ExplorerFirstItem_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
