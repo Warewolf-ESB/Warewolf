@@ -1,5 +1,5 @@
 
-<Source ID="33000f45-a656-4b4e-9a9f-b0981bb79739" Name="New DotNet Plugin Source" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\Warewolf-ESB\Dev\TestingDotnetDllCascading\bin\Debug\TestingDotnetDllCascading.dll" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="0.0.6235.25539" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="33000f45-a656-4b4e-9a9f-b0981bb79739" Name="New DotNet Plugin Source" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="0.0.6235.25539" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>New DotNet Plugin Source</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
