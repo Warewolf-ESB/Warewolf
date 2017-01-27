@@ -169,6 +169,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 _modelItem.SetProperty("Constructor", value);
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
+                OnPropertyChanged("IsConstructorEnabled");
             }
         }
 
