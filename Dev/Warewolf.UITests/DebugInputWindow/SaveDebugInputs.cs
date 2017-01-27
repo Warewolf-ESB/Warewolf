@@ -11,7 +11,7 @@ namespace Warewolf.UITests.DebugInputWindow
 
         [TestMethod]
         [TestCategory("Debug Input")]
-        public void SaveDebugInputs_AfterCancel_UITest()
+        public void Save_DebugInputs_AfterCancel_UITest()
         {
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
@@ -27,7 +27,7 @@ namespace Warewolf.UITests.DebugInputWindow
 
         [TestMethod]
         [TestCategory("Debug Input")]
-        public void SaveDebugInputs_AfterDebug_UITest()
+        public void Save_DebugInputs_AfterDebug_UITest()
         {
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
