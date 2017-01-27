@@ -558,7 +558,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildConstructorInputs", BindingFlags.Instance | BindingFlags.NonPublic);
-            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object,0 }) as List<DebugItem>;
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object,0,false }) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(1, debugInputs.Count);
@@ -628,7 +628,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildConstructorOutput", BindingFlags.Instance | BindingFlags.NonPublic);
-            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object ,0}) as List<DebugItem>;
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object ,0, false}) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(1, debugInputs.Count);
@@ -699,7 +699,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildMethodInputs", BindingFlags.Instance | BindingFlags.NonPublic);
-            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction ,0}) as List<DebugItem>;
+            var debugInputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction ,0,false}) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(1, debugInputs.Count);
@@ -775,7 +775,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildMethodOutputs", BindingFlags.Instance | BindingFlags.NonPublic);
-            var debugOutputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction ,0}) as List<DebugItem>;
+            var debugOutputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction ,0,false}) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugOutputs);
             Assert.AreEqual(1, debugOutputs.Count);

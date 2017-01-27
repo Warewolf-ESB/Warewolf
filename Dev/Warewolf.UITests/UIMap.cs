@@ -1553,11 +1553,18 @@ namespace Warewolf.UITests
         public void Click_Run_Test_Button(TestResultEnum? expectedTestResultEnum = null, int instance = 1)
         {
             var currentTest = GetCurrentTest(instance);
-            var selectedTestRunButton = GetSelectedTestRunButton(currentTest, instance);
-
-            Mouse.Click(selectedTestRunButton);
+            Keyboard.SendKeys(MainStudioWindow, "{F5}", ModifierKeys.None);
             if (expectedTestResultEnum != null)
                 AssertTestResults(expectedTestResultEnum.Value, instance, currentTest);
+        }
+
+        public void ClickConstructorMockRadio(bool isChecked)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ColumnHeadersPrHeader.ColumnHeader.UIMockRadioButton.Selected = isChecked;
+        }
+        public void ClickFavouriteMockRadio(bool isChecked)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.FavouriteFoodsExpander.StepOutputs_FavouTable.ColumnHeadersPrHeader.ItemColumnHeader.MockRadioButton.Selected = isChecked;
         }
 
         private void AssertTestResults(TestResultEnum expectedTestResultEnum, int instance, WpfListItem currentTest)
@@ -4570,6 +4577,11 @@ namespace Warewolf.UITests
         public void Expand_DotnetDll_ByClickingCheckbox(bool isChecked)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.UIExpansionIndicatorCheckBox.Checked = isChecked;
+        }
+
+        public void SetConstructorAssertValue(string value)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit.Text = value;
         }
 
         public void Click_TestViewDotNet_DLL_Constructor_DeleteButton()
