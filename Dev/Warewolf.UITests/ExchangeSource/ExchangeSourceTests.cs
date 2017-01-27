@@ -36,7 +36,6 @@ namespace Warewolf.UITests
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            UIMap.Click_Close_ExchangeSource_Tab();
         }
 
         #region Additional test attributes

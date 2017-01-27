@@ -493,7 +493,7 @@ namespace Warewolf.UITests
             {
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
                 {
-                    TryCloseWorkflowWizardTab();
+                    Click_Close_Workflow_Tab_Button();
                 }
                 else
                 {
@@ -527,7 +527,7 @@ namespace Warewolf.UITests
                 {
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
                     {
-                        TryCloseWorkflowWizardTab();
+                        Click_Close_Workflow_Tab_Button();
                     }
                     else
                     {
@@ -541,28 +541,6 @@ namespace Warewolf.UITests
                 }
             }
             Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
-        }
-
-        [Given(@"I Try Close Workflow")]
-        [When(@"I Try Close Workflow")]
-        [Then(@"I Try Close Workflow")]
-        public void TryCloseWorkflowWizardTab()
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
-                {
-                    Click_Close_Workflow_Tab_Button();
-                }
-                if (ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
-            }
         }
 
         public void TryCloseWorkflowTestingTab()
@@ -1898,6 +1876,7 @@ namespace Warewolf.UITests
 
         public void Click_Close_Scheduler_Tab_Button()
         {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.Exists);
         }
         public void Click_Scheduler_ResourcePicker()
@@ -3171,14 +3150,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
-        [Then(@"I Click Close Clean Workflow Tab")]
-        [When(@"I Click Close Clean Workflow Tab")]
-        [Given(@"I Click Close Clean Workflow Tab")]
-        public void ThenIClickCloseCleanWorkflowWizardTab()
-        {
-            Click_Close_Workflow_Tab_Button();
-        }
-
         [Given(@"I Click Close Sharepoint Server Source Tab")]
         [When(@"I Click Close Sharepoint Server Source Tab")]
         [Then(@"I Click Close Sharepoint Server Source Tab")]
@@ -3726,7 +3697,8 @@ namespace Warewolf.UITests
         [Then(@"I Click MessageBox No")]
         public void Click_MessageBox_No()
         {
-            Mouse.Click(MessageBoxWindow.NoButton, new Point(32, 5));
+            MessageBoxWindow.NoButton.DrawHighlight();
+            Mouse.Click(MessageBoxWindow.NoButton);
         }
 
         [Given(@"I Click MessageBox OK")]
