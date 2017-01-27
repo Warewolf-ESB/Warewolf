@@ -1,0 +1,16 @@
+# Source Control
+.git/*
+.gitattributes
+.gitignore
+README.md
+
+# Code Analysis
+Resharper.AutoLoad.DotSettings
+
+# Compile
+Dev/*/obj/*
+Dev/*/bin/*
+Dev/packages/*
+
+# Test
+Dev/TestResults/*
