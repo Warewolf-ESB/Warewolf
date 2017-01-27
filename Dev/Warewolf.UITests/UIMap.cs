@@ -4224,7 +4224,6 @@ namespace Warewolf.UITests
         public void Click_NewSourceButton_From_DotNetDLLPluginTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourceButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists, "New DotNet Plugin source wizard tab does not exist after clicking new source from DotNet DLL Tool");
         }
 
         [Given(@"I Click New Source Button From SQLBulkInsert Tool")]
@@ -9096,18 +9095,6 @@ namespace Warewolf.UITests
         public void Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton);
-            Assert.IsTrue(ChooseDLLWindow.Exists, "Choose DLL Window did not open after clicking Assembly Diretory Button");
-        }
-        [When(@"I Expand The First Node in the Choose DLL Dialog Tree")]
-        public void Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree()
-        {
-            Assert.IsTrue(ChooseDLLWindow.DLLDataTree.CDrive.Exists);
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.Expander, new Point(17, 6));
-        }
-        [When(@"I Select First C Drive Item in the Choose DLL Dialog Tree")]
-        public void Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree()
-        {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(83, 9));
         }
 
         [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
@@ -9122,9 +9109,9 @@ namespace Warewolf.UITests
         }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
-            Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
-            Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree();
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(11, 14));
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(69, 34));
             Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -9141,11 +9128,12 @@ namespace Warewolf.UITests
             Mouse.Click(SelectFilesWindow.SelectButton);
         }
 
-        public void Select_GACAssemblyFile_From_ChooseDLLWindow()
+        public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
-            ChooseDLLWindow.FilterTextBox.Text = "Build";
-            Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree();
+            ChooseDLLWindow.FilterTextBox.Text = filter;
+            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(80, 35));
             Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
+            Playback.Wait(1000);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
 
