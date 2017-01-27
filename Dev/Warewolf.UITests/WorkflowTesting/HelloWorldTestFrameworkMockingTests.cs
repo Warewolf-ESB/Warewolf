@@ -93,7 +93,6 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
-            UIMap.Click_Close_Tests_Tab();
         }
 
         #region Additional test attributes
