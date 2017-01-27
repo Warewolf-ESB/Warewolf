@@ -31,7 +31,6 @@ namespace Warewolf.UITests.SharepointSource
             UIMap.Click_UserButton_On_SharepointSource();
             UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
-            UIMap.Click_Close_SharepointSource_Tab_Button();
         }
 
         #region Additional test attributes

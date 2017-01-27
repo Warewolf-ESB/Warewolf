@@ -20,7 +20,6 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
             UIMap.Make_Workflow_Savable_By_Dragging_Start();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         #region Additional test attributes

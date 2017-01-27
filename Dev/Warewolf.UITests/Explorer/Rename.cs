@@ -57,7 +57,6 @@ namespace Warewolf.UITests
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
             Directory.Move(renamedFolder, resourcesFolder);
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
