@@ -176,7 +176,7 @@
                                                             Command="{Binding ElementName=MethodListBox, Path=DataContext.DeleteActionCommand }" 
 											                CommandParameter="{Binding .}" 
 											                IsEnabled="{Binding IsDeleteActionEnabled}"
-											                Style="{StaticResource ButtonDeleteTestTransparentStyle}" >
+											                Style="{StaticResource ButtonDeleteActionTransparentStyle}" >
                                                         <Button.Content>
                                                             <fa:FontAwesome Icon="Trash" FontSize="18"/>
                                                         </Button.Content>
