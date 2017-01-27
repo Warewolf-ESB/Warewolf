@@ -19,7 +19,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    public static class TestHelper
+    public static class ServiceTestHelper
     {
         private static IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
@@ -153,38 +153,43 @@ namespace Dev2.Activities
                 {
                     stepToBeAsserted.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                 }
-                var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                if (debugItems != null)
+                var states = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                if (states != null)
                 {
-                    debugItems = debugItems.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
-                    var debugStates = debugItems.LastOrDefault();
-                    if (debugStates != null)
-                    {
-                        var factory = Dev2DecisionFactory.Instance();
-                        var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugStates));
-                        var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-                        var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
-                        var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
-
-                        var finalResult = new TestRunResult();
-                        if (testPassed)
-                        {
-                            finalResult.RunTestResult = RunResult.TestPassed;
-                        }
-                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
-                        {
-                            finalResult.RunTestResult = RunResult.TestFailed;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
-                        {
-                            finalResult.RunTestResult = RunResult.TestInvalid;
-                            finalResult.Message = serviceTestFailureMessage;
-                        }
-                        stepToBeAsserted.Result = finalResult;
-                        dataObject.StopExecution = !testPassed;
-                    }
+                    states = states.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                    var debugState = states.LastOrDefault();
+                    UpdateDebugStateWithAssertion(dataObject, stepToBeAsserted, debugState);
                 }
+            }
+        }
+
+        private static void UpdateDebugStateWithAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted, IDebugState debugState)
+        {
+            if(debugState != null)
+            {
+                var factory = Dev2DecisionFactory.Instance();
+                var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugState));
+                var testRunResults = res as IList<TestRunResult> ?? res.ToList();
+                var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult == RunResult.None);
+                var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
+
+                var finalResult = new TestRunResult();
+                if(testPassed)
+                {
+                    finalResult.RunTestResult = RunResult.TestPassed;
+                }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+                {
+                    finalResult.RunTestResult = RunResult.TestFailed;
+                    finalResult.Message = serviceTestFailureMessage;
+                }
+                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+                {
+                    finalResult.RunTestResult = RunResult.TestInvalid;
+                    finalResult.Message = serviceTestFailureMessage;
+                }
+                stepToBeAsserted.Result = finalResult;
+                dataObject.StopExecution = !testPassed;
             }
         }
     }
