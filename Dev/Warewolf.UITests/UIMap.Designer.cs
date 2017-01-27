@@ -84376,7 +84376,7 @@ namespace Warewolf.UITests
                 {
                     this.mTabDescription = new WpfText(this);
                     #region Search Criteria
-                    this.mTabDescription.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration *";
+                    this.mTabDescription.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
                     this.mTabDescription.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
