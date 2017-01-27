@@ -2160,10 +2160,10 @@ namespace Dev2.Core.Tests
             source.Setup(a => a.Address).Returns("https://someServerName:3143");
 
             var mockWM = new Mock<IWorksurfaceContextManager>();
-            mockWM.Setup(manager => manager.EditServer(It.IsAny<IServerSource>())).Verifiable();
+            mockWM.Setup(manager => manager.EditServer(It.IsAny<IServerSource>(),It.IsAny<IServer>())).Verifiable();
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
-            MainViewModel.WorksurfaceContextManager.EditServer(source.Object);
-            mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>()));
+            MainViewModel.WorksurfaceContextManager.EditServer(source.Object, It.IsAny<IServer>());
+            mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>(), It.IsAny<IServer>()));
             MainViewModel.EditServer(source.Object);
         }
 

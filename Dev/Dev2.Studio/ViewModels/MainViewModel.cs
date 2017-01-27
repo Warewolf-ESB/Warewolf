@@ -844,7 +844,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditServer(IServerSource selectedServer)
         {
-            _worksurfaceContextManager.EditServer(selectedServer);
+            _worksurfaceContextManager.EditServer(selectedServer,LocalhostServer);
         }
 
         public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
