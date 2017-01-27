@@ -139,4 +139,55 @@ Scenario: Disconnect Remote Integration On Deploy Destination Does Not Disconnec
 	And I Click Explorer Connect Remote Server Button
 	Then Destination Remote Server Is Connected
 
+Scenario: Deploy Conflicting Resource With Resource In A Different Path
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+	And I Enter "ResourceToDeployInADifferentPath" Into Deploy Source Filter
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Select Deploy First Source Item
+	And I Click Deploy Tab Destination Server Connect Button
+	And I Click Deploy Tab Deploy Button
+	Then I Click Deploy version conflicts MessageBox OK
+	And I Click Deploy conflicts MessageBox OK
+	And I Click Deploy Successful MessageBox OK
+	And I Select Connected RemoteConnectionIntegration From Explorer
+	And I Click Explorer Connect Remote Server Button
+	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
+	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
+Scenario: Changing Authentication Type of Resource And Save Keeps the Changes
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Edit Button
+	And I change Server Authentication type
+
+Scenario: Changing Server AuthenticationType from Deploy And SAVE Edit Server From Explorer Has Changes
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Edit Button
+	And I change Server Authentication From Deploy And Validate Changes From Explorer
+
+Scenario: Changing Seleced Server On desploy Source While Connected To Remote Server On the Explorer
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Connect Button
+	And I Select RemoteConnectionIntegration From Explorer
+	And I Click Explorer Connect Remote Server Button
+	And I Select localhost From Deploy Tab Source Server Combobox
+	And I validate the Resource tree is loaded
+
+Scenario: Resource Permissions Toggles Deploy button correctly
+	Given The Warewolf Studio is running
+	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for localhost
+	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
+	When I Click Deploy Ribbon Button
+	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+	And I Click Deploy Tab Source Server Connect Button
+	Then I validate I can Deploy "ResourceWithViewAndExecutePerm"
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Click Deploy Tab Destination Server Connect Button
+	And I Select localhost from the source tab
+	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"

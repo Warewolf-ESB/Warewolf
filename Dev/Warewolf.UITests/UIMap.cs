@@ -1133,7 +1133,7 @@ namespace Warewolf.UITests
             }
             Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
-        public void Set_HelloWorld_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
+        public void Set_FirstResource_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_First_Service_From_Service_Picker_Dialog(ResourceName);
@@ -1181,17 +1181,17 @@ namespace Warewolf.UITests
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
 
-
+        [When(@"I Select Deploy First Source Item")]
+        [Then(@"I Select Deploy First Source Item")]
+        [Given(@"I Select Deploy First Source Item")]
         public void Select_Deploy_First_Source_Item()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
-
-
-
+        
+        [Given(@"I Click Deploy Tab Deploy Button")]
         [When(@"I Click Deploy Tab Deploy Button")]
         [Then(@"I Click Deploy Tab Deploy Button")]
-        [Given(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
@@ -1209,6 +1209,49 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for localhost")]
+        public void SetupPublicPermissionsForForLocalhost(string resource)
+        {
+            Click_Settings_Ribbon_Button();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                Mouse.Click(deleteFirstResourceButton);
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            }
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            Click_Close_Settings_Tab_Button();
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
+        public void SetupPublicPermissionsForForRemoteServer(string resource)
+        {
+            Select_RemoteConnectionIntegration_From_Explorer();
+            Click_Explorer_RemoteServer_Connect_Button();
+            Click_Settings_Ribbon_Button();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                Mouse.Click(deleteFirstResourceButton);
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            }
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+        }
+
+        [Then(@"I validate I can Deploy ""(.*)""")]
+        public void ValidateICanDeploy(string resource)
+        {
+            Filter_Deploy_Source_Explorer(resource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
+        }
+
+        [Then(@"I validate I can not Deploy ""(.*)""")]
+        public void ValidateICanNotDeploy(string resource)
+        {
+            Filter_Deploy_Source_Explorer(resource);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
         }
 
         public void TryCloseDeployWizardTab()
@@ -1308,7 +1351,9 @@ namespace Warewolf.UITests
             Select_Deploy_First_Source_Item();
         }
 
+        [Given(@"I Select localhost from the source tab")]
         [When(@"I Select localhost from the source tab")]
+        [Then(@"I Select localhost from the source tab")]
         public void WhenISelectLocalhostFromTheSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.EnvironmentNameCheckCheckBox);
@@ -1366,7 +1411,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled,
                 "Deploy button is not enabled after valid server and resource are selected.");
             Click_Deploy_Tab_Deploy_Button();
-            //WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Spinner);
         }
 
         public void Enter_Values_Into_Data_Merge_Tool_Large_View()
@@ -3516,6 +3560,14 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_Source_Server_Connect_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.ConnectSourceButton, new Point(13, 8));
+        }
+
+        [Given(@"I Click Deploy Tab Source Server Edit Button")]
+        [When(@"I Click Deploy Tab Source Server Edit Button")]
+        [Then(@"I Click Deploy Tab Source Server Edit Button")]
+        public void Click_Deploy_Tab_Source_Server_Edit_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton, new Point(13, 8));
         }
 
         [Given(@"I Click Deploy Tab Source Refresh Button")]
@@ -9213,6 +9265,81 @@ namespace Warewolf.UITests
         {
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, new Point(186, 30));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, 1400, 968);
+        }
+
+        [Given(@"First remote Item should be ""(.*)""")]
+        [When(@"First remote Item should be ""(.*)""")]
+        [Then(@"First remote Item should be ""(.*)""")]
+        public void FirstRemoteItemShouldBe(string resource)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text == resource);
+        }
+        [Given(@"I change Server Authentication type")]
+        [When(@"I change Server Authentication type")]
+        [Then(@"I change Server Authentication type")]
+        public void ChangeServerAuthenticationType()
+        {
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            if(publicRadioButton.Selected)
+            {
+                windowsRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Click_Close_Server_Source_Wizard_Tab_Button();
+                Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(windowsRadioButton.Selected);
+            }
+            else
+            {
+                publicRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Click_Close_Server_Source_Wizard_Tab_Button();
+                Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(publicRadioButton.Selected);
+            }
+        }
+
+        [Given(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
+        [When(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
+        [Then(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
+        public void ChangeServerAuthenticationFromDeployAndValidateChangesFromExplorer()
+        {
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            if(publicRadioButton.Selected)
+            {
+                windowsRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Click_Close_Server_Source_Wizard_Tab_Button();
+                Select_RemoteConnectionIntegration_From_Explorer();
+                Click_Explorer_RemoteServer_Edit_Button();
+                Assert.IsTrue(windowsRadioButton.Selected);
+                Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(windowsRadioButton.Selected);
+            }
+            else
+            {
+                publicRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Click_Close_Server_Source_Wizard_Tab_Button();
+                Select_RemoteConnectionIntegration_From_Explorer();
+                Click_Explorer_RemoteServer_Edit_Button();
+                Assert.IsTrue(publicRadioButton.Selected);
+                Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(publicRadioButton.Selected);
+            }
+        }
+
+        [Given(@"I validate the Resource tree is loaded")]
+        [When(@"I validate the Resource tree is loaded")]
+        [Then(@"I validate the Resource tree is loaded")]
+        public void WhenIValidateTheResourceTreeIsLoaded()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.Exists);
         }
 
         public void Click_UserButton_On_ServerSourceTab()
