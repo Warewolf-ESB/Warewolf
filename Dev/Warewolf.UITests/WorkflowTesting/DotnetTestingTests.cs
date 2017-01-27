@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests.WorkflowTesting
 {
@@ -60,6 +61,7 @@ namespace Warewolf.UITests.WorkflowTesting
             var controlExistsNow = UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.FavouriteFoodsExpander);
             Assert.IsFalse(controlExistsNow);
         }
+
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void ConstructorValuesAreLoadedCorreclty()
@@ -72,6 +74,8 @@ namespace Warewolf.UITests.WorkflowTesting
             StringAssert.Contains(variableValueFromDebug, "PersonFood");
             StringAssert.Contains(variableValueFromDebug, "SurName");
         }
+
+        
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
@@ -88,7 +92,73 @@ namespace Warewolf.UITests.WorkflowTesting
             StringAssert.Contains(variableValueFromDebug, "FoodName\": \"Pizza");
         }
 
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void RunTestsHasTheTestPassing()
+        {
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
+        {
+            UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            UIMap.SetConstructorAssertValue("");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Pending.Exists);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Fail);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Failing.Exists);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void RunTestsWithAssertHasTheTestPassing()
+        {
+            UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Pending.Exists);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
+        {
+            UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            UIMap.SetConstructorAssertValue("");
+            UIMap.ClickConstructorMockRadio(true);
+            UIMap.ClickFavouriteMockRadio(true);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Fail);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void RunTestsWithMockHasTheTestPassing()
+        {
+            UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            UIMap.ClickConstructorMockRadio(true);
+            UIMap.ClickFavouriteMockRadio(true);
+            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            UIMap.Click_Delete_Test_Button();
+            UIMap.Click_MessageBox_Yes();
+        }
         #region Additional test attributes
+
+
 
         [TestInitialize()]
         public void MyTestInitialize()
