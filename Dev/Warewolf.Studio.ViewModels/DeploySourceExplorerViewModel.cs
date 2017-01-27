@@ -130,6 +130,10 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (value?.Count == 0)
+                {
+                    
+                }
                 _environments = value;
                 OnPropertyChanged(() => Environments);
             }

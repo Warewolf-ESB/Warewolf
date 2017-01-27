@@ -647,7 +647,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.ID));
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
-            studioManagerUpdateMock.Verify(it => it.FireServerSaved());
+            studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>()));
         }
 
         [TestMethod]
@@ -673,7 +673,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.ID));
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
-            studioManagerUpdateMock.Verify(it => it.FireServerSaved());
+            studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>()));
         }
 
         [TestMethod]

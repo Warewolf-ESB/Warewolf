@@ -187,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
-            ConnectControlViewModel?.LoadNewServers();
+            ConnectControlViewModel?.LoadServers();
         }
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
