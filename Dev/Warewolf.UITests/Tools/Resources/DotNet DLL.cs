@@ -127,11 +127,8 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox();
             UIMap.Click_DotNet_DLL_Large_View_SecondAction_Combobox();
             UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_SecondAction_From_Actions_Combobox();
-            UIMap.Click_DotNet_DLL_Large_View_ThirdAction_Combobox();
-            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_ThirdAction_From_Actions_Combobox();
-            UIMap.Click_Refresh_Combobox_Button_On_Third_Action_Combobox();
-            UIMap.Click_Refresh_Combobox_Button_On_Second_Action_Combobox();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox));
+            UIMap.Click_Delete_Button_On_Second_Action_Combobox();
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem2.SetActivitiesExpander));
         }
 
         [TestMethod]
@@ -146,8 +143,8 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringListItem.Exists);
             UIMap.Select_DotNet_DLL_Large_View_Constructor_With_One_Parameter_From_Constructor_Combobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Enabled);
-            UIMap.Select_First_Action_From_Dotnet_Dll_LargeView_Action_Dropdown();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Enabled);
+            UIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem2.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Enabled);
         }
         
         #region Additional test attributes
