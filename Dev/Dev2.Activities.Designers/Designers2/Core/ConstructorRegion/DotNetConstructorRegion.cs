@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
             set
             {
-                if(_selectedConstructor.ID == Guid.Empty)
+                if(value?.ID == Guid.Empty)
                 {
                     value.ID = Guid.NewGuid();
                 }
