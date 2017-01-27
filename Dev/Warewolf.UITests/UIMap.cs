@@ -132,10 +132,11 @@ namespace Warewolf.UITests
             }
         }
 
-        bool OnErrorHandlerDisabled = false;
+        int OnErrorHandlerNonce = 0;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
-            if (OnErrorHandlerDisabled) return;
+            if (OnErrorHandlerNonce > 3) return;
+            OnErrorHandlerNonce++;
             var type = e.Error.GetType().ToString();
             var messageText = type + "\n" + e.Error.Message;
             switch (type)
@@ -144,7 +145,7 @@ namespace Warewolf.UITests
                     UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
                     break;
                 default:
-                    Console.WriteLine(messageText);
+                    Console.WriteLine("On Retry " + OnErrorHandlerNonce + ":\n" + messageText);
                     break;
             }
 #if DEBUG
@@ -185,10 +186,10 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
-            OnErrorHandlerDisabled = true;
+            OnErrorHandlerNonce = 4;
             bool controlExists = false;
             controlExists = thisControl.TryFind();
-            OnErrorHandlerDisabled = false;
+            OnErrorHandlerNonce = 0;
             Playback.PlaybackError += OnError;
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
