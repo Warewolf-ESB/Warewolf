@@ -103,20 +103,31 @@ namespace Warewolf.Studio.ViewModels
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
                 var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
-                if (executeCommand.Status == ExecStatus.Success)
+                if (executeCommand == null)
                 {
-                    var duplicatedItems = executeCommand.DuplicatedItems;
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
-                    var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                    var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
-                    var explorerItemViewModels = parentItem.Children;
-                    explorerItemViewModels.AddRange(childItems);
-                    parentItem.Children = explorerItemViewModels;
+                    environmentViewModel.RefreshCommand.Execute(null);
                     CloseView();
                     ViewResult = MessageBoxResult.OK;
-                }else
+                }
+                else
                 {
-                    ErrorMessage = executeCommand.Message;
+                    if (executeCommand.Status == ExecStatus.Success)
+                    {
+                        var duplicatedItems = executeCommand.DuplicatedItems;
+                        var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
+                        var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
+                        var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                        var explorerItemViewModels = parentItem.Children;
+                        explorerItemViewModels.AddRange(childItems);
+                        parentItem.Children = explorerItemViewModels;
+                        CloseView();
+                        ViewResult = MessageBoxResult.OK;
+                    }
+                    else
+                    {
+                        ErrorMessage = executeCommand.Message;
+                    }
                 }
             }
             catch (Exception)
