@@ -9051,6 +9051,11 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+       public void  Expand_DotnetDll_ByClickingCheckbox(bool isChecked)
+       {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.UIExpansionIndicatorCheckBox.Checked = isChecked;
+       }
+
         [Given(@"I DoubleClick Explorer Localhost Second Item")]
         [When(@"I DoubleClick Explorer Localhost Second Item")]
         [Then(@"I DoubleClick Explorer Localhost Second Item")]
@@ -9412,6 +9417,21 @@ namespace Warewolf.UITests
         public void Click_NewWebSource_CancelConnectionButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.CancelTestButton);
+        }
+
+        public void Click_TestViewDotNet_DLL_DeleteButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.DeleteButton);
+        }
+
+        public void Click_TestViewDotNet_DLL_FavouriteFood_DeleteButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.FavouriteFoodsExpander.WarewolfStudioViewMoButton.DeleteButton);
+        }
+
+        public void Click_TestViewDotNet_DLL_Constructor_DeleteButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.UIWarewolfStudioViewMoButton.DeleteButton);
         }
     }
 }
