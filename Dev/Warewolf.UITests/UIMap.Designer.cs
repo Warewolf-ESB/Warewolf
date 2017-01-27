@@ -78642,6 +78642,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public DotnetDllTreeItem DotnetDllTreeItem
+        {
+            get
+            {
+                if ((this.mDotnetDllTreeItem == null))
+                {
+                    this.mDotnetDllTreeItem = new DotnetDllTreeItem(this);
+                }
+                return this.mDotnetDllTreeItem;
+            }
+        }
+        
         public DiceRollTreeItem DiceRollTreeItem
         {
             get
@@ -78679,6 +78691,8 @@ namespace Warewolf.UITests
         private DecisionTreeItem mDecisionTreeItem;
         
         private RandomTreeItem mRandomTreeItem;
+        
+        private DotnetDllTreeItem mDotnetDllTreeItem;
         
         private DiceRollTreeItem mDiceRollTreeItem;
         
@@ -82786,6 +82800,843 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mAssertValueEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DotnetDllTreeItem : WpfTreeItem
+    {
+        
+        public DotnetDllTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox UIExpansionIndicatorCheckBox
+        {
+            get
+            {
+                if ((this.mUIExpansionIndicatorCheckBox == null))
+                {
+                    this.mUIExpansionIndicatorCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIExpansionIndicatorCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ExpansionIndicator";
+                    this.mUIExpansionIndicatorCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIExpansionIndicatorCheckBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIExpansionIndicatorCheckBox;
+            }
+        }
+        
+        public ConstructorExpander ConstructorExpander
+        {
+            get
+            {
+                if ((this.mConstructorExpander == null))
+                {
+                    this.mConstructorExpander = new ConstructorExpander(this);
+                }
+                return this.mConstructorExpander;
+            }
+        }
+        
+        public FavouriteFoodsExpander FavouriteFoodsExpander
+        {
+            get
+            {
+                if ((this.mFavouriteFoodsExpander == null))
+                {
+                    this.mFavouriteFoodsExpander = new FavouriteFoodsExpander(this);
+                }
+                return this.mFavouriteFoodsExpander;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_DotNet DLL_AutoID";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mUIExpansionIndicatorCheckBox;
+        
+        private ConstructorExpander mConstructorExpander;
+        
+        private FavouriteFoodsExpander mFavouriteFoodsExpander;
+        
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ConstructorExpander : WpfExpander
+    {
+        
+        public ConstructorExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_.ctor _AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoButton UIWarewolfStudioViewMoButton
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoButton == null))
+                {
+                    this.mUIWarewolfStudioViewMoButton = new UIWarewolfStudioViewMoButton(this);
+                }
+                return this.mUIWarewolfStudioViewMoButton;
+            }
+        }
+        
+        public StepOutputs_ctor_Table StepOutputs_ctor_Table
+        {
+            get
+            {
+                if ((this.mStepOutputs_ctor_Table == null))
+                {
+                    this.mStepOutputs_ctor_Table = new StepOutputs_ctor_Table(this);
+                }
+                return this.mStepOutputs_ctor_Table;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoButton mUIWarewolfStudioViewMoButton;
+        
+        private StepOutputs_ctor_Table mStepOutputs_ctor_Table;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoButton : WpfButton
+    {
+        
+        public UIWarewolfStudioViewMoButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StepOutputs_ctor_Table : WpfTable
+    {
+        
+        public StepOutputs_ctor_Table(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "UI_StepOutputs_.ctor _AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public ColumnHeadersPrHeader5 ColumnHeadersPrHeader
+        {
+            get
+            {
+                if ((this.mColumnHeadersPrHeader == null))
+                {
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader5(this);
+                }
+                return this.mColumnHeadersPrHeader;
+            }
+        }
+        
+        public ItemRow ItemRow
+        {
+            get
+            {
+                if ((this.mItemRow == null))
+                {
+                    this.mItemRow = new ItemRow(this);
+                }
+                return this.mItemRow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ColumnHeadersPrHeader5 mColumnHeadersPrHeader;
+        
+        private ItemRow mItemRow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ColumnHeadersPrHeader5 : WpfControl
+    {
+        
+        public ColumnHeadersPrHeader5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public ColumnHeader ColumnHeader
+        {
+            get
+            {
+                if ((this.mColumnHeader == null))
+                {
+                    this.mColumnHeader = new ColumnHeader(this);
+                }
+                return this.mColumnHeader;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ColumnHeader mColumnHeader;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ColumnHeader : WpfControl
+    {
+        
+        public ColumnHeader(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton UIAssertRadioButton
+        {
+            get
+            {
+                if ((this.mUIAssertRadioButton == null))
+                {
+                    this.mUIAssertRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUIAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
+                    this.mUIAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIAssertRadioButton;
+            }
+        }
+        
+        public WpfRadioButton UIMockRadioButton
+        {
+            get
+            {
+                if ((this.mUIMockRadioButton == null))
+                {
+                    this.mUIMockRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mUIMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
+                    this.mUIMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIMockRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mUIAssertRadioButton;
+        
+        private WpfRadioButton mUIMockRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow : WpfRow
+    {
+        
+        public ItemRow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell5 Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell5(this);
+                }
+                return this.mCell;
+            }
+        }
+        
+        public Cell11 Cell1
+        {
+            get
+            {
+                if ((this.mCell1 == null))
+                {
+                    this.mCell1 = new Cell11(this);
+                }
+                return this.mCell1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell5 mCell;
+        
+        private Cell11 mCell1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell5 : WpfCell
+    {
+        
+        public Cell5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Result";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AssertValue_humanEdit
+        {
+            get
+            {
+                if ((this.mAssertValue_humanEdit == null))
+                {
+                    this.mAssertValue_humanEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAssertValue_humanEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_[[@human]]_AutoID";
+                    this.mAssertValue_humanEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertValue_humanEdit.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertValue_humanEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAssertValue_humanEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell11 : WpfCell
+    {
+        
+        public Cell11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AssertValue_NamePEdit
+        {
+            get
+            {
+                if ((this.mAssertValue_NamePEdit == null))
+                {
+                    this.mAssertValue_NamePEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAssertValue_NamePEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_{\r\n  \"Name\": \"\",\r\n  \"PersonFood\": \"\",\r\n  \"SurName\": \"\"\r\n}_AutoID";
+                    this.mAssertValue_NamePEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertValue_NamePEdit.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertValue_NamePEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAssertValue_NamePEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FavouriteFoodsExpander : WpfExpander
+    {
+        
+        public FavouriteFoodsExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_FavouriteFoods_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WarewolfStudioViewMoButton WarewolfStudioViewMoButton
+        {
+            get
+            {
+                if ((this.mWarewolfStudioViewMoButton == null))
+                {
+                    this.mWarewolfStudioViewMoButton = new WarewolfStudioViewMoButton(this);
+                }
+                return this.mWarewolfStudioViewMoButton;
+            }
+        }
+        
+        public StepOutputs_FavouTable StepOutputs_FavouTable
+        {
+            get
+            {
+                if ((this.mStepOutputs_FavouTable == null))
+                {
+                    this.mStepOutputs_FavouTable = new StepOutputs_FavouTable(this);
+                }
+                return this.mStepOutputs_FavouTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WarewolfStudioViewMoButton mWarewolfStudioViewMoButton;
+        
+        private StepOutputs_FavouTable mStepOutputs_FavouTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WarewolfStudioViewMoButton : WpfButton
+    {
+        
+        public WarewolfStudioViewMoButton(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_TestStepDelete_AutoID";
+                    this.mDeleteButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StepOutputs_FavouTable : WpfTable
+    {
+        
+        public StepOutputs_FavouTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "UI_StepOutputs_FavouriteFoods_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public ColumnHeadersPrHeader6 ColumnHeadersPrHeader
+        {
+            get
+            {
+                if ((this.mColumnHeadersPrHeader == null))
+                {
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader6(this);
+                }
+                return this.mColumnHeadersPrHeader;
+            }
+        }
+        
+        public ItemRow2 ItemRow
+        {
+            get
+            {
+                if ((this.mItemRow == null))
+                {
+                    this.mItemRow = new ItemRow2(this);
+                }
+                return this.mItemRow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ColumnHeadersPrHeader6 mColumnHeadersPrHeader;
+        
+        private ItemRow2 mItemRow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ColumnHeadersPrHeader6 : WpfControl
+    {
+        
+        public ColumnHeadersPrHeader6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "Header";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ColumnHeadersPresenter";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemColumnHeader ItemColumnHeader
+        {
+            get
+            {
+                if ((this.mItemColumnHeader == null))
+                {
+                    this.mItemColumnHeader = new ItemColumnHeader(this);
+                }
+                return this.mItemColumnHeader;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemColumnHeader mItemColumnHeader;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemColumnHeader : WpfControl
+    {
+        
+        public ItemColumnHeader(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "ColumnHeader";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton AssertRadioButton
+        {
+            get
+            {
+                if ((this.mAssertRadioButton == null))
+                {
+                    this.mAssertRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mAssertRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Assert";
+                    this.mAssertRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertRadioButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertRadioButton;
+            }
+        }
+        
+        public WpfRadioButton MockRadioButton
+        {
+            get
+            {
+                if ((this.mMockRadioButton == null))
+                {
+                    this.mMockRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mMockRadioButton.SearchProperties[WpfRadioButton.PropertyNames.Name] = "Mock";
+                    this.mMockRadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mMockRadioButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mMockRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mAssertRadioButton;
+        
+        private WpfRadioButton mMockRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemRow2 : WpfRow
+    {
+        
+        public ItemRow2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell6 Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell6(this);
+                }
+                return this.mCell;
+            }
+        }
+        
+        public Cell12 Cell1
+        {
+            get
+            {
+                if ((this.mCell1 == null))
+                {
+                    this.mCell1 = new Cell12(this);
+                }
+                return this.mCell1;
+            }
+        }
+        
+        public Cell21 Cell2
+        {
+            get
+            {
+                if ((this.mCell2 == null))
+                {
+                    this.mCell2 = new Cell21(this);
+                }
+                return this.mCell2;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell6 mCell;
+        
+        private Cell12 mCell1;
+        
+        private Cell21 mCell2;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell6 : WpfCell
+    {
+        
+        public Cell6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Result";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AssertValue_foodsEdit
+        {
+            get
+            {
+                if ((this.mAssertValue_foodsEdit == null))
+                {
+                    this.mAssertValue_foodsEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAssertValue_foodsEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_[[@foods]]_AutoID";
+                    this.mAssertValue_foodsEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertValue_foodsEdit.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertValue_foodsEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAssertValue_foodsEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell12 : WpfCell
+    {
+        
+        public Cell12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox AssertOp_foods_AuComboBox
+        {
+            get
+            {
+                if ((this.mAssertOp_foods_AuComboBox == null))
+                {
+                    this.mAssertOp_foods_AuComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mAssertOp_foods_AuComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_AssertOp_[[@foods]]_AutoID";
+                    this.mAssertOp_foods_AuComboBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertOp_foods_AuComboBox.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertOp_foods_AuComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mAssertOp_foods_AuComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Cell21 : WpfCell
+    {
+        
+        public Cell21(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AssertValue_id1tyEdit
+        {
+            get
+            {
+                if ((this.mAssertValue_id1tyEdit == null))
+                {
+                    this.mAssertValue_id1tyEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAssertValue_id1tyEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_AssertValue_[\r\n  {\r\n    \"$id\": \"1\",\r\n    \"$type\": \"TestingDotnetDllCascading.F" +
+                        "ood\",\r\n    \"FoodName\": \"Pizza\"\r\n  _AutoID";
+                    this.mAssertValue_id1tyEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mAssertValue_id1tyEdit.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssertValue_id1tyEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAssertValue_id1tyEdit;
         #endregion
     }
     
@@ -91607,13 +92458,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Cell5 Cell
+        public Cell7 Cell
         {
             get
             {
                 if ((this.mCell == null))
                 {
-                    this.mCell = new Cell5(this);
+                    this.mCell = new Cell7(this);
                 }
                 return this.mCell;
             }
@@ -91621,15 +92472,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Cell5 mCell;
+        private Cell7 mCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Cell5 : WpfCell
+    public class Cell7 : WpfCell
     {
         
-        public Cell5(UITestControl searchLimitContainer) : 
+        public Cell7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -91741,13 +92592,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public Cell6 Cell
+        public Cell8 Cell
         {
             get
             {
                 if ((this.mCell == null))
                 {
-                    this.mCell = new Cell6(this);
+                    this.mCell = new Cell8(this);
                 }
                 return this.mCell;
             }
@@ -91755,15 +92606,15 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private Cell6 mCell;
+        private Cell8 mCell;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Cell6 : WpfCell
+    public class Cell8 : WpfCell
     {
         
-        public Cell6(UITestControl searchLimitContainer) : 
+        public Cell8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92050,13 +92901,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ColumnHeadersPrHeader5 ColumnHeadersPrHeader
+        public ColumnHeadersPrHeader7 ColumnHeadersPrHeader
         {
             get
             {
                 if ((this.mColumnHeadersPrHeader == null))
                 {
-                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader5(this);
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader7(this);
                 }
                 return this.mColumnHeadersPrHeader;
             }
@@ -92066,7 +92917,7 @@ namespace Warewolf.UITests
         #region Fields
         private Row133 mRow1;
         
-        private ColumnHeadersPrHeader5 mColumnHeadersPrHeader;
+        private ColumnHeadersPrHeader7 mColumnHeadersPrHeader;
         #endregion
     }
     
@@ -92133,13 +92984,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public Cell7 Cell
+        public Cell9 Cell
         {
             get
             {
                 if ((this.mCell == null))
                 {
-                    this.mCell = new Cell7(this);
+                    this.mCell = new Cell9(this);
                 }
                 return this.mCell;
             }
@@ -92155,7 +93006,7 @@ namespace Warewolf.UITests
         
         private AssertValueCell2 mAssertValueCell;
         
-        private Cell7 mCell;
+        private Cell9 mCell;
         #endregion
     }
     
@@ -92316,10 +93167,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Cell7 : WpfCustom
+    public class Cell9 : WpfCustom
     {
         
-        public Cell7(UITestControl searchLimitContainer) : 
+        public Cell9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92353,10 +93204,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ColumnHeadersPrHeader5 : WpfControl
+    public class ColumnHeadersPrHeader7 : WpfControl
     {
         
-        public ColumnHeadersPrHeader5(UITestControl searchLimitContainer) : 
+        public ColumnHeadersPrHeader7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -92728,13 +93579,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ColumnHeadersPrHeader6 ColumnHeadersPrHeader
+        public ColumnHeadersPrHeader8 ColumnHeadersPrHeader
         {
             get
             {
                 if ((this.mColumnHeadersPrHeader == null))
                 {
-                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader6(this);
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader8(this);
                 }
                 return this.mColumnHeadersPrHeader;
             }
@@ -92744,7 +93595,7 @@ namespace Warewolf.UITests
         #region Fields
         private Row134 mRow1;
         
-        private ColumnHeadersPrHeader6 mColumnHeadersPrHeader;
+        private ColumnHeadersPrHeader8 mColumnHeadersPrHeader;
         #endregion
     }
     
@@ -93032,10 +93883,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ColumnHeadersPrHeader6 : WpfControl
+    public class ColumnHeadersPrHeader8 : WpfControl
     {
         
-        public ColumnHeadersPrHeader6(UITestControl searchLimitContainer) : 
+        public ColumnHeadersPrHeader8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -93486,13 +94337,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ColumnHeadersPrHeader7 ColumnHeadersPrHeader
+        public ColumnHeadersPrHeader9 ColumnHeadersPrHeader
         {
             get
             {
                 if ((this.mColumnHeadersPrHeader == null))
                 {
-                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader7(this);
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader9(this);
                 }
                 return this.mColumnHeadersPrHeader;
             }
@@ -93502,7 +94353,7 @@ namespace Warewolf.UITests
         #region Fields
         private Row135 mRow1;
         
-        private ColumnHeadersPrHeader7 mColumnHeadersPrHeader;
+        private ColumnHeadersPrHeader9 mColumnHeadersPrHeader;
         #endregion
     }
     
@@ -93790,10 +94641,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ColumnHeadersPrHeader7 : WpfControl
+    public class ColumnHeadersPrHeader9 : WpfControl
     {
         
-        public ColumnHeadersPrHeader7(UITestControl searchLimitContainer) : 
+        public ColumnHeadersPrHeader9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -94438,13 +95289,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ColumnHeadersPrHeader8 ColumnHeadersPrHeader
+        public ColumnHeadersPrHeader10 ColumnHeadersPrHeader
         {
             get
             {
                 if ((this.mColumnHeadersPrHeader == null))
                 {
-                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader8(this);
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader10(this);
                 }
                 return this.mColumnHeadersPrHeader;
             }
@@ -94454,7 +95305,7 @@ namespace Warewolf.UITests
         #region Fields
         private Row136 mRow1;
         
-        private ColumnHeadersPrHeader8 mColumnHeadersPrHeader;
+        private ColumnHeadersPrHeader10 mColumnHeadersPrHeader;
         #endregion
     }
     
@@ -94742,10 +95593,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ColumnHeadersPrHeader8 : WpfControl
+    public class ColumnHeadersPrHeader10 : WpfControl
     {
         
-        public ColumnHeadersPrHeader8(UITestControl searchLimitContainer) : 
+        public ColumnHeadersPrHeader10(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -95119,13 +95970,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public ColumnHeadersPrHeader9 ColumnHeadersPrHeader
+        public ColumnHeadersPrHeader11 ColumnHeadersPrHeader
         {
             get
             {
                 if ((this.mColumnHeadersPrHeader == null))
                 {
-                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader9(this);
+                    this.mColumnHeadersPrHeader = new ColumnHeadersPrHeader11(this);
                 }
                 return this.mColumnHeadersPrHeader;
             }
@@ -95135,7 +95986,7 @@ namespace Warewolf.UITests
         #region Fields
         private Row137 mRow1;
         
-        private ColumnHeadersPrHeader9 mColumnHeadersPrHeader;
+        private ColumnHeadersPrHeader11 mColumnHeadersPrHeader;
         #endregion
     }
     
@@ -95423,10 +96274,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ColumnHeadersPrHeader9 : WpfControl
+    public class ColumnHeadersPrHeader11 : WpfControl
     {
         
-        public ColumnHeadersPrHeader9(UITestControl searchLimitContainer) : 
+        public ColumnHeadersPrHeader11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
