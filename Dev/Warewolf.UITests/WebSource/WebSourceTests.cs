@@ -33,8 +33,6 @@ namespace Warewolf.UITests.WebSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
             UIMap.Click_NewWebSource_TestConnectionButton();
             UIMap.Click_NewWebSource_CancelConnectionButton();
-            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-            UIMap.Click_MessageBox_No();
         }
 
         #region Additional test attributes
