@@ -23,9 +23,7 @@ Scenario: Opening and Editing Workflow from Explorer Remote
 	And I Click Explorer Connect Remote Server Button
 	And I Filter the Explorer with "Hello World"
 	When I open "Hello World" in Remote Connection Integration
-	And I Try Close Workflow
-	And I Click Explorer Connect Remote Server Button	
-
+	
 Scenario: Opening Workflow local and remote using right click
    Given The Warewolf Studio is running
    When I Select RemoteConnectionIntegration From Explorer
