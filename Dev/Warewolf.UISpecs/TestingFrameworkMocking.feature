@@ -1,7 +1,6 @@
 ﻿@TestingFrameworkMocking
 Feature: TestingFrameworkMocking
 
-
 Scenario: Executing Release Tests for Hello World should all be passing
 	Given The Warewolf Studio is running
 	And I have Hello World workflow on the Explorer
