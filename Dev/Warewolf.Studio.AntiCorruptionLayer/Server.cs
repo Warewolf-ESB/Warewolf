@@ -43,7 +43,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ResourceName = EnvironmentConnection.DisplayName;
             EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
             EnvironmentConnection.ItemAddedMessageAction += ItemAdded;
-            _environmentModel = environmentModel;
+            _environmentModel = environmentModel;            
         }
 
         public bool CanDeployTo => _environmentModel.IsAuthorizedDeployTo;
@@ -273,6 +273,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IExplorerRepository ProxyLayer => _proxyLayer;
         public IEnvironmentConnection EnvironmentConnection { get; set; }
+
+        public IEnvironmentModel EnvironmentModel => _environmentModel;
 
         #endregion
 

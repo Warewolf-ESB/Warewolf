@@ -174,7 +174,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_environmentModel.Connection.IsConnected)
             {
-                _environmentModel.Connection.Connect(_environmentModel.ID);
+                //_environmentModel.Connection.Connect(_environmentModel.ID);
                 if (!_environmentModel.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
