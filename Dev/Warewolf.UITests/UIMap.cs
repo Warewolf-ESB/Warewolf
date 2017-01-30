@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Common;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
@@ -54,7 +55,8 @@ namespace Warewolf.UITests
         [Given("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");            
+            Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
             TryClickMessageBoxOK();
 #if !DEBUG
@@ -750,42 +752,9 @@ namespace Warewolf.UITests
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
-
-            if (duplicate || invalid || nameHasWhiteSpace)
-            {
-                if (duplicate)
-                {
-                    Assert.AreEqual(string.Format("An item with name '{0}' already exists in this folder.", ServiceName), errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-                if (invalid)
-                {
-                    Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-                if (nameHasWhiteSpace)
-                {
-                    Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-            }
-            else
-            {
-                if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                    Assert.IsTrue(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                else
-                    Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-            }
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
+
         public void Select_FirstItem_From_ServicePicker_Tree()
         {
             var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
@@ -7890,7 +7859,7 @@ namespace Warewolf.UITests
         [Then(@"Remote ""(.*)"" is open")]
         public void RemoteResourceIsOpen(string tabName)
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists);
+            Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists);
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
@@ -7898,7 +7867,7 @@ namespace Warewolf.UITests
         [Then(@"Local ""(.*)"" is open")]
         public void LocalResourceIsOpen(string tabName)
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
+            Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
@@ -7977,8 +7946,9 @@ namespace Warewolf.UITests
         [When(@"I Select RemoteConnectionIntegration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {            
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Playback.Wait(2000);
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            Playback.Wait(500);
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
