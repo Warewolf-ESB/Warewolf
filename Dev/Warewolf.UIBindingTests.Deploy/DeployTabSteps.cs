@@ -357,7 +357,34 @@ namespace Warewolf.UIBindingTests.Deploy
             var item = new Mock<IExplorerItemViewModel>();
             item.SetupGet(model => model.ResourceName).Returns("DifferentNameSameID");
             item.SetupGet(model => model.ResourcePath).Returns(itemViewModel.ResourcePath);
-            item.SetupGet(model => model.ResourceId).Returns(Guid.NewGuid);
+            item.SetupGet(model => model.ResourceId).Returns(itemViewModel.ResourceId);
+            var observableCollection = new ObservableCollection<IExplorerItemViewModel>()
+            {
+                item.Object
+            };
+            envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
+            envMock.Setup(model => model.AsList()).Returns(observableCollection);
+            envMock.SetupGet(model => model.Children).Returns(observableCollection);
+            var deployDestinationExplorerViewModel = GetViewModel().Destination;
+            deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
+            Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
+        }
+
+        [Then(@"I select Destination Server as ""(.*)"" with SameName different ID confilcts")]
+        [When(@"I select Destination Server as ""(.*)"" with SameName different ID confilcts")]
+        public void ThenISelectDestinationServerAsWithSameNameDifferentIDConfilcts(string p0)
+        {
+            var deployViewModel = (IDeployViewModel)ScenarioContext.Current["vm"];
+            var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList();
+            var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(p0);
+            mockServer.SetupGet(server => server.DisplayName).Returns(p0);
+            mockServer.SetupGet(server => server.ResourceName).Returns(p0);
+            var itemViewModel = explorerItemViewModel.First(model => model.ResourceName.Equals("Control Flow - Sequence", StringComparison.InvariantCultureIgnoreCase));
+            var envMock = new Mock<IEnvironmentViewModel>();
+            var item = new Mock<IExplorerItemViewModel>();
+            item.SetupGet(model => model.ResourceName).Returns("DifferentNameSameID");
+            item.SetupGet(model => model.ResourcePath).Returns(itemViewModel.ResourcePath);
+            item.SetupGet(model => model.ResourceId).Returns(Guid.NewGuid());
             var observableCollection = new ObservableCollection<IExplorerItemViewModel>()
             {
                 item.Object

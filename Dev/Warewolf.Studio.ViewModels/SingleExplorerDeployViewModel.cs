@@ -281,11 +281,19 @@ namespace Warewolf.Studio.ViewModels
                     var sourceEnvServer = sourceEnv.Server;
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
                     var destEnv = Destination.ConnectControlViewModel.SelectedConnection as Server;
-                    foreach (var conflictItem in ConflictItems)
+                    if (ConflictItems != null)
                     {
-                        var task = Task.Run(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(conflictItem.DestinationId, conflictItem.DestinationName, conflictItem.SourceName));
-                        task.Wait();
-                        
+                        foreach (var conflictItem in ConflictItems)
+                        {
+                            if (destEnv != null)
+                            {
+                                var task = Task.Run(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
+                                    conflictItem.DestinationId, conflictItem.DestinationName,
+                                    conflictItem.SourceName));
+                                task.Wait();
+                            }
+
+                        }
                     }
                     if (supportsDirectServerDeploy)
                     {
