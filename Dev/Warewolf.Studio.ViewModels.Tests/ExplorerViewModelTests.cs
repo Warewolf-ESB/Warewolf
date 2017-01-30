@@ -439,7 +439,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
         public void TestServerReConnected()
         {
             //arrange
@@ -458,8 +457,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             netwworkStateChangedEventArgs.SetupGet(it => it.State).Returns(ConnectionNetworkState.Connected);
             var server1Mock = new Mock<IServer>();
             server1Mock.SetupGet(it => it.EnvironmentID).Returns(Guid.Empty);
+            server1Mock.SetupGet(it => it.ResourceID).Returns(Guid.Empty);
             _target.ConnectControlViewModel.Servers.Add(server1Mock.Object);
-            _target.ConnectControlViewModel.LoadNewServers();
+            _target.ConnectControlViewModel.LoadServers();
             _target.IsLoading = false;
 
             //act
