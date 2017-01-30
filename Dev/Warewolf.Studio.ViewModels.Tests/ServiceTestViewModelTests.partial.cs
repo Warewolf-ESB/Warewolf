@@ -49,6 +49,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
             var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
             var debugState = new DebugState
@@ -84,6 +85,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
             var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
             var debugState = new DebugState
@@ -147,6 +149,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 
@@ -190,6 +193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             StringAssert.Contains("DsfMultiAssignActivity", testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
@@ -235,6 +239,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>();
             var serviceTestStep = new Mock<IServiceTestStep>();
@@ -290,6 +295,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.PrepopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
             Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }        
@@ -332,6 +338,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var serviceTestStep = new Mock<IServiceTestStep>();
             ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>() { serviceTestStep.Object };
@@ -389,6 +396,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>() { };
 
@@ -460,6 +468,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>() { };
 
@@ -523,6 +532,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SwitchFromDebug", BindingFlags.NonPublic | BindingFlags.Instance);
 
             //---------------Assert Precondition----------------
@@ -576,6 +586,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             seq.Children.Add(itemViewModel1);
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             ObservableCollection<IServiceTestStep> testSteps = new ObservableCollection<IServiceTestStep>() { };
 
@@ -631,6 +642,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Inputs.Add(new ServiceTestInput("Name", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetInputs", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
@@ -669,6 +681,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
@@ -707,6 +720,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
@@ -746,6 +760,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             testFrameworkViewModel.SelectedServiceTest.Inputs.Add(new ServiceTestInput("Name", ""));
             //---------------Assert Precondition----------------
@@ -787,6 +802,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             //---------------Assert Precondition----------------
@@ -836,6 +852,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var synchronousAsyncWorker = new SynchronousAsyncWorker();
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             //---------------Test Result -----------------------
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
         }
@@ -883,6 +900,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             bool wasCalled = false;
             testViewModel.PropertyChanged += (sender, args) =>
             {
@@ -913,6 +931,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
 
             //---------------Assert Precondition----------------
@@ -940,6 +959,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("StopTest", BindingFlags.NonPublic | BindingFlags.Instance);
             var propertyInfo = typeof(ServiceTestViewModel).GetProperty("ServiceTestCommandHandler", BindingFlags.Public | BindingFlags.Instance);
             //---------------Assert Precondition----------------
@@ -972,6 +992,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetStepIcon", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.Any, new[] { typeof(string), typeof(ServiceTestStep) }, new[] { new ParameterModifier(2), });
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
