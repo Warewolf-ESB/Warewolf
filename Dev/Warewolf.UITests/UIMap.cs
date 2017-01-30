@@ -9103,21 +9103,11 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton);
         }
 
-        [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
-        public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIItemTreeItem = this.ChooseDLLWindow.DLLDataTree.GAC.FirstItem;
-            #endregion
-
-            // Click 'GAC' ->  tree item
-            Mouse.Click(uIItemTreeItem, new Point(68, 6));
-        }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(11, 14));
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(69, 34));
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive, new Point(11, 14));
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(69, 34));
             Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -9136,17 +9126,20 @@ namespace Warewolf.UITests
 
         public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
+            if (string.IsNullOrEmpty(ChooseDLLWindow.FilterTextBox.Text) == false)
+            {
+                Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
+            }
             ChooseDLLWindow.FilterTextBox.Text = filter;
-            Mouse.Click(ChooseDLLWindow.DLLDataTree, new Point(80, 35));
-            Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
-            Playback.Wait(1000);
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
+            Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text), "Files Textbox is empty.");
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
 
         public void Select_AssemblyFile_From_COMPluginDataTree(string filter)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = filter;
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree, new Point(61, 13));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[1]);
         }
 
         public void Select_Attachments_From_SelectFilesWindow()
@@ -9252,7 +9245,7 @@ namespace Warewolf.UITests
 
         public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "irrelevant";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "test";
         }
 
         public void Click_OAuthSource_AuthoriseButton()
