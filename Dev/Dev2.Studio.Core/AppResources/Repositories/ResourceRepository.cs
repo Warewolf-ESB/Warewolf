@@ -119,8 +119,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_environmentModel.Connection.IsConnected)
             {
-                ShowServerDisconnectedPopup();
-                return null;
+                _environmentModel.Connection.Connect(_environmentModel.ID);
+                if (!_environmentModel.Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return null;
+                }
             }
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
@@ -130,8 +134,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
             if (toReloadResources == null && !_environmentModel.Connection.IsConnected)
             {
-                ShowServerDisconnectedPopup();
-                return null;
+                if (!_environmentModel.Connection.IsConnected)
+                {
+                    _environmentModel.Connection.Connect(_environmentModel.ID);
+                    if (!_environmentModel.Connection.IsConnected)
+                    {
+                        ShowServerDisconnectedPopup();
+                        return null;
+                    }
+                }
+                else
+                {
+                    toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
+                }
+                
             }
             if (toReloadResources != null)
             {
@@ -174,8 +190,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_environmentModel.Connection.IsConnected)
             {
-                ShowServerDisconnectedPopup();
-                return null;
+                _environmentModel.Connection.Connect(_environmentModel.ID);
+                if (!_environmentModel.Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return null;
+                }
             }
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
@@ -488,8 +508,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_environmentModel.Connection.IsConnected)
             {
-                ShowServerDisconnectedPopup();
-                return null;
+                _environmentModel.Connection.Connect(_environmentModel.ID);
+                if (!_environmentModel.Connection.IsConnected)
+                {
+                    ShowServerDisconnectedPopup();
+                    return null;
+                }
             }
 
             Guid id = data.ResourceID;

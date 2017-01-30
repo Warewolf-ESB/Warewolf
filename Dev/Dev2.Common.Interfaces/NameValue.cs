@@ -169,8 +169,8 @@ namespace Dev2.Common.Interfaces
             Name = "";
 
             Value = "";
-            AddRowCommand = new DelegateCommand(AddRow);
-            RemoveRowCommand = new DelegateCommand(RemoveRow);
+            AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
+            RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
