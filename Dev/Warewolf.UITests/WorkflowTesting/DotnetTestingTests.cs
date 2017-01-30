@@ -74,8 +74,17 @@ namespace Warewolf.UITests.WorkflowTesting
             StringAssert.Contains(variableValueFromDebug, "PersonFood");
             StringAssert.Contains(variableValueFromDebug, "SurName");
         }
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
+        {
+            UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            UIMap.Save_Tets_With_Shortcut();
+            UIMap.SetConstructorVariable("[[@newVar]]");
+            UIMap.Assert_Display_Text_ContainStar("Tab", true);
+            UIMap.Assert_Display_Text_ContainStar("Test", true, 1);
+        }
 
-        
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
