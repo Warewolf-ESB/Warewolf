@@ -26,26 +26,34 @@ if ($TestList.StartsWith(",")) {
 # Create assemblies list.
 if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+}
+if ($TestAssembliesPath -eq "") {
+	Write-Host Cannot find Warewolf.UIBindingTests.*.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UIBindingTests
+	exit 1
 }
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $TestAssembliesPath -Include Warewolf.UIBindingTests.*.dll -Recurse | Sort-Object -Property Name -Unique ) {
