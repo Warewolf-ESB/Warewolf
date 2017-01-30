@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,22 +14,26 @@ namespace Warewolf.UITests
                 case 2:
                     var test2 = test as Test2;
                     Assert.IsNotNull(test2);
-                    Assert.IsTrue(test2.Pending.Exists, "Test 2 status is not set to Pending");
+                    var isPending2 = test2.Pending.Width != 1 && test2.Pending.Width != 1 && test2.Pending.Width != 1 && test2.Pending.Width != 1;
+                    Assert.IsTrue(isPending2, "Test 2 status is not set to Pending");
                     break;
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    Assert.IsTrue(test3.Pending.Exists, "Test 3 status is not set to Pending");
+                    var isPending3 = test3.Pending.Width != 1 && test3.Pending.Width != 1 && test3.Pending.Width != 1 && test3.Pending.Width != 1;
+                    Assert.IsTrue(isPending3, "Test 3 status is not set to Pending");
                     break;
                 case 4:
                     var test4 = test as Test4;
                     Assert.IsNotNull(test4);
-                    Assert.IsTrue(test4.Pending.Exists, "Test 4 status is not set to Pending");
+                    var isPending4 = test4.Pending.Width != 1 && test4.Pending.Width != 1 && test4.Pending.Width != 1 && test4.Pending.Width != 1;
+                    Assert.IsTrue(isPending4, "Test 4 status is not set to Pending");
                     break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
-                    Assert.IsTrue(test1.Pending.Exists, "Test 1 status is not set to Pending");
+                    var isPending = test1.Pending.Width != 1 && test1.Pending.Width != 1 && test1.Pending.Width != 1 && test1.Pending.Width != 1;
+                    Assert.IsTrue(isPending, "Test 1 status is not set to Pending");
                     break;
             }
         }
