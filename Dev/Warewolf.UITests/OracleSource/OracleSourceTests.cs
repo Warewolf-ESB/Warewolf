@@ -19,7 +19,6 @@ namespace Warewolf.UITests.OracleSource
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username textbox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password textbos is not enabled.");
-            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
         [TestMethod]
@@ -37,7 +36,6 @@ namespace Warewolf.UITests.OracleSource
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes

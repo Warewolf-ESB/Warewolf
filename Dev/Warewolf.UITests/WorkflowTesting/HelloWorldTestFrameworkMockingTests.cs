@@ -35,7 +35,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
             UIMap.Click_Save_Before_Continuing_MessageBox_OK();
             UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
         
         [TestMethod]
@@ -47,7 +46,6 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
-            UIMap.Click_Close_Tests_Tab();
         }
         
         [TestMethod]
@@ -60,7 +58,6 @@ namespace Warewolf.UITests
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
-            UIMap.Click_Close_Tests_Tab();
         }
 
         [TestMethod]
@@ -69,8 +66,6 @@ namespace Warewolf.UITests
         {
             UIMap.Click_MockRadioButton_On_AssignValue_TestStep(); ;
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.DecisionAssert.SmallDataGridTable.Row1.Exists, "Pending status icon is still visible on assign test step after checking the mock radio button.");
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
         }
         
         [TestMethod]
@@ -80,8 +75,6 @@ namespace Warewolf.UITests
             UIMap.Click_Delete_On_AssignValue_TestStep();
             UIMap.Click_Output_Step();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
-            UIMap.Click_Close_Tests_Tab();
-            UIMap.Click_MessageBox_No();
         }
 
         [TestMethod]
@@ -104,10 +97,8 @@ namespace Warewolf.UITests
             UIMap.AssertStudioIsRunning();
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
         }
 
         UIMap UIMap

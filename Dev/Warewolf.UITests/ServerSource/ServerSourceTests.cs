@@ -18,7 +18,6 @@ namespace Warewolf.UITests.ServerSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User Radio button not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows Radio button not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button is enabled");
-            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
         }
 
         [TestMethod]
@@ -33,7 +32,6 @@ namespace Warewolf.UITests.ServerSource
             UIMap.Enter_RunAsUser_On_ServerSourceTab();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes

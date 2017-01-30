@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Common;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
@@ -54,7 +55,8 @@ namespace Warewolf.UITests
         [Given("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");            
+            Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
             TryClickMessageBoxOK();
 #if !DEBUG
@@ -132,10 +134,12 @@ namespace Warewolf.UITests
             }
         }
 
-        bool OnErrorHandlerDisabled = false;
+        int OnErrorHandlerNonce = 0;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
-            if (OnErrorHandlerDisabled) return;
+            Console.WriteLine("On Retry " + OnErrorHandlerNonce + ":");
+            if (OnErrorHandlerNonce > 3) return;
+            OnErrorHandlerNonce++;
             var type = e.Error.GetType().ToString();
             var messageText = type + "\n" + e.Error.Message;
             switch (type)
@@ -185,10 +189,10 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
             Playback.PlaybackError -= OnError;
-            OnErrorHandlerDisabled = true;
+            OnErrorHandlerNonce = 4;
             bool controlExists = false;
             controlExists = thisControl.TryFind();
-            OnErrorHandlerDisabled = false;
+            OnErrorHandlerNonce = 0;
             Playback.PlaybackError += OnError;
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
@@ -491,7 +495,7 @@ namespace Warewolf.UITests
             {
                 if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
                 {
-                    TryCloseWorkflowWizardTab();
+                    Click_Close_Workflow_Tab_Button();
                 }
                 else
                 {
@@ -525,7 +529,7 @@ namespace Warewolf.UITests
                 {
                     if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
                     {
-                        TryCloseWorkflowWizardTab();
+                        Click_Close_Workflow_Tab_Button();
                     }
                     else
                     {
@@ -539,28 +543,6 @@ namespace Warewolf.UITests
                 }
             }
             Assert.IsFalse(MainStudioWindow.SideMenuBar.RunAndDebugButton.Enabled, "RunDebug button is enabled");
-        }
-
-        [Given(@"I Try Close Workflow")]
-        [When(@"I Try Close Workflow")]
-        [Then(@"I Try Close Workflow")]
-        public void TryCloseWorkflowWizardTab()
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
-                {
-                    Click_Close_Workflow_Tab_Button();
-                }
-                if (ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("TryClose method failed to close Workflow tab.\n" + e.Message);
-            }
         }
 
         public void TryCloseWorkflowTestingTab()
@@ -756,7 +738,7 @@ namespace Warewolf.UITests
         [Then(@"I Enter Service Name Into Save Dialog As ""(.*)""")]
         public void Enter_Valid_Service_Name_Into_Save_Dialog(string ServiceName)
         {
-            WpfText errorLabel = SaveDialogWindow.ErrorLabel;
+            Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist on the Surface.");
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
         }
 
@@ -770,42 +752,9 @@ namespace Warewolf.UITests
         {
             WpfText errorLabel = SaveDialogWindow.ErrorLabel;
             SaveDialogWindow.ServiceNameTextBox.Text = ServiceName;
-
-            if (duplicate || invalid || nameHasWhiteSpace)
-            {
-                if (duplicate)
-                {
-                    Assert.AreEqual(string.Format("An item with name '{0}' already exists in this folder.", ServiceName), errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-                if (invalid)
-                {
-                    Assert.AreEqual("'Name' contains invalid characters", errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-                if (nameHasWhiteSpace)
-                {
-                    Assert.AreEqual("'Name' contains leading or trailing whitespace characters.", errorLabel.DisplayText, "Error is not the same as expected");
-                    if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                        Assert.IsFalse(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                    else
-                        Assert.IsFalse(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                }
-            }
-            else
-            {
-                if (saveOrDuplicate == SaveOrDuplicate.Duplicate)
-                    Assert.IsTrue(SaveDialogWindow.DuplicateButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-                else
-                    Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
-            }
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
+
         public void Select_FirstItem_From_ServicePicker_Tree()
         {
             var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
@@ -997,7 +946,8 @@ namespace Warewolf.UITests
         [When(@"I Click SaveDialog Save Button")]
         [Then(@"I Click SaveDialog Save Button")]
         public void Click_SaveDialog_Save_Button()
-        {
+        {            
+            Assert.IsTrue(SaveDialogWindow.SaveButton.Enabled, "Save button on the Save Dialog is not Enabled");
             Mouse.Click(SaveDialogWindow.SaveButton, new Point(25, 4));
         }
         public void TryCloseNewWebSourceWizardTab()
@@ -1116,6 +1066,7 @@ namespace Warewolf.UITests
         [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
         public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
+            Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_SubItem_Service_From_Service_Picker_Dialog(ResourceName);
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
@@ -1135,6 +1086,7 @@ namespace Warewolf.UITests
         }
         public void Set_FirstResource_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
         {
+            Click_Settings_Ribbon_Button();
             Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
             Select_First_Service_From_Service_Picker_Dialog(ResourceName);
             Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
@@ -1941,7 +1893,7 @@ namespace Warewolf.UITests
 
         public void Click_Close_Scheduler_Tab_Button()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.Exists);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
         }
         public void Click_Scheduler_ResourcePicker()
         {
@@ -2027,6 +1979,13 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
         }
 
+        [Given(@"I Click Close Clean Workflow Tab")]
+        [When(@"I Click Close Clean Workflow Tab")]
+        [Then(@"I Click Close Clean Workflow Tab")]
+        public void ThenIClickCloseCleanWorkflowTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
+        }
 
         public void TryRemoveTests()
         {
@@ -3213,14 +3172,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
-        [Then(@"I Click Close Clean Workflow Tab")]
-        [When(@"I Click Close Clean Workflow Tab")]
-        [Given(@"I Click Close Clean Workflow Tab")]
-        public void ThenIClickCloseCleanWorkflowWizardTab()
-        {
-            Click_Close_Workflow_Tab_Button();
-        }
-
         [Given(@"I Click Close Sharepoint Server Source Tab")]
         [When(@"I Click Close Sharepoint Server Source Tab")]
         [Then(@"I Click Close Sharepoint Server Source Tab")]
@@ -3776,7 +3727,8 @@ namespace Warewolf.UITests
         [Then(@"I Click MessageBox No")]
         public void Click_MessageBox_No()
         {
-            Mouse.Click(MessageBoxWindow.NoButton, new Point(32, 5));
+            MessageBoxWindow.NoButton.DrawHighlight();
+            Mouse.Click(MessageBoxWindow.NoButton);
         }
 
         [Given(@"I Click MessageBox OK")]
@@ -3884,6 +3836,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
@@ -4672,7 +4625,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Save Ribbon Button to Open Save Dialog")]
         public void Click_Save_Ribbon_Button_to_Open_Save_Dialog()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
+            Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
             Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
@@ -5477,7 +5430,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savble was unsucessful.");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
@@ -7264,6 +7217,13 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
         }
+        [Given(@"I Select Rename From SaveDialog Context Menu")]
+        [When(@"I Select Rename From SaveDialog Context Menu")]
+        [Then(@"I Select Rename From SaveDialog Context Menu")]
+        private void Select_Rename_From_SaveDialog_ContextMenu()
+        {
+            Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
+        }
 
         [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
         [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
@@ -7914,7 +7874,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem);
         }
-        
+
         [Given(@"I Select Delete From SaveDialog Context Menu")]
         [When(@"I Select Delete From SaveDialog Context Menu")]
         [Then(@"I Select Delete From SaveDialog Context Menu")]
@@ -7966,7 +7926,7 @@ namespace Warewolf.UITests
         [Then(@"Remote ""(.*)"" is open")]
         public void RemoteResourceIsOpen(string tabName)
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists);
+            Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists);
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
@@ -7974,7 +7934,7 @@ namespace Warewolf.UITests
         [Then(@"Local ""(.*)"" is open")]
         public void LocalResourceIsOpen(string tabName)
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
+            Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
@@ -8064,8 +8024,10 @@ namespace Warewolf.UITests
 
         [When(@"I Select RemoteConnectionIntegration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+        {            
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            Playback.Wait(500);
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
@@ -8291,13 +8253,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
         }
 
-        [When(@"I Type The Testing Site into Web GET Source Wizard Address Textbox")]
-        public void Type_The_Testing_Site_into_Web_GET_Source_Wizard_Address_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Get";
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web get address.");
-        }
-
         [When(@"I Type The Testing Site into Web POST Source Wizard Address Textbox")]
         public void Type_The_Testing_Site_into_Web_POST_Source_Wizard_Address_Textbox()
         {
@@ -8375,6 +8330,7 @@ namespace Warewolf.UITests
         [When(@"I Click Create Test From Debug")]
         public void Click_Create_Test_From_Debug()
         {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
         }
 
@@ -8405,6 +8361,8 @@ namespace Warewolf.UITests
 
         public void Click_Delete_On_AssignValue_TestStep()
         {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.DrawHighlight();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete.Enabled);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.OutputStepHeader.Delete);
         }
 
@@ -9202,7 +9160,12 @@ namespace Warewolf.UITests
         [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
         public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
         {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.FirstItem, new Point(68, 10));
+            #region Variable Declarations
+            WpfTreeItem uIItemTreeItem = this.ChooseDLLWindow.DLLDataTree.GAC.FirstItem;
+            #endregion
+
+            // Click 'GAC' ->  tree item
+            Mouse.Click(uIItemTreeItem, new Point(68, 6));
         }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
