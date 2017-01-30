@@ -138,24 +138,30 @@ namespace Warewolf.UITests
         int OnErrorHandlerNonce = 0;
         public void OnError(object sender, PlaybackErrorEventArgs e)
         {
-            Console.WriteLine("On Retry " + OnErrorHandlerNonce + ":");
-            if (OnErrorHandlerNonce > 3) return;
-            OnErrorHandlerNonce++;
-            var type = e.Error.GetType().ToString();
-            var messageText = type + "\n" + e.Error.Message;
-            switch (type)
+            e.Result = PlaybackErrorOptions.Retry;
+            try
             {
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
-                    UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
-                    break;
-                default:
-                    Console.WriteLine(messageText);
-                    break;
+                Console.WriteLine("On Retry " + OnErrorHandlerNonce + ":");
+                if (OnErrorHandlerNonce > 3) return;
+                OnErrorHandlerNonce++;
+                var type = e.Error.GetType().ToString();
+                var messageText = type + "\n" + e.Error.Message;
+                switch (type)
+                {
+                    case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
+                        UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
+                        break;
+                    default:
+                        Console.WriteLine(messageText);
+                        break;
+                }
+            }
+            catch (Exception innerError)
+            {
+                Console.WriteLine("Exception inside OnError: " + innerError.Message);
             }
 #if DEBUG
             throw e.Error;
-#else
-            e.Result = PlaybackErrorOptions.Retry;
 #endif
         }
 
