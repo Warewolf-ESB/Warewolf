@@ -8,16 +8,33 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
 		[TestCategory("Data Tools")]
-        public void BaseConvert_OpenLargeViewToolUITest()
+        public void BaseConvertTool_Small_And_LargeView_Then_QVIView_UITest()
         {
-            UIMap.Open_Base_Conversion_Tool_Large_View();
-            UIMap.Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox();
-            UIMap.Click_Base_Convert_Large_View_Done_Button();
+            //Small View
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Small View");
+            //Large View
+            UIMap.Open_BaseConvertTool_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Large View");
+            //QVI View
+            UIMap.Open_BaseConvertTool_Qvi_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.Exists, "Base Conversion QVI Window does not exist on the design surface");
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void BaseConvertTool_EnterData_Then_Debug_UITest()
+        {
+            //Enter Data
+            UIMap.Open_BaseConvertTool_LargeView();
+            UIMap.Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox();
+            Assert.AreEqual("SomeData", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text);
+            UIMap.Click_BaseConvertTool_LargeView_DoneButton();
+            //Debug
             UIMap.Press_F6();
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
             UIMap.Click_Debug_Output_BaseConvert_Cell();
-            UIMap.Open_Base_Conversion_Tool_Qvi_Large_View();
         }
+        
 
         #region Additional test attributes
 
