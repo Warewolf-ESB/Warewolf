@@ -149,7 +149,6 @@
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\Refresh.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Control Flow\Sequence.cs" />
     <Compile Include="Tools\Control Flow\Switch.cs" />
     <Compile Include="Tools\Control Flow\Decision.cs" />

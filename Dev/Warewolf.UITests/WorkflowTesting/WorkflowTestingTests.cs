@@ -91,7 +91,6 @@ namespace Warewolf.UITests
             UIMap.Select_First_Test();
             UIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
-            UIMap.Click_Close_Tests_Tab();
         }
         
         #region Additional test attributes
