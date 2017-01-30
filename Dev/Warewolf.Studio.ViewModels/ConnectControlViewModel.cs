@@ -453,18 +453,21 @@ namespace Warewolf.Studio.ViewModels
                     if (_selectedId != null)
                     {
                         var env = EnvironmentRepository.Instance.Get(_selectedId.Value);
-                        var environmentConnection = env.Connection;
-                        var serverSource = new ServerSource
+                        if (env != null)
                         {
-                            Address = environmentConnection.WebServerUri.OriginalString,
-                            ID = server.EnvironmentID,
-                            AuthenticationType = environmentConnection.AuthenticationType,
-                            UserName = environmentConnection.UserName,
-                            Password = environmentConnection.Password,
-                            ServerName = environmentConnection.WebServerUri.Host,
-                            Name = server.ResourceName,
-                        };
-                        shellViewModel.EditServer(serverSource);
+                            var environmentConnection = env.Connection;
+                            var serverSource = new ServerSource
+                            {
+                                Address = environmentConnection.WebServerUri.OriginalString,
+                                ID = server.EnvironmentID,
+                                AuthenticationType = environmentConnection.AuthenticationType,
+                                UserName = environmentConnection.UserName,
+                                Password = environmentConnection.Password,
+                                ServerName = environmentConnection.WebServerUri.Host,
+                                Name = server.ResourceName,
+                            };
+                            shellViewModel.EditServer(serverSource);
+                        }
                     }
                 }
             }
