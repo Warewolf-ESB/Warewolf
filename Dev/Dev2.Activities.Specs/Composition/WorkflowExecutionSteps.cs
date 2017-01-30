@@ -2573,7 +2573,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity()
             {
-                IsObject = true
+                IsObject = true, DisplayName = dotNetServiceName
             };
             var Source = table.Rows[0]["Source"];
             var ClassName = table.Rows[0]["ClassName"];
