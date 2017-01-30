@@ -72,7 +72,7 @@ if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTes
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssemblyPath + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
