@@ -43,36 +43,36 @@ $TestSettingsFile = "$PSScriptRoot\IntegrationTests.testsettings"
 "@)
 
 # Create assemblies list.
-if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\debug"
-} elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\debug"
-} elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\debug"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\debug"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\debug"
+if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot"
+	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
-}
-$TestAssembliesList = ''
-foreach ($file in Get-ChildItem $TestAssembliesPath -Include Dev2.IntegrationTests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll"
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = $TestAssemblyPath + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList

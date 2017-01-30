@@ -43,28 +43,33 @@ $TestSettingsFile = "$PSScriptRoot\WorkflowExecutionSpecs.testsettings"
 # Create assemblies list.
 if (Test-Path "$PSScriptRoot\Warewolf.Specs\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Specs"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Specs\Dev2.*.Specs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Specs"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Specs"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Specs"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Specs\Dev2.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\..\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\..\..\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Specs\Dev2.*.Specs.dll") {
+	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Specs"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.*.Specs.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
-$TestAssembliesList = ''
+if ($TestAssembliesPath -eq "") {
+	Write-Host Cannot find Warewolf.*.Specs.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Specs
+	exit 1
+}
 foreach ($file in Get-ChildItem $TestAssembliesPath -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
