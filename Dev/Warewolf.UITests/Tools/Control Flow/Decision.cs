@@ -10,12 +10,14 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestCategory("Tools")]
         public void DecisionTool_LargeViewResize_UITest()
         {
+            //Large View
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Table.Exists, "Table does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.RequireAllDecisionsToBeTrueCheckbox.Exists, "Require All Decisions To Be True Checkbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.DisplayTextbox.Exists, "Display Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.TrueArmTextbox.Exists, "True Arm Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.FalseArmTextbox.Exists, "False Arm Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Done button does not exist on decision large view after dragging tool in from the toolbox.");
+            //Resized Decision Tool Window
             var sizeBefore = UIMap.DecisionOrSwitchDialog.LargeView.Height;
             UIMap.Resize_Decision_LargeTool();
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
