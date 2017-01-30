@@ -16,7 +16,8 @@
 			xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
 			xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
 			xmlns:views="clr-namespace:Warewolf.Studio.Views"
-             d:DesignHeight="300"
+			xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+			d:DesignHeight="300"
 			d:DesignWidth="300"
 			mc:Ignorable="d"
 			x:Name="ServiceTestUserControl"
@@ -417,7 +418,8 @@
 															x:Name="TestInputs">
 
                                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                                        <DataGrid.Columns>
+                                        <DataGrid.Columns >
+                                            
                                             <DataGridTemplateColumn Width="*"
 																	MinWidth="125"
 																	Header="Variable"
@@ -439,7 +441,8 @@
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBox Margin="1,0,1,1" AcceptsReturn="True"
+                                                        <!--<TextBox Margin="1,0,1,1" 
+                                                                 AcceptsReturn="True"
                                                                  VerticalScrollBarVisibility="Auto"
                                                                  Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                  ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
@@ -447,7 +450,31 @@
                                                             <i:Interaction.Behaviors>
                                                                 <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
-                                                        </TextBox>
+                                                        </TextBox>-->
+
+                                                        <ui:IntellisenseTextBox 
+						                                    AllowMultilinePaste="True"
+						                                    AllowUserCalculateMode="True"
+						                                    AllowUserInsertLine="True"
+						                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+						                                    VerticalScrollBarVisibility="Auto"
+						                                    TextWrapping="Wrap"
+						                                    Margin="0,0,1,1"
+						                                    AcceptsReturn="True"
+						                                    MaxHeight="80"
+                                                            
+						                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+						                                    Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+						                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+						                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+				   	                                        ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
+                                                            
+                                                            AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                            <i:Interaction.Behaviors>
+                                                                                       <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </ui:IntellisenseTextBox>
+
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -685,7 +712,7 @@
                                                                                     <StackPanel Grid.Column="0"
 																							    Grid.ColumnSpan="2" 
 																							    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                                                        <TextBox Margin="1,0,1,1"
+                                                                                        <!--<TextBox Margin="1,0,1,1"
 																							    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
 																							    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
@@ -694,7 +721,29 @@
                                                                                             <i:Interaction.Behaviors>
                                                                                                 <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                             </i:Interaction.Behaviors>
-                                                                                        </TextBox>
+                                                                                        </TextBox>-->
+
+                                                                                        <ui:IntellisenseTextBox 
+						                                                                            AllowMultilinePaste="True"
+						                                                                            AllowUserCalculateMode="True"
+						                                                                            AllowUserInsertLine="True"
+						                                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+						                                                                            VerticalScrollBarVisibility="Auto"
+						                                                                            TextWrapping="Wrap"
+						                                                                            Margin="0,0,1,1"
+						                                                                            AcceptsReturn="True"
+						                                                                            MaxHeight="80"
+						                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						                                                                            IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+						                                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+				   	                                                                                ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
+																							    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+																							    Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                                                                AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}">
+                                                                                            <i:Interaction.Behaviors>
+                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                            </i:Interaction.Behaviors>
+                                                                                        </ui:IntellisenseTextBox>
                                                                                     </StackPanel>
 
                                                                                     <TextBox Margin="1,0,1,1"
@@ -822,7 +871,7 @@
                                                             <StackPanel Grid.Column="0"
 																	    Grid.ColumnSpan="2" 
 																	    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                                <TextBox Margin="1,0,1,1"
+                                                                <!--<TextBox Margin="1,0,1,1"
 																	    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																	    ToolTip="{x:Static languages:Tooltips.ServiceTestOutputValueTooltip}"
 																	    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
@@ -831,7 +880,28 @@
                                                                     <i:Interaction.Behaviors>
                                                                         <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                     </i:Interaction.Behaviors>
-                                                                </TextBox>
+                                                                </TextBox>-->
+                                                                <ui:IntellisenseTextBox 
+						                                                            AllowMultilinePaste="True"
+						                                                            AllowUserCalculateMode="True"
+						                                                            AllowUserInsertLine="True"
+						                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+						                                                            VerticalScrollBarVisibility="Auto"
+						                                                            TextWrapping="Wrap"
+						                                                            Margin="0,0,1,1"
+						                                                            AcceptsReturn="True"
+						                                                            MaxHeight="80"
+						                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						                                                            IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+						                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+				   	                                                                ToolTip="{x:Static languages:Tooltips.ServiceTestOutputValueTooltip}"
+																	                IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+																	                Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+																	    AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                                    <i:Interaction.Behaviors>
+                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                    </i:Interaction.Behaviors>
+                                                                </ui:IntellisenseTextBox>
                                                             </StackPanel>
 
                                                             <TextBox Margin="1,0,1,1"
