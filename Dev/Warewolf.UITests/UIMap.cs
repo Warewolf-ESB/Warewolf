@@ -1197,6 +1197,9 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
         }
 
+        [Given(@"I Click Settings Ribbon Button")]
+        [When(@"I Click Settings Ribbon Button")]
+        [Then(@"I Click Settings Ribbon Button")]
         public void Click_Settings_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
@@ -1207,6 +1210,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
+            Playback.Wait(500);
             Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
@@ -1831,17 +1835,17 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
-            bool controlAvailable = true;
-            try
-            {
-                MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => uicontrol.State == ControlStates.Unavailable, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-                controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
-            }
-            catch (UITestControlNotAvailableException)
-            {
-                controlAvailable = false;
-            }
-            Assert.IsFalse(controlAvailable, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
+            //bool controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
+            //try
+            //{
+            //    MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => uicontrol.State == ControlStates.Unavailable, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
+            //    controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
+            //}
+            //catch (UITestControlNotAvailableException)
+            //{
+            //    controlAvailable = false;
+            //}
+            //Assert.IsFalse(controlAvailable, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
         }
 
         public void DeleteAssign_FromContextMenu()
@@ -1948,7 +1952,6 @@ namespace Warewolf.UITests
         public void Click_Service_Picker_Dialog_OK()
         {
             Mouse.Click(ServicePickerDialog.OK, new Point(52, 10));
-            Assert.IsFalse(ControlExistsNow(ServicePickerDialog), "Service picker dialog still exists after clicking OK button.");
         }
 
         public void Click_Service_Picker_Dialog_Cancel()
@@ -8063,7 +8066,6 @@ namespace Warewolf.UITests
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
