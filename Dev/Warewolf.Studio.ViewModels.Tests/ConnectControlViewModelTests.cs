@@ -641,10 +641,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentModel.SetupGet(a => a.Connection).Returns(mockEnvironmentConnection.Object);
             environmentModel.SetupGet(a => a.IsConnected).Returns(true);
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object);
+            var e1 = new EnvironmentModel(serverGuid, mockEnvironmentConnection.Object);
             var repo = new TestEnvironmentRespository(environmentModel.Object, e1);
             repo.ActiveEnvironment = e1;
-            EnvironmentRepository.Instance.ActiveEnvironment = repo.ActiveEnvironment;
+            new EnvironmentRepository(repo);
 
             bool passed = false;
             mockShellViewModel.Setup(a => a.EditServer(It.IsAny<IServerSource>()))
