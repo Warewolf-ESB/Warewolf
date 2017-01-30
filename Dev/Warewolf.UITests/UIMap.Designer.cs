@@ -1019,6 +1019,18 @@ namespace Warewolf.UITests
                 return this.mDev2TestingDBCustom;
             }
         }
+        
+        public RemoteConnectionInteCustom RemoteConnectionInteCustom
+        {
+            get
+            {
+                if ((this.mRemoteConnectionInteCustom == null))
+                {
+                    this.mRemoteConnectionInteCustom = new RemoteConnectionInteCustom(this);
+                }
+                return this.mRemoteConnectionInteCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1125,6 +1137,8 @@ namespace Warewolf.UITests
         private ComboboxListItemAsDropboxServerType mComboboxListItemAsDropboxServerType;
         
         private Dev2TestingDBCustom mDev2TestingDBCustom;
+        
+        private RemoteConnectionInteCustom mRemoteConnectionInteCustom;
         #endregion
     }
     
@@ -103834,6 +103848,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mUIDev2TestingDBText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RemoteConnectionInteCustom : WpfCustom
+    {
+        
+        public RemoteConnectionInteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration ";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RemoteConnectionInteText
+        {
+            get
+            {
+                if ((this.mRemoteConnectionInteText == null))
+                {
+                    this.mRemoteConnectionInteText = new WpfText(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionInteText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration ";
+                    this.mRemoteConnectionInteText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRemoteConnectionInteText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRemoteConnectionInteText;
         #endregion
     }
     
