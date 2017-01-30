@@ -27,8 +27,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.Exists, "OAuth Source Tab does not exist");
             UIMap.Enter_TextIntoOAuthKey_On_OAuthSourceTab();
             UIMap.Click_OAuthSource_AuthoriseButton();
-            UIMap.Click_OAuthSource_CloseTabButton();
         }
+
         #region Additional test attributes
 
         [TestInitialize()]

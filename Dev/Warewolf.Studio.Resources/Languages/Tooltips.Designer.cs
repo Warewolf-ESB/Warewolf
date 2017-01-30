@@ -3980,7 +3980,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute this flow as a REST api.
+        ///   Looks up a localized string similar to Execute this flow as a REST API.
         /// </summary>
         public static string ServiceViewInBrowserTooltip {
             get {

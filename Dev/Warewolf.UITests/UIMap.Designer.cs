@@ -112504,7 +112504,6 @@ namespace Warewolf.UITests
                 {
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.WindowTitles.Add("Choose DLL");
