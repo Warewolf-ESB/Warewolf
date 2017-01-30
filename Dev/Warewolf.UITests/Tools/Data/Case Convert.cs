@@ -10,14 +10,16 @@ namespace Warewolf.UITests.Tools.Data
 		[TestCategory("Data Tools")]
         public void CaseConvertTool_OpenLargeViewUITest()
         {
-            UIMap.Open_Case_Conversion_Tool_Large_View();
-        }
-
-        [TestMethod]
-		[TestCategory("Data Tools")]
-        public void CaseConvertTool_OpenQVIUITest()
-        {
-            UIMap.Open_Case_Conversion_Tool_Qvi_Large_View();
+            //Small View
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.SmallViewContentCustom.SmallDataGridTable.Exists, "Data Grid does not exist on tool Case Covert Small View");
+            //Large View
+            UIMap.Open_CaseConvertTool_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.DoneButton.Exists, "Done Button does not exist after opening Case Convert large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.LargeViewContentCustom.SmallDataGridTable.Exists, "Data Grid does not exist on tool Case Convert Large View");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.LargeViewContentCustom.OnErrorCustom.Exists, "On Error Pane does not exist on tool Case Convert Large View");
+            //QVI View
+            UIMap.Open_CaseConvertTool_Qvi_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent.Exists, "QVI on CaseConvert is not open");
         }
 
         #region Additional test attributes
