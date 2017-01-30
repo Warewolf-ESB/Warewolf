@@ -776,6 +776,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     stepCompare = false;
                 }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].Variable != otherStepOutputs[c].Variable)
+                {
+                    stepCompare = false;
+                }
             }
             return stepCompare;
         }
