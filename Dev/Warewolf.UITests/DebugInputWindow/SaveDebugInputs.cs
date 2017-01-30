@@ -22,7 +22,6 @@ namespace Warewolf.UITests.DebugInputWindow
             UIMap.Click_Debug_Ribbon_Button();
             Assert.AreEqual(InputDataText, UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Cancelling and re-openning the debug input dialog loses input values.");
             UIMap.Click_DebugInput_Cancel_Button();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
@@ -43,7 +42,6 @@ namespace Warewolf.UITests.DebugInputWindow
             UIMap.Click_Debug_Ribbon_Button();
             Assert.AreEqual(InputDataText, UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debugging Hello World workflow and then re-openning the debug input dialog loses input values.");
             UIMap.Click_DebugInput_Cancel_Button();
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         #region Additional test attributes

@@ -26,7 +26,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.Exists, "WCF Source Tab does now exist");
             UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
             UIMap.Click_WCFServiceSource_TestConnectionButton();
-            UIMap.Click_Close_WCFServiceSource_TabButton();
         }
 
         #region Additional test attributes

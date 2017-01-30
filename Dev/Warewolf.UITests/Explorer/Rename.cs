@@ -9,7 +9,7 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class RenameExplorerResource
     {
-        private const string Folder = "Acceptance Tests";
+        private const string Folder = "FolderRenameInExplorer";
         private const string newFolderName = "FolderItem2";
         private const string newResourceName = "FolderItem2";
         private const string ResourceToRename = "KeepNewName";
@@ -32,16 +32,11 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Explorer")]
         public void RenameFolder_UsingF2_Shortcut()
-        {
-            var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
-            var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Renamed";
+        {            
+            var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\";
             UIMap.Filter_Explorer(Folder);
             UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
-            Assert.IsTrue(Directory.Exists(renamedFolder), "Folder did not rename");
-            //Put back the Original Name
-            Directory.Move(renamedFolder, resourcesFolder);
-            UIMap.Click_Explorer_Refresh_Button();
-            Assert.IsTrue(Directory.Exists(resourcesFolder), "Folder did not revert back.");
+            Assert.IsTrue(Directory.Exists(renamedFolder + Folder + "_Renamed"), "Folder did not rename");
             
         }
 
@@ -62,7 +57,6 @@ namespace Warewolf.UITests
             UIMap.Click_Close_Workflow_Tab_Button();
             UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
             Directory.Move(renamedFolder, resourcesFolder);
-            UIMap.Click_Close_Workflow_Tab_Button();
         }
 
         [TestMethod]
