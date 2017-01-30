@@ -189,8 +189,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public IContextualResourceModel LoadContextualResourceModel(Guid resourceId)
         {
             if (!_environmentModel.Connection.IsConnected)
-            {
-                //_environmentModel.Connection.Connect(_environmentModel.ID);
+            {                
                 if (!_environmentModel.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
