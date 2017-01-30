@@ -44,7 +44,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 	[TestClass]
 	public partial class ServiceTestViewModelTests
 	{
-		[TestMethod]
+
+        [TestInitialize]
+        public void Init()
+        {
+            CustomContainer.Register(new Mock<IWarewolfWebClient>().Object);
+        }
+
+        [TestMethod]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		[ExpectedException(typeof(ArgumentNullException))]
@@ -88,6 +95,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
 			var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
 			var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+            testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 			//------------Execute Test---------------------------
 			//------------Assert Results-------------------------
 			Assert.IsNotNull(testViewModel.SelectedServiceTest);
@@ -108,6 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
 			var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
 			var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
+
 			//------------Execute Test---------------------------
 			//------------Assert Results-------------------------
 			Assert.IsNotNull(testViewModel.SelectedServiceTest);
