@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -129,8 +130,6 @@ namespace Warewolf.Studio.ViewModels
                 }
                 IsLoading = false;
             }, OnError);
-
-
         }
 
         public bool IsLoading
@@ -557,15 +556,26 @@ namespace Warewolf.Studio.ViewModels
                     foreach (var debugItemResult in actualOutputs)
                     {
                         var variable = debugItemResult.Variable;
-                        var serviceTestOutput = new ServiceTestOutput(variable ?? "", debugItemResult.Value, "", "")
-                        {
-                            AssertOp = "=",
-                            AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                        };
+                        var value = debugItemResult.Value;
+                        var assertOp = "=";
                         if (debugItemResult.MoreLink != null)
                         {
-                            serviceTestOutput.AssertOp = "Contains";
+                            if (serviceTestStep.ActivityType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                            {
+                                var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
+                                value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
+                            }
+                            else
+                            {
+                                assertOp = "Contains";
+                            }
                         }
+                        var serviceTestOutput = new ServiceTestOutput(variable ?? "", value, "", "")
+                        {
+                            AssertOp = assertOp,
+                            AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                        };
+                        
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
@@ -590,6 +600,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public IWarewolfWebClient WebClient
+        {
+            get
+            {
+                return _webClient ?? CustomContainer.Get<IWarewolfWebClient>();
+            }
+            set
+            {
+                _webClient = value;
+            }
+        }
+
         private void SetOutputs(IDebugState outPutState)
         {
             if (outPutState != null)
@@ -604,7 +626,15 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
                         {
-                            serviceTestOutput.AssertOp = "Contains";
+                            if (outPutState.ActualType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                            {
+                                var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
+                                value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
+                            }
+                            else
+                            {
+                                serviceTestOutput.AssertOp = "Contains";
+                            }
                         }
                         serviceTestOutput.Value = value;
                     }
@@ -1647,6 +1677,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isLoading;
         private bool _isValid;
         private bool _dirty;
+        private IWarewolfWebClient _webClient;
 
         private int GetNewTestNumber(string testName)
         {
