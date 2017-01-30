@@ -11,6 +11,7 @@ Scenario: Deploying From Explorer Opens The Deploy With Resource Already Checked
 	
 Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	Given The Warewolf Studio is running
+	And I Click Settings Ribbon Button
 	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
