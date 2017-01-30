@@ -109686,17 +109686,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfEdit FilterTextBox
+        public FilterTextBox FilterTextBox
         {
             get
             {
                 if ((this.mFilterTextBox == null))
                 {
-                    this.mFilterTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mFilterTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-                    this.mFilterTextBox.WindowTitles.Add("Choose DLL");
-                    #endregion
+                    this.mFilterTextBox = new FilterTextBox(this);
                 }
                 return this.mFilterTextBox;
             }
@@ -109712,7 +109708,7 @@ namespace Warewolf.UITests
         
         private DLLDataTree mDLLDataTree;
         
-        private WpfEdit mFilterTextBox;
+        private FilterTextBox mFilterTextBox;
         #endregion
     }
     
@@ -109852,26 +109848,62 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfTreeItem FirstItem
+        public WpfTreeItem DataTreeItem
         {
             get
             {
-                if ((this.mFirstItem == null))
+                if ((this.mDataTreeItem == null))
                 {
-                    this.mFirstItem = new WpfTreeItem(this);
+                    this.mDataTreeItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mFirstItem.WindowTitles.Add("Choose DLL");
+                    this.mDataTreeItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mDataTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDataTreeItem.WindowTitles.Add("Choose DLL");
                     #endregion
                 }
-                return this.mFirstItem;
+                return this.mDataTreeItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mFirstItem;
+        private WpfTreeItem mDataTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FilterTextBox : WpfEdit
+    {
+        
+        public FilterTextBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+            this.WindowTitles.Add("Choose DLL");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ClearSearchButton
+        {
+            get
+            {
+                if ((this.mClearSearchButton == null))
+                {
+                    this.mClearSearchButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mClearSearchButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ClearSearchButton";
+                    this.mClearSearchButton.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mClearSearchButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mClearSearchButton;
         #endregion
     }
     
