@@ -37,8 +37,9 @@ namespace Warewolf.UITests
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
+            Playback.PlaybackSettings.ContinueOnError = true;
 #if DEBUG
-            Playback.PlaybackSettings.ThinkTimeMultiplier = 1;
+            Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #else  
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #endif
@@ -1163,7 +1164,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
             Playback.Wait(500);
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.DeployButton.Exists, "Deploy ribbon button does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -8037,7 +8037,7 @@ namespace Warewolf.UITests
         public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+            Playback.Wait(500);
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
         }
 
