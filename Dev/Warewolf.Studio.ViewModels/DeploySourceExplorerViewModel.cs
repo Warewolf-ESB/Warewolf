@@ -289,10 +289,10 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
+        protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(isDeploy);
+            await localhostEnvironment.Load(true,true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
         }
 
