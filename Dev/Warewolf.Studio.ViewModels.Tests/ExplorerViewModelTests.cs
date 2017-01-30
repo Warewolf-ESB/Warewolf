@@ -439,7 +439,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
         public void TestServerReConnected()
         {
             //arrange
